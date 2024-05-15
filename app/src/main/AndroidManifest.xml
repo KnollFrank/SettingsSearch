@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.bytehamster.preferencesearch">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true">
+        <activity
+            android:name=".SimpleExample"
+            android:exported="true"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true">
-        <activity android:name=".SimpleExample"
-                  android:theme="@style/AppTheme"
-                  android:label="@string/app_name">
+            android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EnhancedExample"
-                  android:theme="@style/AppThemeDark"
-                  android:label="@string/app_name_enhanced">
+        <activity
+            android:name=".EnhancedExample"
+            android:exported="true"
+            android:label="@string/app_name_enhanced"
+            android:theme="@style/AppThemeDark">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NoPreferencesExample"
-                  android:theme="@style/AppTheme"
-                  android:label="@string/app_name_no_preferences">
+        <activity
+            android:name=".NoPreferencesExample"
+            android:exported="true"
+            android:label="@string/app_name_no_preferences"
+            android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchViewExample"
-                  android:theme="@style/AppTheme"
-                  android:label="@string/app_name_search_view">
+        <activity
+            android:name=".SearchViewExample"
+            android:exported="true"
+            android:label="@string/app_name_search_view"
+            android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
