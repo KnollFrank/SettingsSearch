@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,7 +63,6 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
                 holder.breadcrumbs.setVisibility(View.GONE);
                 holder.summary.setAlpha(0.6f);
             }
-
         }
 
         h.root.setOnClickListener(v -> {
@@ -101,6 +101,7 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View root;
+
         ViewHolder(View v) {
             super(v);
             root = v;
@@ -109,6 +110,7 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
 
     static class HistoryViewHolder extends ViewHolder {
         TextView term;
+
         HistoryViewHolder(View v) {
             super(v);
             term = v.findViewById(R.id.term);
@@ -119,6 +121,7 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
         TextView title;
         TextView summary;
         TextView breadcrumbs;
+
         PreferenceViewHolder(View v) {
             super(v);
             title = v.findViewById(R.id.title);
