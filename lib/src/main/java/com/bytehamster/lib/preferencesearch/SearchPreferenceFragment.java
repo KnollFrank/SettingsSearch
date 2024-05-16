@@ -14,12 +14,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bytehamster.lib.preferencesearch.ui.AnimationUtils;
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 
@@ -27,12 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchPreferenceFragment extends Fragment implements SearchPreferenceAdapter.SearchClickListener {
-    /** Default tag used on the library's Fragment transactions with {@link SearchPreferenceFragment} */
+    /**
+     * Default tag used on the library's Fragment transactions with {@link SearchPreferenceFragment}
+     */
     public static final String TAG = "SearchPreferenceFragment";
 
     private static final String SHARED_PREFS_FILE = "preferenceSearch";
     private static final int MAX_HISTORY = 5;
-    private PreferenceParser searcher;
+    private Searcher searcher;
     private List<PreferenceItem> results;
     private List<HistoryItem> history;
     private SharedPreferences prefs;
@@ -46,14 +50,18 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = getContext().getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
-        searcher = new PreferenceParser(getContext());
-
         searchConfiguration = SearchConfiguration.fromBundle(getArguments());
-        for (SearchConfiguration.SearchIndexItem file : searchConfiguration.getFiles()) {
-            searcher.addResourceFile(file.getResId());
-        }
-        searcher.addPreferenceItems(searchConfiguration.getPreferencesToIndex());
+        searcher = createSearcher(searchConfiguration, getContext());
         loadHistory();
+    }
+
+    private static Searcher createSearcher(final SearchConfiguration searchConfiguration, final Context context) {
+        final PreferenceParser preferenceParser = new PreferenceParser(context);
+        for (SearchConfiguration.SearchIndexItem file : searchConfiguration.getFiles()) {
+            preferenceParser.addResourceFile(file.getResId());
+        }
+        preferenceParser.addPreferenceItems(searchConfiguration.getPreferencesToIndex());
+        return new Searcher(preferenceParser.getPreferenceItems());
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -135,6 +143,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
 
     /**
      * Gets the preference key for the history size, prefixed with the history ID, if set.
+     *
      * @return the preference key for the history size
      */
     private String historySizeKey() {
@@ -147,6 +156,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
 
     /**
      * Gets the preference key for a history entry, prefixed with the history ID, if set.
+     *
      * @return the preference key for the history entry
      */
     private String historyEntryKey(int i) {
@@ -270,7 +280,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         }
     }
 
-    private TextWatcher textWatcher = new TextWatcher() {
+    private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         }
@@ -291,12 +301,12 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     }
 
     private static class SearchViewHolder {
-        private ImageView clearButton;
-        private ImageView moreButton;
-        private EditText searchView;
-        private RecyclerView recyclerView;
-        private TextView noResults;
-        private CardView cardView;
+        private final ImageView clearButton;
+        private final ImageView moreButton;
+        private final EditText searchView;
+        private final RecyclerView recyclerView;
+        private final TextView noResults;
+        private final CardView cardView;
 
         SearchViewHolder(View root) {
             searchView = root.findViewById(R.id.search);

@@ -14,7 +14,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PreferenceParserTest {
+public class PreferenceParserAndSearcherTest {
 
     @Before
     public void setUp() {
@@ -26,10 +26,11 @@ public class PreferenceParserTest {
         // Given
         final PreferenceParser preferenceParser = new PreferenceParser(TestUtils.getContext());
         preferenceParser.addResourceFile(R.xml.prefs);
+        final Searcher searcher = new Searcher(preferenceParser.getPreferenceItems());
         final String keyword = "Switch";
 
         // When
-        final List<PreferenceItem> preferenceItems = preferenceParser.searchFor(keyword, true);
+        final List<PreferenceItem> preferenceItems = searcher.searchFor(keyword, true);
 
         // Then
         final List<String> titles =
