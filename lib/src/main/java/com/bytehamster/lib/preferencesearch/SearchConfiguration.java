@@ -16,6 +16,7 @@ import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchConfiguration {
     private static final String ARGUMENT_INDEX_FILES = "items";
@@ -232,8 +233,11 @@ public class SearchConfiguration {
         return preferenceItem;
     }
 
-    public void indexItems(final List<Preference> preferences) {
-        preferences.forEach(this::indexItem);
+    public List<PreferenceItem> indexItems(final List<Preference> preferences) {
+        return preferences
+                .stream()
+                .map(this::indexItem)
+                .collect(Collectors.toList());
     }
 
     ArrayList<String> getBannedKeys() {

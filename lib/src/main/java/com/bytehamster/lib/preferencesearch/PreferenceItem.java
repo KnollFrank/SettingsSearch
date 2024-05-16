@@ -20,7 +20,7 @@ public class PreferenceItem extends ListItem implements Parcelable {
     String breadcrumbs;
     String keywords;
     ArrayList<String> keyBreadcrumbs = new ArrayList<>();
-    int resId;
+    @XmlRes int resId;
 
     private float lastScore = 0;
     private String lastKeyword = null;

@@ -3,14 +3,23 @@ package com.bytehamster.lib.preferencesearch;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.XmlRes;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceGroup;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 class PreferenceParser {
@@ -20,65 +29,27 @@ class PreferenceParser {
     private static final List<String> BLACKLIST = Arrays.asList(SearchPreference.class.getName(), "PreferenceCategory");
     private static final List<String> CONTAINERS = Arrays.asList("PreferenceCategory", "PreferenceScreen");
     private Context context;
-    private ArrayList<PreferenceItem> allEntries = new ArrayList<>();
+    private List<PreferenceItem> allEntries = new ArrayList<>();
 
-    PreferenceParser(Context context) {
+    PreferenceParser(final Context context) {
         this.context = context;
     }
 
-    void addResourceFile(SearchConfiguration.SearchIndexItem item) {
-        allEntries.addAll(parseFile(item));
+    void addResourceFile(@XmlRes final int preferenceScreen) {
+        allEntries.addAll(getPreferenceItems(preferenceScreen));
     }
 
-    void addPreferenceItems(ArrayList<PreferenceItem> preferenceItems) {
+    void addPreferenceItems(final List<PreferenceItem> preferenceItems) {
         allEntries.addAll(preferenceItems);
     }
 
-    private ArrayList<PreferenceItem> parseFile(SearchConfiguration.SearchIndexItem item) {
-        java.util.ArrayList<PreferenceItem> results = new ArrayList<>();
-        XmlPullParser xpp = context.getResources().getXml(item.getResId());
-        List<String> bannedKeys = item.getSearchConfiguration().getBannedKeys();
-
-        try {
-            xpp.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
-            xpp.setFeature(XmlPullParser.FEATURE_REPORT_NAMESPACE_ATTRIBUTES, true);
-            ArrayList<String> breadcrumbs = new ArrayList<>();
-            ArrayList<String> keyBreadcrumbs = new ArrayList<>();
-            if (!TextUtils.isEmpty(item.getBreadcrumb())) {
-                breadcrumbs.add(item.getBreadcrumb());
-            }
-            while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
-                if (xpp.getEventType() == XmlPullParser.START_TAG) {
-                    PreferenceItem result = parseSearchResult(xpp);
-                    result.resId = item.getResId();
-
-                    if (!BLACKLIST.contains(xpp.getName())
-                            && result.hasData()
-                            && !"true".equals(getAttribute(xpp, NS_SEARCH, "ignore"))
-                            && !bannedKeys.contains(result.key)) {
-                        result.breadcrumbs = joinBreadcrumbs(breadcrumbs);
-                        result.keyBreadcrumbs = cleanupKeyBreadcrumbs(keyBreadcrumbs);
-                        results.add(result);
-                    }
-                    if (CONTAINERS.contains(xpp.getName())) {
-                        breadcrumbs.add(result.title == null ? "" : result.title);
-                    }
-                    if (xpp.getName().equals("PreferenceScreen")) {
-                        keyBreadcrumbs.add(getAttribute(xpp, "key"));
-                    }
-                } else if (xpp.getEventType() == XmlPullParser.END_TAG && CONTAINERS.contains(xpp.getName())) {
-                    breadcrumbs.remove(breadcrumbs.size() - 1);
-                    if (xpp.getName().equals("PreferenceScreen")) {
-                        keyBreadcrumbs.remove(keyBreadcrumbs.size() - 1);
-                    }
-                }
-
-                xpp.next();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return results;
+    private List<PreferenceItem> getPreferenceItems(@XmlRes final int preferenceScreen) {
+        final PreferenceManager preferenceManager = new PreferenceManager(context);
+        final PreferenceScreen _preferenceScreen = preferenceManager.inflateFromResource(preferenceManager.getContext(), preferenceScreen, null);
+        final List<Preference> preferences = getPreferences(_preferenceScreen);
+        final List<PreferenceItem> preferenceItems = new SearchConfiguration().indexItems(preferences);
+        preferenceItems.forEach(preferenceItem -> preferenceItem.resId = preferenceScreen);
+        return preferenceItems;
     }
 
     private ArrayList<String> cleanupKeyBreadcrumbs(ArrayList<String> keyBreadcrumbs) {
@@ -180,12 +151,7 @@ class PreferenceParser {
             }
         }
 
-        Collections.sort(results, new Comparator<PreferenceItem>() {
-            @Override
-            public int compare(PreferenceItem i1, PreferenceItem i2) {
-                return floatCompare(i2.getScore(keyword), i1.getScore(keyword));
-            }
-        });
+        Collections.sort(results, (i1, i2) -> floatCompare(i2.getScore(keyword), i1.getScore(keyword)));
 
         if (results.size() > MAX_RESULTS) {
             return results.subList(0, MAX_RESULTS);
@@ -197,5 +163,17 @@ class PreferenceParser {
     @SuppressWarnings("UseCompareMethod")
     private static int floatCompare(float x, float y) {
         return (x < y) ? -1 : ((x == y) ? 0 : 1);
+    }
+
+    private static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {
+        final Builder<Preference> preferencesBuilder = ImmutableList.builder();
+        for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
+            final Preference preference = preferenceGroup.getPreference(i);
+            preferencesBuilder.add(preference);
+            if (preference instanceof PreferenceGroup) {
+                preferencesBuilder.addAll(getPreferences((PreferenceGroup) preference));
+            }
+        }
+        return preferencesBuilder.build();
     }
 }
