@@ -247,6 +247,7 @@ public class SearchConfiguration {
         bannedKeys.add(key);
     }
 
+    // FK-TODO: return type shall be List<SearchIndexItem>
     ArrayList<SearchIndexItem> getFiles() {
         return filesToIndex;
     }
