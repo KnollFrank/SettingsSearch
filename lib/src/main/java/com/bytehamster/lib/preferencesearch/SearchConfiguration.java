@@ -3,6 +3,7 @@ package com.bytehamster.lib.preferencesearch;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.annotation.XmlRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class SearchConfiguration {
 
     private ArrayList<SearchIndexItem> filesToIndex = new ArrayList<>();
     private ArrayList<PreferenceItem> preferencesToIndex = new ArrayList<>();
-    private ArrayList<String> bannedKeys = new ArrayList<>();
+    private final List<String> bannedKeys = new ArrayList<>();
     private boolean historyEnabled = true;
     private String historyId = null;
     private boolean breadcrumbsEnabled = false;
@@ -47,28 +49,19 @@ public class SearchConfiguration {
     private String textHint;
 
     SearchConfiguration() {
-
     }
 
-    /**
-     * Creates a new search configuration
-     * @param activity The Activity that receives callbacks. Must implement SearchPreferenceResultListener.
-     */
     public SearchConfiguration(AppCompatActivity activity) {
         setActivity(activity);
     }
 
-    /**
-     * Shows the fragment
-     * @return A reference to the fragment
-     */
     public SearchPreferenceFragment showSearchFragment() {
         if (activity == null) {
             throw new IllegalStateException("setActivity() not called");
         }
 
-        Bundle arguments = this.toBundle();
-        SearchPreferenceFragment fragment = new SearchPreferenceFragment();
+        final Bundle arguments = this.toBundle();
+        final SearchPreferenceFragment fragment = new SearchPreferenceFragment();
         fragment.setArguments(arguments);
         activity.getSupportFragmentManager().beginTransaction()
                 .add(containerResId, fragment, SearchPreferenceFragment.TAG)
@@ -111,6 +104,7 @@ public class SearchConfiguration {
 
     /**
      * Sets the current activity that also receives callbacks
+     *
      * @param activity The Activity that receives callbacks. Must implement SearchPreferenceResultListener.
      */
     public void setActivity(@NonNull AppCompatActivity activity) {
@@ -122,6 +116,7 @@ public class SearchConfiguration {
 
     /**
      * Show a history of recent search terms if nothing was typed yet. Default is true
+     *
      * @param historyEnabled True if history should be enabled
      */
     public void setHistoryEnabled(boolean historyEnabled) {
@@ -131,6 +126,7 @@ public class SearchConfiguration {
     /**
      * Sets the id to use for saving the history. Preference screens with the same history id will share the same
      * history. The default id is null (no id).
+     *
      * @param historyId the history id
      */
     public void setHistoryId(String historyId) {
@@ -139,6 +135,7 @@ public class SearchConfiguration {
 
     /**
      * Allow to enable and disable fuzzy searching. Default is true
+     *
      * @param fuzzySearchEnabled True if search should be fuzzy
      */
     public void setFuzzySearchEnabled(boolean fuzzySearchEnabled) {
@@ -149,6 +146,7 @@ public class SearchConfiguration {
      * Show breadcrumbs in the list of search results, containing of
      * the prefix given in addResourceFileToIndex, PreferenceCategory and PreferenceScreen.
      * Default is false
+     *
      * @param breadcrumbsEnabled True if breadcrumbs should be shown
      */
     public void setBreadcrumbsEnabled(boolean breadcrumbsEnabled) {
@@ -158,6 +156,7 @@ public class SearchConfiguration {
     /**
      * Show the search bar above the list. When setting this to false, you have to use {@see SearchPreferenceFragment#setSearchTerm(String) setSearchTerm} instead
      * Default is true
+     *
      * @param searchBarEnabled True if search bar should be shown
      */
     public void setSearchBarEnabled(boolean searchBarEnabled) {
@@ -166,6 +165,7 @@ public class SearchConfiguration {
 
     /**
      * Sets the container to use when loading the fragment
+     *
      * @param containerResId Resource id of the container
      */
     public void setFragmentContainerViewId(@IdRes int containerResId) {
@@ -174,10 +174,11 @@ public class SearchConfiguration {
 
     /**
      * Display a reveal animation
-     * @param centerX Origin of the reveal animation
-     * @param centerY Origin of the reveal animation
-     * @param width Size of the main container
-     * @param height Size of the main container
+     *
+     * @param centerX     Origin of the reveal animation
+     * @param centerY     Origin of the reveal animation
+     * @param width       Size of the main container
+     * @param height      Size of the main container
      * @param colorAccent Accent color to use
      */
     public void useAnimation(int centerX, int centerY, int width, int height, @ColorInt int colorAccent) {
@@ -186,6 +187,7 @@ public class SearchConfiguration {
 
     /**
      * Adds a new file to the index
+     *
      * @param resId The preference file to index
      */
     public SearchIndexItem index(@XmlRes int resId) {
@@ -194,35 +196,15 @@ public class SearchConfiguration {
         return item;
     }
 
-    /**
-     * Indexes a single preference
-     * @return the indexed PreferenceItem to configure it with chaining
-     * @see PreferenceItem for the available methods for configuring it
-     */
-    public PreferenceItem indexItem() {
-        PreferenceItem preferenceItem = new PreferenceItem();
-        preferencesToIndex.add(preferenceItem);
-        return preferenceItem;
-    }
-
-    /**
-     * Indexes a single android preference
-     * @param preference to get its key, summary, title and entries
-     * @return the indexed PreferenceItem to configure it with chaining
-     * @see PreferenceItem for the available methods for configuring it
-     */
-    public PreferenceItem indexItem(@NonNull Preference preference) {
-        PreferenceItem preferenceItem = new PreferenceItem();
-
-        if (preference.getKey() != null) {
-            preferenceItem.key = preference.getKey();
-        }
-        if (preference.getSummary() != null) {
-            preferenceItem.summary = preference.getSummary().toString();
-        }
-        if (preference.getTitle() != null) {
-            preferenceItem.title = preference.getTitle().toString();
-        }
+    public PreferenceItem indexItem(final Preference preference, @XmlRes final int resId) {
+        final PreferenceItem preferenceItem =
+                new PreferenceItem(
+                        preference.getTitle() != null ? preference.getTitle().toString() : null,
+                        preference.getSummary() != null ? preference.getSummary().toString() : null,
+                        preference.getKey(),
+                        null,
+                        null,
+                        resId);
         if (preference instanceof ListPreference) {
             ListPreference listPreference = ((ListPreference) preference);
             if (listPreference.getEntries() != null) {
@@ -233,14 +215,14 @@ public class SearchConfiguration {
         return preferenceItem;
     }
 
-    public List<PreferenceItem> indexItems(final List<Preference> preferences) {
+    public List<PreferenceItem> indexItems(final List<Preference> preferences, @XmlRes final int resId) {
         return preferences
                 .stream()
-                .map(this::indexItem)
+                .map(preference -> indexItem(preference, resId))
                 .collect(Collectors.toList());
     }
 
-    ArrayList<String> getBannedKeys() {
+    List<String> getBannedKeys() {
         return bannedKeys;
     }
 
@@ -318,6 +300,7 @@ public class SearchConfiguration {
 
         /**
          * Includes the given R.xml resource in the index
+         *
          * @param resId The resource to index
          */
         private SearchIndexItem(@XmlRes int resId, SearchConfiguration searchConfiguration) {
@@ -327,6 +310,7 @@ public class SearchConfiguration {
 
         /**
          * Adds a breadcrumb
+         *
          * @param breadcrumb The breadcrumb to add
          * @return For chaining
          */
@@ -337,6 +321,7 @@ public class SearchConfiguration {
 
         /**
          * Adds a breadcrumb
+         *
          * @param breadcrumb The breadcrumb to add
          * @return For chaining
          */
@@ -355,7 +340,8 @@ public class SearchConfiguration {
             }
         }
 
-        @XmlRes int getResId() {
+        @XmlRes
+        int getResId() {
             return resId;
         }
 
@@ -379,7 +365,7 @@ public class SearchConfiguration {
             }
         };
 
-        private SearchIndexItem(Parcel parcel){
+        private SearchIndexItem(Parcel parcel) {
             this.breadcrumb = parcel.readString();
             this.resId = parcel.readInt();
             this.searchConfiguration = null;

@@ -3,44 +3,71 @@ package com.bytehamster.lib.preferencesearch;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+
 import androidx.annotation.XmlRes;
+
 import org.apache.commons.text.similarity.FuzzyScore;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class PreferenceItem extends ListItem implements Parcelable {
     static final int TYPE = 2;
-    private static FuzzyScore fuzzyScore = new FuzzyScore(Locale.getDefault());
+    private static final FuzzyScore fuzzyScore = new FuzzyScore(Locale.getDefault());
 
-    String title;
-    String summary;
-    String key;
-    String entries;
-    String breadcrumbs;
-    String keywords;
-    ArrayList<String> keyBreadcrumbs = new ArrayList<>();
-    @XmlRes int resId;
+    public final String title;
+    public final String summary;
+    public final String key;
+    public final String breadcrumbs;
+    public final String keywords;
+    @XmlRes
+    public final int resId;
 
+    public String entries;
+    public List<String> keyBreadcrumbs = new ArrayList<>();
     private float lastScore = 0;
     private String lastKeyword = null;
 
-    PreferenceItem() {
+    PreferenceItem(final String title,
+                   final String summary,
+                   final String key,
+                   final String breadcrumbs,
+                   final String keywords,
+                   @XmlRes final int resId) {
+        this.title = title;
+        this.summary = summary;
+        this.key = key;
+        this.breadcrumbs = breadcrumbs;
+        this.keywords = keywords;
+        this.resId = resId;
     }
 
-    private PreferenceItem(Parcel in) {
-        this.title = in.readString();
-        this.summary = in.readString();
-        this.key = in.readString();
-        this.breadcrumbs = in.readString();
-        this.keywords = in.readString();
-        this.resId = in.readInt();
+    private PreferenceItem(final Parcel source) {
+        this.title = source.readString();
+        this.summary = source.readString();
+        this.key = source.readString();
+        this.breadcrumbs = source.readString();
+        this.keywords = source.readString();
+        this.resId = source.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(title);
+        parcel.writeString(summary);
+        parcel.writeString(key);
+        parcel.writeString(breadcrumbs);
+        parcel.writeString(keywords);
+        parcel.writeInt(resId);
     }
 
     public static final Creator<PreferenceItem> CREATOR = new Creator<PreferenceItem>() {
+
         @Override
-        public PreferenceItem createFromParcel(Parcel in) {
-            return new PreferenceItem(in);
+        public PreferenceItem createFromParcel(final Parcel source) {
+            return new PreferenceItem(source);
         }
 
         @Override
@@ -98,45 +125,6 @@ public class PreferenceItem extends ListItem implements Parcelable {
         return infoBuilder.toString();
     }
 
-    public PreferenceItem withKey(String key) {
-        this.key = key;
-        return this;
-    }
-
-    public PreferenceItem withSummary(String summary) {
-        this.summary = summary;
-        return this;
-    }
-
-    public PreferenceItem withTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public PreferenceItem withEntries(String entries) {
-        this.entries = entries;
-        return this;
-    }
-
-    public PreferenceItem withKeywords(String keywords) {
-        this.keywords = keywords;
-        return this;
-    }
-
-    public PreferenceItem withResId(@XmlRes Integer resId) {
-        this.resId = resId;
-        return this;
-    }
-
-    /**
-     * @param breadcrumb The breadcrumb to add
-     * @return For chaining
-     */
-    public PreferenceItem addBreadcrumb(String breadcrumb) {
-        this.breadcrumbs = Breadcrumb.concat(this.breadcrumbs, breadcrumb);
-        return this;
-    }
-
     @Override
     public String toString() {
         return "PreferenceItem: " + title + " " + summary + " " + key;
@@ -153,13 +141,15 @@ public class PreferenceItem extends ListItem implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(title);
-        parcel.writeString(summary);
-        parcel.writeString(key);
-        parcel.writeString(breadcrumbs);
-        parcel.writeString(keywords);
-        parcel.writeInt(resId);
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final PreferenceItem that = (PreferenceItem) o;
+        return resId == that.resId && Objects.equals(title, that.title) && Objects.equals(summary, that.summary) && Objects.equals(key, that.key) && Objects.equals(breadcrumbs, that.breadcrumbs) && Objects.equals(keywords, that.keywords);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, summary, key, breadcrumbs, keywords, resId);
+    }
 }
