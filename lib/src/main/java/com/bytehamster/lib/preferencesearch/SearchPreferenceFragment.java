@@ -49,8 +49,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         searcher = new PreferenceParser(getContext());
 
         searchConfiguration = SearchConfiguration.fromBundle(getArguments());
-        ArrayList<SearchConfiguration.SearchIndexItem> files = searchConfiguration.getFiles();
-        for (SearchConfiguration.SearchIndexItem file : files) {
+        for (SearchConfiguration.SearchIndexItem file : searchConfiguration.getFiles()) {
             searcher.addResourceFile(file.getResId());
         }
         searcher.addPreferenceItems(searchConfiguration.getPreferencesToIndex());
