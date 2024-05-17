@@ -9,11 +9,12 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
+import com.bytehamster.lib.preferencesearch.common.Utils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class PreferenceParser {
 
@@ -24,11 +25,16 @@ class PreferenceParser {
     }
 
     public List<PreferenceItem> parsePreferences(final List<Integer> preferenceScreens) {
-        final List<PreferenceItem> preferenceItems = new ArrayList<>();
-        for (final Integer preferenceScreen : preferenceScreens) {
-            preferenceItems.addAll(getPreferenceItems(preferenceScreen));
-        }
-        return preferenceItems;
+        return getPreferenceItems(preferenceScreens);
+    }
+
+    private List<PreferenceItem> getPreferenceItems(final List<Integer> preferenceScreens) {
+        final List<List<PreferenceItem>> preferenceItems =
+                preferenceScreens
+                        .stream()
+                        .map(this::getPreferenceItems)
+                        .collect(Collectors.toList());
+        return Utils.concat(preferenceItems);
     }
 
     private List<PreferenceItem> getPreferenceItems(@XmlRes final int preferenceScreen) {
