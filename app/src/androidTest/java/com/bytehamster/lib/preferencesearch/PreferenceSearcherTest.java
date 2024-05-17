@@ -8,17 +8,23 @@ import android.os.Looper;
 
 import com.bytehamster.preferencesearch.test.R;
 
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PreferenceParserAndSearcherTest {
+public class PreferenceSearcherTest {
 
-    @Before
-    public void setUp() {
+    @BeforeClass
+    public static void beforeClass() {
         Looper.prepare();
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        Looper.getMainLooper().quitSafely();
     }
 
     @Test
@@ -26,11 +32,11 @@ public class PreferenceParserAndSearcherTest {
         // Given
         final PreferenceParser preferenceParser = new PreferenceParser(TestUtils.getContext());
         preferenceParser.addResourceFile(R.xml.prefs);
-        final Searcher searcher = new Searcher(preferenceParser.getPreferenceItems());
+        final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(preferenceParser.getPreferenceItems());
         final String keyword = "Switch";
 
         // When
-        final List<PreferenceItem> preferenceItems = searcher.searchFor(keyword, true);
+        final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword, true);
 
         // Then
         final List<String> titles =

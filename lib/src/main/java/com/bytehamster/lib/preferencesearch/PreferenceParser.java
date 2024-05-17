@@ -24,6 +24,7 @@ class PreferenceParser {
         this.context = context;
     }
 
+    // FK-TODO: remove methods addResourceFile() and addPreferenceItems() and add their params to method getPreferenceItems() which shall be renamed to parse()
     public void addResourceFile(@XmlRes final int preferenceScreen) {
         preferenceItems.addAll(getPreferenceItems(preferenceScreen));
     }

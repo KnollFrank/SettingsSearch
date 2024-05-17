@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-class Searcher {
+class PreferenceSearcher {
 
     private static final int MAX_RESULTS = 10;
 
     private final List<PreferenceItem> preferenceItems;
 
-    public Searcher(List<PreferenceItem> preferenceItems) {
+    public PreferenceSearcher(List<PreferenceItem> preferenceItems) {
         this.preferenceItems = preferenceItems;
     }
 

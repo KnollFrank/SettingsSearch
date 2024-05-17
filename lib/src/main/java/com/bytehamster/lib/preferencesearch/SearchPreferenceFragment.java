@@ -36,7 +36,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
 
     private static final String SHARED_PREFS_FILE = "preferenceSearch";
     private static final int MAX_HISTORY = 5;
-    private Searcher searcher;
+    private PreferenceSearcher preferenceSearcher;
     private List<PreferenceItem> results;
     private List<HistoryItem> history;
     private SharedPreferences prefs;
@@ -51,17 +51,17 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         super.onCreate(savedInstanceState);
         prefs = getContext().getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         searchConfiguration = SearchConfiguration.fromBundle(getArguments());
-        searcher = createSearcher(searchConfiguration, getContext());
+        preferenceSearcher = createSearcher(searchConfiguration, getContext());
         loadHistory();
     }
 
-    private static Searcher createSearcher(final SearchConfiguration searchConfiguration, final Context context) {
+    private static PreferenceSearcher createSearcher(final SearchConfiguration searchConfiguration, final Context context) {
         final PreferenceParser preferenceParser = new PreferenceParser(context);
         for (SearchConfiguration.SearchIndexItem file : searchConfiguration.getFiles()) {
             preferenceParser.addResourceFile(file.getResId());
         }
         preferenceParser.addPreferenceItems(searchConfiguration.getPreferencesToIndex());
-        return new Searcher(preferenceParser.getPreferenceItems());
+        return new PreferenceSearcher(preferenceParser.getPreferenceItems());
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -228,7 +228,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
             return;
         }
 
-        results = searcher.searchFor(keyword, searchConfiguration.isFuzzySearchEnabled());
+        results = preferenceSearcher.searchFor(keyword, searchConfiguration.isFuzzySearchEnabled());
         adapter.setContent(new ArrayList<>(results));
 
         setEmptyViewShown(results.isEmpty());
