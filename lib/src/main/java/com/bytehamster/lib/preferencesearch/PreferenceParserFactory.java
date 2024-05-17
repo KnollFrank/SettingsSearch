@@ -5,7 +5,7 @@ import android.content.Context;
 
 import androidx.preference.PreferenceManager;
 
-public class PreferenceParserFactory {
+class PreferenceParserFactory {
 
     @SuppressLint("RestrictedApi")
     public static PreferenceParser fromContext(final Context context) {

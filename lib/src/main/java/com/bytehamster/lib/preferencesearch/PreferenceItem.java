@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class PreferenceItem extends ListItem implements Parcelable {
+class PreferenceItem extends ListItem implements Parcelable {
     static final int TYPE = 2;
     private static final FuzzyScore fuzzyScore = new FuzzyScore(Locale.getDefault());
 

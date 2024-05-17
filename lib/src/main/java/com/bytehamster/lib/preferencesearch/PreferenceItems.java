@@ -5,7 +5,7 @@ import androidx.preference.Preference;
 
 import java.util.List;
 
-public class PreferenceItems {
+class PreferenceItems {
 
     public static List<PreferenceItem> getPreferenceItems(final List<Preference> preferences,
                                                           @XmlRes final int resId) {

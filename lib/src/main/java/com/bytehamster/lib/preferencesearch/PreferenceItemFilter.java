@@ -5,7 +5,7 @@ import androidx.preference.Preference;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PreferenceItemFilter {
+class PreferenceItemFilter {
 
     public static List<Preference> getSearchablePreferences(final List<Preference> preferences) {
         return preferences
