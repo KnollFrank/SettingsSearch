@@ -38,9 +38,7 @@ public class PreferenceSearcherTest {
                         .fromContext(TestUtils.getContext())
                         .parsePreferenceScreen(preferenceScreen);
         final PreferenceSearcher preferenceSearcher =
-                PreferenceSearcherFactory.createPreferenceSearcher(
-                        preferences,
-                        preferenceScreen);
+                new PreferenceSearcher(PreferenceItems.getPreferenceItems(preferences, preferenceScreen));
         final String keyword = "Switch";
 
         // When
