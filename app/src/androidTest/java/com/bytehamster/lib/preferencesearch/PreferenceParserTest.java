@@ -29,12 +29,12 @@ public class PreferenceParserTest {
     @Test
     public void shouldParseXmlResource() {
         // Given
-        final PreferenceParser preferenceParser = PreferenceParser.create(TestUtils.getContext());
+        final PreferenceParser preferenceParser = PreferenceParserFactory.fromContext(TestUtils.getContext());
         final int preferenceScreen = R.xml.prefs;
 
         // When
         final List<PreferenceItem> preferenceItems =
-                preferenceParser.parsePreferences(Collections.singletonList(preferenceScreen));
+                preferenceParser.parsePreferenceScreens(Collections.singletonList(preferenceScreen));
 
         // Then
         assertThat(preferenceItems, hasSize(15));

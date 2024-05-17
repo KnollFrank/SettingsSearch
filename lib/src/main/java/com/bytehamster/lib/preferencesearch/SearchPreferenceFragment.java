@@ -58,7 +58,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
                 new PreferenceSearcher(
                         getPreferenceItems(
                                 searchConfiguration,
-                                PreferenceParser.create(getContext())));
+                                PreferenceParserFactory.fromContext(getContext())));
         loadHistory();
     }
 
@@ -66,7 +66,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
                                                            final PreferenceParser preferenceParser) {
         return ImmutableList
                 .<PreferenceItem>builder()
-                .addAll(preferenceParser.parsePreferences(getPreferenceScreens(searchConfiguration)))
+                .addAll(preferenceParser.parsePreferenceScreens(getPreferenceScreens(searchConfiguration)))
                 .addAll(searchConfiguration.getPreferencesToIndex())
                 .build();
     }

@@ -1,7 +1,6 @@
 package com.bytehamster.lib.preferencesearch;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 
 import androidx.annotation.XmlRes;
 import androidx.preference.Preference;
@@ -13,6 +12,7 @@ import com.bytehamster.lib.preferencesearch.common.Utils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,17 +20,16 @@ class PreferenceParser {
 
     private final PreferenceManager preferenceManager;
 
-    @SuppressLint("RestrictedApi")
-    public static PreferenceParser create(final Context context) {
-        return new PreferenceParser(new PreferenceManager(context));
-    }
-
-    public List<PreferenceItem> parsePreferences(final List<Integer> preferenceScreens) {
-        return getPreferenceItems(preferenceScreens);
-    }
-
-    private PreferenceParser(final PreferenceManager preferenceManager) {
+    public PreferenceParser(final PreferenceManager preferenceManager) {
         this.preferenceManager = preferenceManager;
+    }
+
+    public List<PreferenceItem> parsePreferenceScreen(@XmlRes final int preferenceScreen) {
+        return parsePreferenceScreens(Collections.singletonList(preferenceScreen));
+    }
+
+    public List<PreferenceItem> parsePreferenceScreens(final List<Integer> preferenceScreens) {
+        return getPreferenceItems(preferenceScreens);
     }
 
     private List<PreferenceItem> getPreferenceItems(final List<Integer> preferenceScreens) {
