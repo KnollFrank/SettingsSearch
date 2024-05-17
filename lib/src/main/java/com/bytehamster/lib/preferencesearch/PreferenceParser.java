@@ -1,6 +1,7 @@
 package com.bytehamster.lib.preferencesearch;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 
 import androidx.annotation.XmlRes;
 import androidx.preference.Preference;
@@ -16,6 +17,11 @@ import java.util.List;
 class PreferenceParser {
 
     private final PreferenceManager preferenceManager;
+
+    @SuppressLint("RestrictedApi")
+    public static PreferenceParser fromContext(final Context context) {
+        return new PreferenceParser(new PreferenceManager(context));
+    }
 
     public PreferenceParser(final PreferenceManager preferenceManager) {
         this.preferenceManager = preferenceManager;

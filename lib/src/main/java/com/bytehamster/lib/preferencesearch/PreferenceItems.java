@@ -49,7 +49,7 @@ class PreferenceItems {
     private static List<PreferenceItem> parsePreferenceScreen(@XmlRes final int preferenceScreen,
                                                               final Context context) {
         final List<Preference> preferences =
-                PreferenceParserFactory
+                PreferenceParser
                         .fromContext(context)
                         .parsePreferenceScreen(preferenceScreen);
         final List<Preference> searchablePreferences =

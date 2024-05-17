@@ -30,7 +30,7 @@ public class PreferenceParserTest {
     @Test
     public void shouldParseXmlResource() {
         // Given
-        final PreferenceParser preferenceParser = PreferenceParserFactory.fromContext(TestUtils.getContext());
+        final PreferenceParser preferenceParser = PreferenceParser.fromContext(TestUtils.getContext());
         final int preferenceScreen = R.xml.prefs;
 
         // When

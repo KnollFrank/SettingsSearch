@@ -34,7 +34,7 @@ public class PreferenceSearcherTest {
         // Given
         final int preferenceScreen = R.xml.prefs;
         final List<Preference> preferences =
-                PreferenceParserFactory
+                PreferenceParser
                         .fromContext(TestUtils.getContext())
                         .parsePreferenceScreen(preferenceScreen);
         final PreferenceSearcher preferenceSearcher =
