@@ -12,7 +12,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +33,7 @@ public class PreferenceSearcherTest {
         final List<PreferenceItem> parsedPreferenceItems =
                 PreferenceParserFactory
                         .fromContext(TestUtils.getContext())
-                        .parsePreferenceScreens(Collections.singletonList(R.xml.prefs));
+                        .parsePreferenceScreen(R.xml.prefs);
         final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(parsedPreferenceItems);
         final String keyword = "Switch";
 

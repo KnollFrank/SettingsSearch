@@ -33,8 +33,7 @@ public class PreferenceParserTest {
         final int preferenceScreen = R.xml.prefs;
 
         // When
-        final List<PreferenceItem> preferenceItems =
-                preferenceParser.parsePreferenceScreens(Collections.singletonList(preferenceScreen));
+        final List<PreferenceItem> preferenceItems = preferenceParser.parsePreferenceScreen(preferenceScreen);
 
         // Then
         assertThat(preferenceItems, hasSize(15));

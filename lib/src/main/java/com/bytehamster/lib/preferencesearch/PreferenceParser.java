@@ -8,13 +8,10 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
-import com.bytehamster.lib.preferencesearch.common.Utils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 class PreferenceParser {
 
@@ -25,20 +22,7 @@ class PreferenceParser {
     }
 
     public List<PreferenceItem> parsePreferenceScreen(@XmlRes final int preferenceScreen) {
-        return parsePreferenceScreens(Collections.singletonList(preferenceScreen));
-    }
-
-    public List<PreferenceItem> parsePreferenceScreens(final List<Integer> preferenceScreens) {
-        return getPreferenceItems(preferenceScreens);
-    }
-
-    private List<PreferenceItem> getPreferenceItems(final List<Integer> preferenceScreens) {
-        final List<List<PreferenceItem>> preferenceItems =
-                preferenceScreens
-                        .stream()
-                        .map(this::getPreferenceItems)
-                        .collect(Collectors.toList());
-        return Utils.concat(preferenceItems);
+        return getPreferenceItems(preferenceScreen);
     }
 
     private List<PreferenceItem> getPreferenceItems(@XmlRes final int preferenceScreen) {

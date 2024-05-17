@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bytehamster.lib.preferencesearch.SearchConfiguration.SearchIndexItem;
+import com.bytehamster.lib.preferencesearch.common.Utils;
 import com.bytehamster.lib.preferencesearch.ui.AnimationUtils;
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 import com.google.common.collect.ImmutableList;
@@ -66,7 +67,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
                                                            final PreferenceParser preferenceParser) {
         return ImmutableList
                 .<PreferenceItem>builder()
-                .addAll(preferenceParser.parsePreferenceScreens(getPreferenceScreens(searchConfiguration)))
+                .addAll(parsePreferenceScreens(getPreferenceScreens(searchConfiguration), preferenceParser))
                 .addAll(searchConfiguration.getPreferencesToIndex())
                 .build();
     }
@@ -77,6 +78,16 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
                 .stream()
                 .map(SearchIndexItem::getResId)
                 .collect(Collectors.toList());
+    }
+
+    private static List<PreferenceItem> parsePreferenceScreens(final List<Integer> preferenceScreens,
+                                                               final PreferenceParser preferenceParser) {
+        final List<List<PreferenceItem>> preferenceItems =
+                preferenceScreens
+                        .stream()
+                        .map(preferenceParser::parsePreferenceScreen)
+                        .collect(Collectors.toList());
+        return Utils.concat(preferenceItems);
     }
 
     @SuppressLint("ClickableViewAccessibility")
