@@ -21,19 +21,17 @@ class PreferenceParser {
         this.preferenceManager = preferenceManager;
     }
 
-    public List<PreferenceItem> parsePreferenceScreen(@XmlRes final int preferenceScreen) {
-        return getPreferenceItems(preferenceScreen);
+    public List<Preference> parsePreferenceScreen(@XmlRes final int preferenceScreen) {
+        return getPreferences(preferenceScreen);
     }
 
-    private List<PreferenceItem> getPreferenceItems(@XmlRes final int preferenceScreen) {
+    private List<Preference> getPreferences(@XmlRes final int preferenceScreen) {
         @SuppressLint("RestrictedApi") final PreferenceScreen _preferenceScreen =
                 preferenceManager.inflateFromResource(
                         preferenceManager.getContext(),
                         preferenceScreen,
                         null);
-        return new SearchConfiguration().indexItems(
-                getPreferences(_preferenceScreen),
-                preferenceScreen);
+        return getPreferences(_preferenceScreen);
     }
 
     private static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {

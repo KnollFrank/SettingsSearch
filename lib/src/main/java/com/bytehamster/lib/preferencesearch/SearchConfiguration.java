@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// FK-TODO: refactor
 public class SearchConfiguration {
     private static final String ARGUMENT_INDEX_FILES = "items";
     private static final String ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES = "individual_prefs";

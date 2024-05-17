@@ -6,6 +6,8 @@ import static org.hamcrest.core.StringContains.containsString;
 
 import android.os.Looper;
 
+import androidx.preference.Preference;
+
 import com.bytehamster.preferencesearch.test.R;
 
 import org.junit.AfterClass;
@@ -30,11 +32,15 @@ public class PreferenceSearcherTest {
     @Test
     public void shouldSearch() {
         // Given
-        final List<PreferenceItem> parsedPreferenceItems =
+        final int preferenceScreen = R.xml.prefs;
+        final List<Preference> preferences =
                 PreferenceParserFactory
                         .fromContext(TestUtils.getContext())
-                        .parsePreferenceScreen(R.xml.prefs);
-        final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(parsedPreferenceItems);
+                        .parsePreferenceScreen(preferenceScreen);
+        final PreferenceSearcher preferenceSearcher =
+                PreferenceSearcherFactory.createPreferenceSearcher(
+                        preferences,
+                        preferenceScreen);
         final String keyword = "Switch";
 
         // When

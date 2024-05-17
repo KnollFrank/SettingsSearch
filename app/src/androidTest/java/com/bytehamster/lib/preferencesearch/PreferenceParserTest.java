@@ -5,13 +5,14 @@ import static org.hamcrest.Matchers.hasSize;
 
 import android.os.Looper;
 
+import androidx.preference.Preference;
+
 import com.bytehamster.preferencesearch.test.R;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 public class PreferenceParserTest {
@@ -33,9 +34,9 @@ public class PreferenceParserTest {
         final int preferenceScreen = R.xml.prefs;
 
         // When
-        final List<PreferenceItem> preferenceItems = preferenceParser.parsePreferenceScreen(preferenceScreen);
+        final List<Preference> preferences = preferenceParser.parsePreferenceScreen(preferenceScreen);
 
         // Then
-        assertThat(preferenceItems, hasSize(15));
+        assertThat(preferences, hasSize(15));
     }
 }

@@ -16,9 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.XmlRes;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,19 +57,14 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         super.onCreate(savedInstanceState);
         prefs = getContext().getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         searchConfiguration = SearchConfiguration.fromBundle(getArguments());
-        preferenceSearcher =
-                new PreferenceSearcher(
-                        getPreferenceItems(
-                                searchConfiguration,
-                                PreferenceParserFactory.fromContext(getContext())));
+        preferenceSearcher = new PreferenceSearcher(getPreferenceItems(searchConfiguration));
         loadHistory();
     }
 
-    private static List<PreferenceItem> getPreferenceItems(final SearchConfiguration searchConfiguration,
-                                                           final PreferenceParser preferenceParser) {
+    private List<PreferenceItem> getPreferenceItems(final SearchConfiguration searchConfiguration) {
         return ImmutableList
                 .<PreferenceItem>builder()
-                .addAll(parsePreferenceScreens(getPreferenceScreens(searchConfiguration), preferenceParser))
+                .addAll(parsePreferenceScreens(getPreferenceScreens(searchConfiguration)))
                 .addAll(searchConfiguration.getPreferencesToIndex())
                 .build();
     }
@@ -80,14 +77,23 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
                 .collect(Collectors.toList());
     }
 
-    private static List<PreferenceItem> parsePreferenceScreens(final List<Integer> preferenceScreens,
-                                                               final PreferenceParser preferenceParser) {
+    private List<PreferenceItem> parsePreferenceScreens(final List<Integer> preferenceScreens) {
         final List<List<PreferenceItem>> preferenceItems =
                 preferenceScreens
                         .stream()
-                        .map(preferenceParser::parsePreferenceScreen)
+                        .map(this::parsePreferenceScreen)
                         .collect(Collectors.toList());
         return Utils.concat(preferenceItems);
+    }
+
+    private List<PreferenceItem> parsePreferenceScreen(@XmlRes final int preferenceScreen) {
+        final List<Preference> preferences =
+                PreferenceParserFactory
+                        .fromContext(getContext())
+                        .parsePreferenceScreen(preferenceScreen);
+        final List<Preference> searchablePreferences =
+                PreferenceItemFilter.getSearchablePreferences(preferences);
+        return PreferenceItems.getPreferenceItems(searchablePreferences, preferenceScreen);
     }
 
     @SuppressLint("ClickableViewAccessibility")

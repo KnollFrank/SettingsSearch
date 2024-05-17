@@ -12,7 +12,7 @@ class PreferenceSearcher {
 
     private final List<PreferenceItem> preferenceItems;
 
-    public PreferenceSearcher(List<PreferenceItem> preferenceItems) {
+    public PreferenceSearcher(final List<PreferenceItem> preferenceItems) {
         this.preferenceItems = preferenceItems;
     }
 
