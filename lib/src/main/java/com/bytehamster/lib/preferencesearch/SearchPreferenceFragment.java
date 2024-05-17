@@ -58,7 +58,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
                 new PreferenceSearcher(
                         getPreferenceItems(
                                 searchConfiguration,
-                                new PreferenceParser(getContext())));
+                                PreferenceParser.create(getContext())));
         loadHistory();
     }
 

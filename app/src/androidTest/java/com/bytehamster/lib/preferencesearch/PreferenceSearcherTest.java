@@ -32,7 +32,8 @@ public class PreferenceSearcherTest {
     public void shouldSearch() {
         // Given
         final List<PreferenceItem> parsedPreferenceItems =
-                new PreferenceParser(TestUtils.getContext())
+                PreferenceParser
+                        .create(TestUtils.getContext())
                         .parsePreferences(Collections.singletonList(R.xml.prefs));
         final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(parsedPreferenceItems);
         final String keyword = "Switch";

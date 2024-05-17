@@ -18,14 +18,19 @@ import java.util.stream.Collectors;
 
 class PreferenceParser {
 
-    private final Context context;
+    private final PreferenceManager preferenceManager;
 
-    public PreferenceParser(final Context context) {
-        this.context = context;
+    @SuppressLint("RestrictedApi")
+    public static PreferenceParser create(final Context context) {
+        return new PreferenceParser(new PreferenceManager(context));
     }
 
     public List<PreferenceItem> parsePreferences(final List<Integer> preferenceScreens) {
         return getPreferenceItems(preferenceScreens);
+    }
+
+    private PreferenceParser(final PreferenceManager preferenceManager) {
+        this.preferenceManager = preferenceManager;
     }
 
     private List<PreferenceItem> getPreferenceItems(final List<Integer> preferenceScreens) {
@@ -38,8 +43,11 @@ class PreferenceParser {
     }
 
     private List<PreferenceItem> getPreferenceItems(@XmlRes final int preferenceScreen) {
-        @SuppressLint("RestrictedApi") final PreferenceManager preferenceManager = new PreferenceManager(context);
-        @SuppressLint("RestrictedApi") final PreferenceScreen _preferenceScreen = preferenceManager.inflateFromResource(preferenceManager.getContext(), preferenceScreen, null);
+        @SuppressLint("RestrictedApi") final PreferenceScreen _preferenceScreen =
+                preferenceManager.inflateFromResource(
+                        preferenceManager.getContext(),
+                        preferenceScreen,
+                        null);
         return new SearchConfiguration().indexItems(
                 getPreferences(_preferenceScreen),
                 preferenceScreen);
