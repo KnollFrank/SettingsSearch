@@ -22,11 +22,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bytehamster.lib.preferencesearch.SearchConfiguration.SearchIndexItem;
 import com.bytehamster.lib.preferencesearch.ui.AnimationUtils;
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
+import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchPreferenceFragment extends Fragment implements SearchPreferenceAdapter.SearchClickListener {
     /**
@@ -51,17 +54,29 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         super.onCreate(savedInstanceState);
         prefs = getContext().getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         searchConfiguration = SearchConfiguration.fromBundle(getArguments());
-        preferenceSearcher = createSearcher(searchConfiguration, getContext());
+        preferenceSearcher =
+                new PreferenceSearcher(
+                        getPreferenceItems(
+                                searchConfiguration,
+                                new PreferenceParser(getContext())));
         loadHistory();
     }
 
-    private static PreferenceSearcher createSearcher(final SearchConfiguration searchConfiguration, final Context context) {
-        final PreferenceParser preferenceParser = new PreferenceParser(context);
-        for (SearchConfiguration.SearchIndexItem file : searchConfiguration.getFiles()) {
-            preferenceParser.addResourceFile(file.getResId());
-        }
-        preferenceParser.addPreferenceItems(searchConfiguration.getPreferencesToIndex());
-        return new PreferenceSearcher(preferenceParser.getPreferenceItems());
+    private static List<PreferenceItem> getPreferenceItems(final SearchConfiguration searchConfiguration,
+                                                           final PreferenceParser preferenceParser) {
+        return ImmutableList
+                .<PreferenceItem>builder()
+                .addAll(preferenceParser.parsePreferences(getPreferenceScreens(searchConfiguration)))
+                .addAll(searchConfiguration.getPreferencesToIndex())
+                .build();
+    }
+
+    private static List<Integer> getPreferenceScreens(final SearchConfiguration searchConfiguration) {
+        return searchConfiguration
+                .getFiles()
+                .stream()
+                .map(SearchIndexItem::getResId)
+                .collect(Collectors.toList());
     }
 
     @SuppressLint("ClickableViewAccessibility")

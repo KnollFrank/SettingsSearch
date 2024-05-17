@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PreferenceParserTest {
@@ -29,10 +30,11 @@ public class PreferenceParserTest {
     public void shouldParseXmlResource() {
         // Given
         final PreferenceParser preferenceParser = new PreferenceParser(TestUtils.getContext());
-        preferenceParser.addResourceFile(R.xml.prefs);
+        final int preferenceScreen = R.xml.prefs;
 
         // When
-        final List<PreferenceItem> preferenceItems = preferenceParser.getPreferenceItems();
+        final List<PreferenceItem> preferenceItems =
+                preferenceParser.parsePreferences(Collections.singletonList(preferenceScreen));
 
         // Then
         assertThat(preferenceItems, hasSize(15));

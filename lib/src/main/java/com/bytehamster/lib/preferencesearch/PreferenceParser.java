@@ -18,22 +18,16 @@ import java.util.List;
 class PreferenceParser {
 
     private final Context context;
-    private final List<PreferenceItem> preferenceItems = new ArrayList<>();
 
     public PreferenceParser(final Context context) {
         this.context = context;
     }
 
-    // FK-TODO: remove methods addResourceFile() and addPreferenceItems() and add their params to method getPreferenceItems() which shall be renamed to parse()
-    public void addResourceFile(@XmlRes final int preferenceScreen) {
-        preferenceItems.addAll(getPreferenceItems(preferenceScreen));
-    }
-
-    public void addPreferenceItems(final List<PreferenceItem> preferenceItems) {
-        this.preferenceItems.addAll(preferenceItems);
-    }
-
-    public List<PreferenceItem> getPreferenceItems() {
+    public List<PreferenceItem> parsePreferences(final List<Integer> preferenceScreens) {
+        final List<PreferenceItem> preferenceItems = new ArrayList<>();
+        for (final Integer preferenceScreen : preferenceScreens) {
+            preferenceItems.addAll(getPreferenceItems(preferenceScreen));
+        }
         return preferenceItems;
     }
 

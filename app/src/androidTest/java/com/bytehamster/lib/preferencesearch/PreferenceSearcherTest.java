@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,9 +31,10 @@ public class PreferenceSearcherTest {
     @Test
     public void shouldSearch() {
         // Given
-        final PreferenceParser preferenceParser = new PreferenceParser(TestUtils.getContext());
-        preferenceParser.addResourceFile(R.xml.prefs);
-        final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(preferenceParser.getPreferenceItems());
+        final List<PreferenceItem> parsedPreferenceItems =
+                new PreferenceParser(TestUtils.getContext())
+                        .parsePreferences(Collections.singletonList(R.xml.prefs));
+        final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(parsedPreferenceItems);
         final String keyword = "Switch";
 
         // When
