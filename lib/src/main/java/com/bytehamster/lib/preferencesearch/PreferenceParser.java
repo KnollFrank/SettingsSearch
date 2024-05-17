@@ -32,12 +32,15 @@ class PreferenceParser {
     }
 
     private List<Preference> getPreferences(@XmlRes final int preferenceScreen) {
-        @SuppressLint("RestrictedApi") final PreferenceScreen _preferenceScreen =
-                preferenceManager.inflateFromResource(
-                        preferenceManager.getContext(),
-                        preferenceScreen,
-                        null);
-        return getPreferences(_preferenceScreen);
+        return getPreferences(getPreferenceScreen(preferenceScreen));
+    }
+
+    @SuppressLint("RestrictedApi")
+    private PreferenceScreen getPreferenceScreen(@XmlRes final int resId) {
+        return preferenceManager.inflateFromResource(
+                preferenceManager.getContext(),
+                resId,
+                null);
     }
 
     private static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {
