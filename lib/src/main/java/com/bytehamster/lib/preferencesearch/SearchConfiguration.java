@@ -58,9 +58,8 @@ public class SearchConfiguration {
             throw new IllegalStateException("setActivity() not called");
         }
 
-        final Bundle arguments = this.toBundle();
         final SearchPreferenceFragment fragment = new SearchPreferenceFragment();
-        fragment.setArguments(arguments);
+        fragment.setArguments(toBundle());
         activity.getSupportFragmentManager().beginTransaction()
                 .add(containerResId, fragment, SearchPreferenceFragment.TAG)
                 .addToBackStack(SearchPreferenceFragment.TAG)
