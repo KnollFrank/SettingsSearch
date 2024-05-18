@@ -2,13 +2,17 @@ package com.bytehamster.preferencesearch;
 
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+
+import java.util.Arrays;
 
 /**
  * This file demonstrates some additional features that might not be needed when setting it up for the first time
@@ -52,9 +56,10 @@ public class EnhancedExample extends AppCompatActivity implements SearchPreferen
             SearchConfiguration config = searchPreference.getSearchConfiguration();
             config.setActivity((AppCompatActivity) getActivity());
             config.setFragmentContainerViewId(android.R.id.content);
-
-            config.index(R.xml.preferences).addBreadcrumb("Main file");
-            config.index(R.xml.preferences2).addBreadcrumb("Second file");
+            config.setFiles(
+                    Arrays.asList(
+                            config.createSearchIndexItem(R.xml.preferences).addBreadcrumb("Main file"),
+                            config.createSearchIndexItem(R.xml.preferences2).addBreadcrumb("Second file")));
             config.setBreadcrumbsEnabled(true);
             config.setHistoryEnabled(true);
             config.setFuzzySearchEnabled(true);

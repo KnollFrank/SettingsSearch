@@ -182,15 +182,16 @@ public class SearchConfiguration {
         revealAnimationSetting = new RevealAnimationSetting(centerX, centerY, width, height, colorAccent);
     }
 
-    /**
-     * Adds a new file to the index
-     *
-     * @param resId The preference file to index
-     */
-    public SearchIndexItem index(@XmlRes int resId) {
-        SearchIndexItem item = new SearchIndexItem(resId, this);
-        filesToIndex.add(item);
-        return item;
+    List<SearchIndexItem> getFiles() {
+        return filesToIndex;
+    }
+
+    public void setFiles(final List<SearchIndexItem> filesToIndex) {
+        this.filesToIndex = filesToIndex;
+    }
+
+    public SearchIndexItem createSearchIndexItem(@XmlRes final int resId) {
+        return new SearchIndexItem(resId, this);
     }
 
     public PreferenceItem indexItem(final Preference preference, @XmlRes final int resId) {
@@ -228,10 +229,6 @@ public class SearchConfiguration {
      */
     public void ignorePreference(@NonNull String key) {
         bannedKeys.add(key);
-    }
-
-    List<SearchIndexItem> getFiles() {
-        return filesToIndex;
     }
 
     List<PreferenceItem> getPreferencesToIndex() {

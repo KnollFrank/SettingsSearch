@@ -1,13 +1,17 @@
 package com.bytehamster.preferencesearch;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
-import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+
+import java.util.Collections;
 
 /**
  * This file contains a minimal working example for the library
@@ -35,10 +39,10 @@ public class SimpleExample extends AppCompatActivity implements SearchPreference
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preferences);
 
-            SearchPreference searchPreference = (SearchPreference) findPreference("searchPreference");
+            SearchPreference searchPreference = findPreference("searchPreference");
             SearchConfiguration config = searchPreference.getSearchConfiguration();
             config.setActivity((AppCompatActivity) getActivity());
-            config.index(R.xml.preferences);
+            config.setFiles(Collections.singletonList(config.createSearchIndexItem(R.xml.preferences)));
         }
     }
 }
