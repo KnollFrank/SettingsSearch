@@ -36,12 +36,7 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
                 .addToBackStack("PrefsFragment")
                 .commit(); // Allow to navigate back to search
         // Allow fragment to get created
-        new Handler().post(() -> {
-            // prefsFragment.onSearchResultClicked(result);
-            prefsFragment
-                    .findPreference("global_settings")
-                    .performClick();
-        });
+        new Handler().post(() -> prefsFragment.onSearchResultClicked(result));
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {
@@ -70,10 +65,8 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
                 scrollToPreference(result.getKey());
                 findPreference(result.getKey()).setTitle("RESULT: " + findPreference(result.getKey()).getTitle());
             } else {
-                // Result was found in the other file
-                getPreferenceScreen().removeAll();
-                addPreferencesFromResource(R.xml.preferences2);
-                result.highlight(this);
+                findPreference("global_settings").performClick();
+                // result.highlight(this);
             }
         }
     }

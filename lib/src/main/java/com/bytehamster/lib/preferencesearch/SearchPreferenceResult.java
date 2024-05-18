@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.FragmentManager;
@@ -29,6 +30,7 @@ public class SearchPreferenceResult {
 
     /**
      * Returns the key of the preference pressed
+     *
      * @return The key
      */
     public String getKey() {
@@ -37,6 +39,7 @@ public class SearchPreferenceResult {
 
     /**
      * Returns the file in which the result was found
+     *
      * @return The file in which the result was found
      */
     public int getResourceFile() {
@@ -45,6 +48,7 @@ public class SearchPreferenceResult {
 
     /**
      * Returns the screen in which the result was found
+     *
      * @return The screen in which the result was found
      */
     public String getScreen() {
@@ -53,6 +57,7 @@ public class SearchPreferenceResult {
 
     /**
      * Highlight the preference that was found
+     *
      * @param prefsFragment Fragment that contains the preference
      */
     public void highlight(final PreferenceFragmentCompat prefsFragment) {
@@ -61,7 +66,6 @@ public class SearchPreferenceResult {
 
     private void doHighlight(final PreferenceFragmentCompat prefsFragment) {
         final Preference prefResult = prefsFragment.findPreference(getKey());
-
         if (prefResult == null) {
             Log.e("doHighlight", "Preference not found on given screen");
             return;
@@ -73,17 +77,21 @@ public class SearchPreferenceResult {
             final int position = callback.getPreferenceAdapterPosition(prefResult);
             if (position != RecyclerView.NO_POSITION) {
                 recyclerView.scrollToPosition(position);
-                recyclerView.postDelayed(() -> {
-                    RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
-                    if (holder != null) {
-                        Drawable oldBackground = holder.itemView.getBackground();
-                        int color = getColorFromAttr(prefsFragment.getContext(), android.R.attr.textColorPrimary);
-                        holder.itemView.setBackgroundColor(color & 0xffffff | 0x33000000);
-                        new Handler().postDelayed(() -> holder.itemView.setBackgroundDrawable(oldBackground), 1000);
-                        return;
-                    }
-                    highlightFallback(prefsFragment, prefResult);
-                }, 200);
+                recyclerView.postDelayed(
+                        () -> {
+                            final RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
+                            if (holder != null) {
+                                final Drawable oldBackground = holder.itemView.getBackground();
+                                final int color = getColorFromAttr(prefsFragment.getContext(), android.R.attr.textColorPrimary);
+                                holder.itemView.setBackgroundColor(color & 0xffffff | 0x33000000);
+                                new Handler().postDelayed(
+                                        () -> holder.itemView.setBackgroundDrawable(oldBackground),
+                                        1000);
+                                return;
+                            }
+                            highlightFallback(prefsFragment, prefResult);
+                        },
+                        200);
                 return;
             }
         }
@@ -120,6 +128,7 @@ public class SearchPreferenceResult {
 
     /**
      * Closes the search results page
+     *
      * @param activity The current activity
      */
     public void closeSearchPage(AppCompatActivity activity) {
