@@ -20,8 +20,10 @@ public class SimpleExample extends AppCompatActivity implements SearchPreference
         super.onCreate(savedInstanceState);
 
         prefsFragment = new PrefsFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, prefsFragment).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(android.R.id.content, prefsFragment)
+                .commit();
     }
 
     @Override
@@ -35,7 +37,7 @@ public class SimpleExample extends AppCompatActivity implements SearchPreference
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preferences);
 
-            SearchPreference searchPreference = (SearchPreference) findPreference("searchPreference");
+            SearchPreference searchPreference = findPreference("searchPreference");
             SearchConfiguration config = searchPreference.getSearchConfiguration();
             config.setActivity((AppCompatActivity) getActivity());
             config.index(R.xml.preferences);

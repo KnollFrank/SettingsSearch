@@ -112,7 +112,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preferences);
 
-            SearchPreference searchPreference = (SearchPreference) findPreference("searchPreference");
+            SearchPreference searchPreference = findPreference("searchPreference");
             searchPreference.setVisible(false);
         }
     }

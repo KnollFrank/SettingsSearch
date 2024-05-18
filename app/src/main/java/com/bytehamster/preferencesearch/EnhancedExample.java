@@ -2,9 +2,11 @@ package com.bytehamster.preferencesearch;
 
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
@@ -22,23 +24,23 @@ public class EnhancedExample extends AppCompatActivity implements SearchPreferen
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         prefsFragment = new PrefsFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, prefsFragment).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(android.R.id.content, prefsFragment)
+                .commit();
     }
 
     @Override
     public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
         prefsFragment = new PrefsFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, prefsFragment).addToBackStack("PrefsFragment")
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(android.R.id.content, prefsFragment)
+                .addToBackStack("PrefsFragment")
                 .commit(); // Allow to navigate back to search
 
-        new Handler().post(new Runnable() { // Allow fragment to get created
-            @Override
-            public void run() {
-                prefsFragment.onSearchResultClicked(result);
-            }
-        });
+        // Allow fragment to get created
+        new Handler().post(() -> prefsFragment.onSearchResultClicked(result));
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {
@@ -48,7 +50,7 @@ public class EnhancedExample extends AppCompatActivity implements SearchPreferen
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preferences);
 
-            searchPreference = (SearchPreference) findPreference("searchPreference");
+            searchPreference = findPreference("searchPreference");
             SearchConfiguration config = searchPreference.getSearchConfiguration();
             config.setActivity((AppCompatActivity) getActivity());
             config.setFragmentContainerViewId(android.R.id.content);
@@ -60,7 +62,7 @@ public class EnhancedExample extends AppCompatActivity implements SearchPreferen
             config.setFuzzySearchEnabled(true);
         }
 
-        private void onSearchResultClicked(SearchPreferenceResult result) {
+        private void onSearchResultClicked(final SearchPreferenceResult result) {
             if (result.getResourceFile() == R.xml.preferences) {
                 searchPreference.setVisible(false); // Do not allow to click search multiple times
                 scrollToPreference(result.getKey());
