@@ -68,7 +68,7 @@ public class SearchConfiguration {
     }
 
     private Bundle toBundle() {
-        Bundle arguments = new Bundle();
+        final Bundle arguments = new Bundle();
         arguments.putParcelableArrayList(ARGUMENT_INDEX_FILES, new ArrayList<>(filesToIndex));
         arguments.putParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES, new ArrayList<>(preferencesToIndex));
         arguments.putBoolean(ARGUMENT_HISTORY_ENABLED, historyEnabled);
@@ -84,7 +84,7 @@ public class SearchConfiguration {
     }
 
     static SearchConfiguration fromBundle(Bundle bundle) {
-        SearchConfiguration config = new SearchConfiguration();
+        final SearchConfiguration config = new SearchConfiguration();
         config.filesToIndex = bundle.getParcelableArrayList(ARGUMENT_INDEX_FILES);
         config.preferencesToIndex = bundle.getParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES);
         config.historyEnabled = bundle.getBoolean(ARGUMENT_HISTORY_ENABLED);
