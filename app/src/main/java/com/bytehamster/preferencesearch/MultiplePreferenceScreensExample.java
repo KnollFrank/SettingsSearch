@@ -36,12 +36,16 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
                 .addToBackStack("PrefsFragment")
                 .commit(); // Allow to navigate back to search
         // Allow fragment to get created
-        new Handler().post(() -> prefsFragment.onSearchResultClicked(result));
+        new Handler().post(() -> {
+            prefsFragment.onSearchResultClicked(result);
+            // final Preference globalSettings = prefsFragment.findPreference("global_settings");
+            // globalSettings.performClick();
+        });
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {
 
-        SearchPreference searchPreference;
+        private SearchPreference searchPreference;
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -60,7 +64,7 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
         }
 
         private void onSearchResultClicked(final SearchPreferenceResult result) {
-            if (result.getResourceFile() == R.xml.preferences) {
+            if (result.getResourceFile() == R.xml.preferences_multiple_screens) {
                 searchPreference.setVisible(false); // Do not allow to click search multiple times
                 scrollToPreference(result.getKey());
                 findPreference(result.getKey()).setTitle("RESULT: " + findPreference(result.getKey()).getTitle());
