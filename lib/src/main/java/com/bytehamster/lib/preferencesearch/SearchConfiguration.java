@@ -31,8 +31,8 @@ public class SearchConfiguration {
     private static final String ARGUMENT_TEXT_CLEAR_HISTORY = "text_clear_history";
     private static final String ARGUMENT_TEXT_NO_RESULTS = "text_no_results";
 
-    private ArrayList<SearchIndexItem> filesToIndex = new ArrayList<>();
-    private ArrayList<PreferenceItem> preferencesToIndex = new ArrayList<>();
+    private List<SearchIndexItem> filesToIndex = new ArrayList<>();
+    private List<PreferenceItem> preferencesToIndex = new ArrayList<>();
     private final List<String> bannedKeys = new ArrayList<>();
     private boolean historyEnabled = true;
     private String historyId = null;
@@ -70,8 +70,8 @@ public class SearchConfiguration {
 
     private Bundle toBundle() {
         Bundle arguments = new Bundle();
-        arguments.putParcelableArrayList(ARGUMENT_INDEX_FILES, filesToIndex);
-        arguments.putParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES, preferencesToIndex);
+        arguments.putParcelableArrayList(ARGUMENT_INDEX_FILES, new ArrayList<>(filesToIndex));
+        arguments.putParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES, new ArrayList<>(preferencesToIndex));
         arguments.putBoolean(ARGUMENT_HISTORY_ENABLED, historyEnabled);
         arguments.putParcelable(ARGUMENT_REVEAL_ANIMATION_SETTING, revealAnimationSetting);
         arguments.putBoolean(ARGUMENT_FUZZY_ENABLED, fuzzySearchEnabled);
