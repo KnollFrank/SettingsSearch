@@ -310,6 +310,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     }
 
     public interface HistoryClickListener {
+
         void onHistoryEntryClicked(String entry);
     }
 }

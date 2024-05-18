@@ -27,12 +27,7 @@ public class NoPreferencesExample extends AppCompatActivity implements SearchPre
         config.setFuzzySearchEnabled(false);
 
         fragment = config.showSearchFragment();
-        fragment.setHistoryClickListener(new SearchPreferenceFragment.HistoryClickListener() {
-            @Override
-            public void onHistoryEntryClicked(String entry) {
-                Log.d("NoPreferencesExample", "History entry clicked: " + entry);
-            }
-        });
+        fragment.setHistoryClickListener(entry -> Log.d("NoPreferencesExample", "History entry clicked: " + entry));
     }
 
     @Override
