@@ -14,8 +14,6 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 
-import java.util.Collections;
-
 /**
  * This file demonstrates how to use the library without actually displaying a PreferenceFragment
  */
@@ -48,7 +46,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         searchPreferenceMenuItem = menu.findItem(R.id.search);
         searchPreferenceActionView = (SearchPreferenceActionView) searchPreferenceMenuItem.getActionView();
         SearchConfiguration searchConfiguration = searchPreferenceActionView.getSearchConfiguration();
-        searchConfiguration.setFiles(Collections.singletonList(searchConfiguration.createSearchIndexItem(R.xml.preferences)));
+        searchConfiguration.index(R.xml.preferences);
 
         searchConfiguration.useAnimation(
                 findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight()/2,
