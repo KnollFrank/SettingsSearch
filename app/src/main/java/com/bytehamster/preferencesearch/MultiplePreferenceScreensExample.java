@@ -37,9 +37,10 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
                 .commit(); // Allow to navigate back to search
         // Allow fragment to get created
         new Handler().post(() -> {
-            prefsFragment.onSearchResultClicked(result);
-            // final Preference globalSettings = prefsFragment.findPreference("global_settings");
-            // globalSettings.performClick();
+            // prefsFragment.onSearchResultClicked(result);
+            prefsFragment
+                    .findPreference("global_settings")
+                    .performClick();
         });
     }
 
