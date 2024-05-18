@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.annotation.XmlRes;
 import androidx.preference.Preference;
 
-import com.bytehamster.lib.preferencesearch.SearchConfiguration.SearchIndexItem;
 import com.bytehamster.lib.preferencesearch.common.Utils;
 import com.google.common.collect.ImmutableList;
 
