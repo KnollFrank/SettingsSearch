@@ -8,7 +8,7 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.preferencesearch.R;
 
-public class PrefsFragment extends BaseFragment {
+public class PrefsFragmentFirst extends BaseFragment {
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {

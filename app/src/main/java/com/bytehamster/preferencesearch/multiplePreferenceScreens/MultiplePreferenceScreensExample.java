@@ -20,7 +20,7 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        show(new PrefsFragment(), false);
+        show(new PrefsFragmentFirst(), false);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
     private static Fragment createFragment(@IdRes final int resourceFile) {
         switch (resourceFile) {
             case R.xml.preferences_multiple_screens:
-                return new PrefsFragment();
+                return new PrefsFragmentFirst();
             case R.xml.preferences2:
                 return new PrefsFragmentSecond();
             default:
