@@ -1,7 +1,7 @@
 package com.bytehamster.preferencesearch.multiplePreferenceScreens;
 
-import static com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample.NAVIGATION_PATH;
-import static com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample.KEY_OF_PREFERENCE_2_HIGHLIGHT;
+import static com.bytehamster.preferencesearch.multiplePreferenceScreens.Navigation.NAVIGATION_PATH;
+import static com.bytehamster.preferencesearch.multiplePreferenceScreens.Navigation.KEY_OF_PREFERENCE_2_HIGHLIGHT;
 
 import android.os.Bundle;
 import android.view.View;
@@ -39,10 +39,11 @@ public abstract class BaseFragment extends PreferenceFragmentCompat {
                         searchPreferenceResult.highlight(this);
                     });
         } else {
-            ((MultiplePreferenceScreensExample) requireActivity()).navigatePathAndHighlightPreference(
+            Navigation.navigatePathAndHighlightPreference(
                     this.navigationPath,
                     this.keyOfPreference2Highlight.get(),
-                    false);
+                    false,
+                    requireActivity());
         }
     }
 }
