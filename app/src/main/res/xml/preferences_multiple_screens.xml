@@ -10,7 +10,7 @@
         android:persistent="false"
         android:summary="some summary"
         android:title="some title"
-        app:fragment="com.bytehamster.preferencesearch.MultiplePreferenceScreensExample$PrefsFragmentSecond" />
+        app:fragment="com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentSecond" />
 
     <CheckBoxPreference
         android:key="checkbox"
