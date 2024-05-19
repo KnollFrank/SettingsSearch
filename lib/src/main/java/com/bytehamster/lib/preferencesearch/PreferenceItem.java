@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 class PreferenceItem extends ListItem implements Parcelable {
+
     static final int TYPE = 2;
     private static final FuzzyScore fuzzyScore = new FuzzyScore(Locale.getDefault());
 

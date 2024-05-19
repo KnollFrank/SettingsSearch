@@ -22,7 +22,7 @@ public class SearchPreferenceResult {
     private final int file;
     private final String screen;
 
-    SearchPreferenceResult(String key, int file, String screen) {
+    public SearchPreferenceResult(String key, int file, String screen) {
         this.key = key;
         this.file = file;
         this.screen = screen;
