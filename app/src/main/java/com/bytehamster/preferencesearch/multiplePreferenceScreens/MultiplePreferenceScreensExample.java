@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class MultiplePreferenceScreensExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
-    public static final String FRAGMENT_NAVIGATION_PATH = "fragmentNavigationPath";
+    public static final String NAVIGATION_PATH = "navigationPath";
     public static final String KEY_OF_PREFERENCE_2_HIGHLIGHT = "keyOfPreference2Highlight";
 
     @Override
@@ -33,12 +33,15 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
 
     @Override
     public void onSearchResultClicked(final SearchPreferenceResult result) {
-        show(createFragmentNavigationPath(result.getResourceFile()), result.getKey(), true);
+        navigatePathAndHighlightPreference(
+                createFragmentNavigationPath(result.getResourceFile()),
+                result.getKey(),
+                true);
     }
 
-    public void show(final List<String> fragmentNavigationPath, final String key, final boolean addToBackStack) {
+    public void navigatePathAndHighlightPreference(final List<String> navigationPath, final String key, final boolean addToBackStack) {
         show(
-                createFragment(fragmentNavigationPath, key),
+                createFragment(navigationPath, key),
                 addToBackStack);
     }
 
@@ -62,19 +65,17 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
         }
     }
 
-    private Fragment createFragment(final List<String> fragmentNavigationPath, final String key) {
+    private Fragment createFragment(final List<String> navigationPath, final String key) {
         return Fragment.instantiate(
                 this,
-                head(fragmentNavigationPath),
-                createArguments(
-                        tail(fragmentNavigationPath),
-                        key));
+                head(navigationPath),
+                createArguments(tail(navigationPath), key));
     }
 
-    private static Bundle createArguments(final List<String> fragmentNavigationPath,
+    private static Bundle createArguments(final List<String> navigationPath,
                                           final String keyOfPreference2Highlight) {
         final Bundle arguments = new Bundle();
-        arguments.putStringArrayList(FRAGMENT_NAVIGATION_PATH, new ArrayList<>(fragmentNavigationPath));
+        arguments.putStringArrayList(NAVIGATION_PATH, new ArrayList<>(navigationPath));
         arguments.putString(KEY_OF_PREFERENCE_2_HIGHLIGHT, keyOfPreference2Highlight);
         return arguments;
     }
