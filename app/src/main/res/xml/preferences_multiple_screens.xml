@@ -6,10 +6,10 @@
     <com.bytehamster.lib.preferencesearch.SearchPreference android:key="searchPreference" />
 
     <Preference
-        android:key="global_settings"
+        android:key="link_to_second_fragment"
         android:persistent="false"
-        android:summary="some summary"
-        android:title="some title"
+        android:summary="some summary to second fragment"
+        android:title="some title to second fragment"
         app:fragment="com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentSecond" />
 
     <CheckBoxPreference

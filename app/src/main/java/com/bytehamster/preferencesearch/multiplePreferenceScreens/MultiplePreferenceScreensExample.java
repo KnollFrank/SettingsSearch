@@ -44,6 +44,8 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
                 return new PrefsFragmentFirst();
             case R.xml.preferences2:
                 return new PrefsFragmentSecond();
+            case R.xml.preferences3:
+                return new PrefsFragmentThird();
             default:
                 throw new IllegalArgumentException();
         }

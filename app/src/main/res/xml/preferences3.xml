@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch"
+    android:title="third screen">
+
+    <CheckBoxPreference
+        android:key="thirdfile"
+        android:summary="This checkbox is a preference coming from a third file"
+        android:title="Checkbox third file" />
+</PreferenceScreen>
