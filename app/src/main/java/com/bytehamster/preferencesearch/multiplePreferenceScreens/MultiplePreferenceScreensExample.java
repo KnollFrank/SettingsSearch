@@ -6,6 +6,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
@@ -19,10 +20,7 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(android.R.id.content, new PrefsFragment())
-                .commit();
+        show(new PrefsFragment(), false);
     }
 
     @Override
@@ -30,7 +28,8 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
         show(
                 createFragment(
                         result.getResourceFile(),
-                        createArguments(result.getKey())));
+                        createArguments(result.getKey())),
+                true);
     }
 
     private static Fragment createFragment(@IdRes final int resourceFile, final Bundle arguments) {
@@ -56,12 +55,12 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
         return arguments;
     }
 
-    private void show(final Fragment fragment) {
-        this
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .replace(android.R.id.content, fragment)
-                .addToBackStack("fragment")
-                .commit();
+    private void show(final Fragment fragment, final boolean addToBackStack) {
+        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(android.R.id.content, fragment);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack("fragment");
+        }
+        fragmentTransaction.commit();
     }
 }
