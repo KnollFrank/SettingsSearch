@@ -41,7 +41,8 @@ public abstract class BaseFragment extends PreferenceFragmentCompat {
         } else {
             ((MultiplePreferenceScreensExample) requireActivity()).show(
                     this.fragmentNavigationPath,
-                    this.keyOfPreference2Highlight.get());
+                    this.keyOfPreference2Highlight.get(),
+                    false);
         }
     }
 }

@@ -33,13 +33,13 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
 
     @Override
     public void onSearchResultClicked(final SearchPreferenceResult result) {
-        show(createFragmentNavigationPath(result.getResourceFile()), result.getKey());
+        show(createFragmentNavigationPath(result.getResourceFile()), result.getKey(), true);
     }
 
-    public void show(final List<String> fragmentNavigationPath, final String key) {
+    public void show(final List<String> fragmentNavigationPath, final String key, final boolean addToBackStack) {
         show(
                 createFragment(fragmentNavigationPath, key),
-                true);
+                addToBackStack);
     }
 
     private static List<String> createFragmentNavigationPath(@IdRes final int resourceFile) {
