@@ -1,10 +1,9 @@
 package com.bytehamster.lib.preferencesearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.is;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
@@ -13,11 +12,9 @@ import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePrefer
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFirst;
 
 import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.junit.Test;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PreferencesGraphProviderTest {
 
@@ -39,14 +36,42 @@ public class PreferencesGraphProviderTest {
                 preferencesGraphProvider.getPreferencesGraph(root);
 
         // Then
-        assertThat(getPreferenceScreens(preferencesGraph), containsInAnyOrder("first screen", "second screen", "third screen", "fourth screen"));
+        assertThat(
+                GraphHelper.equalsGraphs(
+                        preferencesGraph,
+                        getPreferencesGraphExpected(
+                                getPreferenceScreenByName(preferencesGraph, "first screen"),
+                                getPreferenceScreenByName(preferencesGraph, "second screen"),
+                                getPreferenceScreenByName(preferencesGraph, "third screen"),
+                                getPreferenceScreenByName(preferencesGraph, "fourth screen"))),
+                is(true));
     }
 
-    private static List<String> getPreferenceScreens(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph) {
+    private static Graph<PreferenceScreen, DefaultEdge> getPreferencesGraphExpected(
+            final PreferenceScreen screen1,
+            final PreferenceScreen screen2,
+            final PreferenceScreen screen3,
+            final PreferenceScreen screen4) {
+        final Graph<PreferenceScreen, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
+
+        graph.addVertex(screen1);
+        graph.addVertex(screen2);
+        graph.addVertex(screen3);
+        graph.addVertex(screen4);
+
+        graph.addEdge(screen1, screen2);
+        graph.addEdge(screen1, screen4);
+        graph.addEdge(screen2, screen3);
+
+        return graph;
+    }
+
+    private static PreferenceScreen getPreferenceScreenByName(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph, final String name) {
         return preferencesGraph
                 .vertexSet()
                 .stream()
-                .map(Preference::toString)
-                .collect(Collectors.toList());
+                .filter(preferenceScreen -> name.equals(preferenceScreen.toString()))
+                .findFirst()
+                .get();
     }
 }

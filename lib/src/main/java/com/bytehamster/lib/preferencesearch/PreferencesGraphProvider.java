@@ -24,19 +24,18 @@ public class PreferencesGraphProvider {
     public Graph<PreferenceScreen, DefaultEdge> getPreferencesGraph(final PreferenceFragmentCompat root) {
         final Graph<PreferenceScreen, DefaultEdge> preferencesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
         initialize(root);
-        buildPreferencesGraph(preferencesGraph, root);
+        buildPreferencesGraph(preferencesGraph, root.getPreferenceScreen());
         return preferencesGraph;
     }
 
-    private void buildPreferencesGraph(
-            final Graph<PreferenceScreen, DefaultEdge> preferencesGraph,
-            final PreferenceFragmentCompat root) {
-        preferencesGraph.addVertex(root.getPreferenceScreen());
-        for (final Preference preferenceHavingFragment : getPreferencesHavingFragment(root.getPreferenceScreen())) {
-            final PreferenceFragmentCompat childFragment = instantiateAndInitialize(preferenceHavingFragment.getFragment());
-            preferencesGraph.addVertex(childFragment.getPreferenceScreen());
-            preferencesGraph.addEdge(root.getPreferenceScreen(), childFragment.getPreferenceScreen());
-            buildPreferencesGraph(preferencesGraph, childFragment);
+    private void buildPreferencesGraph(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph,
+                                       final PreferenceScreen root) {
+        preferencesGraph.addVertex(root);
+        for (final Preference preferenceHavingFragment : getPreferencesHavingFragment(root)) {
+            final PreferenceScreen child = getPreferenceScreenOfFragment(preferenceHavingFragment.getFragment());
+            preferencesGraph.addVertex(child);
+            preferencesGraph.addEdge(root, child);
+            buildPreferencesGraph(preferencesGraph, child);
         }
     }
 
@@ -57,13 +56,13 @@ public class PreferencesGraphProvider {
                 .collect(Collectors.toList());
     }
 
-    private PreferenceFragmentCompat instantiateAndInitialize(final String fragment) {
+    private PreferenceScreen getPreferenceScreenOfFragment(final String fragment) {
         final PreferenceFragmentCompat preferenceFragmentCompat =
                 (PreferenceFragmentCompat) Fragment.instantiate(
                         this.fragmentActivity,
                         fragment,
                         null);
         initialize(preferenceFragmentCompat);
-        return preferenceFragmentCompat;
+        return preferenceFragmentCompat.getPreferenceScreen();
     }
 }
