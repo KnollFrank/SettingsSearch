@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import org.jgrapht.Graph;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -32,11 +33,13 @@ public class PreferencesGraphProvider {
     private void buildPreferencesGraph(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph,
                                        final PreferenceScreen root) {
         preferencesGraph.addVertex(root);
-        for (final PreferenceScreen child : getChildren(root)) {
-            preferencesGraph.addVertex(child);
-            preferencesGraph.addEdge(root, child);
-            buildPreferencesGraph(preferencesGraph, child);
-        }
+        this
+                .getChildren(root)
+                .forEach(
+                        child -> {
+                            Graphs.addEdgeWithVertices(preferencesGraph, root, child);
+                            buildPreferencesGraph(preferencesGraph, child);
+                        });
     }
 
     private void initialize(final Fragment fragment) {
