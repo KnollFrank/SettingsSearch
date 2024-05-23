@@ -13,5 +13,4 @@ public class TestUtils {
     public static Context getContext() {
         return InstrumentationRegistry.getInstrumentation().getContext();
     }
-
 }
