@@ -27,13 +27,11 @@ public class PreferencesGraphProviderTest {
 
     private static void shouldGetPreferencesGraph(final FragmentActivity activity) {
         // Given
-        final PreferencesGraphProvider preferencesGraphProvider =
-                new PreferencesGraphProvider(activity);
+        final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(activity);
         final PreferenceFragmentCompat root = new PrefsFragmentFirst();
 
         // When
-        final Graph<PreferenceScreen, DefaultEdge> preferencesGraph =
-                preferencesGraphProvider.getPreferencesGraph(root);
+        final Graph<PreferenceScreen, DefaultEdge> preferencesGraph = preferencesGraphProvider.getPreferencesGraph(root);
 
         // Then
         assertThat(
@@ -47,7 +45,8 @@ public class PreferencesGraphProviderTest {
                 is(true));
     }
 
-    private static PreferenceScreen getPreferenceScreenByName(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph, final String name) {
+    private static PreferenceScreen getPreferenceScreenByName(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph,
+                                                              final String name) {
         return preferencesGraph
                 .vertexSet()
                 .stream()
@@ -56,11 +55,10 @@ public class PreferencesGraphProviderTest {
                 .get();
     }
 
-    private static Graph<PreferenceScreen, DefaultEdge> getPreferencesGraphExpected(
-            final PreferenceScreen screen1,
-            final PreferenceScreen screen2,
-            final PreferenceScreen screen3,
-            final PreferenceScreen screen4) {
+    private static Graph<PreferenceScreen, DefaultEdge> getPreferencesGraphExpected(final PreferenceScreen screen1,
+                                                                                    final PreferenceScreen screen2,
+                                                                                    final PreferenceScreen screen3,
+                                                                                    final PreferenceScreen screen4) {
         final Graph<PreferenceScreen, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
         graph.addVertex(screen1);
