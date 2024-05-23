@@ -47,6 +47,15 @@ public class PreferencesGraphProviderTest {
                 is(true));
     }
 
+    private static PreferenceScreen getPreferenceScreenByName(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph, final String name) {
+        return preferencesGraph
+                .vertexSet()
+                .stream()
+                .filter(preferenceScreen -> name.equals(preferenceScreen.toString()))
+                .findFirst()
+                .get();
+    }
+
     private static Graph<PreferenceScreen, DefaultEdge> getPreferencesGraphExpected(
             final PreferenceScreen screen1,
             final PreferenceScreen screen2,
@@ -64,14 +73,5 @@ public class PreferencesGraphProviderTest {
         graph.addEdge(screen2, screen3);
 
         return graph;
-    }
-
-    private static PreferenceScreen getPreferenceScreenByName(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph, final String name) {
-        return preferencesGraph
-                .vertexSet()
-                .stream()
-                .filter(preferenceScreen -> name.equals(preferenceScreen.toString()))
-                .findFirst()
-                .get();
     }
 }
