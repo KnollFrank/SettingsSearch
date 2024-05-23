@@ -11,6 +11,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PreferencesGraphProvider {
@@ -31,8 +32,7 @@ public class PreferencesGraphProvider {
     private void buildPreferencesGraph(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph,
                                        final PreferenceScreen root) {
         preferencesGraph.addVertex(root);
-        for (final Preference preferenceHavingFragment : getPreferencesHavingFragment(root)) {
-            final PreferenceScreen child = getPreferenceScreenOfFragment(preferenceHavingFragment.getFragment());
+        for (final PreferenceScreen child : getChildren(root)) {
             preferencesGraph.addVertex(child);
             preferencesGraph.addEdge(root, child);
             buildPreferencesGraph(preferencesGraph, child);
@@ -48,11 +48,13 @@ public class PreferencesGraphProvider {
                 .commitNow();
     }
 
-    private static List<Preference> getPreferencesHavingFragment(final PreferenceScreen preferenceScreen) {
+    private List<PreferenceScreen> getChildren(final PreferenceScreen preferenceScreen) {
         return PreferenceParser
                 .getPreferences(preferenceScreen)
                 .stream()
-                .filter(preference -> preference.getFragment() != null)
+                .map(Preference::getFragment)
+                .filter(Objects::nonNull)
+                .map(this::getPreferenceScreenOfFragment)
                 .collect(Collectors.toList());
     }
 
