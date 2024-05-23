@@ -12,6 +12,13 @@
         android:title="some title to second fragment"
         app:fragment="com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentSecond" />
 
+    <Preference
+        android:key="link_to_fourth_fragment"
+        android:persistent="false"
+        android:summary="some summary to fourth fragment"
+        android:title="some title to fourth fragment"
+        app:fragment="com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFourth" />
+
     <CheckBoxPreference
         android:key="checkbox"
         android:summary="This is a checkbox preference"

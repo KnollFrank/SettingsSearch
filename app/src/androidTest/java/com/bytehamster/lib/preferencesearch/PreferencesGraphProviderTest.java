@@ -1,7 +1,7 @@
 package com.bytehamster.lib.preferencesearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
@@ -31,7 +31,7 @@ public class PreferencesGraphProviderTest {
     private static void shouldGetPreferencesGraph(final FragmentActivity activity) {
         // Given
         final PreferencesGraphProvider preferencesGraphProvider =
-                new PreferencesGraphProvider(activity.getSupportFragmentManager());
+                new PreferencesGraphProvider(activity);
         final PreferenceFragmentCompat root = new PrefsFragmentFirst();
 
         // When
@@ -39,7 +39,7 @@ public class PreferencesGraphProviderTest {
                 preferencesGraphProvider.getPreferencesGraph(root);
 
         // Then
-        assertThat(getPreferenceScreens(preferencesGraph), contains(root.getPreferenceScreen().toString()));
+        assertThat(getPreferenceScreens(preferencesGraph), containsInAnyOrder("first screen", "second screen", "third screen", "fourth screen"));
     }
 
     private static List<String> getPreferenceScreens(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph) {
