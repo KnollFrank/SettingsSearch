@@ -7,14 +7,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
-import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
+import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * This file contains a minimal working example for the library
  */
 public class SimpleExample extends AppCompatActivity implements SearchPreferenceResultListener {
+
     private PrefsFragment prefsFragment;
 
     @Override
@@ -40,10 +42,10 @@ public class SimpleExample extends AppCompatActivity implements SearchPreference
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preferences);
 
-            SearchPreference searchPreference = findPreference("searchPreference");
-            SearchConfiguration config = searchPreference.getSearchConfiguration();
+            final SearchPreference searchPreference = findPreference("searchPreference");
+            final SearchConfiguration config = searchPreference.getSearchConfiguration();
             config.setActivity((AppCompatActivity) getActivity());
-            config.index(PrefsFragment.class);
+            config.setPreferenceFragmentsSupplier(() -> ImmutableSet.of(PrefsFragment.class));
         }
     }
 }

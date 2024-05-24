@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * This file demonstrates how to use the library without actually displaying a PreferenceFragment
@@ -45,8 +48,8 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         getMenuInflater().inflate(R.menu.menu, menu);
         searchPreferenceMenuItem = menu.findItem(R.id.search);
         searchPreferenceActionView = (SearchPreferenceActionView) searchPreferenceMenuItem.getActionView();
-        SearchConfiguration searchConfiguration = searchPreferenceActionView.getSearchConfiguration();
-        searchConfiguration.index(PrefsFragment.class);
+        final SearchConfiguration searchConfiguration = searchPreferenceActionView.getSearchConfiguration();
+        searchConfiguration.setPreferenceFragmentsSupplier(() -> ImmutableSet.of(PrefsFragment.class));
 
         searchConfiguration.useAnimation(
                 findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight()/2,

@@ -12,6 +12,7 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * This file demonstrates how to use the library without actually displaying the preference
@@ -25,7 +26,7 @@ public class NoPreferencesExample extends AppCompatActivity implements SearchPre
 
         SearchConfiguration config = new SearchConfiguration(this);
         config.setFragmentContainerViewId(android.R.id.content);
-        config.index(PrefsFragment.class);
+        config.setPreferenceFragmentsSupplier(() -> ImmutableSet.of(PrefsFragment.class));
         config.setSearchBarEnabled(false);
         config.setFuzzySearchEnabled(false);
 

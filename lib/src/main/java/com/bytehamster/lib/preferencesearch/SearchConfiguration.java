@@ -12,7 +12,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
-import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 // FK-TODO: refactor
 public class SearchConfiguration {
 
-    private static final String ARGUMENT_INDEX_FILES = "items";
     private static final String ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES = "individual_prefs";
     private static final String ARGUMENT_FUZZY_ENABLED = "fuzzy";
     private static final String ARGUMENT_HISTORY_ENABLED = "history_enabled";
@@ -37,7 +35,6 @@ public class SearchConfiguration {
     private static final String ARGUMENT_TEXT_NO_RESULTS = "text_no_results";
     public static final String ARGUMENT_PREFERENCE_ITEMS = "preferenceItems";
 
-    private List<SearchIndexItem> filesToIndex = new ArrayList<>();
     private List<PreferenceItem> preferencesToIndex = new ArrayList<>();
     private final List<String> bannedKeys = new ArrayList<>();
     private boolean historyEnabled = true;
@@ -80,7 +77,6 @@ public class SearchConfiguration {
 
     private Bundle toBundle() {
         final Bundle arguments = new Bundle();
-        arguments.putParcelableArrayList(ARGUMENT_INDEX_FILES, new ArrayList<>(filesToIndex));
         arguments.putParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES, new ArrayList<>(preferencesToIndex));
         arguments.putBoolean(ARGUMENT_HISTORY_ENABLED, historyEnabled);
         arguments.putParcelable(ARGUMENT_REVEAL_ANIMATION_SETTING, revealAnimationSetting);
@@ -96,7 +92,6 @@ public class SearchConfiguration {
 
     static SearchConfiguration fromBundle(Bundle bundle) {
         final SearchConfiguration config = new SearchConfiguration();
-        config.filesToIndex = bundle.getParcelableArrayList(ARGUMENT_INDEX_FILES);
         config.preferencesToIndex = bundle.getParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES);
         config.historyEnabled = bundle.getBoolean(ARGUMENT_HISTORY_ENABLED);
         config.revealAnimationSetting = bundle.getParcelable(ARGUMENT_REVEAL_ANIMATION_SETTING);
@@ -193,18 +188,6 @@ public class SearchConfiguration {
         revealAnimationSetting = new RevealAnimationSetting(centerX, centerY, width, height, colorAccent);
     }
 
-    /**
-     * Adds a new file to the index
-     *
-     * @param resId The preference file to index
-     */
-    // FK-TODO: remove method?
-    public SearchIndexItem index(final Class<? extends PreferenceFragmentCompat> resId) {
-        final SearchIndexItem item = new SearchIndexItem(resId, this);
-        filesToIndex.add(item);
-        return item;
-    }
-
     public void setPreferenceFragmentsSupplier(final Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier) {
         this.preferenceFragmentsSupplier = preferenceFragmentsSupplier;
     }
@@ -248,17 +231,12 @@ public class SearchConfiguration {
     }
 
     List<SearchIndexItem> getFiles() {
-        return ImmutableList
-                .<SearchIndexItem>builder()
-                .addAll(this.filesToIndex)
-                .addAll(
-                        this
-                                .preferenceFragmentsSupplier
-                                .get()
-                                .stream()
-                                .map(resId -> new SearchIndexItem(resId, this))
-                                .collect(Collectors.toList()))
-                .build();
+        return this
+                .preferenceFragmentsSupplier
+                .get()
+                .stream()
+                .map(resId -> new SearchIndexItem(resId, this))
+                .collect(Collectors.toList());
     }
 
     List<PreferenceItem> getPreferencesToIndex() {

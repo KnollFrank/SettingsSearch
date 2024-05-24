@@ -26,15 +26,15 @@ public class PrefsFragmentFirst extends BaseFragment {
         final SearchConfiguration config = searchPreference.getSearchConfiguration();
         config.setActivity((AppCompatActivity) getActivity());
         config.setFragmentContainerViewId(android.R.id.content);
-        config.setPreferenceFragmentsSupplier(this::getPreferenceFragments);
+        config.setPreferenceFragmentsSupplier(() -> getPreferenceFragments(new PrefsFragmentFirst()));
         config.setBreadcrumbsEnabled(true);
         config.setHistoryEnabled(true);
         config.setFuzzySearchEnabled(true);
     }
 
-    private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments() {
+    private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PrefsFragmentFirst root) {
         return new PreferencesGraphProvider(new PreferenceFragmentCompatHelper(getActivity()))
-                .getPreferencesGraph(new PrefsFragmentFirst())
+                .getPreferencesGraph(root)
                 .vertexSet()
                 .stream()
                 .map(preferenceScreenWithHost -> preferenceScreenWithHost.host)

@@ -11,7 +11,9 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+import com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFirst;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentSecond;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * This file demonstrates some additional features that might not be needed when setting it up for the first time
@@ -45,7 +47,8 @@ public class EnhancedExample extends AppCompatActivity implements SearchPreferen
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {
-        SearchPreference searchPreference;
+
+        private SearchPreference searchPreference;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -55,9 +58,7 @@ public class EnhancedExample extends AppCompatActivity implements SearchPreferen
             SearchConfiguration config = searchPreference.getSearchConfiguration();
             config.setActivity((AppCompatActivity) getActivity());
             config.setFragmentContainerViewId(android.R.id.content);
-
-            config.index(PrefsFragment.class).addBreadcrumb("Main file");
-            config.index(PrefsFragmentSecond.class).addBreadcrumb("Second file");
+            config.setPreferenceFragmentsSupplier(() -> ImmutableSet.of(PrefsFragmentFirst.class, PrefsFragmentSecond.class));
             config.setBreadcrumbsEnabled(true);
             config.setHistoryEnabled(true);
             config.setFuzzySearchEnabled(true);
