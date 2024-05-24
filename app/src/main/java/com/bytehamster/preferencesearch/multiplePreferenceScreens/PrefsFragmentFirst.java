@@ -25,6 +25,7 @@ public class PrefsFragmentFirst extends BaseFragment {
         config.index(R.xml.preferences_multiple_screens).addBreadcrumb("Main file");
         config.index(R.xml.preferences2).addBreadcrumb("Second file");
         config.index(R.xml.preferences3).addBreadcrumb("Third file");
+        config.index(R.xml.preferences4).addBreadcrumb("Fourth file");
         config.setBreadcrumbsEnabled(true);
         config.setHistoryEnabled(true);
         config.setFuzzySearchEnabled(true);

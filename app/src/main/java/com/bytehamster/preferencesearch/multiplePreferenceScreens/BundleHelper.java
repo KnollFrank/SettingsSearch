@@ -10,7 +10,7 @@ public class BundleHelper {
 
     private final Bundle bundle;
 
-    public BundleHelper(Bundle bundle) {
+    public BundleHelper(final Bundle bundle) {
         this.bundle = bundle;
     }
 
