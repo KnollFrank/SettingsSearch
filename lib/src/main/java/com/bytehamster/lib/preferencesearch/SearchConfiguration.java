@@ -6,19 +6,24 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Supplier;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
+import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 // FK-TODO: refactor
 public class SearchConfiguration {
+
     private static final String ARGUMENT_INDEX_FILES = "items";
     private static final String ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES = "individual_prefs";
     private static final String ARGUMENT_FUZZY_ENABLED = "fuzzy";
@@ -46,6 +51,7 @@ public class SearchConfiguration {
     private String textClearHistory;
     private String textNoResults;
     private String textHint;
+    private Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier = Collections::emptySet;
 
     SearchConfiguration() {
     }
@@ -192,10 +198,15 @@ public class SearchConfiguration {
      *
      * @param resId The preference file to index
      */
+    // FK-TODO: remove method?
     public SearchIndexItem index(final Class<? extends PreferenceFragmentCompat> resId) {
-        SearchIndexItem item = new SearchIndexItem(resId, this);
+        final SearchIndexItem item = new SearchIndexItem(resId, this);
         filesToIndex.add(item);
         return item;
+    }
+
+    public void setPreferenceFragmentsSupplier(final Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier) {
+        this.preferenceFragmentsSupplier = preferenceFragmentsSupplier;
     }
 
     public PreferenceItem indexItem(final Preference preference, final Class<? extends PreferenceFragmentCompat> resId) {
@@ -237,7 +248,17 @@ public class SearchConfiguration {
     }
 
     List<SearchIndexItem> getFiles() {
-        return filesToIndex;
+        return ImmutableList
+                .<SearchIndexItem>builder()
+                .addAll(this.filesToIndex)
+                .addAll(
+                        this
+                                .preferenceFragmentsSupplier
+                                .get()
+                                .stream()
+                                .map(resId -> new SearchIndexItem(resId, this))
+                                .collect(Collectors.toList()))
+                .build();
     }
 
     List<PreferenceItem> getPreferencesToIndex() {
