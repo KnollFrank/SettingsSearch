@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.is;
 
 import android.os.Parcel;
 
-import com.bytehamster.preferencesearch.test.R;
+import com.bytehamster.lib.preferencesearch.PreferenceParserTest.PrefsFragment;
 
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ public class PreferenceItemTest {
                         "key",
                         "breadcrumbs",
                         "keywords",
-                        R.xml.prefs);
+                        PrefsFragment.class);
 
         // Obtain a Parcel object and write the parcelable object to it:
         final Parcel parcel = Parcel.obtain();

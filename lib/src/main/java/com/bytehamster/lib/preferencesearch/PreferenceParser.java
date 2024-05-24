@@ -1,12 +1,8 @@
 package com.bytehamster.lib.preferencesearch;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-
-import androidx.annotation.XmlRes;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
-import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
 import com.google.common.collect.ImmutableList;
@@ -16,18 +12,13 @@ import java.util.List;
 
 public class PreferenceParser {
 
-    private final PreferenceManager preferenceManager;
+    private final PreferenceFragmentCompatHelper preferenceFragmentCompatHelper;
 
-    @SuppressLint("RestrictedApi")
-    public static PreferenceParser fromContext(final Context context) {
-        return new PreferenceParser(new PreferenceManager(context));
+    public PreferenceParser(final PreferenceFragmentCompatHelper preferenceFragmentCompatHelper) {
+        this.preferenceFragmentCompatHelper = preferenceFragmentCompatHelper;
     }
 
-    public PreferenceParser(final PreferenceManager preferenceManager) {
-        this.preferenceManager = preferenceManager;
-    }
-
-    public List<Preference> parsePreferenceScreen(@XmlRes final int preferenceScreen) {
+    public List<Preference> parsePreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
         return getPreferences(preferenceScreen);
     }
 
@@ -43,15 +34,14 @@ public class PreferenceParser {
         return preferencesBuilder.build();
     }
 
-    private List<Preference> getPreferences(@XmlRes final int preferenceScreen) {
+    private List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
         return getPreferences(getPreferenceScreen(preferenceScreen));
     }
 
-    @SuppressLint("RestrictedApi")
-    private PreferenceScreen getPreferenceScreen(@XmlRes final int resId) {
-        return preferenceManager.inflateFromResource(
-                preferenceManager.getContext(),
-                resId,
-                null);
+    private PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> resId) {
+        return this
+                .preferenceFragmentCompatHelper
+                .getPreferenceScreenOfFragment(resId.getName())
+                .preferenceScreen;
     }
 }

@@ -19,7 +19,7 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
     @Override
     public void onSearchResultClicked(final SearchPreferenceResult result) {
         Navigation.navigatePathAndHighlightPreference(
-                Navigation.getNameOfContainingFragment(result.getResourceFile()),
+                result.getResourceFile().getName(),
                 result.getKey(),
                 true,
                 this);

@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import androidx.annotation.XmlRes;
+import androidx.preference.PreferenceFragmentCompat;
+
+import com.bytehamster.lib.preferencesearch.common.Parcels;
 
 import org.apache.commons.text.similarity.FuzzyScore;
 
@@ -23,8 +25,7 @@ class PreferenceItem extends ListItem implements Parcelable {
     public final String key;
     public final String breadcrumbs;
     public final String keywords;
-    @XmlRes
-    public final int resId;
+    public final Class<? extends PreferenceFragmentCompat> resId;
 
     public String entries;
     public List<String> keyBreadcrumbs = new ArrayList<>();
@@ -36,7 +37,7 @@ class PreferenceItem extends ListItem implements Parcelable {
                    final String key,
                    final String breadcrumbs,
                    final String keywords,
-                   @XmlRes final int resId) {
+                   final Class<? extends PreferenceFragmentCompat> resId) {
         this.title = title;
         this.summary = summary;
         this.key = key;
@@ -51,7 +52,7 @@ class PreferenceItem extends ListItem implements Parcelable {
         this.key = source.readString();
         this.breadcrumbs = source.readString();
         this.keywords = source.readString();
-        this.resId = source.readInt();
+        this.resId = Parcels.readClass(source);
     }
 
     @Override
@@ -61,7 +62,7 @@ class PreferenceItem extends ListItem implements Parcelable {
         parcel.writeString(key);
         parcel.writeString(breadcrumbs);
         parcel.writeString(keywords);
-        parcel.writeInt(resId);
+        Parcels.writeClass(parcel, resId);
     }
 
     public static final Creator<PreferenceItem> CREATOR = new Creator<PreferenceItem>() {

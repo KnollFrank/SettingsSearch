@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.StringRes;
-import androidx.annotation.XmlRes;
+import androidx.preference.PreferenceFragmentCompat;
+
+import com.bytehamster.lib.preferencesearch.common.Parcels;
 
 /**
  * Adds a given R.xml resource to the search index
@@ -12,7 +14,7 @@ import androidx.annotation.XmlRes;
 public class SearchIndexItem implements Parcelable {
 
     private String breadcrumb = "";
-    private final @XmlRes int resId;
+    private final Class<? extends PreferenceFragmentCompat> resId;
     private final SearchConfiguration searchConfiguration;
 
     /**
@@ -20,7 +22,8 @@ public class SearchIndexItem implements Parcelable {
      *
      * @param resId The resource to index
      */
-    SearchIndexItem(@XmlRes int resId, SearchConfiguration searchConfiguration) {
+    SearchIndexItem(final Class<? extends PreferenceFragmentCompat> resId,
+                    final SearchConfiguration searchConfiguration) {
         this.resId = resId;
         this.searchConfiguration = searchConfiguration;
     }
@@ -57,8 +60,7 @@ public class SearchIndexItem implements Parcelable {
         }
     }
 
-    @XmlRes
-    int getResId() {
+    Class<? extends PreferenceFragmentCompat> getResId() {
         return resId;
     }
 
@@ -84,14 +86,14 @@ public class SearchIndexItem implements Parcelable {
 
     private SearchIndexItem(Parcel parcel) {
         this.breadcrumb = parcel.readString();
-        this.resId = parcel.readInt();
+        this.resId = Parcels.readClass(parcel);
         this.searchConfiguration = null;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.breadcrumb);
-        dest.writeInt(this.resId);
+        Parcels.writeClass(dest, this.resId);
     }
 
     @Override

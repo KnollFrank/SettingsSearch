@@ -3,14 +3,10 @@ package com.bytehamster.preferencesearch.multiplePreferenceScreens;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceFragmentCompat;
-
-import com.bytehamster.preferencesearch.R;
 
 class Navigation {
 
@@ -35,25 +31,6 @@ class Navigation {
             fragmentTransaction.addToBackStack("fragment");
         }
         fragmentTransaction.commit();
-    }
-
-    public static String getNameOfContainingFragment(@IdRes final int resourceFile) {
-        return getContainingFragment(resourceFile).getName();
-    }
-
-    private static Class<? extends PreferenceFragmentCompat> getContainingFragment(@IdRes final int resourceFile) {
-        switch (resourceFile) {
-            case R.xml.preferences_multiple_screens:
-                return PrefsFragmentFirst.class;
-            case R.xml.preferences2:
-                return PrefsFragmentSecond.class;
-            case R.xml.preferences3:
-                return PrefsFragmentThird.class;
-            case R.xml.preferences4:
-                return PrefsFragmentFourth.class;
-            default:
-                throw new IllegalArgumentException();
-        }
     }
 
     private static Fragment createFragment(final String fragment, final String key, final Context context) {

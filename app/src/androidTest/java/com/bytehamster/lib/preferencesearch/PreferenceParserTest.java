@@ -3,10 +3,14 @@ package com.bytehamster.lib.preferencesearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
+import android.os.Bundle;
 import android.os.Looper;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.test.core.app.ActivityScenario;
 
+import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
 import com.bytehamster.preferencesearch.test.R;
 
 import org.junit.AfterClass;
@@ -29,14 +33,27 @@ public class PreferenceParserTest {
 
     @Test
     public void shouldParseXmlResource() {
-        // Given
-        final PreferenceParser preferenceParser = PreferenceParser.fromContext(TestUtils.getContext());
-        final int preferenceScreen = R.xml.prefs;
+        // FK-TODO: do not use MultiplePreferenceScreensExample as an activity, create a new activity within the androidTest folder.
+        try (final ActivityScenario<MultiplePreferenceScreensExample> scenario = ActivityScenario.launch(MultiplePreferenceScreensExample.class)) {
+            scenario.onActivity(fragmentActivity -> {
+                // Given
+                final PreferenceParser preferenceParser = new PreferenceParser(new PreferenceFragmentCompatHelper(fragmentActivity));
+                final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
 
-        // When
-        final List<Preference> preferences = preferenceParser.parsePreferenceScreen(preferenceScreen);
+                // When
+                final List<Preference> preferences = preferenceParser.parsePreferenceScreen(preferenceScreen);
 
-        // Then
-        assertThat(preferences, hasSize(15));
+                // Then
+                assertThat(preferences, hasSize(15));
+            });
+        }
+    }
+
+    public static class PrefsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            addPreferencesFromResource(R.xml.prefs);
+        }
     }
 }

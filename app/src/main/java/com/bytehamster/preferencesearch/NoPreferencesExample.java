@@ -3,8 +3,11 @@ package com.bytehamster.preferencesearch;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
+
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
@@ -22,7 +25,7 @@ public class NoPreferencesExample extends AppCompatActivity implements SearchPre
 
         SearchConfiguration config = new SearchConfiguration(this);
         config.setFragmentContainerViewId(android.R.id.content);
-        config.index(R.xml.preferences);
+        config.index(PrefsFragment.class);
         config.setSearchBarEnabled(false);
         config.setFuzzySearchEnabled(false);
 
@@ -40,5 +43,13 @@ public class NoPreferencesExample extends AppCompatActivity implements SearchPre
     @Override
     public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
         Toast.makeText(this, result.getKey(), Toast.LENGTH_LONG).show();
+    }
+
+    public static class PrefsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            addPreferencesFromResource(R.xml.preferences);
+        }
     }
 }

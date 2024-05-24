@@ -1,9 +1,11 @@
 package com.bytehamster.preferencesearch;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
@@ -33,6 +35,7 @@ public class SimpleExample extends AppCompatActivity implements SearchPreference
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preferences);
@@ -40,7 +43,7 @@ public class SimpleExample extends AppCompatActivity implements SearchPreference
             SearchPreference searchPreference = findPreference("searchPreference");
             SearchConfiguration config = searchPreference.getSearchConfiguration();
             config.setActivity((AppCompatActivity) getActivity());
-            config.index(R.xml.preferences);
+            config.index(PrefsFragment.class);
         }
     }
 }

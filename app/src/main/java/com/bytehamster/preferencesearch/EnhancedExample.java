@@ -11,6 +11,7 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+import com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentSecond;
 
 /**
  * This file demonstrates some additional features that might not be needed when setting it up for the first time
@@ -55,15 +56,15 @@ public class EnhancedExample extends AppCompatActivity implements SearchPreferen
             config.setActivity((AppCompatActivity) getActivity());
             config.setFragmentContainerViewId(android.R.id.content);
 
-            config.index(R.xml.preferences).addBreadcrumb("Main file");
-            config.index(R.xml.preferences2).addBreadcrumb("Second file");
+            config.index(PrefsFragment.class).addBreadcrumb("Main file");
+            config.index(PrefsFragmentSecond.class).addBreadcrumb("Second file");
             config.setBreadcrumbsEnabled(true);
             config.setHistoryEnabled(true);
             config.setFuzzySearchEnabled(true);
         }
 
         private void onSearchResultClicked(final SearchPreferenceResult result) {
-            if (result.getResourceFile() == R.xml.preferences) {
+            if (PrefsFragment.class.equals(result.getResourceFile())) {
                 searchPreference.setVisible(false); // Do not allow to click search multiple times
                 findPreference(result.getKey()).setTitle("RESULT: " + findPreference(result.getKey()).getTitle());
             } else {

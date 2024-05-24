@@ -28,7 +28,7 @@ public abstract class BaseFragment extends PreferenceFragmentCompat {
         super.onViewCreated(view, savedInstanceState);
         this.keyOfPreference2Highlight.ifPresent(
                 keyOfPreference2Highlight -> {
-                    final SearchPreferenceResult searchPreferenceResult = new SearchPreferenceResult(keyOfPreference2Highlight, 0, null);
+                    final SearchPreferenceResult searchPreferenceResult = new SearchPreferenceResult(keyOfPreference2Highlight, null, null);
                     scrollToPreference(keyOfPreference2Highlight);
                     searchPreferenceResult.highlight(this);
                 });

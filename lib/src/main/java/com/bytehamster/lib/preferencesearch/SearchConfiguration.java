@@ -9,6 +9,7 @@ import androidx.annotation.XmlRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 
@@ -30,6 +31,7 @@ public class SearchConfiguration {
     private static final String ARGUMENT_TEXT_HINT = "text_hint";
     private static final String ARGUMENT_TEXT_CLEAR_HISTORY = "text_clear_history";
     private static final String ARGUMENT_TEXT_NO_RESULTS = "text_no_results";
+    public static final String ARGUMENT_PREFERENCE_ITEMS = "preferenceItems";
 
     private List<SearchIndexItem> filesToIndex = new ArrayList<>();
     private List<PreferenceItem> preferencesToIndex = new ArrayList<>();
@@ -59,7 +61,11 @@ public class SearchConfiguration {
         }
 
         final SearchPreferenceFragment fragment = new SearchPreferenceFragment();
-        fragment.setArguments(toBundle());
+        // FK-TODO: refactor
+        final Bundle bundle = toBundle();
+        final List<PreferenceItem> preferenceItems = PreferenceItems.getPreferenceItems(this, this.activity);
+        bundle.putParcelableArrayList(ARGUMENT_PREFERENCE_ITEMS, new ArrayList<>(preferenceItems));
+        fragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
                 .add(containerResId, fragment, SearchPreferenceFragment.TAG)
                 .addToBackStack(SearchPreferenceFragment.TAG)
@@ -187,13 +193,13 @@ public class SearchConfiguration {
      *
      * @param resId The preference file to index
      */
-    public SearchIndexItem index(@XmlRes int resId) {
+    public SearchIndexItem index(final Class<? extends PreferenceFragmentCompat> resId) {
         SearchIndexItem item = new SearchIndexItem(resId, this);
         filesToIndex.add(item);
         return item;
     }
 
-    public PreferenceItem indexItem(final Preference preference, @XmlRes final int resId) {
+    public PreferenceItem indexItem(final Preference preference, final Class<? extends PreferenceFragmentCompat> resId) {
         final PreferenceItem preferenceItem =
                 new PreferenceItem(
                         preference.getTitle() != null ? preference.getTitle().toString() : null,
@@ -212,7 +218,8 @@ public class SearchConfiguration {
         return preferenceItem;
     }
 
-    public List<PreferenceItem> indexItems(final List<Preference> preferences, @XmlRes final int resId) {
+    public List<PreferenceItem> indexItems(final List<Preference> preferences,
+                                           final Class<? extends PreferenceFragmentCompat> resId) {
         return preferences
                 .stream()
                 .map(preference -> indexItem(preference, resId))

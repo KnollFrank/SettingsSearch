@@ -20,10 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class SearchPreferenceResult {
 
     private final String key;
-    private final int file;
+    private final Class<? extends PreferenceFragmentCompat> file;
     private final String screen;
 
-    public SearchPreferenceResult(String key, int file, String screen) {
+    public SearchPreferenceResult(final String key,
+                                  final Class<? extends PreferenceFragmentCompat> file,
+                                  final String screen) {
         this.key = key;
         this.file = file;
         this.screen = screen;
@@ -43,7 +45,7 @@ public class SearchPreferenceResult {
      *
      * @return The file in which the result was found
      */
-    public int getResourceFile() {
+    public Class<? extends PreferenceFragmentCompat> getResourceFile() {
         return file;
     }
 

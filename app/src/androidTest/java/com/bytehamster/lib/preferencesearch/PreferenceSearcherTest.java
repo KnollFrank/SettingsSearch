@@ -7,8 +7,10 @@ import static org.hamcrest.core.StringContains.containsString;
 import android.os.Looper;
 
 import androidx.preference.Preference;
+import androidx.test.core.app.ActivityScenario;
 
-import com.bytehamster.preferencesearch.test.R;
+import com.bytehamster.lib.preferencesearch.PreferenceParserTest.PrefsFragment;
+import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -31,25 +33,28 @@ public class PreferenceSearcherTest {
 
     @Test
     public void shouldSearch() {
-        // Given
-        final int preferenceScreen = R.xml.prefs;
-        final List<Preference> preferences =
-                PreferenceParser
-                        .fromContext(TestUtils.getContext())
-                        .parsePreferenceScreen(preferenceScreen);
-        final PreferenceSearcher preferenceSearcher =
-                new PreferenceSearcher(PreferenceItems.getPreferenceItems(preferences, preferenceScreen));
-        final String keyword = "Switch";
+        try (final ActivityScenario<MultiplePreferenceScreensExample> scenario = ActivityScenario.launch(MultiplePreferenceScreensExample.class)) {
+            scenario.onActivity(fragmentActivity -> {
+                // Given
+                final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
+                final List<Preference> preferences =
+                        new PreferenceParser(new PreferenceFragmentCompatHelper(fragmentActivity))
+                                .parsePreferenceScreen(preferenceScreen);
+                final PreferenceSearcher preferenceSearcher =
+                        new PreferenceSearcher(PreferenceItems.getPreferenceItems(preferences, preferenceScreen));
+                final String keyword = "Switch";
 
-        // When
-        final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword, true);
+                // When
+                final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword, true);
 
-        // Then
-        final List<String> titles =
-                preferenceItems
-                        .stream()
-                        .map(result -> result.title)
-                        .collect(Collectors.toList());
-        assertThat(titles, hasItem(containsString(keyword)));
+                // Then
+                final List<String> titles =
+                        preferenceItems
+                                .stream()
+                                .map(result -> result.title)
+                                .collect(Collectors.toList());
+                assertThat(titles, hasItem(containsString(keyword)));
+            });
+        }
     }
 }
