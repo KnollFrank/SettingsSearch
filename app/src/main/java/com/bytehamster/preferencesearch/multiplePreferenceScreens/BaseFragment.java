@@ -17,6 +17,7 @@ import java.util.Optional;
 
 public abstract class BaseFragment extends PreferenceFragmentCompat {
 
+    // FK-TODO: remove navigationPath and navigate directly to the desired fragment in Navigation.navigatePathAndHighlightPreference()
     private List<String> navigationPath;
     private Optional<String> keyOfPreference2Highlight;
 

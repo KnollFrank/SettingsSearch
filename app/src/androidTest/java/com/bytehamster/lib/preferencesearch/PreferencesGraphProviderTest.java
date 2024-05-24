@@ -20,6 +20,7 @@ public class PreferencesGraphProviderTest {
 
     @Test
     public void shouldGetPreferencesGraph() {
+        // FK-TODO: do not use MultiplePreferenceScreensExample as an activity, create a new activity within the androidTest folder.
         try (final ActivityScenario<MultiplePreferenceScreensExample> scenario = ActivityScenario.launch(MultiplePreferenceScreensExample.class)) {
             scenario.onActivity(PreferencesGraphProviderTest::shouldGetPreferencesGraph);
         }

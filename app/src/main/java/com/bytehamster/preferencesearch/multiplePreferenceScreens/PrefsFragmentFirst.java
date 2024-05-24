@@ -21,6 +21,7 @@ public class PrefsFragmentFirst extends BaseFragment {
         config.setActivity((AppCompatActivity) getActivity());
         config.setFragmentContainerViewId(android.R.id.content);
 
+        // FK-TODO: PreferencesGraphProvider und preferencesGraph verwenden
         config.index(R.xml.preferences_multiple_screens).addBreadcrumb("Main file");
         config.index(R.xml.preferences2).addBreadcrumb("Second file");
         config.index(R.xml.preferences3).addBreadcrumb("Third file");
