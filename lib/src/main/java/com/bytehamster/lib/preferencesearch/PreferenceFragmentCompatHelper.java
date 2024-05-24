@@ -12,7 +12,6 @@ public class PreferenceFragmentCompatHelper {
         this.fragmentActivity = fragmentActivity;
     }
 
-    // FK-TODO: replaced String argument with Class<? extends PreferenceFragmentCompat>
     public PreferenceScreenWithHost getPreferenceScreenOfFragment(final String fragment) {
         final PreferenceFragmentCompat preferenceFragmentCompat =
                 (PreferenceFragmentCompat) Fragment.instantiate(
