@@ -1,6 +1,5 @@
 package com.bytehamster.preferencesearch.multiplePreferenceScreens;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,7 +16,7 @@ class Navigation {
                                                           final boolean addToBackStack,
                                                           final FragmentActivity fragmentActivity) {
         show(
-                createFragment(fragment, key, fragmentActivity),
+                Fragment.instantiate(fragmentActivity, fragment, createArguments(key)),
                 addToBackStack,
                 fragmentActivity.getSupportFragmentManager());
     }
@@ -31,10 +30,6 @@ class Navigation {
             fragmentTransaction.addToBackStack("fragment");
         }
         fragmentTransaction.commit();
-    }
-
-    private static Fragment createFragment(final String fragment, final String key, final Context context) {
-        return Fragment.instantiate(context, fragment, createArguments(key));
     }
 
     private static Bundle createArguments(final String keyOfPreference2Highlight) {
