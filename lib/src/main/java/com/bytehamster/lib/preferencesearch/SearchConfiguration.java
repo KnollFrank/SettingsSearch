@@ -192,7 +192,15 @@ public class SearchConfiguration {
         this.preferenceFragmentsSupplier = preferenceFragmentsSupplier;
     }
 
-    public PreferenceItem indexItem(final Preference preference, final Class<? extends PreferenceFragmentCompat> resId) {
+    public List<PreferenceItem> indexItems(final List<Preference> preferences,
+                                           final Class<? extends PreferenceFragmentCompat> resId) {
+        return preferences
+                .stream()
+                .map(preference -> indexItem(preference, resId))
+                .collect(Collectors.toList());
+    }
+
+    private PreferenceItem indexItem(final Preference preference, final Class<? extends PreferenceFragmentCompat> resId) {
         final PreferenceItem preferenceItem =
                 new PreferenceItem(
                         preference.getTitle() != null ? preference.getTitle().toString() : null,
@@ -202,21 +210,13 @@ public class SearchConfiguration {
                         null,
                         resId);
         if (preference instanceof ListPreference) {
-            ListPreference listPreference = ((ListPreference) preference);
+            final ListPreference listPreference = ((ListPreference) preference);
             if (listPreference.getEntries() != null) {
                 preferenceItem.entries = Arrays.toString(listPreference.getEntries());
             }
         }
         preferencesToIndex.add(preferenceItem);
         return preferenceItem;
-    }
-
-    public List<PreferenceItem> indexItems(final List<Preference> preferences,
-                                           final Class<? extends PreferenceFragmentCompat> resId) {
-        return preferences
-                .stream()
-                .map(preference -> indexItem(preference, resId))
-                .collect(Collectors.toList());
     }
 
     List<String> getBannedKeys() {
