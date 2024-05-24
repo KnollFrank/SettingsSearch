@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
@@ -23,15 +22,15 @@ public class PreferencesGraphProvider {
         this.fragmentActivity = fragmentActivity;
     }
 
-    public Graph<PreferenceScreen, DefaultEdge> getPreferencesGraph(final PreferenceFragmentCompat root) {
-        final Graph<PreferenceScreen, DefaultEdge> preferencesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+    public Graph<PreferenceScreenWithHost, DefaultEdge> getPreferencesGraph(final PreferenceFragmentCompat root) {
+        final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
         initialize(root);
-        buildPreferencesGraph(preferencesGraph, root.getPreferenceScreen());
+        buildPreferencesGraph(preferencesGraph, PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(root));
         return preferencesGraph;
     }
 
-    private void buildPreferencesGraph(final Graph<PreferenceScreen, DefaultEdge> preferencesGraph,
-                                       final PreferenceScreen root) {
+    private void buildPreferencesGraph(final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph,
+                                       final PreferenceScreenWithHost root) {
         preferencesGraph.addVertex(root);
         this
                 .getChildren(root)
@@ -51,9 +50,9 @@ public class PreferencesGraphProvider {
                 .commitNow();
     }
 
-    private List<PreferenceScreen> getChildren(final PreferenceScreen preferenceScreen) {
+    private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreen) {
         return PreferenceParser
-                .getPreferences(preferenceScreen)
+                .getPreferences(preferenceScreen.preferenceScreen)
                 .stream()
                 .map(Preference::getFragment)
                 .filter(Objects::nonNull)
@@ -61,13 +60,13 @@ public class PreferencesGraphProvider {
                 .collect(Collectors.toList());
     }
 
-    private PreferenceScreen getPreferenceScreenOfFragment(final String fragment) {
+    private PreferenceScreenWithHost getPreferenceScreenOfFragment(final String fragment) {
         final PreferenceFragmentCompat preferenceFragmentCompat =
                 (PreferenceFragmentCompat) Fragment.instantiate(
                         this.fragmentActivity,
                         fragment,
                         null);
         initialize(preferenceFragmentCompat);
-        return preferenceFragmentCompat.getPreferenceScreen();
+        return PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragmentCompat);
     }
 }

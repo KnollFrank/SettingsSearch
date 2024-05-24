@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.preferencesearch.R;
 import com.google.common.collect.ImmutableList;
@@ -52,7 +53,7 @@ class Navigation {
                 .collect(Collectors.toList());
     }
 
-    private static List<Class<?>> _createFragmentNavigationPath(@IdRes final int resourceFile) {
+    private static List<Class<? extends PreferenceFragmentCompat>> _createFragmentNavigationPath(@IdRes final int resourceFile) {
         switch (resourceFile) {
             case R.xml.preferences_multiple_screens:
                 return ImmutableList.of(PrefsFragmentFirst.class);

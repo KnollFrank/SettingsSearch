@@ -18,6 +18,7 @@ import androidx.preference.PreferenceGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SearchPreferenceResult {
+
     private final String key;
     private final int file;
     private final String screen;
