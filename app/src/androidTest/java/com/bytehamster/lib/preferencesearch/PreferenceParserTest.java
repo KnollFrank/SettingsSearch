@@ -10,8 +10,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
+import com.bytehamster.preferencesearch.R;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
-import com.bytehamster.preferencesearch.test.R;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -44,7 +44,7 @@ public class PreferenceParserTest {
                 final List<Preference> preferences = preferenceParser.parsePreferenceScreen(preferenceScreen);
 
                 // Then
-                assertThat(preferences, hasSize(15));
+                assertThat(preferences, hasSize(1));
             });
         }
     }
@@ -53,7 +53,7 @@ public class PreferenceParserTest {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            addPreferencesFromResource(R.xml.prefs);
+            addPreferencesFromResource(R.xml.preferences4);
         }
     }
 }
