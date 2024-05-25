@@ -25,7 +25,7 @@ public class PrefsFragmentFirst extends BaseFragment {
     private void configureSearchPreference(final SearchPreference searchPreference) {
         final SearchConfiguration config = searchPreference.getSearchConfiguration();
         config.setActivity((AppCompatActivity) getActivity());
-        config.setFragmentContainerViewId(android.R.id.content);
+        config.setFragmentContainerViewId(R.id.fragmentContainerView);
         config.setPreferenceFragmentsSupplier(() -> getPreferenceFragments(new PrefsFragmentFirst()));
         config.setBreadcrumbsEnabled(true);
         config.setHistoryEnabled(true);
@@ -33,7 +33,7 @@ public class PrefsFragmentFirst extends BaseFragment {
     }
 
     private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PrefsFragmentFirst root) {
-        return new PreferencesGraphProvider(new PreferenceFragmentCompatHelper(getActivity()))
+        return new PreferencesGraphProvider(new PreferenceFragmentCompatHelper(getActivity(), R.id.fragmentContainerView))
                 .getPreferencesGraph(root)
                 .vertexSet()
                 .stream()

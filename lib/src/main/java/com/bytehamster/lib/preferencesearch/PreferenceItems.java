@@ -1,5 +1,6 @@
 package com.bytehamster.lib.preferencesearch;
 
+import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -18,10 +19,11 @@ class PreferenceItems {
     }
 
     public static List<PreferenceItem> getPreferenceItems(final SearchConfiguration searchConfiguration,
-                                                          final FragmentActivity fragmentActivity) {
+                                                          final FragmentActivity fragmentActivity,
+                                                          @IdRes final int containerResId) {
         return ImmutableList
                 .<PreferenceItem>builder()
-                .addAll(parsePreferenceScreens(getPreferenceScreens(searchConfiguration), fragmentActivity))
+                .addAll(parsePreferenceScreens(getPreferenceScreens(searchConfiguration), fragmentActivity, containerResId))
                 .addAll(searchConfiguration.getPreferencesToIndex())
                 .build();
     }
@@ -35,20 +37,22 @@ class PreferenceItems {
     }
 
     private static List<PreferenceItem> parsePreferenceScreens(final List<Class<? extends PreferenceFragmentCompat>> preferenceScreens,
-                                                               final FragmentActivity fragmentActivity) {
+                                                               final FragmentActivity fragmentActivity,
+                                                               @IdRes final int containerResId) {
         final List<List<PreferenceItem>> preferenceItems =
                 preferenceScreens
                         .stream()
-                        .map(preferenceScreen -> parsePreferenceScreen(preferenceScreen, fragmentActivity))
+                        .map(preferenceScreen -> parsePreferenceScreen(preferenceScreen, fragmentActivity, containerResId))
                         .collect(Collectors.toList());
         return Utils.concat(preferenceItems);
     }
 
     private static List<PreferenceItem> parsePreferenceScreen(
             final Class<? extends PreferenceFragmentCompat> preferenceScreen,
-            final FragmentActivity fragmentActivity) {
+            final FragmentActivity fragmentActivity,
+            @IdRes final int containerResId) {
         final List<Preference> preferences =
-                new PreferenceParser(new PreferenceFragmentCompatHelper(fragmentActivity))
+                new PreferenceParser(new PreferenceFragmentCompatHelper(fragmentActivity, containerResId))
                         .parsePreferenceScreen(preferenceScreen);
         final List<Preference> searchablePreferences =
                 PreferenceItemFilter.getSearchablePreferences(preferences);

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
+import com.bytehamster.preferencesearch.R;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFirst;
 
@@ -27,7 +28,7 @@ public class PreferencesGraphProviderTest {
 
     private static void shouldGetPreferencesGraph(final FragmentActivity activity) {
         // Given
-        final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(new PreferenceFragmentCompatHelper(activity));
+        final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(new PreferenceFragmentCompatHelper(activity, R.id.fragmentContainerView));
         final PreferenceFragmentCompat root = new PrefsFragmentFirst();
 
         // When

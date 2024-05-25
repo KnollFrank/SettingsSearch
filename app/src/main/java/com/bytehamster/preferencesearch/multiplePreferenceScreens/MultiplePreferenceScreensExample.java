@@ -12,6 +12,7 @@ public class MultiplePreferenceScreensExample extends AppCompatActivity implemen
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(com.bytehamster.preferencesearch.R.layout.multiple_preference_screens_example);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Navigation.show(new PrefsFragmentFirst(), false, getSupportFragmentManager());
     }

@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bytehamster.preferencesearch.R;
+
 class Navigation {
 
     public static final String KEY_OF_PREFERENCE_2_HIGHLIGHT = "keyOfPreference2Highlight";
@@ -27,7 +29,7 @@ class Navigation {
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setReorderingAllowed(true);
         // FK-TODO: umsetzen: "Note: It is strongly recommended to always use fragment operations that take a Class rather than a fragment instance to ensure that the same mechanisms for creating the fragment are also used for restoring the fragment from a saved state. See Fragment manager for more details." (https://developer.android.com/guide/fragments/transactions)
-        fragmentTransaction.replace(android.R.id.content, fragment);
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment);
         if (addToBackStack) {
             fragmentTransaction.addToBackStack("fragment");
         }

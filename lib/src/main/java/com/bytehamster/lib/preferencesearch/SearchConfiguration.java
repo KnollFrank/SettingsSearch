@@ -65,11 +65,11 @@ public class SearchConfiguration {
         final SearchPreferenceFragment fragment = new SearchPreferenceFragment();
         // FK-TODO: refactor
         final Bundle bundle = toBundle();
-        final List<PreferenceItem> preferenceItems = PreferenceItems.getPreferenceItems(this, this.activity);
+        final List<PreferenceItem> preferenceItems = PreferenceItems.getPreferenceItems(this, this.activity, this.containerResId);
         bundle.putParcelableArrayList(ARGUMENT_PREFERENCE_ITEMS, new ArrayList<>(preferenceItems));
         fragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction()
-                .add(containerResId, fragment, SearchPreferenceFragment.TAG)
+                .add(this.containerResId, fragment, SearchPreferenceFragment.TAG)
                 .addToBackStack(SearchPreferenceFragment.TAG)
                 .commit();
         return fragment;
@@ -171,7 +171,7 @@ public class SearchConfiguration {
      *
      * @param containerResId Resource id of the container
      */
-    public void setFragmentContainerViewId(@IdRes int containerResId) {
+    public void setFragmentContainerViewId(@IdRes final int containerResId) {
         this.containerResId = containerResId;
     }
 

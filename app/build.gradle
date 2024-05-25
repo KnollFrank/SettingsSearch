@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.bytehamster.preferencesearch"
         minSdkVersion 24
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -31,9 +31,9 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.preference:preference:1.2.1'
     // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation 'com.google.guava:guava:33.2.0-android'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core
@@ -42,6 +42,9 @@ dependencies {
     implementation 'org.jgrapht:jgrapht-io:1.5.2'
     // https://mvnrepository.com/artifact/io.vavr/vavr
     implementation project(":lib")
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.activity:activity:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.test:core:1.5.0'

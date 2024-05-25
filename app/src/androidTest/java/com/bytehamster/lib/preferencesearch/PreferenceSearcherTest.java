@@ -10,6 +10,7 @@ import androidx.preference.Preference;
 import androidx.test.core.app.ActivityScenario;
 
 import com.bytehamster.lib.preferencesearch.PreferenceParserTest.PrefsFragment;
+import com.bytehamster.preferencesearch.R;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
 
 import org.junit.AfterClass;
@@ -38,7 +39,7 @@ public class PreferenceSearcherTest {
                 // Given
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
                 final List<Preference> preferences =
-                        new PreferenceParser(new PreferenceFragmentCompatHelper(fragmentActivity))
+                        new PreferenceParser(new PreferenceFragmentCompatHelper(fragmentActivity, R.id.fragmentContainerView))
                                 .parsePreferenceScreen(preferenceScreen);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(PreferenceItems.getPreferenceItems(preferences, preferenceScreen));
