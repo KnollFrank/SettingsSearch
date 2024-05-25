@@ -52,7 +52,7 @@ class PreferenceItems {
             final FragmentActivity fragmentActivity,
             @IdRes final int containerResId) {
         final List<Preference> preferences =
-                new PreferenceParser(new PreferenceFragmentCompatHelper(fragmentActivity, containerResId))
+                new PreferenceParser(new PreferenceFragmentHelper(fragmentActivity, containerResId))
                         .parsePreferenceScreen(preferenceScreen);
         final List<Preference> searchablePreferences =
                 PreferenceItemFilter.getSearchablePreferences(preferences);

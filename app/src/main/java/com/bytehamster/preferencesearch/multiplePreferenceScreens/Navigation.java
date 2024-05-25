@@ -27,13 +27,13 @@ class Navigation {
                             final boolean addToBackStack,
                             final FragmentManager fragmentManager) {
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setReorderingAllowed(true);
-        // FK-TODO: umsetzen: "Note: It is strongly recommended to always use fragment operations that take a Class rather than a fragment instance to ensure that the same mechanisms for creating the fragment are also used for restoring the fragment from a saved state. See Fragment manager for more details." (https://developer.android.com/guide/fragments/transactions)
-        fragmentTransaction.replace(R.id.fragmentContainerView, fragment);
         if (addToBackStack) {
             fragmentTransaction.addToBackStack("fragment");
         }
-        fragmentTransaction.commit();
+        fragmentTransaction
+                .setReorderingAllowed(true)
+                .replace(R.id.fragmentContainerView, fragment)
+                .commit();
     }
 
     private static Bundle createArguments(final String keyOfPreference2Highlight) {

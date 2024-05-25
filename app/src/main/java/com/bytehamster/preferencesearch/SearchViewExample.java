@@ -39,8 +39,10 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         }
 
         prefsFragment = new PrefsFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(android.R.id.content, prefsFragment).commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(android.R.id.content, prefsFragment)
+                .commit();
     }
 
     @Override
@@ -52,8 +54,8 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         searchConfiguration.setPreferenceFragmentsSupplier(() -> ImmutableSet.of(PrefsFragment.class));
 
         searchConfiguration.useAnimation(
-                findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight()/2,
-                -getSupportActionBar().getHeight()/2,
+                findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
+                -getSupportActionBar().getHeight() / 2,
                 findViewById(android.R.id.content).getWidth(),
                 findViewById(android.R.id.content).getHeight(),
                 getResources().getColor(R.color.colorPrimary));

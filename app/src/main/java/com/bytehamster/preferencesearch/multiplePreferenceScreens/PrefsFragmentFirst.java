@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.bytehamster.lib.preferencesearch.PreferenceFragmentCompatHelper;
+import com.bytehamster.lib.preferencesearch.PreferenceFragmentHelper;
 import com.bytehamster.lib.preferencesearch.PreferencesGraphProvider;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
@@ -32,8 +32,8 @@ public class PrefsFragmentFirst extends BaseFragment {
         config.setFuzzySearchEnabled(true);
     }
 
-    private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PrefsFragmentFirst root) {
-        return new PreferencesGraphProvider(new PreferenceFragmentCompatHelper(getActivity(), R.id.fragmentContainerView))
+    private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root) {
+        return new PreferencesGraphProvider(new PreferenceFragmentHelper(getActivity(), R.id.fragmentContainerView))
                 .getPreferencesGraph(root)
                 .vertexSet()
                 .stream()

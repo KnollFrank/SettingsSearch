@@ -12,10 +12,10 @@ import java.util.List;
 
 public class PreferenceParser {
 
-    private final PreferenceFragmentCompatHelper preferenceFragmentCompatHelper;
+    private final PreferenceFragmentHelper preferenceFragmentHelper;
 
-    public PreferenceParser(final PreferenceFragmentCompatHelper preferenceFragmentCompatHelper) {
-        this.preferenceFragmentCompatHelper = preferenceFragmentCompatHelper;
+    public PreferenceParser(final PreferenceFragmentHelper preferenceFragmentHelper) {
+        this.preferenceFragmentHelper = preferenceFragmentHelper;
     }
 
     public List<Preference> parsePreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
@@ -40,7 +40,7 @@ public class PreferenceParser {
 
     private PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> resId) {
         return this
-                .preferenceFragmentCompatHelper
+                .preferenceFragmentHelper
                 .getPreferenceScreenOfFragment(resId.getName())
                 .preferenceScreen;
     }

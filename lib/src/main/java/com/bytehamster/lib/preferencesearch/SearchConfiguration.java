@@ -68,7 +68,9 @@ public class SearchConfiguration {
         final List<PreferenceItem> preferenceItems = PreferenceItems.getPreferenceItems(this, this.activity, this.containerResId);
         bundle.putParcelableArrayList(ARGUMENT_PREFERENCE_ITEMS, new ArrayList<>(preferenceItems));
         fragment.setArguments(bundle);
-        activity.getSupportFragmentManager().beginTransaction()
+        activity
+                .getSupportFragmentManager()
+                .beginTransaction()
                 .add(this.containerResId, fragment, SearchPreferenceFragment.TAG)
                 .addToBackStack(SearchPreferenceFragment.TAG)
                 .commit();

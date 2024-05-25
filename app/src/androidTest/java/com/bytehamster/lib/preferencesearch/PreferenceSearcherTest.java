@@ -39,7 +39,7 @@ public class PreferenceSearcherTest {
                 // Given
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
                 final List<Preference> preferences =
-                        new PreferenceParser(new PreferenceFragmentCompatHelper(fragmentActivity, R.id.fragmentContainerView))
+                        new PreferenceParser(new PreferenceFragmentHelper(fragmentActivity, R.id.fragmentContainerView))
                                 .parsePreferenceScreen(preferenceScreen);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(PreferenceItems.getPreferenceItems(preferences, preferenceScreen));
