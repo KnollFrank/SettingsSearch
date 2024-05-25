@@ -188,6 +188,7 @@ public class SearchConfiguration {
         revealAnimationSetting = new RevealAnimationSetting(centerX, centerY, width, height, colorAccent);
     }
 
+    // FK-TODO: Supplier entfernen
     public void setPreferenceFragmentsSupplier(final Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier) {
         this.preferenceFragmentsSupplier = preferenceFragmentsSupplier;
     }
