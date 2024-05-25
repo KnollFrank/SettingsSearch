@@ -18,6 +18,10 @@ public class BundleHelper {
         return this.bundle != null ? Optional.ofNullable(this.bundle.getString(key)) : Optional.empty();
     }
 
+    public boolean getBoolean(final String key, final boolean defaultValue) {
+        return this.bundle != null ? this.bundle.getBoolean(key, defaultValue) : defaultValue;
+    }
+
     public List<String> getStringArrayList(final String key) {
         if (this.bundle == null || !this.bundle.containsKey(key)) {
             return Collections.emptyList();
