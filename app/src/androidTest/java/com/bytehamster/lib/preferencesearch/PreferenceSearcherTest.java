@@ -1,5 +1,6 @@
 package com.bytehamster.lib.preferencesearch;
 
+import static com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample.FRAGMENT_CONTAINER_VIEW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.StringContains.containsString;
@@ -10,7 +11,6 @@ import androidx.preference.Preference;
 import androidx.test.core.app.ActivityScenario;
 
 import com.bytehamster.lib.preferencesearch.PreferenceParserTest.PrefsFragment;
-import com.bytehamster.preferencesearch.R;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
 
 import org.junit.AfterClass;
@@ -39,7 +39,7 @@ public class PreferenceSearcherTest {
                 // Given
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
                 final List<Preference> preferences =
-                        new PreferenceParser(new PreferenceFragmentHelper(fragmentActivity, R.id.fragmentContainerView))
+                        new PreferenceParser(new PreferenceFragmentHelper(fragmentActivity, FRAGMENT_CONTAINER_VIEW))
                                 .parsePreferenceScreen(preferenceScreen);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(PreferenceItems.getPreferenceItems(preferences, preferenceScreen));

@@ -1,5 +1,6 @@
 package com.bytehamster.lib.preferencesearch;
 
+import static com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample.FRAGMENT_CONTAINER_VIEW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -7,7 +8,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
-import com.bytehamster.preferencesearch.R;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFirst;
 
@@ -28,7 +28,7 @@ public class PreferencesGraphProviderTest {
 
     private static void shouldGetPreferencesGraph(final FragmentActivity activity) {
         // Given
-        final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(new PreferenceFragmentHelper(activity, R.id.fragmentContainerView));
+        final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(new PreferenceFragmentHelper(activity, FRAGMENT_CONTAINER_VIEW));
         final PreferenceFragmentCompat root = new PrefsFragmentFirst();
 
         // When

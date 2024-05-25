@@ -1,5 +1,7 @@
 package com.bytehamster.preferencesearch.multiplePreferenceScreens;
 
+import static com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample.FRAGMENT_CONTAINER_VIEW;
+
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +27,7 @@ public class PrefsFragmentFirst extends BaseFragment {
     private void configureSearchPreference(final SearchPreference searchPreference) {
         final SearchConfiguration config = searchPreference.getSearchConfiguration();
         config.setActivity((AppCompatActivity) getActivity());
-        config.setFragmentContainerViewId(R.id.fragmentContainerView);
+        config.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
         config.setPreferenceFragmentsSupplier(() -> getPreferenceFragments(new PrefsFragmentFirst()));
         config.setBreadcrumbsEnabled(true);
         config.setHistoryEnabled(true);
@@ -33,7 +35,7 @@ public class PrefsFragmentFirst extends BaseFragment {
     }
 
     private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root) {
-        return new PreferencesGraphProvider(new PreferenceFragmentHelper(getActivity(), R.id.fragmentContainerView))
+        return new PreferencesGraphProvider(new PreferenceFragmentHelper(getActivity(), FRAGMENT_CONTAINER_VIEW))
                 .getPreferencesGraph(root)
                 .vertexSet()
                 .stream()

@@ -2,12 +2,11 @@ package com.bytehamster.preferencesearch.multiplePreferenceScreens;
 
 import android.os.Bundle;
 
+import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.bytehamster.preferencesearch.R;
 
 class Navigation {
 
@@ -16,23 +15,26 @@ class Navigation {
     public static void navigatePathAndHighlightPreference(final String fragment,
                                                           final String key,
                                                           final boolean addToBackStack,
-                                                          final FragmentActivity fragmentActivity) {
+                                                          final FragmentActivity fragmentActivity,
+                                                          @IdRes final int containerViewId) {
         show(
                 Fragment.instantiate(fragmentActivity, fragment, createArguments(key)),
                 addToBackStack,
-                fragmentActivity.getSupportFragmentManager());
+                fragmentActivity.getSupportFragmentManager(),
+                containerViewId);
     }
 
     public static void show(final Fragment fragment,
                             final boolean addToBackStack,
-                            final FragmentManager fragmentManager) {
+                            final FragmentManager fragmentManager,
+                            @IdRes final int containerViewId) {
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (addToBackStack) {
             fragmentTransaction.addToBackStack("fragment");
         }
         fragmentTransaction
                 .setReorderingAllowed(true)
-                .replace(R.id.fragmentContainerView, fragment)
+                .replace(containerViewId, fragment)
                 .commit();
     }
 

@@ -1,5 +1,6 @@
 package com.bytehamster.lib.preferencesearch;
 
+import static com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample.FRAGMENT_CONTAINER_VIEW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -37,7 +38,7 @@ public class PreferenceParserTest {
         try (final ActivityScenario<MultiplePreferenceScreensExample> scenario = ActivityScenario.launch(MultiplePreferenceScreensExample.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final PreferenceParser preferenceParser = new PreferenceParser(new PreferenceFragmentHelper(fragmentActivity, R.id.fragmentContainerView));
+                final PreferenceParser preferenceParser = new PreferenceParser(new PreferenceFragmentHelper(fragmentActivity, FRAGMENT_CONTAINER_VIEW));
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
 
                 // When
