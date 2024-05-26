@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 
 android {
     namespace "com.bytehamster.lib.preferencesearch"
-    compileSdkVersion 34
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 24
@@ -20,6 +20,12 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
     }
 }
 
@@ -38,16 +44,16 @@ dependencies {
     // https://mvnrepository.com/artifact/io.vavr/vavr
 }
 
-//afterEvaluate {
-//    publishing {
-//        publications {
-//            // Creates a Maven publication called "release".
-//            release(MavenPublication) {
-//                from components.release
-//                groupId = 'com.github.ByteHamster'
-//                artifactId = 'SearchPreference'
-//                version = 'v2.5.1'
-//            }
-//        }
-//    }
-//}
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.ByteHamster'
+            artifactId = 'SearchPreference'
+            version = 'v2.5.1'
+
+            afterEvaluate {
+                from components.release
+            }
+        }
+    }
+}
