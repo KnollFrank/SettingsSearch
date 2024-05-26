@@ -1,5 +1,7 @@
 package com.bytehamster.lib.preferencesearch;
 
+import static com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment.KEY_OF_PREFERENCE_2_HIGHLIGHT;
+
 import android.os.Bundle;
 
 import androidx.annotation.IdRes;
@@ -9,8 +11,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 public class Navigation {
-
-    public static final String KEY_OF_PREFERENCE_2_HIGHLIGHT = "keyOfPreference2Highlight";
 
     public static void navigatePathAndHighlightPreference(final String fragment,
                                                           final String key,

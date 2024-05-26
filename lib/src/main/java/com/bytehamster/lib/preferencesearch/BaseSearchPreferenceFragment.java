@@ -1,7 +1,5 @@
 package com.bytehamster.lib.preferencesearch;
 
-import static com.bytehamster.lib.preferencesearch.Navigation.KEY_OF_PREFERENCE_2_HIGHLIGHT;
-
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,6 +10,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Optional;
 
 public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCompat {
+
+    public static final String KEY_OF_PREFERENCE_2_HIGHLIGHT = "keyOfPreference2Highlight";
 
     private Optional<String> keyOfPreference2Highlight;
 
