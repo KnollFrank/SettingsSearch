@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchPreferenceFragment extends Fragment implements SearchPreferenceAdapter.SearchClickListener {
+
     /**
      * Default tag used on the library's Fragment transactions with {@link SearchPreferenceFragment}
      */

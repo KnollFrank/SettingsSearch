@@ -10,12 +10,12 @@ import com.google.common.collect.ImmutableList.Builder;
 
 import java.util.List;
 
-public class PreferenceParser {
+class PreferenceParser {
 
-    private final PreferenceFragmentHelper preferenceFragmentHelper;
+    private final PreferenceFragments preferenceFragments;
 
-    public PreferenceParser(final PreferenceFragmentHelper preferenceFragmentHelper) {
-        this.preferenceFragmentHelper = preferenceFragmentHelper;
+    public PreferenceParser(final PreferenceFragments preferenceFragments) {
+        this.preferenceFragments = preferenceFragments;
     }
 
     public List<Preference> parsePreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
@@ -40,7 +40,7 @@ public class PreferenceParser {
 
     private PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> resId) {
         return this
-                .preferenceFragmentHelper
+                .preferenceFragments
                 .getPreferenceScreenOfFragment(resId.getName())
                 .get()
                 .preferenceScreen;

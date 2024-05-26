@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapter.ViewHolder> {
+
     private List<ListItem> dataset;
     private SearchConfiguration searchConfiguration;
     private SearchClickListener onItemClickListener;

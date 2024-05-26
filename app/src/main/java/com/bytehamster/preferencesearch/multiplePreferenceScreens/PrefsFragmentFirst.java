@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
-import com.bytehamster.lib.preferencesearch.PreferenceFragmentHelper;
+import com.bytehamster.lib.preferencesearch.PreferenceFragments;
 import com.bytehamster.lib.preferencesearch.PreferencesGraphProvider;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
@@ -36,7 +36,7 @@ public class PrefsFragmentFirst extends BaseSearchPreferenceFragment {
     }
 
     private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root) {
-        return new PreferencesGraphProvider(new PreferenceFragmentHelper(getActivity(), FRAGMENT_CONTAINER_VIEW))
+        return new PreferencesGraphProvider(new PreferenceFragments(getActivity(), FRAGMENT_CONTAINER_VIEW))
                 .getPreferencesGraph(root)
                 // FK-TODO: only vertexSet() is needed, no graph, so do not build any graph at all and remove dependencies to jgrapht library
                 .vertexSet()

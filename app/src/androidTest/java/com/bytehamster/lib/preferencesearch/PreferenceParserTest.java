@@ -38,7 +38,7 @@ public class PreferenceParserTest {
         try (final ActivityScenario<MultiplePreferenceScreensExample> scenario = ActivityScenario.launch(MultiplePreferenceScreensExample.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final PreferenceParser preferenceParser = new PreferenceParser(new PreferenceFragmentHelper(fragmentActivity, FRAGMENT_CONTAINER_VIEW));
+                final PreferenceParser preferenceParser = new PreferenceParser(new PreferenceFragments(fragmentActivity, FRAGMENT_CONTAINER_VIEW));
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
 
                 // When

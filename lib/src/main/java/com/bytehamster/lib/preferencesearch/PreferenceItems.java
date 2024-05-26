@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.bytehamster.lib.preferencesearch.common.Utils;
+import com.bytehamster.lib.preferencesearch.common.Lists;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -44,7 +44,7 @@ class PreferenceItems {
                         .stream()
                         .map(preferenceScreen -> parsePreferenceScreen(preferenceScreen, fragmentActivity, containerResId))
                         .collect(Collectors.toList());
-        return Utils.concat(preferenceItems);
+        return Lists.concat(preferenceItems);
     }
 
     private static List<PreferenceItem> parsePreferenceScreen(
@@ -52,7 +52,7 @@ class PreferenceItems {
             final FragmentActivity fragmentActivity,
             @IdRes final int containerResId) {
         final List<Preference> preferences =
-                new PreferenceParser(new PreferenceFragmentHelper(fragmentActivity, containerResId))
+                new PreferenceParser(new PreferenceFragments(fragmentActivity, containerResId))
                         .parsePreferenceScreen(preferenceScreen);
         final List<Preference> searchablePreferences =
                 PreferenceItemFilter.getSearchablePreferences(preferences);

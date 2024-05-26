@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.bytehamster.lib.preferencesearch.common.BundleHelper;
+import com.bytehamster.lib.preferencesearch.common.Bundles;
 
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCom
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.keyOfPreference2Highlight = new BundleHelper(getArguments()).getString(KEY_OF_PREFERENCE_2_HIGHLIGHT);
+        this.keyOfPreference2Highlight = new Bundles(getArguments()).getString(KEY_OF_PREFERENCE_2_HIGHLIGHT);
     }
 
     @Override

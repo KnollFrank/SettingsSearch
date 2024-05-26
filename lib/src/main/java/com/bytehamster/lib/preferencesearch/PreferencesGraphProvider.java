@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 
 public class PreferencesGraphProvider {
 
-    private final PreferenceFragmentHelper preferenceFragmentHelper;
+    private final PreferenceFragments preferenceFragments;
 
-    public PreferencesGraphProvider(final PreferenceFragmentHelper preferenceFragmentHelper) {
-        this.preferenceFragmentHelper = preferenceFragmentHelper;
+    public PreferencesGraphProvider(final PreferenceFragments preferenceFragments) {
+        this.preferenceFragments = preferenceFragments;
     }
 
     public Graph<PreferenceScreenWithHost, DefaultEdge> getPreferencesGraph(final PreferenceFragmentCompat root) {
         final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
-        this.preferenceFragmentHelper.initialize(root);
+        this.preferenceFragments.initialize(root);
         buildPreferencesGraph(preferencesGraph, PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(root));
         return preferencesGraph;
     }
@@ -46,7 +46,7 @@ public class PreferencesGraphProvider {
                 .stream()
                 .map(Preference::getFragment)
                 .filter(Objects::nonNull)
-                .map(this.preferenceFragmentHelper::getPreferenceScreenOfFragment)
+                .map(this.preferenceFragments::getPreferenceScreenOfFragment)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());

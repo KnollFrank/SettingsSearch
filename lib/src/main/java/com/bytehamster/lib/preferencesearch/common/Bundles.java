@@ -6,11 +6,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class BundleHelper {
+public class Bundles {
 
     private final Bundle bundle;
 
-    public BundleHelper(final Bundle bundle) {
+    public Bundles(final Bundle bundle) {
         this.bundle = bundle;
     }
 

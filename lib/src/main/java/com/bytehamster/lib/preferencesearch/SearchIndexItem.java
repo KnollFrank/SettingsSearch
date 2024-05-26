@@ -11,7 +11,7 @@ import com.bytehamster.lib.preferencesearch.common.Parcels;
 /**
  * Adds a given R.xml resource to the search index
  */
-public class SearchIndexItem implements Parcelable {
+class SearchIndexItem implements Parcelable {
 
     private String breadcrumb = "";
     private final Class<? extends PreferenceFragmentCompat> resId;

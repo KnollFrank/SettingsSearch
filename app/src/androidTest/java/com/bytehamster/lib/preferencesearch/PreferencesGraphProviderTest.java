@@ -29,7 +29,7 @@ public class PreferencesGraphProviderTest {
 
     private static void shouldGetPreferencesGraph(final FragmentActivity activity) {
         // Given
-        final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(new PreferenceFragmentHelper(activity, FRAGMENT_CONTAINER_VIEW));
+        final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(new PreferenceFragments(activity, FRAGMENT_CONTAINER_VIEW));
         final PreferenceFragmentCompat root = new PrefsFragmentFirst();
 
         // When

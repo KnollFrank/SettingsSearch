@@ -16,6 +16,7 @@ import android.view.ViewAnimationUtils;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 public class AnimationUtils {
+
     public static void registerCircularRevealAnimation(final Context context, final View view, final RevealAnimationSetting revealSettings) {
         final int startColor = revealSettings.getColorAccent();
         final int endColor = getBackgroundColor(view);

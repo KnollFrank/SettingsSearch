@@ -7,12 +7,12 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-public class PreferenceFragmentHelper {
+public class PreferenceFragments {
 
     private final FragmentActivity fragmentActivity;
     private final int containerResId;
 
-    public PreferenceFragmentHelper(final FragmentActivity fragmentActivity, @IdRes int containerResId) {
+    public PreferenceFragments(final FragmentActivity fragmentActivity, @IdRes int containerResId) {
         this.fragmentActivity = fragmentActivity;
         this.containerResId = containerResId;
     }
