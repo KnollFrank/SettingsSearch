@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class SearchPreferenceActionView extends SearchView {
     protected SearchPreferenceFragment searchFragment;
-    protected SearchConfiguration searchConfiguration = new SearchConfiguration();
+    protected final SearchConfiguration searchConfiguration = new SearchConfiguration();
     protected AppCompatActivity activity;
 
     public SearchPreferenceActionView(Context context) {

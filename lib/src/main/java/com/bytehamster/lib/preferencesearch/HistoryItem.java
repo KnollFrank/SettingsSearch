@@ -2,9 +2,9 @@ package com.bytehamster.lib.preferencesearch;
 
 class HistoryItem extends ListItem {
     static final int TYPE = 1;
-    private String term;
+    private final String term;
 
-    HistoryItem(String term) {
+    HistoryItem(final String term) {
         super();
         this.term = term;
     }

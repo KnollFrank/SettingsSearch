@@ -4,7 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class RevealAnimationSetting implements Parcelable {
-    private int centerX, centerY, width, height, colorAccent;
+
+    private final int centerX;
+    private final int centerY;
+    private final int width;
+    private final int height;
+    private final int colorAccent;
 
     public RevealAnimationSetting(int centerX, int centerY, int width, int height, int colorAccent) {
         this.centerX = centerX;
@@ -22,7 +27,7 @@ public class RevealAnimationSetting implements Parcelable {
         colorAccent = in.readInt();
     }
 
-    public static final Creator<RevealAnimationSetting> CREATOR = new Creator<RevealAnimationSetting>() {
+    public static final Creator<RevealAnimationSetting> CREATOR = new Creator<>() {
         @Override
         public RevealAnimationSetting createFromParcel(Parcel in) {
             return new RevealAnimationSetting(in);

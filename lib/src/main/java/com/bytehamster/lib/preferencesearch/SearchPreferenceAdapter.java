@@ -100,7 +100,7 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        View root;
+        final View root;
 
         ViewHolder(View v) {
             super(v);
@@ -109,7 +109,7 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
     }
 
     static class HistoryViewHolder extends ViewHolder {
-        TextView term;
+        final TextView term;
 
         HistoryViewHolder(View v) {
             super(v);
@@ -118,9 +118,9 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
     }
 
     static class PreferenceViewHolder extends ViewHolder {
-        TextView title;
-        TextView summary;
-        TextView breadcrumbs;
+        final TextView title;
+        final TextView summary;
+        final TextView breadcrumbs;
 
         PreferenceViewHolder(View v) {
             super(v);

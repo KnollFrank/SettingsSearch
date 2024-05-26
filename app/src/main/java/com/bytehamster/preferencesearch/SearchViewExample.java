@@ -78,14 +78,11 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         });
 
         if (savedInstanceSearchEnabled) {
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    // If we do not use a handler here, it will not be possible
-                    // to use the menuItem after dismissing the searchView
-                    searchPreferenceMenuItem.expandActionView();
-                    searchPreferenceActionView.setQuery(savedInstanceSearchQuery, false);
-                }
+            new Handler().post(() -> {
+                // If we do not use a handler here, it will not be possible
+                // to use the menuItem after dismissing the searchView
+                searchPreferenceMenuItem.expandActionView();
+                searchPreferenceActionView.setQuery(savedInstanceSearchQuery, false);
             });
         }
         return true;

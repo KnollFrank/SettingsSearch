@@ -72,7 +72,7 @@ public class SearchIndexItem implements Parcelable {
         return searchConfiguration;
     }
 
-    public static final Creator<SearchIndexItem> CREATOR = new Creator<SearchIndexItem>() {
+    public static final Creator<SearchIndexItem> CREATOR = new Creator<>() {
         @Override
         public SearchIndexItem createFromParcel(Parcel in) {
             return new SearchIndexItem(in);

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-class PreferenceItem extends ListItem implements Parcelable {
+public class PreferenceItem extends ListItem implements Parcelable {
 
     static final int TYPE = 2;
     private static final FuzzyScore fuzzyScore = new FuzzyScore(Locale.getDefault());
@@ -28,7 +28,7 @@ class PreferenceItem extends ListItem implements Parcelable {
     public final Class<? extends PreferenceFragmentCompat> resId;
 
     public String entries;
-    public List<String> keyBreadcrumbs = new ArrayList<>();
+    public final List<String> keyBreadcrumbs = new ArrayList<>();
     private float lastScore = 0;
     private String lastKeyword = null;
 
@@ -65,7 +65,7 @@ class PreferenceItem extends ListItem implements Parcelable {
         Parcels.writeClass(parcel, resId);
     }
 
-    public static final Creator<PreferenceItem> CREATOR = new Creator<PreferenceItem>() {
+    public static final Creator<PreferenceItem> CREATOR = new Creator<>() {
 
         @Override
         public PreferenceItem createFromParcel(final Parcel source) {

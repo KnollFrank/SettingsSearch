@@ -11,7 +11,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
 public class SearchPreference extends Preference implements View.OnClickListener {
-    private SearchConfiguration searchConfiguration = new SearchConfiguration();
+    private final SearchConfiguration searchConfiguration = new SearchConfiguration();
     private String hint = null;
 
     @SuppressWarnings("unused")

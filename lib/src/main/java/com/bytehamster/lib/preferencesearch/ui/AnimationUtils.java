@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 public class AnimationUtils {
@@ -47,12 +48,7 @@ public class AnimationUtils {
         ValueAnimator anim = new ValueAnimator();
         anim.setIntValues(startColor, endColor);
         anim.setEvaluator(new ArgbEvaluator());
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                view.setBackgroundColor((Integer) valueAnimator.getAnimatedValue());
-            }
-        });
+        anim.addUpdateListener(valueAnimator -> view.setBackgroundColor((Integer) valueAnimator.getAnimatedValue()));
         anim.setDuration(duration);
         anim.start();
     }
