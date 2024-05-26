@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableSet;
  * This file demonstrates how to use the library without actually displaying a PreferenceFragment
  */
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
+
     private static final String KEY_SEARCH_QUERY = "search_query";
     private static final String KEY_SEARCH_ENABLED = "search_enabled";
     private SearchPreferenceActionView searchPreferenceActionView;
