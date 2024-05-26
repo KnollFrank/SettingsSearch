@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bytehamster.lib.preferencesearch.Navigation;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import com.bytehamster.preferencesearch.R;

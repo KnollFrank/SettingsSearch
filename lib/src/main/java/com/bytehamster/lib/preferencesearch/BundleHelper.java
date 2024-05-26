@@ -1,4 +1,4 @@
-package com.bytehamster.preferencesearch.multiplePreferenceScreens;
+package com.bytehamster.lib.preferencesearch;
 
 import android.os.Bundle;
 

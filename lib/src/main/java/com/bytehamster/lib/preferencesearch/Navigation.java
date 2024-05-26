@@ -1,4 +1,4 @@
-package com.bytehamster.preferencesearch.multiplePreferenceScreens;
+package com.bytehamster.lib.preferencesearch;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-class Navigation {
+public class Navigation {
 
     public static final String KEY_OF_PREFERENCE_2_HIGHLIGHT = "keyOfPreference2Highlight";
 

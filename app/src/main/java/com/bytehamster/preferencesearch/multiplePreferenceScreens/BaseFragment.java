@@ -1,6 +1,6 @@
 package com.bytehamster.preferencesearch.multiplePreferenceScreens;
 
-import static com.bytehamster.preferencesearch.multiplePreferenceScreens.Navigation.KEY_OF_PREFERENCE_2_HIGHLIGHT;
+import static com.bytehamster.lib.preferencesearch.Navigation.KEY_OF_PREFERENCE_2_HIGHLIGHT;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.bytehamster.lib.preferencesearch.BundleHelper;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 
 import java.util.Optional;
