@@ -217,7 +217,7 @@ public class SearchConfiguration {
                 preferenceItem.entries = Arrays.toString(listPreference.getEntries());
             }
         }
-        // FK-TODO: keine Seiteneffekte, bitte!
+        // FK-TODO: keine Seiteneffekte, please!
         preferencesToIndex.add(preferenceItem);
         return preferenceItem;
     }
