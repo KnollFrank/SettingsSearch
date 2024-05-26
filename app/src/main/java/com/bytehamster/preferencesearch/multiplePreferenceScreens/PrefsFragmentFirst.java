@@ -7,7 +7,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.bytehamster.lib.preferencesearch.BaseFragment;
+import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.PreferenceFragmentHelper;
 import com.bytehamster.lib.preferencesearch.PreferencesGraphProvider;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
@@ -17,7 +17,7 @@ import com.bytehamster.preferencesearch.R;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PrefsFragmentFirst extends BaseFragment {
+public class PrefsFragmentFirst extends BaseSearchPreferenceFragment {
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {

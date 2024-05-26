@@ -11,7 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-public abstract class BaseFragment extends PreferenceFragmentCompat {
+public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCompat {
 
     private Optional<String> keyOfPreference2Highlight;
 
