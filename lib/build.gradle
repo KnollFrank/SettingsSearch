@@ -41,7 +41,6 @@ dependencies {
     implementation 'org.jgrapht:jgrapht-core:1.5.2'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-io
     implementation 'org.jgrapht:jgrapht-io:1.5.2'
-    // https://mvnrepository.com/artifact/io.vavr/vavr
 }
 
 publishing {
