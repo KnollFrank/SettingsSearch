@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.bytehamster.lib.preferencesearch.common.BundleHelper;
+
 import java.util.Optional;
 
 public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCompat {

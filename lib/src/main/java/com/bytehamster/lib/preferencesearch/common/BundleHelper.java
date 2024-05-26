@@ -1,4 +1,4 @@
-package com.bytehamster.lib.preferencesearch;
+package com.bytehamster.lib.preferencesearch.common;
 
 import android.os.Bundle;
 
