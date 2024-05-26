@@ -42,6 +42,7 @@ public class PreferenceParser {
         return this
                 .preferenceFragmentHelper
                 .getPreferenceScreenOfFragment(resId.getName())
+                .get()
                 .preferenceScreen;
     }
 }

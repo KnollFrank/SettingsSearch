@@ -10,6 +10,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PreferencesGraphProvider {
@@ -46,6 +47,8 @@ public class PreferencesGraphProvider {
                 .map(Preference::getFragment)
                 .filter(Objects::nonNull)
                 .map(this.preferenceFragmentHelper::getPreferenceScreenOfFragment)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 }

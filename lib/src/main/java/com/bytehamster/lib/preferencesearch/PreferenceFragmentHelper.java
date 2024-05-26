@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Optional;
+
 public class PreferenceFragmentHelper {
 
     private final FragmentActivity fragmentActivity;
@@ -15,14 +17,17 @@ public class PreferenceFragmentHelper {
         this.containerResId = containerResId;
     }
 
-    public PreferenceScreenWithHost getPreferenceScreenOfFragment(final String fragment) {
-        final PreferenceFragmentCompat preferenceFragment =
-                (PreferenceFragmentCompat) Fragment.instantiate(
-                        this.fragmentActivity,
-                        fragment,
-                        null);
+    public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment) {
+        return getPreferenceScreenOfFragment(Fragment.instantiate(this.fragmentActivity, fragment, null));
+    }
+
+    private Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final Fragment fragment) {
+        if (!(fragment instanceof PreferenceFragmentCompat)) {
+            return Optional.empty();
+        }
+        final PreferenceFragmentCompat preferenceFragment = (PreferenceFragmentCompat) fragment;
         initialize(preferenceFragment);
-        return PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragment);
+        return Optional.of(PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragment));
     }
 
     public void initialize(final Fragment fragment) {
