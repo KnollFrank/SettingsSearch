@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
