@@ -38,14 +38,14 @@ public class PreferenceSearcherTest {
     }
 
     @Test
-    public void shouldSearch() {
+    public void shouldSearchAndFind() {
         final String keyword = "fourth";
         testSearch(PrefsFragment.class, keyword, hasItem(containsString(keyword)));
     }
 
     @Test
-    public void shouldNotFind() {
-        final String keyword = "third";
+    public void shouldSearchAndNotFind() {
+        final String keyword = "non_existing_keyword";
         testSearch(PrefsFragment.class, keyword, not(hasItem(containsString(keyword))));
     }
 
