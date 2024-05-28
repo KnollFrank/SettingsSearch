@@ -15,7 +15,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
-import com.bytehamster.preferencesearch.multiplePreferenceScreens.TestActivity;
+import com.bytehamster.preferencesearch.test.TestActivity;
 
 import org.hamcrest.Matcher;
 import org.junit.AfterClass;

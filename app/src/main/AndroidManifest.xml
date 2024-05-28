@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".multiplePreferenceScreens.TestActivity"
+            android:name=".test.TestActivity"
             android:exported="true"
             android:label="TestActivity"
             android:theme="@style/AppThemeDark">
