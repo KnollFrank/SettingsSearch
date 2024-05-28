@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.is;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
@@ -21,18 +20,20 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.junit.Test;
 
-public class PreferencesGraphProviderTest {
+public class PreferencesGraphProvider1Test {
 
     @Test
     public void shouldGetPreferencesGraph() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(PreferencesGraphProviderTest::shouldGetPreferencesGraph);
+            scenario.onActivity(PreferencesGraphProvider1Test::shouldGetPreferencesGraph);
         }
     }
 
     private static void shouldGetPreferencesGraph(final FragmentActivity activity) {
         // Given
-        final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(new PreferenceFragments(activity, FRAGMENT_CONTAINER_VIEW));
+        final PreferencesGraphProvider preferencesGraphProvider =
+                new PreferencesGraphProvider(
+                        new PreferenceFragments(activity, FRAGMENT_CONTAINER_VIEW));
         final PreferenceFragmentCompat root = new Fragment1ConnectedToFragment2AndFragment4();
 
         // When
@@ -59,8 +60,7 @@ public class PreferencesGraphProviderTest {
                     "first screen",
                     ImmutableList.of(
                             Fragment2ConnectedToFragment3.class,
-                            Fragment4.class,
-                            NonPreferenceFragment.class));
+                            Fragment4.class));
         }
     }
 
@@ -95,9 +95,6 @@ public class PreferencesGraphProviderTest {
                     "fourth screen",
                     ImmutableList.of());
         }
-    }
-
-    public static class NonPreferenceFragment extends Fragment {
     }
 
     private static Graph<PreferenceScreenWithHost, DefaultEdge> getPreferencesGraphExpected(
