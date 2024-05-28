@@ -27,12 +27,12 @@ public class PrefsFragmentFirst extends BaseSearchPreferenceFragment {
 
     private void configureSearchPreference(final SearchPreference searchPreference) {
         final SearchConfiguration config = searchPreference.getSearchConfiguration();
-        config.setActivity((AppCompatActivity) getActivity());
+        config.setActivity((AppCompatActivity) requireActivity());
         config.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
         config.setPreferenceFragmentsSupplier(() -> getPreferenceFragments(new PrefsFragmentFirst()));
         config.setBreadcrumbsEnabled(true);
         config.setHistoryEnabled(true);
-        config.setFuzzySearchEnabled(true);
+        config.setFuzzySearchEnabled(false);
     }
 
     private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root) {

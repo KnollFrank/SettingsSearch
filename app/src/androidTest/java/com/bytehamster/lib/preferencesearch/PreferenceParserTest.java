@@ -1,6 +1,5 @@
 package com.bytehamster.lib.preferencesearch;
 
-import static com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample.FRAGMENT_CONTAINER_VIEW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
@@ -12,7 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
 import com.bytehamster.preferencesearch.R;
-import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
+import com.bytehamster.preferencesearch.multiplePreferenceScreens.TestActivity;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,11 +33,10 @@ public class PreferenceParserTest {
 
     @Test
     public void shouldParseXmlResource() {
-        // FK-TODO: do not use MultiplePreferenceScreensExample as an activity, create a new activity within the androidTest folder.
-        try (final ActivityScenario<MultiplePreferenceScreensExample> scenario = ActivityScenario.launch(MultiplePreferenceScreensExample.class)) {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final PreferenceParser preferenceParser = new PreferenceParser(new PreferenceFragments(fragmentActivity, FRAGMENT_CONTAINER_VIEW));
+                final PreferenceParser preferenceParser = new PreferenceParser(new PreferenceFragments(fragmentActivity, TestActivity.FRAGMENT_CONTAINER_VIEW));
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
 
                 // When
