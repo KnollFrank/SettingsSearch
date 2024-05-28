@@ -1,15 +1,20 @@
 package com.bytehamster.lib.preferencesearch;
 
+import static com.bytehamster.lib.preferencesearch.PreferencesGraphProviderTestHelper.configureConnectedPreferencesOfFragment;
+import static com.bytehamster.lib.preferencesearch.PreferencesGraphProviderTestHelper.getPreferenceScreenByName;
 import static com.bytehamster.preferencesearch.test.TestActivity.FRAGMENT_CONTAINER_VIEW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
-import com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFirst;
 import com.bytehamster.preferencesearch.test.TestActivity;
+import com.google.common.collect.ImmutableList;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -20,7 +25,6 @@ public class PreferencesGraphProviderTest {
 
     @Test
     public void shouldGetPreferencesGraph() {
-        // FK-TODO: use Preferences from test code, do NOT use Preferences from production code (PrefsFragmentFirst).
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(PreferencesGraphProviderTest::shouldGetPreferencesGraph);
         }
@@ -29,7 +33,7 @@ public class PreferencesGraphProviderTest {
     private static void shouldGetPreferencesGraph(final FragmentActivity activity) {
         // Given
         final PreferencesGraphProvider preferencesGraphProvider = new PreferencesGraphProvider(new PreferenceFragments(activity, FRAGMENT_CONTAINER_VIEW));
-        final PreferenceFragmentCompat root = new PrefsFragmentFirst();
+        final PreferenceFragmentCompat root = new Fragment1ConnectedToFragment2AndFragment4();
 
         // When
         final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph = preferencesGraphProvider.getPreferencesGraph(root);
@@ -46,14 +50,54 @@ public class PreferencesGraphProviderTest {
                 is(true));
     }
 
-    private static PreferenceScreenWithHost getPreferenceScreenByName(final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph,
-                                                                      final String name) {
-        return preferencesGraph
-                .vertexSet()
-                .stream()
-                .filter(preferenceScreen -> name.equals(preferenceScreen.preferenceScreen.toString()))
-                .findFirst()
-                .get();
+    public static class Fragment1ConnectedToFragment2AndFragment4 extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            configureConnectedPreferencesOfFragment(
+                    this,
+                    "first screen",
+                    ImmutableList.of(
+                            Fragment2ConnectedToFragment3.class,
+                            Fragment4.class,
+                            NonPreferenceFragment.class));
+        }
+    }
+
+    public static class Fragment2ConnectedToFragment3 extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            configureConnectedPreferencesOfFragment(
+                    this,
+                    "second screen",
+                    ImmutableList.of(Fragment3.class));
+        }
+    }
+
+    public static class Fragment3 extends BaseSearchPreferenceFragment {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            configureConnectedPreferencesOfFragment(
+                    this,
+                    "third screen",
+                    ImmutableList.of());
+        }
+    }
+
+    public static class Fragment4 extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            configureConnectedPreferencesOfFragment(
+                    this,
+                    "fourth screen",
+                    ImmutableList.of());
+        }
+    }
+
+    public static class NonPreferenceFragment extends Fragment {
     }
 
     private static Graph<PreferenceScreenWithHost, DefaultEdge> getPreferencesGraphExpected(
