@@ -5,12 +5,16 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.os.Looper;
 
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
-import com.bytehamster.lib.preferencesearch.PreferenceParserTest.PrefsFragment;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.TestActivity;
 
 import org.hamcrest.Matcher;
@@ -49,7 +53,6 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                // FK-TODO: do not use "foreign" class PrefsFragment
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
                 final List<Preference> preferences =
                         new PreferenceParser(new PreferenceFragments(fragmentActivity, TestActivity.FRAGMENT_CONTAINER_VIEW))
@@ -68,6 +71,23 @@ public class PreferenceSearcherTest {
                                 .collect(Collectors.toList());
                 assertThat(titles, titlesMatcher);
             });
+        }
+    }
+
+    public static class PrefsFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            final Context context = getPreferenceManager().getContext();
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+
+            final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(context);
+            checkBoxPreference.setKey("fourthfile");
+            checkBoxPreference.setSummary("This checkbox is a preference coming from a fourth file");
+            checkBoxPreference.setTitle("Checkbox fourth file");
+
+            screen.addPreference(checkBoxPreference);
+            setPreferenceScreen(screen);
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bytehamster.preferencesearch.R;
 
+// FK-TODO: move to package com.bytehamster.preferencesearch.test
 public class TestActivity extends AppCompatActivity {
 
     @IdRes
