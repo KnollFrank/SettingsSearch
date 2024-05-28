@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.is;
 
 import android.os.Parcel;
 
-import com.bytehamster.lib.preferencesearch.PreferenceParserTest.PrefsFragment;
+import com.bytehamster.lib.preferencesearch.PreferenceSearcherTest.PrefsFragment;
 
 import org.junit.Test;
 

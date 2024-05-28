@@ -3,14 +3,12 @@ package com.bytehamster.lib.preferencesearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
-import android.os.Bundle;
 import android.os.Looper;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
-import com.bytehamster.preferencesearch.R;
+import com.bytehamster.lib.preferencesearch.PreferenceSearcherTest.PrefsFragment;
 import com.bytehamster.preferencesearch.test.TestActivity;
 
 import org.junit.AfterClass;
@@ -45,14 +43,6 @@ public class PreferenceParserTest {
                 // Then
                 assertThat(preferences, hasSize(1));
             });
-        }
-    }
-
-    public static class PrefsFragment extends PreferenceFragmentCompat {
-
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            addPreferencesFromResource(R.xml.preferences4);
         }
     }
 }
