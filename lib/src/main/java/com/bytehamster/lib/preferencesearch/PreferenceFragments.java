@@ -21,15 +21,6 @@ public class PreferenceFragments {
         return getPreferenceScreenOfFragment(Fragment.instantiate(this.fragmentActivity, fragment, null));
     }
 
-    private Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final Fragment fragment) {
-        if (!(fragment instanceof PreferenceFragmentCompat)) {
-            return Optional.empty();
-        }
-        final PreferenceFragmentCompat preferenceFragment = (PreferenceFragmentCompat) fragment;
-        initialize(preferenceFragment);
-        return Optional.of(PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragment));
-    }
-
     public void initialize(final Fragment fragment) {
         this
                 .fragmentActivity
@@ -37,5 +28,14 @@ public class PreferenceFragments {
                 .beginTransaction()
                 .replace(this.containerResId, fragment)
                 .commitNow();
+    }
+
+    private Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final Fragment fragment) {
+        if (!(fragment instanceof PreferenceFragmentCompat)) {
+            return Optional.empty();
+        }
+        final PreferenceFragmentCompat preferenceFragment = (PreferenceFragmentCompat) fragment;
+        initialize(preferenceFragment);
+        return Optional.of(PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragment));
     }
 }

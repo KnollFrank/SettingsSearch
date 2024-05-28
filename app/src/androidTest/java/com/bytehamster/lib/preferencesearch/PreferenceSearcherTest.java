@@ -40,38 +40,13 @@ public class PreferenceSearcherTest {
     @Test
     public void shouldSearch() {
         final String keyword = "fourth";
-        testSearch(keyword, hasItem(containsString(keyword)));
+        testSearch(PrefsFragment.class, keyword, hasItem(containsString(keyword)));
     }
 
     @Test
     public void shouldNotFind() {
         final String keyword = "third";
-        testSearch(keyword, not(hasItem(containsString(keyword))));
-    }
-
-    private static void testSearch(final String keyword, final Matcher<Iterable<? super String>> titlesMatcher) {
-        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(fragmentActivity -> {
-                // Given
-                final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
-                final List<Preference> preferences =
-                        new PreferenceParser(new PreferenceFragments(fragmentActivity, TestActivity.FRAGMENT_CONTAINER_VIEW))
-                                .parsePreferenceScreen(preferenceScreen);
-                final PreferenceSearcher preferenceSearcher =
-                        new PreferenceSearcher(PreferenceItems.getPreferenceItems(preferences, preferenceScreen));
-
-                // When
-                final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword, false);
-
-                // Then
-                final List<String> titles =
-                        preferenceItems
-                                .stream()
-                                .map(result -> result.title)
-                                .collect(Collectors.toList());
-                assertThat(titles, titlesMatcher);
-            });
-        }
+        testSearch(PrefsFragment.class, keyword, not(hasItem(containsString(keyword))));
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {
@@ -89,5 +64,46 @@ public class PreferenceSearcherTest {
             screen.addPreference(checkBoxPreference);
             setPreferenceScreen(screen);
         }
+    }
+
+    private static void testSearch(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
+                                   final String keyword,
+                                   final Matcher<Iterable<? super String>> titlesMatcher) {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
+            scenario.onActivity(fragmentActivity -> {
+                // Given
+                final PreferenceSearcher preferenceSearcher = createPreferenceSearcher(preferenceScreen, fragmentActivity);
+
+                // When
+                final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword, false);
+
+                // Then
+                assertThat(getTitles(preferenceItems), titlesMatcher);
+            });
+        }
+    }
+
+    private static PreferenceSearcher createPreferenceSearcher(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
+                                                               final TestActivity fragmentActivity) {
+        return new PreferenceSearcher(
+                PreferenceItems.getPreferenceItems(
+                        getPreferences(preferenceScreen, fragmentActivity),
+                        preferenceScreen));
+    }
+
+    private static List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
+                                                   final TestActivity fragmentActivity) {
+        return new PreferenceParser(
+                new PreferenceFragments(
+                        fragmentActivity,
+                        TestActivity.FRAGMENT_CONTAINER_VIEW))
+                .parsePreferenceScreen(preferenceScreen);
+    }
+
+    private static List<String> getTitles(final List<PreferenceItem> preferenceItems) {
+        return preferenceItems
+                .stream()
+                .map(result -> result.title)
+                .collect(Collectors.toList());
     }
 }
