@@ -1,6 +1,6 @@
 package com.bytehamster.lib.preferencesearch;
 
-import static com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample.FRAGMENT_CONTAINER_VIEW;
+import static com.bytehamster.preferencesearch.test.TestActivity.FRAGMENT_CONTAINER_VIEW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -8,8 +8,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
-import com.bytehamster.preferencesearch.multiplePreferenceScreens.MultiplePreferenceScreensExample;
 import com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFirst;
+import com.bytehamster.preferencesearch.test.TestActivity;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -20,9 +20,8 @@ public class PreferencesGraphProviderTest {
 
     @Test
     public void shouldGetPreferencesGraph() {
-        // FK-TODO: do not use MultiplePreferenceScreensExample as an activity, create a new activity within the androidTest folder.
-        // FK-TODO: use Preferences contained in androidTest/res folder, do NOT use Preferences from production code.
-        try (final ActivityScenario<MultiplePreferenceScreensExample> scenario = ActivityScenario.launch(MultiplePreferenceScreensExample.class)) {
+        // FK-TODO: use Preferences from test code, do NOT use Preferences from production code (PrefsFragmentFirst).
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(PreferencesGraphProviderTest::shouldGetPreferencesGraph);
         }
     }
