@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
+// FK-TODO: Das Suchfeld für die Preferences soll selbst keine Preference sein, die weggescrollt werden kann, sondern soll immer am oberen Bildschirmrand sichtbar bleiben wie in den Systemeinstellungen.
 public class SearchPreference extends Preference implements View.OnClickListener {
     private final SearchConfiguration searchConfiguration = new SearchConfiguration();
     private String hint = null;
