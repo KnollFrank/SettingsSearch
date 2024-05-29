@@ -3,10 +3,7 @@ package com.bytehamster.lib.preferencesearch;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
+import com.google.common.collect.ImmutableSet;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,22 +20,21 @@ public class PreferenceScreensProvider {
     }
 
     public Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceFragmentCompat root) {
-        final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
         this.preferenceFragments.initialize(root);
-        buildPreferencesGraph(preferencesGraph, PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(root));
-        return preferencesGraph.vertexSet();
+        return getPreferenceScreens(PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(root));
     }
 
-    private void buildPreferencesGraph(final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph,
-                                       final PreferenceScreenWithHost root) {
-        preferencesGraph.addVertex(root);
-        this
-                .getChildren(root)
-                .forEach(
-                        child -> {
-                            Graphs.addEdgeWithVertices(preferencesGraph, root, child);
-                            buildPreferencesGraph(preferencesGraph, child);
-                        });
+    private Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceScreenWithHost root) {
+        return ImmutableSet
+                .<PreferenceScreenWithHost>builder()
+                .add(root)
+                .addAll(
+                        this
+                                .getChildren(root)
+                                .stream()
+                                .flatMap(child -> getPreferenceScreens(child).stream())
+                                .collect(Collectors.toSet()))
+                .build();
     }
 
     private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreen) {
