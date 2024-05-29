@@ -31,11 +31,13 @@ public class PreferenceFragments {
     }
 
     private Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final Fragment fragment) {
-        if (!(fragment instanceof PreferenceFragmentCompat)) {
-            return Optional.empty();
-        }
-        final PreferenceFragmentCompat preferenceFragment = (PreferenceFragmentCompat) fragment;
+        return fragment instanceof PreferenceFragmentCompat ?
+                Optional.of(getPreferenceScreenOfFragment((PreferenceFragmentCompat) fragment)) :
+                Optional.empty();
+    }
+
+    private PreferenceScreenWithHost getPreferenceScreenOfFragment(final PreferenceFragmentCompat preferenceFragment) {
         initialize(preferenceFragment);
-        return Optional.of(PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragment));
+        return PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragment);
     }
 }
