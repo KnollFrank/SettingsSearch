@@ -12,7 +12,7 @@ public class PreferenceFragments {
     private final FragmentActivity fragmentActivity;
     private final int containerResId;
 
-    public PreferenceFragments(final FragmentActivity fragmentActivity, @IdRes int containerResId) {
+    public PreferenceFragments(final FragmentActivity fragmentActivity, @IdRes final int containerResId) {
         this.fragmentActivity = fragmentActivity;
         this.containerResId = containerResId;
     }
