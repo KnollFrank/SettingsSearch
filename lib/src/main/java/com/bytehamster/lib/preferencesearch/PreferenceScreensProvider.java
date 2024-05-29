@@ -3,6 +3,7 @@ package com.bytehamster.lib.preferencesearch;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.bytehamster.lib.preferencesearch.common.Sets;
 import com.google.common.collect.ImmutableSet;
 
 import java.util.List;
@@ -25,15 +26,17 @@ public class PreferenceScreensProvider {
     }
 
     private Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceScreenWithHost root) {
-        return ImmutableSet
-                .<PreferenceScreenWithHost>builder()
-                .add(root)
-                .addAll(
+        final Set<PreferenceScreenWithHost> preferenceScreensOfChildren =
+                Sets.union(
                         this
                                 .getChildren(root)
                                 .stream()
-                                .flatMap(child -> getPreferenceScreens(child).stream())
-                                .collect(Collectors.toSet()))
+                                .map(this::getPreferenceScreens)
+                                .collect(Collectors.toSet()));
+        return ImmutableSet
+                .<PreferenceScreenWithHost>builder()
+                .add(root)
+                .addAll(preferenceScreensOfChildren)
                 .build();
     }
 
