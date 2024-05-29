@@ -1,6 +1,8 @@
 package com.bytehamster.preferencesearch;
 
 
+import static com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFirst.getPreferenceFragments;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -8,20 +10,14 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.Navigation;
-import com.bytehamster.lib.preferencesearch.PreferenceFragments;
-import com.bytehamster.lib.preferencesearch.PreferenceScreensProvider;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
@@ -54,7 +50,11 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         searchPreferenceMenuItem = menu.findItem(R.id.search);
         searchPreferenceActionView = (SearchPreferenceActionView) searchPreferenceMenuItem.getActionView();
         final SearchConfiguration searchConfiguration = searchPreferenceActionView.getSearchConfiguration();
-        searchConfiguration.setPreferenceFragmentsSupplier(() -> getPreferenceFragments(new PrefsFragment()));
+        searchConfiguration.setPreferenceFragmentsSupplier(() ->
+                getPreferenceFragments(
+                        new PrefsFragment(),
+                        this,
+                        android.R.id.content));
         searchConfiguration.setFuzzySearchEnabled(false);
         searchConfiguration.useAnimation(
                 findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
@@ -126,13 +126,5 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
             SearchPreference searchPreference = findPreference("searchPreference");
             searchPreference.setVisible(false);
         }
-    }
-
-    private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root) {
-        return new PreferenceScreensProvider(new PreferenceFragments(this, android.R.id.content))
-                .getPreferenceScreens(root)
-                .stream()
-                .map(preferenceScreenWithHost -> preferenceScreenWithHost.host)
-                .collect(Collectors.toSet());
     }
 }

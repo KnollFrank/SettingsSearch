@@ -4,7 +4,9 @@ import static com.bytehamster.preferencesearch.multiplePreferenceScreens.Multipl
 
 import android.os.Bundle;
 
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
@@ -29,14 +31,18 @@ public class PrefsFragmentFirst extends BaseSearchPreferenceFragment {
         final SearchConfiguration config = searchPreference.getSearchConfiguration();
         config.setActivity((AppCompatActivity) requireActivity());
         config.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
-        config.setPreferenceFragmentsSupplier(() -> getPreferenceFragments(new PrefsFragmentFirst()));
+        config.setPreferenceFragmentsSupplier(() ->
+                getPreferenceFragments(
+                        new PrefsFragmentFirst(),
+                        getActivity(),
+                        FRAGMENT_CONTAINER_VIEW));
         config.setBreadcrumbsEnabled(true);
         config.setHistoryEnabled(true);
         config.setFuzzySearchEnabled(false);
     }
 
-    private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root) {
-        return new PreferenceScreensProvider(new PreferenceFragments(getActivity(), FRAGMENT_CONTAINER_VIEW))
+    public static Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root, final FragmentActivity fragmentActivity, @IdRes final int containerResId) {
+        return new PreferenceScreensProvider(new PreferenceFragments(fragmentActivity, containerResId))
                 .getPreferenceScreens(root)
                 .stream()
                 .map(preferenceScreenWithHost -> preferenceScreenWithHost.host)
