@@ -19,7 +19,6 @@ public class PreferenceFragments {
         this.containerResId = containerResId;
     }
 
-   // FK-TODO: diese Methode von OsmAnd aus aufrufen.
     public static Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(
             final PreferenceFragmentCompat root,
             final FragmentActivity fragmentActivity,
