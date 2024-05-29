@@ -10,16 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
+import com.bytehamster.lib.preferencesearch.Navigation;
+import com.bytehamster.lib.preferencesearch.PreferenceFragments;
+import com.bytehamster.lib.preferencesearch.PreferenceScreensProvider;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
-import com.google.common.collect.ImmutableSet;
 
-/**
- * This file demonstrates how to use the library without actually displaying a PreferenceFragment
- */
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
     private static final String KEY_SEARCH_QUERY = "search_query";
@@ -28,7 +31,6 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     private MenuItem searchPreferenceMenuItem;
     private String savedInstanceSearchQuery;
     private boolean savedInstanceSearchEnabled;
-    private PrefsFragment prefsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +41,11 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
             savedInstanceSearchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED);
         }
 
-        prefsFragment = new PrefsFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(android.R.id.content, prefsFragment)
-                .commit();
+        Navigation.show(
+                new PrefsFragment(),
+                false,
+                getSupportFragmentManager(),
+                android.R.id.content);
     }
 
     @Override
@@ -52,8 +54,8 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         searchPreferenceMenuItem = menu.findItem(R.id.search);
         searchPreferenceActionView = (SearchPreferenceActionView) searchPreferenceMenuItem.getActionView();
         final SearchConfiguration searchConfiguration = searchPreferenceActionView.getSearchConfiguration();
-        searchConfiguration.setPreferenceFragmentsSupplier(() -> ImmutableSet.of(PrefsFragment.class));
-
+        searchConfiguration.setPreferenceFragmentsSupplier(() -> getPreferenceFragments(new PrefsFragment()));
+        searchConfiguration.setFuzzySearchEnabled(false);
         searchConfiguration.useAnimation(
                 findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
                 -getSupportActionBar().getHeight() / 2,
@@ -92,7 +94,12 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
         searchPreferenceActionView.cancelSearch();
         searchPreferenceMenuItem.collapseActionView();
-        result.highlight(prefsFragment);
+        Navigation.navigatePathAndHighlightPreference(
+                result.getResourceFile().getName(),
+                result.getKey(),
+                true,
+                this,
+                android.R.id.content);
     }
 
     @Override
@@ -110,13 +117,22 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         super.onSaveInstanceState(outState);
     }
 
-    public static class PrefsFragment extends PreferenceFragmentCompat {
+    public static class PrefsFragment extends BaseSearchPreferenceFragment {
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            addPreferencesFromResource(R.xml.preferences);
+            addPreferencesFromResource(R.xml.preferences_multiple_screens);
 
             SearchPreference searchPreference = findPreference("searchPreference");
             searchPreference.setVisible(false);
         }
+    }
+
+    private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root) {
+        return new PreferenceScreensProvider(new PreferenceFragments(this, android.R.id.content))
+                .getPreferenceScreens(root)
+                .stream()
+                .map(preferenceScreenWithHost -> preferenceScreenWithHost.host)
+                .collect(Collectors.toSet());
     }
 }
