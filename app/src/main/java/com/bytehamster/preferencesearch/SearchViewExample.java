@@ -1,7 +1,7 @@
 package com.bytehamster.preferencesearch;
 
 
-import static com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFirst.getPreferenceFragments;
+import static com.bytehamster.lib.preferencesearch.PreferenceFragments.getPreferenceFragments;
 
 import android.os.Bundle;
 import android.os.Handler;
