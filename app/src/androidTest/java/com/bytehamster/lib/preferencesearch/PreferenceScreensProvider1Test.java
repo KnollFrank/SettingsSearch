@@ -1,7 +1,7 @@
 package com.bytehamster.lib.preferencesearch;
 
-import static com.bytehamster.lib.preferencesearch.PreferencesGraphProviderTestHelper.configureConnectedPreferencesOfFragment;
-import static com.bytehamster.lib.preferencesearch.PreferencesGraphProviderTestHelper.getPreferenceScreenByName;
+import static com.bytehamster.lib.preferencesearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
+import static com.bytehamster.lib.preferencesearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
 import static com.bytehamster.preferencesearch.test.TestActivity.FRAGMENT_CONTAINER_VIEW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -14,41 +14,40 @@ import androidx.test.core.app.ActivityScenario;
 
 import com.bytehamster.preferencesearch.test.TestActivity;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
 import org.junit.Test;
 
-public class PreferencesGraphProvider1Test {
+import java.util.Set;
+
+public class PreferenceScreensProvider1Test {
 
     @Test
-    public void shouldGetPreferencesGraph() {
+    public void shouldGetPreferenceScreens() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(PreferencesGraphProvider1Test::shouldGetPreferencesGraph);
+            scenario.onActivity(PreferenceScreensProvider1Test::shouldGetPreferenceScreens);
         }
     }
 
-    private static void shouldGetPreferencesGraph(final FragmentActivity activity) {
+    private static void shouldGetPreferenceScreens(final FragmentActivity activity) {
         // Given
-        final PreferencesGraphProvider preferencesGraphProvider =
-                new PreferencesGraphProvider(
+        final PreferenceScreensProvider preferenceScreensProvider =
+                new PreferenceScreensProvider(
                         new PreferenceFragments(activity, FRAGMENT_CONTAINER_VIEW));
         final PreferenceFragmentCompat root = new Fragment1ConnectedToFragment2AndFragment4();
 
         // When
-        final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph = preferencesGraphProvider.getPreferencesGraph(root);
+        final Set<PreferenceScreenWithHost> preferenceScreens = preferenceScreensProvider.getPreferenceScreens(root);
 
         // Then
         assertThat(
-                GraphHelper.equalsGraphs(
-                        preferencesGraph,
-                        getPreferencesGraphExpected(
-                                getPreferenceScreenByName(preferencesGraph, "first screen"),
-                                getPreferenceScreenByName(preferencesGraph, "second screen"),
-                                getPreferenceScreenByName(preferencesGraph, "third screen"),
-                                getPreferenceScreenByName(preferencesGraph, "fourth screen"))),
-                is(true));
+                preferenceScreens,
+                is(
+                        ImmutableSet.of(
+                                getPreferenceScreenByName(preferenceScreens, "first screen"),
+                                getPreferenceScreenByName(preferenceScreens, "second screen"),
+                                getPreferenceScreenByName(preferenceScreens, "third screen"),
+                                getPreferenceScreenByName(preferenceScreens, "fourth screen"))));
     }
 
     public static class Fragment1ConnectedToFragment2AndFragment4 extends PreferenceFragmentCompat {
@@ -95,24 +94,5 @@ public class PreferencesGraphProvider1Test {
                     "fourth screen",
                     ImmutableList.of());
         }
-    }
-
-    private static Graph<PreferenceScreenWithHost, DefaultEdge> getPreferencesGraphExpected(
-            final PreferenceScreenWithHost screen1,
-            final PreferenceScreenWithHost screen2,
-            final PreferenceScreenWithHost screen3,
-            final PreferenceScreenWithHost screen4) {
-        final Graph<PreferenceScreenWithHost, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
-
-        graph.addVertex(screen1);
-        graph.addVertex(screen2);
-        graph.addVertex(screen3);
-        graph.addVertex(screen4);
-
-        graph.addEdge(screen1, screen2);
-        graph.addEdge(screen1, screen4);
-        graph.addEdge(screen2, screen3);
-
-        return graph;
     }
 }

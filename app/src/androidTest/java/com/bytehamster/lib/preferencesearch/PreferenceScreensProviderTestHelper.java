@@ -7,12 +7,10 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-
 import java.util.List;
+import java.util.Set;
 
-class PreferencesGraphProviderTestHelper {
+class PreferenceScreensProviderTestHelper {
 
     public static void configureConnectedPreferencesOfFragment(
             final PreferenceFragmentCompat fragment,
@@ -28,10 +26,10 @@ class PreferencesGraphProviderTestHelper {
         fragment.setPreferenceScreen(screen);
     }
 
-    public static PreferenceScreenWithHost getPreferenceScreenByName(final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph,
-                                                                     final String name) {
-        return preferencesGraph
-                .vertexSet()
+    public static PreferenceScreenWithHost getPreferenceScreenByName(
+            final Set<PreferenceScreenWithHost> preferenceScreens,
+            final String name) {
+        return preferenceScreens
                 .stream()
                 .filter(preferenceScreen -> name.equals(preferenceScreen.preferenceScreen.toString()))
                 .findFirst()

@@ -11,21 +11,22 @@ import org.jgrapht.graph.DefaultEdge;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-public class PreferencesGraphProvider {
+public class PreferenceScreensProvider {
 
     private final PreferenceFragments preferenceFragments;
 
-    public PreferencesGraphProvider(final PreferenceFragments preferenceFragments) {
+    public PreferenceScreensProvider(final PreferenceFragments preferenceFragments) {
         this.preferenceFragments = preferenceFragments;
     }
 
-    public Graph<PreferenceScreenWithHost, DefaultEdge> getPreferencesGraph(final PreferenceFragmentCompat root) {
+    public Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceFragmentCompat root) {
         final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
         this.preferenceFragments.initialize(root);
         buildPreferencesGraph(preferencesGraph, PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(root));
-        return preferencesGraph;
+        return preferencesGraph.vertexSet();
     }
 
     private void buildPreferencesGraph(final Graph<PreferenceScreenWithHost, DefaultEdge> preferencesGraph,

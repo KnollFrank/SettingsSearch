@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.PreferenceFragments;
-import com.bytehamster.lib.preferencesearch.PreferencesGraphProvider;
+import com.bytehamster.lib.preferencesearch.PreferenceScreensProvider;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.preferencesearch.R;
@@ -36,10 +36,8 @@ public class PrefsFragmentFirst extends BaseSearchPreferenceFragment {
     }
 
     private Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(final PreferenceFragmentCompat root) {
-        return new PreferencesGraphProvider(new PreferenceFragments(getActivity(), FRAGMENT_CONTAINER_VIEW))
-                .getPreferencesGraph(root)
-                // FK-TODO: only vertexSet() is needed, no graph, so do not build any graph at all and remove dependencies to jgrapht library
-                .vertexSet()
+        return new PreferenceScreensProvider(new PreferenceFragments(getActivity(), FRAGMENT_CONTAINER_VIEW))
+                .getPreferenceScreens(root)
                 .stream()
                 .map(preferenceScreenWithHost -> preferenceScreenWithHost.host)
                 .collect(Collectors.toSet());
