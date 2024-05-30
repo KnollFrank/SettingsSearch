@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Supplier;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -36,7 +35,7 @@ public class SearchConfiguration {
     private boolean breadcrumbsEnabled = false;
     private boolean fuzzySearchEnabled = true;
     private boolean searchBarEnabled = true;
-    FragmentActivity activity;
+    private FragmentActivity activity;
     private int containerResId = android.R.id.content;
     private RevealAnimationSetting revealAnimationSetting = null;
     private String textClearHistory;
@@ -47,43 +46,11 @@ public class SearchConfiguration {
     SearchConfiguration() {
     }
 
-    public SearchConfiguration(AppCompatActivity activity) {
+    public SearchConfiguration(final FragmentActivity activity) {
         setActivity(activity);
     }
 
-    public SearchPreferenceFragment showSearchFragment() {
-        if (activity == null) {
-            throw new IllegalStateException("setActivity() not called");
-        }
-        final SearchPreferenceFragment searchPreferenceFragment = createSearchPreferenceFragment();
-        show(searchPreferenceFragment);
-        return searchPreferenceFragment;
-    }
-
-    private SearchPreferenceFragment createSearchPreferenceFragment() {
-        final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment();
-        final Bundle bundle = toBundle();
-        PreferenceItemsBundle.writePreferenceItems(
-                bundle,
-                PreferenceItems.getPreferenceItems(
-                        this.preferenceFragmentsSupplier.get(),
-                        PreferenceProviderFactory.createPreferenceProvider(
-                                this.activity,
-                                this.containerResId)));
-        searchPreferenceFragment.setArguments(bundle);
-        return searchPreferenceFragment;
-    }
-
-    private void show(final SearchPreferenceFragment searchPreferenceFragment) {
-        activity
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .add(this.containerResId, searchPreferenceFragment, SearchPreferenceFragment.TAG)
-                .addToBackStack(SearchPreferenceFragment.TAG)
-                .commit();
-    }
-
-    private Bundle toBundle() {
+    public Bundle toBundle() {
         final Bundle arguments = new Bundle();
         arguments.putBoolean(ARGUMENT_HISTORY_ENABLED, historyEnabled);
         arguments.putParcelable(ARGUMENT_REVEAL_ANIMATION_SETTING, revealAnimationSetting);
@@ -121,6 +88,10 @@ public class SearchConfiguration {
         if (!(activity instanceof SearchPreferenceResultListener)) {
             throw new IllegalArgumentException("Activity must implement SearchPreferenceResultListener");
         }
+    }
+
+    public FragmentActivity getActivity() {
+        return activity;
     }
 
     /**
@@ -181,6 +152,10 @@ public class SearchConfiguration {
         this.containerResId = containerResId;
     }
 
+    public int getFragmentContainerViewId() {
+        return containerResId;
+    }
+
     /**
      * Display a reveal animation
      *
@@ -196,6 +171,10 @@ public class SearchConfiguration {
 
     public void setPreferenceFragmentsSupplier(final Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier) {
         this.preferenceFragmentsSupplier = preferenceFragmentsSupplier;
+    }
+
+    public Supplier<Set<Class<? extends PreferenceFragmentCompat>>> getPreferenceFragmentsSupplier() {
+        return preferenceFragmentsSupplier;
     }
 
     List<String> getBannedKeys() {

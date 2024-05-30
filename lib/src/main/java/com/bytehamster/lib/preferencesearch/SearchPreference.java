@@ -37,18 +37,18 @@ public class SearchPreference extends Preference implements View.OnClickListener
     }
 
     private void parseAttrs(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, new int[] {R.attr.textHint});
+        TypedArray a = getContext().obtainStyledAttributes(attrs, new int[]{R.attr.textHint});
         if (a.getText(0) != null) {
             hint = a.getText(0).toString();
             searchConfiguration.setTextHint(a.getText(0).toString());
         }
         a.recycle();
-        a = getContext().obtainStyledAttributes(attrs, new int[] {R.attr.textClearHistory});
+        a = getContext().obtainStyledAttributes(attrs, new int[]{R.attr.textClearHistory});
         if (a.getText(0) != null) {
             searchConfiguration.setTextClearHistory(a.getText(0).toString());
         }
         a.recycle();
-        a = getContext().obtainStyledAttributes(attrs, new int[] {R.attr.textNoResults});
+        a = getContext().obtainStyledAttributes(attrs, new int[]{R.attr.textNoResults});
         if (a.getText(0) != null) {
             searchConfiguration.setTextNoResults(a.getText(0).toString());
         }
@@ -73,11 +73,12 @@ public class SearchPreference extends Preference implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        getSearchConfiguration().showSearchFragment();
+        new SearchPreferenceFragments(getSearchConfiguration()).showSearchFragment();
     }
 
     /**
      * Returns the search configuration object for this preference
+     *
      * @return The search configuration
      */
     public SearchConfiguration getSearchConfiguration() {

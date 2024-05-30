@@ -46,7 +46,7 @@ public class SearchPreferenceActionView extends SearchView {
         });
         setOnQueryTextFocusChangeListener((v, hasFocus) -> {
             if (hasFocus && (searchFragment == null || !searchFragment.isVisible())) {
-                searchFragment = searchConfiguration.showSearchFragment();
+                searchFragment = new SearchPreferenceFragments(searchConfiguration).showSearchFragment();
                 searchFragment.setHistoryClickListener(entry -> setQuery(entry, false));
             }
         });
@@ -58,6 +58,7 @@ public class SearchPreferenceActionView extends SearchView {
 
     /**
      * Hides the search fragment
+     *
      * @return true if it was hidden, so the calling activity should not go back itself.
      */
     public boolean cancelSearch() {
