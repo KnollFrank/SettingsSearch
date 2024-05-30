@@ -95,7 +95,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         searchPreferenceActionView.cancelSearch();
         searchPreferenceMenuItem.collapseActionView();
         Navigation.navigatePathAndHighlightPreference(
-                result.getResourceFile().getName(),
+                result.getPreferenceFragmentClass().getName(),
                 result.getKey(),
                 true,
                 this,

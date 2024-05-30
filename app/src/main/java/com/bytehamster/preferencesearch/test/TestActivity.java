@@ -24,7 +24,7 @@ public class TestActivity extends AppCompatActivity implements SearchPreferenceR
     @Override
     public void onSearchResultClicked(final SearchPreferenceResult result) {
         Navigation.navigatePathAndHighlightPreference(
-                result.getResourceFile().getName(),
+                result.getPreferenceFragmentClass().getName(),
                 result.getKey(),
                 true,
                 this,

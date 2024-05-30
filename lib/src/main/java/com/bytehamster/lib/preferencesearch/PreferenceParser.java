@@ -18,6 +18,7 @@ class PreferenceParser {
         this.preferenceFragments = preferenceFragments;
     }
 
+    // FK-TODO: rename to getPreferences(), also in test methods
     public List<Preference> parsePreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
         return getPreferences(preferenceScreen);
     }

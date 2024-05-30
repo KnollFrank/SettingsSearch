@@ -45,7 +45,7 @@ public class SearchPreferenceResult {
      *
      * @return The file in which the result was found
      */
-    public Class<? extends PreferenceFragmentCompat> getResourceFile() {
+    public Class<? extends PreferenceFragmentCompat> getPreferenceFragmentClass() {
         return file;
     }
 
