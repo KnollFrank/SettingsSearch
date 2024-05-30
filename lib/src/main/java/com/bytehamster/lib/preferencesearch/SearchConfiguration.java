@@ -7,6 +7,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Supplier;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -33,7 +34,6 @@ public class SearchConfiguration {
     private static final String ARGUMENT_TEXT_HINT = "text_hint";
     private static final String ARGUMENT_TEXT_CLEAR_HISTORY = "text_clear_history";
     private static final String ARGUMENT_TEXT_NO_RESULTS = "text_no_results";
-    public static final String ARGUMENT_PREFERENCE_ITEMS = "preferenceItems";
 
     private List<PreferenceItem> preferencesToIndex = new ArrayList<>();
     private final List<String> bannedKeys = new ArrayList<>();
@@ -42,7 +42,7 @@ public class SearchConfiguration {
     private boolean breadcrumbsEnabled = false;
     private boolean fuzzySearchEnabled = true;
     private boolean searchBarEnabled = true;
-    AppCompatActivity activity;
+    FragmentActivity activity;
     private int containerResId = android.R.id.content;
     private RevealAnimationSetting revealAnimationSetting = null;
     private String textClearHistory;
@@ -61,20 +61,28 @@ public class SearchConfiguration {
         if (activity == null) {
             throw new IllegalStateException("setActivity() not called");
         }
+        final SearchPreferenceFragment searchPreferenceFragment = createSearchPreferenceFragment();
+        show(searchPreferenceFragment);
+        return searchPreferenceFragment;
+    }
 
-        final SearchPreferenceFragment fragment = new SearchPreferenceFragment();
-        // FK-TODO: refactor
+    private SearchPreferenceFragment createSearchPreferenceFragment() {
+        final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment();
         final Bundle bundle = toBundle();
-        final List<PreferenceItem> preferenceItems = PreferenceItems.getPreferenceItems(this, this.activity, this.containerResId);
-        bundle.putParcelableArrayList(ARGUMENT_PREFERENCE_ITEMS, new ArrayList<>(preferenceItems));
-        fragment.setArguments(bundle);
+        PreferenceItemsBundle.writePreferenceItems(
+                bundle,
+                PreferenceItems.getPreferenceItems(this, this.activity, this.containerResId));
+        searchPreferenceFragment.setArguments(bundle);
+        return searchPreferenceFragment;
+    }
+
+    private void show(final SearchPreferenceFragment searchPreferenceFragment) {
         activity
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .add(this.containerResId, fragment, SearchPreferenceFragment.TAG)
+                .add(this.containerResId, searchPreferenceFragment, SearchPreferenceFragment.TAG)
                 .addToBackStack(SearchPreferenceFragment.TAG)
                 .commit();
-        return fragment;
     }
 
     private Bundle toBundle() {
@@ -112,7 +120,7 @@ public class SearchConfiguration {
      *
      * @param activity The Activity that receives callbacks. Must implement SearchPreferenceResultListener.
      */
-    public void setActivity(@NonNull AppCompatActivity activity) {
+    public void setActivity(@NonNull FragmentActivity activity) {
         this.activity = activity;
         if (!(activity instanceof SearchPreferenceResultListener)) {
             throw new IllegalArgumentException("Activity must implement SearchPreferenceResultListener");

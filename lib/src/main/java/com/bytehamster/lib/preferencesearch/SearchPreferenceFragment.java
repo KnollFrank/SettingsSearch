@@ -1,7 +1,5 @@
 package com.bytehamster.lib.preferencesearch;
 
-import static com.bytehamster.lib.preferencesearch.SearchConfiguration.ARGUMENT_PREFERENCE_ITEMS;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -55,9 +53,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         prefs = getContext().getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         final Bundle arguments = getArguments();
         searchConfiguration = SearchConfiguration.fromBundle(arguments);
-        // FK-TODO: refactor
-        final List<PreferenceItem> preferenceItems = arguments.getParcelableArrayList(ARGUMENT_PREFERENCE_ITEMS);
-        preferenceSearcher = new PreferenceSearcher(preferenceItems);
+        preferenceSearcher = new PreferenceSearcher(PreferenceItemsBundle.readPreferenceItems(arguments));
         loadHistory();
     }
 
