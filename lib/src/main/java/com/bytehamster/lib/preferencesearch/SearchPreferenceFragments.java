@@ -39,7 +39,10 @@ public class SearchPreferenceFragments {
                 .getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .add(this.searchConfiguration.getFragmentContainerViewId(), searchPreferenceFragment, SearchPreferenceFragment.TAG)
+                .add(
+                        this.searchConfiguration.getFragmentContainerViewId(),
+                        searchPreferenceFragment,
+                        SearchPreferenceFragment.TAG)
                 .addToBackStack(SearchPreferenceFragment.TAG)
                 .commit();
     }

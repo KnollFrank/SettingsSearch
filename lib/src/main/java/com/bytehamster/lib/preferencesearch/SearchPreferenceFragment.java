@@ -207,7 +207,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         }
     }
 
-    public void setSearchTerm(CharSequence term) {
+    public void setSearchTerm(final CharSequence term) {
         if (viewHolder != null) {
             viewHolder.searchView.setText(term);
         } else {
@@ -289,7 +289,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         }
     };
 
-    public void setHistoryClickListener(HistoryClickListener historyClickListener) {
+    public void setHistoryClickListener(final HistoryClickListener historyClickListener) {
         this.historyClickListener = historyClickListener;
     }
 
