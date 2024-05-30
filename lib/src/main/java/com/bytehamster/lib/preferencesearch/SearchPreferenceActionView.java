@@ -96,7 +96,7 @@ public class SearchPreferenceActionView extends SearchView {
         }
     }
 
-    public void setActivity(AppCompatActivity activity) {
+    public void setActivity(final AppCompatActivity activity) {
         searchConfiguration.setActivity(activity);
         this.activity = activity;
     }

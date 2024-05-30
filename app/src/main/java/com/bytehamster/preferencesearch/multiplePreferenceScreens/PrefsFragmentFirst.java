@@ -5,8 +5,6 @@ import static com.bytehamster.preferencesearch.multiplePreferenceScreens.Multipl
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
@@ -22,7 +20,7 @@ public class PrefsFragmentFirst extends BaseSearchPreferenceFragment {
 
     private void configureSearchPreference(final SearchPreference searchPreference) {
         final SearchConfiguration config = searchPreference.getSearchConfiguration();
-        config.setActivity((AppCompatActivity) requireActivity());
+        config.setActivity(requireActivity());
         config.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
         config.setPreferenceFragmentsSupplier(() ->
                 getPreferenceFragments(
