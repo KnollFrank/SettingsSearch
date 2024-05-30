@@ -32,8 +32,8 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            this.searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY);
-            this.searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED);
+            searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY);
+            searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED);
         }
         Navigation.show(
                 new PrefsFragment(),
@@ -45,11 +45,11 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        this.searchPreferenceMenuItem = menu.findItem(R.id.search);
-        this.searchPreferenceActionView = (SearchPreferenceActionView) searchPreferenceMenuItem.getActionView();
-        this.searchPreferenceActionView.setActivity(this);
-        configure(this.searchPreferenceActionView.getSearchConfiguration());
-        this.searchPreferenceMenuItem.setOnActionExpandListener(
+        searchPreferenceMenuItem = menu.findItem(R.id.search);
+        searchPreferenceActionView = (SearchPreferenceActionView) searchPreferenceMenuItem.getActionView();
+        searchPreferenceActionView.setActivity(this);
+        configure(searchPreferenceActionView.getSearchConfiguration());
+        searchPreferenceMenuItem.setOnActionExpandListener(
                 new MenuItem.OnActionExpandListener() {
 
                     @Override
@@ -63,38 +63,21 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                         return true;
                     }
                 });
-        if (this.searchEnabled) {
+        if (searchEnabled) {
             new Handler().post(() -> {
                 // If we do not use a handler here, it will not be possible
                 // to use the menuItem after dismissing the searchView
-                this.searchPreferenceMenuItem.expandActionView();
-                this.searchPreferenceActionView.setQuery(this.searchQuery, false);
+                searchPreferenceMenuItem.expandActionView();
+                searchPreferenceActionView.setQuery(searchQuery, false);
             });
         }
         return true;
     }
 
-    private void configure(final SearchConfiguration searchConfiguration) {
-        searchConfiguration.setPreferenceFragmentsSupplier(() ->
-                getPreferenceFragments(
-                        new PrefsFragment(),
-                        this,
-                        android.R.id.content));
-        searchConfiguration.setBreadcrumbsEnabled(true);
-        searchConfiguration.setFuzzySearchEnabled(false);
-        searchConfiguration.setRevealAnimationSetting(
-                new RevealAnimationSetting(
-                        findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
-                        -getSupportActionBar().getHeight() / 2,
-                        findViewById(android.R.id.content).getWidth(),
-                        findViewById(android.R.id.content).getHeight(),
-                        getResources().getColor(R.color.colorPrimary)));
-    }
-
     @Override
     public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
-        this.searchPreferenceActionView.cancelSearch();
-        this.searchPreferenceMenuItem.collapseActionView();
+        searchPreferenceActionView.cancelSearch();
+        searchPreferenceMenuItem.collapseActionView();
         Navigation.navigatePathAndHighlightPreference(
                 result.getPreferenceFragmentClass().getName(),
                 result.getKey(),
@@ -112,9 +95,9 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
 
     @Override
     public void onSaveInstanceState(final Bundle outState) {
-        outState.putString(KEY_SEARCH_QUERY, this.searchPreferenceActionView.getQuery().toString());
-        outState.putBoolean(KEY_SEARCH_ENABLED, !this.searchPreferenceActionView.isIconified());
-        this.searchPreferenceActionView.cancelSearch();
+        outState.putString(KEY_SEARCH_QUERY, searchPreferenceActionView.getQuery().toString());
+        outState.putBoolean(KEY_SEARCH_ENABLED, !searchPreferenceActionView.isIconified());
+        searchPreferenceActionView.cancelSearch();
         super.onSaveInstanceState(outState);
     }
 
@@ -123,7 +106,24 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             addPreferencesFromResource(R.xml.preferences_multiple_screens);
-            this.findPreference("searchPreference").setVisible(false);
+            findPreference("searchPreference").setVisible(false);
         }
+    }
+
+    private void configure(final SearchConfiguration searchConfiguration) {
+        searchConfiguration.setPreferenceFragmentsSupplier(() ->
+                getPreferenceFragments(
+                        new PrefsFragment(),
+                        this,
+                        android.R.id.content));
+        searchConfiguration.setBreadcrumbsEnabled(true);
+        searchConfiguration.setFuzzySearchEnabled(false);
+        searchConfiguration.setRevealAnimationSetting(
+                new RevealAnimationSetting(
+                        findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
+                        -getSupportActionBar().getHeight() / 2,
+                        findViewById(android.R.id.content).getWidth(),
+                        findViewById(android.R.id.content).getHeight(),
+                        getResources().getColor(R.color.colorPrimary)));
     }
 }
