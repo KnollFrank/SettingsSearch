@@ -45,7 +45,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     private SearchConfiguration searchConfiguration;
     private SearchPreferenceAdapter adapter;
     private HistoryClickListener historyClickListener;
-    private CharSequence searchTermPreset = null;
+    private String searchTermPreset = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -207,7 +207,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         }
     }
 
-    public void setSearchTerm(final CharSequence term) {
+    public void setSearchTerm(final String term) {
         if (viewHolder != null) {
             viewHolder.searchView.setText(term);
         } else {
@@ -246,13 +246,13 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     }
 
     @Override
-    public void onItemClicked(ListItem item, int position) {
+    public void onItemClicked(final ListItem item, final int position) {
         if (item.getType() == HistoryItem.TYPE) {
-            CharSequence text = ((HistoryItem) item).getTerm();
+            final String text = ((HistoryItem) item).getTerm();
             viewHolder.searchView.setText(text);
             viewHolder.searchView.setSelection(text.length());
             if (historyClickListener != null) {
-                historyClickListener.onHistoryEntryClicked(text.toString());
+                historyClickListener.onHistoryEntryClicked(text);
             }
         } else {
             hideKeyboard();

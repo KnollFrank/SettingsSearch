@@ -97,10 +97,12 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
     }
 
     interface SearchClickListener {
+
         void onItemClicked(ListItem item, int position);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+
         final View root;
 
         ViewHolder(View v) {
