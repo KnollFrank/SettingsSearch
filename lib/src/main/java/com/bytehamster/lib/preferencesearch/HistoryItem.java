@@ -1,6 +1,7 @@
 package com.bytehamster.lib.preferencesearch;
 
 class HistoryItem extends ListItem {
+
     static final int TYPE = 1;
     private final String term;
 

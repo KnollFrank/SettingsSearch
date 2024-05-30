@@ -18,7 +18,6 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
     private SearchConfiguration searchConfiguration;
     private SearchClickListener onItemClickListener;
 
-
     SearchPreferenceAdapter() {
         dataset = new ArrayList<>();
     }
@@ -73,7 +72,7 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
         });
     }
 
-    void setContent(List<ListItem> items) {
+    void setContent(final List<ListItem> items) {
         dataset = new ArrayList<>(items);
         this.notifyDataSetChanged();
     }
