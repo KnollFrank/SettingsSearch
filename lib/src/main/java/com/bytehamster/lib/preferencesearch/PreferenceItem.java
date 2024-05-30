@@ -28,7 +28,7 @@ class PreferenceItem extends ListItem implements Parcelable {
     public final Class<? extends PreferenceFragmentCompat> resId;
 
     public String entries;
-    // FK-TODO: remove all breadCrumbs in ALL files
+    // FK-TODO: breadcrumbs aktivieren, Tests dazu schreiben (Graph dazu wieder einführen)
     public final List<String> keyBreadcrumbs = new ArrayList<>();
     private float lastScore = 0;
     private String lastKeyword = null;
