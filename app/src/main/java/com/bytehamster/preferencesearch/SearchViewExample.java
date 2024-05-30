@@ -56,6 +56,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                         new PrefsFragment(),
                         this,
                         android.R.id.content));
+        searchConfiguration.setBreadcrumbsEnabled(true);
         searchConfiguration.setFuzzySearchEnabled(false);
         searchConfiguration.setRevealAnimationSetting(
                 new RevealAnimationSetting(
