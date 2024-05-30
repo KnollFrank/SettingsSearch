@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 // FK-TODO: refactor
 public class SearchConfiguration {
 
-    private static final String ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES = "individual_prefs";
     private static final String ARGUMENT_FUZZY_ENABLED = "fuzzy";
     private static final String ARGUMENT_HISTORY_ENABLED = "history_enabled";
     private static final String ARGUMENT_HISTORY_ID = "history_id";
@@ -35,7 +34,6 @@ public class SearchConfiguration {
     private static final String ARGUMENT_TEXT_CLEAR_HISTORY = "text_clear_history";
     private static final String ARGUMENT_TEXT_NO_RESULTS = "text_no_results";
 
-    private List<PreferenceItem> preferencesToIndex = new ArrayList<>();
     private final List<String> bannedKeys = new ArrayList<>();
     private boolean historyEnabled = true;
     private String historyId = null;
@@ -87,7 +85,6 @@ public class SearchConfiguration {
 
     private Bundle toBundle() {
         final Bundle arguments = new Bundle();
-        arguments.putParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES, new ArrayList<>(preferencesToIndex));
         arguments.putBoolean(ARGUMENT_HISTORY_ENABLED, historyEnabled);
         arguments.putParcelable(ARGUMENT_REVEAL_ANIMATION_SETTING, revealAnimationSetting);
         arguments.putBoolean(ARGUMENT_FUZZY_ENABLED, fuzzySearchEnabled);
@@ -102,7 +99,6 @@ public class SearchConfiguration {
 
     static SearchConfiguration fromBundle(final Bundle bundle) {
         final SearchConfiguration config = new SearchConfiguration();
-        config.preferencesToIndex = bundle.getParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES);
         config.historyEnabled = bundle.getBoolean(ARGUMENT_HISTORY_ENABLED);
         config.revealAnimationSetting = bundle.getParcelable(ARGUMENT_REVEAL_ANIMATION_SETTING);
         config.fuzzySearchEnabled = bundle.getBoolean(ARGUMENT_FUZZY_ENABLED);
@@ -225,8 +221,6 @@ public class SearchConfiguration {
                 preferenceItem.entries = Arrays.toString(listPreference.getEntries());
             }
         }
-        // FK-TODO: keine Seiteneffekte, bitte!
-        preferencesToIndex.add(preferenceItem);
         return preferenceItem;
     }
 
@@ -248,10 +242,6 @@ public class SearchConfiguration {
                 .stream()
                 .map(resId -> new SearchIndexItem(resId, this))
                 .collect(Collectors.toList());
-    }
-
-    List<PreferenceItem> getPreferencesToIndex() {
-        return preferencesToIndex;
     }
 
     boolean isHistoryEnabled() {

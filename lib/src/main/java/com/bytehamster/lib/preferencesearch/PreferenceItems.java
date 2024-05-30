@@ -24,7 +24,6 @@ class PreferenceItems {
         return ImmutableList
                 .<PreferenceItem>builder()
                 .addAll(parsePreferenceScreens(getPreferenceScreens(searchConfiguration), fragmentActivity, containerResId))
-                .addAll(searchConfiguration.getPreferencesToIndex())
                 .build();
     }
 
