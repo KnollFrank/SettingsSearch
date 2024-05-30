@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 // FK-TODO: refactor
 public class SearchConfiguration {
@@ -66,7 +65,10 @@ public class SearchConfiguration {
         final Bundle bundle = toBundle();
         PreferenceItemsBundle.writePreferenceItems(
                 bundle,
-                PreferenceItems.getPreferenceItems(this, this.activity, this.containerResId));
+                PreferenceItems.getPreferenceItems(
+                        this.preferenceFragmentsSupplier.get(),
+                        this.activity,
+                        this.containerResId));
         searchPreferenceFragment.setArguments(bundle);
         return searchPreferenceFragment;
     }
@@ -204,15 +206,6 @@ public class SearchConfiguration {
      */
     public void ignorePreference(@NonNull String key) {
         bannedKeys.add(key);
-    }
-
-    List<SearchIndexItem> getFiles() {
-        return this
-                .preferenceFragmentsSupplier
-                .get()
-                .stream()
-                .map(resId -> new SearchIndexItem(resId, this))
-                .collect(Collectors.toList());
     }
 
     boolean isHistoryEnabled() {

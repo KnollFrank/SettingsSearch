@@ -6,13 +6,14 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.List;
+import java.util.Set;
 
 class PreferenceItems {
 
-    public static List<PreferenceItem> getPreferenceItems(final SearchConfiguration searchConfiguration,
+    public static List<PreferenceItem> getPreferenceItems(final Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments,
                                                           final FragmentActivity fragmentActivity,
                                                           @IdRes final int containerResId) {
-        return PreferenceItems1.getPreferenceItems(searchConfiguration, fragmentActivity, containerResId);
+        return PreferenceItems1.getPreferenceItems(preferenceFragments, fragmentActivity, containerResId);
     }
 
     static List<PreferenceItem> getPreferenceItems(final List<Preference> preferences,
