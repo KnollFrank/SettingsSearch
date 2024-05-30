@@ -23,8 +23,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bytehamster.lib.preferencesearch.common.Lists;
+import com.bytehamster.lib.preferencesearch.common.UIUtils;
 import com.bytehamster.lib.preferencesearch.ui.AnimationUtils;
-import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
+import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,13 +54,24 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     private HistoryClickListener historyClickListener;
     private String searchTermPreset = null;
 
+    public void setHistoryClickListener(final HistoryClickListener historyClickListener) {
+        this.historyClickListener = historyClickListener;
+    }
+
+    public void setSearchTerm(final String term) {
+        if (viewHolder != null) {
+            viewHolder.searchView.setText(term);
+        } else {
+            searchTermPreset = term;
+        }
+    }
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = getContext().getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
-        final Bundle arguments = getArguments();
-        searchConfiguration = SearchConfigurations.fromBundle(arguments);
-        preferenceSearcher = new PreferenceSearcher(PreferenceItemsBundle.readPreferenceItems(arguments));
+        searchConfiguration = SearchConfigurations.fromBundle(getArguments());
+        preferenceSearcher = new PreferenceSearcher(PreferenceItemsBundle.readPreferenceItems(getArguments()));
         loadHistory();
     }
 
@@ -70,9 +82,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         viewHolder = new SearchViewHolder(rootView);
 
         viewHolder.clearButton.setOnClickListener(view -> viewHolder.searchView.setText(""));
-        if (searchConfiguration.isHistoryEnabled()) {
-            viewHolder.moreButton.setVisibility(View.VISIBLE);
-        }
+        UIUtils.set_VISIBLE_or_GONE(viewHolder.moreButton, searchConfiguration.isHistoryEnabled());
         if (searchConfiguration.getTextHint() != null) {
             viewHolder.searchView.setHint(searchConfiguration.getTextHint());
         }
@@ -114,22 +124,25 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
 
                     @Override
                     public void afterTextChanged(final Editable editable) {
-                        updateSearchResults(editable.toString());
-                        viewHolder.clearButton.setVisibility(as_VISIBLE_or_GONE(!editable.toString().isEmpty()));
+                        afterTextChanged(editable.toString());
+                    }
+
+                    private void afterTextChanged(final String searchQuery) {
+                        updateSearchResults(searchQuery);
+                        UIUtils.set_VISIBLE_or_GONE(viewHolder.clearButton, !searchQuery.isEmpty());
                     }
                 });
-
         if (!searchConfiguration.isSearchBarEnabled()) {
             viewHolder.cardView.setVisibility(View.GONE);
         }
-
         if (searchTermPreset != null) {
             viewHolder.searchView.setText(searchTermPreset);
         }
-
-        final RevealAnimationSetting anim = searchConfiguration.getRevealAnimationSetting();
-        if (anim != null) {
-            AnimationUtils.registerCircularRevealAnimation(getContext(), rootView, anim);
+        if (searchConfiguration.getRevealAnimationSetting() != null) {
+            AnimationUtils.registerCircularRevealAnimation(
+                    getContext(),
+                    rootView,
+                    searchConfiguration.getRevealAnimationSetting());
         }
         rootView.setOnTouchListener((v, event) -> true);
         return rootView;
@@ -141,6 +154,28 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         updateSearchResults(viewHolder.searchView.getText().toString());
         if (searchConfiguration.isSearchBarEnabled()) {
             showKeyboard();
+        }
+    }
+
+    @Override
+    public void onItemClicked(final ListItem item, final int position) {
+        if (item.getType() == HistoryItem.TYPE) {
+            final String text = ((HistoryItem) item).getTerm();
+            viewHolder.searchView.setText(text);
+            viewHolder.searchView.setSelection(text.length());
+            if (historyClickListener != null) {
+                historyClickListener.onHistoryEntryClicked(text);
+            }
+        } else {
+            hideKeyboard();
+            try {
+                final SearchPreferenceResultListener searchPreferenceResultListener = (SearchPreferenceResultListener) getActivity();
+                final PreferenceItem preferenceItem = results.get(position);
+                addHistoryEntry(preferenceItem.title);
+                searchPreferenceResultListener.onSearchResultClicked(getSearchPreferenceResult(preferenceItem));
+            } catch (final ClassCastException e) {
+                throw new ClassCastException(getActivity().toString() + " must implement SearchPreferenceResultListener");
+            }
         }
     }
 
@@ -184,7 +219,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
      *
      * @return the preference key for the history entry
      */
-    private String historyEntryKey(int i) {
+    private String historyEntryKey(final int i) {
         if (searchConfiguration.getHistoryId() != null) {
             return searchConfiguration.getHistoryId() + "_history_" + i;
         } else {
@@ -214,7 +249,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     private void showKeyboard() {
         viewHolder.searchView.post(() -> {
             viewHolder.searchView.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = getInputMethodManager();
             if (imm != null) {
                 imm.showSoftInput(viewHolder.searchView, InputMethodManager.SHOW_IMPLICIT);
             }
@@ -223,18 +258,14 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
 
     private void hideKeyboard() {
         final View view = getActivity().getCurrentFocus();
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        final InputMethodManager imm = getInputMethodManager();
         if (view != null && imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public void setSearchTerm(final String term) {
-        if (viewHolder != null) {
-            viewHolder.searchView.setText(term);
-        } else {
-            searchTermPreset = term;
-        }
+    private InputMethodManager getInputMethodManager() {
+        return (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     private void updateSearchResults(final String keyword) {
@@ -244,52 +275,31 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         }
 
         results = preferenceSearcher.searchFor(keyword, searchConfiguration.isFuzzySearchEnabled());
-        adapter.setContent(new ArrayList<>(results));
+        adapter.setContent(ImmutableList.copyOf(results));
 
-        setEmptyViewShown(results.isEmpty());
+        setEmptyViewVisible(results.isEmpty());
     }
 
-    private void setEmptyViewShown(final boolean shown) {
-        viewHolder.noResults.setVisibility(as_VISIBLE_or_GONE(shown));
-        viewHolder.recyclerView.setVisibility(as_VISIBLE_or_GONE(!shown));
-    }
-
-    private static int as_VISIBLE_or_GONE(final boolean visible) {
-        return visible ? View.VISIBLE : View.GONE;
+    private void setEmptyViewVisible(final boolean visible) {
+        UIUtils.set_VISIBLE_or_GONE(viewHolder.noResults, visible);
+        UIUtils.set_VISIBLE_or_GONE(viewHolder.recyclerView, !visible);
     }
 
     private void showHistory() {
         viewHolder.noResults.setVisibility(View.GONE);
         viewHolder.recyclerView.setVisibility(View.VISIBLE);
 
-        adapter.setContent(new ArrayList<>(history));
-        setEmptyViewShown(history.isEmpty());
+        adapter.setContent(ImmutableList.copyOf(history));
+        setEmptyViewVisible(history.isEmpty());
     }
 
-    @Override
-    public void onItemClicked(final ListItem item, final int position) {
-        if (item.getType() == HistoryItem.TYPE) {
-            final String text = ((HistoryItem) item).getTerm();
-            viewHolder.searchView.setText(text);
-            viewHolder.searchView.setSelection(text.length());
-            if (historyClickListener != null) {
-                historyClickListener.onHistoryEntryClicked(text);
-            }
-        } else {
-            hideKeyboard();
-            try {
-                final SearchPreferenceResultListener searchPreferenceResultListener = (SearchPreferenceResultListener) getActivity();
-                final PreferenceItem preferenceItem = results.get(position);
-                addHistoryEntry(preferenceItem.title);
-                searchPreferenceResultListener.onSearchResultClicked(getSearchPreferenceResult(preferenceItem));
-            } catch (final ClassCastException e) {
-                throw new ClassCastException(getActivity().toString() + " must implement SearchPreferenceResultListener");
-            }
-        }
-    }
-
-    public void setHistoryClickListener(final HistoryClickListener historyClickListener) {
-        this.historyClickListener = historyClickListener;
+    private static SearchPreferenceResult getSearchPreferenceResult(final PreferenceItem preferenceItem) {
+        return new SearchPreferenceResult(
+                preferenceItem.key,
+                preferenceItem.resId,
+                Lists
+                        .getLastElement(preferenceItem.keyBreadcrumbs)
+                        .orElse(null));
     }
 
     private static class SearchViewHolder {
@@ -309,14 +319,5 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
             noResults = root.findViewById(R.id.no_results);
             cardView = root.findViewById(R.id.search_card);
         }
-    }
-
-    private static SearchPreferenceResult getSearchPreferenceResult(final PreferenceItem preferenceItem) {
-        return new SearchPreferenceResult(
-                preferenceItem.key,
-                preferenceItem.resId,
-                Lists
-                        .getLastElement(preferenceItem.keyBreadcrumbs)
-                        .orElse(null));
     }
 }

@@ -9,17 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapter.ViewHolder> {
 
-    private List<ListItem> dataset;
+    private ImmutableList<ListItem> dataset;
     private SearchConfiguration searchConfiguration;
     private SearchClickListener onItemClickListener;
 
     SearchPreferenceAdapter() {
-        dataset = new ArrayList<>();
+        dataset = ImmutableList.of();
     }
 
     @NonNull
@@ -72,8 +71,8 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
         });
     }
 
-    void setContent(final List<ListItem> items) {
-        dataset = new ArrayList<>(items);
+    void setContent(final ImmutableList<ListItem> items) {
+        dataset = items;
         this.notifyDataSetChanged();
     }
 

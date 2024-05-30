@@ -1,5 +1,7 @@
 package com.bytehamster.lib.preferencesearch;
 
+import java.util.Objects;
+
 class HistoryItem extends ListItem {
 
     static final int TYPE = 1;
@@ -20,10 +22,15 @@ class HistoryItem extends ListItem {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof HistoryItem) {
-            return ((HistoryItem) obj).term.equals(term);
-        }
-        return false;
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final HistoryItem that = (HistoryItem) o;
+        return Objects.equals(getTerm(), that.getTerm());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTerm());
     }
 }
