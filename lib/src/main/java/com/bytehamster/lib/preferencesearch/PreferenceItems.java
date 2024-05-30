@@ -13,8 +13,8 @@ class PreferenceItems {
         return new PreferenceItems1(preferenceParser).getPreferenceItems(preferenceFragments);
     }
 
-    static List<PreferenceItem> getPreferenceItems(final List<Preference> preferences,
-                                                   final Class<? extends PreferenceFragmentCompat> resId) {
+    public static List<PreferenceItem> getPreferenceItems(final List<Preference> preferences,
+                                                          final Class<? extends PreferenceFragmentCompat> resId) {
         return PreferenceItems2.getPreferenceItems(preferences, resId);
     }
 }

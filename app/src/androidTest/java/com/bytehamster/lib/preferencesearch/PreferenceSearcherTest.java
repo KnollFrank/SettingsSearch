@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import androidx.preference.CheckBoxPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
@@ -87,17 +86,10 @@ public class PreferenceSearcherTest {
                                                                final TestActivity fragmentActivity) {
         return new PreferenceSearcher(
                 PreferenceItems.getPreferenceItems(
-                        getPreferences(preferenceScreen, fragmentActivity),
+                        PreferenceParserFactory
+                                .createPreferenceParser(fragmentActivity, TestActivity.FRAGMENT_CONTAINER_VIEW)
+                                .parsePreferenceScreen(preferenceScreen),
                         preferenceScreen));
-    }
-
-    private static List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
-                                                   final TestActivity fragmentActivity) {
-        return new PreferenceParser(
-                new PreferenceFragments(
-                        fragmentActivity,
-                        TestActivity.FRAGMENT_CONTAINER_VIEW))
-                .parsePreferenceScreen(preferenceScreen);
     }
 
     private static List<String> getTitles(final List<PreferenceItem> preferenceItems) {

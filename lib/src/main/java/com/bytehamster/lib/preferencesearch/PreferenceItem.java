@@ -28,6 +28,7 @@ class PreferenceItem extends ListItem implements Parcelable {
     public final Class<? extends PreferenceFragmentCompat> resId;
 
     public String entries;
+    // FK-TODO: remove all breadCrumbs in ALL files
     public final List<String> keyBreadcrumbs = new ArrayList<>();
     private float lastScore = 0;
     private String lastKeyword = null;
@@ -77,10 +78,6 @@ class PreferenceItem extends ListItem implements Parcelable {
             return new PreferenceItem[size];
         }
     };
-
-    boolean hasData() {
-        return title != null || summary != null;
-    }
 
     boolean matchesFuzzy(String keyword) {
         return getScore(keyword) > 0.3;
