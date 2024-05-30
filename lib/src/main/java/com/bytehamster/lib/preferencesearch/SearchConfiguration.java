@@ -1,7 +1,5 @@
 package com.bytehamster.lib.preferencesearch;
 
-import android.os.Bundle;
-
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -18,16 +16,6 @@ import java.util.Set;
 
 // FK-TODO: refactor
 public class SearchConfiguration {
-
-    private static final String ARGUMENT_FUZZY_ENABLED = "fuzzy";
-    private static final String ARGUMENT_HISTORY_ENABLED = "history_enabled";
-    private static final String ARGUMENT_HISTORY_ID = "history_id";
-    private static final String ARGUMENT_SEARCH_BAR_ENABLED = "search_bar_enabled";
-    private static final String ARGUMENT_BREADCRUMBS_ENABLED = "breadcrumbs_enabled";
-    private static final String ARGUMENT_REVEAL_ANIMATION_SETTING = "reveal_anim_setting";
-    private static final String ARGUMENT_TEXT_HINT = "text_hint";
-    private static final String ARGUMENT_TEXT_CLEAR_HISTORY = "text_clear_history";
-    private static final String ARGUMENT_TEXT_NO_RESULTS = "text_no_results";
 
     private final List<String> bannedKeys = new ArrayList<>();
     private boolean historyEnabled = true;
@@ -48,34 +36,6 @@ public class SearchConfiguration {
 
     public SearchConfiguration(final FragmentActivity activity) {
         setActivity(activity);
-    }
-
-    public Bundle toBundle() {
-        final Bundle arguments = new Bundle();
-        arguments.putBoolean(ARGUMENT_HISTORY_ENABLED, historyEnabled);
-        arguments.putParcelable(ARGUMENT_REVEAL_ANIMATION_SETTING, revealAnimationSetting);
-        arguments.putBoolean(ARGUMENT_FUZZY_ENABLED, fuzzySearchEnabled);
-        arguments.putBoolean(ARGUMENT_BREADCRUMBS_ENABLED, breadcrumbsEnabled);
-        arguments.putBoolean(ARGUMENT_SEARCH_BAR_ENABLED, searchBarEnabled);
-        arguments.putString(ARGUMENT_TEXT_HINT, textHint);
-        arguments.putString(ARGUMENT_TEXT_CLEAR_HISTORY, textClearHistory);
-        arguments.putString(ARGUMENT_TEXT_NO_RESULTS, textNoResults);
-        arguments.putString(ARGUMENT_HISTORY_ID, historyId);
-        return arguments;
-    }
-
-    static SearchConfiguration fromBundle(final Bundle bundle) {
-        final SearchConfiguration config = new SearchConfiguration();
-        config.historyEnabled = bundle.getBoolean(ARGUMENT_HISTORY_ENABLED);
-        config.revealAnimationSetting = bundle.getParcelable(ARGUMENT_REVEAL_ANIMATION_SETTING);
-        config.fuzzySearchEnabled = bundle.getBoolean(ARGUMENT_FUZZY_ENABLED);
-        config.breadcrumbsEnabled = bundle.getBoolean(ARGUMENT_BREADCRUMBS_ENABLED);
-        config.searchBarEnabled = bundle.getBoolean(ARGUMENT_SEARCH_BAR_ENABLED);
-        config.textHint = bundle.getString(ARGUMENT_TEXT_HINT);
-        config.textClearHistory = bundle.getString(ARGUMENT_TEXT_CLEAR_HISTORY);
-        config.textNoResults = bundle.getString(ARGUMENT_TEXT_NO_RESULTS);
-        config.historyId = bundle.getString(ARGUMENT_HISTORY_ID);
-        return config;
     }
 
     /**
@@ -167,6 +127,10 @@ public class SearchConfiguration {
      */
     public void useAnimation(int centerX, int centerY, int width, int height, @ColorInt int colorAccent) {
         revealAnimationSetting = new RevealAnimationSetting(centerX, centerY, width, height, colorAccent);
+    }
+
+    public void setRevealAnimationSetting(final RevealAnimationSetting revealAnimationSetting) {
+        this.revealAnimationSetting = revealAnimationSetting;
     }
 
     public void setPreferenceFragmentsSupplier(final Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier) {

@@ -21,7 +21,7 @@ public class SearchPreferenceFragments {
 
     private SearchPreferenceFragment createSearchPreferenceFragment() {
         final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment();
-        final Bundle bundle = this.searchConfiguration.toBundle();
+        final Bundle bundle = SearchConfigurations.toBundle(this.searchConfiguration);
         PreferenceItemsBundle.writePreferenceItems(
                 bundle,
                 PreferenceItems.getPreferenceItems(

@@ -52,7 +52,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         super.onCreate(savedInstanceState);
         prefs = getContext().getSharedPreferences(SHARED_PREFS_FILE, Context.MODE_PRIVATE);
         final Bundle arguments = getArguments();
-        searchConfiguration = SearchConfiguration.fromBundle(arguments);
+        searchConfiguration = SearchConfigurations.fromBundle(arguments);
         preferenceSearcher = new PreferenceSearcher(PreferenceItemsBundle.readPreferenceItems(arguments));
         loadHistory();
     }
