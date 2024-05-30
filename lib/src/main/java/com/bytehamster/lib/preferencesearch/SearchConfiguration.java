@@ -8,14 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Supplier;
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -196,32 +193,6 @@ public class SearchConfiguration {
 
     public void setPreferenceFragmentsSupplier(final Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier) {
         this.preferenceFragmentsSupplier = preferenceFragmentsSupplier;
-    }
-
-    public List<PreferenceItem> indexItems(final List<Preference> preferences,
-                                           final Class<? extends PreferenceFragmentCompat> resId) {
-        return preferences
-                .stream()
-                .map(preference -> indexItem(preference, resId))
-                .collect(Collectors.toList());
-    }
-
-    private PreferenceItem indexItem(final Preference preference, final Class<? extends PreferenceFragmentCompat> resId) {
-        final PreferenceItem preferenceItem =
-                new PreferenceItem(
-                        preference.getTitle() != null ? preference.getTitle().toString() : null,
-                        preference.getSummary() != null ? preference.getSummary().toString() : null,
-                        preference.getKey(),
-                        null,
-                        null,
-                        resId);
-        if (preference instanceof ListPreference) {
-            final ListPreference listPreference = ((ListPreference) preference);
-            if (listPreference.getEntries() != null) {
-                preferenceItem.entries = Arrays.toString(listPreference.getEntries());
-            }
-        }
-        return preferenceItem;
     }
 
     List<String> getBannedKeys() {
