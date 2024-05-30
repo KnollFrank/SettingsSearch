@@ -100,7 +100,7 @@ public class SearchConfiguration {
         return arguments;
     }
 
-    static SearchConfiguration fromBundle(Bundle bundle) {
+    static SearchConfiguration fromBundle(final Bundle bundle) {
         final SearchConfiguration config = new SearchConfiguration();
         config.preferencesToIndex = bundle.getParcelableArrayList(ARGUMENT_INDEX_INDIVIDUAL_PREFERENCES);
         config.historyEnabled = bundle.getBoolean(ARGUMENT_HISTORY_ENABLED);
@@ -120,7 +120,7 @@ public class SearchConfiguration {
      *
      * @param activity The Activity that receives callbacks. Must implement SearchPreferenceResultListener.
      */
-    public void setActivity(@NonNull FragmentActivity activity) {
+    public void setActivity(final FragmentActivity activity) {
         this.activity = activity;
         if (!(activity instanceof SearchPreferenceResultListener)) {
             throw new IllegalArgumentException("Activity must implement SearchPreferenceResultListener");
@@ -132,7 +132,7 @@ public class SearchConfiguration {
      *
      * @param historyEnabled True if history should be enabled
      */
-    public void setHistoryEnabled(boolean historyEnabled) {
+    public void setHistoryEnabled(final boolean historyEnabled) {
         this.historyEnabled = historyEnabled;
     }
 
@@ -142,7 +142,7 @@ public class SearchConfiguration {
      *
      * @param historyId the history id
      */
-    public void setHistoryId(String historyId) {
+    public void setHistoryId(final String historyId) {
         this.historyId = historyId;
     }
 
@@ -151,7 +151,7 @@ public class SearchConfiguration {
      *
      * @param fuzzySearchEnabled True if search should be fuzzy
      */
-    public void setFuzzySearchEnabled(boolean fuzzySearchEnabled) {
+    public void setFuzzySearchEnabled(final boolean fuzzySearchEnabled) {
         this.fuzzySearchEnabled = fuzzySearchEnabled;
     }
 
@@ -162,7 +162,7 @@ public class SearchConfiguration {
      *
      * @param breadcrumbsEnabled True if breadcrumbs should be shown
      */
-    public void setBreadcrumbsEnabled(boolean breadcrumbsEnabled) {
+    public void setBreadcrumbsEnabled(final boolean breadcrumbsEnabled) {
         this.breadcrumbsEnabled = breadcrumbsEnabled;
     }
 
@@ -172,7 +172,7 @@ public class SearchConfiguration {
      *
      * @param searchBarEnabled True if search bar should be shown
      */
-    public void setSearchBarEnabled(boolean searchBarEnabled) {
+    public void setSearchBarEnabled(final boolean searchBarEnabled) {
         this.searchBarEnabled = searchBarEnabled;
     }
 
@@ -225,7 +225,7 @@ public class SearchConfiguration {
                 preferenceItem.entries = Arrays.toString(listPreference.getEntries());
             }
         }
-        // FK-TODO: keine Seiteneffekte, please!
+        // FK-TODO: keine Seiteneffekte, bitte!
         preferencesToIndex.add(preferenceItem);
         return preferenceItem;
     }
