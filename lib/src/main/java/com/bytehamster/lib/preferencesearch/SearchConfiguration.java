@@ -1,6 +1,5 @@
 package com.bytehamster.lib.preferencesearch;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.core.util.Supplier;
@@ -14,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-// FK-TODO: refactor
 public class SearchConfiguration {
 
     private final List<String> bannedKeys = new ArrayList<>();
@@ -32,10 +30,6 @@ public class SearchConfiguration {
     private Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier = Collections::emptySet;
 
     SearchConfiguration() {
-    }
-
-    public SearchConfiguration(final FragmentActivity activity) {
-        setActivity(activity);
     }
 
     /**
@@ -63,6 +57,10 @@ public class SearchConfiguration {
         this.historyEnabled = historyEnabled;
     }
 
+    boolean isHistoryEnabled() {
+        return historyEnabled;
+    }
+
     /**
      * Sets the id to use for saving the history. Preference screens with the same history id will share the same
      * history. The default id is null (no id).
@@ -73,6 +71,10 @@ public class SearchConfiguration {
         this.historyId = historyId;
     }
 
+    String getHistoryId() {
+        return historyId;
+    }
+
     /**
      * Allow to enable and disable fuzzy searching. Default is true
      *
@@ -80,6 +82,10 @@ public class SearchConfiguration {
      */
     public void setFuzzySearchEnabled(final boolean fuzzySearchEnabled) {
         this.fuzzySearchEnabled = fuzzySearchEnabled;
+    }
+
+    boolean isFuzzySearchEnabled() {
+        return fuzzySearchEnabled;
     }
 
     /**
@@ -93,6 +99,10 @@ public class SearchConfiguration {
         this.breadcrumbsEnabled = breadcrumbsEnabled;
     }
 
+    boolean isBreadcrumbsEnabled() {
+        return breadcrumbsEnabled;
+    }
+
     /**
      * Show the search bar above the list. When setting this to false, you have to use {@see SearchPreferenceFragment#setSearchTerm(String) setSearchTerm} instead
      * Default is true
@@ -101,6 +111,10 @@ public class SearchConfiguration {
      */
     public void setSearchBarEnabled(final boolean searchBarEnabled) {
         this.searchBarEnabled = searchBarEnabled;
+    }
+
+    boolean isSearchBarEnabled() {
+        return searchBarEnabled;
     }
 
     /**
@@ -116,21 +130,12 @@ public class SearchConfiguration {
         return containerResId;
     }
 
-    /**
-     * Display a reveal animation
-     *
-     * @param centerX     Origin of the reveal animation
-     * @param centerY     Origin of the reveal animation
-     * @param width       Size of the main container
-     * @param height      Size of the main container
-     * @param colorAccent Accent color to use
-     */
-    public void useAnimation(int centerX, int centerY, int width, int height, @ColorInt int colorAccent) {
-        revealAnimationSetting = new RevealAnimationSetting(centerX, centerY, width, height, colorAccent);
-    }
-
     public void setRevealAnimationSetting(final RevealAnimationSetting revealAnimationSetting) {
         this.revealAnimationSetting = revealAnimationSetting;
+    }
+
+    RevealAnimationSetting getRevealAnimationSetting() {
+        return revealAnimationSetting;
     }
 
     public void setPreferenceFragmentsSupplier(final Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier) {
@@ -141,62 +146,38 @@ public class SearchConfiguration {
         return preferenceFragmentsSupplier;
     }
 
+    /**
+     * @param key of the preference to be ignored
+     */
+    public void ignorePreference(@NonNull final String key) {
+        bannedKeys.add(key);
+    }
+
     List<String> getBannedKeys() {
         return bannedKeys;
     }
 
-    /**
-     * @param key of the preference to be ignored
-     */
-    public void ignorePreference(@NonNull String key) {
-        bannedKeys.add(key);
-    }
-
-    boolean isHistoryEnabled() {
-        return historyEnabled;
-    }
-
-    String getHistoryId() {
-        return historyId;
-    }
-
-    boolean isBreadcrumbsEnabled() {
-        return breadcrumbsEnabled;
-    }
-
-    boolean isFuzzySearchEnabled() {
-        return fuzzySearchEnabled;
-    }
-
-    boolean isSearchBarEnabled() {
-        return searchBarEnabled;
-    }
-
-    RevealAnimationSetting getRevealAnimationSetting() {
-        return revealAnimationSetting;
+    public void setTextClearHistory(final String textClearHistory) {
+        this.textClearHistory = textClearHistory;
     }
 
     public String getTextClearHistory() {
         return textClearHistory;
     }
 
-    public void setTextClearHistory(String textClearHistory) {
-        this.textClearHistory = textClearHistory;
+    public void setTextNoResults(final String textNoResults) {
+        this.textNoResults = textNoResults;
     }
 
     public String getTextNoResults() {
         return textNoResults;
     }
 
-    public void setTextNoResults(String textNoResults) {
-        this.textNoResults = textNoResults;
+    public void setTextHint(final String textHint) {
+        this.textHint = textHint;
     }
 
     public String getTextHint() {
         return textHint;
-    }
-
-    public void setTextHint(String textHint) {
-        this.textHint = textHint;
     }
 }

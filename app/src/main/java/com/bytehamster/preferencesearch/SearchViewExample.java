@@ -18,6 +18,7 @@ import com.bytehamster.lib.preferencesearch.SearchPreference;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
@@ -56,12 +57,13 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                         this,
                         android.R.id.content));
         searchConfiguration.setFuzzySearchEnabled(false);
-        searchConfiguration.useAnimation(
-                findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
-                -getSupportActionBar().getHeight() / 2,
-                findViewById(android.R.id.content).getWidth(),
-                findViewById(android.R.id.content).getHeight(),
-                getResources().getColor(R.color.colorPrimary));
+        searchConfiguration.setRevealAnimationSetting(
+                new RevealAnimationSetting(
+                        findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
+                        -getSupportActionBar().getHeight() / 2,
+                        findViewById(android.R.id.content).getWidth(),
+                        findViewById(android.R.id.content).getHeight(),
+                        getResources().getColor(R.color.colorPrimary)));
 
         searchPreferenceActionView.setActivity(this);
 
