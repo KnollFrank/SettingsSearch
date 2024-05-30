@@ -10,17 +10,12 @@ import com.google.common.collect.ImmutableList.Builder;
 
 import java.util.List;
 
-class PreferenceParser {
+class PreferenceProvider {
 
     private final PreferenceFragments preferenceFragments;
 
-    public PreferenceParser(final PreferenceFragments preferenceFragments) {
+    public PreferenceProvider(final PreferenceFragments preferenceFragments) {
         this.preferenceFragments = preferenceFragments;
-    }
-
-    // FK-TODO: rename to getPreferences(), also in test methods
-    public List<Preference> parsePreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
-        return getPreferences(preferenceScreen);
     }
 
     public static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {
@@ -35,7 +30,7 @@ class PreferenceParser {
         return preferencesBuilder.build();
     }
 
-    private List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
+    public List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
         return getPreferences(getPreferenceScreen(preferenceScreen));
     }
 

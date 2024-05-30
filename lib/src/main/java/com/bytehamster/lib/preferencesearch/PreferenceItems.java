@@ -9,8 +9,8 @@ import java.util.Set;
 class PreferenceItems {
 
     public static List<PreferenceItem> getPreferenceItems(final Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments,
-                                                          final PreferenceParser preferenceParser) {
-        return new PreferenceItems1(preferenceParser).getPreferenceItems(preferenceFragments);
+                                                          final PreferenceProvider preferenceProvider) {
+        return new PreferenceItems1(preferenceProvider).getPreferenceItems(preferenceFragments);
     }
 
     public static List<PreferenceItem> getPreferenceItems(final List<Preference> preferences,

@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class PreferenceParserTest {
+public class PreferenceProviderTest {
 
     @BeforeClass
     public static void beforeClass() {
@@ -30,15 +30,15 @@ public class PreferenceParserTest {
     }
 
     @Test
-    public void shouldParseXmlResource() {
+    public void shouldGetPreferences() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final PreferenceParser preferenceParser = new PreferenceParser(new PreferenceFragments(fragmentActivity, TestActivity.FRAGMENT_CONTAINER_VIEW));
+                final PreferenceProvider preferenceProvider = new PreferenceProvider(new PreferenceFragments(fragmentActivity, TestActivity.FRAGMENT_CONTAINER_VIEW));
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
 
                 // When
-                final List<Preference> preferences = preferenceParser.parsePreferenceScreen(preferenceScreen);
+                final List<Preference> preferences = preferenceProvider.getPreferences(preferenceScreen);
 
                 // Then
                 assertThat(preferences, hasSize(1));

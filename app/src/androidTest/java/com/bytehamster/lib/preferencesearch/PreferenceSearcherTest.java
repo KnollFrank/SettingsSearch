@@ -84,11 +84,13 @@ public class PreferenceSearcherTest {
 
     private static PreferenceSearcher createPreferenceSearcher(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
                                                                final TestActivity fragmentActivity) {
+        PreferenceProvider preferenceProvider =
+                PreferenceProviderFactory.createPreferenceProvider(
+                        fragmentActivity,
+                        TestActivity.FRAGMENT_CONTAINER_VIEW);
         return new PreferenceSearcher(
                 PreferenceItems.getPreferenceItems(
-                        PreferenceParserFactory
-                                .createPreferenceParser(fragmentActivity, TestActivity.FRAGMENT_CONTAINER_VIEW)
-                                .parsePreferenceScreen(preferenceScreen),
+                        preferenceProvider.getPreferences(preferenceScreen),
                         preferenceScreen));
     }
 

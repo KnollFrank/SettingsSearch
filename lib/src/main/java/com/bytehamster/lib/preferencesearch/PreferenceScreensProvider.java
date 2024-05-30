@@ -41,7 +41,7 @@ public class PreferenceScreensProvider {
     }
 
     private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreen) {
-        return PreferenceParser
+        return PreferenceProvider
                 .getPreferences(preferenceScreen.preferenceScreen)
                 .stream()
                 .map(Preference::getFragment)

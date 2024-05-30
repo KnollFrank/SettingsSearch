@@ -67,7 +67,7 @@ public class SearchConfiguration {
                 bundle,
                 PreferenceItems.getPreferenceItems(
                         this.preferenceFragmentsSupplier.get(),
-                        PreferenceParserFactory.createPreferenceParser(
+                        PreferenceProviderFactory.createPreferenceProvider(
                                 this.activity,
                                 this.containerResId)));
         searchPreferenceFragment.setArguments(bundle);

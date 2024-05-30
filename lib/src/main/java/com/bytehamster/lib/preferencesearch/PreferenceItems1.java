@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 class PreferenceItems1 {
 
-    private final PreferenceParser preferenceParser;
+    private final PreferenceProvider preferenceProvider;
 
-    public PreferenceItems1(final PreferenceParser preferenceParser) {
-        this.preferenceParser = preferenceParser;
+    public PreferenceItems1(final PreferenceProvider preferenceProvider) {
+        this.preferenceProvider = preferenceProvider;
     }
 
     public List<PreferenceItem> getPreferenceItems(final Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments) {
@@ -27,7 +27,7 @@ class PreferenceItems1 {
     }
 
     private List<PreferenceItem> parsePreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
-        final List<Preference> preferences = preferenceParser.parsePreferenceScreen(preferenceScreen);
+        final List<Preference> preferences = preferenceProvider.getPreferences(preferenceScreen);
         final List<Preference> searchablePreferences =
                 PreferenceItemFilter.getSearchablePreferences(preferences);
         return PreferenceItems.getPreferenceItems(searchablePreferences, preferenceScreen);
