@@ -19,16 +19,16 @@ public class PrefsFragmentFirst extends BaseSearchPreferenceFragment {
     }
 
     private void configureSearchPreference(final SearchPreference searchPreference) {
-        final SearchConfiguration config = searchPreference.getSearchConfiguration();
-        config.setActivity(requireActivity());
-        config.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
-        config.setPreferenceFragmentsSupplier(() ->
+        final SearchConfiguration searchConfiguration = searchPreference.getSearchConfiguration();
+        searchConfiguration.setActivity(requireActivity());
+        searchConfiguration.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
+        searchConfiguration.setPreferenceFragmentsSupplier(() ->
                 getPreferenceFragments(
                         new PrefsFragmentFirst(),
                         getActivity(),
                         FRAGMENT_CONTAINER_VIEW));
-        config.setBreadcrumbsEnabled(true);
-        config.setHistoryEnabled(true);
-        config.setFuzzySearchEnabled(false);
+        searchConfiguration.setBreadcrumbsEnabled(true);
+        searchConfiguration.setHistoryEnabled(true);
+        searchConfiguration.setFuzzySearchEnabled(false);
     }
 }

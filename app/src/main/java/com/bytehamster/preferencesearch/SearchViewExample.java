@@ -118,6 +118,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                         android.R.id.content));
         searchConfiguration.setBreadcrumbsEnabled(true);
         searchConfiguration.setFuzzySearchEnabled(false);
+        searchConfiguration.setHistoryEnabled(true);
         searchConfiguration.setRevealAnimationSetting(
                 new RevealAnimationSetting(
                         findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
