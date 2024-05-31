@@ -1,5 +1,7 @@
 package com.bytehamster.lib.preferencesearch;
 
+import static com.bytehamster.lib.preferencesearch.common.UIUtils.set_VISIBLE_or_GONE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bytehamster.lib.preferencesearch.common.Lists;
-import com.bytehamster.lib.preferencesearch.common.UIUtils;
 import com.bytehamster.lib.preferencesearch.ui.AnimationUtils;
 import com.google.common.collect.ImmutableList;
 
@@ -41,7 +42,6 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
      * Default tag used on the library's Fragment transactions with {@link SearchPreferenceFragment}
      */
     public static final String TAG = "SearchPreferenceFragment";
-
     private static final String SHARED_PREFS_FILE = "preferenceSearch";
     private static final int MAX_HISTORY = 5;
     private PreferenceSearcher preferenceSearcher;
@@ -82,7 +82,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
         viewHolder = new SearchViewHolder(rootView);
 
         viewHolder.clearButton.setOnClickListener(view -> viewHolder.searchView.setText(""));
-        UIUtils.set_VISIBLE_or_GONE(viewHolder.moreButton, searchConfiguration.isHistoryEnabled());
+        set_VISIBLE_or_GONE(viewHolder.moreButton, searchConfiguration.isHistoryEnabled());
         if (searchConfiguration.getTextHint() != null) {
             viewHolder.searchView.setHint(searchConfiguration.getTextHint());
         }
@@ -129,7 +129,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
 
                     private void afterTextChanged(final String searchQuery) {
                         updateSearchResults(searchQuery);
-                        UIUtils.set_VISIBLE_or_GONE(viewHolder.clearButton, !searchQuery.isEmpty());
+                        set_VISIBLE_or_GONE(viewHolder.clearButton, !searchQuery.isEmpty());
                     }
                 });
         if (!searchConfiguration.isSearchBarEnabled()) {
@@ -281,8 +281,8 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     }
 
     private void setEmptyViewVisible(final boolean visible) {
-        UIUtils.set_VISIBLE_or_GONE(viewHolder.noResults, visible);
-        UIUtils.set_VISIBLE_or_GONE(viewHolder.recyclerView, !visible);
+        set_VISIBLE_or_GONE(viewHolder.noResults, visible);
+        set_VISIBLE_or_GONE(viewHolder.recyclerView, !visible);
     }
 
     private void showHistory() {
