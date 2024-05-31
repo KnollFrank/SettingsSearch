@@ -2,7 +2,6 @@ package com.bytehamster.lib.preferencesearch;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.core.util.Supplier;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -24,11 +23,13 @@ public class SearchConfiguration {
     private FragmentActivity activity;
     @IdRes
     private int fragmentContainerViewId = -1;
+    @IdRes
+    private int dummyFragmentContainerViewId = -1;
     private RevealAnimationSetting revealAnimationSetting = null;
     private String textClearHistory;
     private String textNoResults;
     private String textHint;
-    private Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier = Collections::emptySet;
+    private Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments = Collections.emptySet();
 
     SearchConfiguration() {
     }
@@ -131,6 +132,14 @@ public class SearchConfiguration {
         return fragmentContainerViewId;
     }
 
+    public void setDummyFragmentContainerViewId(@IdRes final int dummyFragmentContainerViewId) {
+        this.dummyFragmentContainerViewId = dummyFragmentContainerViewId;
+    }
+
+    public int getDummyFragmentContainerViewId() {
+        return dummyFragmentContainerViewId;
+    }
+
     public void setRevealAnimationSetting(final RevealAnimationSetting revealAnimationSetting) {
         this.revealAnimationSetting = revealAnimationSetting;
     }
@@ -139,13 +148,12 @@ public class SearchConfiguration {
         return revealAnimationSetting;
     }
 
-    // FK-TODO: remove Supplier?
-    public void setPreferenceFragmentsSupplier(final Supplier<Set<Class<? extends PreferenceFragmentCompat>>> preferenceFragmentsSupplier) {
-        this.preferenceFragmentsSupplier = preferenceFragmentsSupplier;
+    public void setPreferenceFragments(final Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments) {
+        this.preferenceFragments = preferenceFragments;
     }
 
-    public Supplier<Set<Class<? extends PreferenceFragmentCompat>>> getPreferenceFragmentsSupplier() {
-        return preferenceFragmentsSupplier;
+    public Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments() {
+        return preferenceFragments;
     }
 
     /**

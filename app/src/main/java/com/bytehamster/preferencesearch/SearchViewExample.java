@@ -24,6 +24,8 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
 
     @IdRes
     public static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
+    @IdRes
+    public static final int DUMMY_FRAGMENT_CONTAINER_VIEW = R.id.dummyFragmentContainerView;
 
     private static final String KEY_SEARCH_QUERY = "search_query";
     private static final String KEY_SEARCH_ENABLED = "search_enabled";
@@ -42,7 +44,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         }
         Navigation.show(
                 new PrefsFragment(),
-                false,
+                true,
                 getSupportFragmentManager(),
                 FRAGMENT_CONTAINER_VIEW);
     }
@@ -116,11 +118,12 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
 
     private void configure(final SearchConfiguration searchConfiguration) {
         searchConfiguration.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
-        searchConfiguration.setPreferenceFragmentsSupplier(() ->
+        searchConfiguration.setDummyFragmentContainerViewId(DUMMY_FRAGMENT_CONTAINER_VIEW);
+        searchConfiguration.setPreferenceFragments(
                 getPreferenceFragments(
                         new PrefsFragment(),
                         this,
-                        FRAGMENT_CONTAINER_VIEW));
+                        DUMMY_FRAGMENT_CONTAINER_VIEW));
         searchConfiguration.setBreadcrumbsEnabled(true);
         searchConfiguration.setFuzzySearchEnabled(false);
         searchConfiguration.setHistoryEnabled(true);

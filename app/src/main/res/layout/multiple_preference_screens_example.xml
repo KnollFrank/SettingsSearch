@@ -25,4 +25,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView" />
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/dummyFragmentContainerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

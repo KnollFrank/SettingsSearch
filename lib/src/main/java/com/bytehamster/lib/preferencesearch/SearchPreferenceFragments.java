@@ -25,10 +25,10 @@ public class SearchPreferenceFragments {
         PreferenceItemsBundle.writePreferenceItems(
                 bundle,
                 PreferenceItems.getPreferenceItems(
-                        this.searchConfiguration.getPreferenceFragmentsSupplier().get(),
+                        this.searchConfiguration.getPreferenceFragments(),
                         PreferenceProviderFactory.createPreferenceProvider(
                                 this.searchConfiguration.getActivity(),
-                                this.searchConfiguration.getFragmentContainerViewId())));
+                                this.searchConfiguration.getDummyFragmentContainerViewId())));
         searchPreferenceFragment.setArguments(bundle);
         return searchPreferenceFragment;
     }
