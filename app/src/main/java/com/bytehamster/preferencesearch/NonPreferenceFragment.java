@@ -1,4 +1,4 @@
-package com.bytehamster.preferencesearch.multiplePreferenceScreens;
+package com.bytehamster.preferencesearch;
 
 import androidx.fragment.app.Fragment;
 

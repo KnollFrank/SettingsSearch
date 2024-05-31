@@ -9,7 +9,7 @@
         android:persistent="false"
         android:summary="some summary to third fragment"
         android:title="some title to third fragment"
-        app:fragment="com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentThird" />
+        app:fragment="com.bytehamster.preferencesearch.PrefsFragmentThird" />
 
     <CheckBoxPreference
         android:key="secondfile"

@@ -10,21 +10,21 @@
         android:persistent="false"
         android:summary="some summary to second fragment"
         android:title="some title to second fragment"
-        app:fragment="com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentSecond" />
+        app:fragment="com.bytehamster.preferencesearch.PrefsFragmentSecond" />
 
     <Preference
         android:key="link_to_fourth_fragment"
         android:persistent="false"
         android:summary="some summary to fourth fragment"
         android:title="some title to fourth fragment"
-        app:fragment="com.bytehamster.preferencesearch.multiplePreferenceScreens.PrefsFragmentFourth" />
+        app:fragment="com.bytehamster.preferencesearch.PrefsFragmentFourth" />
 
     <Preference
         android:key="link_to_nonPreference_fragment"
         android:persistent="false"
         android:summary="some summary to nonPreference fragment"
         android:title="some title to nonPreference fragment"
-        app:fragment="com.bytehamster.preferencesearch.multiplePreferenceScreens.NonPreferenceFragment" />
+        app:fragment="com.bytehamster.preferencesearch.NonPreferenceFragment" />
 
     <CheckBoxPreference
         android:key="checkbox"

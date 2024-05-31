@@ -1,9 +1,8 @@
-package com.bytehamster.preferencesearch.multiplePreferenceScreens;
+package com.bytehamster.preferencesearch;
 
 import android.os.Bundle;
 
 import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
-import com.bytehamster.preferencesearch.R;
 
 public class PrefsFragmentFourth extends BaseSearchPreferenceFragment {
 

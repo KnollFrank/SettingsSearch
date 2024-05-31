@@ -9,16 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".multiplePreferenceScreens.MultiplePreferenceScreensExample"
-            android:exported="true"
-            android:label="@string/app_name_MultiplePreferenceScreens"
-            android:theme="@style/AppThemeDark">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".SearchViewExample"
             android:exported="true"
             android:label="@string/app_name_search_view"
