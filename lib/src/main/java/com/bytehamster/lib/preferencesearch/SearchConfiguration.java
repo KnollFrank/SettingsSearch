@@ -23,7 +23,7 @@ public class SearchConfiguration {
     private boolean searchBarEnabled = true;
     private FragmentActivity activity;
     @IdRes
-    private int fragmentContainerViewId = android.R.id.content;
+    private int fragmentContainerViewId = -1;
     private RevealAnimationSetting revealAnimationSetting = null;
     private String textClearHistory;
     private String textNoResults;
