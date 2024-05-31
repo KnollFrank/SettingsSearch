@@ -22,7 +22,8 @@ public class SearchConfiguration {
     private boolean fuzzySearchEnabled = true;
     private boolean searchBarEnabled = true;
     private FragmentActivity activity;
-    private int containerResId = android.R.id.content;
+    @IdRes
+    private int fragmentContainerViewId = android.R.id.content;
     private RevealAnimationSetting revealAnimationSetting = null;
     private String textClearHistory;
     private String textNoResults;
@@ -120,14 +121,14 @@ public class SearchConfiguration {
     /**
      * Sets the container to use when loading the fragment
      *
-     * @param containerResId Resource id of the container
+     * @param fragmentContainerViewId Resource id of the container
      */
-    public void setFragmentContainerViewId(@IdRes final int containerResId) {
-        this.containerResId = containerResId;
+    public void setFragmentContainerViewId(@IdRes final int fragmentContainerViewId) {
+        this.fragmentContainerViewId = fragmentContainerViewId;
     }
 
     public int getFragmentContainerViewId() {
-        return containerResId;
+        return fragmentContainerViewId;
     }
 
     public void setRevealAnimationSetting(final RevealAnimationSetting revealAnimationSetting) {
