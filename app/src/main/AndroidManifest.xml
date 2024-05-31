@@ -11,7 +11,7 @@
         <activity
             android:name=".SearchViewExample"
             android:exported="true"
-            android:label="@string/app_name_search_view"
+            android:label="@string/app_name_search_view_example"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

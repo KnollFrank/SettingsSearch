@@ -1,7 +1,4 @@
 <resources>
-    <string name="app_name">PrefSearch</string>
-    <string name="app_name_enhanced">PrefSearch++</string>
-    <string name="app_name_no_preferences">PrefSearch+++</string>
-    <string name="app_name_search_view">Search View</string>
-    <string name="app_name_MultiplePreferenceScreens">MultiplePreferenceScreens</string>
+    <string name="app_name">Search Preference</string>
+    <string name="app_name_search_view_example">Search View Example</string>
 </resources>
