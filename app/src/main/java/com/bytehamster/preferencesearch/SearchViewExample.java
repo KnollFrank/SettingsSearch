@@ -54,15 +54,6 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                 FRAGMENT_CONTAINER_VIEW);
     }
 
-    private void _setContentView(final @LayoutRes int resource) {
-        final Pair<ViewGroup, Integer> contentViewAndDummyFragmentContainerViewId =
-                UIUtils.createContentViewAndDummyFragmentContainerViewId(
-                        resource,
-                        this);
-        dummyFragmentContainerViewId = contentViewAndDummyFragmentContainerViewId.second;
-        setContentView(contentViewAndDummyFragmentContainerViewId.first);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -128,6 +119,15 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             addPreferencesFromResource(R.xml.preferences_multiple_screens);
         }
+    }
+
+    private void _setContentView(final @LayoutRes int resource) {
+        final Pair<ViewGroup, Integer> contentViewAndDummyFragmentContainerViewId =
+                UIUtils.createContentViewAndDummyFragmentContainerViewId(
+                        resource,
+                        this);
+        dummyFragmentContainerViewId = contentViewAndDummyFragmentContainerViewId.second;
+        setContentView(contentViewAndDummyFragmentContainerViewId.first);
     }
 
     private void configure(final SearchConfiguration searchConfiguration) {
