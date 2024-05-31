@@ -5,10 +5,14 @@ import static com.bytehamster.lib.preferencesearch.PreferenceFragments.getPrefer
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,14 +22,13 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+import com.bytehamster.lib.preferencesearch.common.UIUtils;
 import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
     @IdRes
     public static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
-    @IdRes
-    public static final int DUMMY_FRAGMENT_CONTAINER_VIEW = R.id.dummyFragmentContainerView;
 
     private static final String KEY_SEARCH_QUERY = "search_query";
     private static final String KEY_SEARCH_ENABLED = "search_enabled";
@@ -33,20 +36,31 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     private MenuItem searchPreferenceMenuItem;
     private String searchQuery;
     private boolean searchEnabled;
+    @IdRes
+    private int dummyFragmentContainerViewId = View.NO_ID;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.bytehamster.preferencesearch.R.layout.multiple_preference_screens_example);
+        _setContentView(R.layout.multiple_preference_screens_example);
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY);
             searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED);
         }
         Navigation.show(
                 new PrefsFragment(),
-                true,
+                false,
                 getSupportFragmentManager(),
                 FRAGMENT_CONTAINER_VIEW);
+    }
+
+    private void _setContentView(final @LayoutRes int resource) {
+        final Pair<ViewGroup, Integer> contentViewAndDummyFragmentContainerViewId =
+                UIUtils.createContentViewAndDummyFragmentContainerViewId(
+                        resource,
+                        this);
+        dummyFragmentContainerViewId = contentViewAndDummyFragmentContainerViewId.second;
+        setContentView(contentViewAndDummyFragmentContainerViewId.first);
     }
 
     @Override
@@ -118,12 +132,12 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
 
     private void configure(final SearchConfiguration searchConfiguration) {
         searchConfiguration.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
-        searchConfiguration.setDummyFragmentContainerViewId(DUMMY_FRAGMENT_CONTAINER_VIEW);
+        searchConfiguration.setDummyFragmentContainerViewId(dummyFragmentContainerViewId);
         searchConfiguration.setPreferenceFragments(
                 getPreferenceFragments(
                         new PrefsFragment(),
                         this,
-                        DUMMY_FRAGMENT_CONTAINER_VIEW));
+                        dummyFragmentContainerViewId));
         searchConfiguration.setBreadcrumbsEnabled(true);
         searchConfiguration.setFuzzySearchEnabled(false);
         searchConfiguration.setHistoryEnabled(true);

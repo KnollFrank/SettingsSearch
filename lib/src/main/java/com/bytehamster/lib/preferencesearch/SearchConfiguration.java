@@ -1,5 +1,7 @@
 package com.bytehamster.lib.preferencesearch;
 
+import android.view.View;
+
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -22,9 +24,9 @@ public class SearchConfiguration {
     private boolean searchBarEnabled = true;
     private FragmentActivity activity;
     @IdRes
-    private int fragmentContainerViewId = -1;
+    private int fragmentContainerViewId = View.NO_ID;
     @IdRes
-    private int dummyFragmentContainerViewId = -1;
+    private int dummyFragmentContainerViewId = View.NO_ID;
     private RevealAnimationSetting revealAnimationSetting = null;
     private String textClearHistory;
     private String textNoResults;
