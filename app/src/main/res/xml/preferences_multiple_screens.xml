@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="first screen">
 
-    <com.bytehamster.lib.preferencesearch.SearchPreference android:key="searchPreference" />
-
     <Preference
         android:key="link_to_second_fragment"
         android:persistent="false"

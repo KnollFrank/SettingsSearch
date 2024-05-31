@@ -34,9 +34,7 @@ class PreferenceItems {
 
             private List<PreferenceItem> parsePreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
                 final List<Preference> preferences = preferenceProvider.getPreferences(preferenceScreen);
-                final List<Preference> searchablePreferences =
-                        PreferenceItemFilter.getSearchablePreferences(preferences);
-                return PreferenceItems.getPreferenceItems(searchablePreferences, preferenceScreen);
+                return PreferenceItems.getPreferenceItems(preferences, preferenceScreen);
             }
         }
 
