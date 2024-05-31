@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,6 +22,9 @@ import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
+    @IdRes
+    public static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
+
     private static final String KEY_SEARCH_QUERY = "search_query";
     private static final String KEY_SEARCH_ENABLED = "search_enabled";
     private SearchPreferenceActionView searchPreferenceActionView;
@@ -31,6 +35,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(com.bytehamster.preferencesearch.R.layout.multiple_preference_screens_example);
         if (savedInstanceState != null) {
             searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY);
             searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED);
@@ -39,7 +44,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                 new PrefsFragment(),
                 false,
                 getSupportFragmentManager(),
-                android.R.id.content);
+                FRAGMENT_CONTAINER_VIEW);
     }
 
     @Override
@@ -83,7 +88,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                 result.getKey(),
                 true,
                 this,
-                android.R.id.content);
+                FRAGMENT_CONTAINER_VIEW);
     }
 
     @Override
@@ -111,20 +116,21 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     }
 
     private void configure(final SearchConfiguration searchConfiguration) {
+        searchConfiguration.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
         searchConfiguration.setPreferenceFragmentsSupplier(() ->
                 getPreferenceFragments(
                         new PrefsFragment(),
                         this,
-                        android.R.id.content));
+                        FRAGMENT_CONTAINER_VIEW));
         searchConfiguration.setBreadcrumbsEnabled(true);
         searchConfiguration.setFuzzySearchEnabled(false);
         searchConfiguration.setHistoryEnabled(true);
         searchConfiguration.setRevealAnimationSetting(
                 new RevealAnimationSetting(
-                        findViewById(android.R.id.content).getWidth() - getSupportActionBar().getHeight() / 2,
+                        findViewById(FRAGMENT_CONTAINER_VIEW).getWidth() - getSupportActionBar().getHeight() / 2,
                         -getSupportActionBar().getHeight() / 2,
-                        findViewById(android.R.id.content).getWidth(),
-                        findViewById(android.R.id.content).getHeight(),
+                        findViewById(FRAGMENT_CONTAINER_VIEW).getWidth(),
+                        findViewById(FRAGMENT_CONTAINER_VIEW).getHeight(),
                         getResources().getColor(R.color.colorPrimary)));
     }
 }
