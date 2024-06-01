@@ -12,14 +12,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class Navigation {
 
-    public static void navigatePathAndHighlightPreference(final String fragment,
-                                                          final String key,
-                                                          final boolean addToBackStack,
-                                                          final FragmentActivity fragmentActivity,
-                                                          @IdRes final int containerViewId) {
+    public static void showPreferenceScreenAndHighlightPreference(
+            final String fragmentOfPreferenceScreen,
+            final String keyOfPreference2Highlight,
+            final FragmentActivity fragmentActivity,
+            @IdRes final int containerViewId) {
         show(
-                Fragment.instantiate(fragmentActivity, fragment, createArguments(key)),
-                addToBackStack,
+                Fragment.instantiate(fragmentActivity, fragmentOfPreferenceScreen, createArguments(keyOfPreference2Highlight)),
+                true,
                 fragmentActivity.getSupportFragmentManager(),
                 containerViewId);
     }

@@ -15,6 +15,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.Navigation;
@@ -60,7 +61,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         searchPreferenceMenuItem = menu.findItem(R.id.search);
         searchPreferenceActionView = (SearchPreferenceActionView) searchPreferenceMenuItem.getActionView();
         searchPreferenceActionView.setActivity(this);
-        configure(searchPreferenceActionView.getSearchConfiguration());
+        configure(searchPreferenceActionView.getSearchConfiguration(), new PrefsFragment());
         searchPreferenceMenuItem.setOnActionExpandListener(
                 new MenuItem.OnActionExpandListener() {
 
@@ -90,10 +91,9 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
         searchPreferenceActionView.cancelSearch();
         searchPreferenceMenuItem.collapseActionView();
-        Navigation.navigatePathAndHighlightPreference(
+        Navigation.showPreferenceScreenAndHighlightPreference(
                 result.getPreferenceFragmentClass().getName(),
                 result.getKey(),
-                true,
                 this,
                 FRAGMENT_CONTAINER_VIEW);
     }
@@ -130,12 +130,13 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         setContentView(contentViewAndDummyFragmentContainerViewId.first);
     }
 
-    private void configure(final SearchConfiguration searchConfiguration) {
+    private void configure(final SearchConfiguration searchConfiguration,
+                           final PreferenceFragmentCompat root) {
         searchConfiguration.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
         searchConfiguration.setDummyFragmentContainerViewId(dummyFragmentContainerViewId);
         searchConfiguration.setPreferenceFragments(
                 getPreferenceFragments(
-                        new PrefsFragment(),
+                        root,
                         this,
                         dummyFragmentContainerViewId));
         searchConfiguration.setBreadcrumbsEnabled(true);
