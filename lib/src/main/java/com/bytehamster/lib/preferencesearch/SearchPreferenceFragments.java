@@ -10,7 +10,7 @@ public class SearchPreferenceFragments {
         this.searchConfiguration = searchConfiguration;
     }
 
-    public SearchPreferenceFragment showSearchFragment() {
+    public SearchPreferenceFragment createAndShowSearchPreferenceFragment() {
         if (this.searchConfiguration.getActivity() == null) {
             throw new IllegalStateException("setActivity() not called");
         }

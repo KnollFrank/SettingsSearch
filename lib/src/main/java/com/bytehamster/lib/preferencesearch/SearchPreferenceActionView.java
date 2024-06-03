@@ -91,7 +91,8 @@ public class SearchPreferenceActionView extends SearchView {
         setOnQueryTextFocusChangeListener(
                 (v, hasFocus) -> {
                     if (hasFocus && (searchPreferenceFragment == null || !searchPreferenceFragment.isVisible())) {
-                        searchPreferenceFragment = new SearchPreferenceFragments(searchConfiguration).showSearchFragment();
+                        final SearchPreferenceFragments searchPreferenceFragments = new SearchPreferenceFragments(searchConfiguration);
+                        searchPreferenceFragment = searchPreferenceFragments.createAndShowSearchPreferenceFragment();
                         searchPreferenceFragment.setHistoryClickListener(entry -> setQuery(entry, false));
                     }
                 });
