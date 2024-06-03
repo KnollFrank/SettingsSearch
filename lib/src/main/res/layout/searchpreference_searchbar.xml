@@ -70,5 +70,4 @@
             app:srcCompat="@drawable/searchpreference_ic_more"
             app:tint="?android:attr/textColorPrimary" />
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>
