@@ -47,11 +47,13 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
             searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY);
             searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED);
         }
-        Navigation.show(
-                new PrefsFragment(),
-                false,
-                getSupportFragmentManager(),
-                FRAGMENT_CONTAINER_VIEW);
+        if (savedInstanceState == null) {
+            Navigation.show(
+                    new PrefsFragment(),
+                    false,
+                    getSupportFragmentManager(),
+                    FRAGMENT_CONTAINER_VIEW);
+        }
     }
 
     @Override
