@@ -1,8 +1,6 @@
 package com.bytehamster.preferencesearch;
 
 
-import static com.bytehamster.lib.preferencesearch.PreferenceFragments.getPreferenceFragments;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Pair;
@@ -18,6 +16,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.Navigation;
+import com.bytehamster.lib.preferencesearch.PreferenceFragments;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
@@ -136,7 +135,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         searchConfiguration.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
         searchConfiguration.setDummyFragmentContainerViewId(dummyFragmentContainerViewId);
         searchConfiguration.setPreferenceFragments(
-                getPreferenceFragments(
+                PreferenceFragments.getPreferenceFragments(
                         root,
                         this,
                         dummyFragmentContainerViewId));
