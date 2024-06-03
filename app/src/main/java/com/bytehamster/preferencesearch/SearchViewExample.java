@@ -9,7 +9,6 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
@@ -29,7 +28,7 @@ import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
     @IdRes
-    public static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
+    private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
 
     private static final String KEY_SEARCH_QUERY = "search_query";
     private static final String KEY_SEARCH_ENABLED = "search_enabled";
@@ -122,7 +121,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     }
 
     private void _setContentView(final @LayoutRes int resource) {
-        final Pair<ViewGroup, Integer> contentViewAndDummyFragmentContainerViewId =
+        final Pair<View, Integer> contentViewAndDummyFragmentContainerViewId =
                 UIUtils.createContentViewAndDummyFragmentContainerViewId(
                         resource,
                         this);

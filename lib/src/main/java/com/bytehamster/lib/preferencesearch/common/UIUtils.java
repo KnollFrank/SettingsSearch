@@ -15,7 +15,7 @@ public class UIUtils {
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-    public static Pair<ViewGroup, Integer> createContentViewAndDummyFragmentContainerViewId(
+    public static Pair<View, Integer> createContentViewAndDummyFragmentContainerViewId(
             final @LayoutRes int resource,
             final Activity activity) {
         final ViewGroup contentView = (ViewGroup) activity.getLayoutInflater().inflate(resource, null);
