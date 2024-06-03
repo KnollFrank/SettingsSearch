@@ -36,37 +36,37 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder h, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
         final ListItem listItem = dataset.get(position);
         if (getItemViewType(position) == HistoryItem.TYPE) {
-            HistoryViewHolder holder = (HistoryViewHolder) h;
+            final HistoryViewHolder historyViewHolder = (HistoryViewHolder) viewHolder;
             HistoryItem item = (HistoryItem) listItem;
-            holder.term.setText(item.getTerm());
+            historyViewHolder.term.setText(item.getTerm());
         } else if (getItemViewType(position) == PreferenceItem.TYPE) {
-            PreferenceViewHolder holder = (PreferenceViewHolder) h;
-            PreferenceItem item = (PreferenceItem) listItem;
-            holder.title.setText(item.title);
+            final PreferenceViewHolder preferenceViewHolder = (PreferenceViewHolder) viewHolder;
+            final PreferenceItem item = (PreferenceItem) listItem;
+            preferenceViewHolder.title.setText(item.title);
 
             if (TextUtils.isEmpty(item.summary)) {
-                holder.summary.setVisibility(View.GONE);
+                preferenceViewHolder.summary.setVisibility(View.GONE);
             } else {
-                holder.summary.setVisibility(View.VISIBLE);
-                holder.summary.setText(item.summary);
+                preferenceViewHolder.summary.setVisibility(View.VISIBLE);
+                preferenceViewHolder.summary.setText(item.summary);
             }
 
             if (searchConfiguration.isBreadcrumbsEnabled()) {
-                holder.breadcrumbs.setText(item.breadcrumbs);
-                holder.breadcrumbs.setAlpha(0.6f);
-                holder.summary.setAlpha(1.0f);
+                preferenceViewHolder.breadcrumbs.setText(item.breadcrumbs);
+                preferenceViewHolder.breadcrumbs.setAlpha(0.6f);
+                preferenceViewHolder.summary.setAlpha(1.0f);
             } else {
-                holder.breadcrumbs.setVisibility(View.GONE);
-                holder.summary.setAlpha(0.6f);
+                preferenceViewHolder.breadcrumbs.setVisibility(View.GONE);
+                preferenceViewHolder.summary.setAlpha(0.6f);
             }
         }
 
-        h.root.setOnClickListener(v -> {
+        viewHolder.root.setOnClickListener(v -> {
             if (onItemClickListener != null) {
-                onItemClickListener.onItemClicked(listItem, h.getAdapterPosition());
+                onItemClickListener.onItemClicked(listItem, viewHolder.getAdapterPosition());
             }
         });
     }
@@ -101,15 +101,16 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        final View root;
+        public final View root;
 
-        ViewHolder(View v) {
-            super(v);
-            root = v;
+        public ViewHolder(final View root) {
+            super(root);
+            this.root = root;
         }
     }
 
     static class HistoryViewHolder extends ViewHolder {
+
         final TextView term;
 
         HistoryViewHolder(View v) {
@@ -119,15 +120,16 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapt
     }
 
     static class PreferenceViewHolder extends ViewHolder {
-        final TextView title;
-        final TextView summary;
-        final TextView breadcrumbs;
 
-        PreferenceViewHolder(View v) {
-            super(v);
-            title = v.findViewById(R.id.title);
-            summary = v.findViewById(R.id.summary);
-            breadcrumbs = v.findViewById(R.id.breadcrumbs);
+        public final TextView title;
+        public final TextView summary;
+        public final TextView breadcrumbs;
+
+        public PreferenceViewHolder(final View view) {
+            super(view);
+            title = view.findViewById(R.id.title);
+            summary = view.findViewById(R.id.summary);
+            breadcrumbs = view.findViewById(R.id.breadcrumbs);
         }
     }
 }
