@@ -27,14 +27,12 @@ public class SearchConfiguration {
     private int fragmentContainerViewId = View.NO_ID;
     @IdRes
     private int dummyFragmentContainerViewId = View.NO_ID;
+    // FK-TODO: remove revealAnimationSetting
     private RevealAnimationSetting revealAnimationSetting = null;
     private String textClearHistory;
     private String textNoResults;
     private String textHint;
     private Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments = Collections.emptySet();
-
-    SearchConfiguration() {
-    }
 
     /**
      * Sets the current activity that also receives callbacks

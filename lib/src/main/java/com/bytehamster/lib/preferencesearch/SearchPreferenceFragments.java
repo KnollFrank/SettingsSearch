@@ -10,13 +10,11 @@ public class SearchPreferenceFragments {
         this.searchConfiguration = searchConfiguration;
     }
 
-    public SearchPreferenceFragment createAndShowSearchPreferenceFragment() {
+    public void showSearchPreferenceFragment() {
         if (this.searchConfiguration.getActivity() == null) {
             throw new IllegalStateException("setActivity() not called");
         }
-        final SearchPreferenceFragment searchPreferenceFragment = createSearchPreferenceFragment();
-        show(searchPreferenceFragment);
-        return searchPreferenceFragment;
+        show(createSearchPreferenceFragment());
     }
 
     private SearchPreferenceFragment createSearchPreferenceFragment() {

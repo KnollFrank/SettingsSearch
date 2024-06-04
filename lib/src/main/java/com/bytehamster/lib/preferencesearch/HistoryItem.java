@@ -2,6 +2,7 @@ package com.bytehamster.lib.preferencesearch;
 
 import java.util.Objects;
 
+// FK-TODO: remove HistoryItem
 class HistoryItem extends ListItem {
 
     static final int TYPE = 1;

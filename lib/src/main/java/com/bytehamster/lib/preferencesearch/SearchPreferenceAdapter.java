@@ -13,13 +13,9 @@ import com.google.common.collect.ImmutableList;
 
 class SearchPreferenceAdapter extends RecyclerView.Adapter<SearchPreferenceAdapter.ViewHolder> {
 
-    private ImmutableList<ListItem> dataset;
+    private ImmutableList<ListItem> dataset = ImmutableList.of();
     private SearchConfiguration searchConfiguration;
     private SearchClickListener onItemClickListener;
-
-    SearchPreferenceAdapter() {
-        dataset = ImmutableList.of();
-    }
 
     @NonNull
     @Override

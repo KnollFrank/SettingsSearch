@@ -6,25 +6,12 @@
     android:clipToPadding="false"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/searchpreference_searchbar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="0dp" />
-
-    <TextView
-        android:id="@+id/no_results"
+    <SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="48dp"
-        android:text="@string/searchpreference_no_results"
-        android:visibility="gone" />
+        android:iconifiedByDefault="false"
+        android:queryHint="Search Preferences" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
