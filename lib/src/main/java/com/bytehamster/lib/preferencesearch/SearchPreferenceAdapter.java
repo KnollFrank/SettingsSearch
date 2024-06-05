@@ -1,6 +1,5 @@
 package com.bytehamster.lib.preferencesearch;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,15 +40,15 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<PreferenceViewHolder>
     public void onBindViewHolder(@NonNull final PreferenceViewHolder preferenceViewHolder,
                                  final int position) {
         final PreferenceItem preferenceItem = preferenceItems.get(position);
-        preferenceViewHolder.title.setText(preferenceItem.title);
+        preferenceViewHolder.title.setText(preferenceItem.title.orElse(null));
 
-        preferenceViewHolder.summary.setText(preferenceItem.summary);
+        preferenceViewHolder.summary.setText(preferenceItem.summary.orElse(null));
         UIUtils.set_VISIBLE_or_GONE(
                 preferenceViewHolder.summary,
-                !TextUtils.isEmpty(preferenceItem.summary));
+                preferenceItem.summary.isPresent());
 
         if (searchConfiguration.isBreadcrumbsEnabled()) {
-            preferenceViewHolder.breadcrumbs.setText(preferenceItem.breadcrumbs);
+            preferenceViewHolder.breadcrumbs.setText(preferenceItem.breadcrumbs.orElse(null));
             preferenceViewHolder.breadcrumbs.setAlpha(0.6f);
             preferenceViewHolder.summary.setAlpha(1.0f);
         } else {

@@ -22,6 +22,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PreferenceSearcherTest {
@@ -98,6 +99,8 @@ public class PreferenceSearcherTest {
         return preferenceItems
                 .stream()
                 .map(result -> result.title)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 }

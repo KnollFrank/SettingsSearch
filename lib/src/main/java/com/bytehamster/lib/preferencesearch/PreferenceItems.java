@@ -8,6 +8,7 @@ import com.bytehamster.lib.preferencesearch.common.Lists;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,21 +58,29 @@ public class PreferenceItems {
 
             private static PreferenceItem getPreferenceItem(final Preference preference,
                                                             final Class<? extends PreferenceFragmentCompat> resId) {
-                final PreferenceItem preferenceItem =
-                        new PreferenceItem(
-                                preference.getTitle() != null ? preference.getTitle().toString() : null,
-                                preference.getSummary() != null ? preference.getSummary().toString() : null,
-                                preference.getKey(),
-                                null,
-                                null,
-                                resId);
-                if (preference instanceof ListPreference) {
-                    final ListPreference listPreference = ((ListPreference) preference);
-                    if (listPreference.getEntries() != null) {
-                        preferenceItem.entries = Arrays.toString(listPreference.getEntries());
-                    }
+                return new PreferenceItem(
+                        asString(preference.getTitle()),
+                        asString(preference.getSummary()),
+                        Optional.ofNullable(preference.getKey()),
+                        Optional.empty(),
+                        Optional.empty(),
+                        getEntries(preference),
+                        resId);
+            }
+
+            private static Optional<String> asString(final CharSequence charSequence) {
+                return Optional
+                        .ofNullable(charSequence)
+                        .map(CharSequence::toString);
+            }
+
+            private static Optional<String> getEntries(final Preference preference) {
+                if (!(preference instanceof ListPreference)) {
+                    return Optional.empty();
                 }
-                return preferenceItem;
+                return Optional
+                        .ofNullable(((ListPreference) preference).getEntries())
+                        .map(Arrays::toString);
             }
         }
 

@@ -65,7 +65,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
 
     private static SearchPreferenceResult getSearchPreferenceResult(final PreferenceItem preferenceItem) {
         return new SearchPreferenceResult(
-                preferenceItem.key,
+                preferenceItem.key.orElse(null),
                 preferenceItem.resId,
                 Lists
                         .getLastElement(preferenceItem.keyBreadcrumbs)

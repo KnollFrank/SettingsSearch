@@ -9,6 +9,8 @@ import com.bytehamster.lib.preferencesearch.PreferenceSearcherTest.PrefsFragment
 
 import org.junit.Test;
 
+import java.util.Optional;
+
 public class PreferenceItemTest {
 
     @Test
@@ -16,11 +18,12 @@ public class PreferenceItemTest {
         // Given
         final PreferenceItem preferenceItem =
                 new PreferenceItem(
-                        "title",
-                        "summary",
-                        "key",
-                        "breadcrumbs",
-                        "keywords",
+                        Optional.of("title"),
+                        Optional.of("summary"),
+                        Optional.of("key"),
+                        Optional.of("breadcrumbs"),
+                        Optional.of("keywords"),
+                        Optional.of("entries"),
                         PrefsFragment.class);
 
         // Obtain a Parcel object and write the parcelable object to it:
