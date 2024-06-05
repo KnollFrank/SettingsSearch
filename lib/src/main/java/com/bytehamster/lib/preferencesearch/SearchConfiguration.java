@@ -3,18 +3,14 @@ package com.bytehamster.lib.preferencesearch;
 import android.view.View;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 public class SearchConfiguration {
 
-    private final List<String> bannedKeys = new ArrayList<>();
     private boolean historyEnabled = true;
     private String historyId = null;
     private boolean breadcrumbsEnabled = false;
@@ -142,17 +138,6 @@ public class SearchConfiguration {
 
     public Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments() {
         return preferenceFragments;
-    }
-
-    /**
-     * @param key of the preference to be ignored
-     */
-    public void ignorePreference(@NonNull final String key) {
-        bannedKeys.add(key);
-    }
-
-    List<String> getBannedKeys() {
-        return bannedKeys;
     }
 
     public void setTextClearHistory(final String textClearHistory) {
