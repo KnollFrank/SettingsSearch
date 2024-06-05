@@ -14,8 +14,6 @@ public class SearchConfiguration {
     private boolean breadcrumbsEnabled = false;
     // FK-TODO: remove
     private boolean fuzzySearchEnabled = true;
-    // FK-TODO: remove
-    private boolean searchBarEnabled = true;
     private FragmentActivity activity;
     @IdRes
     private int fragmentContainerViewId = View.NO_ID;
@@ -67,20 +65,6 @@ public class SearchConfiguration {
 
     boolean isBreadcrumbsEnabled() {
         return breadcrumbsEnabled;
-    }
-
-    /**
-     * Show the search bar above the list. When setting this to false, you have to use {@see SearchPreferenceFragment#setSearchTerm(String) setSearchTerm} instead
-     * Default is true
-     *
-     * @param searchBarEnabled True if search bar should be shown
-     */
-    public void setSearchBarEnabled(final boolean searchBarEnabled) {
-        this.searchBarEnabled = searchBarEnabled;
-    }
-
-    boolean isSearchBarEnabled() {
-        return searchBarEnabled;
     }
 
     /**
