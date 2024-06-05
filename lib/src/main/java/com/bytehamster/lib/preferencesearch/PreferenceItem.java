@@ -52,10 +52,9 @@ class PreferenceItem implements Parcelable {
     }
 
     private static boolean matches(final Optional<String> haystack, final String needle) {
-        if (!haystack.isPresent()) {
-            return false;
-        }
-        return matches(haystack.get(), needle);
+        return haystack
+                .filter(_haystack -> matches(_haystack, needle))
+                .isPresent();
     }
 
     private static boolean matches(final String haystack, final String needle) {
