@@ -11,8 +11,6 @@ import java.util.Set;
 
 public class SearchConfiguration {
 
-    private boolean historyEnabled = true;
-    private String historyId = null;
     private boolean breadcrumbsEnabled = false;
     private boolean fuzzySearchEnabled = true;
     private boolean searchBarEnabled = true;
@@ -21,7 +19,6 @@ public class SearchConfiguration {
     private int fragmentContainerViewId = View.NO_ID;
     @IdRes
     private int dummyFragmentContainerViewId = View.NO_ID;
-    private String textClearHistory;
     private String textNoResults;
     private String textHint;
     private Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments = Collections.emptySet();
@@ -40,33 +37,6 @@ public class SearchConfiguration {
 
     public FragmentActivity getActivity() {
         return activity;
-    }
-
-    /**
-     * Show a history of recent search terms if nothing was typed yet. Default is true
-     *
-     * @param historyEnabled True if history should be enabled
-     */
-    public void setHistoryEnabled(final boolean historyEnabled) {
-        this.historyEnabled = historyEnabled;
-    }
-
-    boolean isHistoryEnabled() {
-        return historyEnabled;
-    }
-
-    /**
-     * Sets the id to use for saving the history. Preference screens with the same history id will share the same
-     * history. The default id is null (no id).
-     *
-     * @param historyId the history id
-     */
-    public void setHistoryId(final String historyId) {
-        this.historyId = historyId;
-    }
-
-    String getHistoryId() {
-        return historyId;
     }
 
     /**
@@ -138,14 +108,6 @@ public class SearchConfiguration {
 
     public Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments() {
         return preferenceFragments;
-    }
-
-    public void setTextClearHistory(final String textClearHistory) {
-        this.textClearHistory = textClearHistory;
-    }
-
-    public String getTextClearHistory() {
-        return textClearHistory;
     }
 
     public void setTextNoResults(final String textNoResults) {

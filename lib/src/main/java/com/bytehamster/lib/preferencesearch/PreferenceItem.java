@@ -15,9 +15,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-class PreferenceItem extends ListItem implements Parcelable {
+class PreferenceItem implements Parcelable {
 
-    static final int TYPE = 2;
     private static final FuzzyScore fuzzyScore = new FuzzyScore(Locale.getDefault());
 
     public final String title;
@@ -127,11 +126,6 @@ class PreferenceItem extends ListItem implements Parcelable {
     @Override
     public String toString() {
         return "PreferenceItem: " + title + " " + summary + " " + key;
-    }
-
-    @Override
-    public int getType() {
-        return TYPE;
     }
 
     @Override

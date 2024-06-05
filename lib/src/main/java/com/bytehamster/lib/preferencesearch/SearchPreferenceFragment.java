@@ -13,11 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bytehamster.lib.preferencesearch.SearchPreferenceAdapter.SearchClickListener;
 import com.bytehamster.lib.preferencesearch.common.Lists;
 import com.google.common.collect.ImmutableList;
 
-public class SearchPreferenceFragment extends Fragment implements SearchPreferenceAdapter.SearchClickListener {
+public class SearchPreferenceFragment extends Fragment implements SearchClickListener {
 
     public static final String TAG = "SearchPreferenceFragment";
     private PreferenceSearcher preferenceSearcher;
@@ -50,18 +49,12 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
     }
 
     @Override
-    public void onItemClicked(final ListItem item, final int position) {
-        if (item.getType() == HistoryItem.TYPE) {
-            final String text = ((HistoryItem) item).getTerm();
-            searchView.setQuery(text, false);
-        } else {
-            try {
-                final PreferenceItem preferenceItem = (PreferenceItem) item;
-                final SearchPreferenceResultListener searchPreferenceResultListener = (SearchPreferenceResultListener) getActivity();
-                searchPreferenceResultListener.onSearchResultClicked(getSearchPreferenceResult(preferenceItem));
-            } catch (final ClassCastException e) {
-                throw new ClassCastException(getActivity().toString() + " must implement SearchPreferenceResultListener");
-            }
+    public void onItemClicked(final PreferenceItem preferenceItem, final int position) {
+        try {
+            final SearchPreferenceResultListener searchPreferenceResultListener = (SearchPreferenceResultListener) getActivity();
+            searchPreferenceResultListener.onSearchResultClicked(getSearchPreferenceResult(preferenceItem));
+        } catch (final ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() + " must implement SearchPreferenceResultListener");
         }
     }
 
@@ -130,12 +123,12 @@ public class SearchPreferenceFragment extends Fragment implements SearchPreferen
 
             @Override
             public boolean onQueryTextChange(final String newText) {
-                filterItemsBy(newText);
+                filterPreferenceItemsBy(newText);
                 return true;
             }
 
-            private void filterItemsBy(final String query) {
-                searchPreferenceAdapter.setContent(
+            private void filterPreferenceItemsBy(final String query) {
+                searchPreferenceAdapter.setPreferenceItems(
                         ImmutableList.copyOf(
                                 preferenceSearcher.searchFor(query, false)));
             }

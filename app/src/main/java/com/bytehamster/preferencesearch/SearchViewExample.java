@@ -89,6 +89,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
 
     private void configure(final SearchConfiguration searchConfiguration,
                            final PreferenceFragmentCompat root) {
+        searchConfiguration.setActivity(this);
         searchConfiguration.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
         searchConfiguration.setDummyFragmentContainerViewId(dummyFragmentContainerViewId);
         searchConfiguration.setPreferenceFragments(
@@ -98,7 +99,5 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                         dummyFragmentContainerViewId));
         searchConfiguration.setBreadcrumbsEnabled(true);
         searchConfiguration.setFuzzySearchEnabled(false);
-        searchConfiguration.setHistoryEnabled(true);
-        searchConfiguration.setActivity(this);
     }
 }
