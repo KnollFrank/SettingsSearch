@@ -72,6 +72,9 @@ class PreferenceItem implements Parcelable {
     };
 
     public boolean matches(final String keyword) {
+        if (TextUtils.isEmpty(keyword)) {
+            return false;
+        }
         return getInfo().toLowerCase().contains(keyword.toLowerCase());
     }
 
