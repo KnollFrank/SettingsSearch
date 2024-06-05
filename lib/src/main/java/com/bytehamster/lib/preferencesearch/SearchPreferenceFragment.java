@@ -21,12 +21,9 @@ import java.util.List;
 public class SearchPreferenceFragment extends Fragment implements SearchClickListener {
 
     public static final String TAG = "SearchPreferenceFragment";
-    // FK-TODO: make preferenceSearcher a local variable
     private List<PreferenceItem> preferenceItems;
     private SearchView searchView;
     private SearchConfiguration searchConfiguration;
-    // FK-TODO: make searchPreferenceAdapter a local variable
-    private SearchPreferenceAdapter searchPreferenceAdapter;
 
     public SearchPreferenceFragment() {
         super(R.layout.searchpreference_fragment);
@@ -38,7 +35,6 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
         searchConfiguration = SearchConfigurations.fromBundle(getArguments());
         // FK-TODO: preferenceItems hier berechnen, nicht nur auslesen?
         preferenceItems = PreferenceItemsBundle.readPreferenceItems(getArguments());
-        searchPreferenceAdapter = createAndConfigureSearchPreferenceAdapter(searchConfiguration, this);
     }
 
     @Override
@@ -46,6 +42,8 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
         super.onViewCreated(view, savedInstanceState);
         searchView = view.findViewById(R.id.searchView);
         final RecyclerView recyclerView = view.findViewById(R.id.list);
+        final SearchPreferenceAdapter searchPreferenceAdapter =
+                createAndConfigureSearchPreferenceAdapter(searchConfiguration, this);
         configureRecyclerView(recyclerView, searchPreferenceAdapter);
         configureSearchView(
                 searchView,
