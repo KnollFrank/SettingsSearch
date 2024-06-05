@@ -21,7 +21,6 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceFragments;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import com.bytehamster.lib.preferencesearch.common.UIUtils;
-import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
 
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
@@ -100,13 +99,6 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         searchConfiguration.setBreadcrumbsEnabled(true);
         searchConfiguration.setFuzzySearchEnabled(false);
         searchConfiguration.setHistoryEnabled(true);
-        searchConfiguration.setRevealAnimationSetting(
-                new RevealAnimationSetting(
-                        findViewById(FRAGMENT_CONTAINER_VIEW).getWidth() - getSupportActionBar().getHeight() / 2,
-                        -getSupportActionBar().getHeight() / 2,
-                        findViewById(FRAGMENT_CONTAINER_VIEW).getWidth(),
-                        findViewById(FRAGMENT_CONTAINER_VIEW).getHeight(),
-                        getResources().getColor(R.color.colorPrimary)));
         searchConfiguration.setActivity(this);
     }
 }

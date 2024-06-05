@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.bytehamster.lib.preferencesearch.ui.RevealAnimationSetting;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,8 +25,6 @@ public class SearchConfiguration {
     private int fragmentContainerViewId = View.NO_ID;
     @IdRes
     private int dummyFragmentContainerViewId = View.NO_ID;
-    // FK-TODO: remove revealAnimationSetting
-    private RevealAnimationSetting revealAnimationSetting = null;
     private String textClearHistory;
     private String textNoResults;
     private String textHint;
@@ -138,14 +134,6 @@ public class SearchConfiguration {
 
     public int getDummyFragmentContainerViewId() {
         return dummyFragmentContainerViewId;
-    }
-
-    public void setRevealAnimationSetting(final RevealAnimationSetting revealAnimationSetting) {
-        this.revealAnimationSetting = revealAnimationSetting;
-    }
-
-    RevealAnimationSetting getRevealAnimationSetting() {
-        return revealAnimationSetting;
     }
 
     public void setPreferenceFragments(final Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments) {
