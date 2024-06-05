@@ -51,6 +51,17 @@ class PreferenceItem implements Parcelable {
                 .anyMatch(haystack -> matches(haystack, keyword));
     }
 
+    private static boolean matches(final Optional<String> haystack, final String needle) {
+        if (!haystack.isPresent()) {
+            return false;
+        }
+        return matches(haystack.get(), needle);
+    }
+
+    private static boolean matches(final String haystack, final String needle) {
+        return haystack.toLowerCase().contains(needle.toLowerCase());
+    }
+
     private PreferenceItem(final Parcel source) {
         this.title = Optional.ofNullable(source.readString());
         this.summary = Optional.ofNullable(source.readString());
@@ -106,16 +117,5 @@ class PreferenceItem implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hash(title, summary, key, breadcrumbs, keywords, entries, resId, keyBreadcrumbs);
-    }
-
-    private static boolean matches(final Optional<String> haystack, final String needle) {
-        if (!haystack.isPresent()) {
-            return false;
-        }
-        return matches(haystack.get(), needle);
-    }
-
-    private static boolean matches(final String haystack, final String needle) {
-        return haystack.toLowerCase().contains(needle.toLowerCase());
     }
 }
