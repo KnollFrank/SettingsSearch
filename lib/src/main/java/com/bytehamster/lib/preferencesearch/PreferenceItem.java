@@ -8,16 +8,11 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.common.Parcels;
 
-import org.apache.commons.text.similarity.FuzzyScore;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 class PreferenceItem implements Parcelable {
-
-    private static final FuzzyScore fuzzyScore = new FuzzyScore(Locale.getDefault());
 
     public final String title;
     public final String summary;
@@ -29,15 +24,13 @@ class PreferenceItem implements Parcelable {
     public String entries;
     // FK-TODO: breadcrumbs aktivieren, Tests dazu schreiben (Graph dazu wieder einführen)
     public final List<String> keyBreadcrumbs = new ArrayList<>();
-    private float lastScore = 0;
-    private String lastKeyword = null;
 
-    PreferenceItem(final String title,
-                   final String summary,
-                   final String key,
-                   final String breadcrumbs,
-                   final String keywords,
-                   final Class<? extends PreferenceFragmentCompat> resId) {
+    public PreferenceItem(final String title,
+                          final String summary,
+                          final String key,
+                          final String breadcrumbs,
+                          final String keywords,
+                          final Class<? extends PreferenceFragmentCompat> resId) {
         this.title = title;
         this.summary = summary;
         this.key = key;
@@ -78,34 +71,14 @@ class PreferenceItem implements Parcelable {
         }
     };
 
-    // FK-TODO: remove fuzzy search
-    boolean matchesFuzzy(String keyword) {
-        return getScore(keyword) > 0.3;
-    }
-
-    boolean matches(String keyword) {
-        Locale locale = Locale.getDefault();
-        return getInfo().toLowerCase(locale).contains(keyword.toLowerCase(locale));
-    }
-
-    float getScore(String keyword) {
-        if (TextUtils.isEmpty(keyword)) {
-            return 0;
-        } else if (TextUtils.equals(lastKeyword, keyword)) {
-            return lastScore;
-        }
-        String info = getInfo();
-
-        float score = fuzzyScore.fuzzyScore(info, "ø" + keyword);
-        float maxScore = (keyword.length() + 1) * 3 - 2; // First item can not get +2 bonus score
-
-        lastScore = score / maxScore;
-        lastKeyword = keyword;
-        return lastScore;
+    public boolean matches(final String keyword) {
+        return getInfo().toLowerCase().contains(keyword.toLowerCase());
     }
 
     private String getInfo() {
         StringBuilder infoBuilder = new StringBuilder();
+        // FK-TODO: emptyIfNull = s => Objects.toString(s, "");
+        //          replace with infoBuilder.append("ø").append(emptyIfNull(title));
         if (!TextUtils.isEmpty(title)) {
             infoBuilder.append("ø").append(title);
         }

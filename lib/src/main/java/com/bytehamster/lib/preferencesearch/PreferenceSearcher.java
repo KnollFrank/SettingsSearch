@@ -3,12 +3,9 @@ package com.bytehamster.lib.preferencesearch;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 class PreferenceSearcher {
-
-    private static final int MAX_RESULTS = 10;
 
     private final List<PreferenceItem> preferenceItems;
 
@@ -16,23 +13,18 @@ class PreferenceSearcher {
         this.preferenceItems = preferenceItems;
     }
 
-    public List<PreferenceItem> searchFor(final String keyword, boolean fuzzy) {
+    // FK-TODO: refactor
+    public List<PreferenceItem> searchFor(final String keyword) {
         if (TextUtils.isEmpty(keyword)) {
             return new ArrayList<>();
         }
         final List<PreferenceItem> results = new ArrayList<>();
-
         for (final PreferenceItem preferenceItem : preferenceItems) {
-            if ((fuzzy && preferenceItem.matchesFuzzy(keyword)) || (!fuzzy && preferenceItem.matches(keyword))) {
+            if (preferenceItem.matches(keyword)) {
                 results.add(preferenceItem);
             }
         }
 
-        results.sort(Comparator.comparingDouble(preferenceItem -> preferenceItem.getScore(keyword)));
-        if (results.size() > MAX_RESULTS) {
-            return results.subList(0, MAX_RESULTS);
-        } else {
-            return results;
-        }
+        return results;
     }
 }

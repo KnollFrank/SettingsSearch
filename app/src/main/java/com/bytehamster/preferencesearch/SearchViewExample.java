@@ -97,7 +97,6 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                         root,
                         this,
                         dummyFragmentContainerViewId));
-        searchConfiguration.setBreadcrumbsEnabled(true);
-        searchConfiguration.setFuzzySearchEnabled(false);
+        searchConfiguration.setBreadcrumbsEnabled(false);
     }
 }

@@ -135,7 +135,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
             private void filterPreferenceItemsBy(final String query) {
                 searchPreferenceAdapter.setPreferenceItems(
                         ImmutableList.copyOf(
-                                preferenceSearcher.searchFor(query, false)));
+                                preferenceSearcher.searchFor(query)));
             }
         };
     }

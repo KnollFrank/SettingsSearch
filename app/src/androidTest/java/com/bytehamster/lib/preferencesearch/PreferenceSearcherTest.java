@@ -74,7 +74,7 @@ public class PreferenceSearcherTest {
                 final PreferenceSearcher preferenceSearcher = createPreferenceSearcher(preferenceScreen, fragmentActivity);
 
                 // When
-                final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword, false);
+                final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword);
 
                 // Then
                 assertThat(getTitles(preferenceItems), titlesMatcher);

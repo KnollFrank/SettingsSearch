@@ -12,8 +12,6 @@ import java.util.Set;
 public class SearchConfiguration {
 
     private boolean breadcrumbsEnabled = false;
-    // FK-TODO: remove
-    private boolean fuzzySearchEnabled = true;
     private FragmentActivity activity;
     @IdRes
     private int fragmentContainerViewId = View.NO_ID;
@@ -37,19 +35,6 @@ public class SearchConfiguration {
 
     public FragmentActivity getActivity() {
         return activity;
-    }
-
-    /**
-     * Allow to enable and disable fuzzy searching. Default is true
-     *
-     * @param fuzzySearchEnabled True if search should be fuzzy
-     */
-    public void setFuzzySearchEnabled(final boolean fuzzySearchEnabled) {
-        this.fuzzySearchEnabled = fuzzySearchEnabled;
-    }
-
-    boolean isFuzzySearchEnabled() {
-        return fuzzySearchEnabled;
     }
 
     /**
