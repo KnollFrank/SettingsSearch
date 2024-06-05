@@ -11,10 +11,6 @@ import androidx.fragment.app.FragmentContainerView;
 
 public class UIUtils {
 
-    public static void set_VISIBLE_or_GONE(final View view, final boolean visible) {
-        view.setVisibility(visible ? View.VISIBLE : View.GONE);
-    }
-
     public static Pair<View, Integer> createContentViewAndDummyFragmentContainerViewId(
             final @LayoutRes int resource,
             final Activity activity) {

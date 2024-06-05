@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bytehamster.lib.preferencesearch.common.UIUtils;
 import com.google.common.collect.ImmutableList;
 
 class SearchPreferenceAdapter extends RecyclerView.Adapter<PreferenceViewHolder> {
@@ -43,9 +42,7 @@ class SearchPreferenceAdapter extends RecyclerView.Adapter<PreferenceViewHolder>
         preferenceViewHolder.title.setText(preferenceItem.title.orElse(null));
 
         preferenceViewHolder.summary.setText(preferenceItem.summary.orElse(null));
-        UIUtils.set_VISIBLE_or_GONE(
-                preferenceViewHolder.summary,
-                preferenceItem.summary.isPresent());
+        preferenceViewHolder.summary.setVisibility(preferenceItem.summary.isPresent() ? View.VISIBLE : View.GONE);
 
         if (searchConfiguration.isBreadcrumbsEnabled()) {
             preferenceViewHolder.breadcrumbs.setText(preferenceItem.breadcrumbs.orElse(null));
