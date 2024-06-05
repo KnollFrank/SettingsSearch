@@ -22,7 +22,6 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
 
     public static final String TAG = "SearchPreferenceFragment";
     private List<PreferenceItem> preferenceItems;
-    private SearchView searchView;
     private SearchConfiguration searchConfiguration;
 
     public SearchPreferenceFragment() {
@@ -40,17 +39,18 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        searchView = view.findViewById(R.id.searchView);
-        final RecyclerView recyclerView = view.findViewById(R.id.list);
         final SearchPreferenceAdapter searchPreferenceAdapter =
                 createAndConfigureSearchPreferenceAdapter(searchConfiguration, this);
-        configureRecyclerView(recyclerView, searchPreferenceAdapter);
-        configureSearchView(
-                searchView,
-                searchPreferenceAdapter,
-                new PreferenceSearcher(preferenceItems),
-                searchConfiguration);
-        selectSearchView();
+        configureRecyclerView(view.findViewById(R.id.list), searchPreferenceAdapter);
+        {
+            final SearchView searchView = view.findViewById(R.id.searchView);
+            configureSearchView(
+                    searchView,
+                    searchPreferenceAdapter,
+                    new PreferenceSearcher(preferenceItems),
+                    searchConfiguration);
+            selectSearchView(searchView);
+        }
     }
 
     @Override
@@ -81,7 +81,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
         return searchPreferenceAdapter;
     }
 
-    private void selectSearchView() {
+    private void selectSearchView(final SearchView searchView) {
         searchView.requestFocus();
         showKeyboard(searchView);
     }
