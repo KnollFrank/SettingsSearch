@@ -16,13 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bytehamster.lib.preferencesearch.common.Lists;
 import com.google.common.collect.ImmutableList;
 
+import java.util.List;
+
 public class SearchPreferenceFragment extends Fragment implements SearchClickListener {
 
     public static final String TAG = "SearchPreferenceFragment";
-    private PreferenceSearcher preferenceSearcher;
-    public SearchView searchView;
-    public RecyclerView recyclerView;
+    // FK-TODO: make preferenceSearcher a local variable
+    private List<PreferenceItem> preferenceItems;
+    private SearchView searchView;
     private SearchConfiguration searchConfiguration;
+    // FK-TODO: make searchPreferenceAdapter a local variable
     private SearchPreferenceAdapter searchPreferenceAdapter;
 
     public SearchPreferenceFragment() {
@@ -33,8 +36,8 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchConfiguration = SearchConfigurations.fromBundle(getArguments());
-        // FK-TODO: preferenceItems hier berechnen, nicht nur auslesen.
-        preferenceSearcher = new PreferenceSearcher(PreferenceItemsBundle.readPreferenceItems(getArguments()));
+        // FK-TODO: preferenceItems hier berechnen, nicht nur auslesen?
+        preferenceItems = PreferenceItemsBundle.readPreferenceItems(getArguments());
         searchPreferenceAdapter = createAndConfigureSearchPreferenceAdapter(searchConfiguration, this);
     }
 
@@ -42,9 +45,13 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         searchView = view.findViewById(R.id.searchView);
-        recyclerView = view.findViewById(R.id.list);
+        final RecyclerView recyclerView = view.findViewById(R.id.list);
         configureRecyclerView(recyclerView, searchPreferenceAdapter);
-        configureSearchView(searchView, searchPreferenceAdapter, preferenceSearcher, searchConfiguration);
+        configureSearchView(
+                searchView,
+                searchPreferenceAdapter,
+                new PreferenceSearcher(preferenceItems),
+                searchConfiguration);
         selectSearchView();
     }
 

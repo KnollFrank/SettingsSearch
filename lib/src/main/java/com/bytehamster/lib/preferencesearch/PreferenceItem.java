@@ -78,6 +78,7 @@ class PreferenceItem implements Parcelable {
         }
     };
 
+    // FK-TODO: remove fuzzy search
     boolean matchesFuzzy(String keyword) {
         return getScore(keyword) > 0.3;
     }

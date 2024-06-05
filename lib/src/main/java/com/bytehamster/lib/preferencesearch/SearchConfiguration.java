@@ -12,7 +12,9 @@ import java.util.Set;
 public class SearchConfiguration {
 
     private boolean breadcrumbsEnabled = false;
+    // FK-TODO: remove
     private boolean fuzzySearchEnabled = true;
+    // FK-TODO: remove
     private boolean searchBarEnabled = true;
     private FragmentActivity activity;
     @IdRes
