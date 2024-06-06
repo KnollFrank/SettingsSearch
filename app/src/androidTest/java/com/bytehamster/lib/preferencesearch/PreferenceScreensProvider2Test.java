@@ -34,7 +34,10 @@ public class PreferenceScreensProvider2Test {
         // Given
         final PreferenceScreensProvider preferenceScreensProvider =
                 new PreferenceScreensProvider(
-                        new PreferenceFragments(activity, FRAGMENT_CONTAINER_VIEW));
+                        new PreferenceFragments(
+                                activity,
+                                activity.getSupportFragmentManager(),
+                                FRAGMENT_CONTAINER_VIEW));
         final PreferenceFragmentCompat root = new FragmentConnectedToNonPreferenceFragment();
 
         // When

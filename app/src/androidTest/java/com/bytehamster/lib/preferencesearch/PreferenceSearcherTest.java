@@ -88,6 +88,7 @@ public class PreferenceSearcherTest {
         PreferenceProvider preferenceProvider =
                 PreferenceProviderFactory.createPreferenceProvider(
                         fragmentActivity,
+                        fragmentActivity.getSupportFragmentManager(),
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
         return new PreferenceSearcher(
                 PreferenceItems.getPreferenceItems(

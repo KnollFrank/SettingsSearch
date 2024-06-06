@@ -34,7 +34,12 @@ public class PreferenceProviderTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final PreferenceProvider preferenceProvider = new PreferenceProvider(new PreferenceFragments(fragmentActivity, TestActivity.FRAGMENT_CONTAINER_VIEW));
+                final PreferenceProvider preferenceProvider =
+                        new PreferenceProvider(
+                                new PreferenceFragments(
+                                        fragmentActivity,
+                                        fragmentActivity.getSupportFragmentManager(),
+                                        TestActivity.FRAGMENT_CONTAINER_VIEW));
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
 
                 // When
