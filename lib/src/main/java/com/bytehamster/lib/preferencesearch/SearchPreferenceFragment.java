@@ -97,6 +97,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
         return (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
+    // FK-TODO: vielleicht statt eines RecyclerView einen PreferenceScreen anzeigen mit den zur Suchanfrage passenden Preferences?
     private void configureRecyclerView(final RecyclerView recyclerView,
                                        final SearchPreferenceAdapter searchPreferenceAdapter) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
