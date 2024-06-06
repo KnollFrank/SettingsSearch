@@ -1,6 +1,5 @@
 package com.bytehamster.preferencesearch;
 
-
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.Menu;
