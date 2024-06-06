@@ -15,9 +15,15 @@ public class UIUtils {
             final @LayoutRes int resource,
             final Activity activity) {
         final ViewGroup contentView = (ViewGroup) activity.getLayoutInflater().inflate(resource, null);
-        final FragmentContainerView fragmentContainerView = createGoneFragmentContainerView(activity);
-        contentView.addView(fragmentContainerView);
+        final FragmentContainerView fragmentContainerView = addFragmentContainerView2ViewGroup(contentView, activity);
         return Pair.create(contentView, fragmentContainerView.getId());
+    }
+
+    public static FragmentContainerView addFragmentContainerView2ViewGroup(final ViewGroup viewGroup,
+                                                                           final Activity activity) {
+        final FragmentContainerView fragmentContainerView = createGoneFragmentContainerView(activity);
+        viewGroup.addView(fragmentContainerView);
+        return fragmentContainerView;
     }
 
     private static FragmentContainerView createGoneFragmentContainerView(final Context context) {

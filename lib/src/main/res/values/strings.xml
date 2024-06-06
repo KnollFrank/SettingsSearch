@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name">Search Preference</string>
     <string name="searchpreference_search">Search…</string>
     <string name="searchpreference_no_results">No results</string>
 </resources>

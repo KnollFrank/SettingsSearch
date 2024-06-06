@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.bytehamster.lib.preferencesearch.BaseSearchPreferenceFragment;
 import com.bytehamster.lib.preferencesearch.Navigation;
 import com.bytehamster.lib.preferencesearch.PreferenceFragments;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
@@ -21,7 +20,8 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import com.bytehamster.lib.preferencesearch.common.UIUtils;
 
-public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
+// FK-TODO: rename
+public class SearchViewExample2 extends AppCompatActivity implements SearchPreferenceResultListener {
 
     @IdRes
     private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
@@ -35,7 +35,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         _setContentView(R.layout.multiple_preference_screens_example);
         if (savedInstanceState == null) {
             Navigation.show(
-                    new PrefsFragment(),
+                    new SearchViewExample.PrefsFragment(),
                     false,
                     getSupportFragmentManager(),
                     FRAGMENT_CONTAINER_VIEW);
@@ -52,9 +52,9 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         if (item.getItemId() == R.id.search_action) {
             final SearchConfiguration searchConfiguration = new SearchConfiguration();
-            configure(searchConfiguration, new PrefsFragment());
+            configure(searchConfiguration, new SearchViewExample.PrefsFragment());
             final SearchPreferenceFragments searchPreferenceFragments = new SearchPreferenceFragments(searchConfiguration);
-            searchPreferenceFragments.showSearchPreferenceFragment();
+            searchPreferenceFragments.showSearchPreferenceFragment2();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -62,19 +62,6 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
 
     @Override
     public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
-        Navigation.showPreferenceScreenAndHighlightPreference(
-                result.getPreferenceFragmentClass().getName(),
-                result.getKey(),
-                this,
-                FRAGMENT_CONTAINER_VIEW);
-    }
-
-    public static class PrefsFragment extends BaseSearchPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            addPreferencesFromResource(R.xml.preferences_multiple_screens);
-        }
     }
 
     private void _setContentView(final @LayoutRes int resource) {

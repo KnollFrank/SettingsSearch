@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList.Builder;
 
 import java.util.List;
 
-class PreferenceProvider {
+public class PreferenceProvider {
 
     private final PreferenceFragments preferenceFragments;
 
