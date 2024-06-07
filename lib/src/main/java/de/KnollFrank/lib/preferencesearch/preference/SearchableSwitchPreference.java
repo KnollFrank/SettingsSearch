@@ -12,7 +12,8 @@ import java.util.function.Consumer;
 
 public class SearchableSwitchPreference extends SwitchPreference implements IClickablePreference {
 
-    private Consumer<Preference> clickListener;
+    private Consumer<Preference> clickListener = preference -> {
+    };
 
     public SearchableSwitchPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);

@@ -12,7 +12,8 @@ import java.util.function.Consumer;
 
 public class SearchableCheckBoxPreference extends CheckBoxPreference implements IClickablePreference {
 
-    private Consumer<Preference> clickListener;
+    private Consumer<Preference> clickListener = preference -> {
+    };
 
     public SearchableCheckBoxPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
