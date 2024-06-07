@@ -60,7 +60,6 @@ public class SearchPreferenceFragment2 extends Fragment {
         }
         if (savedInstanceState == null) {
             searchResults.setPreferences(asPreferences(preferences));
-            // FK-FIXME: when reaching SearchPreferenceFragment2 via the back button then changed preferences don't show their changed values (e.g. checkboxes)
             Navigation.show(
                     searchResults,
                     false,

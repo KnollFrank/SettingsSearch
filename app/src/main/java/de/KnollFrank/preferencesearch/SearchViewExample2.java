@@ -34,6 +34,7 @@ public class SearchViewExample2 extends AppCompatActivity implements SearchPrefe
         super.onCreate(savedInstanceState);
         _setContentView(R.layout.multiple_preference_screens_example);
         if (savedInstanceState == null) {
+            // FK-FIXME: when reaching SearchViewExample2 via the back button then changed preferences don't show their changed values (e.g. checkboxes)
             Navigation.show(
                     new PrefsFragmentFirst(),
                     false,
