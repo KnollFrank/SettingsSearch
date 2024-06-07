@@ -39,6 +39,7 @@ public class SearchPreferenceFragment2 extends Fragment {
                 new PreferenceScreensProvider(
                         new PreferenceFragments(requireActivity(), getChildFragmentManager(), dummyFragmentContainerViewId));
         // so erhält man Preferences startend mit den Preferences von PrefsFragment2, die wiederverwendet werden können.
+        // FK-TODO: Eingaben im SearchView sollen eine Suche in den Preferences auslösen und die Suchergebnisse in PrefsFragmentFirst2 anzeigen. Eine ähnliche Methode schreiben wie in SearchPreferenceFragment.configureSearchView()
         final List<Preference> preferences =
                 preferenceScreensProvider
                         .getPreferenceScreens(new PrefsFragment())
@@ -48,10 +49,10 @@ public class SearchPreferenceFragment2 extends Fragment {
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
         if (savedInstanceState == null) {
-            final PrefsFragmentFirst2 root = new PrefsFragmentFirst2();
-            root.setPreferences(preferences);
+            final SearchResultsPreferenceFragment searchResults = new SearchResultsPreferenceFragment();
+            searchResults.setPreferences(preferences);
             Navigation.show(
-                    root,
+                    searchResults,
                     false,
                     getChildFragmentManager(),
                     FRAGMENT_CONTAINER_VIEW);

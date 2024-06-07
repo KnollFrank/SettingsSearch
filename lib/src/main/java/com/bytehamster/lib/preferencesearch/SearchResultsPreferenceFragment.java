@@ -12,12 +12,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-// FK-TODO: rename to SearchResultsPreferenceFragment
-public class PrefsFragmentFirst2 extends BaseSearchPreferenceFragment {
+public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragment {
 
     private List<Preference> preferences = Collections.emptyList();
 
-    // so kann man den in einem PreferenceFragmentCompat angezeigten PreferenceScreen mit Preferences aktualisieren.
     public void setPreferences(final List<Preference> preferences) {
         removePreferencesFromTheirParents(preferences);
         this
@@ -34,7 +32,7 @@ public class PrefsFragmentFirst2 extends BaseSearchPreferenceFragment {
     }
 
     private static void removePreferencesFromTheirParents(final Collection<Preference> preferences) {
-        preferences.forEach(PrefsFragmentFirst2::removePreferenceFromItsParent);
+        preferences.forEach(SearchResultsPreferenceFragment::removePreferenceFromItsParent);
     }
 
     private static void removePreferenceFromItsParent(final Preference preference) {
