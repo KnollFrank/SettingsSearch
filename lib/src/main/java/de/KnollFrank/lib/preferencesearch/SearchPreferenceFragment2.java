@@ -26,7 +26,7 @@ public class SearchPreferenceFragment2 extends Fragment {
     private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView2;
 
     private SearchConfiguration searchConfiguration;
-    private final SearchResultsPreferenceFragment searchResults = new SearchResultsPreferenceFragment();
+    private final SearchResultsPreferenceFragment searchResultsPreferenceFragment = new SearchResultsPreferenceFragment();
 
     public SearchPreferenceFragment2() {
         super(R.layout.searchpreference_fragment2);
@@ -53,15 +53,15 @@ public class SearchPreferenceFragment2 extends Fragment {
             final SearchView searchView = view.findViewById(R.id.searchView);
             configureSearchView(
                     searchView,
-                    searchResults,
+                    searchResultsPreferenceFragment,
                     new PreferenceSearcher<>(preferences),
                     searchConfiguration);
             selectSearchView(searchView);
         }
         if (savedInstanceState == null) {
-            searchResults.setPreferences(asPreferences(preferences));
+            searchResultsPreferenceFragment.setPreferences(asPreferences(preferences));
             Navigation.show(
-                    searchResults,
+                    searchResultsPreferenceFragment,
                     false,
                     getChildFragmentManager(),
                     FRAGMENT_CONTAINER_VIEW);
