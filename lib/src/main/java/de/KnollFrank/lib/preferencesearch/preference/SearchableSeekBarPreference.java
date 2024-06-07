@@ -37,13 +37,8 @@ public class SearchableSeekBarPreference extends SeekBarPreference implements IC
     }
 
     @Override
-    public Consumer<Preference> getClickListener() {
-        return clickListener;
-    }
-
-    @Override
     public void performClick() {
-        getClickListener().accept(this);
+        clickListener.accept(this);
         super.performClick();
     }
 }

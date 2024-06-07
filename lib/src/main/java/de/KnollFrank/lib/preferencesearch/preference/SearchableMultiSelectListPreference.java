@@ -37,13 +37,8 @@ public class SearchableMultiSelectListPreference extends MultiSelectListPreferen
     }
 
     @Override
-    public Consumer<Preference> getClickListener() {
-        return clickListener;
-    }
-
-    @Override
     public void performClick() {
-        getClickListener().accept(this);
+        clickListener.accept(this);
         super.performClick();
     }
 }
