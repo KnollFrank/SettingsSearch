@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.bytehamster.preferencesearch"
+    namespace "de.KnollFrank.preferencesearch"
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.bytehamster.preferencesearch"
+        applicationId "de.KnollFrank.preferencesearch"
         minSdkVersion 24
         targetSdkVersion 34
         versionCode 1

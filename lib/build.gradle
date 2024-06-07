@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 android {
-    namespace "com.bytehamster.lib.preferencesearch"
+    namespace "de.KnollFrank.lib.preferencesearch"
     compileSdk 34
 
     defaultConfig {
@@ -41,7 +41,7 @@ dependencies {
 publishing {
     publications {
         release(MavenPublication) {
-            groupId = 'com.github.ByteHamster'
+            groupId = 'com.github.KnollFrank'
             artifactId = 'SearchPreference'
             version = 'v2.5.1'
 
