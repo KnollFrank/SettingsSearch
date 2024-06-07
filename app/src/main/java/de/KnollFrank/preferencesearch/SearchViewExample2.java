@@ -35,7 +35,7 @@ public class SearchViewExample2 extends AppCompatActivity implements SearchPrefe
         _setContentView(R.layout.multiple_preference_screens_example);
         if (savedInstanceState == null) {
             Navigation.show(
-                    new SearchViewExample.PrefsFragment(),
+                    new PrefsFragmentFirst(),
                     false,
                     getSupportFragmentManager(),
                     FRAGMENT_CONTAINER_VIEW);
@@ -52,7 +52,7 @@ public class SearchViewExample2 extends AppCompatActivity implements SearchPrefe
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         if (item.getItemId() == R.id.search_action) {
             final SearchConfiguration searchConfiguration = new SearchConfiguration();
-            configure(searchConfiguration, new SearchViewExample.PrefsFragment());
+            configure(searchConfiguration, new PrefsFragmentFirst());
             final SearchPreferenceFragments searchPreferenceFragments = new SearchPreferenceFragments(searchConfiguration);
             searchPreferenceFragments.showSearchPreferenceFragment2();
             return true;

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import de.KnollFrank.lib.preferencesearch.BaseSearchPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
@@ -35,7 +34,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         _setContentView(R.layout.multiple_preference_screens_example);
         if (savedInstanceState == null) {
             Navigation.show(
-                    new PrefsFragment(),
+                    new PrefsFragmentFirst(),
                     false,
                     getSupportFragmentManager(),
                     FRAGMENT_CONTAINER_VIEW);
@@ -52,7 +51,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         if (item.getItemId() == R.id.search_action) {
             final SearchConfiguration searchConfiguration = new SearchConfiguration();
-            configure(searchConfiguration, new PrefsFragment());
+            configure(searchConfiguration, new PrefsFragmentFirst());
             final SearchPreferenceFragments searchPreferenceFragments = new SearchPreferenceFragments(searchConfiguration);
             searchPreferenceFragments.showSearchPreferenceFragment();
             return true;
@@ -67,14 +66,6 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                 result.getKey(),
                 this,
                 FRAGMENT_CONTAINER_VIEW);
-    }
-
-    public static class PrefsFragment extends BaseSearchPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            addPreferencesFromResource(R.xml.preferences_multiple_screens);
-        }
     }
 
     private void _setContentView(final @LayoutRes int resource) {
