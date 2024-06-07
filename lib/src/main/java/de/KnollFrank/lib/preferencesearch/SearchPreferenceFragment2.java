@@ -46,7 +46,7 @@ public class SearchPreferenceFragment2 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         dummyFragmentContainerViewId =
                 UIUtils
-                        .addFragmentContainerView2ViewGroup((ViewGroup) view, getContext())
+                        .createAndAddFragmentContainerView2ViewGroup((ViewGroup) view, getContext())
                         .getId();
         final PreferenceScreensProvider preferenceScreensProvider =
                 new PreferenceScreensProvider(
