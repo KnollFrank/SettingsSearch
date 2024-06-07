@@ -20,8 +20,8 @@ public class UIUtils {
     }
 
     public static FragmentContainerView addFragmentContainerView2ViewGroup(final ViewGroup viewGroup,
-                                                                           final Activity activity) {
-        final FragmentContainerView fragmentContainerView = createGoneFragmentContainerView(activity);
+                                                                           final Context context) {
+        final FragmentContainerView fragmentContainerView = createGoneFragmentContainerView(context);
         viewGroup.addView(fragmentContainerView);
         return fragmentContainerView;
     }
