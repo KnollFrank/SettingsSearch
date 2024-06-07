@@ -84,6 +84,7 @@ public class SearchViewExample2 extends AppCompatActivity implements SearchPrefe
                         this,
                         this.getSupportFragmentManager(),
                         dummyFragmentContainerViewId));
+        searchConfiguration.setRootPreferenceFragment(root.getClass());
         searchConfiguration.setBreadcrumbsEnabled(false);
     }
 }

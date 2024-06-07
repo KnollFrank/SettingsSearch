@@ -25,8 +25,6 @@ public class SearchPreferenceFragment2 extends Fragment {
     @IdRes
     private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView2;
 
-    @IdRes
-    private int dummyFragmentContainerViewId = View.NO_ID;
     private SearchConfiguration searchConfiguration;
     private final SearchResultsPreferenceFragment searchResults = new SearchResultsPreferenceFragment();
 
@@ -43,14 +41,13 @@ public class SearchPreferenceFragment2 extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dummyFragmentContainerViewId =
+        @IdRes final int dummyFragmentContainerViewId =
                 UIUtils
                         .createAndAddFragmentContainerView2ViewGroup((ViewGroup) view, getContext())
                         .getId();
         final IPreferencesProvider<PreferenceWrapper> preferencesProvider =
                 new PreferencesProvider(
-                        // FK-TODO: PrefsFragment.class.getName() uas den getArguments() auslesen
-                        PrefsFragment.class.getName(),
+                        searchConfiguration.getRootPreferenceFragment().getName(),
                         new PreferenceScreensProvider(
                                 new PreferenceFragments(
                                         requireActivity(),

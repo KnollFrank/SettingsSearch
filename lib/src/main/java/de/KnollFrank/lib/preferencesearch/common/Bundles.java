@@ -29,4 +29,12 @@ public class Bundles {
         final List<String> result = this.bundle.getStringArrayList(key);
         return result == null ? Collections.emptyList() : result;
     }
+
+    public <T> void putClass(final String key, final Class<? extends T> value) {
+        this.bundle.putString(key, value.getName());
+    }
+
+    public <T> Class<? extends T> getClass(final String key) {
+        return Utils.getClass(this.bundle.getString(key));
+    }
 }

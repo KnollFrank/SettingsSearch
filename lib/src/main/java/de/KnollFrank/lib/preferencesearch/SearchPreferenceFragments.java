@@ -29,6 +29,11 @@ public class SearchPreferenceFragments {
 
     private SearchPreferenceFragment createSearchPreferenceFragment() {
         final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment();
+        searchPreferenceFragment.setArguments(getBundle4SearchPreferenceFragment());
+        return searchPreferenceFragment;
+    }
+
+    private Bundle getBundle4SearchPreferenceFragment() {
         final Bundle bundle = SearchConfigurations.toBundle(this.searchConfiguration);
         PreferenceItemsBundle.writePreferenceItems(
                 bundle,
@@ -38,8 +43,7 @@ public class SearchPreferenceFragments {
                                 this.searchConfiguration.getActivity(),
                                 this.searchConfiguration.getActivity().getSupportFragmentManager(),
                                 this.searchConfiguration.getDummyFragmentContainerViewId())));
-        searchPreferenceFragment.setArguments(bundle);
-        return searchPreferenceFragment;
+        return bundle;
     }
 
     private SearchPreferenceFragment2 createSearchPreferenceFragment2() {

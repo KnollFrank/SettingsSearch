@@ -20,6 +20,7 @@ public class SearchConfiguration {
     private String textNoResults;
     private String textHint;
     private Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments = Collections.emptySet();
+    private Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
 
     /**
      * Sets the current activity that also receives callbacks
@@ -79,6 +80,14 @@ public class SearchConfiguration {
 
     public Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments() {
         return preferenceFragments;
+    }
+
+    public void setRootPreferenceFragment(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
+        this.rootPreferenceFragment = rootPreferenceFragment;
+    }
+
+    public Class<? extends PreferenceFragmentCompat> getRootPreferenceFragment() {
+        return rootPreferenceFragment;
     }
 
     public void setTextNoResults(final String textNoResults) {
