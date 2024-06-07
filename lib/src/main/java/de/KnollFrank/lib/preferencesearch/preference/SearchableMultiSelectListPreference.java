@@ -43,9 +43,7 @@ public class SearchableMultiSelectListPreference extends MultiSelectListPreferen
 
     @Override
     public void performClick() {
-        if (getClickListener() != null) {
-            getClickListener().accept(this);
-        }
+        getClickListener().accept(this);
         super.performClick();
     }
 }

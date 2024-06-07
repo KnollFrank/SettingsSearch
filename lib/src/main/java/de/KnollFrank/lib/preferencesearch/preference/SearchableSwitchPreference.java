@@ -43,9 +43,7 @@ public class SearchableSwitchPreference extends SwitchPreference implements ICli
 
     @Override
     public void performClick() {
-        if (getClickListener() != null) {
-            getClickListener().accept(this);
-        }
+        getClickListener().accept(this);
         super.performClick();
     }
 }

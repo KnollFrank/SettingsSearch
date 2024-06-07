@@ -43,9 +43,7 @@ public class SearchableSwitchPreferenceCompat extends SwitchPreferenceCompat imp
 
     @Override
     public void performClick() {
-        if (getClickListener() != null) {
-            getClickListener().accept(this);
-        }
+        getClickListener().accept(this);
         super.performClick();
     }
 }
