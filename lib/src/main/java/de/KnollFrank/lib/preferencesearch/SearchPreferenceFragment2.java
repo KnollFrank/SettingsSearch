@@ -45,16 +45,10 @@ public class SearchPreferenceFragment2 extends Fragment {
                 UIUtils
                         .createAndAddFragmentContainerView2ViewGroup((ViewGroup) view, getContext())
                         .getId();
-        final IPreferencesProvider<PreferenceWrapper> preferencesProvider =
-                new PreferencesProvider(
-                        searchConfiguration.getRootPreferenceFragment().getName(),
-                        new PreferenceScreensProvider(
-                                new PreferenceFragments(
-                                        requireActivity(),
-                                        getChildFragmentManager(),
-                                        dummyFragmentContainerViewId)),
-                        getContext());
-        final List<PreferenceWrapper> preferences = preferencesProvider.getPreferences();
+        final List<PreferenceWrapper> preferences =
+                this
+                        .getPreferencesProvider(dummyFragmentContainerViewId)
+                        .getPreferences();
         {
             final SearchView searchView = view.findViewById(R.id.searchView);
             configureSearchView(
@@ -142,5 +136,16 @@ public class SearchPreferenceFragment2 extends Fragment {
                 .stream()
                 .map(preferenceWrapper -> preferenceWrapper.preference)
                 .collect(Collectors.toList());
+    }
+
+    private IPreferencesProvider<PreferenceWrapper> getPreferencesProvider(final int fragmentContainerViewId) {
+        return new PreferencesProvider(
+                searchConfiguration.getRootPreferenceFragment().getName(),
+                new PreferenceScreensProvider(
+                        new PreferenceFragments(
+                                requireActivity(),
+                                getChildFragmentManager(),
+                                fragmentContainerViewId)),
+                getContext());
     }
 }

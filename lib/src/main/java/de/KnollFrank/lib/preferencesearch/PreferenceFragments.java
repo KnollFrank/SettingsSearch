@@ -15,6 +15,7 @@ public class PreferenceFragments {
 
     private final Context context;
     private final FragmentManager fragmentManager;
+    @IdRes
     private final int containerResId;
 
     public PreferenceFragments(final Context context,
