@@ -33,7 +33,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         searchConfiguration = SearchConfigurations.fromBundle(getArguments());
-        // FK-TODO: preferenceItems hier berechnen, nicht nur auslesen?
+        // FK-TODO: preferenceItems über einen IPreferencesProvider<PreferenceItem> auslesen
         preferenceItems = PreferenceItemsBundle.readPreferenceItems(getArguments());
     }
 

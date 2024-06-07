@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,32 +47,28 @@ public class SearchPreferenceFragment2 extends Fragment {
                 UIUtils
                         .createAndAddFragmentContainerView2ViewGroup((ViewGroup) view, getContext())
                         .getId();
-        final PreferenceScreensProvider preferenceScreensProvider =
-                new PreferenceScreensProvider(
-                        new PreferenceFragments(requireActivity(), getChildFragmentManager(), dummyFragmentContainerViewId));
-        final List<Preference> preferences =
-                preferenceScreensProvider
-                        .getPreferenceScreens(new PrefsFragment())
-                        .stream()
-                        .map(preferenceScreenWithHost -> preferenceScreenWithHost.preferenceScreen)
-                        .map(PreferenceProvider::getPreferences)
-                        .flatMap(Collection::stream)
-                        .collect(Collectors.toList());
+        final IPreferencesProvider<PreferenceWrapper> preferencesProvider =
+                new PreferencesProvider(
+                        // FK-TODO: PrefsFragment.class.getName() uas den getArguments() auslesen
+                        PrefsFragment.class.getName(),
+                        new PreferenceScreensProvider(
+                                new PreferenceFragments(
+                                        requireActivity(),
+                                        getChildFragmentManager(),
+                                        dummyFragmentContainerViewId)),
+                        getContext());
+        final List<PreferenceWrapper> preferences = preferencesProvider.getPreferences();
         {
             final SearchView searchView = view.findViewById(R.id.searchView);
             configureSearchView(
                     searchView,
                     searchResults,
-                    new PreferenceSearcher<>(
-                            preferences
-                                    .stream()
-                                    .map(PreferenceWrapper::new)
-                                    .collect(Collectors.toList())),
+                    new PreferenceSearcher<>(preferences),
                     searchConfiguration);
             selectSearchView(searchView);
         }
         if (savedInstanceState == null) {
-            searchResults.setPreferences(preferences);
+            searchResults.setPreferences(asPreferences(preferences));
             Navigation.show(
                     searchResults,
                     false,
@@ -123,13 +118,6 @@ public class SearchPreferenceFragment2 extends Fragment {
             private void filterPreferenceItemsBy(final String query) {
                 searchResults.setPreferences(asPreferences(preferenceSearcher.searchFor(query)));
             }
-
-            private static List<Preference> asPreferences(final List<PreferenceWrapper> preferenceWrappers) {
-                return preferenceWrappers
-                        .stream()
-                        .map(preferenceWrapper -> preferenceWrapper.preference)
-                        .collect(Collectors.toList());
-            }
         };
     }
 
@@ -150,5 +138,12 @@ public class SearchPreferenceFragment2 extends Fragment {
     // FK-TODO: DRY with SearchPreferenceFragment
     private InputMethodManager getInputMethodManager() {
         return (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    }
+
+    private static List<Preference> asPreferences(final List<PreferenceWrapper> preferenceWrappers) {
+        return preferenceWrappers
+                .stream()
+                .map(preferenceWrapper -> preferenceWrapper.preference)
+                .collect(Collectors.toList());
     }
 }
