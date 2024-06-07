@@ -60,20 +60,12 @@ public class SearchPreferenceFragment2 extends Fragment {
         }
         if (savedInstanceState == null) {
             searchResults.setPreferences(asPreferences(preferences));
+            // FK-FIXME: when reaching SearchPreferenceFragment2 via the back button then changed preferences don't show their changed values (e.g. checkboxes)
             Navigation.show(
                     searchResults,
                     false,
                     getChildFragmentManager(),
                     FRAGMENT_CONTAINER_VIEW);
-        }
-    }
-
-    // FK-TODO: remove
-    public static class PrefsFragment extends BaseSearchPreferenceFragment {
-
-        @Override
-        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            addPreferencesFromResource(R.xml.preferences_multiple_screens2);
         }
     }
 
