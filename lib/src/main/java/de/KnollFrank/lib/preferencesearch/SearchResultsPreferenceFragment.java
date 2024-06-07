@@ -11,6 +11,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+
+import de.KnollFrank.lib.preferencesearch.preference.IClickablePreference;
 
 public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragment {
 
@@ -18,17 +21,12 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
 
     public void setPreferences(final List<Preference> preferences) {
         removePreferencesFromTheirParents(preferences);
+        setClickListener(_preference -> System.out.println("clicking on preference " + _preference), preferences);
+        // FK-TODO: falls PreferenceScreen nicht vorhanden ist, dann eine Exception werfen?
         this
                 .getOptionalPreferenceScreen()
                 .ifPresent(preferenceScreen -> setPreferences(preferences, preferenceScreen));
         this.preferences = preferences;
-    }
-
-    @Override
-    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final PreferenceScreen screen = createPreferenceScreen();
-        addPreferences(preferences, screen);
-        setPreferenceScreen(screen);
     }
 
     private static void removePreferencesFromTheirParents(final Collection<Preference> preferences) {
@@ -40,6 +38,29 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
         if (parent != null) {
             parent.removePreference(preference);
         }
+    }
+
+    private static void setClickListener(final Consumer<Preference> clickListener,
+                                         final List<Preference> preferences) {
+        for (final Preference preference : preferences) {
+            setClickListener(clickListener, preference);
+        }
+    }
+
+    private static void setClickListener(final Consumer<Preference> clickListener,
+                                         final Preference preference) {
+        preference.setEnabled(false);
+        preference.setShouldDisableView(false);
+        if (preference instanceof IClickablePreference) {
+            ((IClickablePreference) preference).setClickListener(clickListener);
+        }
+    }
+
+    @Override
+    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+        final PreferenceScreen screen = createPreferenceScreen();
+        addPreferences(preferences, screen);
+        setPreferenceScreen(screen);
     }
 
     private PreferenceScreen createPreferenceScreen() {

@@ -3,94 +3,94 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="first screen">
 
-    <Preference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchablePreference
         android:key="link_to_second_fragment"
         android:persistent="false"
         android:summary="some summary to second fragment"
         android:title="some title to second fragment"
         app:fragment="de.KnollFrank.preferencesearch.PrefsFragmentSecond" />
 
-    <Preference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchablePreference
         android:key="link_to_fourth_fragment"
         android:persistent="false"
         android:summary="some summary to fourth fragment"
         android:title="some title to fourth fragment"
         app:fragment="de.KnollFrank.preferencesearch.PrefsFragmentFourth" />
 
-    <Preference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchablePreference
         android:key="link_to_nonPreference_fragment"
         android:persistent="false"
         android:summary="some summary to nonPreference fragment"
         android:title="some title to nonPreference fragment"
         app:fragment="de.KnollFrank.preferencesearch.NonPreferenceFragment" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="checkbox"
-        android:summary="This is a checkbox preference"
+        android:summary="This is a DisabledAppearanceCheckboxPreference"
         android:title="Checkbox" />
 
-    <PreferenceCategory android:title="This is a preference category">
-        <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchablePreferenceCategory android:title="This is a preference category">
+        <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
             android:key="checkbox2"
             android:summary="This is a checkbox preference inside a category"
             android:title="Checkbox in category" />
-    </PreferenceCategory>
+    </de.KnollFrank.lib.preferencesearch.preference.SearchablePreferenceCategory>
 
     <PreferenceScreen
         android:key="screen"
         android:summary="This is a PreferenceScreen"
         android:title="Screen">
-        <CheckBoxPreference
+        <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
             android:key="checkbox3"
             android:summary="This is a checkbox preference inside a PreferenceScreen"
             android:title="Checkbox in screen" />
     </PreferenceScreen>
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="string"
         android:summary="This checkbox demonstrates @string resources"
         android:title="@string/app_name" />
 
-    <EditTextPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableEditTextPreference
         android:key="edittext"
         android:summary="This is an edit text preference"
         android:title="Edit text" />
 
-    <SwitchPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableSwitchPreference
         android:key="switch"
         android:summary="This allows to use a nice switch"
         android:title="Switch preference" />
 
-    <ListPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableListPreference
         android:entries="@android:array/emailAddressTypes"
         android:entryValues="@android:array/emailAddressTypes"
         android:key="list"
         android:summary="This allows to select from a list"
         android:title="List preference" />
 
-    <MultiSelectListPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableMultiSelectListPreference
         android:entries="@android:array/emailAddressTypes"
         android:entryValues="@android:array/emailAddressTypes"
         android:key="multilist"
         android:summary="This allows to select multiple entries from a list"
         android:title="Multi select list preference" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="checkbox4"
         android:summary="This checkbox is just there to fill the screen"
         android:title="Checkbox 4" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="checkbox4"
         android:summary="This checkbox is just there to fill the screen"
         android:title="Checkbox 5" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="checkbox4"
         android:summary="This checkbox is just there to fill the screen"
         android:title="Checkbox 6" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="fardown"
         android:summary="A preference that is very far down on the screen, so it has to be scrolled to"
         android:title="Far down" />

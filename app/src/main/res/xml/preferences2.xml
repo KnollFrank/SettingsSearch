@@ -5,31 +5,31 @@
     android:title="second screen">
 
     <!-- FK-FIXME: when clicking on a preference with a app:fragment tag the referenced fragment is not shown in SearchViewExample2. -->
-    <Preference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchablePreference
         android:key="link_to_third_fragment"
         android:persistent="false"
         android:summary="some summary to third fragment"
         android:title="some title to third fragment"
         app:fragment="de.KnollFrank.preferencesearch.PrefsFragmentThird" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="secondfile"
         android:summary="This checkbox is a preference coming from a second file"
         android:title="Checkbox" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="searchsummary"
         android:summary="This checkbox is a preference coming from a second file"
         android:title="Checkbox"
         search:summary="This summary is only displayed in search" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="searchkeyword"
         android:summary="This checkbox has additional keywords"
         android:title="Checkbox"
         search:keywords="42, 23" />
 
-    <CheckBoxPreference
+    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
         android:key="ignoredcheckbox"
         android:summary="This checkbox should not be displayed"
         android:title="Ignored"
