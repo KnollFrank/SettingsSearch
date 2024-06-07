@@ -26,7 +26,6 @@ public class SearchPreferenceFragment2 extends Fragment {
     private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView2;
 
     private SearchConfiguration searchConfiguration;
-    private final SearchResultsPreferenceFragment searchResultsPreferenceFragment = new SearchResultsPreferenceFragment();
 
     public SearchPreferenceFragment2() {
         super(R.layout.searchpreference_fragment2);
@@ -49,6 +48,7 @@ public class SearchPreferenceFragment2 extends Fragment {
                 this
                         .getPreferencesProvider(dummyFragmentContainerViewId)
                         .getPreferences();
+        final SearchResultsPreferenceFragment searchResultsPreferenceFragment = new SearchResultsPreferenceFragment();
         {
             final SearchView searchView = view.findViewById(R.id.searchView);
             configureSearchView(
@@ -69,7 +69,7 @@ public class SearchPreferenceFragment2 extends Fragment {
     }
 
     private static void configureSearchView(final SearchView searchView,
-                                            final SearchResultsPreferenceFragment searchResults,
+                                            final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
                                             final PreferenceSearcher<PreferenceWrapper> preferenceSearcher,
                                             final SearchConfiguration searchConfiguration) {
         if (searchConfiguration.getTextHint() != null) {
@@ -77,12 +77,12 @@ public class SearchPreferenceFragment2 extends Fragment {
         }
         searchView.setOnQueryTextListener(
                 createOnQueryTextListener(
-                        searchResults,
+                        searchResultsPreferenceFragment,
                         preferenceSearcher));
     }
 
     private static OnQueryTextListener createOnQueryTextListener(
-            final SearchResultsPreferenceFragment searchResults,
+            final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
             final PreferenceSearcher<PreferenceWrapper> preferenceSearcher) {
         return new OnQueryTextListener() {
 
@@ -98,7 +98,7 @@ public class SearchPreferenceFragment2 extends Fragment {
             }
 
             private void filterPreferenceItemsBy(final String query) {
-                searchResults.setPreferences(asPreferences(preferenceSearcher.searchFor(query)));
+                searchResultsPreferenceFragment.setPreferences(asPreferences(preferenceSearcher.searchFor(query)));
             }
         };
     }
