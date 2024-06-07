@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 import de.KnollFrank.lib.preferencesearch.common.Parcels;
 
-class PreferenceItem implements Parcelable {
+class PreferenceItem implements Parcelable, IPreferenceItem {
 
     public final Optional<String> title;
     public final Optional<String> summary;
@@ -42,6 +42,7 @@ class PreferenceItem implements Parcelable {
         this.resId = resId;
     }
 
+    @Override
     public boolean matches(final String keyword) {
         if (TextUtils.isEmpty(keyword)) {
             return false;

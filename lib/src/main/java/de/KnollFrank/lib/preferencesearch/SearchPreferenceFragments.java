@@ -24,7 +24,7 @@ public class SearchPreferenceFragments {
         if (this.searchConfiguration.getActivity() == null) {
             throw new IllegalStateException("setActivity() not called");
         }
-        show(new SearchPreferenceFragment2());
+        show(createSearchPreferenceFragment2());
     }
 
     private SearchPreferenceFragment createSearchPreferenceFragment() {
@@ -40,6 +40,12 @@ public class SearchPreferenceFragments {
                                 this.searchConfiguration.getDummyFragmentContainerViewId())));
         searchPreferenceFragment.setArguments(bundle);
         return searchPreferenceFragment;
+    }
+
+    private SearchPreferenceFragment2 createSearchPreferenceFragment2() {
+        final SearchPreferenceFragment2 searchPreferenceFragment2 = new SearchPreferenceFragment2();
+        searchPreferenceFragment2.setArguments(SearchConfigurations.toBundle(this.searchConfiguration));
+        return searchPreferenceFragment2;
     }
 
     private void show(final Fragment fragment) {

@@ -3,15 +3,15 @@ package de.KnollFrank.lib.preferencesearch;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class PreferenceSearcher {
+class PreferenceSearcher<T extends IPreferenceItem> {
 
-    private final List<PreferenceItem> preferenceItems;
+    private final List<T> preferenceItems;
 
-    public PreferenceSearcher(final List<PreferenceItem> preferenceItems) {
+    public PreferenceSearcher(final List<T> preferenceItems) {
         this.preferenceItems = preferenceItems;
     }
 
-    public List<PreferenceItem> searchFor(final String keyword) {
+    public List<T> searchFor(final String keyword) {
         return preferenceItems
                 .stream()
                 .filter(preferenceItem -> preferenceItem.matches(keyword))

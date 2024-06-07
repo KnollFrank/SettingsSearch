@@ -48,7 +48,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
             configureSearchView(
                     searchView,
                     searchPreferenceAdapter,
-                    new PreferenceSearcher(preferenceItems),
+                    new PreferenceSearcher<>(preferenceItems),
                     searchConfiguration);
             selectSearchView(searchView);
         }
@@ -106,7 +106,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
 
     private static void configureSearchView(final SearchView searchView,
                                             final SearchPreferenceAdapter searchPreferenceAdapter,
-                                            final PreferenceSearcher preferenceSearcher,
+                                            final PreferenceSearcher<PreferenceItem> preferenceSearcher,
                                             final SearchConfiguration searchConfiguration) {
         if (searchConfiguration.getTextHint() != null) {
             searchView.setQueryHint(searchConfiguration.getTextHint());
@@ -119,7 +119,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
 
     private static OnQueryTextListener createOnQueryTextListener(
             final SearchPreferenceAdapter searchPreferenceAdapter,
-            final PreferenceSearcher preferenceSearcher) {
+            final PreferenceSearcher<PreferenceItem> preferenceSearcher) {
         return new OnQueryTextListener() {
 
             @Override

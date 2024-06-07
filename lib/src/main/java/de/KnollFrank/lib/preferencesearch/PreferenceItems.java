@@ -46,18 +46,19 @@ public class PreferenceItems {
     public static List<PreferenceItem> getPreferenceItems(
             final List<Preference> preferences,
             final Class<? extends PreferenceFragmentCompat> resId) {
+        return preferences
+                .stream()
+                .map(preference -> getPreferenceItem(preference, resId))
+                .collect(Collectors.toList());
+    }
+
+    public static PreferenceItem getPreferenceItem(
+            final Preference preference,
+            final Class<? extends PreferenceFragmentCompat> resId) {
         class _PreferenceItems {
 
-            public static List<PreferenceItem> getPreferenceItems(final List<Preference> preferences,
-                                                                  final Class<? extends PreferenceFragmentCompat> resId) {
-                return preferences
-                        .stream()
-                        .map(preference -> getPreferenceItem(preference, resId))
-                        .collect(Collectors.toList());
-            }
-
-            private static PreferenceItem getPreferenceItem(final Preference preference,
-                                                            final Class<? extends PreferenceFragmentCompat> resId) {
+            public static PreferenceItem getPreferenceItem(final Preference preference,
+                                                           final Class<? extends PreferenceFragmentCompat> resId) {
                 return new PreferenceItem(
                         asString(preference.getTitle()),
                         asString(preference.getSummary()),
@@ -84,6 +85,6 @@ public class PreferenceItems {
             }
         }
 
-        return _PreferenceItems.getPreferenceItems(preferences, resId);
+        return _PreferenceItems.getPreferenceItem(preference, resId);
     }
 }

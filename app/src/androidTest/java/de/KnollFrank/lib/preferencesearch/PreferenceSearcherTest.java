@@ -72,7 +72,7 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final PreferenceSearcher preferenceSearcher = createPreferenceSearcher(preferenceScreen, fragmentActivity);
+                final PreferenceSearcher<PreferenceItem> preferenceSearcher = createPreferenceSearcher(preferenceScreen, fragmentActivity);
 
                 // When
                 final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword);
@@ -83,14 +83,15 @@ public class PreferenceSearcherTest {
         }
     }
 
-    private static PreferenceSearcher createPreferenceSearcher(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
-                                                               final TestActivity fragmentActivity) {
+    private static PreferenceSearcher<PreferenceItem> createPreferenceSearcher(
+            final Class<? extends PreferenceFragmentCompat> preferenceScreen,
+            final TestActivity fragmentActivity) {
         PreferenceProvider preferenceProvider =
                 PreferenceProviderFactory.createPreferenceProvider(
                         fragmentActivity,
                         fragmentActivity.getSupportFragmentManager(),
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
-        return new PreferenceSearcher(
+        return new PreferenceSearcher<>(
                 PreferenceItems.getPreferenceItems(
                         preferenceProvider.getPreferences(preferenceScreen),
                         preferenceScreen));
