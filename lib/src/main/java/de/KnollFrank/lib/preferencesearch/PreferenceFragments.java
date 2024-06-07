@@ -38,7 +38,7 @@ public class PreferenceFragments {
     }
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment) {
-        return getPreferenceScreenOfFragment(Fragment.instantiate(this.context, fragment, null));
+        return getPreferenceScreenOfFragment(Fragment.instantiate(this.context, fragment));
     }
 
     public void initialize(final Fragment fragment) {
