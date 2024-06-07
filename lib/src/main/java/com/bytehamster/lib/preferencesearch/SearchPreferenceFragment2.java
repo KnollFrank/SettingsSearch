@@ -59,6 +59,7 @@ public class SearchPreferenceFragment2 extends Fragment {
         }
     }
 
+    // FK-TODO: remove
     public static class PrefsFragment extends BaseSearchPreferenceFragment {
 
         @Override
