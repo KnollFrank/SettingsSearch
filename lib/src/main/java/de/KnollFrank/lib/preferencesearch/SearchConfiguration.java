@@ -8,7 +8,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 public class SearchConfiguration {
 
-    private boolean breadcrumbsEnabled = false;
     private FragmentActivity activity;
     @IdRes
     private int fragmentContainerViewId = View.NO_ID;
@@ -30,21 +29,6 @@ public class SearchConfiguration {
 
     public FragmentActivity getActivity() {
         return activity;
-    }
-
-    /**
-     * Show breadcrumbs in the list of search results, containing of
-     * the prefix given in addResourceFileToIndex, PreferenceCategory and PreferenceScreen.
-     * Default is false
-     *
-     * @param breadcrumbsEnabled True if breadcrumbs should be shown
-     */
-    public void setBreadcrumbsEnabled(final boolean breadcrumbsEnabled) {
-        this.breadcrumbsEnabled = breadcrumbsEnabled;
-    }
-
-    boolean isBreadcrumbsEnabled() {
-        return breadcrumbsEnabled;
     }
 
     /**
