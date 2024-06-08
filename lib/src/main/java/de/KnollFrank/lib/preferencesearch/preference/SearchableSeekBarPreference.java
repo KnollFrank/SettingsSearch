@@ -18,20 +18,8 @@ public class SearchableSeekBarPreference extends SeekBarPreference implements IC
     };
     private Class<? extends PreferenceFragmentCompat> host;
 
-    public SearchableSeekBarPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public SearchableSeekBarPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     public SearchableSeekBarPreference(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public SearchableSeekBarPreference(@NonNull final Context context) {
-        super(context);
     }
 
     @Override

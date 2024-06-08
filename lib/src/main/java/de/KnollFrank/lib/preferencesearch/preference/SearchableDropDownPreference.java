@@ -18,20 +18,8 @@ public class SearchableDropDownPreference extends DropDownPreference implements 
     };
     private Class<? extends PreferenceFragmentCompat> host;
 
-    public SearchableDropDownPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public SearchableDropDownPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     public SearchableDropDownPreference(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public SearchableDropDownPreference(@NonNull final Context context) {
-        super(context);
     }
 
     @Override

@@ -18,20 +18,8 @@ public class SearchableEditTextPreference extends EditTextPreference implements 
     };
     private Class<? extends PreferenceFragmentCompat> host;
 
-    public SearchableEditTextPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public SearchableEditTextPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     public SearchableEditTextPreference(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public SearchableEditTextPreference(@NonNull final Context context) {
-        super(context);
     }
 
     @Override

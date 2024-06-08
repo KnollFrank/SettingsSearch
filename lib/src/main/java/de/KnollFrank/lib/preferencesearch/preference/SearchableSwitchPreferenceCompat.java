@@ -18,20 +18,8 @@ public class SearchableSwitchPreferenceCompat extends SwitchPreferenceCompat imp
     };
     private Class<? extends PreferenceFragmentCompat> host;
 
-    public SearchableSwitchPreferenceCompat(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public SearchableSwitchPreferenceCompat(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     public SearchableSwitchPreferenceCompat(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public SearchableSwitchPreferenceCompat(@NonNull final Context context) {
-        super(context);
     }
 
     @Override

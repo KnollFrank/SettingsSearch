@@ -18,20 +18,8 @@ public class SearchableCheckBoxPreference extends CheckBoxPreference implements 
     };
     private Class<? extends PreferenceFragmentCompat> host;
 
-    public SearchableCheckBoxPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public SearchableCheckBoxPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     public SearchableCheckBoxPreference(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public SearchableCheckBoxPreference(@NonNull final Context context) {
-        super(context);
     }
 
     @Override

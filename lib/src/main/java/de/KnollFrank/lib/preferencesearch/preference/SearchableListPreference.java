@@ -18,20 +18,8 @@ public class SearchableListPreference extends ListPreference implements IClickab
     };
     private Class<? extends PreferenceFragmentCompat> host;
 
-    public SearchableListPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public SearchableListPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     public SearchableListPreference(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public SearchableListPreference(@NonNull final Context context) {
-        super(context);
     }
 
     @Override

@@ -18,20 +18,8 @@ public class SearchableMultiSelectListPreference extends MultiSelectListPreferen
     };
     private Class<? extends PreferenceFragmentCompat> host;
 
-    public SearchableMultiSelectListPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    public SearchableMultiSelectListPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     public SearchableMultiSelectListPreference(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    public SearchableMultiSelectListPreference(@NonNull final Context context) {
-        super(context);
     }
 
     @Override
