@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 
+// FK-TODO: verwende https://github.com/raphw/byte-buddy/tree/master/byte-buddy-gradle-plugin oder https://github.com/linkedin/dexmaker um die Searchable*-Klassen anders zu erzeugen und in den preferences.xml-Dateien wieder die Original-Preferences (aus dem package androidx.preference) verwenden zu können.
 public class SearchablePreference extends Preference implements IClickablePreference {
 
     private Consumer<PreferenceWithHost> preferenceClickListener = preferenceWithHost -> {
