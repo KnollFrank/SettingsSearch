@@ -24,9 +24,7 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
         ClickListenerSetter.setClickListener(
                 preference -> System.out.println("clicking on preference " + preference),
                 preferences);
-        this
-                .getOptionalPreferenceScreen()
-                .ifPresent(preferenceScreen -> PreferencesSetter.setPreferencesOnPreferenceScreen(preferences, preferenceScreen));
+        setPreferencesOnOptionalPreferenceScreen(preferences);
         this.preferences = preferences;
     }
 
@@ -72,6 +70,16 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
 
     private PreferenceScreen createPreferenceScreen() {
         return getPreferenceManager().createPreferenceScreen(getPreferenceManager().getContext());
+    }
+
+    private void setPreferencesOnOptionalPreferenceScreen(final List<Preference> preferences) {
+        this
+                .getOptionalPreferenceScreen()
+                .ifPresent(
+                        preferenceScreen ->
+                                PreferencesSetter.setPreferencesOnPreferenceScreen(
+                                        preferences,
+                                        preferenceScreen));
     }
 
     private Optional<PreferenceScreen> getOptionalPreferenceScreen() {
