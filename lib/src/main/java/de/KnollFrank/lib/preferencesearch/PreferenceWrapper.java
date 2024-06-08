@@ -7,7 +7,7 @@ public class PreferenceWrapper implements IPreferenceItem {
 
     public final Preference preference;
 
-    public PreferenceWrapper(Preference preference) {
+    public PreferenceWrapper(final Preference preference) {
         this.preference = preference;
     }
 
