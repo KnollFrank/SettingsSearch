@@ -25,9 +25,6 @@ public class SearchViewExample2 extends AppCompatActivity implements SearchPrefe
     @IdRes
     private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
 
-    @IdRes
-    private int dummyFragmentContainerViewId = View.NO_ID;
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +71,6 @@ public class SearchViewExample2 extends AppCompatActivity implements SearchPrefe
                 UIUtils.createContentViewAndDummyFragmentContainerViewId(
                         resource,
                         this);
-        dummyFragmentContainerViewId = contentViewAndDummyFragmentContainerViewId.second;
         setContentView(contentViewAndDummyFragmentContainerViewId.first);
     }
 
