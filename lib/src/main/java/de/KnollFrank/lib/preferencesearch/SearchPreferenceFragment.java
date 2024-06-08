@@ -99,13 +99,11 @@ public class SearchPreferenceFragment extends Fragment {
         };
     }
 
-    // FK-TODO: DRY with SearchPreferenceFragment
     private void selectSearchView(final SearchView searchView) {
         searchView.requestFocus();
         showKeyboard(searchView);
     }
 
-    // FK-TODO: DRY with SearchPreferenceFragment
     private void showKeyboard(final View view) {
         final InputMethodManager inputMethodManager = getInputMethodManager();
         if (inputMethodManager != null) {
@@ -113,7 +111,6 @@ public class SearchPreferenceFragment extends Fragment {
         }
     }
 
-    // FK-TODO: DRY with SearchPreferenceFragment
     private InputMethodManager getInputMethodManager() {
         return (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
