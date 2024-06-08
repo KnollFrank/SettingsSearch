@@ -22,7 +22,7 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
     public void setPreferences(final List<Preference> preferences) {
         removePreferencesFromTheirParents(preferences);
         setClickListener(
-                _preference -> System.out.println("clicking on preference " + _preference),
+                preference -> System.out.println("clicking on preference " + preference),
                 preferences);
         this
                 .getOptionalPreferenceScreen()
