@@ -21,12 +21,20 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
 
     public void setPreferences(final List<Preference> preferences) {
         removePreferencesFromTheirParents(preferences);
-        setClickListener(_preference -> System.out.println("clicking on preference " + _preference), preferences);
-        // FK-TODO: falls PreferenceScreen nicht vorhanden ist, dann eine Exception werfen?
+        setClickListener(
+                _preference -> System.out.println("clicking on preference " + _preference),
+                preferences);
         this
                 .getOptionalPreferenceScreen()
                 .ifPresent(preferenceScreen -> setPreferences(preferences, preferenceScreen));
         this.preferences = preferences;
+    }
+
+    @Override
+    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+        final PreferenceScreen preferenceScreen = createPreferenceScreen();
+        addPreferences(preferences, preferenceScreen);
+        setPreferenceScreen(preferenceScreen);
     }
 
     private static void removePreferencesFromTheirParents(final Collection<Preference> preferences) {
@@ -56,13 +64,6 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
         }
     }
 
-    @Override
-    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final PreferenceScreen screen = createPreferenceScreen();
-        addPreferences(preferences, screen);
-        setPreferenceScreen(screen);
-    }
-
     private PreferenceScreen createPreferenceScreen() {
         return getPreferenceManager().createPreferenceScreen(getPreferenceManager().getContext());
     }
@@ -80,7 +81,7 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
     }
 
     private static void addPreferences(final List<Preference> preferences,
-                                       final PreferenceScreen screen) {
-        preferences.forEach(screen::addPreference);
+                                       final PreferenceScreen preferenceScreen) {
+        preferences.forEach(preferenceScreen::addPreference);
     }
 }
