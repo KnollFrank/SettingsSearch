@@ -6,20 +6,14 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.Collections;
-import java.util.Set;
-
 public class SearchConfiguration {
 
     private boolean breadcrumbsEnabled = false;
     private FragmentActivity activity;
     @IdRes
     private int fragmentContainerViewId = View.NO_ID;
-    @IdRes
-    private int dummyFragmentContainerViewId = View.NO_ID;
     private String textNoResults;
     private String textHint;
-    private Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments = Collections.emptySet();
     private Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
 
     /**
@@ -64,22 +58,6 @@ public class SearchConfiguration {
 
     public int getFragmentContainerViewId() {
         return fragmentContainerViewId;
-    }
-
-    public void setDummyFragmentContainerViewId(@IdRes final int dummyFragmentContainerViewId) {
-        this.dummyFragmentContainerViewId = dummyFragmentContainerViewId;
-    }
-
-    public int getDummyFragmentContainerViewId() {
-        return dummyFragmentContainerViewId;
-    }
-
-    public void setPreferenceFragments(final Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments) {
-        this.preferenceFragments = preferenceFragments;
-    }
-
-    public Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments() {
-        return preferenceFragments;
     }
 
     public void setRootPreferenceFragment(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {

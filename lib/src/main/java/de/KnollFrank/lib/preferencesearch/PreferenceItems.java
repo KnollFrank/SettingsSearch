@@ -7,41 +7,9 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.common.Lists;
-
 public class PreferenceItems {
-
-    public static List<PreferenceItem> getPreferenceItems(
-            final Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments,
-            final PreferenceProvider preferenceProvider) {
-        class _PreferenceItems {
-
-            private final PreferenceProvider preferenceProvider;
-
-            public _PreferenceItems(final PreferenceProvider preferenceProvider) {
-                this.preferenceProvider = preferenceProvider;
-            }
-
-            public List<PreferenceItem> getPreferenceItems(final Set<Class<? extends PreferenceFragmentCompat>> preferenceFragments) {
-                final List<List<PreferenceItem>> preferenceItems =
-                        preferenceFragments
-                                .stream()
-                                .map(this::parsePreferenceScreen)
-                                .collect(Collectors.toList());
-                return Lists.concat(preferenceItems);
-            }
-
-            private List<PreferenceItem> parsePreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
-                final List<Preference> preferences = preferenceProvider.getPreferences(preferenceScreen);
-                return PreferenceItems.getPreferenceItems(preferences, preferenceScreen);
-            }
-        }
-
-        return new _PreferenceItems(preferenceProvider).getPreferenceItems(preferenceFragments);
-    }
 
     public static List<PreferenceItem> getPreferenceItems(
             final List<Preference> preferences,

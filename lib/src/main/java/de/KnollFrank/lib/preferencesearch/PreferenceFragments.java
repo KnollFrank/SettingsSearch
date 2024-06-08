@@ -8,8 +8,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class PreferenceFragments {
 
@@ -24,18 +22,6 @@ public class PreferenceFragments {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.containerResId = containerResId;
-    }
-
-    public static Set<Class<? extends PreferenceFragmentCompat>> getPreferenceFragments(
-            final PreferenceFragmentCompat root,
-            final Context context,
-            final FragmentManager fragmentManager,
-            @IdRes final int containerResId) {
-        return new PreferenceScreensProvider(new PreferenceFragments(context, fragmentManager, containerResId))
-                .getPreferenceScreens(root)
-                .stream()
-                .map(preferenceScreenWithHost -> preferenceScreenWithHost.host)
-                .collect(Collectors.toSet());
     }
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment) {

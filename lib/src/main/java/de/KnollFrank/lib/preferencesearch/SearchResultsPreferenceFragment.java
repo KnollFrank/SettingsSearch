@@ -42,8 +42,8 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
     private static SearchPreferenceResult getSearchPreferenceResult(final PreferenceWithHost preferenceWithHost) {
         return new SearchPreferenceResult(
                 preferenceWithHost.preference.getKey(),
-                preferenceWithHost.host,
-                null);
+                preferenceWithHost.host
+        );
     }
 
     @Override

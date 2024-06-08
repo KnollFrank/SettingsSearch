@@ -9,9 +9,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -21,14 +19,11 @@ public class SearchPreferenceResult {
 
     private final String key;
     private final Class<? extends PreferenceFragmentCompat> preferenceFragmentClass;
-    private final String screen;
 
     public SearchPreferenceResult(final String key,
-                                  final Class<? extends PreferenceFragmentCompat> preferenceFragmentClass,
-                                  final String screen) {
+                                  final Class<? extends PreferenceFragmentCompat> preferenceFragmentClass) {
         this.key = key;
         this.preferenceFragmentClass = preferenceFragmentClass;
-        this.screen = screen;
     }
 
     /**
@@ -47,15 +42,6 @@ public class SearchPreferenceResult {
      */
     public Class<? extends PreferenceFragmentCompat> getPreferenceFragmentClass() {
         return preferenceFragmentClass;
-    }
-
-    /**
-     * Returns the screen in which the result was found
-     *
-     * @return The screen in which the result was found
-     */
-    public String getScreen() {
-        return screen;
     }
 
     /**
@@ -127,15 +113,5 @@ public class SearchPreferenceResult {
         int color = arr.getColor(0, 0xff3F51B5);
         arr.recycle();
         return color;
-    }
-
-    /**
-     * Closes the search results page
-     *
-     * @param activity The current activity
-     */
-    public void closeSearchPage(AppCompatActivity activity) {
-        FragmentManager fm = activity.getSupportFragmentManager();
-        fm.beginTransaction().remove(fm.findFragmentByTag(SearchPreferenceFragment.TAG)).commit();
     }
 }

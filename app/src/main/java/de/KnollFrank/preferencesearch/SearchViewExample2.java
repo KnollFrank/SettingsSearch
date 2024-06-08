@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
 import de.KnollFrank.lib.preferencesearch.Navigation;
-import de.KnollFrank.lib.preferencesearch.PreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.SearchPreferenceResult;
@@ -83,13 +82,6 @@ public class SearchViewExample2 extends AppCompatActivity implements SearchPrefe
                            final PreferenceFragmentCompat root) {
         searchConfiguration.setActivity(this);
         searchConfiguration.setFragmentContainerViewId(FRAGMENT_CONTAINER_VIEW);
-        searchConfiguration.setDummyFragmentContainerViewId(dummyFragmentContainerViewId);
-        searchConfiguration.setPreferenceFragments(
-                PreferenceFragments.getPreferenceFragments(
-                        root,
-                        this,
-                        this.getSupportFragmentManager(),
-                        dummyFragmentContainerViewId));
         searchConfiguration.setRootPreferenceFragment(root.getClass());
         searchConfiguration.setBreadcrumbsEnabled(false);
     }

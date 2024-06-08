@@ -29,7 +29,7 @@ public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCom
         super.onViewCreated(view, savedInstanceState);
         this.keyOfPreference2Highlight.ifPresent(
                 keyOfPreference2Highlight -> {
-                    final SearchPreferenceResult searchPreferenceResult = new SearchPreferenceResult(keyOfPreference2Highlight, null, null);
+                    final SearchPreferenceResult searchPreferenceResult = new SearchPreferenceResult(keyOfPreference2Highlight, null);
                     scrollToPreference(keyOfPreference2Highlight);
                     searchPreferenceResult.highlight(this);
                 });
