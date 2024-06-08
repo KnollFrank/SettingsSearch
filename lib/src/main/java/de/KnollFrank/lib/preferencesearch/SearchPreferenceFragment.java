@@ -17,15 +17,14 @@ import java.util.List;
 
 import de.KnollFrank.lib.preferencesearch.common.UIUtils;
 
-// FK-TODO: rename
-public class SearchPreferenceFragment2 extends Fragment {
+public class SearchPreferenceFragment extends Fragment {
 
     @IdRes
     private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView2;
 
     private SearchConfiguration searchConfiguration;
 
-    public SearchPreferenceFragment2() {
+    public SearchPreferenceFragment() {
         super(R.layout.searchpreference_fragment2);
     }
 
@@ -70,8 +69,8 @@ public class SearchPreferenceFragment2 extends Fragment {
                                             final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
                                             final PreferenceSearcher<PreferenceWithHost> preferenceSearcher,
                                             final SearchConfiguration searchConfiguration) {
-        if (searchConfiguration.getTextHint() != null) {
-            searchView.setQueryHint(searchConfiguration.getTextHint());
+        if (searchConfiguration.textHint != null) {
+            searchView.setQueryHint(searchConfiguration.textHint);
         }
         searchView.setOnQueryTextListener(
                 createOnQueryTextListener(
@@ -123,7 +122,7 @@ public class SearchPreferenceFragment2 extends Fragment {
 
     private IPreferencesProvider<PreferenceWithHost> getPreferencesProvider(final int fragmentContainerViewId) {
         return new PreferencesProvider(
-                searchConfiguration.getRootPreferenceFragment().getName(),
+                searchConfiguration.rootPreferenceFragment.getName(),
                 new PreferenceScreensProvider(
                         new PreferenceFragments(
                                 requireActivity(),

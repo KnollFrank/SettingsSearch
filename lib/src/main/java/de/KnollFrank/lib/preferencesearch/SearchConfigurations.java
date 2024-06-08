@@ -2,6 +2,8 @@ package de.KnollFrank.lib.preferencesearch;
 
 import android.os.Bundle;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.preferencesearch.common.Bundles;
 
 class SearchConfigurations {
@@ -11,15 +13,16 @@ class SearchConfigurations {
 
     public static Bundle toBundle(final SearchConfiguration searchConfiguration) {
         final Bundle bundle = new Bundle();
-        bundle.putString(ARGUMENT_TEXT_HINT, searchConfiguration.getTextHint());
-        new Bundles(bundle).putClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT, searchConfiguration.getRootPreferenceFragment());
+        bundle.putString(ARGUMENT_TEXT_HINT, searchConfiguration.textHint);
+        new Bundles(bundle).putClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT, searchConfiguration.rootPreferenceFragment);
         return bundle;
     }
 
     public static SearchConfiguration fromBundle(final Bundle bundle) {
-        final SearchConfiguration searchConfiguration = new SearchConfiguration();
-        searchConfiguration.setTextHint(bundle.getString(ARGUMENT_TEXT_HINT));
-        searchConfiguration.setRootPreferenceFragment(new Bundles(bundle).getClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT));
-        return searchConfiguration;
+        return new SearchConfiguration(
+                Optional.empty(),
+                0,
+                bundle.getString(ARGUMENT_TEXT_HINT),
+                new Bundles(bundle).getClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT));
     }
 }

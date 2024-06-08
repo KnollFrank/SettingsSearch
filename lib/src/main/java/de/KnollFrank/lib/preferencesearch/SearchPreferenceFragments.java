@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.preferencesearch;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class SearchPreferenceFragments {
 
@@ -10,31 +11,29 @@ public class SearchPreferenceFragments {
         this.searchConfiguration = searchConfiguration;
     }
 
-    // FK-TODO: rename method
-    public void showSearchPreferenceFragment2() {
-        if (this.searchConfiguration.getActivity() == null) {
-            throw new IllegalStateException("setActivity() not called");
-        }
-        show(createSearchPreferenceFragment2());
+    public void showSearchPreferenceFragment() {
+        show(createSearchPreferenceFragment());
     }
 
-    private SearchPreferenceFragment2 createSearchPreferenceFragment2() {
-        final SearchPreferenceFragment2 searchPreferenceFragment2 = new SearchPreferenceFragment2();
-        searchPreferenceFragment2.setArguments(SearchConfigurations.toBundle(this.searchConfiguration));
-        return searchPreferenceFragment2;
+    private SearchPreferenceFragment createSearchPreferenceFragment() {
+        final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment();
+        searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(this.searchConfiguration));
+        return searchPreferenceFragment;
     }
 
     private void show(final Fragment fragment) {
         this
-                .searchConfiguration
-                .getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
                 .add(
-                        this.searchConfiguration.getFragmentContainerViewId(),
+                        this.searchConfiguration.fragmentContainerViewId,
                         fragment,
                         fragment.getClass().getName())
                 .addToBackStack(fragment.getClass().getName())
                 .commit();
+    }
+
+    private FragmentManager getSupportFragmentManager() {
+        return this.searchConfiguration.activity.get().getSupportFragmentManager();
     }
 }

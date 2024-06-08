@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name=".SearchViewExample2"
+            android:name=".SearchViewExample"
             android:exported="true"
-            android:label="@string/app_name_search_view_example2"
+            android:label="@string/app_name_search_view_example"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
