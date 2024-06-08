@@ -80,7 +80,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         return new SearchConfiguration(
                 Optional.of(this),
                 FRAGMENT_CONTAINER_VIEW,
-                null,
+                Optional.empty(),
                 rootPreferenceFragment);
     }
 }

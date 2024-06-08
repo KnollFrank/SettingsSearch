@@ -14,16 +14,16 @@ public class Bundles {
         this.bundle = bundle;
     }
 
-    public Optional<String> getString(final String key) {
-        return this.bundle != null ? Optional.ofNullable(this.bundle.getString(key)) : Optional.empty();
+    public void putOptionalString(final String key, final Optional<String> value) {
+        value.ifPresent(_value -> bundle.putString(key, _value));
     }
 
-    public boolean getBoolean(final String key, final boolean defaultValue) {
-        return this.bundle != null ? this.bundle.getBoolean(key, defaultValue) : defaultValue;
+    public Optional<String> getOptionalString(final String key) {
+        return Optional.ofNullable(this.bundle.getString(key));
     }
 
     public List<String> getStringArrayList(final String key) {
-        if (this.bundle == null || !this.bundle.containsKey(key)) {
+        if (!this.bundle.containsKey(key)) {
             return Collections.emptyList();
         }
         final List<String> result = this.bundle.getStringArrayList(key);

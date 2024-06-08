@@ -21,13 +21,16 @@ public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCom
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.keyOfPreference2Highlight = new Bundles(getArguments()).getString(KEY_OF_PREFERENCE_2_HIGHLIGHT);
+        keyOfPreference2Highlight =
+                getArguments() != null ?
+                        new Bundles(getArguments()).getOptionalString(KEY_OF_PREFERENCE_2_HIGHLIGHT) :
+                        Optional.empty();
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.keyOfPreference2Highlight.ifPresent(
+        keyOfPreference2Highlight.ifPresent(
                 keyOfPreference2Highlight -> {
                     final SearchPreferenceResult searchPreferenceResult = new SearchPreferenceResult(keyOfPreference2Highlight, null);
                     scrollToPreference(keyOfPreference2Highlight);

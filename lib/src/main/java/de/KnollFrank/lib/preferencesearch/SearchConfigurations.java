@@ -13,16 +13,18 @@ class SearchConfigurations {
 
     public static Bundle toBundle(final SearchConfiguration searchConfiguration) {
         final Bundle bundle = new Bundle();
-        bundle.putString(ARGUMENT_TEXT_HINT, searchConfiguration.textHint);
-        new Bundles(bundle).putClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT, searchConfiguration.rootPreferenceFragment);
+        final Bundles bundles = new Bundles(bundle);
+        bundles.putOptionalString(ARGUMENT_TEXT_HINT, searchConfiguration.textHint);
+        bundles.putClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT, searchConfiguration.rootPreferenceFragment);
         return bundle;
     }
 
     public static SearchConfiguration fromBundle(final Bundle bundle) {
+        final Bundles bundles = new Bundles(bundle);
         return new SearchConfiguration(
                 Optional.empty(),
                 0,
-                bundle.getString(ARGUMENT_TEXT_HINT),
-                new Bundles(bundle).getClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT));
+                bundles.getOptionalString(ARGUMENT_TEXT_HINT),
+                bundles.getClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT));
     }
 }

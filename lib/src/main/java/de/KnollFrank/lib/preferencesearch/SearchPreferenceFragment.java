@@ -25,7 +25,7 @@ public class SearchPreferenceFragment extends Fragment {
     private SearchConfiguration searchConfiguration;
 
     public SearchPreferenceFragment() {
-        super(R.layout.searchpreference_fragment2);
+        super(R.layout.searchpreference_fragment);
     }
 
     @Override
@@ -69,9 +69,7 @@ public class SearchPreferenceFragment extends Fragment {
                                             final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
                                             final PreferenceSearcher<PreferenceWithHost> preferenceSearcher,
                                             final SearchConfiguration searchConfiguration) {
-        if (searchConfiguration.textHint != null) {
-            searchView.setQueryHint(searchConfiguration.textHint);
-        }
+        searchConfiguration.textHint.ifPresent(searchView::setQueryHint);
         searchView.setOnQueryTextListener(
                 createOnQueryTextListener(
                         searchResultsPreferenceFragment,
