@@ -11,7 +11,6 @@ public class SearchConfiguration {
     private FragmentActivity activity;
     @IdRes
     private int fragmentContainerViewId = View.NO_ID;
-    private String textNoResults;
     private String textHint;
     private Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
 
@@ -51,14 +50,6 @@ public class SearchConfiguration {
 
     public Class<? extends PreferenceFragmentCompat> getRootPreferenceFragment() {
         return rootPreferenceFragment;
-    }
-
-    public void setTextNoResults(final String textNoResults) {
-        this.textNoResults = textNoResults;
-    }
-
-    public String getTextNoResults() {
-        return textNoResults;
     }
 
     public void setTextHint(final String textHint) {
