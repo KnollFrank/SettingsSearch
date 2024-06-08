@@ -12,10 +12,8 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.UIUtils;
 
@@ -44,7 +42,7 @@ public class SearchPreferenceFragment2 extends Fragment {
                 UIUtils
                         .createAndAddFragmentContainerView2ViewGroup((ViewGroup) view, getContext())
                         .getId();
-        final List<PreferenceWrapper> preferences =
+        final List<PreferenceWithHost> preferenceWithHostList =
                 this
                         .getPreferencesProvider(dummyFragmentContainerViewId)
                         .getPreferences();
@@ -54,12 +52,12 @@ public class SearchPreferenceFragment2 extends Fragment {
             configureSearchView(
                     searchView,
                     searchResultsPreferenceFragment,
-                    new PreferenceSearcher<>(preferences),
+                    new PreferenceSearcher<>(preferenceWithHostList),
                     searchConfiguration);
             selectSearchView(searchView);
         }
         if (savedInstanceState == null) {
-            searchResultsPreferenceFragment.setPreferences(asPreferences(preferences));
+            searchResultsPreferenceFragment.setPreferenceWithHostList(preferenceWithHostList);
             Navigation.show(
                     searchResultsPreferenceFragment,
                     false,
@@ -70,7 +68,7 @@ public class SearchPreferenceFragment2 extends Fragment {
 
     private static void configureSearchView(final SearchView searchView,
                                             final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
-                                            final PreferenceSearcher<PreferenceWrapper> preferenceSearcher,
+                                            final PreferenceSearcher<PreferenceWithHost> preferenceSearcher,
                                             final SearchConfiguration searchConfiguration) {
         if (searchConfiguration.getTextHint() != null) {
             searchView.setQueryHint(searchConfiguration.getTextHint());
@@ -83,7 +81,7 @@ public class SearchPreferenceFragment2 extends Fragment {
 
     private static OnQueryTextListener createOnQueryTextListener(
             final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
-            final PreferenceSearcher<PreferenceWrapper> preferenceSearcher) {
+            final PreferenceSearcher<PreferenceWithHost> preferenceSearcher) {
         return new OnQueryTextListener() {
 
             @Override
@@ -98,7 +96,8 @@ public class SearchPreferenceFragment2 extends Fragment {
             }
 
             private void filterPreferenceItemsBy(final String query) {
-                searchResultsPreferenceFragment.setPreferences(asPreferences(preferenceSearcher.searchFor(query)));
+                searchResultsPreferenceFragment.setPreferenceWithHostList(
+                        preferenceSearcher.searchFor(query));
             }
         };
     }
@@ -122,14 +121,7 @@ public class SearchPreferenceFragment2 extends Fragment {
         return (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
-    private static List<Preference> asPreferences(final List<PreferenceWrapper> preferenceWrappers) {
-        return preferenceWrappers
-                .stream()
-                .map(preferenceWrapper -> preferenceWrapper.preference)
-                .collect(Collectors.toList());
-    }
-
-    private IPreferencesProvider<PreferenceWrapper> getPreferencesProvider(final int fragmentContainerViewId) {
+    private IPreferencesProvider<PreferenceWithHost> getPreferencesProvider(final int fragmentContainerViewId) {
         return new PreferencesProvider(
                 searchConfiguration.getRootPreferenceFragment().getName(),
                 new PreferenceScreensProvider(

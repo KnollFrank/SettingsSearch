@@ -6,14 +6,17 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.EditTextPreference;
-import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
+
 public class SearchableEditTextPreference extends EditTextPreference implements IClickablePreference {
 
-    private Consumer<Preference> clickListener = preference -> {
+    private Consumer<PreferenceWithHost> preferenceClickListener = preferenceWithHost -> {
     };
+    private Class<? extends PreferenceFragmentCompat> host;
 
     public SearchableEditTextPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -32,13 +35,15 @@ public class SearchableEditTextPreference extends EditTextPreference implements 
     }
 
     @Override
-    public void setClickListener(final Consumer<Preference> clickListener) {
-        this.clickListener = clickListener;
+    public void setPreferenceClickListenerAndHost(final Consumer<PreferenceWithHost> preferenceClickListener,
+                                                  final Class<? extends PreferenceFragmentCompat> host) {
+        this.preferenceClickListener = preferenceClickListener;
+        this.host = host;
     }
 
     @Override
     public void performClick() {
-        clickListener.accept(this);
+        preferenceClickListener.accept(new PreferenceWithHost(this, host));
         super.performClick();
     }
 }

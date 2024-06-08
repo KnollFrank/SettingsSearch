@@ -63,6 +63,11 @@ public class SearchViewExample2 extends AppCompatActivity implements SearchPrefe
 
     @Override
     public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
+        Navigation.showPreferenceScreenAndHighlightPreference(
+                result.getPreferenceFragmentClass().getName(),
+                result.getKey(),
+                this,
+                FRAGMENT_CONTAINER_VIEW);
     }
 
     private void _setContentView(final @LayoutRes int resource) {

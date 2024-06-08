@@ -5,15 +5,18 @@ import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
+
 public class SearchableSwitchPreference extends SwitchPreference implements IClickablePreference {
 
-    private Consumer<Preference> clickListener = preference -> {
+    private Consumer<PreferenceWithHost> preferenceClickListener = preferenceWithHost -> {
     };
+    private Class<? extends PreferenceFragmentCompat> host;
 
     public SearchableSwitchPreference(@NonNull final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
@@ -32,13 +35,15 @@ public class SearchableSwitchPreference extends SwitchPreference implements ICli
     }
 
     @Override
-    public void setClickListener(final Consumer<Preference> clickListener) {
-        this.clickListener = clickListener;
+    public void setPreferenceClickListenerAndHost(final Consumer<PreferenceWithHost> preferenceClickListener,
+                                                  final Class<? extends PreferenceFragmentCompat> host) {
+        this.preferenceClickListener = preferenceClickListener;
+        this.host = host;
     }
 
     @Override
     public void performClick() {
-        clickListener.accept(this);
+        preferenceClickListener.accept(new PreferenceWithHost(this, host));
         super.performClick();
     }
 }

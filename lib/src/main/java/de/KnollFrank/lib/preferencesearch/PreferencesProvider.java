@@ -3,13 +3,14 @@ package de.KnollFrank.lib.preferencesearch;
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PreferencesProvider implements IPreferencesProvider<PreferenceWrapper> {
+public class PreferencesProvider implements IPreferencesProvider<PreferenceWithHost> {
 
     private final String preferenceFragment;
     private final PreferenceScreensProvider preferenceScreensProvider;
@@ -24,14 +25,24 @@ public class PreferencesProvider implements IPreferencesProvider<PreferenceWrapp
     }
 
     @Override
-    public List<PreferenceWrapper> getPreferences() {
+    public List<PreferenceWithHost> getPreferences() {
         return preferenceScreensProvider
                 .getPreferenceScreens(instantiatePreferenceFragment())
                 .stream()
-                .map(preferenceScreenWithHost -> preferenceScreenWithHost.preferenceScreen)
-                .map(PreferenceProvider::getPreferences)
+                .map(preferenceScreenWithHost ->
+                        asPreferenceWithHostList(
+                                PreferenceProvider.getPreferences(preferenceScreenWithHost.preferenceScreen),
+                                preferenceScreenWithHost.host))
                 .flatMap(Collection::stream)
-                .map(PreferenceWrapper::new)
+                .collect(Collectors.toList());
+    }
+
+    private static List<PreferenceWithHost> asPreferenceWithHostList(
+            final List<Preference> preferences,
+            final Class<? extends PreferenceFragmentCompat> host) {
+        return preferences
+                .stream()
+                .map(preference -> new PreferenceWithHost(preference, host))
                 .collect(Collectors.toList());
     }
 

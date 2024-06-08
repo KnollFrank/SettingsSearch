@@ -12,26 +12,46 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.preference.IClickablePreference;
 
 public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragment {
 
-    private List<Preference> preferences = Collections.emptyList();
+    private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
 
-    public void setPreferences(final List<Preference> preferences) {
+    public void setPreferenceWithHostList(final List<PreferenceWithHost> preferenceWithHostList) {
+        final List<Preference> preferences = getPreferences(preferenceWithHostList);
         PreferencesRemover.removePreferencesFromTheirParents(preferences);
-        ClickListenerSetter.setClickListener(
-                preference -> System.out.println("clicking on preference " + preference),
-                preferences);
+        ClickListenerSetter.setPreferenceClickListener(
+                preferenceWithHost ->
+                        ((SearchPreferenceResultListener) getActivity())
+                                .onSearchResultClicked(getSearchPreferenceResult(preferenceWithHost)),
+                preferenceWithHostList);
         setPreferencesOnOptionalPreferenceScreen(preferences);
-        this.preferences = preferences;
+        this.preferenceWithHostList = preferenceWithHostList;
+    }
+
+    private List<Preference> getPreferences(final List<PreferenceWithHost> preferenceWithHostList) {
+        return preferenceWithHostList
+                .stream()
+                .map(preferenceWithHost -> preferenceWithHost.preference)
+                .collect(Collectors.toList());
+    }
+
+    private static SearchPreferenceResult getSearchPreferenceResult(final PreferenceWithHost preferenceWithHost) {
+        return new SearchPreferenceResult(
+                preferenceWithHost.preference.getKey(),
+                preferenceWithHost.host,
+                null);
     }
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         final PreferenceScreen preferenceScreen = createPreferenceScreen();
-        PreferencesSetter.addPreferences2PreferenceScreen(this.preferences, preferenceScreen);
+        PreferencesSetter.addPreferences2PreferenceScreen(
+                getPreferences(this.preferenceWithHostList),
+                preferenceScreen);
         setPreferenceScreen(preferenceScreen);
     }
 
@@ -51,20 +71,24 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
 
     private static class ClickListenerSetter {
 
-        public static void setClickListener(final Consumer<Preference> clickListener,
-                                            final List<Preference> preferences) {
-            for (final Preference preference : preferences) {
-                setClickListener(clickListener, preference);
+        public static void setPreferenceClickListener(final Consumer<PreferenceWithHost> preferenceClickListener,
+                                                      final List<PreferenceWithHost> preferenceWithHostList) {
+            for (final PreferenceWithHost preferenceWithHost : preferenceWithHostList) {
+                setPreferenceClickListener(preferenceClickListener, preferenceWithHost);
             }
         }
 
-        private static void setClickListener(final Consumer<Preference> clickListener,
-                                             final Preference preference) {
+        private static void setPreferenceClickListener(final Consumer<PreferenceWithHost> preferenceClickListener,
+                                                       final PreferenceWithHost preferenceWithHost) {
+            preparePreferenceClickListener(preferenceWithHost.preference);
+            if (preferenceWithHost.preference instanceof final IClickablePreference clickablePreference) {
+                clickablePreference.setPreferenceClickListenerAndHost(preferenceClickListener, preferenceWithHost.host);
+            }
+        }
+
+        private static void preparePreferenceClickListener(final Preference preference) {
             preference.setEnabled(false);
             preference.setShouldDisableView(false);
-            if (preference instanceof IClickablePreference) {
-                ((IClickablePreference) preference).setClickListener(clickListener);
-            }
         }
     }
 
