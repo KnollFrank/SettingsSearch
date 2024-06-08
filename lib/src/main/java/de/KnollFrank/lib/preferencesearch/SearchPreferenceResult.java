@@ -61,8 +61,7 @@ public class SearchPreferenceResult {
         }
         final RecyclerView recyclerView = prefsFragment.getListView();
         final RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
-        if (adapter instanceof PreferenceGroup.PreferencePositionCallback) {
-            PreferenceGroup.PreferencePositionCallback callback = (PreferenceGroup.PreferencePositionCallback) adapter;
+        if (adapter instanceof final PreferenceGroup.PreferencePositionCallback callback) {
             final int position = callback.getPreferenceAdapterPosition(prefResult);
             if (position != RecyclerView.NO_POSITION) {
                 recyclerView.scrollToPosition(position);
