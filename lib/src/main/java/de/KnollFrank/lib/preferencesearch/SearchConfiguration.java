@@ -56,6 +56,7 @@ public class SearchConfiguration {
         this.fragmentContainerViewId = fragmentContainerViewId;
     }
 
+    @IdRes
     public int getFragmentContainerViewId() {
         return fragmentContainerViewId;
     }
