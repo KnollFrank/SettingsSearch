@@ -56,12 +56,7 @@ public class SearchPreferenceFragment extends Fragment implements SearchClickLis
 
     @Override
     public void onItemClicked(final PreferenceItem preferenceItem, final int position) {
-        try {
-            final SearchPreferenceResultListener searchPreferenceResultListener = (SearchPreferenceResultListener) getActivity();
-            searchPreferenceResultListener.onSearchResultClicked(getSearchPreferenceResult(preferenceItem));
-        } catch (final ClassCastException e) {
-            throw new ClassCastException(getActivity().toString() + " must implement SearchPreferenceResultListener");
-        }
+        ((SearchPreferenceResultListener) getActivity()).onSearchResultClicked(getSearchPreferenceResult(preferenceItem));
     }
 
     private static SearchPreferenceResult getSearchPreferenceResult(final PreferenceItem preferenceItem) {
