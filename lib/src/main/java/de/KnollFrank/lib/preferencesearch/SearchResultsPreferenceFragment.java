@@ -14,22 +14,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
-    private Consumer<PreferenceWithHost> onPreferenceClickListener;
 
     public void setPreferenceWithHostList(final List<PreferenceWithHost> preferenceWithHostList) {
         final List<Preference> preferences = getPreferences(preferenceWithHostList);
         PreferencesRemover.removePreferencesFromTheirParents(preferences);
-        // FK-TODO: replace with new instance method of SearchResultsPreferenceFragment
-        this.onPreferenceClickListener =
-                preferenceWithHost ->
-                        ((SearchPreferenceResultListener) getActivity())
-                                .onSearchResultClicked(getSearchPreferenceResult(preferenceWithHost));
         PreferencePreparer.preparePreferences(getPreferences(preferenceWithHostList));
         setPreferencesOnOptionalPreferenceScreen(preferences);
         this.preferenceWithHostList = preferenceWithHostList;
@@ -49,8 +42,13 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     protected Adapter onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
         return new SearchPreferenceGroupAdapter(
                 preferenceScreen,
-                onPreferenceClickListener,
+                this::invokeOnSearchResultClicked,
                 this::getPreferenceWithHost);
+    }
+
+    private void invokeOnSearchResultClicked(final PreferenceWithHost preferenceWithHost) {
+        ((SearchPreferenceResultListener) getActivity())
+                .onSearchResultClicked(getSearchPreferenceResult(preferenceWithHost));
     }
 
     private PreferenceWithHost getPreferenceWithHost(final Preference preference) {
