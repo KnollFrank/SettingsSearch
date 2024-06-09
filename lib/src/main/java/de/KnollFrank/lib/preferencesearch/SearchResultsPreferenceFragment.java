@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
@@ -16,8 +17,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-// FK-TODO: extend PreferenceFragmentCompat instead of BaseSearchPreferenceFragment?
-public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragment {
+public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
     private Consumer<PreferenceWithHost> onPreferenceClickListener;
