@@ -5,10 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
-import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
-import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import java.util.Collection;
@@ -49,27 +47,18 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
     @NonNull
     @Override
     protected Adapter onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
-        // FK-TODO: refactor by extracting sub class?
-        return new PreferenceGroupAdapter(preferenceScreen) {
-            @Override
-            public void onBindViewHolder(@NonNull final PreferenceViewHolder holder, final int position) {
-                super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(
-                        v -> onPreferenceClickListener.accept(getPreferenceWithHost(position)));
-            }
+        return new SearchPreferenceGroupAdapter(
+                preferenceScreen,
+                onPreferenceClickListener,
+                this::getPreferenceWithHost);
+    }
 
-            private PreferenceWithHost getPreferenceWithHost(final int position) {
-                return getPreferenceWithHost(getItem(position));
-            }
-
-            private PreferenceWithHost getPreferenceWithHost(final Preference preference) {
-                return preferenceWithHostList
-                        .stream()
-                        .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
-                        .findFirst()
-                        .get();
-            }
-        };
+    private PreferenceWithHost getPreferenceWithHost(final Preference preference) {
+        return preferenceWithHostList
+                .stream()
+                .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
+                .findFirst()
+                .get();
     }
 
     private List<Preference> getPreferences(final List<PreferenceWithHost> preferenceWithHostList) {
