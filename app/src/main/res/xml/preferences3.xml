@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="third screen">
 
-    <de.KnollFrank.lib.preferencesearch.preference.SearchableCheckBoxPreference
+    <CheckBoxPreference
         android:key="thirdfile"
         android:summary="This checkbox is a preference coming from a third file"
         android:title="Checkbox third file" />

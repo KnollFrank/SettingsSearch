@@ -59,8 +59,7 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
             }
 
             private PreferenceWithHost getPreferenceWithHost(final int position) {
-                final Preference preference = getItem(position);
-                return getPreferenceWithHost(preference);
+                return getPreferenceWithHost(getItem(position));
             }
 
             private PreferenceWithHost getPreferenceWithHost(final Preference preference) {
