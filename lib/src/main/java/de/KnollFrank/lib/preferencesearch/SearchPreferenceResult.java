@@ -49,6 +49,7 @@ public class SearchPreferenceResult {
      *
      * @param prefsFragment Fragment that contains the preference
      */
+    // FK-TODO: move method to a new class
     public void highlight(final PreferenceFragmentCompat prefsFragment) {
         new Handler().post(() -> doHighlight(prefsFragment));
     }
