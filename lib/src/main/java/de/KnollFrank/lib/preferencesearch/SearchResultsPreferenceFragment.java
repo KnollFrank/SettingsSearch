@@ -2,10 +2,14 @@ package de.KnollFrank.lib.preferencesearch;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
+import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceViewHolder;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -14,21 +18,21 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.preference.IClickablePreference;
-
 // FK-TODO: extend PreferenceFragmentCompat instead of BaseSearchPreferenceFragment?
 public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragment {
 
     private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
+    private Consumer<PreferenceWithHost> onPreferenceClickListener;
 
     public void setPreferenceWithHostList(final List<PreferenceWithHost> preferenceWithHostList) {
         final List<Preference> preferences = getPreferences(preferenceWithHostList);
         PreferencesRemover.removePreferencesFromTheirParents(preferences);
-        ClickListenerSetter.setPreferenceClickListener(
+        // FK-TODO: replace with new instance method of SearchResultsPreferenceFragment
+        this.onPreferenceClickListener =
                 preferenceWithHost ->
                         ((SearchPreferenceResultListener) getActivity())
-                                .onSearchResultClicked(getSearchPreferenceResult(preferenceWithHost)),
-                preferenceWithHostList);
+                                .onSearchResultClicked(getSearchPreferenceResult(preferenceWithHost));
+        PreferencePreparer.preparePreferences(getPreferences(preferenceWithHostList));
         setPreferencesOnOptionalPreferenceScreen(preferences);
         this.preferenceWithHostList = preferenceWithHostList;
     }
@@ -40,6 +44,33 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
                 getPreferences(this.preferenceWithHostList),
                 preferenceScreen);
         setPreferenceScreen(preferenceScreen);
+    }
+
+    @NonNull
+    @Override
+    protected Adapter onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
+        // FK-TODO: refactor by extracting sub class?
+        return new PreferenceGroupAdapter(preferenceScreen) {
+            @Override
+            public void onBindViewHolder(@NonNull final PreferenceViewHolder holder, final int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.setOnClickListener(
+                        v -> onPreferenceClickListener.accept(getPreferenceWithHost(position)));
+            }
+
+            private PreferenceWithHost getPreferenceWithHost(final int position) {
+                final Preference preference = getItem(position);
+                return getPreferenceWithHost(preference);
+            }
+
+            private PreferenceWithHost getPreferenceWithHost(final Preference preference) {
+                return preferenceWithHostList
+                        .stream()
+                        .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
+                        .findFirst()
+                        .get();
+            }
+        };
     }
 
     private List<Preference> getPreferences(final List<PreferenceWithHost> preferenceWithHostList) {
@@ -70,24 +101,13 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
         }
     }
 
-    private static class ClickListenerSetter {
+    private static class PreferencePreparer {
 
-        public static void setPreferenceClickListener(final Consumer<PreferenceWithHost> preferenceClickListener,
-                                                      final List<PreferenceWithHost> preferenceWithHostList) {
-            for (final PreferenceWithHost preferenceWithHost : preferenceWithHostList) {
-                setPreferenceClickListener(preferenceClickListener, preferenceWithHost);
-            }
+        public static void preparePreferences(final List<Preference> preferences) {
+            preferences.forEach(PreferencePreparer::preparePreference);
         }
 
-        private static void setPreferenceClickListener(final Consumer<PreferenceWithHost> preferenceClickListener,
-                                                       final PreferenceWithHost preferenceWithHost) {
-            preparePreferenceClickListener(preferenceWithHost.preference);
-            if (preferenceWithHost.preference instanceof final IClickablePreference clickablePreference) {
-                clickablePreference.setPreferenceClickListenerAndHost(preferenceClickListener, preferenceWithHost.host);
-            }
-        }
-
-        private static void preparePreferenceClickListener(final Preference preference) {
+        private static void preparePreference(final Preference preference) {
             preference.setEnabled(false);
             preference.setShouldDisableView(false);
         }

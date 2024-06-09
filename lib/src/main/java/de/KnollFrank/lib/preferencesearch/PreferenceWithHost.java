@@ -20,4 +20,12 @@ public class PreferenceWithHost implements IPreferenceItem {
                 .getPreferenceItem(preference, host)
                 .matches(keyword);
     }
+
+    @Override
+    public String toString() {
+        return "PreferenceWithHost{" +
+                "preference=" + preference +
+                ", host=" + host +
+                '}';
+    }
 }
