@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.preference.IClickablePreference;
 
+// FK-TODO: extend PreferenceFragmentCompat instead of BaseSearchPreferenceFragment?
 public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragment {
 
     private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
@@ -32,6 +33,15 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
         this.preferenceWithHostList = preferenceWithHostList;
     }
 
+    @Override
+    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+        final PreferenceScreen preferenceScreen = createPreferenceScreen();
+        PreferencesSetter.addPreferences2PreferenceScreen(
+                getPreferences(this.preferenceWithHostList),
+                preferenceScreen);
+        setPreferenceScreen(preferenceScreen);
+    }
+
     private List<Preference> getPreferences(final List<PreferenceWithHost> preferenceWithHostList) {
         return preferenceWithHostList
                 .stream()
@@ -44,15 +54,6 @@ public class SearchResultsPreferenceFragment extends BaseSearchPreferenceFragmen
                 preferenceWithHost.preference.getKey(),
                 preferenceWithHost.host
         );
-    }
-
-    @Override
-    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final PreferenceScreen preferenceScreen = createPreferenceScreen();
-        PreferencesSetter.addPreferences2PreferenceScreen(
-                getPreferences(this.preferenceWithHostList),
-                preferenceScreen);
-        setPreferenceScreen(preferenceScreen);
     }
 
     private static class PreferencesRemover {
