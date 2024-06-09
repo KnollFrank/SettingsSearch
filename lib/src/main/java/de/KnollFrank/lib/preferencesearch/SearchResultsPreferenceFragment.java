@@ -10,7 +10,6 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +21,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     public void setPreferenceWithHostList(final List<PreferenceWithHost> preferenceWithHostList) {
         final List<Preference> preferences = getPreferences(preferenceWithHostList);
-        PreferencesRemover.removePreferencesFromTheirParents(preferences);
-        PreferencePreparer.preparePreferences(getPreferences(preferenceWithHostList));
+        PreferencePreparer.preparePreferences(preferences);
         setPreferencesOnOptionalPreferenceScreen(preferences);
         this.preferenceWithHostList = preferenceWithHostList;
     }
@@ -73,20 +71,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         );
     }
 
-    private static class PreferencesRemover {
-
-        public static void removePreferencesFromTheirParents(final Collection<Preference> preferences) {
-            preferences.forEach(PreferencesRemover::removePreferenceFromItsParent);
-        }
-
-        private static void removePreferenceFromItsParent(final Preference preference) {
-            final PreferenceGroup parent = preference.getParent();
-            if (parent != null) {
-                parent.removePreference(preference);
-            }
-        }
-    }
-
     private static class PreferencePreparer {
 
         public static void preparePreferences(final List<Preference> preferences) {
@@ -96,6 +80,14 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         private static void preparePreference(final Preference preference) {
             preference.setEnabled(false);
             preference.setShouldDisableView(false);
+            removePreferenceFromItsParent(preference);
+        }
+
+        private static void removePreferenceFromItsParent(final Preference preference) {
+            final PreferenceGroup parent = preference.getParent();
+            if (parent != null) {
+                parent.removePreference(preference);
+            }
         }
     }
 
