@@ -44,8 +44,8 @@ public class SearchViewExample extends AppCompatActivity {
         if (item.getItemId() == R.id.search_action) {
             final SearchPreferenceFragments searchPreferenceFragments =
                     new SearchPreferenceFragments(
-                            createSearchConfiguration(
-                                    PrefsFragmentFirst.class));
+                            createSearchConfiguration(PrefsFragmentFirst.class),
+                            getSupportFragmentManager());
             searchPreferenceFragments.showSearchPreferenceFragment();
             return true;
         }
@@ -54,7 +54,6 @@ public class SearchViewExample extends AppCompatActivity {
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
         return new SearchConfiguration(
-                Optional.of(this),
                 FRAGMENT_CONTAINER_VIEW,
                 Optional.empty(),
                 rootPreferenceFragment);

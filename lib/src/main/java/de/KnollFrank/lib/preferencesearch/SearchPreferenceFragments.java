@@ -6,9 +6,12 @@ import androidx.fragment.app.FragmentManager;
 public class SearchPreferenceFragments {
 
     private final SearchConfiguration searchConfiguration;
+    private final FragmentManager fragmentManager;
 
-    public SearchPreferenceFragments(final SearchConfiguration searchConfiguration) {
+    public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
+                                     final FragmentManager fragmentManager) {
         this.searchConfiguration = searchConfiguration;
+        this.fragmentManager = fragmentManager;
     }
 
     public void showSearchPreferenceFragment() {
@@ -17,16 +20,12 @@ public class SearchPreferenceFragments {
 
     private void show(final Fragment fragment) {
         this
-                .getSupportFragmentManager()
+                .fragmentManager
                 .beginTransaction()
                 .replace(
                         this.searchConfiguration.fragmentContainerViewId,
                         fragment,
                         fragment.getClass().getName())
                 .commit();
-    }
-
-    private FragmentManager getSupportFragmentManager() {
-        return this.searchConfiguration.activity.get().getSupportFragmentManager();
     }
 }
