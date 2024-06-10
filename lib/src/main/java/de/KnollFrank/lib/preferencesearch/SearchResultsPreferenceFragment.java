@@ -58,10 +58,9 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void showPreferenceScreenAndHighlightPreference(final PreferenceWithHost preferenceWithHost) {
-        final SearchPreferenceResult searchPreferenceResult = getSearchPreferenceResult(preferenceWithHost);
         Navigation.showPreferenceScreenAndHighlightPreference(
-                searchPreferenceResult.getPreferenceFragmentClass().getName(),
-                searchPreferenceResult.getKey(),
+                preferenceWithHost.host.getName(),
+                preferenceWithHost.preference.getKey(),
                 getActivity(),
                 this.fragmentContainerViewId);
     }
@@ -79,13 +78,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 .stream()
                 .map(preferenceWithHost -> preferenceWithHost.preference)
                 .collect(Collectors.toList());
-    }
-
-    private static SearchPreferenceResult getSearchPreferenceResult(final PreferenceWithHost preferenceWithHost) {
-        return new SearchPreferenceResult(
-                preferenceWithHost.preference.getKey(),
-                preferenceWithHost.host
-        );
     }
 
     private static class PreferencePreparer {
