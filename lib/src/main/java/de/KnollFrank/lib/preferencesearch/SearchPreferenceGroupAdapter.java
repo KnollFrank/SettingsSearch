@@ -1,5 +1,9 @@
 package de.KnollFrank.lib.preferencesearch;
 
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
@@ -26,11 +30,34 @@ class SearchPreferenceGroupAdapter extends PreferenceGroupAdapter {
     @Override
     public void onBindViewHolder(@NonNull final PreferenceViewHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
-        holder.itemView.setOnClickListener(
+        UIUtils.setOnClickListener(
+                holder.itemView,
                 v -> onPreferenceWithHostClickListener.accept(getPreferenceWithHost(position)));
     }
 
     private PreferenceWithHost getPreferenceWithHost(final int position) {
         return this.getPreferenceWithHost.apply(getItem(position));
+    }
+
+    private static class UIUtils {
+
+        public static void setOnClickListener(final View view, final OnClickListener onClickListener) {
+            UIUtils.makeChildViewsNonClickable(view);
+            view.setOnClickListener(onClickListener);
+        }
+
+        private static void makeChildViewsNonClickable(final View view) {
+            setClickableRecursive(view, false);
+            view.setClickable(true);
+        }
+
+        private static void setClickableRecursive(final View view, boolean clickable) {
+            view.setClickable(clickable);
+            if (view instanceof final ViewGroup viewGroup) {
+                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                    setClickableRecursive(viewGroup.getChildAt(i), clickable);
+                }
+            }
+        }
     }
 }
