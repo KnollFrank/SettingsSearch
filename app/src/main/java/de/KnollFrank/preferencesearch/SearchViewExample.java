@@ -59,6 +59,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
         return super.onOptionsItemSelected(item);
     }
 
+    // FK-TODO: inline method onSearchResultClicked()
     @Override
     public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
         Navigation.showPreferenceScreenAndHighlightPreference(
