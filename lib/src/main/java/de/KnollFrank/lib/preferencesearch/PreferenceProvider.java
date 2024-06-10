@@ -6,7 +6,6 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class PreferenceProvider {
     }
 
     public static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {
-        final Builder<Preference> preferencesBuilder = ImmutableList.builder();
+        final ImmutableList.Builder<Preference> preferencesBuilder = ImmutableList.builder();
         for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
             final Preference preference = preferenceGroup.getPreference(i);
             preferencesBuilder.add(preference);

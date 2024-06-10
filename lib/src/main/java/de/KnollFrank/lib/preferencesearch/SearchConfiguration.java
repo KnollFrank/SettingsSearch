@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public class SearchConfiguration {
 
+    // FK-TODO: make activity non Optional
     public final Optional<FragmentActivity> activity;
     public final @IdRes int fragmentContainerViewId;
     public final Optional<String> textHint;

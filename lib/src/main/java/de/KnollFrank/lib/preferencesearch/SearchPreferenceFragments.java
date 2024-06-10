@@ -12,20 +12,14 @@ public class SearchPreferenceFragments {
     }
 
     public void showSearchPreferenceFragment() {
-        show(createSearchPreferenceFragment());
-    }
-
-    private SearchPreferenceFragment createSearchPreferenceFragment() {
-        final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment();
-        searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(this.searchConfiguration));
-        return searchPreferenceFragment;
+        show(SearchPreferenceFragment.newInstance(this.searchConfiguration));
     }
 
     private void show(final Fragment fragment) {
         this
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .add(
+                .replace(
                         this.searchConfiguration.fragmentContainerViewId,
                         fragment,
                         fragment.getClass().getName())

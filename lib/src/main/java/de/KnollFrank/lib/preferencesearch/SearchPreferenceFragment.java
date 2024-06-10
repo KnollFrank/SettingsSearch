@@ -21,6 +21,12 @@ public class SearchPreferenceFragment extends Fragment {
 
     private SearchConfiguration searchConfiguration;
 
+    public static SearchPreferenceFragment newInstance(final SearchConfiguration searchConfiguration) {
+        final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment();
+        searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
+        return searchPreferenceFragment;
+    }
+
     public SearchPreferenceFragment() {
         super(R.layout.searchpreference_fragment);
     }
@@ -28,7 +34,7 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        searchConfiguration = SearchConfigurations.fromBundle(getArguments());
+        searchConfiguration = SearchConfigurations.fromBundle(requireArguments());
     }
 
     @Override
