@@ -50,7 +50,7 @@ public class SearchPreferenceFragment extends Fragment {
                         .getPreferencesProvider(dummyFragmentContainerView.getId())
                         .getPreferences();
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment =
-                new SearchResultsPreferenceFragment(searchConfiguration.fragmentContainerViewId);
+                SearchResultsPreferenceFragment.newInstance(searchConfiguration.fragmentContainerViewId);
         {
             final SearchView searchView = view.findViewById(R.id.searchView);
             configureSearchView(

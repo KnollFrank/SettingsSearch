@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -19,10 +20,16 @@ import java.util.stream.Collectors;
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
-    private final @IdRes int fragmentContainerViewId;
+    private @IdRes int fragmentContainerViewId;
 
-    public SearchResultsPreferenceFragment(final @IdRes int fragmentContainerViewId) {
-        this.fragmentContainerViewId = fragmentContainerViewId;
+    public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId) {
+        return Factory.newInstance(fragmentContainerViewId);
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new Factory().setInstanceVariables();
     }
 
     public void setPreferenceWithHostList(final List<PreferenceWithHost> preferenceWithHostList) {
@@ -132,6 +139,28 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         public static void addPreferences2PreferenceScreen(final List<Preference> preferences,
                                                            final PreferenceScreen preferenceScreen) {
             preferences.forEach(preferenceScreen::addPreference);
+        }
+    }
+
+    private class Factory {
+
+        private static final String FRAGMENT_CONTAINER_VIEW_ID = "fragmentContainerViewId";
+
+        public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId) {
+            final SearchResultsPreferenceFragment fragment = new SearchResultsPreferenceFragment();
+            fragment.setArguments(createArguments(fragmentContainerViewId));
+            return fragment;
+        }
+
+        public void setInstanceVariables() {
+            SearchResultsPreferenceFragment.this.fragmentContainerViewId =
+                    requireArguments().getInt(FRAGMENT_CONTAINER_VIEW_ID);
+        }
+
+        private static Bundle createArguments(final @IdRes int fragmentContainerViewId) {
+            final Bundle bundle = new Bundle();
+            bundle.putInt(FRAGMENT_CONTAINER_VIEW_ID, fragmentContainerViewId);
+            return bundle;
         }
     }
 }
