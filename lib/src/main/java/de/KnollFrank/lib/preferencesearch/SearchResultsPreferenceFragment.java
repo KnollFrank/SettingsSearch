@@ -26,17 +26,17 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         return Factory.newInstance(fragmentContainerViewId);
     }
 
-    @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        new Factory().setInstanceVariables();
-    }
-
     public void setPreferenceWithHostList(final List<PreferenceWithHost> preferenceWithHostList) {
         final List<Preference> preferences = getPreferences(preferenceWithHostList);
         PreferencePreparer.preparePreferences(preferences);
         setPreferencesOnOptionalPreferenceScreen(preferences);
         this.preferenceWithHostList = preferenceWithHostList;
+    }
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new Factory().setInstanceVariables();
     }
 
     @Override
