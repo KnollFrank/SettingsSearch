@@ -12,10 +12,9 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 
 import java.util.List;
-
-import de.KnollFrank.lib.preferencesearch.common.UIUtils;
 
 public class SearchPreferenceFragment extends Fragment {
 
@@ -37,13 +36,13 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        @IdRes final int dummyFragmentContainerViewId =
-                UIUtils
-                        .createAndAddFragmentContainerView2ViewGroup((ViewGroup) view, getContext())
-                        .getId();
+        final FragmentContainerView dummyFragmentContainerView =
+                UIUtils.createAndAddFragmentContainerView2ViewGroup(
+                        (ViewGroup) view,
+                        getContext());
         final List<PreferenceWithHost> preferenceWithHostList =
                 this
-                        .getPreferencesProvider(dummyFragmentContainerViewId)
+                        .getPreferencesProvider(dummyFragmentContainerView.getId())
                         .getPreferences();
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment = new SearchResultsPreferenceFragment();
         {
@@ -115,7 +114,7 @@ public class SearchPreferenceFragment extends Fragment {
         return (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
-    private IPreferencesProvider<PreferenceWithHost> getPreferencesProvider(final int fragmentContainerViewId) {
+    private IPreferencesProvider<PreferenceWithHost> getPreferencesProvider(final @IdRes int fragmentContainerViewId) {
         return new PreferencesProvider(
                 searchConfiguration.rootPreferenceFragment.getName(),
                 new PreferenceScreensProvider(
@@ -124,5 +123,23 @@ public class SearchPreferenceFragment extends Fragment {
                                 getChildFragmentManager(),
                                 fragmentContainerViewId)),
                 getContext());
+    }
+
+    private static class UIUtils {
+
+        public static FragmentContainerView createAndAddFragmentContainerView2ViewGroup(
+                final ViewGroup viewGroup,
+                final Context context) {
+            final FragmentContainerView fragmentContainerView = createGoneFragmentContainerView(context);
+            viewGroup.addView(fragmentContainerView);
+            return fragmentContainerView;
+        }
+
+        private static FragmentContainerView createGoneFragmentContainerView(final Context context) {
+            final FragmentContainerView fragmentContainerView = new FragmentContainerView(context);
+            fragmentContainerView.setId(View.generateViewId());
+            fragmentContainerView.setVisibility(View.GONE);
+            return fragmentContainerView;
+        }
     }
 }

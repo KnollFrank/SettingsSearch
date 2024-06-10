@@ -1,13 +1,10 @@
 package de.KnollFrank.preferencesearch;
 
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -19,7 +16,6 @@ import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.SearchPreferenceResult;
 import de.KnollFrank.lib.preferencesearch.SearchPreferenceResultListener;
-import de.KnollFrank.lib.preferencesearch.common.UIUtils;
 
 public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
 
@@ -29,7 +25,7 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _setContentView(R.layout.multiple_preference_screens_example);
+        setContentView(R.layout.multiple_preference_screens_example);
         if (savedInstanceState == null) {
             // FK-FIXME: when reaching SearchViewExample via the back button then changed preferences don't show their changed values (e.g. checkboxes)
             Navigation.show(
@@ -67,14 +63,6 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
                 result.getKey(),
                 this,
                 FRAGMENT_CONTAINER_VIEW);
-    }
-
-    private void _setContentView(final @LayoutRes int resource) {
-        final Pair<View, Integer> contentViewAndDummyFragmentContainerViewId =
-                UIUtils.createContentViewAndDummyFragmentContainerViewId(
-                        resource,
-                        this);
-        setContentView(contentViewAndDummyFragmentContainerViewId.first);
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
