@@ -29,7 +29,6 @@ public class SearchPreferenceFragments {
                         this.searchConfiguration.fragmentContainerViewId,
                         fragment,
                         fragment.getClass().getName())
-                .addToBackStack(fragment.getClass().getName())
                 .commit();
     }
 

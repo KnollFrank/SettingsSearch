@@ -19,7 +19,7 @@ public class Navigation {
             @IdRes final int containerViewId) {
         show(
                 Fragment.instantiate(fragmentActivity, fragmentOfPreferenceScreen, createArguments(keyOfPreference2Highlight)),
-                true,
+                false,
                 fragmentActivity.getSupportFragmentManager(),
                 containerViewId);
     }

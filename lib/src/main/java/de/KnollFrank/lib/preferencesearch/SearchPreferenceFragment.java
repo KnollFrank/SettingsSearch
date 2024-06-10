@@ -54,7 +54,6 @@ public class SearchPreferenceFragment extends Fragment {
                     searchConfiguration);
             selectSearchView(searchView);
         }
-        searchResultsPreferenceFragment.setPreferenceWithHostList(preferenceWithHostList);
         Navigation.show(
                 searchResultsPreferenceFragment,
                 false,
