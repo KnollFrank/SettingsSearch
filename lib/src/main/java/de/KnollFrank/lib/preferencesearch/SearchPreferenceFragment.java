@@ -9,7 +9,6 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
@@ -34,8 +33,9 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onStart() {
+        super.onStart();
+        final View view = getView();
         final FragmentContainerView dummyFragmentContainerView =
                 UIUtils.createAndAddFragmentContainerView2ViewGroup(
                         (ViewGroup) view,
@@ -54,14 +54,12 @@ public class SearchPreferenceFragment extends Fragment {
                     searchConfiguration);
             selectSearchView(searchView);
         }
-        if (savedInstanceState == null) {
-            searchResultsPreferenceFragment.setPreferenceWithHostList(preferenceWithHostList);
-            Navigation.show(
-                    searchResultsPreferenceFragment,
-                    false,
-                    getChildFragmentManager(),
-                    FRAGMENT_CONTAINER_VIEW);
-        }
+        searchResultsPreferenceFragment.setPreferenceWithHostList(preferenceWithHostList);
+        Navigation.show(
+                searchResultsPreferenceFragment,
+                false,
+                getChildFragmentManager(),
+                FRAGMENT_CONTAINER_VIEW);
     }
 
     private static void configureSearchView(final SearchView searchView,
