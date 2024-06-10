@@ -14,9 +14,8 @@
         android:iconifiedByDefault="false"
         android:queryHint="Search Preferences" />
 
-    <!-- FK-TODO: set id to "@+id/searchResultsFragmentContainerView"-->
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView2"
+        android:id="@+id/searchResultsFragmentContainerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>
