@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.preferencesearch;
 
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ class SearchConfigurations {
         final Bundles bundles = new Bundles(bundle);
         return new SearchConfiguration(
                 Optional.empty(),
-                0,
+                View.NO_ID,
                 bundles.getOptionalString(ARGUMENT_TEXT_HINT),
                 bundles.getClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT));
     }
