@@ -16,7 +16,7 @@ public class Navigation {
             final String fragmentOfPreferenceScreen,
             final String keyOfPreference2Highlight,
             final FragmentActivity fragmentActivity,
-            @IdRes final int containerViewId) {
+            final @IdRes int containerViewId) {
         show(
                 Fragment.instantiate(fragmentActivity, fragmentOfPreferenceScreen, createArguments(keyOfPreference2Highlight)),
                 false,
@@ -27,7 +27,7 @@ public class Navigation {
     public static void show(final Fragment fragment,
                             final boolean addToBackStack,
                             final FragmentManager fragmentManager,
-                            @IdRes final int containerViewId) {
+                            final @IdRes int containerViewId) {
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (addToBackStack) {
             fragmentTransaction.addToBackStack("fragment");

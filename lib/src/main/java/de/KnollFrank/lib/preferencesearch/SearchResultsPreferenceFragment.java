@@ -2,6 +2,7 @@ package de.KnollFrank.lib.preferencesearch;
 
 import android.os.Bundle;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -18,6 +19,11 @@ import java.util.stream.Collectors;
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
+    private final @IdRes int fragmentContainerViewId;
+
+    public SearchResultsPreferenceFragment(final @IdRes int fragmentContainerViewId) {
+        this.fragmentContainerViewId = fragmentContainerViewId;
+    }
 
     public void setPreferenceWithHostList(final List<PreferenceWithHost> preferenceWithHostList) {
         final List<Preference> preferences = getPreferences(preferenceWithHostList);
@@ -40,13 +46,17 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     protected Adapter onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
         return new SearchPreferenceGroupAdapter(
                 preferenceScreen,
-                this::invokeOnSearchResultClicked,
+                this::showPreferenceScreenAndHighlightPreference,
                 this::getPreferenceWithHost);
     }
 
-    private void invokeOnSearchResultClicked(final PreferenceWithHost preferenceWithHost) {
-        ((SearchPreferenceResultListener) getActivity())
-                .onSearchResultClicked(getSearchPreferenceResult(preferenceWithHost));
+    private void showPreferenceScreenAndHighlightPreference(final PreferenceWithHost preferenceWithHost) {
+        final SearchPreferenceResult searchPreferenceResult = getSearchPreferenceResult(preferenceWithHost);
+        Navigation.showPreferenceScreenAndHighlightPreference(
+                searchPreferenceResult.getPreferenceFragmentClass().getName(),
+                searchPreferenceResult.getKey(),
+                getActivity(),
+                this.fragmentContainerViewId);
     }
 
     private PreferenceWithHost getPreferenceWithHost(final Preference preference) {

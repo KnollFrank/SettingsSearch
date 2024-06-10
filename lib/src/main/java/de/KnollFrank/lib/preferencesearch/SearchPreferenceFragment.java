@@ -17,8 +17,7 @@ import java.util.List;
 
 public class SearchPreferenceFragment extends Fragment {
 
-    @IdRes
-    private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView2;
+    private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView2;
 
     private SearchConfiguration searchConfiguration;
 
@@ -44,7 +43,8 @@ public class SearchPreferenceFragment extends Fragment {
                 this
                         .getPreferencesProvider(dummyFragmentContainerView.getId())
                         .getPreferences();
-        final SearchResultsPreferenceFragment searchResultsPreferenceFragment = new SearchResultsPreferenceFragment();
+        final SearchResultsPreferenceFragment searchResultsPreferenceFragment =
+                new SearchResultsPreferenceFragment(searchConfiguration.fragmentContainerViewId);
         {
             final SearchView searchView = view.findViewById(R.id.searchView);
             configureSearchView(

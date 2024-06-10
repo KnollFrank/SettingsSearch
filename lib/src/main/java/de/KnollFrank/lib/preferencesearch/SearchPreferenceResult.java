@@ -15,6 +15,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
+// FK-TODO: remove class
 public class SearchPreferenceResult {
 
     private final String key;

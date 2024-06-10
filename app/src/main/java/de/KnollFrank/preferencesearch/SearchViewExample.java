@@ -14,13 +14,10 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.SearchPreferenceFragments;
-import de.KnollFrank.lib.preferencesearch.SearchPreferenceResult;
-import de.KnollFrank.lib.preferencesearch.SearchPreferenceResultListener;
 
-public class SearchViewExample extends AppCompatActivity implements SearchPreferenceResultListener {
+public class SearchViewExample extends AppCompatActivity {
 
-    @IdRes
-    private static final int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
+    private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -53,16 +50,6 @@ public class SearchViewExample extends AppCompatActivity implements SearchPrefer
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // FK-TODO: inline method onSearchResultClicked()
-    @Override
-    public void onSearchResultClicked(@NonNull final SearchPreferenceResult result) {
-        Navigation.showPreferenceScreenAndHighlightPreference(
-                result.getPreferenceFragmentClass().getName(),
-                result.getKey(),
-                this,
-                FRAGMENT_CONTAINER_VIEW);
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
