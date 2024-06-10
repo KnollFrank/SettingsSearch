@@ -130,15 +130,15 @@ public class SearchPreferenceFragment extends Fragment {
         public static FragmentContainerView createAndAddFragmentContainerView2ViewGroup(
                 final ViewGroup viewGroup,
                 final Context context) {
-            final FragmentContainerView fragmentContainerView = createGoneFragmentContainerView(context);
+            final FragmentContainerView fragmentContainerView = createInvisibleFragmentContainerView(context);
             viewGroup.addView(fragmentContainerView);
             return fragmentContainerView;
         }
 
-        private static FragmentContainerView createGoneFragmentContainerView(final Context context) {
+        private static FragmentContainerView createInvisibleFragmentContainerView(final Context context) {
             final FragmentContainerView fragmentContainerView = new FragmentContainerView(context);
             fragmentContainerView.setId(View.generateViewId());
-            fragmentContainerView.setVisibility(View.GONE);
+            fragmentContainerView.setVisibility(View.INVISIBLE);
             return fragmentContainerView;
         }
     }
