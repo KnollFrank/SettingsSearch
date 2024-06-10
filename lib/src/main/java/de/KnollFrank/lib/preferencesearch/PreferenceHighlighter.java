@@ -16,7 +16,7 @@ import androidx.preference.PreferenceGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 // FK-TODO: refactor
-public class PreferenceHighlighter {
+class PreferenceHighlighter {
 
     public static void highlightPreferenceOfPreferenceFragment(
             final String keyOfPreference,
