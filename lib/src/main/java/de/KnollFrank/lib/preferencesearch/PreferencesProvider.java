@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PreferencesProvider implements IPreferencesProvider<PreferenceWithHost> {
+public class PreferencesProvider {
 
     private final String preferenceFragment;
     private final PreferenceScreensProvider preferenceScreensProvider;
@@ -24,7 +24,6 @@ public class PreferencesProvider implements IPreferencesProvider<PreferenceWithH
         this.context = context;
     }
 
-    @Override
     public List<PreferenceWithHost> getPreferences() {
         return preferenceScreensProvider
                 .getPreferenceScreens(instantiatePreferenceFragment())

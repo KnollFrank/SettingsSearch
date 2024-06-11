@@ -108,7 +108,7 @@ public class SearchPreferenceFragment extends Fragment {
         Keyboard.showKeyboard(getActivity(), searchView);
     }
 
-    private IPreferencesProvider<PreferenceWithHost> getPreferencesProvider(final @IdRes int fragmentContainerViewId) {
+    private PreferencesProvider getPreferencesProvider(final @IdRes int fragmentContainerViewId) {
         return new PreferencesProvider(
                 searchConfiguration.rootPreferenceFragment.getName(),
                 new PreferenceScreensProvider(
