@@ -20,16 +20,17 @@ class PreferenceHighlighter {
     public static void highlightPreferenceOfPreferenceFragment(
             final String keyOfPreference,
             final PreferenceFragmentCompat preferenceFragment) {
-        new Handler().post(() -> doHighlightPreferenceOfPreferenceFragment(keyOfPreference, preferenceFragment));
+        new Handler().post(() -> doHighlightPreferenceOfPreferenceFragment(keyOfPreference, preferenceFragment, 1000));
     }
 
     private static void doHighlightPreferenceOfPreferenceFragment(
             final String keyOfPreference,
-            final PreferenceFragmentCompat preferenceFragment) {
+            final PreferenceFragmentCompat preferenceFragment,
+            final int highlightDurationMillis) {
         doHighlightPreferenceOfPreferenceFragment(
                 preferenceFragment.findPreference(keyOfPreference),
                 preferenceFragment,
-                1000);
+                highlightDurationMillis);
     }
 
     private static void doHighlightPreferenceOfPreferenceFragment(
