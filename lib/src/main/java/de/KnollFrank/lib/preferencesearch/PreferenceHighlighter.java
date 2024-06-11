@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.preferencesearch;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -27,7 +26,16 @@ class PreferenceHighlighter {
     private static void doHighlightPreferenceOfPreferenceFragment(
             final String keyOfPreference,
             final PreferenceFragmentCompat preferenceFragment) {
-        final Preference preference = preferenceFragment.findPreference(keyOfPreference);
+        doHighlightPreferenceOfPreferenceFragment(
+                preferenceFragment.findPreference(keyOfPreference),
+                preferenceFragment,
+                1000);
+    }
+
+    private static void doHighlightPreferenceOfPreferenceFragment(
+            final Preference preference,
+            final PreferenceFragmentCompat preferenceFragment,
+            final int highlightDurationMillis) {
         if (preference == null) {
             Log.e("doHighlight", "Preference not found on given screen");
             return;
@@ -47,44 +55,52 @@ class PreferenceHighlighter {
                                 holder.itemView.setBackgroundColor(color & 0xffffff | 0x33000000);
                                 new Handler().postDelayed(
                                         () -> holder.itemView.setBackgroundDrawable(oldBackground),
-                                        1000);
-                                return;
+                                        highlightDurationMillis);
+                            } else {
+                                highlightFallback(preference, preferenceFragment, highlightDurationMillis);
                             }
-                            highlightFallback(preferenceFragment, preference);
                         },
                         200);
                 return;
             }
         }
-        highlightFallback(preferenceFragment, preference);
+        highlightFallback(preference, preferenceFragment, highlightDurationMillis);
     }
 
-    /**
-     * Alternative highlight method if accessing the view did not work
-     */
-    private static void highlightFallback(final PreferenceFragmentCompat preferenceFragment,
-                                          final Preference preference) {
+    private static void highlightFallback(final Preference preference,
+                                          final PreferenceFragmentCompat preferenceFragment,
+                                          final int highlightDurationMillis) {
         final Drawable oldIcon = preference.getIcon();
         final boolean oldSpaceReserved = preference.isIconSpaceReserved();
-        Drawable arrow = AppCompatResources.getDrawable(preferenceFragment.getContext(), R.drawable.searchpreference_ic_arrow_right);
-        int color = getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
+        final Drawable arrow = AppCompatResources.getDrawable(preferenceFragment.getContext(), R.drawable.searchpreference_ic_arrow_right);
+        final int color = getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
         arrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         preference.setIcon(arrow);
         preferenceFragment.scrollToPreference(preference);
-        new Handler().postDelayed(() -> {
-            preference.setIcon(oldIcon);
-            preference.setIconSpaceReserved(oldSpaceReserved);
-        }, 1000);
+        new Handler().postDelayed(
+                () -> {
+                    preference.setIcon(oldIcon);
+                    preference.setIconSpaceReserved(oldSpaceReserved);
+                },
+                highlightDurationMillis);
     }
 
     private static int getColorFromAttr(final Context context, final int attr) {
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(attr, typedValue, true);
-        TypedArray arr = context.obtainStyledAttributes(typedValue.data, new int[]{
-                android.R.attr.textColorPrimary});
-        int color = arr.getColor(0, 0xff3F51B5);
-        arr.recycle();
+        final TypedValue typedValue = getTypedValue(context, attr);
+        final TypedArray typedArray =
+                context.obtainStyledAttributes(
+                        typedValue.data,
+                        new int[]{android.R.attr.textColorPrimary});
+        final int color = typedArray.getColor(0, 0xff3F51B5);
+        typedArray.recycle();
         return color;
+    }
+
+    private static TypedValue getTypedValue(final Context context, final int attr) {
+        final TypedValue typedValue = new TypedValue();
+        context
+                .getTheme()
+                .resolveAttribute(attr, typedValue, true);
+        return typedValue;
     }
 }
