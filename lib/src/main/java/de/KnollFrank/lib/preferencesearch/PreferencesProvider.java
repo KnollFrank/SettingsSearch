@@ -7,7 +7,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 class PreferencesProvider {
@@ -15,6 +17,8 @@ class PreferencesProvider {
     private final String preferenceFragment;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final Context context;
+    private static final Map<String, List<PreferenceWithHost>> preferencesByFragment = new HashMap<>();
+
 
     public PreferencesProvider(final String preferenceFragment,
                                final PreferenceScreensProvider preferenceScreensProvider,
@@ -25,7 +29,14 @@ class PreferencesProvider {
     }
 
     public List<PreferenceWithHost> getPreferences() {
-        return preferenceScreensProvider
+        if (!preferencesByFragment.containsKey(this.preferenceFragment)) {
+            preferencesByFragment.put(this.preferenceFragment, _getPreferences());
+        }
+        return preferencesByFragment.get(this.preferenceFragment);
+    }
+
+    private List<PreferenceWithHost> _getPreferences() {
+        return this.preferenceScreensProvider
                 .getPreferenceScreens(instantiatePreferenceFragment())
                 .stream()
                 .map(preferenceScreenWithHost ->
