@@ -26,6 +26,8 @@ public class SearchPreferenceFragments {
                         this.searchConfiguration.fragmentContainerViewId,
                         fragment,
                         fragment.getClass().getName())
+                .addToBackStack(null)
+                .setReorderingAllowed(true)
                 .commit();
     }
 }

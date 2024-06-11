@@ -1,16 +1,13 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
 
 import java.util.List;
 
@@ -40,13 +37,9 @@ public class SearchPreferenceFragment extends Fragment {
     public void onStart() {
         super.onStart();
         final View view = requireView();
-        final FragmentContainerView dummyFragmentContainerView =
-                UIUtils.createAndAddFragmentContainerView2ViewGroup(
-                        (ViewGroup) view,
-                        getContext());
         final List<PreferenceWithHost> preferenceWithHostList =
                 this
-                        .getPreferencesProvider(dummyFragmentContainerView.getId())
+                        .getPreferencesProvider(R.id.dummyFragmentContainerView)
                         .getPreferences();
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment =
                 SearchResultsPreferenceFragment.newInstance(searchConfiguration.fragmentContainerViewId);
@@ -58,6 +51,7 @@ public class SearchPreferenceFragment extends Fragment {
                     new PreferenceSearcher<>(preferenceWithHostList),
                     searchConfiguration);
             selectSearchView(searchView);
+            searchView.setQuery(searchView.getQuery(), true);
         }
         Navigation.show(
                 searchResultsPreferenceFragment,
@@ -86,6 +80,7 @@ public class SearchPreferenceFragment extends Fragment {
 
                 @Override
                 public boolean onQueryTextSubmit(final String query) {
+                    onQueryTextChange(query);
                     return false;
                 }
 
@@ -117,23 +112,5 @@ public class SearchPreferenceFragment extends Fragment {
                                 getChildFragmentManager(),
                                 fragmentContainerViewId)),
                 getContext());
-    }
-
-    private static class UIUtils {
-
-        public static FragmentContainerView createAndAddFragmentContainerView2ViewGroup(
-                final ViewGroup viewGroup,
-                final Context context) {
-            final FragmentContainerView fragmentContainerView = createInvisibleFragmentContainerView(context);
-            viewGroup.addView(fragmentContainerView);
-            return fragmentContainerView;
-        }
-
-        private static FragmentContainerView createInvisibleFragmentContainerView(final Context context) {
-            final FragmentContainerView fragmentContainerView = new FragmentContainerView(context);
-            fragmentContainerView.setId(View.generateViewId());
-            fragmentContainerView.setVisibility(View.INVISIBLE);
-            return fragmentContainerView;
-        }
     }
 }

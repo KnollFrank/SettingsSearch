@@ -19,7 +19,7 @@ public class Navigation {
             final @IdRes int containerViewId) {
         show(
                 Fragment.instantiate(fragmentActivity, fragmentOfPreferenceScreen, createArguments(keyOfPreference2Highlight)),
-                false,
+                true,
                 fragmentActivity.getSupportFragmentManager(),
                 containerViewId);
     }
@@ -30,7 +30,7 @@ public class Navigation {
                             final @IdRes int containerViewId) {
         final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (addToBackStack) {
-            fragmentTransaction.addToBackStack("fragment");
+            fragmentTransaction.addToBackStack(null);
         }
         fragmentTransaction
                 .setReorderingAllowed(true)
