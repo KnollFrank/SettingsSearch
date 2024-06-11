@@ -43,6 +43,11 @@ public class SearchPreferenceFragment extends Fragment {
                         .getPreferences();
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment =
                 SearchResultsPreferenceFragment.newInstance(searchConfiguration.fragmentContainerViewId);
+        Navigation.show(
+                searchResultsPreferenceFragment,
+                false,
+                getChildFragmentManager(),
+                R.id.searchResultsFragmentContainerView);
         {
             final SearchView searchView = view.findViewById(R.id.searchView);
             SearchViewConfigurer.configureSearchView(
@@ -53,11 +58,6 @@ public class SearchPreferenceFragment extends Fragment {
             selectSearchView(searchView);
             searchView.setQuery(searchView.getQuery(), true);
         }
-        Navigation.show(
-                searchResultsPreferenceFragment,
-                false,
-                getChildFragmentManager(),
-                R.id.searchResultsFragmentContainerView);
     }
 
     private static class SearchViewConfigurer {
