@@ -14,23 +14,22 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
-// FK-TODO: refactor
 class PreferenceHighlighter {
 
     public static void highlightPreferenceOfPreferenceFragment(
             final String keyOfPreference,
             final PreferenceFragmentCompat preferenceFragment) {
-        new Handler().post(() -> doHighlightPreferenceOfPreferenceFragment(keyOfPreference, preferenceFragment, 1000));
-    }
-
-    private static void doHighlightPreferenceOfPreferenceFragment(
-            final String keyOfPreference,
-            final PreferenceFragmentCompat preferenceFragment,
-            final int highlightDurationMillis) {
-        doHighlightPreferenceOfPreferenceFragment(
+        highlightPreferenceOfPreferenceFragment(
                 preferenceFragment.findPreference(keyOfPreference),
                 preferenceFragment,
-                highlightDurationMillis);
+                1000);
+    }
+
+    private static void highlightPreferenceOfPreferenceFragment(
+            final Preference preference,
+            final PreferenceFragmentCompat preferenceFragment,
+            final int highlightDurationMillis) {
+        new Handler().post(() -> doHighlightPreferenceOfPreferenceFragment(preference, preferenceFragment, highlightDurationMillis));
     }
 
     private static void doHighlightPreferenceOfPreferenceFragment(
