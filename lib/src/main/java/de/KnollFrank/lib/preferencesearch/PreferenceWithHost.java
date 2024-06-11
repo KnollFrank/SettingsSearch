@@ -3,7 +3,7 @@ package de.KnollFrank.lib.preferencesearch;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-public class PreferenceWithHost implements IPreferenceItem {
+class PreferenceWithHost implements IPreferenceItem {
 
     public final Preference preference;
     public final Class<? extends PreferenceFragmentCompat> host;

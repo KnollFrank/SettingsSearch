@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.Sets;
 
-public class PreferenceScreensProvider {
+class PreferenceScreensProvider {
 
     private final PreferenceFragments preferenceFragments;
 

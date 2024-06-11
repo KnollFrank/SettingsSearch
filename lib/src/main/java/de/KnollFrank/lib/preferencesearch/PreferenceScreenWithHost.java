@@ -5,7 +5,7 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.Objects;
 
-public class PreferenceScreenWithHost {
+class PreferenceScreenWithHost {
 
     public final PreferenceScreen preferenceScreen;
     public final Class<? extends PreferenceFragmentCompat> host;

@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-public class PreferenceFragments {
+class PreferenceFragments {
 
     private final Context context;
     private final FragmentManager fragmentManager;

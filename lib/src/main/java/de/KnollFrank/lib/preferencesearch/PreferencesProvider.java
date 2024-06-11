@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PreferencesProvider {
+class PreferencesProvider {
 
     private final String preferenceFragment;
     private final PreferenceScreensProvider preferenceScreensProvider;
