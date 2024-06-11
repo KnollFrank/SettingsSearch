@@ -4,7 +4,6 @@
     xmlns:search="http://schemas.android.com/apk/de.KnollFrank.lib.preferencesearch"
     android:title="second screen">
 
-    <!-- FK-FIXME: when clicking on a preference with a app:fragment tag the referenced fragment is not shown in SearchViewExample2. -->
     <Preference
         android:key="link_to_third_fragment"
         android:persistent="false"
