@@ -14,6 +14,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.threeten.bp.Duration;
+
 class PreferenceHighlighter {
 
     public static void highlightPreferenceOfPreferenceFragment(
@@ -22,20 +24,20 @@ class PreferenceHighlighter {
         highlightPreferenceOfPreferenceFragment(
                 preferenceFragment.findPreference(keyOfPreference),
                 preferenceFragment,
-                1000);
+                Duration.ofSeconds(1));
     }
 
     private static void highlightPreferenceOfPreferenceFragment(
             final Preference preference,
             final PreferenceFragmentCompat preferenceFragment,
-            final int highlightDurationMillis) {
-        new Handler().post(() -> doHighlightPreferenceOfPreferenceFragment(preference, preferenceFragment, highlightDurationMillis));
+            final Duration highlightDuration) {
+        new Handler().post(() -> doHighlightPreferenceOfPreferenceFragment(preference, preferenceFragment, highlightDuration));
     }
 
     private static void doHighlightPreferenceOfPreferenceFragment(
             final Preference preference,
             final PreferenceFragmentCompat preferenceFragment,
-            final int highlightDurationMillis) {
+            final Duration highlightDuration) {
         if (preference == null) {
             Log.e("doHighlight", "Preference not found on given screen");
             return;
@@ -55,21 +57,21 @@ class PreferenceHighlighter {
                                 holder.itemView.setBackgroundColor(color & 0xffffff | 0x33000000);
                                 new Handler().postDelayed(
                                         () -> holder.itemView.setBackgroundDrawable(oldBackground),
-                                        highlightDurationMillis);
+                                        highlightDuration.toMillis());
                             } else {
-                                highlightFallback(preference, preferenceFragment, highlightDurationMillis);
+                                highlightFallback(preference, preferenceFragment, highlightDuration);
                             }
                         },
                         200);
                 return;
             }
         }
-        highlightFallback(preference, preferenceFragment, highlightDurationMillis);
+        highlightFallback(preference, preferenceFragment, highlightDuration);
     }
 
     private static void highlightFallback(final Preference preference,
                                           final PreferenceFragmentCompat preferenceFragment,
-                                          final int highlightDurationMillis) {
+                                          final Duration highlightDuration) {
         final Drawable oldIcon = preference.getIcon();
         final boolean oldSpaceReserved = preference.isIconSpaceReserved();
         final Drawable arrow = AppCompatResources.getDrawable(preferenceFragment.getContext(), R.drawable.searchpreference_ic_arrow_right);
@@ -82,7 +84,7 @@ class PreferenceHighlighter {
                     preference.setIcon(oldIcon);
                     preference.setIconSpaceReserved(oldSpaceReserved);
                 },
-                highlightDurationMillis);
+                highlightDuration.toMillis());
     }
 
     private static int getColorFromAttr(final Context context, final int attr) {
