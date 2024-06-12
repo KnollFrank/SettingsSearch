@@ -19,7 +19,6 @@ class PreferencesProvider {
     private final Context context;
     private static final Map<String, List<PreferenceWithHost>> preferencesByFragment = new HashMap<>();
 
-
     public PreferencesProvider(final String preferenceFragment,
                                final PreferenceScreensProvider preferenceScreensProvider,
                                final Context context) {
@@ -29,14 +28,14 @@ class PreferencesProvider {
     }
 
     public List<PreferenceWithHost> getPreferences() {
-        if (!preferencesByFragment.containsKey(this.preferenceFragment)) {
-            preferencesByFragment.put(this.preferenceFragment, _getPreferences());
+        if (!preferencesByFragment.containsKey(preferenceFragment)) {
+            preferencesByFragment.put(preferenceFragment, _getPreferences());
         }
-        return preferencesByFragment.get(this.preferenceFragment);
+        return preferencesByFragment.get(preferenceFragment);
     }
 
     private List<PreferenceWithHost> _getPreferences() {
-        return this.preferenceScreensProvider
+        return preferenceScreensProvider
                 .getPreferenceScreens(instantiatePreferenceFragment())
                 .stream()
                 .map(preferenceScreenWithHost ->
