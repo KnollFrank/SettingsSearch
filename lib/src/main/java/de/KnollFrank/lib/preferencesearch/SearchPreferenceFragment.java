@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import java.util.List;
 
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
+import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 
 public class SearchPreferenceFragment extends Fragment {
 
