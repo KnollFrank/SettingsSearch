@@ -38,25 +38,25 @@ class SearchPreferenceGroupAdapter extends PreferenceGroupAdapter {
     private PreferenceWithHost getPreferenceWithHost(final int position) {
         return this.getPreferenceWithHost.apply(getItem(position));
     }
+}
 
-    private static class UIUtils {
+class UIUtils {
 
-        public static void setOnClickListener(final View view, final OnClickListener onClickListener) {
-            UIUtils.makeChildViewsNonClickable(view);
-            view.setOnClickListener(onClickListener);
-        }
+    public static void setOnClickListener(final View view, final OnClickListener onClickListener) {
+        UIUtils.makeChildViewsNonClickable(view);
+        view.setOnClickListener(onClickListener);
+    }
 
-        private static void makeChildViewsNonClickable(final View view) {
-            setClickableRecursive(view, false);
-            view.setClickable(true);
-        }
+    private static void makeChildViewsNonClickable(final View view) {
+        setClickableRecursive(view, false);
+        view.setClickable(true);
+    }
 
-        private static void setClickableRecursive(final View view, boolean clickable) {
-            view.setClickable(clickable);
-            if (view instanceof final ViewGroup viewGroup) {
-                for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                    setClickableRecursive(viewGroup.getChildAt(i), clickable);
-                }
+    private static void setClickableRecursive(final View view, boolean clickable) {
+        view.setClickable(clickable);
+        if (view instanceof final ViewGroup viewGroup) {
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                setClickableRecursive(viewGroup.getChildAt(i), clickable);
             }
         }
     }

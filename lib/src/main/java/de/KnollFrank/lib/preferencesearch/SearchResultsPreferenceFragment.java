@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
+    // FK-TODO: make preferenceWithHostList of type PreferenceScreen instead of List<PreferenceWithHost>
     private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
     private @IdRes int fragmentContainerViewId;
 
