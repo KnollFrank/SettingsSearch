@@ -80,26 +80,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 .collect(Collectors.toList());
     }
 
-    private static class PreferencePreparer {
-
-        public static void preparePreferences(final List<Preference> preferences) {
-            preferences.forEach(PreferencePreparer::preparePreference);
-        }
-
-        private static void preparePreference(final Preference preference) {
-            preference.setEnabled(false);
-            preference.setShouldDisableView(false);
-            removePreferenceFromItsParent(preference);
-        }
-
-        private static void removePreferenceFromItsParent(final Preference preference) {
-            final PreferenceGroup parent = preference.getParent();
-            if (parent != null) {
-                parent.removePreference(preference);
-            }
-        }
-    }
-
     private PreferenceScreen createPreferenceScreen() {
         return getPreferenceManager().createPreferenceScreen(getPreferenceManager().getContext());
     }
@@ -118,20 +98,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         return Optional
                 .ofNullable(getPreferenceManager())
                 .map(PreferenceManager::getPreferenceScreen);
-    }
-
-    private static class PreferencesSetter {
-
-        public static void setPreferencesOnPreferenceScreen(final List<Preference> preferences,
-                                                            final PreferenceScreen preferenceScreen) {
-            preferenceScreen.removeAll();
-            addPreferences2PreferenceScreen(preferences, preferenceScreen);
-        }
-
-        public static void addPreferences2PreferenceScreen(final List<Preference> preferences,
-                                                           final PreferenceScreen preferenceScreen) {
-            preferences.forEach(preferenceScreen::addPreference);
-        }
     }
 
     private class Factory {
@@ -153,6 +119,40 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
             final Bundle bundle = new Bundle();
             bundle.putInt(FRAGMENT_CONTAINER_VIEW_ID, fragmentContainerViewId);
             return bundle;
+        }
+    }
+}
+
+class PreferencesSetter {
+
+    public static void setPreferencesOnPreferenceScreen(final List<Preference> preferences,
+                                                        final PreferenceScreen preferenceScreen) {
+        preferenceScreen.removeAll();
+        addPreferences2PreferenceScreen(preferences, preferenceScreen);
+    }
+
+    public static void addPreferences2PreferenceScreen(final List<Preference> preferences,
+                                                       final PreferenceScreen preferenceScreen) {
+        preferences.forEach(preferenceScreen::addPreference);
+    }
+}
+
+class PreferencePreparer {
+
+    public static void preparePreferences(final List<Preference> preferences) {
+        preferences.forEach(PreferencePreparer::preparePreference);
+    }
+
+    private static void preparePreference(final Preference preference) {
+        preference.setEnabled(false);
+        preference.setShouldDisableView(false);
+        removePreferenceFromItsParent(preference);
+    }
+
+    private static void removePreferenceFromItsParent(final Preference preference) {
+        final PreferenceGroup parent = preference.getParent();
+        if (parent != null) {
+            parent.removePreference(preference);
         }
     }
 }

@@ -60,44 +60,6 @@ public class SearchPreferenceFragment extends Fragment {
         }
     }
 
-    private static class SearchViewConfigurer {
-
-        public static void configureSearchView(final SearchView searchView,
-                                               final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
-                                               final PreferenceSearcher<PreferenceWithHost> preferenceSearcher,
-                                               final SearchConfiguration searchConfiguration) {
-            searchConfiguration.textHint.ifPresent(searchView::setQueryHint);
-            searchView.setOnQueryTextListener(
-                    createOnQueryTextListener(
-                            searchResultsPreferenceFragment,
-                            preferenceSearcher));
-        }
-
-        private static OnQueryTextListener createOnQueryTextListener(
-                final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
-                final PreferenceSearcher<PreferenceWithHost> preferenceSearcher) {
-            return new OnQueryTextListener() {
-
-                @Override
-                public boolean onQueryTextSubmit(final String query) {
-                    onQueryTextChange(query);
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(final String newText) {
-                    filterPreferenceItemsBy(newText);
-                    return true;
-                }
-
-                private void filterPreferenceItemsBy(final String query) {
-                    searchResultsPreferenceFragment.setPreferenceWithHostList(
-                            preferenceSearcher.searchFor(query));
-                }
-            };
-        }
-    }
-
     private void selectSearchView(final SearchView searchView) {
         searchView.requestFocus();
         Keyboard.showKeyboard(getActivity(), searchView);
@@ -112,5 +74,43 @@ public class SearchPreferenceFragment extends Fragment {
                                 getChildFragmentManager(),
                                 fragmentContainerViewId)),
                 getContext());
+    }
+}
+
+class SearchViewConfigurer {
+
+    public static void configureSearchView(final SearchView searchView,
+                                           final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
+                                           final PreferenceSearcher<PreferenceWithHost> preferenceSearcher,
+                                           final SearchConfiguration searchConfiguration) {
+        searchConfiguration.textHint.ifPresent(searchView::setQueryHint);
+        searchView.setOnQueryTextListener(
+                createOnQueryTextListener(
+                        searchResultsPreferenceFragment,
+                        preferenceSearcher));
+    }
+
+    private static OnQueryTextListener createOnQueryTextListener(
+            final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
+            final PreferenceSearcher<PreferenceWithHost> preferenceSearcher) {
+        return new OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(final String query) {
+                onQueryTextChange(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(final String newText) {
+                filterPreferenceItemsBy(newText);
+                return true;
+            }
+
+            private void filterPreferenceItemsBy(final String query) {
+                searchResultsPreferenceFragment.setPreferenceWithHostList(
+                        preferenceSearcher.searchFor(query));
+            }
+        };
     }
 }
