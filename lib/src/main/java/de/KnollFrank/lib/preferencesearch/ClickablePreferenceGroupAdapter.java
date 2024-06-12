@@ -11,20 +11,15 @@ import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceViewHolder;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-class SearchPreferenceGroupAdapter extends PreferenceGroupAdapter {
+class ClickablePreferenceGroupAdapter extends PreferenceGroupAdapter {
 
-    private final Consumer<PreferenceWithHost> onPreferenceWithHostClickListener;
-    private final Function<Preference, PreferenceWithHost> getPreferenceWithHost;
+    private final Consumer<Preference> onPreferenceClickListener;
 
-    public SearchPreferenceGroupAdapter(
-            final PreferenceGroup preferenceGroup,
-            final Consumer<PreferenceWithHost> onPreferenceWithHostClickListener,
-            final Function<Preference, PreferenceWithHost> getPreferenceWithHost) {
+    public ClickablePreferenceGroupAdapter(final PreferenceGroup preferenceGroup,
+                                           final Consumer<Preference> onPreferenceClickListener) {
         super(preferenceGroup);
-        this.onPreferenceWithHostClickListener = onPreferenceWithHostClickListener;
-        this.getPreferenceWithHost = getPreferenceWithHost;
+        this.onPreferenceClickListener = onPreferenceClickListener;
     }
 
     @Override
@@ -32,11 +27,7 @@ class SearchPreferenceGroupAdapter extends PreferenceGroupAdapter {
         super.onBindViewHolder(holder, position);
         UIUtils.setOnClickListener(
                 holder.itemView,
-                v -> onPreferenceWithHostClickListener.accept(getPreferenceWithHost(position)));
-    }
-
-    private PreferenceWithHost getPreferenceWithHost(final int position) {
-        return this.getPreferenceWithHost.apply(getItem(position));
+                v -> onPreferenceClickListener.accept(getItem(position)));
     }
 }
 

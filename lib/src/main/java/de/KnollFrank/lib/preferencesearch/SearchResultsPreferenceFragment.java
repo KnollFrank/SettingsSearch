@@ -52,26 +52,27 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     @NonNull
     @Override
     protected Adapter onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
-        return new SearchPreferenceGroupAdapter(
+        return new ClickablePreferenceGroupAdapter(
                 preferenceScreen,
-                this::showPreferenceScreenAndHighlightPreference,
-                this::getPreferenceWithHost);
+                this::showPreferenceScreenAndHighlightPreference);
     }
 
-    private void showPreferenceScreenAndHighlightPreference(final PreferenceWithHost preferenceWithHost) {
+    private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
+        final Class<? extends PreferenceFragmentCompat> host = getHost(preference);
         Navigation.showPreferenceScreenAndHighlightPreference(
-                preferenceWithHost.host.getName(),
-                preferenceWithHost.preference.getKey(),
+                host.getName(),
+                preference.getKey(),
                 getActivity(),
                 this.fragmentContainerViewId);
     }
 
-    private PreferenceWithHost getPreferenceWithHost(final Preference preference) {
+    private Class<? extends PreferenceFragmentCompat> getHost(final Preference preference) {
         return preferenceWithHostList
                 .stream()
                 .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
                 .findFirst()
-                .get();
+                .get()
+                .host;
     }
 
     private List<Preference> getPreferences(final List<PreferenceWithHost> preferenceWithHostList) {
