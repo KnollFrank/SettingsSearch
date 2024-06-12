@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 import de.KnollFrank.lib.preferencesearch.common.Parcels;
 
-class PreferenceItem implements Parcelable, IPreferenceItem {
+public class PreferenceItem implements Parcelable, IPreferenceItem {
 
     public final Optional<String> title;
     public final Optional<String> summary;

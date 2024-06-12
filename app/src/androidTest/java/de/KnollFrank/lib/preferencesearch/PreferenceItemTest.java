@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.preferencesearch.PreferenceSearcherTest.PrefsFragment;
+import de.KnollFrank.lib.preferencesearch.search.PreferenceSearcherTest.PrefsFragment;
 
 public class PreferenceItemTest {
 

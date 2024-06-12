@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-class PreferenceItems {
+public class PreferenceItems {
 
     public static List<PreferenceItem> getPreferenceItems(
             final List<Preference> preferences,

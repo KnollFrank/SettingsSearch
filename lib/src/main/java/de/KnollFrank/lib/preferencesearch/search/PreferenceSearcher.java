@@ -1,7 +1,9 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.search;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import de.KnollFrank.lib.preferencesearch.IPreferenceItem;
 
 class PreferenceSearcher<T extends IPreferenceItem> {
 

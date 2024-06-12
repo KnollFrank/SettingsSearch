@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import de.KnollFrank.lib.preferencesearch.PreferenceSearcherTest.PrefsFragment;
+import de.KnollFrank.lib.preferencesearch.search.PreferenceSearcherTest.PrefsFragment;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceProviderTest {

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-class PreferencesProvider {
+public class PreferencesProvider {
 
     private final String preferenceFragment;
     private final PreferenceScreensProvider preferenceScreensProvider;

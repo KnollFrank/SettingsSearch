@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import de.KnollFrank.lib.preferencesearch.common.Bundles;
 
-class SearchConfigurations {
+public class SearchConfigurations {
 
     private static final String ARGUMENT_TEXT_HINT = "text_hint";
     private static final String ARGUMENT_ROOT_PREFERENCE_FRAGMENT = "rootPreferenceFragment";

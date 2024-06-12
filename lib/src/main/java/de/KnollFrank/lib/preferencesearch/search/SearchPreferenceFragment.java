@@ -1,9 +1,8 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.search;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
@@ -11,6 +10,14 @@ import androidx.fragment.app.Fragment;
 
 import java.util.List;
 
+import de.KnollFrank.lib.preferencesearch.Navigation;
+import de.KnollFrank.lib.preferencesearch.PreferenceFragments;
+import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
+import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
+import de.KnollFrank.lib.preferencesearch.R;
+import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
+import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 
@@ -75,43 +82,5 @@ public class SearchPreferenceFragment extends Fragment {
                                 getChildFragmentManager(),
                                 fragmentContainerViewId)),
                 getContext());
-    }
-}
-
-class SearchViewConfigurer {
-
-    public static void configureSearchView(final SearchView searchView,
-                                           final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
-                                           final PreferenceSearcher<PreferenceWithHost> preferenceSearcher,
-                                           final SearchConfiguration searchConfiguration) {
-        searchConfiguration.textHint.ifPresent(searchView::setQueryHint);
-        searchView.setOnQueryTextListener(
-                createOnQueryTextListener(
-                        searchResultsPreferenceFragment,
-                        preferenceSearcher));
-    }
-
-    private static OnQueryTextListener createOnQueryTextListener(
-            final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
-            final PreferenceSearcher<PreferenceWithHost> preferenceSearcher) {
-        return new OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(final String query) {
-                onQueryTextChange(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(final String newText) {
-                filterPreferenceItemsBy(newText);
-                return true;
-            }
-
-            private void filterPreferenceItemsBy(final String query) {
-                searchResultsPreferenceFragment.setPreferenceWithHostList(
-                        preferenceSearcher.searchFor(query));
-            }
-        };
     }
 }
