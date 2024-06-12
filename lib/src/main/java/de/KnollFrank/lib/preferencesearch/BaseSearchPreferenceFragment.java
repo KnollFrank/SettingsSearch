@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
+import org.threeten.bp.Duration;
+
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Bundles;
@@ -33,7 +35,10 @@ public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCom
         keyOfPreference2Highlight.ifPresent(
                 keyOfPreference2Highlight -> {
                     scrollToPreference(keyOfPreference2Highlight);
-                    PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(keyOfPreference2Highlight, this);
+                    PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
+                            keyOfPreference2Highlight,
+                            this,
+                            Duration.ofSeconds(1));
                 });
     }
 }

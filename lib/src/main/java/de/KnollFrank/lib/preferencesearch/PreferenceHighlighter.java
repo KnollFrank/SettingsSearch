@@ -20,11 +20,12 @@ class PreferenceHighlighter {
 
     public static void highlightPreferenceOfPreferenceFragment(
             final String keyOfPreference,
-            final PreferenceFragmentCompat preferenceFragment) {
+            final PreferenceFragmentCompat preferenceFragment,
+            final Duration highlightDuration) {
         highlightPreferenceOfPreferenceFragment(
                 preferenceFragment.findPreference(keyOfPreference),
                 preferenceFragment,
-                Duration.ofSeconds(1));
+                highlightDuration);
     }
 
     private static void highlightPreferenceOfPreferenceFragment(
