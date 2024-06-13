@@ -14,19 +14,15 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
     public final Optional<String> title;
     private final Optional<String> summary;
     private final Optional<String> key;
-    // FK-TODO: remove keywords
-    private final Optional<String> keywords;
     private final Optional<String> entries;
 
     public PreferenceItem(final Optional<String> title,
                           final Optional<String> summary,
                           final Optional<String> key,
-                          final Optional<String> keywords,
                           final Optional<String> entries) {
         this.title = title;
         this.summary = summary;
         this.key = key;
-        this.keywords = keywords;
         this.entries = entries;
     }
 
@@ -36,7 +32,7 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
             return false;
         }
         return Stream
-                .of(title, summary, keywords, entries)
+                .of(title, summary, entries)
                 .anyMatch(haystack -> matches(haystack, keyword));
     }
 
@@ -54,7 +50,6 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
         this.title = Optional.ofNullable(source.readString());
         this.summary = Optional.ofNullable(source.readString());
         this.key = Optional.ofNullable(source.readString());
-        this.keywords = Optional.ofNullable(source.readString());
         this.entries = Optional.ofNullable(source.readString());
     }
 
@@ -63,7 +58,6 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
         parcel.writeString(title.orElse(null));
         parcel.writeString(summary.orElse(null));
         parcel.writeString(key.orElse(null));
-        parcel.writeString(keywords.orElse(null));
         parcel.writeString(entries.orElse(null));
     }
 
@@ -98,12 +92,11 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
         return Objects.equals(title, that.title) &&
                 Objects.equals(summary, that.summary) &&
                 Objects.equals(key, that.key) &&
-                Objects.equals(keywords, that.keywords) &&
                 Objects.equals(entries, that.entries);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, summary, key, keywords, entries);
+        return Objects.hash(title, summary, key, entries);
     }
 }

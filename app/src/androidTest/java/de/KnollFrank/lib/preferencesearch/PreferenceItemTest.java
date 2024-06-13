@@ -19,7 +19,6 @@ public class PreferenceItemTest {
                         Optional.of("title"),
                         Optional.of("summary"),
                         Optional.of("key"),
-                        Optional.of("keywords"),
                         Optional.of("entries"));
 
         // Obtain a Parcel object and write the parcelable object to it:
