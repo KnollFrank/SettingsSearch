@@ -8,7 +8,7 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 
-import de.KnollFrank.lib.preferencesearch.common.iter.PreferenceGroups;
+import de.KnollFrank.lib.preferencesearch.common.PreferenceGroups;
 import de.KnollFrank.lib.preferencesearch.results.PreferencePreparer;
 
 class PreferenceScreensCombiner {
@@ -37,7 +37,7 @@ class PreferenceScreensCombiner {
 
     private static void movePreferencesOfScreen2Category(final PreferenceScreen screen,
                                                          final PreferenceCategory category) {
-        for (final Preference preference : PreferenceGroups.iterateOverImmediateChildrenOf(screen)) {
+        for (final Preference preference : PreferenceGroups.getImmediateChildrenOf(screen)) {
             PreferencePreparer.removePreferenceFromItsParent(preference);
             category.addPreference(preference);
         }

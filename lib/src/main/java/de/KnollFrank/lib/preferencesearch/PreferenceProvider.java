@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
-import de.KnollFrank.lib.preferencesearch.common.iter.PreferenceGroups;
+import de.KnollFrank.lib.preferencesearch.common.PreferenceGroups;
 
 public class PreferenceProvider {
 
@@ -21,7 +21,7 @@ public class PreferenceProvider {
 
     public static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {
         final ImmutableList.Builder<Preference> preferencesBuilder = ImmutableList.builder();
-        for (final Preference preference : PreferenceGroups.iterateOverImmediateChildrenOf(preferenceGroup)) {
+        for (final Preference preference : PreferenceGroups.getImmediateChildrenOf(preferenceGroup)) {
             preferencesBuilder.add(preference);
             if (preference instanceof PreferenceGroup) {
                 preferencesBuilder.addAll(getPreferences((PreferenceGroup) preference));
