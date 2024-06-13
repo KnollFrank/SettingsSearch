@@ -1,15 +1,12 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.TextUtils;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-// FK-TODO: remove Parcelable interface?
-public class PreferenceItem implements Parcelable, IPreferenceItem {
+public class PreferenceItem implements IPreferenceItem {
 
     public final Optional<String> title;
     private final Optional<String> summary;
@@ -46,42 +43,9 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
         return haystack.toLowerCase().contains(needle.toLowerCase());
     }
 
-    private PreferenceItem(final Parcel source) {
-        this.title = Optional.ofNullable(source.readString());
-        this.summary = Optional.ofNullable(source.readString());
-        this.key = Optional.ofNullable(source.readString());
-        this.entries = Optional.ofNullable(source.readString());
-    }
-
-    @Override
-    public void writeToParcel(final Parcel parcel, final int flags) {
-        parcel.writeString(title.orElse(null));
-        parcel.writeString(summary.orElse(null));
-        parcel.writeString(key.orElse(null));
-        parcel.writeString(entries.orElse(null));
-    }
-
-    public static final Creator<PreferenceItem> CREATOR = new Creator<>() {
-
-        @Override
-        public PreferenceItem createFromParcel(final Parcel source) {
-            return new PreferenceItem(source);
-        }
-
-        @Override
-        public PreferenceItem[] newArray(int size) {
-            return new PreferenceItem[size];
-        }
-    };
-
     @Override
     public String toString() {
         return "PreferenceItem: " + title + " " + summary + " " + key;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     @Override
