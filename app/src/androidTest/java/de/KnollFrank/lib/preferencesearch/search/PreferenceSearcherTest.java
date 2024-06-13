@@ -20,13 +20,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.PreferenceItem;
-import de.KnollFrank.lib.preferencesearch.PreferenceItems;
-import de.KnollFrank.lib.preferencesearch.PreferenceProvider;
-import de.KnollFrank.lib.preferencesearch.PreferenceProviderFactory;
+import de.KnollFrank.lib.preferencesearch.PreferenceFragments;
+import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
+import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
+import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -76,10 +77,13 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final PreferenceSearcher<PreferenceItem> preferenceSearcher = createPreferenceSearcher(preferenceScreen, fragmentActivity);
+                final PreferenceScreenWithHosts preferenceScreenWithHosts =
+                        getPreferencesProvider(preferenceScreen, fragmentActivity)
+                                .getPreferenceScreenWithHosts();
+                final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(preferenceScreenWithHosts);
 
                 // When
-                final List<PreferenceItem> preferenceItems = preferenceSearcher.searchFor(keyword);
+                final List<PreferenceWithHost> preferenceItems = preferenceSearcher.searchFor(keyword);
 
                 // Then
                 assertThat(getTitles(preferenceItems), titlesMatcher);
@@ -87,26 +91,23 @@ public class PreferenceSearcherTest {
         }
     }
 
-    private static PreferenceSearcher<PreferenceItem> createPreferenceSearcher(
-            final Class<? extends PreferenceFragmentCompat> preferenceScreen,
-            final TestActivity fragmentActivity) {
-        PreferenceProvider preferenceProvider =
-                PreferenceProviderFactory.createPreferenceProvider(
-                        fragmentActivity,
-                        fragmentActivity.getSupportFragmentManager(),
-                        TestActivity.FRAGMENT_CONTAINER_VIEW);
-        return new PreferenceSearcher<>(
-                PreferenceItems.getPreferenceItems(
-                        preferenceProvider.getPreferences(preferenceScreen),
-                        preferenceScreen));
+    private static PreferencesProvider getPreferencesProvider(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
+        return new PreferencesProvider(
+                preferenceScreen.getName(),
+                new PreferenceScreensProvider(
+                        new PreferenceFragments(
+                                fragmentActivity,
+                                fragmentActivity.getSupportFragmentManager(),
+                                TestActivity.FRAGMENT_CONTAINER_VIEW)),
+                fragmentActivity);
     }
 
-    private static List<String> getTitles(final List<PreferenceItem> preferenceItems) {
-        return preferenceItems
+    private static List<String> getTitles(final List<PreferenceWithHost> preferences) {
+        return preferences
                 .stream()
-                .map(result -> result.title)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .map(preferenceWithHost -> preferenceWithHost.preference.getTitle())
+                .filter(Objects::nonNull)
+                .map(charSequence -> charSequence.toString())
                 .collect(Collectors.toList());
     }
 }

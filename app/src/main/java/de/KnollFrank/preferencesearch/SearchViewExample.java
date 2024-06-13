@@ -29,7 +29,8 @@ public class SearchViewExample extends AppCompatActivity {
                     new PrefsFragmentFirst(),
                     false,
                     getSupportFragmentManager(),
-                    FRAGMENT_CONTAINER_VIEW);
+                    FRAGMENT_CONTAINER_VIEW,
+                    false);
         }
     }
 

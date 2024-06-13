@@ -8,12 +8,10 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.List;
-
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceFragments;
+import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
-import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
 import de.KnollFrank.lib.preferencesearch.R;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
@@ -45,24 +43,26 @@ public class SearchPreferenceFragment extends Fragment {
     public void onStart() {
         super.onStart();
         final View view = requireView();
-        final List<PreferenceWithHost> preferenceWithHostList =
+        final PreferenceScreenWithHosts preferenceScreenWithHosts =
                 this
                         .getPreferencesProvider(R.id.dummyFragmentContainerView)
-                        .getPreferenceScreenWithHosts()
-                        .preferenceWithHostList;
+                        .getPreferenceScreenWithHosts();
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment =
-                SearchResultsPreferenceFragment.newInstance(searchConfiguration.fragmentContainerViewId);
+                SearchResultsPreferenceFragment.newInstance(
+                        searchConfiguration.fragmentContainerViewId,
+                        preferenceScreenWithHosts);
         Navigation.show(
                 searchResultsPreferenceFragment,
                 false,
                 getChildFragmentManager(),
-                R.id.searchResultsFragmentContainerView);
+                R.id.searchResultsFragmentContainerView,
+                true);
         {
             final SearchView searchView = view.findViewById(R.id.searchView);
             SearchViewConfigurer.configureSearchView(
                     searchView,
                     searchResultsPreferenceFragment,
-                    new PreferenceSearcher<>(preferenceWithHostList),
+                    new PreferenceSearcher(preferenceScreenWithHosts),
                     searchConfiguration);
             selectSearchView(searchView);
             searchView.setQuery(searchView.getQuery(), true);

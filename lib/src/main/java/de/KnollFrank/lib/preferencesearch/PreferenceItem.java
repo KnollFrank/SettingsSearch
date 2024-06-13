@@ -14,17 +14,18 @@ import java.util.stream.Stream;
 
 import de.KnollFrank.lib.preferencesearch.common.Parcels;
 
+// FK-TODO: remove Parcelable interface?
 public class PreferenceItem implements Parcelable, IPreferenceItem {
 
     public final Optional<String> title;
-    public final Optional<String> summary;
-    public final Optional<String> key;
-    public final Optional<String> breadcrumbs;
-    public final Optional<String> keywords;
-    public final Optional<String> entries;
-    public final Class<? extends PreferenceFragmentCompat> resId;
+    private final Optional<String> summary;
+    private final Optional<String> key;
+    private final Optional<String> breadcrumbs;
+    private final Optional<String> keywords;
+    private final Optional<String> entries;
+    private final Class<? extends PreferenceFragmentCompat> resId;
     // FK-TODO: breadcrumbs aktivieren, Tests dazu schreiben (Graph dazu wieder einführen)
-    public final List<String> keyBreadcrumbs = new ArrayList<>();
+    private final List<String> keyBreadcrumbs = new ArrayList<>();
 
     public PreferenceItem(final Optional<String> title,
                           final Optional<String> summary,

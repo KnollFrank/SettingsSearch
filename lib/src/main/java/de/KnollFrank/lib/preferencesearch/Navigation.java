@@ -21,21 +21,28 @@ public class Navigation {
                 Fragment.instantiate(fragmentActivity, fragmentOfPreferenceScreen, createArguments(keyOfPreference2Highlight)),
                 true,
                 fragmentActivity.getSupportFragmentManager(),
-                containerViewId);
+                containerViewId,
+                false);
     }
 
     public static void show(final Fragment fragment,
                             final boolean addToBackStack,
                             final FragmentManager fragmentManager,
-                            final @IdRes int containerViewId) {
-        final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            final @IdRes int containerViewId,
+                            final boolean commitNow) {
+        final FragmentTransaction fragmentTransaction =
+                fragmentManager
+                        .beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(containerViewId, fragment);
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }
-        fragmentTransaction
-                .setReorderingAllowed(true)
-                .replace(containerViewId, fragment)
-                .commit();
+        if (commitNow) {
+            fragmentTransaction.commitNow();
+        } else {
+            fragmentTransaction.commit();
+        }
     }
 
     private static Bundle createArguments(final String keyOfPreference2Highlight) {

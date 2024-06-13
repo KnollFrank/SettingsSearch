@@ -5,20 +5,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class PreferenceItems {
-
-    public static List<PreferenceItem> getPreferenceItems(
-            final List<Preference> preferences,
-            final Class<? extends PreferenceFragmentCompat> resId) {
-        return preferences
-                .stream()
-                .map(preference -> getPreferenceItem(preference, resId))
-                .collect(Collectors.toList());
-    }
 
     public static PreferenceItem getPreferenceItem(
             final Preference preference,

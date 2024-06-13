@@ -41,7 +41,9 @@ public class PreferencesProvider {
     private PreferenceScreenWithHosts _getPreferenceScreenWithHosts() {
         final List<PreferenceScreenWithHost> screens = getScreens();
         final List<PreferenceWithHost> preferenceWithHostList = getPreferenceWithHostList(screens);
-        final PreferenceScreen preferenceScreen = new PreferenceScreensCombiner(context).destructivelyCombineScreens(getPreferenceScreens(screens));
+        final PreferenceScreen preferenceScreen =
+                new PreferenceScreensMerger(context)
+                        .destructivelyMergeScreens(getPreferenceScreens(screens));
         return new PreferenceScreenWithHosts(preferenceScreen, preferenceWithHostList);
     }
 

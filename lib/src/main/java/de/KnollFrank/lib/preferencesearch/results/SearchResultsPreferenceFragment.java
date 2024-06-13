@@ -7,48 +7,33 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import de.KnollFrank.lib.preferencesearch.Navigation;
-import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
+import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
-    // FK-TODO: make preferenceWithHostList of type PreferenceScreen instead of List<PreferenceWithHost>
-    private List<PreferenceWithHost> preferenceWithHostList = Collections.emptyList();
+    private PreferenceScreenWithHosts preferenceScreenWithHosts;
     private @IdRes int fragmentContainerViewId;
 
-    public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId) {
-        return Factory.newInstance(fragmentContainerViewId);
-    }
-
-    public void setPreferenceWithHostList(final List<PreferenceWithHost> preferenceWithHostList) {
-        final List<Preference> preferences = getPreferences(preferenceWithHostList);
-        PreferencePreparer.preparePreferences(preferences);
-        setPreferencesOnOptionalPreferenceScreen(preferences);
-        this.preferenceWithHostList = preferenceWithHostList;
+    public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId,
+                                                              final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+        final SearchResultsPreferenceFragment searchResultsPreferenceFragment = Factory.newInstance(fragmentContainerViewId);
+        searchResultsPreferenceFragment.setPreferenceScreenWithHosts(preferenceScreenWithHosts);
+        return searchResultsPreferenceFragment;
     }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         new Factory().setInstanceVariables();
+        super.onCreate(savedInstanceState);
     }
 
     @Override
-    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final PreferenceScreen preferenceScreen = createPreferenceScreen();
-        PreferencesSetter.addPreferences2PreferenceScreen(
-                getPreferences(this.preferenceWithHostList),
-                preferenceScreen);
-        setPreferenceScreen(preferenceScreen);
+    public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
+        setPreferenceScreen(this.preferenceScreenWithHosts.preferenceScreen);
     }
 
     @NonNull
@@ -57,6 +42,10 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         return new ClickablePreferenceGroupAdapter(
                 preferenceScreen,
                 this::showPreferenceScreenAndHighlightPreference);
+    }
+
+    private void setPreferenceScreenWithHosts(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+        this.preferenceScreenWithHosts = preferenceScreenWithHosts;
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
@@ -69,39 +58,13 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private Class<? extends PreferenceFragmentCompat> getHost(final Preference preference) {
-        return preferenceWithHostList
+        return preferenceScreenWithHosts
+                .preferenceWithHostList
                 .stream()
                 .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
                 .findFirst()
                 .get()
                 .host;
-    }
-
-    private List<Preference> getPreferences(final List<PreferenceWithHost> preferenceWithHostList) {
-        return preferenceWithHostList
-                .stream()
-                .map(preferenceWithHost -> preferenceWithHost.preference)
-                .collect(Collectors.toList());
-    }
-
-    private PreferenceScreen createPreferenceScreen() {
-        return getPreferenceManager().createPreferenceScreen(getPreferenceManager().getContext());
-    }
-
-    private void setPreferencesOnOptionalPreferenceScreen(final List<Preference> preferences) {
-        this
-                .getOptionalPreferenceScreen()
-                .ifPresent(
-                        preferenceScreen ->
-                                PreferencesSetter.setPreferencesOnPreferenceScreen(
-                                        preferences,
-                                        preferenceScreen));
-    }
-
-    private Optional<PreferenceScreen> getOptionalPreferenceScreen() {
-        return Optional
-                .ofNullable(getPreferenceManager())
-                .map(PreferenceManager::getPreferenceScreen);
     }
 
     private class Factory {

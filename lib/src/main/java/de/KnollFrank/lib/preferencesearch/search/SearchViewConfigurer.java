@@ -3,6 +3,8 @@ package de.KnollFrank.lib.preferencesearch.search;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
+import java.util.List;
+
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
@@ -11,7 +13,7 @@ class SearchViewConfigurer {
 
     public static void configureSearchView(final SearchView searchView,
                                            final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
-                                           final PreferenceSearcher<PreferenceWithHost> preferenceSearcher,
+                                           final PreferenceSearcher preferenceSearcher,
                                            final SearchConfiguration searchConfiguration) {
         searchConfiguration.textHint.ifPresent(searchView::setQueryHint);
         searchView.setOnQueryTextListener(
@@ -22,7 +24,7 @@ class SearchViewConfigurer {
 
     private static OnQueryTextListener createOnQueryTextListener(
             final SearchResultsPreferenceFragment searchResultsPreferenceFragment,
-            final PreferenceSearcher<PreferenceWithHost> preferenceSearcher) {
+            final PreferenceSearcher preferenceSearcher) {
         return new OnQueryTextListener() {
 
             @Override
@@ -38,8 +40,17 @@ class SearchViewConfigurer {
             }
 
             private void filterPreferenceItemsBy(final String query) {
-                searchResultsPreferenceFragment.setPreferenceWithHostList(
-                        preferenceSearcher.searchFor(query));
+                // FK-TODO: refactor && extract class
+                preferenceSearcher
+                        .preferenceScreenWithHosts
+                        .preferenceWithHostList
+                        .stream()
+                        .map(preferenceWithHost -> preferenceWithHost.preference)
+                        .forEach(preference -> preference.setVisible(false));
+                final List<PreferenceWithHost> preferenceWithHostList = preferenceSearcher.searchFor(query);
+                for (final PreferenceWithHost preferenceWithHost : preferenceWithHostList) {
+                    preferenceWithHost.preference.setVisible(true);
+                }
             }
         };
     }
