@@ -48,7 +48,8 @@ public class SearchPreferenceFragment extends Fragment {
         final List<PreferenceWithHost> preferenceWithHostList =
                 this
                         .getPreferencesProvider(R.id.dummyFragmentContainerView)
-                        .getPreferences();
+                        .getPreferenceScreenWithHosts()
+                        .preferenceWithHostList;
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment =
                 SearchResultsPreferenceFragment.newInstance(searchConfiguration.fragmentContainerViewId);
         Navigation.show(

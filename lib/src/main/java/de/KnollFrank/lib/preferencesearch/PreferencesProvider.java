@@ -5,7 +5,9 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +19,7 @@ public class PreferencesProvider {
     private final String preferenceFragment;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final Context context;
-    private static final Map<String, List<PreferenceWithHost>> preferencesByFragment = new HashMap<>();
+    private static final Map<String, PreferenceScreenWithHosts> preferenceScreenWithHostsByFragment = new HashMap<>();
 
     public PreferencesProvider(final String preferenceFragment,
                                final PreferenceScreensProvider preferenceScreensProvider,
@@ -27,16 +29,30 @@ public class PreferencesProvider {
         this.context = context;
     }
 
-    public List<PreferenceWithHost> getPreferences() {
-        if (!preferencesByFragment.containsKey(preferenceFragment)) {
-            preferencesByFragment.put(preferenceFragment, _getPreferences());
+    public PreferenceScreenWithHosts getPreferenceScreenWithHosts() {
+        if (!preferenceScreenWithHostsByFragment.containsKey(preferenceFragment)) {
+            preferenceScreenWithHostsByFragment.put(preferenceFragment, _getPreferenceScreenWithHosts());
         }
-        return preferencesByFragment.get(preferenceFragment);
+        return preferenceScreenWithHostsByFragment.get(preferenceFragment);
     }
 
-    private List<PreferenceWithHost> _getPreferences() {
-        return preferenceScreensProvider
-                .getPreferenceScreens(instantiatePreferenceFragment())
+    private PreferenceScreenWithHosts _getPreferenceScreenWithHosts() {
+        final List<PreferenceScreenWithHost> screens = getScreens();
+        final List<PreferenceWithHost> preferenceWithHostList = getPreferenceWithHostList(screens);
+        final PreferenceScreen preferenceScreen = new PreferenceScreensCombiner(context).destructivelyCombineScreens(getPreferenceScreens(screens));
+        return new PreferenceScreenWithHosts(preferenceScreen, preferenceWithHostList);
+    }
+
+    private List<PreferenceScreenWithHost> getScreens() {
+        return new ArrayList<>(preferenceScreensProvider.getPreferenceScreens(instantiatePreferenceFragment()));
+    }
+
+    private PreferenceFragmentCompat instantiatePreferenceFragment() {
+        return (PreferenceFragmentCompat) Fragment.instantiate(context, preferenceFragment);
+    }
+
+    private List<PreferenceWithHost> getPreferenceWithHostList(final List<PreferenceScreenWithHost> preferenceScreenWithHostList) {
+        return preferenceScreenWithHostList
                 .stream()
                 .map(preferenceScreenWithHost ->
                         asPreferenceWithHostList(
@@ -55,7 +71,10 @@ public class PreferencesProvider {
                 .collect(Collectors.toList());
     }
 
-    private PreferenceFragmentCompat instantiatePreferenceFragment() {
-        return (PreferenceFragmentCompat) Fragment.instantiate(context, preferenceFragment);
+    private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {
+        return screens
+                .stream()
+                .map(preferenceScreenWithHost -> preferenceScreenWithHost.preferenceScreen)
+                .collect(Collectors.toList());
     }
 }
