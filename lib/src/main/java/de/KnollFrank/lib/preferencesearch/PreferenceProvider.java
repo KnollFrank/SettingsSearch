@@ -9,6 +9,8 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
+import de.KnollFrank.lib.preferencesearch.common.iter.PreferenceGroups;
+
 public class PreferenceProvider {
 
     private final PreferenceFragments preferenceFragments;
@@ -19,9 +21,7 @@ public class PreferenceProvider {
 
     public static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {
         final ImmutableList.Builder<Preference> preferencesBuilder = ImmutableList.builder();
-        // FK-TODO: create an Iterator for iteration over immediate child preferences of a PreferenceGroup and use it everywhere
-        for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
-            final Preference preference = preferenceGroup.getPreference(i);
+        for (final Preference preference : PreferenceGroups.iterateOverImmediateChildrenOf(preferenceGroup)) {
             preferencesBuilder.add(preference);
             if (preference instanceof PreferenceGroup) {
                 preferencesBuilder.addAll(getPreferences((PreferenceGroup) preference));
