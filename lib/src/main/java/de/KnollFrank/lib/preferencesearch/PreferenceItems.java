@@ -15,7 +15,6 @@ public class PreferenceItems {
                 return new PreferenceItem(
                         asString(preference.getTitle()),
                         asString(preference.getSummary()),
-                        Optional.ofNullable(preference.getKey()),
                         getEntries(preference));
             }
 

@@ -9,17 +9,13 @@ public class PreferenceItem {
 
     private final Optional<String> title;
     private final Optional<String> summary;
-    // FK-TODO: remove key
-    private final Optional<String> key;
     private final Optional<String> entries;
 
     public PreferenceItem(final Optional<String> title,
                           final Optional<String> summary,
-                          final Optional<String> key,
                           final Optional<String> entries) {
         this.title = title;
         this.summary = summary;
-        this.key = key;
         this.entries = entries;
     }
 
