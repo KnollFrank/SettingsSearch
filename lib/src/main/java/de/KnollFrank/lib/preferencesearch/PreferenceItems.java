@@ -2,28 +2,23 @@ package de.KnollFrank.lib.preferencesearch;
 
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 public class PreferenceItems {
 
-    public static PreferenceItem getPreferenceItem(
-            final Preference preference,
-            final Class<? extends PreferenceFragmentCompat> resId) {
+    public static PreferenceItem getPreferenceItem(final Preference preference) {
         class _PreferenceItems {
 
-            public static PreferenceItem getPreferenceItem(final Preference preference,
-                                                           final Class<? extends PreferenceFragmentCompat> resId) {
+            public static PreferenceItem getPreferenceItem(final Preference preference) {
                 return new PreferenceItem(
                         asString(preference.getTitle()),
                         asString(preference.getSummary()),
                         Optional.ofNullable(preference.getKey()),
                         Optional.empty(),
                         Optional.empty(),
-                        getEntries(preference),
-                        resId);
+                        getEntries(preference));
             }
 
             private static Optional<String> asString(final CharSequence charSequence) {
@@ -42,6 +37,6 @@ public class PreferenceItems {
             }
         }
 
-        return _PreferenceItems.getPreferenceItem(preference, resId);
+        return _PreferenceItems.getPreferenceItem(preference);
     }
 }

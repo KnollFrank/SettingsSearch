@@ -63,6 +63,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 .stream()
                 .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
                 .findFirst()
+                // FK-FIXME: bei Klick auf eine künstlich erzeugte Kategorie für die Unterscreens => Absturz
                 .get()
                 .host;
     }

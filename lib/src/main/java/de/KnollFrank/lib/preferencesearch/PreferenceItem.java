@@ -4,15 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
-import androidx.preference.PreferenceFragmentCompat;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import de.KnollFrank.lib.preferencesearch.common.Parcels;
 
 // FK-TODO: remove Parcelable interface?
 public class PreferenceItem implements Parcelable, IPreferenceItem {
@@ -23,8 +19,7 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
     private final Optional<String> breadcrumbs;
     private final Optional<String> keywords;
     private final Optional<String> entries;
-    private final Class<? extends PreferenceFragmentCompat> resId;
-    // FK-TODO: breadcrumbs aktivieren, Tests dazu schreiben (Graph dazu wieder einführen)
+    // FK-TODO: remove keyBreadcrumbs
     private final List<String> keyBreadcrumbs = new ArrayList<>();
 
     public PreferenceItem(final Optional<String> title,
@@ -32,15 +27,13 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
                           final Optional<String> key,
                           final Optional<String> breadcrumbs,
                           final Optional<String> keywords,
-                          final Optional<String> entries,
-                          final Class<? extends PreferenceFragmentCompat> resId) {
+                          final Optional<String> entries) {
         this.title = title;
         this.summary = summary;
         this.key = key;
         this.breadcrumbs = breadcrumbs;
         this.keywords = keywords;
         this.entries = entries;
-        this.resId = resId;
     }
 
     @Override
@@ -70,7 +63,6 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
         this.breadcrumbs = Optional.ofNullable(source.readString());
         this.keywords = Optional.ofNullable(source.readString());
         this.entries = Optional.ofNullable(source.readString());
-        this.resId = Parcels.readClass(source);
     }
 
     @Override
@@ -81,7 +73,6 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
         parcel.writeString(breadcrumbs.orElse(null));
         parcel.writeString(keywords.orElse(null));
         parcel.writeString(entries.orElse(null));
-        Parcels.writeClass(parcel, resId);
     }
 
     public static final Creator<PreferenceItem> CREATOR = new Creator<>() {
@@ -112,11 +103,11 @@ public class PreferenceItem implements Parcelable, IPreferenceItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final PreferenceItem that = (PreferenceItem) o;
-        return Objects.equals(title, that.title) && Objects.equals(summary, that.summary) && Objects.equals(key, that.key) && Objects.equals(breadcrumbs, that.breadcrumbs) && Objects.equals(keywords, that.keywords) && Objects.equals(entries, that.entries) && Objects.equals(resId, that.resId) && Objects.equals(keyBreadcrumbs, that.keyBreadcrumbs);
+        return Objects.equals(title, that.title) && Objects.equals(summary, that.summary) && Objects.equals(key, that.key) && Objects.equals(breadcrumbs, that.breadcrumbs) && Objects.equals(keywords, that.keywords) && Objects.equals(entries, that.entries) && Objects.equals(keyBreadcrumbs, that.keyBreadcrumbs);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, summary, key, breadcrumbs, keywords, entries, resId, keyBreadcrumbs);
+        return Objects.hash(title, summary, key, breadcrumbs, keywords, entries, keyBreadcrumbs);
     }
 }

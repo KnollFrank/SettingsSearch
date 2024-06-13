@@ -17,7 +17,7 @@ public class PreferenceWithHost implements IPreferenceItem {
     @Override
     public boolean matches(final String keyword) {
         return PreferenceItems
-                .getPreferenceItem(preference, host)
+                .getPreferenceItem(preference)
                 .matches(keyword);
     }
 

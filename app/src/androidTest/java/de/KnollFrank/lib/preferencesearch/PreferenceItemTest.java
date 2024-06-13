@@ -9,8 +9,6 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.preferencesearch.search.PreferenceSearcherTest.PrefsFragment;
-
 public class PreferenceItemTest {
 
     @Test
@@ -23,8 +21,7 @@ public class PreferenceItemTest {
                         Optional.of("key"),
                         Optional.of("breadcrumbs"),
                         Optional.of("keywords"),
-                        Optional.of("entries"),
-                        PrefsFragment.class);
+                        Optional.of("entries"));
 
         // Obtain a Parcel object and write the parcelable object to it:
         final Parcel parcel = Parcel.obtain();
