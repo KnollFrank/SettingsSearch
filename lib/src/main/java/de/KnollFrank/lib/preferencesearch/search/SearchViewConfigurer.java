@@ -37,6 +37,7 @@ class SearchViewConfigurer {
 
             private void filterPreferenceItemsBy(final String query) {
                 final List<PreferenceWithHost> preferenceWithHostList = preferenceSearcher.searchFor(query);
+                // FK-TODO: den gefundenen Suchtext query in den Suchergebnissen farblich hervorheben
                 Preferences.makePreferencesOfPreferenceScreenVisible(
                         getPreferences(preferenceWithHostList),
                         preferenceSearcher.preferenceScreenWithHosts.preferenceScreen);

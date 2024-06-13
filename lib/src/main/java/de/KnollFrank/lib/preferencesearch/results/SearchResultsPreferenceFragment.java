@@ -10,6 +10,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 
@@ -49,23 +51,24 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
-        final Class<? extends PreferenceFragmentCompat> host = getHost(preference);
-        Navigation.showPreferenceScreenAndHighlightPreference(
-                host.getName(),
-                preference.getKey(),
-                getActivity(),
-                this.fragmentContainerViewId);
+        this
+                .getHost(preference)
+                .ifPresent(
+                        host ->
+                                Navigation.showPreferenceScreenAndHighlightPreference(
+                                        host.getName(),
+                                        preference.getKey(),
+                                        getActivity(),
+                                        this.fragmentContainerViewId));
     }
 
-    private Class<? extends PreferenceFragmentCompat> getHost(final Preference preference) {
+    private Optional<? extends Class<? extends PreferenceFragmentCompat>> getHost(final Preference preference) {
         return preferenceScreenWithHosts
                 .preferenceWithHostList
                 .stream()
                 .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
-                .findFirst()
-                // FK-FIXME: bei Klick auf eine künstlich erzeugte Kategorie für die Unterscreens => Absturz
-                .get()
-                .host;
+                .map(preferenceWithHost -> preferenceWithHost.host)
+                .findFirst();
     }
 
     private class Factory {
