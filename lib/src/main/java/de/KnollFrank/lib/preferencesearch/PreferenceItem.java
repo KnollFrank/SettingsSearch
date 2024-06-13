@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class PreferenceItem implements IPreferenceItem {
+public class PreferenceItem {
 
     public final Optional<String> title;
     private final Optional<String> summary;
@@ -23,7 +23,6 @@ public class PreferenceItem implements IPreferenceItem {
         this.entries = entries;
     }
 
-    @Override
     public boolean matches(final String keyword) {
         if (TextUtils.isEmpty(keyword)) {
             return false;
