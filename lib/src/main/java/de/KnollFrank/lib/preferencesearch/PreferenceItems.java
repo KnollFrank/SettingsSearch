@@ -17,7 +17,6 @@ public class PreferenceItems {
                         asString(preference.getSummary()),
                         Optional.ofNullable(preference.getKey()),
                         Optional.empty(),
-                        Optional.empty(),
                         getEntries(preference));
             }
 

@@ -19,7 +19,6 @@ public class PreferenceItemTest {
                         Optional.of("title"),
                         Optional.of("summary"),
                         Optional.of("key"),
-                        Optional.of("breadcrumbs"),
                         Optional.of("keywords"),
                         Optional.of("entries"));
 
