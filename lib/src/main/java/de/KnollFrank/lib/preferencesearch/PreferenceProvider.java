@@ -19,6 +19,7 @@ public class PreferenceProvider {
 
     public static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {
         final ImmutableList.Builder<Preference> preferencesBuilder = ImmutableList.builder();
+        // FK-TODO: create an Iterator for iteration over immediate child preferences of a PreferenceGroup and use it everywhere
         for (int i = 0; i < preferenceGroup.getPreferenceCount(); i++) {
             final Preference preference = preferenceGroup.getPreference(i);
             preferencesBuilder.add(preference);
