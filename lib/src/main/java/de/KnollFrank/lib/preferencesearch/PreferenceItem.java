@@ -2,7 +2,6 @@ package de.KnollFrank.lib.preferencesearch;
 
 import android.text.TextUtils;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -10,6 +9,7 @@ public class PreferenceItem {
 
     private final Optional<String> title;
     private final Optional<String> summary;
+    // FK-TODO: remove key
     private final Optional<String> key;
     private final Optional<String> entries;
 
@@ -40,26 +40,5 @@ public class PreferenceItem {
 
     private static boolean matches(final String haystack, final String needle) {
         return haystack.toLowerCase().contains(needle.toLowerCase());
-    }
-
-    @Override
-    public String toString() {
-        return "PreferenceItem: " + title + " " + summary + " " + key;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        final PreferenceItem that = (PreferenceItem) o;
-        return Objects.equals(title, that.title) &&
-                Objects.equals(summary, that.summary) &&
-                Objects.equals(key, that.key) &&
-                Objects.equals(entries, that.entries);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, summary, key, entries);
     }
 }
