@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
+import de.KnollFrank.lib.preferencesearch.matcher.PreferenceMatcher;
 
 class PreferenceSearcher {
 
@@ -22,7 +23,7 @@ class PreferenceSearcher {
                 .preferenceWithHostList
                 .stream()
                 .filter(preferenceWithHost -> !(preferenceWithHost.preference instanceof PreferenceGroup))
-                .filter(preferenceWithHost -> preferenceWithHost.matches(keyword))
+                .filter(preferenceWithHost -> PreferenceMatcher.matches(preferenceWithHost.preference, keyword))
                 .collect(Collectors.toList());
     }
 }

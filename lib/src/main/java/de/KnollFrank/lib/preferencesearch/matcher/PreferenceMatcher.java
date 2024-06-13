@@ -1,30 +1,24 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.matcher;
+
+import static de.KnollFrank.lib.preferencesearch.matcher.PreferenceAttributes.getEntries;
+import static de.KnollFrank.lib.preferencesearch.matcher.PreferenceAttributes.getSummary;
+import static de.KnollFrank.lib.preferencesearch.matcher.PreferenceAttributes.getTitle;
 
 import android.text.TextUtils;
+
+import androidx.preference.Preference;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class PreferenceItem {
+public class PreferenceMatcher {
 
-    private final Optional<String> title;
-    private final Optional<String> summary;
-    private final Optional<String> entries;
-
-    public PreferenceItem(final Optional<String> title,
-                          final Optional<String> summary,
-                          final Optional<String> entries) {
-        this.title = title;
-        this.summary = summary;
-        this.entries = entries;
-    }
-
-    public boolean matches(final String keyword) {
+    public static boolean matches(final Preference preference, final String keyword) {
         if (TextUtils.isEmpty(keyword)) {
             return false;
         }
         return Stream
-                .of(title, summary, entries)
+                .of(getTitle(preference), getSummary(preference), getEntries(preference))
                 .anyMatch(haystack -> matches(haystack, keyword));
     }
 

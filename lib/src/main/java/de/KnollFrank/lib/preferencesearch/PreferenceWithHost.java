@@ -14,12 +14,6 @@ public class PreferenceWithHost {
         this.host = host;
     }
 
-    public boolean matches(final String keyword) {
-        return PreferenceItems
-                .getPreferenceItem(preference)
-                .matches(keyword);
-    }
-
     @Override
     public String toString() {
         return "PreferenceWithHost{" +
