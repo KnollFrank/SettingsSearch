@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PreferenceGroups {
 
-    public static List<Preference> getImmediateChildrenOf(final PreferenceGroup preferenceGroup) {
+    public static List<Preference> getImmediateChildren(final PreferenceGroup preferenceGroup) {
         return ImmutableList.copyOf(getImmediateChildrenIterator(preferenceGroup));
     }
 

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.preferencesearch;
 
+import static de.KnollFrank.lib.preferencesearch.common.PreferenceGroups.getImmediateChildren;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -8,8 +10,6 @@ import androidx.preference.PreferenceScreen;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
-
-import de.KnollFrank.lib.preferencesearch.common.PreferenceGroups;
 
 public class PreferenceProvider {
 
@@ -21,7 +21,7 @@ public class PreferenceProvider {
 
     public static List<Preference> getPreferences(final PreferenceGroup preferenceGroup) {
         final ImmutableList.Builder<Preference> preferencesBuilder = ImmutableList.builder();
-        for (final Preference preference : PreferenceGroups.getImmediateChildrenOf(preferenceGroup)) {
+        for (final Preference preference : getImmediateChildren(preferenceGroup)) {
             preferencesBuilder.add(preference);
             if (preference instanceof PreferenceGroup) {
                 preferencesBuilder.addAll(getPreferences((PreferenceGroup) preference));
