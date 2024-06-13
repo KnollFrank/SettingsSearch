@@ -61,7 +61,6 @@ public class SearchPreferenceFragment extends Fragment {
             final SearchView searchView = view.findViewById(R.id.searchView);
             SearchViewConfigurer.configureSearchView(
                     searchView,
-                    searchResultsPreferenceFragment,
                     new PreferenceSearcher(preferenceScreenWithHosts),
                     searchConfiguration);
             selectSearchView(searchView);
