@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 public class PreferenceItem {
 
-    public final Optional<String> title;
+    private final Optional<String> title;
     private final Optional<String> summary;
     private final Optional<String> key;
     private final Optional<String> entries;
