@@ -10,11 +10,22 @@ import java.util.List;
 
 public class PreferenceGroups {
 
-    public static List<Preference> getImmediateChildren(final PreferenceGroup preferenceGroup) {
-        return ImmutableList.copyOf(getImmediateChildrenIterator(preferenceGroup));
+    public static List<Preference> getAllChildren(final PreferenceGroup preferenceGroup) {
+        final ImmutableList.Builder<Preference> preferencesBuilder = ImmutableList.builder();
+        for (final Preference preference : getDirectChildren(preferenceGroup)) {
+            preferencesBuilder.add(preference);
+            if (preference instanceof PreferenceGroup) {
+                preferencesBuilder.addAll(getAllChildren((PreferenceGroup) preference));
+            }
+        }
+        return preferencesBuilder.build();
     }
 
-    private static Iterator<Preference> getImmediateChildrenIterator(final PreferenceGroup preferenceGroup) {
+    public static List<Preference> getDirectChildren(final PreferenceGroup preferenceGroup) {
+        return ImmutableList.copyOf(getDirectChildrenIterator(preferenceGroup));
+    }
+
+    private static Iterator<Preference> getDirectChildrenIterator(final PreferenceGroup preferenceGroup) {
         return new Iterator<>() {
 
             private int i = 0;

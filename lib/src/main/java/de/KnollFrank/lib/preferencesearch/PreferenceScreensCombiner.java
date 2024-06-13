@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import static de.KnollFrank.lib.preferencesearch.common.PreferenceGroups.getImmediateChildren;
+import static de.KnollFrank.lib.preferencesearch.common.PreferenceGroups.getDirectChildren;
 
 import android.content.Context;
 
@@ -38,7 +38,7 @@ class PreferenceScreensCombiner {
 
     private static void movePreferencesOfScreen2Category(final PreferenceScreen screen,
                                                          final PreferenceCategory category) {
-        for (final Preference preference : getImmediateChildren(screen)) {
+        for (final Preference preference : getDirectChildren(screen)) {
             PreferencePreparer.removePreferenceFromItsParent(preference);
             category.addPreference(preference);
         }
