@@ -3,10 +3,14 @@ package de.KnollFrank.lib.preferencesearch.search;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
+import androidx.preference.Preference;
+
 import java.util.List;
 
+import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
+import de.KnollFrank.lib.preferencesearch.common.PreferenceGroups;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 
 class SearchViewConfigurer {
@@ -41,15 +45,24 @@ class SearchViewConfigurer {
 
             private void filterPreferenceItemsBy(final String query) {
                 // FK-TODO: refactor && extract class
-                preferenceSearcher
-                        .preferenceScreenWithHosts
-                        .preferenceWithHostList
-                        .stream()
-                        .map(preferenceWithHost -> preferenceWithHost.preference)
-                        .forEach(preference -> preference.setVisible(false));
+                setInvisible(preferenceSearcher.preferenceScreenWithHosts);
                 final List<PreferenceWithHost> preferenceWithHostList = preferenceSearcher.searchFor(query);
                 for (final PreferenceWithHost preferenceWithHost : preferenceWithHostList) {
-                    preferenceWithHost.preference.setVisible(true);
+                    setVisibleAndParents(preferenceWithHost.preference);
+                }
+            }
+
+            private static void setInvisible(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+                preferenceScreenWithHosts.preferenceScreen.setVisible(false);
+                PreferenceGroups
+                        .getAllChildren(preferenceScreenWithHosts.preferenceScreen)
+                        .forEach(preference -> preference.setVisible(false));
+            }
+
+            private void setVisibleAndParents(final Preference preference) {
+                if (preference != null) {
+                    preference.setVisible(true);
+                    setVisibleAndParents(preference.getParent());
                 }
             }
         };
