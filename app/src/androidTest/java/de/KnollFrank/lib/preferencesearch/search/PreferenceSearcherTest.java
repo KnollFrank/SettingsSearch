@@ -24,7 +24,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.PreferenceFragments;
-import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
@@ -77,10 +76,11 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final PreferenceScreenWithHosts preferenceScreenWithHosts =
+                final List<PreferenceWithHost> preferenceWithHostList =
                         getPreferencesProvider(preferenceScreen, fragmentActivity)
-                                .getPreferenceScreenWithHosts();
-                final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(preferenceScreenWithHosts);
+                                .getPreferenceScreenWithHosts()
+                                .preferenceWithHostList;
+                final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(preferenceWithHostList);
 
                 // When
                 final List<PreferenceWithHost> preferenceItems = preferenceSearcher.searchFor(keyword);

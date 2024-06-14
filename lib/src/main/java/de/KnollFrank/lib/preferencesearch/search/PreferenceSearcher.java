@@ -5,23 +5,21 @@ import androidx.preference.PreferenceGroup;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.matcher.PreferenceMatcher;
 
 class PreferenceSearcher {
 
-    // FK-TODO: make private again
     // FK-TODO: replace with List<PreferenceWithHost> preferenceWithHostList and exclude PreferenceGroups like in searchFor() method
-    public final PreferenceScreenWithHosts preferenceScreenWithHosts;
+    private final List<PreferenceWithHost> haystack;
 
-    public PreferenceSearcher(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
-        this.preferenceScreenWithHosts = preferenceScreenWithHosts;
+    public PreferenceSearcher(final List<PreferenceWithHost> haystack) {
+        this.haystack = haystack;
     }
 
     public List<PreferenceWithHost> searchFor(final String keyword) {
-        return preferenceScreenWithHosts
-                .preferenceWithHostList
+        return this
+                .haystack
                 .stream()
                 .filter(preferenceWithHost -> !(preferenceWithHost.preference instanceof PreferenceGroup))
                 .filter(preferenceWithHost -> PreferenceMatcher.matches(preferenceWithHost.preference, keyword))
