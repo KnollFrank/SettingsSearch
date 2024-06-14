@@ -12,6 +12,7 @@ import de.KnollFrank.lib.preferencesearch.matcher.PreferenceMatcher;
 class PreferenceSearcher {
 
     // FK-TODO: make private again
+    // FK-TODO: replace with List<PreferenceWithHost> preferenceWithHostList and exclude PreferenceGroups like in searchFor() method
     public final PreferenceScreenWithHosts preferenceScreenWithHosts;
 
     public PreferenceSearcher(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
