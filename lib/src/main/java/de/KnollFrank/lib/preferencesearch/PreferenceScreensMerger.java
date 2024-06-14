@@ -36,7 +36,7 @@ class PreferenceScreensMerger {
 
     private PreferenceCategory createScreenCategory(final PreferenceScreen screen) {
         final PreferenceCategory screenCategory = new PreferenceCategory(context);
-        screenCategory.setTitle("Screen: " + screen);
+        screenCategory.setTitle(screen.toString());
         return screenCategory;
     }
 
