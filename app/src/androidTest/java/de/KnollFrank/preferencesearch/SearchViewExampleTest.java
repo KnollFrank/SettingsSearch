@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -41,59 +40,57 @@ public class SearchViewExampleTest {
             new ActivityScenarioRule<>(SearchViewExample.class);
 
     @Test
-    public void searchViewExampleTest() {
-        ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.search_action), withContentDescription("title"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(androidx.appcompat.R.id.action_bar),
-                                        1),
-                                0),
-                        isDisplayed()));
-        actionMenuItemView.perform(click());
-
-        ViewInteraction searchAutoComplete = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete.perform(click());
-
-        ViewInteraction searchAutoComplete2 = onView(
-                allOf(withClassName(is("android.widget.SearchView$SearchAutoComplete")),
-                        childAtPosition(
-                                allOf(withClassName(is("android.widget.LinearLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        searchAutoComplete2.perform(replaceText("fourth"), closeSoftKeyboard());
-
-        ViewInteraction textView = onView(
-                allOf(withId(android.R.id.title), withText("Checkbox fourth file"),
-                        withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout.class))),
-                        isDisplayed()));
-        textView.check(matches(withText("Checkbox fourth file")));
+    public void shouldSearchAndFindPreferences() {
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText("fourth"), closeSoftKeyboard());
+        onView(checkboxInSearchResults()).check(matches(withText("Checkbox fourth file")));
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
+    private static Matcher<View> searchButton() {
+        return allOf(
+                withId(R.id.search_action),
+                withContentDescription("title"),
+                childAtPosition(
+                        childAtPosition(
+                                withId(androidx.appcompat.R.id.action_bar),
+                                1),
+                        0),
+                isDisplayed());
+    }
 
+    private static Matcher<View> searchView() {
+        return allOf(
+                withClassName(is("android.widget.SearchView$SearchAutoComplete")),
+                childAtPosition(
+                        allOf(
+                                withClassName(is("android.widget.LinearLayout")),
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1)),
+                        0),
+                isDisplayed());
+    }
+
+    private static Matcher<View> checkboxInSearchResults() {
+        return allOf(
+                withId(android.R.id.title),
+                withText("Checkbox fourth file"),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout.class))),
+                isDisplayed());
+    }
+
+    private static Matcher<View> childAtPosition(final Matcher<View> parentMatcher, final int position) {
         return new TypeSafeMatcher<>() {
+
             @Override
-            public void describeTo(Description description) {
+            public void describeTo(final Description description) {
                 description.appendText("Child at position " + position + " in parent ");
                 parentMatcher.describeTo(description);
             }
 
             @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
+            public boolean matchesSafely(final View view) {
+                final ViewParent parent = view.getParent();
                 return parent instanceof ViewGroup && parentMatcher.matches(parent)
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
