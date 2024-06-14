@@ -61,10 +61,10 @@ public class SearchPreferenceFragment extends Fragment {
             final SearchView searchView = view.findViewById(R.id.searchView);
             SearchViewConfigurer.configureSearchView(
                     searchView,
-                    // FK-TODO: make preferenceScreenWithHosts a parameter and inline the following two parameters.
-                    preferenceScreenWithHosts.preferenceScreen,
-                    new PreferenceSearcher(preferenceScreenWithHosts.preferenceWithHostList),
-                    searchConfiguration);
+                    searchConfiguration.textHint,
+                    new SearchAndDisplay(
+                            new PreferenceSearcher(preferenceScreenWithHosts.preferenceWithHostList),
+                            preferenceScreenWithHosts.preferenceScreen));
             selectSearchView(searchView);
             searchView.setQuery(searchView.getQuery(), true);
         }
