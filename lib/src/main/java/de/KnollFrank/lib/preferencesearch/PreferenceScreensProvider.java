@@ -44,7 +44,7 @@ public class PreferenceScreensProvider {
 
     private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreen) {
         return PreferenceGroups
-                .getAllChildren(preferenceScreen.preferenceScreen)
+                .getAllChildren(preferenceScreen.preferenceScreen())
                 .stream()
                 .map(Preference::getFragment)
                 .filter(Objects::nonNull)
