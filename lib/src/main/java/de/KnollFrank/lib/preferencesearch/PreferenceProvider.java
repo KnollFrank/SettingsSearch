@@ -25,6 +25,6 @@ public class PreferenceProvider {
                 .preferenceFragments
                 .getPreferenceScreenOfFragment(resId.getName())
                 .get()
-                .preferenceScreen();
+                .preferenceScreen;
     }
 }

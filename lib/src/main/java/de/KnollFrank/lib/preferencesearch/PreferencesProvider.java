@@ -60,8 +60,8 @@ public class PreferencesProvider {
                 .stream()
                 .map(preferenceScreenWithHost ->
                         asPreferenceWithHostList(
-                                PreferenceGroups.getAllChildren(preferenceScreenWithHost.preferenceScreen()),
-                                preferenceScreenWithHost.host()))
+                                PreferenceGroups.getAllChildren(preferenceScreenWithHost.preferenceScreen),
+                                preferenceScreenWithHost.host))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
@@ -78,7 +78,7 @@ public class PreferencesProvider {
     private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {
         return screens
                 .stream()
-                .map(PreferenceScreenWithHost::preferenceScreen)
+                .map(preferenceScreenWithHost -> preferenceScreenWithHost.preferenceScreen)
                 .collect(Collectors.toList());
     }
 }

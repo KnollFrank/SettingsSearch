@@ -5,8 +5,16 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.Objects;
 
-record PreferenceScreenWithHost(PreferenceScreen preferenceScreen,
-                                Class<? extends PreferenceFragmentCompat> host) {
+class PreferenceScreenWithHost {
+
+    public final PreferenceScreen preferenceScreen;
+    public final Class<? extends PreferenceFragmentCompat> host;
+
+    public PreferenceScreenWithHost(final PreferenceScreen preferenceScreen,
+                                    final Class<? extends PreferenceFragmentCompat> host) {
+        this.preferenceScreen = preferenceScreen;
+        this.host = host;
+    }
 
     @Override
     public boolean equals(final Object o) {
