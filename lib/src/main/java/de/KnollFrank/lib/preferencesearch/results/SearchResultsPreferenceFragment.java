@@ -15,6 +15,9 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 
+// FK-TODO: zeige zu einer Preference im Suchergebnis auch die PreferenceCategories an, zu der diese Preference gehört. Diese PreferenceCategories sollen nicht anklickbar sein.
+// FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht nicht anklickbar sein.
+// FK-FIXME: gebe in der Settingssuche von OsmAnd "walking" ein. Das Suchergebnis ist nicht anklickbar.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private PreferenceScreenWithHosts preferenceScreenWithHosts;
@@ -50,6 +53,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         this.preferenceScreenWithHosts = preferenceScreenWithHosts;
     }
 
+    // FK-TODO: showPreferenceScreenAndHighlightPreference() wird bei einem Klick auf ein Suchergebnis fälschlicherweise immer zwei mal anstatt wie gewünscht nur ein mal aufgerufen.
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
         this
                 .getHost(preference)
