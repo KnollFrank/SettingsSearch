@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.common.PreferenceGroups;
+import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 public class PreferencesProvider {
 
@@ -60,7 +60,7 @@ public class PreferencesProvider {
                 .stream()
                 .map(preferenceScreenWithHost ->
                         asPreferenceWithHostList(
-                                PreferenceGroups.getAllChildren(preferenceScreenWithHost.preferenceScreen),
+                                Preferences.getAllChildren(preferenceScreenWithHost.preferenceScreen),
                                 preferenceScreenWithHost.host))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());

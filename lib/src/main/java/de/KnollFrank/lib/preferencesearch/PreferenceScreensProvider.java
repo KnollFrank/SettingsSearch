@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.common.PreferenceGroups;
+import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.common.Sets;
 
 public class PreferenceScreensProvider {
@@ -43,7 +43,7 @@ public class PreferenceScreensProvider {
     }
 
     private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreen) {
-        return PreferenceGroups
+        return Preferences
                 .getAllChildren(preferenceScreen.preferenceScreen)
                 .stream()
                 .map(Preference::getFragment)

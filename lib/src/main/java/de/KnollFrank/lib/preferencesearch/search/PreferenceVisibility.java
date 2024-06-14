@@ -5,9 +5,9 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 
-import de.KnollFrank.lib.preferencesearch.common.PreferenceGroups;
+import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
-public class Preferences {
+public class PreferenceVisibility {
 
     public static void makePreferencesOfPreferenceScreenVisible(final List<Preference> preferences,
                                                                 final PreferenceScreen preferenceScreen) {
@@ -16,13 +16,13 @@ public class Preferences {
     }
 
     private static void makeWholePreferenceScreenInvisible(final PreferenceScreen preferenceScreen) {
-        PreferenceGroups
+        Preferences
                 .getAllPreferences(preferenceScreen)
                 .forEach(preference -> preference.setVisible(false));
     }
 
     private static void makePreferencesAndTheirParentsVisible(final List<Preference> preferences) {
-        preferences.forEach(Preferences::makePreferenceAndItsParentsVisible);
+        preferences.forEach(PreferenceVisibility::makePreferenceAndItsParentsVisible);
     }
 
     private static void makePreferenceAndItsParentsVisible(final Preference preference) {

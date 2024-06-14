@@ -6,7 +6,7 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 
-import de.KnollFrank.lib.preferencesearch.common.PreferenceGroups;
+import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 public class PreferenceProvider {
 
@@ -17,7 +17,7 @@ public class PreferenceProvider {
     }
 
     public List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen) {
-        return PreferenceGroups.getAllChildren(getPreferenceScreen(preferenceScreen));
+        return Preferences.getAllChildren(getPreferenceScreen(preferenceScreen));
     }
 
     private PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> resId) {

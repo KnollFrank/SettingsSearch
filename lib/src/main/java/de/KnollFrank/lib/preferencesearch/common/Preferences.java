@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.Iterator;
 import java.util.List;
 
-public class PreferenceGroups {
+public class Preferences {
 
     public static List<Preference> getAllPreferences(final PreferenceScreen preferenceScreen) {
         return ImmutableList

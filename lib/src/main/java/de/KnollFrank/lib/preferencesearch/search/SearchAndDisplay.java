@@ -21,7 +21,7 @@ class SearchAndDisplay {
     public void searchForQueryAndDisplayResults(final String query) {
         final List<PreferenceWithHost> preferenceWithHostList = preferenceSearcher.searchFor(query);
         // FK-TODO: den gefundenen Suchtext query in den Suchergebnissen farblich hervorheben
-        Preferences.makePreferencesOfPreferenceScreenVisible(
+        PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
                 getPreferences(preferenceWithHostList),
                 preferenceScreen);
     }

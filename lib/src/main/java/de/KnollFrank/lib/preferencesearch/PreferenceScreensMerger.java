@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import static de.KnollFrank.lib.preferencesearch.common.PreferenceGroups.getDirectChildren;
+import static de.KnollFrank.lib.preferencesearch.common.Preferences.getDirectChildren;
 
 import android.content.Context;
 
