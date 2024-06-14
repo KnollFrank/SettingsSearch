@@ -13,13 +13,13 @@ import java.util.stream.Stream;
 
 public class PreferenceMatcher {
 
-    public static boolean matches(final Preference preference, final String keyword) {
-        if (TextUtils.isEmpty(keyword)) {
+    public static boolean matches(final Preference preference, final String needle) {
+        if (TextUtils.isEmpty(needle)) {
             return false;
         }
         return Stream
                 .of(getTitle(preference), getSummary(preference), getEntries(preference))
-                .anyMatch(haystack -> matches(haystack, keyword));
+                .anyMatch(haystack -> matches(haystack, needle));
     }
 
     private static boolean matches(final Optional<String> haystack, final String needle) {
