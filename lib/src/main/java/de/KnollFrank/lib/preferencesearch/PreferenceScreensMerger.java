@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import static de.KnollFrank.lib.preferencesearch.common.Preferences.getDirectChildren;
-
 import android.content.Context;
 
 import androidx.preference.Preference;
@@ -10,6 +8,8 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 
 import java.util.List;
+
+import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 class PreferenceScreensMerger {
 
@@ -39,21 +39,14 @@ class PreferenceScreensMerger {
         return screenCategory;
     }
 
-    private static void moveChildrenOfSrc2Dst(final PreferenceGroup src,
-                                              final PreferenceGroup dst) {
-        for (final Preference child : getDirectChildren(src)) {
-            prepare(child);
+    private static void moveChildrenOfSrc2Dst(final PreferenceGroup src, final PreferenceGroup dst) {
+        for (final Preference child : Preferences.getDirectChildren(src)) {
             addPreference2PreferenceGroup(child, dst);
+            // FK-TODO: weglassen?
             if (child instanceof PreferenceGroup) {
                 moveChildrenOfSrc2Dst((PreferenceGroup) child, (PreferenceGroup) child);
             }
         }
-    }
-
-    private static void prepare(final Preference preference) {
-        // FK-TODO: introduce visitor for PreferenceGroups and extract "setEnabled() and setShouldDisableView()" from method moveChildrenOfSrc2Dst()
-        preference.setEnabled(false);
-        preference.setShouldDisableView(false);
     }
 
     private static void addPreference2PreferenceGroup(final Preference preference,

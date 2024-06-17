@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.results;
 
+import static de.KnollFrank.lib.preferencesearch.results.PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch;
+
 import android.os.Bundle;
 
 import androidx.annotation.IdRes;
@@ -48,6 +50,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setPreferenceScreenWithHosts(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+        preparePreferenceScreenForSearch(preferenceScreenWithHosts.preferenceScreen);
         this.preferenceScreenWithHosts = preferenceScreenWithHosts;
     }
 
