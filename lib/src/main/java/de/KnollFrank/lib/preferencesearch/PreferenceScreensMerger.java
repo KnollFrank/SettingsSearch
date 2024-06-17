@@ -22,16 +22,15 @@ class PreferenceScreensMerger {
     public PreferenceScreen destructivelyMergeScreens(final List<PreferenceScreen> screens) {
         final PreferenceScreen mergedScreens = screens.get(0).getPreferenceManager().createPreferenceScreen(context);
         for (final PreferenceScreen screen : screens) {
-            destructivelyMergeScreen(screen, mergedScreens);
+            destructivelyMergeSrcIntoDst(screen, mergedScreens);
         }
         return mergedScreens;
     }
 
-    private void destructivelyMergeScreen(final PreferenceScreen screen,
-                                          final PreferenceScreen mergedScreens) {
-        final PreferenceCategory screenCategory = createScreenCategory(screen);
-        mergedScreens.addPreference(screenCategory);
-        movePreferencesOfScreen2Category(screen, screenCategory);
+    private void destructivelyMergeSrcIntoDst(final PreferenceScreen src, final PreferenceScreen dst) {
+        final PreferenceCategory screenCategory = createScreenCategory(src);
+        dst.addPreference(screenCategory);
+        movePreferencesOfScreen2Category(src, screenCategory);
     }
 
     private PreferenceCategory createScreenCategory(final PreferenceScreen screen) {
