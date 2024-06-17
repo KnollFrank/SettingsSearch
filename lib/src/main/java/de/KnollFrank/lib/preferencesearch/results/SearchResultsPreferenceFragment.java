@@ -16,7 +16,6 @@ import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht nicht anklickbar sein.
-// FK-FIXME: gebe in der Settingssuche von OsmAnd "walking" ein. Das Suchergebnis ist nicht anklickbar.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private PreferenceScreenWithHosts preferenceScreenWithHosts;
