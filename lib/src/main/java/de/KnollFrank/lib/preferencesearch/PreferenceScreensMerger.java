@@ -41,16 +41,12 @@ class PreferenceScreensMerger {
 
     private static void moveChildrenOfSrc2Dst(final PreferenceGroup src, final PreferenceGroup dst) {
         for (final Preference child : Preferences.getDirectChildren(src)) {
-            addPreference2PreferenceGroup(child, dst);
-            // FK-TODO: weglassen?
-            if (child instanceof PreferenceGroup) {
-                moveChildrenOfSrc2Dst((PreferenceGroup) child, (PreferenceGroup) child);
-            }
+            movePreference2PreferenceGroup(child, dst);
         }
     }
 
-    private static void addPreference2PreferenceGroup(final Preference preference,
-                                                      final PreferenceGroup preferenceGroup) {
+    private static void movePreference2PreferenceGroup(final Preference preference,
+                                                       final PreferenceGroup preferenceGroup) {
         removePreferenceFromItsParent(preference);
         preferenceGroup.addPreference(preference);
     }
