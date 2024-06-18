@@ -21,7 +21,6 @@ import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.preferencesearch.R;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
-// FK-TODO: zeige zu einer Preference im Suchergebnis auch die PreferenceCategories an, zu der diese Preference gehört. Diese PreferenceCategories sollen nicht anklickbar sein.
 public class PreferenceScreensMergerTest {
 
     @Test
@@ -38,6 +37,14 @@ public class PreferenceScreensMergerTest {
                         Test_two_screens_preferences1.class,
                         Test_two_screens_preferences2.class),
                 Test_two_screens_preferences_merged.class);
+    }
+
+    // FK-TODO: zeige zu einer Preference im Suchergebnis auch die PreferenceCategories an, zu der diese Preference gehört. Diese PreferenceCategories sollen nicht anklickbar sein.
+    @Test
+    public void shouldDestructivelyMergeScreens_retainPreferenceCategories() {
+        shouldDestructivelyMergeScreens(
+                ImmutableList.of(RetainCategories.Test_retain_categories_preferences.class),
+                RetainCategories.Test_retain_categories_merged.class);
     }
 
     private static void shouldDestructivelyMergeScreens(
@@ -114,6 +121,25 @@ public class PreferenceScreensMergerTest {
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             addPreferencesFromResource(R.xml.test_preferences_merged);
+        }
+    }
+
+    private static class RetainCategories {
+
+        public static class Test_retain_categories_preferences extends PreferenceFragmentCompat {
+
+            @Override
+            public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+                addPreferencesFromResource(R.xml.test_retain_categories_preferences);
+            }
+        }
+
+        public static class Test_retain_categories_merged extends PreferenceFragmentCompat {
+
+            @Override
+            public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+                addPreferencesFromResource(R.xml.test_retain_categories_merged);
+            }
         }
     }
 
