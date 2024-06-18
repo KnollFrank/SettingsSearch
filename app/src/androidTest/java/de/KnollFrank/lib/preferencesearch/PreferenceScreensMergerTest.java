@@ -27,39 +27,33 @@ public class PreferenceScreensMergerTest {
     @Test
     public void shouldDestructivelyMergeScreens_singleScreen() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(PreferenceScreensMergerTest::destructivelyMergeScreens_singleScreen);
+            scenario.onActivity(
+                    fragmentActivity ->
+                            shouldDestructivelyMergeScreens(
+                                    fragmentActivity,
+                                    ImmutableList.of(Test_preferences.class),
+                                    Test_preferences_merged.class));
         }
-    }
-
-    private static void destructivelyMergeScreens_singleScreen(final FragmentActivity fragmentActivity) {
-        // Given
-        final PreferenceScreensMerger preferenceScreensMerger = new PreferenceScreensMerger(fragmentActivity);
-        final PreferenceFragments preferenceFragments =
-                new PreferenceFragments(
-                        fragmentActivity,
-                        fragmentActivity.getSupportFragmentManager(),
-                        TestActivity.FRAGMENT_CONTAINER_VIEW);
-        final PreferenceScreen screen = getPreferenceScreen(Test_preferences.class, preferenceFragments);
-
-        // When
-        final PreferenceScreen mergedScreen =
-                preferenceScreensMerger.destructivelyMergeScreens(
-                        ImmutableList.of(screen));
-
-        // Then
-        assertThatPreferenceScreensAreEqual(
-                mergedScreen,
-                getPreferenceScreen(Test_preferences_merged.class, preferenceFragments));
     }
 
     @Test
     public void shouldDestructivelyMergeScreens_twoScreens() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(PreferenceScreensMergerTest::shouldDestructivelyMergeScreens_twoScreens);
+            scenario.onActivity(
+                    fragmentActivity ->
+                            shouldDestructivelyMergeScreens(
+                                    fragmentActivity,
+                                    ImmutableList.of(
+                                            Test_two_screens_preferences1.class,
+                                            Test_two_screens_preferences2.class),
+                                    Test_two_screens_preferences_merged.class));
         }
     }
 
-    private static void shouldDestructivelyMergeScreens_twoScreens(final FragmentActivity fragmentActivity) {
+    private static void shouldDestructivelyMergeScreens(
+            final FragmentActivity fragmentActivity,
+            final List<Class<? extends PreferenceFragmentCompat>> screens2Merge,
+            final Class<? extends PreferenceFragmentCompat> expectedMergedScreen) {
         // Given
         final PreferenceScreensMerger preferenceScreensMerger = new PreferenceScreensMerger(fragmentActivity);
         final PreferenceFragments preferenceFragments =
@@ -67,18 +61,20 @@ public class PreferenceScreensMergerTest {
                         fragmentActivity,
                         fragmentActivity.getSupportFragmentManager(),
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
-        final PreferenceScreen screen1 = getPreferenceScreen(Test_two_screens_preferences1.class, preferenceFragments);
-        final PreferenceScreen screen2 = getPreferenceScreen(Test_two_screens_preferences2.class, preferenceFragments);
+        final List<PreferenceScreen> screens =
+                screens2Merge
+                        .stream()
+                        .map(preferenceFragment -> getPreferenceScreen(preferenceFragment, preferenceFragments))
+                        .toList();
 
         // When
         final PreferenceScreen mergedPreferenceScreen =
-                preferenceScreensMerger.destructivelyMergeScreens(
-                        ImmutableList.of(screen1, screen2));
+                preferenceScreensMerger.destructivelyMergeScreens(screens);
 
         // Then
         assertThatPreferenceScreensAreEqual(
                 mergedPreferenceScreen,
-                getPreferenceScreen(Test_two_screens_preferences_merged.class, preferenceFragments));
+                getPreferenceScreen(expectedMergedScreen, preferenceFragments));
     }
 
     private static PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceFragment,
