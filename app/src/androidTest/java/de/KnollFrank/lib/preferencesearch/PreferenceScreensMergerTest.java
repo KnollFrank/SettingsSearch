@@ -26,27 +26,30 @@ public class PreferenceScreensMergerTest {
 
     @Test
     public void shouldDestructivelyMergeScreens_singleScreen() {
-        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(
-                    fragmentActivity ->
-                            shouldDestructivelyMergeScreens(
-                                    fragmentActivity,
-                                    ImmutableList.of(Test_preferences.class),
-                                    Test_preferences_merged.class));
-        }
+        shouldDestructivelyMergeScreens(
+                ImmutableList.of(Test_preferences.class),
+                Test_preferences_merged.class);
     }
 
     @Test
     public void shouldDestructivelyMergeScreens_twoScreens() {
+        shouldDestructivelyMergeScreens(
+                ImmutableList.of(
+                        Test_two_screens_preferences1.class,
+                        Test_two_screens_preferences2.class),
+                Test_two_screens_preferences_merged.class);
+    }
+
+    private static void shouldDestructivelyMergeScreens(
+            final List<Class<? extends PreferenceFragmentCompat>> screens2Merge,
+            final Class<? extends PreferenceFragmentCompat> expectedMergedScreen) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(
                     fragmentActivity ->
                             shouldDestructivelyMergeScreens(
                                     fragmentActivity,
-                                    ImmutableList.of(
-                                            Test_two_screens_preferences1.class,
-                                            Test_two_screens_preferences2.class),
-                                    Test_two_screens_preferences_merged.class));
+                                    screens2Merge,
+                                    expectedMergedScreen));
         }
     }
 
