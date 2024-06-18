@@ -1,0 +1,10 @@
+https://jitpack.io/#KnollFrank/SearchPreference
+
+SearchViewExample ->
+SearchPreferenceActionView (extends SearchView) ->
+SearchPreferenceFragment -> SearchPreferenceAdapter
+                         |
+                         |-> PreferenceSearcher
+
+https://www.geeksforgeeks.org/searchview-in-android-with-listview/
+
