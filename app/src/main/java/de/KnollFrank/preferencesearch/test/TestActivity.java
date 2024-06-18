@@ -9,7 +9,7 @@ import de.KnollFrank.preferencesearch.R;
 
 public class TestActivity extends AppCompatActivity {
 
-    public static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
+    public static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.testFragmentContainerView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

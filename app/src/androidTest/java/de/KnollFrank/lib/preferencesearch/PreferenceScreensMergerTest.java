@@ -1,12 +1,11 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -19,6 +18,7 @@ import org.junit.Test;
 import java.util.List;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.preferencesearch.R;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 // FK-TODO: zeige zu einer Preference im Suchergebnis auch die PreferenceCategories an, zu der diese Preference gehört. Diese PreferenceCategories sollen nicht anklickbar sein.
@@ -39,11 +39,7 @@ public class PreferenceScreensMergerTest {
                         fragmentActivity,
                         fragmentActivity.getSupportFragmentManager(),
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
-        final PreferenceScreen preferenceScreen =
-                preferenceFragments
-                        .getPreferenceScreenOfFragment(PrefsFragment.class.getName())
-                        .get()
-                        .preferenceScreen;
+        final PreferenceScreen preferenceScreen = getPreferenceScreen(PrefsFragment.class, preferenceFragments);
 
         // When
         final PreferenceScreen mergedPreferenceScreen =
@@ -51,25 +47,45 @@ public class PreferenceScreensMergerTest {
                         ImmutableList.of(preferenceScreen));
 
         // Then
-        final List<Preference> allPreferences = Preferences.getAllChildren(mergedPreferenceScreen);
-        fail("Then case not yet implemented");
+        assertThatPreferenceScreensAreEqual(
+                mergedPreferenceScreen,
+                getPreferenceScreen(PrefsFragmentExpected.class, preferenceFragments));
+    }
+
+    private static PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceFragment,
+                                                        final PreferenceFragments preferenceFragments) {
+        return preferenceFragments
+                .getPreferenceScreenOfFragment(preferenceFragment.getName())
+                .get()
+                .preferenceScreen;
+    }
+
+    private static void assertThatPreferenceScreensAreEqual(final PreferenceScreen actual,
+                                                            final PreferenceScreen expected) {
+        assertThat(getAllPreferences(actual), is(getAllPreferences(expected)));
+    }
+
+    private static List<String> getAllPreferences(final PreferenceScreen preferenceScreen) {
+        return Preferences
+                .getAllPreferences(preferenceScreen)
+                .stream()
+                .map(Preference::toString)
+                .toList();
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            final Context context = getPreferenceManager().getContext();
-            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
-            screen.setTitle("This is PrefsFragment");
+            addPreferencesFromResource(R.xml.test_preferences);
+        }
+    }
 
-            final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(context);
-            checkBoxPreference.setKey("fourthfile");
-            checkBoxPreference.setSummary("This checkbox is a preference coming from a fourth file");
-            checkBoxPreference.setTitle("Checkbox fourth file");
+    public static class PrefsFragmentExpected extends PreferenceFragmentCompat {
 
-            screen.addPreference(checkBoxPreference);
-            setPreferenceScreen(screen);
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            addPreferencesFromResource(R.xml.test_preferences_merged);
         }
     }
 }

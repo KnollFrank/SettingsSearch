@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="some title of screen">
+        <CheckBoxPreference
+            android:key="some key of checkbox"
+            android:summary="some summary of checkbox"
+            android:title="some title of checkbox" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
