@@ -2,6 +2,7 @@ package de.KnollFrank.lib.preferencesearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static de.KnollFrank.lib.preferencesearch.PreferenceFragmentsFactory.createPreferenceFragments;
 
 import android.os.Looper;
 
@@ -35,11 +36,7 @@ public class PreferenceProviderTest {
             scenario.onActivity(fragmentActivity -> {
                 // Given
                 final PreferenceProvider preferenceProvider =
-                        new PreferenceProvider(
-                                new PreferenceFragments(
-                                        fragmentActivity,
-                                        fragmentActivity.getSupportFragmentManager(),
-                                        TestActivity.FRAGMENT_CONTAINER_VIEW));
+                        new PreferenceProvider(createPreferenceFragments(fragmentActivity));
                 final Class<PrefsFragment> preferenceScreen = PrefsFragment.class;
 
                 // When

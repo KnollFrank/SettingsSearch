@@ -2,6 +2,7 @@ package de.KnollFrank.lib.preferencesearch;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static de.KnollFrank.lib.preferencesearch.PreferenceFragmentsFactory.createPreferenceFragments;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
@@ -35,11 +36,7 @@ class PreferenceScreensMergerTestImplementation {
             final Class<? extends PreferenceFragmentCompat> expectedMergedScreen) {
         // Given
         final PreferenceScreensMerger preferenceScreensMerger = new PreferenceScreensMerger(fragmentActivity);
-        final PreferenceFragments preferenceFragments =
-                new PreferenceFragments(
-                        fragmentActivity,
-                        fragmentActivity.getSupportFragmentManager(),
-                        TestActivity.FRAGMENT_CONTAINER_VIEW);
+        final PreferenceFragments preferenceFragments = createPreferenceFragments(fragmentActivity);
         final List<PreferenceScreen> screens =
                 screens2Merge
                         .stream()

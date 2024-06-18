@@ -2,9 +2,9 @@ package de.KnollFrank.lib.preferencesearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.preferencesearch.PreferenceFragmentsFactory.createPreferenceFragments;
 import static de.KnollFrank.lib.preferencesearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.preferencesearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
-import static de.KnollFrank.preferencesearch.test.TestActivity.FRAGMENT_CONTAINER_VIEW;
 
 import android.os.Bundle;
 
@@ -34,12 +34,7 @@ public class PreferenceScreensProvider2Test {
     private static void shouldIgnoreNonPreferenceFragments(final FragmentActivity activity) {
         // Given
         final PreferenceScreensProvider preferenceScreensProvider =
-                new PreferenceScreensProvider(
-                        // FK-TODO: extract factory method for creation of PreferenceFragments and use it everywhere in tests
-                        new PreferenceFragments(
-                                activity,
-                                activity.getSupportFragmentManager(),
-                                FRAGMENT_CONTAINER_VIEW));
+                new PreferenceScreensProvider(createPreferenceFragments(activity));
         final PreferenceFragmentCompat root = new FragmentConnectedToNonPreferenceFragment();
 
         // When
