@@ -35,7 +35,6 @@ public class PreferenceScreensMergerTest {
                                         TwoScreens.Test_two_screens_preferences2.class),
                                 TwoScreens.Test_two_screens_preferences_merged.class
                         },
-                        // FK-TODO: zeige zu einer Preference im Suchergebnis auch die PreferenceCategories an, zu der diese Preference gehört. Diese PreferenceCategories sollen nicht anklickbar sein.
                         {
                                 "RetainCategories",
                                 ImmutableList.of(RetainCategories.Test_retain_categories_preferences.class),

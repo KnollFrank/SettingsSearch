@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
@@ -56,6 +57,9 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     // FK-TODO: showPreferenceScreenAndHighlightPreference() wird bei einem Klick auf ein Suchergebnis fälschlicherweise immer zwei mal anstatt wie gewünscht nur ein mal aufgerufen.
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
+        if (preference instanceof PreferenceGroup) {
+            return;
+        }
         this
                 .getHost(preference)
                 .ifPresent(
