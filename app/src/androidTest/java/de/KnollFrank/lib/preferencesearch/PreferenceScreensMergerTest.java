@@ -25,13 +25,13 @@ import de.KnollFrank.preferencesearch.test.TestActivity;
 public class PreferenceScreensMergerTest {
 
     @Test
-    public void shouldDestructivelyMergeScreens() {
+    public void shouldDestructivelyMergeScreens_singleScreen() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(PreferenceScreensMergerTest::destructivelyMergeScreens);
+            scenario.onActivity(PreferenceScreensMergerTest::destructivelyMergeScreens_singleScreen);
         }
     }
 
-    private static void destructivelyMergeScreens(final FragmentActivity fragmentActivity) {
+    private static void destructivelyMergeScreens_singleScreen(final FragmentActivity fragmentActivity) {
         // Given
         final PreferenceScreensMerger preferenceScreensMerger = new PreferenceScreensMerger(fragmentActivity);
         final PreferenceFragments preferenceFragments =
@@ -39,17 +39,46 @@ public class PreferenceScreensMergerTest {
                         fragmentActivity,
                         fragmentActivity.getSupportFragmentManager(),
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
-        final PreferenceScreen preferenceScreen = getPreferenceScreen(PrefsFragment.class, preferenceFragments);
+        final PreferenceScreen screen = getPreferenceScreen(Test_preferences.class, preferenceFragments);
+
+        // When
+        final PreferenceScreen mergedScreen =
+                preferenceScreensMerger.destructivelyMergeScreens(
+                        ImmutableList.of(screen));
+
+        // Then
+        assertThatPreferenceScreensAreEqual(
+                mergedScreen,
+                getPreferenceScreen(Test_preferences_merged.class, preferenceFragments));
+    }
+
+    @Test
+    public void shouldDestructivelyMergeScreens_twoScreens() {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
+            scenario.onActivity(PreferenceScreensMergerTest::shouldDestructivelyMergeScreens_twoScreens);
+        }
+    }
+
+    private static void shouldDestructivelyMergeScreens_twoScreens(final FragmentActivity fragmentActivity) {
+        // Given
+        final PreferenceScreensMerger preferenceScreensMerger = new PreferenceScreensMerger(fragmentActivity);
+        final PreferenceFragments preferenceFragments =
+                new PreferenceFragments(
+                        fragmentActivity,
+                        fragmentActivity.getSupportFragmentManager(),
+                        TestActivity.FRAGMENT_CONTAINER_VIEW);
+        final PreferenceScreen screen1 = getPreferenceScreen(Test_two_screens_preferences1.class, preferenceFragments);
+        final PreferenceScreen screen2 = getPreferenceScreen(Test_two_screens_preferences2.class, preferenceFragments);
 
         // When
         final PreferenceScreen mergedPreferenceScreen =
                 preferenceScreensMerger.destructivelyMergeScreens(
-                        ImmutableList.of(preferenceScreen));
+                        ImmutableList.of(screen1, screen2));
 
         // Then
         assertThatPreferenceScreensAreEqual(
                 mergedPreferenceScreen,
-                getPreferenceScreen(PrefsFragmentExpected.class, preferenceFragments));
+                getPreferenceScreen(Test_two_screens_preferences_merged.class, preferenceFragments));
     }
 
     private static PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceFragment,
@@ -73,7 +102,7 @@ public class PreferenceScreensMergerTest {
                 .toList();
     }
 
-    public static class PrefsFragment extends PreferenceFragmentCompat {
+    public static class Test_preferences extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -81,11 +110,35 @@ public class PreferenceScreensMergerTest {
         }
     }
 
-    public static class PrefsFragmentExpected extends PreferenceFragmentCompat {
+    public static class Test_preferences_merged extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             addPreferencesFromResource(R.xml.test_preferences_merged);
+        }
+    }
+
+    public static class Test_two_screens_preferences1 extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            addPreferencesFromResource(R.xml.test_two_screens_preferences1);
+        }
+    }
+
+    public static class Test_two_screens_preferences2 extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            addPreferencesFromResource(R.xml.test_two_screens_preferences2);
+        }
+    }
+
+    public static class Test_two_screens_preferences_merged extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            addPreferencesFromResource(R.xml.test_two_screens_preferences_merged);
         }
     }
 }
