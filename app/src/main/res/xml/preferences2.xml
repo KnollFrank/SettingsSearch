@@ -33,5 +33,4 @@
         android:summary="This checkbox should not be displayed"
         android:title="Ignored"
         search:ignore="true" />
-
 </PreferenceScreen>

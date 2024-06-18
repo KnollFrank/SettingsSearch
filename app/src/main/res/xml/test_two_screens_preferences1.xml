@@ -6,5 +6,4 @@
         android:key="some key of checkbox1"
         android:summary="some summary of checkbox1"
         android:title="some title of checkbox1" />
-
 </PreferenceScreen>

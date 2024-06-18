@@ -29,7 +29,9 @@
         android:summary="This is a DisabledAppearanceCheckboxPreference"
         android:title="Checkbox" />
 
-    <PreferenceCategory android:title="This is a preference category">
+    <PreferenceCategory
+        android:key="key of PreferenceCategory"
+        android:title="This is a preference category">
         <CheckBoxPreference
             android:key="checkbox2"
             android:summary="This is a checkbox preference inside a category"

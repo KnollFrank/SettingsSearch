@@ -35,6 +35,7 @@ public class PreferenceScreensProvider2Test {
         // Given
         final PreferenceScreensProvider preferenceScreensProvider =
                 new PreferenceScreensProvider(
+                        // FK-TODO: extract factory method for creation of PreferenceFragments and use it everywhere in tests
                         new PreferenceFragments(
                                 activity,
                                 activity.getSupportFragmentManager(),

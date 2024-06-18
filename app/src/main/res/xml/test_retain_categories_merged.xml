@@ -9,5 +9,4 @@
                 android:title="some title of checkbox" />
         </PreferenceCategory>
     </PreferenceCategory>
-
 </PreferenceScreen>
