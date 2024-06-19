@@ -1,5 +1,8 @@
 package de.KnollFrank.lib.preferencesearch.search.matcher;
 
+import static de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceAttributes.getSummary;
+import static de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceAttributes.getTitle;
+
 import android.text.TextUtils;
 
 import androidx.preference.Preference;
@@ -22,33 +25,33 @@ public class PreferenceMatcher {
             return Collections.emptyList();
         }
         return Lists.concat(
-                getTitleMatches(haystack, needle),
-                getSummaryMatches(haystack, needle));
+                getTitlePreferenceMatches(haystack, needle),
+                getSummaryPreferenceMatch(haystack, needle));
     }
 
-    private static List<PreferenceMatch> getTitleMatches(final Preference haystack, final String needle) {
-        return getPreferenceMatches(haystack, needle, PreferenceAttributes::getTitle, Type.TITLE);
+    private static List<PreferenceMatch> getTitlePreferenceMatches(final Preference haystack,
+                                                                   final String needle) {
+        return getPreferenceMatches(
+                getTitle(haystack),
+                needle,
+                indexRange -> new PreferenceMatch(haystack, Type.TITLE, indexRange));
     }
 
-    private static List<PreferenceMatch> getSummaryMatches(final Preference haystack, final String needle) {
-        return getPreferenceMatches(haystack, needle, PreferenceAttributes::getSummary, Type.SUMMARY);
+    private static List<PreferenceMatch> getSummaryPreferenceMatch(final Preference haystack,
+                                                                   final String needle) {
+        return getPreferenceMatches(
+                getSummary(haystack),
+                needle,
+                indexRange -> new PreferenceMatch(haystack, Type.SUMMARY, indexRange));
     }
 
     private static List<PreferenceMatch> getPreferenceMatches(
-            final Preference haystack,
+            final Optional<String> haystack,
             final String needle,
-            final Function<Preference, Optional<String>> getAttribute,
-            final Type type) {
-        return getAttribute
-                .apply(haystack)
-                .map(_haystack -> getPreferenceMatches(_haystack, needle, createPreferenceMatch(haystack, type)))
+            final Function<IndexRange, PreferenceMatch> createPreferenceMatch) {
+        return haystack
+                .map(_haystack -> getPreferenceMatches(_haystack, needle, createPreferenceMatch))
                 .orElse(Collections.emptyList());
-    }
-
-    private static Function<IndexRange, PreferenceMatch> createPreferenceMatch(
-            final Preference preference,
-            final Type type) {
-        return indexRange -> new PreferenceMatch(preference, type, indexRange);
     }
 
     private static List<PreferenceMatch> getPreferenceMatches(
