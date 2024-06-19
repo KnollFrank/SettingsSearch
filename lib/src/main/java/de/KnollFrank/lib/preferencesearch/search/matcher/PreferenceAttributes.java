@@ -4,7 +4,7 @@ import androidx.preference.Preference;
 
 import java.util.Optional;
 
-class PreferenceAttributes {
+public class PreferenceAttributes {
 
     public static Optional<String> getTitle(final Preference preference) {
         return asString(preference.getTitle());
