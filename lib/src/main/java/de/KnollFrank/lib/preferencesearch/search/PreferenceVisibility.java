@@ -7,7 +7,7 @@ import java.util.List;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
-public class PreferenceVisibility {
+class PreferenceVisibility {
 
     public static void makePreferencesOfPreferenceScreenVisible(final List<Preference> preferences,
                                                                 final PreferenceScreen preferenceScreen) {
