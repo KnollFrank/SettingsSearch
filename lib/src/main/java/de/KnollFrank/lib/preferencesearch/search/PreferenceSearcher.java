@@ -6,7 +6,7 @@ import androidx.preference.PreferenceGroup;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.matcher.PreferenceMatcher;
+import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatcher;
 
 class PreferenceSearcher {
 
@@ -21,7 +21,7 @@ class PreferenceSearcher {
                 .haystack
                 .stream()
                 .filter(preference -> !(preference instanceof PreferenceGroup))
-                .filter(preference -> PreferenceMatcher.matches(preference, keyword))
+                .filter(preference -> !PreferenceMatcher.getMatches(preference, keyword).isEmpty())
                 .collect(Collectors.toList());
     }
 }
