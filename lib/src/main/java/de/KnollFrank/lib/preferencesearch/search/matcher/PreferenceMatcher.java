@@ -1,8 +1,5 @@
 package de.KnollFrank.lib.preferencesearch.search.matcher;
 
-import static de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceAttributes.getSummary;
-import static de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceAttributes.getTitle;
-
 import android.text.TextUtils;
 
 import androidx.preference.Preference;
@@ -11,15 +8,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Strings;
-import de.KnollFrank.lib.preferencesearch.search.matcher.Match.Type;
+import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch.Type;
 
 public class PreferenceMatcher {
 
-    public static List<Match> getMatches(final Preference haystack, final String needle) {
+    public static List<PreferenceMatch> getPreferenceMatches(final Preference haystack, final String needle) {
         if (TextUtils.isEmpty(needle)) {
             return Collections.emptyList();
         }
@@ -28,29 +26,34 @@ public class PreferenceMatcher {
                 getSummaryMatches(haystack, needle));
     }
 
-    private static List<Match> getTitleMatches(final Preference haystack, final String needle) {
-        return getMatches(getTitle(haystack), needle, createMatch(Type.TITLE));
+    private static List<PreferenceMatch> getTitleMatches(final Preference haystack, final String needle) {
+        return getPreferenceMatches(haystack, needle, PreferenceAttributes::getTitle, Type.TITLE);
     }
 
-    private static List<Match> getSummaryMatches(final Preference haystack, final String needle) {
-        return getMatches(getSummary(haystack), needle, createMatch(Type.SUMMARY));
+    private static List<PreferenceMatch> getSummaryMatches(final Preference haystack, final String needle) {
+        return getPreferenceMatches(haystack, needle, PreferenceAttributes::getSummary, Type.SUMMARY);
     }
 
-    private static BiFunction<Integer, Integer, Match> createMatch(final Type type) {
-        return (startInclusive, endExclusive) -> new Match(type, startInclusive, endExclusive);
-    }
-
-    private static List<Match> getMatches(final Optional<String> haystack,
-                                          final String needle,
-                                          final BiFunction<Integer, Integer, Match> createMatch) {
-        return haystack
-                .map(_haystack -> getMatches(_haystack, needle, createMatch))
+    private static List<PreferenceMatch> getPreferenceMatches(
+            final Preference haystack,
+            final String needle,
+            final Function<Preference, Optional<String>> getAttribute,
+            final Type type) {
+        return getAttribute
+                .apply(haystack)
+                .map(_haystack -> getPreferenceMatches(_haystack, needle, createMatch(haystack, type)))
                 .orElse(Collections.emptyList());
     }
 
-    private static List<Match> getMatches(final String haystack,
-                                          final String needle,
-                                          final BiFunction<Integer, Integer, Match> createMatch) {
+    private static BiFunction<Integer, Integer, PreferenceMatch> createMatch(
+            final Preference preference,
+            final Type type) {
+        return (startInclusive, endExclusive) -> new PreferenceMatch(preference, type, startInclusive, endExclusive);
+    }
+
+    private static List<PreferenceMatch> getPreferenceMatches(final String haystack,
+                                                              final String needle,
+                                                              final BiFunction<Integer, Integer, PreferenceMatch> createMatch) {
         return Strings
                 .getIndices(haystack.toLowerCase(), needle.toLowerCase())
                 .stream()

@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHostList;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
+import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -82,10 +83,10 @@ public class PreferenceSearcherTest {
                                 getPreferences(preferenceScreen, fragmentActivity));
 
                 // When
-                final List<Preference> preferences = preferenceSearcher.searchFor(keyword);
+                final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
 
                 // Then
-                assertThat(getTitles(preferences), titlesMatcher);
+                assertThat(getTitles(preferenceMatches), titlesMatcher);
             });
         }
     }
@@ -104,9 +105,10 @@ public class PreferenceSearcherTest {
                 fragmentActivity);
     }
 
-    private static List<String> getTitles(final List<Preference> preferences) {
-        return preferences
+    private static List<String> getTitles(final List<PreferenceMatch> preferenceMatches) {
+        return preferenceMatches
                 .stream()
+                .map(preferenceMatch -> preferenceMatch.preference)
                 .map(Preference::getTitle)
                 .filter(Objects::nonNull)
                 .map(CharSequence::toString)

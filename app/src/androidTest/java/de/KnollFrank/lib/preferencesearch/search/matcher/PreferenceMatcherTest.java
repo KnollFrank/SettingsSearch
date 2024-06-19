@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import de.KnollFrank.lib.preferencesearch.search.matcher.Match.Type;
+import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch.Type;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceMatcherTest {
@@ -32,14 +32,14 @@ public class PreferenceMatcherTest {
         preference.setSummary("title in summary");
 
         // When
-        final List<Match> matches = PreferenceMatcher.getMatches(preference, "title");
+        final List<PreferenceMatch> preferenceMatches = PreferenceMatcher.getPreferenceMatches(preference, "title");
 
         // Then
         assertThat(
-                matches,
+                preferenceMatches,
                 hasItems(
-                        new Match(Type.TITLE, 0, 5),
-                        new Match(Type.TITLE, 7, 12),
-                        new Match(Type.SUMMARY, 0, 5)));
+                        new PreferenceMatch(preference, Type.TITLE, 0, 5),
+                        new PreferenceMatch(preference, Type.TITLE, 7, 12),
+                        new PreferenceMatch(preference, Type.SUMMARY, 0, 5)));
     }
 }
