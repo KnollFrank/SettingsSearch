@@ -4,9 +4,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 
 class SearchAndDisplay {
 
@@ -19,17 +16,8 @@ class SearchAndDisplay {
     }
 
     public void searchForQueryAndDisplayResults(final String query) {
-        final List<PreferenceWithHost> preferenceWithHostList = preferenceSearcher.searchFor(query);
+        final List<Preference> preferences = preferenceSearcher.searchFor(query);
         // FK-TODO: den gefundenen Suchtext query in den Suchergebnissen farblich hervorheben. Siehe https://developer.android.com/develop/ui/views/text-and-emoji/spans
-        PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
-                getPreferences(preferenceWithHostList),
-                preferenceScreen);
-    }
-
-    private static List<Preference> getPreferences(final List<PreferenceWithHost> preferenceWithHostList) {
-        return preferenceWithHostList
-                .stream()
-                .map(preferenceWithHost -> preferenceWithHost.preference)
-                .collect(Collectors.toList());
+        PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(preferences, preferenceScreen);
     }
 }

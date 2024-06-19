@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
@@ -25,7 +26,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
-import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHostList;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
@@ -76,19 +77,24 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final List<PreferenceWithHost> preferenceWithHostList =
-                        getPreferencesProvider(preferenceScreen, fragmentActivity)
-                                .getPreferenceScreenWithHosts()
-                                .preferenceWithHostList;
-                final PreferenceSearcher preferenceSearcher = new PreferenceSearcher(preferenceWithHostList);
+                final PreferenceSearcher preferenceSearcher =
+                        new PreferenceSearcher(
+                                getPreferences(preferenceScreen, fragmentActivity));
 
                 // When
-                final List<PreferenceWithHost> preferenceItems = preferenceSearcher.searchFor(keyword);
+                final List<Preference> preferences = preferenceSearcher.searchFor(keyword);
 
                 // Then
-                assertThat(getTitles(preferenceItems), titlesMatcher);
+                assertThat(getTitles(preferences), titlesMatcher);
             });
         }
+    }
+
+    private static List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
+        return PreferenceWithHostList.getPreferences(
+                getPreferencesProvider(preferenceScreen, fragmentActivity)
+                        .getPreferenceScreenWithHosts()
+                        .preferenceWithHostList);
     }
 
     private static PreferencesProvider getPreferencesProvider(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
@@ -98,12 +104,12 @@ public class PreferenceSearcherTest {
                 fragmentActivity);
     }
 
-    private static List<String> getTitles(final List<PreferenceWithHost> preferences) {
+    private static List<String> getTitles(final List<Preference> preferences) {
         return preferences
                 .stream()
-                .map(preferenceWithHost -> preferenceWithHost.preference.getTitle())
+                .map(Preference::getTitle)
                 .filter(Objects::nonNull)
-                .map(charSequence -> charSequence.toString())
+                .map(CharSequence::toString)
                 .collect(Collectors.toList());
     }
 }

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
+import static de.KnollFrank.lib.preferencesearch.PreferenceWithHostList.getPreferences;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -63,7 +65,7 @@ public class SearchPreferenceFragment extends Fragment {
                     searchView,
                     searchConfiguration.textHint,
                     new SearchAndDisplay(
-                            new PreferenceSearcher(preferenceScreenWithHosts.preferenceWithHostList),
+                            new PreferenceSearcher(getPreferences(preferenceScreenWithHosts.preferenceWithHostList)),
                             preferenceScreenWithHosts.preferenceScreen));
             selectSearchView(searchView);
             searchView.setQuery(searchView.getQuery(), true);

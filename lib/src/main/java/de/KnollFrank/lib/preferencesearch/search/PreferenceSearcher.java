@@ -1,27 +1,28 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.matcher.PreferenceMatcher;
 
 class PreferenceSearcher {
 
-    private final List<PreferenceWithHost> haystack;
+    private final List<Preference> haystack;
 
-    public PreferenceSearcher(final List<PreferenceWithHost> haystack) {
+    public PreferenceSearcher(final List<Preference> haystack) {
         this.haystack = haystack;
     }
 
-    public List<PreferenceWithHost> searchFor(final String keyword) {
+    public List<Preference> searchFor(final String keyword) {
         return this
                 .haystack
                 .stream()
-                .filter(preferenceWithHost -> !(preferenceWithHost.preference instanceof PreferenceGroup))
-                .filter(preferenceWithHost -> PreferenceMatcher.matches(preferenceWithHost.preference, keyword))
+                // FK-TODO: verschiebe den Test auf PreferenceGroup nach PreferenceMatcher.matches()?
+                .filter(preference -> !(preference instanceof PreferenceGroup))
+                .filter(preference -> PreferenceMatcher.matches(preference, keyword))
                 .collect(Collectors.toList());
     }
 }
