@@ -20,7 +20,6 @@ class PreferenceSearcher {
         return this
                 .haystack
                 .stream()
-                // FK-TODO: verschiebe den Test auf PreferenceGroup nach PreferenceMatcher.matches()?
                 .filter(preference -> !(preference instanceof PreferenceGroup))
                 .filter(preference -> PreferenceMatcher.matches(preference, keyword))
                 .collect(Collectors.toList());
