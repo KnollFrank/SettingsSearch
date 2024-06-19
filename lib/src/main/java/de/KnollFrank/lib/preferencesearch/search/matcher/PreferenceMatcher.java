@@ -41,23 +41,24 @@ public class PreferenceMatcher {
             final Type type) {
         return getAttribute
                 .apply(haystack)
-                .map(_haystack -> getPreferenceMatches(_haystack, needle, createMatch(haystack, type)))
+                .map(_haystack -> getPreferenceMatches(_haystack, needle, createPreferenceMatch(haystack, type)))
                 .orElse(Collections.emptyList());
     }
 
-    private static Function<IndexRange, PreferenceMatch> createMatch(final Preference preference,
-                                                                     final Type type) {
+    private static Function<IndexRange, PreferenceMatch> createPreferenceMatch(
+            final Preference preference,
+            final Type type) {
         return indexRange -> new PreferenceMatch(preference, type, indexRange);
     }
 
     private static List<PreferenceMatch> getPreferenceMatches(
             final String haystack,
             final String needle,
-            final Function<IndexRange, PreferenceMatch> createMatch) {
+            final Function<IndexRange, PreferenceMatch> createPreferenceMatch) {
         return Strings
                 .getIndicesOfNeedleWithinHaystack(haystack.toLowerCase(), needle.toLowerCase())
                 .stream()
-                .map(index -> createMatch.apply(new IndexRange(index, index + needle.length())))
+                .map(index -> createPreferenceMatch.apply(new IndexRange(index, index + needle.length())))
                 .collect(Collectors.toList());
     }
 }
