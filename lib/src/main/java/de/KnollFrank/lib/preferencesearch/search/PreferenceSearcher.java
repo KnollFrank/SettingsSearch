@@ -18,7 +18,6 @@ class PreferenceSearcher {
         this.haystack = haystack;
     }
 
-    // FK-TODO: vielleicht nur dann echte PreferenceMatches zurückgeben, wenn keyword.length() >= 3, sonst leere Liste
     public List<PreferenceMatch> searchFor(final String keyword) {
         return Lists.concat(
                 this

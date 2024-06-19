@@ -7,7 +7,6 @@ import androidx.preference.Preference;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,8 @@ import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch.Type;
 
 public class PreferenceMatcher {
 
-    public static List<PreferenceMatch> getPreferenceMatches(final Preference haystack, final String needle) {
+    public static List<PreferenceMatch> getPreferenceMatches(final Preference haystack,
+                                                             final String needle) {
         if (TextUtils.isEmpty(needle)) {
             return Collections.emptyList();
         }
@@ -45,19 +45,19 @@ public class PreferenceMatcher {
                 .orElse(Collections.emptyList());
     }
 
-    private static BiFunction<Integer, Integer, PreferenceMatch> createMatch(
-            final Preference preference,
-            final Type type) {
-        return (startInclusive, endExclusive) -> new PreferenceMatch(preference, type, startInclusive, endExclusive);
+    private static Function<IndexRange, PreferenceMatch> createMatch(final Preference preference,
+                                                                     final Type type) {
+        return indexRange -> new PreferenceMatch(preference, type, indexRange);
     }
 
-    private static List<PreferenceMatch> getPreferenceMatches(final String haystack,
-                                                              final String needle,
-                                                              final BiFunction<Integer, Integer, PreferenceMatch> createMatch) {
+    private static List<PreferenceMatch> getPreferenceMatches(
+            final String haystack,
+            final String needle,
+            final Function<IndexRange, PreferenceMatch> createMatch) {
         return Strings
                 .getIndices(haystack.toLowerCase(), needle.toLowerCase())
                 .stream()
-                .map(index -> createMatch.apply(index, index + needle.length()))
+                .map(index -> createMatch.apply(new IndexRange(index, index + needle.length())))
                 .collect(Collectors.toList());
     }
 }

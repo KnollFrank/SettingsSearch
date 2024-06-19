@@ -32,14 +32,15 @@ public class PreferenceMatcherTest {
         preference.setSummary("title in summary");
 
         // When
-        final List<PreferenceMatch> preferenceMatches = PreferenceMatcher.getPreferenceMatches(preference, "title");
+        final List<PreferenceMatch> preferenceMatches =
+                PreferenceMatcher.getPreferenceMatches(preference, "title");
 
         // Then
         assertThat(
                 preferenceMatches,
                 hasItems(
-                        new PreferenceMatch(preference, Type.TITLE, 0, 5),
-                        new PreferenceMatch(preference, Type.TITLE, 7, 12),
-                        new PreferenceMatch(preference, Type.SUMMARY, 0, 5)));
+                        new PreferenceMatch(preference, Type.TITLE, new IndexRange(0, 5)),
+                        new PreferenceMatch(preference, Type.TITLE, new IndexRange(7, 12)),
+                        new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(0, 5))));
     }
 }

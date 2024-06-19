@@ -68,13 +68,12 @@ class PreferenceMatchesHighlighter {
                         preferenceMatch.preference.getSummary().toString()));
     }
 
-    private static Spannable createSpannable(final PreferenceMatch preferenceMatch,
-                                             final String str) {
+    private static Spannable createSpannable(final PreferenceMatch preferenceMatch, final String str) {
         final SpannableString spannable = new SpannableString(str);
         spannable.setSpan(
                 new BackgroundColorSpan(Color.GREEN),
-                preferenceMatch.startInclusive,
-                preferenceMatch.endExclusive,
+                preferenceMatch.indexRange.startIndexInclusive,
+                preferenceMatch.indexRange.endIndexExclusive,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannable;
     }

@@ -12,31 +12,27 @@ public class PreferenceMatch {
 
     public final Preference preference;
     public final Type type;
-    public final int startInclusive;
-    public final int endExclusive;
+    public final IndexRange indexRange;
 
     public PreferenceMatch(final Preference preference,
                            final Type type,
-                           // FK-TODO: combine startInclusive and endExclusive into a new Interval class
-                           final int startInclusive,
-                           final int endExclusive) {
+                           final IndexRange indexRange) {
         this.preference = preference;
         this.type = type;
-        this.startInclusive = startInclusive;
-        this.endExclusive = endExclusive;
+        this.indexRange = indexRange;
     }
 
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final PreferenceMatch preferenceMatch = (PreferenceMatch) o;
-        return startInclusive == preferenceMatch.startInclusive && endExclusive == preferenceMatch.endExclusive && Objects.equals(preference, preferenceMatch.preference) && type == preferenceMatch.type;
+        final PreferenceMatch that = (PreferenceMatch) o;
+        return Objects.equals(preference, that.preference) && type == that.type && Objects.equals(indexRange, that.indexRange);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(preference, type, startInclusive, endExclusive);
+        return Objects.hash(preference, type, indexRange);
     }
 
     @Override
@@ -44,8 +40,7 @@ public class PreferenceMatch {
         return "PreferenceMatch{" +
                 "preference=" + preference +
                 ", type=" + type +
-                ", startInclusive=" + startInclusive +
-                ", endExclusive=" + endExclusive +
+                ", indexRange=" + indexRange +
                 '}';
     }
 }
