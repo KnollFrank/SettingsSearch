@@ -55,7 +55,7 @@ public class PreferenceMatcher {
             final String needle,
             final Function<IndexRange, PreferenceMatch> createMatch) {
         return Strings
-                .getIndices(haystack.toLowerCase(), needle.toLowerCase())
+                .getIndicesOfNeedleWithinHaystack(haystack.toLowerCase(), needle.toLowerCase())
                 .stream()
                 .map(index -> createMatch.apply(new IndexRange(index, index + needle.length())))
                 .collect(Collectors.toList());

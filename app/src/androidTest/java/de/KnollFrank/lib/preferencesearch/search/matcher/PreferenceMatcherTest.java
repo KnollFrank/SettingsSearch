@@ -18,13 +18,13 @@ import de.KnollFrank.preferencesearch.test.TestActivity;
 public class PreferenceMatcherTest {
 
     @Test
-    public void testMatches() {
+    public void shouldGetPreferenceMatches() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(PreferenceMatcherTest::testMatches);
+            scenario.onActivity(PreferenceMatcherTest::shouldGetPreferenceMatches);
         }
     }
 
-    private static void testMatches(final Context context) {
+    private static void shouldGetPreferenceMatches(final Context context) {
         // Given
         final Preference preference = new Preference(context);
         preference.setKey("feedback");
