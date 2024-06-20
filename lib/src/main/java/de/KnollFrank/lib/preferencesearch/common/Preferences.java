@@ -20,14 +20,14 @@ public class Preferences {
     }
 
     public static List<Preference> getAllChildren(final PreferenceGroup preferenceGroup) {
-        final ImmutableList.Builder<Preference> preferencesBuilder = ImmutableList.builder();
-        for (final Preference preference : getDirectChildren(preferenceGroup)) {
-            preferencesBuilder.add(preference);
-            if (preference instanceof PreferenceGroup) {
-                preferencesBuilder.addAll(getAllChildren((PreferenceGroup) preference));
+        final ImmutableList.Builder<Preference> childrenBuilder = ImmutableList.builder();
+        for (final Preference child : getDirectChildren(preferenceGroup)) {
+            childrenBuilder.add(child);
+            if (child instanceof PreferenceGroup) {
+                childrenBuilder.addAll(getAllChildren((PreferenceGroup) child));
             }
         }
-        return preferencesBuilder.build();
+        return childrenBuilder.build();
     }
 
     public static List<Preference> getDirectChildren(final PreferenceGroup preferenceGroup) {
