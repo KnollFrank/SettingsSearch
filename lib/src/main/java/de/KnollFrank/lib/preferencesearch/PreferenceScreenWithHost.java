@@ -16,6 +16,12 @@ class PreferenceScreenWithHost {
         this.host = host;
     }
 
+    public static PreferenceScreenWithHost fromPreferenceFragment(final PreferenceFragmentCompat preferenceFragment) {
+        return new PreferenceScreenWithHost(
+                preferenceFragment.getPreferenceScreen(),
+                preferenceFragment.getClass());
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

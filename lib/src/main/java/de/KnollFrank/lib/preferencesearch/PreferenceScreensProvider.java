@@ -24,7 +24,7 @@ public class PreferenceScreensProvider {
 
     public Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceFragmentCompat root) {
         this.preferenceFragments.initialize(root);
-        return getPreferenceScreens(PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(root));
+        return getPreferenceScreens(PreferenceScreenWithHost.fromPreferenceFragment(root));
     }
 
     private Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceScreenWithHost root) {

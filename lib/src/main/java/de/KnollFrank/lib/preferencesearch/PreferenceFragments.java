@@ -43,6 +43,6 @@ public class PreferenceFragments {
 
     private PreferenceScreenWithHost getPreferenceScreenOfFragment(final PreferenceFragmentCompat preferenceFragment) {
         initialize(preferenceFragment);
-        return PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragment);
+        return PreferenceScreenWithHost.fromPreferenceFragment(preferenceFragment);
     }
 }
