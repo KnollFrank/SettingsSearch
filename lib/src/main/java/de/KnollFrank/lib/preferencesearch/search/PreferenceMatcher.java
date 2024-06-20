@@ -17,7 +17,7 @@ import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Strings;
 import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
 
-public class PreferenceMatcher {
+class PreferenceMatcher {
 
     public static List<PreferenceMatch> getPreferenceMatches(final Preference haystack,
                                                              final String needle) {

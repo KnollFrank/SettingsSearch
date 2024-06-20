@@ -4,7 +4,7 @@ import androidx.preference.Preference;
 
 import java.util.Objects;
 
-public class PreferenceMatch {
+class PreferenceMatch {
 
     public enum Type {
         TITLE, SUMMARY
