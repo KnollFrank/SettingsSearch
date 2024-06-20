@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
-import de.KnollFrank.lib.preferencesearch.provider.PreferencesProvider;
+import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -92,16 +92,17 @@ public class PreferenceSearcherTest {
     }
 
     private static List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
-        final MergedPreferenceScreen mergedPreferenceScreen =
-                getPreferencesProvider(preferenceScreen, fragmentActivity).getMergedPreferenceScreen();
+        final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen(preferenceScreen, fragmentActivity);
         return Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen);
     }
 
-    private static PreferencesProvider getPreferencesProvider(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
-        return new PreferencesProvider(
-                preferenceScreen.getName(),
-                new PreferenceScreensProvider(createPreferenceScreenWithHostProvider(fragmentActivity)),
-                fragmentActivity);
+    private static MergedPreferenceScreen getMergedPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
+        final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
+                new MergedPreferenceScreenProvider(
+                        preferenceScreen.getName(),
+                        new PreferenceScreensProvider(createPreferenceScreenWithHostProvider(fragmentActivity)),
+                        fragmentActivity);
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen();
     }
 
     private static List<String> getTitles(final List<PreferenceMatch> preferenceMatches) {

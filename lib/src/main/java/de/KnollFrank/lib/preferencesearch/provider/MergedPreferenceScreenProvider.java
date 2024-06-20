@@ -15,7 +15,7 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 
-public class PreferencesProvider {
+public class MergedPreferenceScreenProvider {
 
     private final String preferenceFragment;
     private final Context context;
@@ -23,9 +23,9 @@ public class PreferencesProvider {
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
 
-    public PreferencesProvider(final String preferenceFragment,
-                               final PreferenceScreensProvider preferenceScreensProvider,
-                               final Context context) {
+    public MergedPreferenceScreenProvider(final String preferenceFragment,
+                                          final PreferenceScreensProvider preferenceScreensProvider,
+                                          final Context context) {
         this.preferenceFragment = preferenceFragment;
         this.context = context;
         this.preferenceScreenWithHostProvider = new PreferenceScreenWithHostProvider(preferenceFragment, preferenceScreensProvider, context);
