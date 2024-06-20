@@ -49,16 +49,7 @@ public class SearchPreferenceFragment extends Fragment {
                 this
                         .getPreferencesProvider(R.id.dummyFragmentContainerView)
                         .getPreferenceScreenWithHosts();
-        final SearchResultsPreferenceFragment searchResultsPreferenceFragment =
-                SearchResultsPreferenceFragment.newInstance(
-                        searchConfiguration.fragmentContainerViewId,
-                        preferenceScreenWithHosts);
-        Navigation.show(
-                searchResultsPreferenceFragment,
-                false,
-                getChildFragmentManager(),
-                R.id.searchResultsFragmentContainerView,
-                true);
+        showSearchResultsPreferenceFragment(preferenceScreenWithHosts);
         {
             final SearchView searchView = view.findViewById(R.id.searchView);
             SearchViewConfigurer.configureSearchView(
@@ -70,6 +61,17 @@ public class SearchPreferenceFragment extends Fragment {
             selectSearchView(searchView);
             searchView.setQuery(searchView.getQuery(), true);
         }
+    }
+
+    private void showSearchResultsPreferenceFragment(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+        Navigation.show(
+                SearchResultsPreferenceFragment.newInstance(
+                        searchConfiguration.fragmentContainerViewId,
+                        preferenceScreenWithHosts),
+                false,
+                getChildFragmentManager(),
+                R.id.searchResultsFragmentContainerView,
+                true);
     }
 
     private void selectSearchView(final SearchView searchView) {
