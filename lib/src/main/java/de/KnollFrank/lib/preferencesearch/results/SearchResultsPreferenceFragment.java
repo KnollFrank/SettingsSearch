@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHostList;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
@@ -57,9 +58,8 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         if (preference instanceof PreferenceGroup) {
             return;
         }
-        this
-                .preferenceScreenWithHosts
-                .findHostByPreference(preference)
+        PreferenceWithHostList
+                .findHostByPreference(this.preferenceScreenWithHosts.preferenceWithHostList, preference)
                 .ifPresent(
                         host ->
                                 Navigation.showPreferenceScreenAndHighlightPreference(
