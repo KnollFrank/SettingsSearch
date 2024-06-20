@@ -70,6 +70,7 @@ class PreferenceMatchesHighlighter {
 
     private static Spannable createSpannable(final PreferenceMatch preferenceMatch, final String str) {
         final SpannableString spannable = new SpannableString(str);
+        // FK-TODO: markiere den Text mit blau anstatt den Hintergrund des Textes mit grün, analog zu den Android Settings. Oder mache das ganze am besten konfigurierbar.
         spannable.setSpan(
                 new BackgroundColorSpan(Color.GREEN),
                 preferenceMatch.indexRange.startIndexInclusive,
