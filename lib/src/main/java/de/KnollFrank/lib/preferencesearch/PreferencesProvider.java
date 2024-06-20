@@ -8,12 +8,13 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 public class PreferencesProvider {
@@ -56,28 +57,21 @@ public class PreferencesProvider {
     }
 
     private Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(final List<PreferenceScreenWithHost> preferenceScreenWithHostList) {
-        // FK-TODO: refactor using https://stackoverflow.com/a/47117245/12982352
-        return preferenceScreenWithHostList
-                .stream()
-                .map(preferenceScreenWithHost ->
-                        asPreferenceWithHostList(
-                                Preferences.getAllChildren(preferenceScreenWithHost.preferenceScreen),
-                                preferenceScreenWithHost.host))
-                .flatMap(Collection::stream)
-                .collect(
-                        Collectors.toMap(
-                                preferenceWithHost -> preferenceWithHost.preference,
-                                preferenceWithHost -> preferenceWithHost.host));
-
+        return Maps.merge(
+                preferenceScreenWithHostList
+                        .stream()
+                        .map(PreferencesProvider::getHostByPreference)
+                        .collect(Collectors.toList()));
     }
 
-    private static List<PreferenceWithHost> asPreferenceWithHostList(
-            final List<Preference> preferences,
-            final Class<? extends PreferenceFragmentCompat> host) {
-        return preferences
+    private static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
+        return Preferences
+                .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
-                .map(preference -> new PreferenceWithHost(preference, host))
-                .collect(Collectors.toList());
+                .collect(
+                        Collectors.toMap(
+                                Function.identity(),
+                                preference -> preferenceScreenWithHost.host));
     }
 
     private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {
