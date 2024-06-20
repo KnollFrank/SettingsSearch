@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
-import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.provider.PreferencesProvider;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {

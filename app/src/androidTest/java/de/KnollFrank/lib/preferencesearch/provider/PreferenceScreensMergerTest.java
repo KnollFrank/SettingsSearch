@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.provider;
 
 import android.os.Bundle;
 

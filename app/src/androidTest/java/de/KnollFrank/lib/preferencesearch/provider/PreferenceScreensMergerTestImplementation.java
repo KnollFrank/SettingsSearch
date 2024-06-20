@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.provider;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,6 +12,7 @@ import androidx.test.core.app.ActivityScenario;
 
 import java.util.List;
 
+import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
@@ -36,7 +37,7 @@ class PreferenceScreensMergerTestImplementation {
             final Class<? extends PreferenceFragmentCompat> expectedMergedScreen) {
         // Given
         final PreferenceScreensMerger preferenceScreensMerger = new PreferenceScreensMerger(fragmentActivity);
-        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider = createPreferenceScreenWithHostProvider(fragmentActivity);
+        final de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider preferenceScreenWithHostProvider = createPreferenceScreenWithHostProvider(fragmentActivity);
         final List<PreferenceScreen> screens =
                 screens2Merge
                         .stream()

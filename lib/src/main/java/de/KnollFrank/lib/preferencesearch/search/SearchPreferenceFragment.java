@@ -10,12 +10,12 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
-import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
 import de.KnollFrank.lib.preferencesearch.R;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.provider.PreferencesProvider;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 
 public class SearchPreferenceFragment extends Fragment {
