@@ -25,9 +25,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
-import de.KnollFrank.lib.preferencesearch.PreferenceWithHostList;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
+import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -91,10 +92,9 @@ public class PreferenceSearcherTest {
     }
 
     private static List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
-        return PreferenceWithHostList.getPreferences(
-                getPreferencesProvider(preferenceScreen, fragmentActivity)
-                        .getPreferenceScreenWithHosts()
-                        .preferenceWithHostList);
+        final PreferenceScreenWithHosts preferenceScreenWithHosts =
+                getPreferencesProvider(preferenceScreen, fragmentActivity).getPreferenceScreenWithHosts();
+        return Preferences.getAllPreferences(preferenceScreenWithHosts.preferenceScreen);
     }
 
     private static PreferencesProvider getPreferencesProvider(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {

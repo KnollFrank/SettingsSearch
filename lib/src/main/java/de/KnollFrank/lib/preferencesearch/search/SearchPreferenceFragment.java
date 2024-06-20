@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
-import static de.KnollFrank.lib.preferencesearch.PreferenceWithHostList.getPreferences;
-
 import android.os.Bundle;
 import android.widget.SearchView;
 
@@ -17,6 +15,7 @@ import de.KnollFrank.lib.preferencesearch.R;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
+import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 
 public class SearchPreferenceFragment extends Fragment {
@@ -77,7 +76,7 @@ public class SearchPreferenceFragment extends Fragment {
                 searchView,
                 searchConfiguration.textHint,
                 new SearchAndDisplay(
-                        new PreferenceSearcher(getPreferences(preferenceScreenWithHosts.preferenceWithHostList)),
+                        new PreferenceSearcher(Preferences.getAllPreferences(preferenceScreenWithHosts.preferenceScreen)),
                         preferenceScreenWithHosts.preferenceScreen));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
