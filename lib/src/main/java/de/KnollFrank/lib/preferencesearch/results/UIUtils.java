@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 class UIUtils {
 
     public static void setOnClickListener(final View view, final View.OnClickListener onClickListener) {
-        UIUtils.makeChildViewsNonClickable(view);
+        makeChildViewsNonClickable(view);
         view.setOnClickListener(onClickListener);
     }
 
