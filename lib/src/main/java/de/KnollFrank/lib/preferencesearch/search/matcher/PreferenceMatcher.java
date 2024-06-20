@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.search.matcher;
 
-import static de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceAttributes.getSummary;
-import static de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceAttributes.getTitle;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getSummaryAsString;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getTitleAsString;
 
 import android.text.TextUtils;
 
@@ -32,7 +32,7 @@ public class PreferenceMatcher {
     private static List<PreferenceMatch> getTitlePreferenceMatches(final Preference haystack,
                                                                    final String needle) {
         return getPreferenceMatches(
-                getTitle(haystack),
+                getTitleAsString(haystack),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.TITLE, indexRange));
     }
@@ -40,7 +40,7 @@ public class PreferenceMatcher {
     private static List<PreferenceMatch> getSummaryPreferenceMatch(final Preference haystack,
                                                                    final String needle) {
         return getPreferenceMatches(
-                getSummary(haystack),
+                getSummaryAsString(haystack),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.SUMMARY, indexRange));
     }
