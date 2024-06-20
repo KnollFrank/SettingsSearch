@@ -2,7 +2,7 @@ package de.KnollFrank.lib.preferencesearch.provider;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostHelperFactory.createPreferenceScreenWithHostProvider;
+import static de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProviderFactory.createPreferenceScreenWithHostProvider;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;

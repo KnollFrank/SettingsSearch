@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
-import static de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostHelperFactory.createPreferenceScreenWithHostProvider;
+import static de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProviderFactory.createPreferenceScreenWithHostProvider;
 
 import android.content.Context;
 import android.os.Bundle;

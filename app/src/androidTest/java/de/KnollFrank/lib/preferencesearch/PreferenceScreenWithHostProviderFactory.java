@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
-public class PreferenceScreenWithHostHelperFactory {
+public class PreferenceScreenWithHostProviderFactory {
 
     public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final FragmentActivity activity) {
         return new PreferenceScreenWithHostProvider(
