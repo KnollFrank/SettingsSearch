@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
+import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
@@ -92,9 +92,9 @@ public class PreferenceSearcherTest {
     }
 
     private static List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
-        final PreferenceScreenWithHosts preferenceScreenWithHosts =
-                getPreferencesProvider(preferenceScreen, fragmentActivity).getPreferenceScreenWithHosts();
-        return Preferences.getAllPreferences(preferenceScreenWithHosts.preferenceScreen);
+        final MergedPreferenceScreen mergedPreferenceScreen =
+                getPreferencesProvider(preferenceScreen, fragmentActivity).getMergedPreferenceScreen();
+        return Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen);
     }
 
     private static PreferencesProvider getPreferencesProvider(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {

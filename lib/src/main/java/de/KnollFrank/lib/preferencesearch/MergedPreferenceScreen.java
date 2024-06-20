@@ -7,15 +7,14 @@ import androidx.preference.PreferenceScreen;
 import java.util.List;
 import java.util.Optional;
 
-// FK-TODO: rename to MultiPreferenceScreen
-public class PreferenceScreenWithHosts {
+public class MergedPreferenceScreen {
 
     public final PreferenceScreen preferenceScreen;
     // FK-TODO: replace private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
     private final List<PreferenceWithHost> preferenceWithHostList;
 
-    public PreferenceScreenWithHosts(final PreferenceScreen preferenceScreen,
-                                     final List<PreferenceWithHost> preferenceWithHostList) {
+    public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
+                                  final List<PreferenceWithHost> preferenceWithHostList) {
         this.preferenceScreen = preferenceScreen;
         this.preferenceWithHostList = preferenceWithHostList;
     }

@@ -13,19 +13,19 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
+import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.Navigation;
-import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
-    private PreferenceScreenWithHosts preferenceScreenWithHosts;
+    private MergedPreferenceScreen mergedPreferenceScreen;
     private @IdRes int fragmentContainerViewId;
 
     public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId,
-                                                              final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+                                                              final MergedPreferenceScreen mergedPreferenceScreen) {
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment = Factory.newInstance(fragmentContainerViewId);
-        searchResultsPreferenceFragment.setPreferenceScreenWithHosts(preferenceScreenWithHosts);
+        searchResultsPreferenceFragment.setMergedPreferenceScreen(mergedPreferenceScreen);
         return searchResultsPreferenceFragment;
     }
 
@@ -37,7 +37,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        setPreferenceScreen(this.preferenceScreenWithHosts.preferenceScreen);
+        setPreferenceScreen(this.mergedPreferenceScreen.preferenceScreen);
     }
 
     @NonNull
@@ -48,9 +48,9 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 this::showPreferenceScreenAndHighlightPreference);
     }
 
-    private void setPreferenceScreenWithHosts(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
-        preparePreferenceScreenForSearch(preferenceScreenWithHosts.preferenceScreen);
-        this.preferenceScreenWithHosts = preferenceScreenWithHosts;
+    private void setMergedPreferenceScreen(final MergedPreferenceScreen mergedPreferenceScreen) {
+        preparePreferenceScreenForSearch(mergedPreferenceScreen.preferenceScreen);
+        this.mergedPreferenceScreen = mergedPreferenceScreen;
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
@@ -58,7 +58,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
             return;
         }
         this
-                .preferenceScreenWithHosts
+                .mergedPreferenceScreen
                 .findHostByPreference(preference)
                 .ifPresent(
                         host ->

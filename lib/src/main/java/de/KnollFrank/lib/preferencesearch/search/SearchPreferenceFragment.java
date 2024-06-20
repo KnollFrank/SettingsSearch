@@ -6,9 +6,9 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
 import de.KnollFrank.lib.preferencesearch.R;
@@ -41,12 +41,12 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        final PreferenceScreenWithHosts preferenceScreenWithHosts = getPreferenceScreenWithHosts();
-        showSearchResultsPreferenceFragment(preferenceScreenWithHosts);
-        configureSearchView(preferenceScreenWithHosts);
+        final MergedPreferenceScreen mergedPreferenceScreen = geMergedPreferenceScreen();
+        showSearchResultsPreferenceFragment(mergedPreferenceScreen);
+        configureSearchView(mergedPreferenceScreen);
     }
 
-    private PreferenceScreenWithHosts getPreferenceScreenWithHosts() {
+    private MergedPreferenceScreen geMergedPreferenceScreen() {
         final PreferencesProvider preferencesProvider =
                 new PreferencesProvider(
                         searchConfiguration.rootPreferenceFragment.getName(),
@@ -56,28 +56,28 @@ public class SearchPreferenceFragment extends Fragment {
                                         getChildFragmentManager(),
                                         R.id.dummyFragmentContainerView)),
                         getContext());
-        return preferencesProvider.getPreferenceScreenWithHosts();
+        return preferencesProvider.getMergedPreferenceScreen();
     }
 
-    private void showSearchResultsPreferenceFragment(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+    private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen) {
         Navigation.show(
                 SearchResultsPreferenceFragment.newInstance(
                         searchConfiguration.fragmentContainerViewId,
-                        preferenceScreenWithHosts),
+                        mergedPreferenceScreen),
                 false,
                 getChildFragmentManager(),
                 R.id.searchResultsFragmentContainerView,
                 true);
     }
 
-    private void configureSearchView(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+    private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {
         final SearchView searchView = requireView().findViewById(R.id.searchView);
         SearchViewConfigurer.configureSearchView(
                 searchView,
                 searchConfiguration.textHint,
                 new SearchAndDisplay(
-                        new PreferenceSearcher(Preferences.getAllPreferences(preferenceScreenWithHosts.preferenceScreen)),
-                        preferenceScreenWithHosts.preferenceScreen));
+                        new PreferenceSearcher(Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen)),
+                        mergedPreferenceScreen.preferenceScreen));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
     }
