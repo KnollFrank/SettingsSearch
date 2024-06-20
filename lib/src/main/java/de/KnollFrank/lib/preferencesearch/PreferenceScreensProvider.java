@@ -28,23 +28,25 @@ public class PreferenceScreensProvider {
     }
 
     private Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceScreenWithHost root) {
-        final Set<PreferenceScreenWithHost> preferenceScreensOfChildren =
-                Sets.union(
-                        this
-                                .getChildren(root)
-                                .stream()
-                                .map(this::getPreferenceScreens)
-                                .collect(Collectors.toSet()));
         return ImmutableSet
                 .<PreferenceScreenWithHost>builder()
                 .add(root)
-                .addAll(preferenceScreensOfChildren)
+                .addAll(getPreferenceScreensOfChildren(root))
                 .build();
     }
 
-    private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreen) {
+    private Set<PreferenceScreenWithHost> getPreferenceScreensOfChildren(final PreferenceScreenWithHost root) {
+        return Sets.union(
+                this
+                        .getChildren(root)
+                        .stream()
+                        .map(this::getPreferenceScreens)
+                        .collect(Collectors.toSet()));
+    }
+
+    private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreenWithHost) {
         return Preferences
-                .getAllChildren(preferenceScreen.preferenceScreen)
+                .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
                 .map(Preference::getFragment)
                 .filter(Objects::nonNull)
