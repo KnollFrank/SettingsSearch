@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch.search.matcher;
+package de.KnollFrank.lib.preferencesearch.search;
 
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch.Type;
+import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceMatcherTest {

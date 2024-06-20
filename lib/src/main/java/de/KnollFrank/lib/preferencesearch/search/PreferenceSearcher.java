@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.Lists;
-import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch;
-import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatcher;
 
 class PreferenceSearcher {
 

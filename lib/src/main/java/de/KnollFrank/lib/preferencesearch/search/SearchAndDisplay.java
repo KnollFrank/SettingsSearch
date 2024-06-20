@@ -6,8 +6,6 @@ import androidx.preference.PreferenceScreen;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch;
-
 class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;

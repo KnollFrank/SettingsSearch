@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHostList;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
-import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {

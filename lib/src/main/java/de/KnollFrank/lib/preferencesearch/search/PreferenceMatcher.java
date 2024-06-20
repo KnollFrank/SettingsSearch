@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch.search.matcher;
+package de.KnollFrank.lib.preferencesearch.search;
 
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getSummaryAsString;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getTitleAsString;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Strings;
-import de.KnollFrank.lib.preferencesearch.search.matcher.PreferenceMatch.Type;
+import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
 
 public class PreferenceMatcher {
 

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch.search.matcher;
+package de.KnollFrank.lib.preferencesearch.search;
 
 import java.util.Objects;
 
