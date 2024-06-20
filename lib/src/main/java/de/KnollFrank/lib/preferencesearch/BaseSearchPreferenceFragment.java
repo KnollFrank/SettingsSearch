@@ -32,6 +32,7 @@ public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCom
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // FK-TODO: was soll passieren, falls die Preference keinen key hat?
         keyOfPreference2Highlight.ifPresent(
                 keyOfPreference2Highlight -> {
                     scrollToPreference(keyOfPreference2Highlight);
