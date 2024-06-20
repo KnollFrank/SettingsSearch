@@ -1,9 +1,9 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.search;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
+import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
 
 public class SearchPreferenceFragments {
 
