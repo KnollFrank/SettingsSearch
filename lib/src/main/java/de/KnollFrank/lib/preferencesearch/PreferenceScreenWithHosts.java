@@ -1,8 +1,11 @@
 package de.KnollFrank.lib.preferencesearch;
 
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PreferenceScreenWithHosts {
 
@@ -14,4 +17,14 @@ public class PreferenceScreenWithHosts {
         this.preferenceScreen = preferenceScreen;
         this.preferenceWithHostList = preferenceWithHostList;
     }
+
+    public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHostByPreference(final Preference preference) {
+        return this
+                .preferenceWithHostList
+                .stream()
+                .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
+                .map(preferenceWithHost -> preferenceWithHost.host)
+                .findFirst();
+    }
+
 }

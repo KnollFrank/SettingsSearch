@@ -13,8 +13,6 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
-import java.util.Optional;
-
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 
@@ -60,7 +58,8 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
             return;
         }
         this
-                .getHost(preference)
+                .preferenceScreenWithHosts
+                .findHostByPreference(preference)
                 .ifPresent(
                         host ->
                                 Navigation.showPreferenceScreenAndHighlightPreference(
@@ -68,15 +67,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                                         preference.getKey(),
                                         getActivity(),
                                         this.fragmentContainerViewId));
-    }
-
-    private Optional<? extends Class<? extends PreferenceFragmentCompat>> getHost(final Preference preference) {
-        return preferenceScreenWithHosts
-                .preferenceWithHostList
-                .stream()
-                .filter(preferenceWithHost -> preferenceWithHost.preference.equals(preference))
-                .map(preferenceWithHost -> preferenceWithHost.host)
-                .findFirst();
     }
 
     private class Factory {
