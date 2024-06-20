@@ -9,15 +9,15 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-public class PreferenceFragments {
+public class PreferenceScreenWithHostProvider {
 
     private final Context context;
     private final FragmentManager fragmentManager;
     private final @IdRes int containerResId;
 
-    public PreferenceFragments(final Context context,
-                               final FragmentManager fragmentManager,
-                               final @IdRes int containerResId) {
+    public PreferenceScreenWithHostProvider(final Context context,
+                                            final FragmentManager fragmentManager,
+                                            final @IdRes int containerResId) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.containerResId = containerResId;

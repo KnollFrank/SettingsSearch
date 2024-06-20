@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import de.KnollFrank.lib.preferencesearch.Navigation;
-import de.KnollFrank.lib.preferencesearch.PreferenceFragments;
+import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHosts;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.PreferencesProvider;
@@ -52,7 +52,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new PreferencesProvider(
                         searchConfiguration.rootPreferenceFragment.getName(),
                         new PreferenceScreensProvider(
-                                new PreferenceFragments(
+                                new PreferenceScreenWithHostProvider(
                                         requireActivity(),
                                         getChildFragmentManager(),
                                         R.id.dummyFragmentContainerView)),

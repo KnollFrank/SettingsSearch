@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
-import static de.KnollFrank.lib.preferencesearch.PreferenceFragmentsFactory.createPreferenceFragments;
+import static de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostHelperFactory.createPreferenceScreenWithHostProvider;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -100,7 +100,7 @@ public class PreferenceSearcherTest {
     private static PreferencesProvider getPreferencesProvider(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
         return new PreferencesProvider(
                 preferenceScreen.getName(),
-                new PreferenceScreensProvider(createPreferenceFragments(fragmentActivity)),
+                new PreferenceScreensProvider(createPreferenceScreenWithHostProvider(fragmentActivity)),
                 fragmentActivity);
     }
 

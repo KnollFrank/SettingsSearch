@@ -16,14 +16,14 @@ import de.KnollFrank.lib.preferencesearch.common.Sets;
 
 public class PreferenceScreensProvider {
 
-    private final PreferenceFragments preferenceFragments;
+    private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
 
-    public PreferenceScreensProvider(final PreferenceFragments preferenceFragments) {
-        this.preferenceFragments = preferenceFragments;
+    public PreferenceScreensProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
+        this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
     public Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceFragmentCompat root) {
-        this.preferenceFragments.initialize(root);
+        this.preferenceScreenWithHostProvider.initialize(root);
         return getPreferenceScreens(PreferenceScreenWithHost.fromPreferenceFragment(root));
     }
 
@@ -48,7 +48,7 @@ public class PreferenceScreensProvider {
                 .stream()
                 .map(Preference::getFragment)
                 .filter(Objects::nonNull)
-                .map(this.preferenceFragments::getPreferenceScreenOfFragment)
+                .map(this.preferenceScreenWithHostProvider::getPreferenceScreenOfFragment)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());

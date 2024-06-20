@@ -2,7 +2,7 @@ package de.KnollFrank.lib.preferencesearch;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static de.KnollFrank.lib.preferencesearch.PreferenceFragmentsFactory.createPreferenceFragments;
+import static de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostHelperFactory.createPreferenceScreenWithHostProvider;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
@@ -36,11 +36,11 @@ class PreferenceScreensMergerTestImplementation {
             final Class<? extends PreferenceFragmentCompat> expectedMergedScreen) {
         // Given
         final PreferenceScreensMerger preferenceScreensMerger = new PreferenceScreensMerger(fragmentActivity);
-        final PreferenceFragments preferenceFragments = createPreferenceFragments(fragmentActivity);
+        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider = createPreferenceScreenWithHostProvider(fragmentActivity);
         final List<PreferenceScreen> screens =
                 screens2Merge
                         .stream()
-                        .map(preferenceFragment -> getPreferenceScreen(preferenceFragment, preferenceFragments))
+                        .map(preferenceFragment -> getPreferenceScreen(preferenceFragment, preferenceScreenWithHostProvider))
                         .toList();
 
         // When
@@ -50,12 +50,12 @@ class PreferenceScreensMergerTestImplementation {
         // Then
         assertThatPreferenceScreensAreEqual(
                 mergedPreferenceScreen,
-                getPreferenceScreen(expectedMergedScreen, preferenceFragments));
+                getPreferenceScreen(expectedMergedScreen, preferenceScreenWithHostProvider));
     }
 
     private static PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceFragment,
-                                                        final PreferenceFragments preferenceFragments) {
-        return preferenceFragments
+                                                        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
+        return preferenceScreenWithHostProvider
                 .getPreferenceScreenOfFragment(preferenceFragment.getName())
                 .get()
                 .preferenceScreen;

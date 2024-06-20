@@ -4,10 +4,10 @@ import androidx.fragment.app.FragmentActivity;
 
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
-public class PreferenceFragmentsFactory {
+public class PreferenceScreenWithHostHelperFactory {
 
-    public static PreferenceFragments createPreferenceFragments(final FragmentActivity activity) {
-        return new PreferenceFragments(
+    public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final FragmentActivity activity) {
+        return new PreferenceScreenWithHostProvider(
                 activity,
                 activity.getSupportFragmentManager(),
                 TestActivity.FRAGMENT_CONTAINER_VIEW);
