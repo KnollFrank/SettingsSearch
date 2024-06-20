@@ -64,7 +64,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 .ifPresent(
                         host ->
                                 Navigation.showPreferenceScreenAndHighlightPreference(
-                                        host.getName(),
+                                        host,
                                         preference.getKey(),
                                         getActivity(),
                                         this.fragmentContainerViewId));
