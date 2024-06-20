@@ -26,5 +26,4 @@ public class PreferenceScreenWithHosts {
                 .map(preferenceWithHost -> preferenceWithHost.host)
                 .findFirst();
     }
-
 }
