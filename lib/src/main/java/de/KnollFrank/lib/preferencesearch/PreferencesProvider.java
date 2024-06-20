@@ -40,11 +40,11 @@ public class PreferencesProvider {
 
     private MergedPreferenceScreen _getMergedPreferenceScreen() {
         final List<PreferenceScreenWithHost> screens = getScreens();
-        final List<PreferenceWithHost> preferenceWithHostList = getPreferenceWithHostList(screens);
+        final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference = getHostByPreference(screens);
         final PreferenceScreen preferenceScreen =
                 new PreferenceScreensMerger(context)
                         .destructivelyMergeScreens(getPreferenceScreens(screens));
-        return new MergedPreferenceScreen(preferenceScreen, preferenceWithHostList);
+        return new MergedPreferenceScreen(preferenceScreen, hostByPreference);
     }
 
     private List<PreferenceScreenWithHost> getScreens() {
@@ -55,7 +55,8 @@ public class PreferencesProvider {
         return (PreferenceFragmentCompat) Fragment.instantiate(context, preferenceFragment);
     }
 
-    private List<PreferenceWithHost> getPreferenceWithHostList(final List<PreferenceScreenWithHost> preferenceScreenWithHostList) {
+    private Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(final List<PreferenceScreenWithHost> preferenceScreenWithHostList) {
+        // FK-TODO: refactor using https://stackoverflow.com/a/47117245/12982352
         return preferenceScreenWithHostList
                 .stream()
                 .map(preferenceScreenWithHost ->
@@ -63,7 +64,11 @@ public class PreferencesProvider {
                                 Preferences.getAllChildren(preferenceScreenWithHost.preferenceScreen),
                                 preferenceScreenWithHost.host))
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .collect(
+                        Collectors.toMap(
+                                preferenceWithHost -> preferenceWithHost.preference,
+                                preferenceWithHost -> preferenceWithHost.host));
+
     }
 
     private static List<PreferenceWithHost> asPreferenceWithHostList(
