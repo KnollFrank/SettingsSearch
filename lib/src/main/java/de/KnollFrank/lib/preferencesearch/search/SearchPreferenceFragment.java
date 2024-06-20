@@ -3,10 +3,8 @@ package de.KnollFrank.lib.preferencesearch.search;
 import static de.KnollFrank.lib.preferencesearch.PreferenceWithHostList.getPreferences;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.SearchView;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -44,23 +42,22 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        final View view = requireView();
-        final PreferenceScreenWithHosts preferenceScreenWithHosts =
-                this
-                        .getPreferencesProvider(R.id.dummyFragmentContainerView)
-                        .getPreferenceScreenWithHosts();
+        final PreferenceScreenWithHosts preferenceScreenWithHosts = getPreferenceScreenWithHosts();
         showSearchResultsPreferenceFragment(preferenceScreenWithHosts);
-        {
-            final SearchView searchView = view.findViewById(R.id.searchView);
-            SearchViewConfigurer.configureSearchView(
-                    searchView,
-                    searchConfiguration.textHint,
-                    new SearchAndDisplay(
-                            new PreferenceSearcher(getPreferences(preferenceScreenWithHosts.preferenceWithHostList)),
-                            preferenceScreenWithHosts.preferenceScreen));
-            selectSearchView(searchView);
-            searchView.setQuery(searchView.getQuery(), true);
-        }
+        configureSearchView(preferenceScreenWithHosts);
+    }
+
+    private PreferenceScreenWithHosts getPreferenceScreenWithHosts() {
+        final PreferencesProvider preferencesProvider =
+                new PreferencesProvider(
+                        searchConfiguration.rootPreferenceFragment.getName(),
+                        new PreferenceScreensProvider(
+                                new PreferenceFragments(
+                                        requireActivity(),
+                                        getChildFragmentManager(),
+                                        R.id.dummyFragmentContainerView)),
+                        getContext());
+        return preferencesProvider.getPreferenceScreenWithHosts();
     }
 
     private void showSearchResultsPreferenceFragment(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
@@ -74,19 +71,20 @@ public class SearchPreferenceFragment extends Fragment {
                 true);
     }
 
+    private void configureSearchView(final PreferenceScreenWithHosts preferenceScreenWithHosts) {
+        final SearchView searchView = requireView().findViewById(R.id.searchView);
+        SearchViewConfigurer.configureSearchView(
+                searchView,
+                searchConfiguration.textHint,
+                new SearchAndDisplay(
+                        new PreferenceSearcher(getPreferences(preferenceScreenWithHosts.preferenceWithHostList)),
+                        preferenceScreenWithHosts.preferenceScreen));
+        selectSearchView(searchView);
+        searchView.setQuery(searchView.getQuery(), true);
+    }
+
     private void selectSearchView(final SearchView searchView) {
         searchView.requestFocus();
         Keyboard.showKeyboard(getActivity(), searchView);
-    }
-
-    private PreferencesProvider getPreferencesProvider(final @IdRes int fragmentContainerViewId) {
-        return new PreferencesProvider(
-                searchConfiguration.rootPreferenceFragment.getName(),
-                new PreferenceScreensProvider(
-                        new PreferenceFragments(
-                                requireActivity(),
-                                getChildFragmentManager(),
-                                fragmentContainerViewId)),
-                getContext());
     }
 }

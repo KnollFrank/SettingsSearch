@@ -15,6 +15,7 @@ import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.SearchPreferenceFragments;
 
+// FK-TODO: README.md anpassen
 public class SearchViewExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
