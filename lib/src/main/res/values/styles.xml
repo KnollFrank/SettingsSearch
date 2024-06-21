@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="SearchPreferenceResultTextAppearance" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:typeface">sans</item>
+    </style>
+</resources>

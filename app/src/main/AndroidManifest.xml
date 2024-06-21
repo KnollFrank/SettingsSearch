@@ -22,7 +22,7 @@
             android:name=".test.TestActivity"
             android:exported="true"
             android:label="TestActivity"
-            android:theme="@style/AppThemeDark">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

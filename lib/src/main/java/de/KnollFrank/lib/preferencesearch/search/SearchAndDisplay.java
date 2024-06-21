@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
+import android.content.Context;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
@@ -10,15 +12,19 @@ class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;
     private final PreferenceScreen preferenceScreen;
+    private final Context context;
 
-    public SearchAndDisplay(final PreferenceSearcher preferenceSearcher, final PreferenceScreen preferenceScreen) {
+    public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
+                            final PreferenceScreen preferenceScreen,
+                            final Context context) {
         this.preferenceSearcher = preferenceSearcher;
         this.preferenceScreen = preferenceScreen;
+        this.context = context;
     }
 
     public void searchForQueryAndDisplayResults(final String query) {
         final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
-        PreferenceMatchesHighlighter.highlight(preferenceMatches, preferenceScreen);
+        PreferenceMatchesHighlighter.highlight(preferenceMatches, preferenceScreen, context);
         PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
                 getPreferences(preferenceMatches),
                 preferenceScreen);
