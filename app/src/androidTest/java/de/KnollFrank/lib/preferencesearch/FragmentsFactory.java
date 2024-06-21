@@ -2,17 +2,15 @@ package de.KnollFrank.lib.preferencesearch;
 
 import androidx.fragment.app.FragmentActivity;
 
-import de.KnollFrank.lib.preferencesearch.fragment.FragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class FragmentsFactory {
 
     public static Fragments createFragments(final FragmentActivity activity) {
-        return new Fragments(
+        return de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory.createFragments(
                 activity,
-                new FragmentInitializer(
-                        activity.getSupportFragmentManager(),
-                        TestActivity.FRAGMENT_CONTAINER_VIEW));
+                activity.getSupportFragmentManager(),
+                TestActivity.FRAGMENT_CONTAINER_VIEW);
     }
 }

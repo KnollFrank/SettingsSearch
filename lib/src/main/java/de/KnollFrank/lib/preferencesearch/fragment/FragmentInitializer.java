@@ -4,7 +4,7 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class FragmentInitializer {
+class FragmentInitializer {
 
     private final FragmentManager fragmentManager;
     private final @IdRes int containerResId;

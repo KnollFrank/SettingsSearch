@@ -15,8 +15,8 @@ import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
-import de.KnollFrank.lib.preferencesearch.fragment.FragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
+import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
@@ -51,11 +51,10 @@ public class SearchPreferenceFragment extends Fragment {
 
     private MergedPreferenceScreen geMergedPreferenceScreen() {
         final Fragments fragments =
-                new Fragments(
+                FragmentsFactory.createFragments(
                         requireActivity(),
-                        new FragmentInitializer(
-                                getChildFragmentManager(),
-                                R.id.dummyFragmentContainerView));
+                        getChildFragmentManager(),
+                        R.id.dummyFragmentContainerView);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         fragments,
