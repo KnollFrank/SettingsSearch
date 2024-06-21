@@ -7,8 +7,7 @@ import androidx.fragment.app.Fragment;
 public class Fragments {
 
     private final Context context;
-    // FK-TODO: make private again
-    public final FragmentInitializer fragmentInitializer;
+    private final FragmentInitializer fragmentInitializer;
 
     public Fragments(final Context context, final FragmentInitializer fragmentInitializer) {
         this.context = context;
