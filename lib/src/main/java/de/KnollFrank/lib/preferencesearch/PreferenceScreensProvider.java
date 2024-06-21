@@ -22,12 +22,12 @@ public class PreferenceScreensProvider {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
-    public Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceFragmentCompat root) {
+    public Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
         this.preferenceScreenWithHostProvider.initialize(root);
-        return getPreferenceScreens(PreferenceScreenWithHost.fromPreferenceFragment(root));
+        return getConnectedPreferenceScreens(PreferenceScreenWithHost.fromPreferenceFragment(root));
     }
 
-    private Set<PreferenceScreenWithHost> getPreferenceScreens(final PreferenceScreenWithHost root) {
+    private Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceScreenWithHost root) {
         return ImmutableSet
                 .<PreferenceScreenWithHost>builder()
                 .add(root)
@@ -40,7 +40,7 @@ public class PreferenceScreensProvider {
                 this
                         .getChildren(root)
                         .stream()
-                        .map(this::getPreferenceScreens)
+                        .map(this::getConnectedPreferenceScreens)
                         .collect(Collectors.toSet()));
     }
 

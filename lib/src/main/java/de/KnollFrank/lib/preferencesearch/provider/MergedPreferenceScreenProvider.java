@@ -53,7 +53,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     private List<PreferenceScreenWithHost> getPreferenceScreenWithHostList() {
-        return new ArrayList<>(preferenceScreensProvider.getPreferenceScreens(instantiatePreferenceFragment()));
+        return new ArrayList<>(preferenceScreensProvider.getConnectedPreferenceScreens(instantiatePreferenceFragment()));
     }
 
     private PreferenceFragmentCompat instantiatePreferenceFragment() {

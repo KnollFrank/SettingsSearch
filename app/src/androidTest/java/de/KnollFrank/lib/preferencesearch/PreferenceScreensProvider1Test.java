@@ -24,20 +24,20 @@ import de.KnollFrank.preferencesearch.test.TestActivity;
 public class PreferenceScreensProvider1Test {
 
     @Test
-    public void shouldGetPreferenceScreens() {
+    public void shouldGetConnectedPreferenceScreens() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(PreferenceScreensProvider1Test::shouldGetPreferenceScreens);
+            scenario.onActivity(PreferenceScreensProvider1Test::shouldGetConnectedPreferenceScreens);
         }
     }
 
-    private static void shouldGetPreferenceScreens(final FragmentActivity activity) {
+    private static void shouldGetConnectedPreferenceScreens(final FragmentActivity activity) {
         // Given
         final PreferenceScreensProvider preferenceScreensProvider =
                 new PreferenceScreensProvider(createPreferenceScreenWithHostProvider(activity));
         final PreferenceFragmentCompat root = new Fragment1ConnectedToFragment2AndFragment4();
 
         // When
-        final Set<PreferenceScreenWithHost> preferenceScreens = preferenceScreensProvider.getPreferenceScreens(root);
+        final Set<PreferenceScreenWithHost> preferenceScreens = preferenceScreensProvider.getConnectedPreferenceScreens(root);
 
         // Then
         assertThat(
