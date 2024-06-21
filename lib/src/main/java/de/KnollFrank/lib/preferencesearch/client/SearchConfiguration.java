@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.client;
 
 import androidx.annotation.IdRes;
 import androidx.preference.PreferenceFragmentCompat;

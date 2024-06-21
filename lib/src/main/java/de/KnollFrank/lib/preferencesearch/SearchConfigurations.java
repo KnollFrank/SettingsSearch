@@ -2,6 +2,7 @@ package de.KnollFrank.lib.preferencesearch;
 
 import android.os.Bundle;
 
+import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.common.Bundles;
 
 public class SearchConfigurations {

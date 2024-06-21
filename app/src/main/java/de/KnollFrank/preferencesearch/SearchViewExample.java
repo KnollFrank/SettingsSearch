@@ -12,8 +12,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.Navigation;
-import de.KnollFrank.lib.preferencesearch.SearchConfiguration;
-import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragments;
+import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
+import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 
 // FK-TODO: README.md anpassen
 public class SearchViewExample extends AppCompatActivity {
