@@ -16,13 +16,13 @@ class PreferenceSearcher {
         this.haystack = haystack;
     }
 
-    public List<PreferenceMatch> searchFor(final String keyword) {
+    public List<PreferenceMatch> searchFor(final String needle) {
         return Lists.concat(
                 this
                         .haystack
                         .stream()
                         .filter(preference -> !(preference instanceof PreferenceGroup))
-                        .map(preference -> PreferenceMatcher.getPreferenceMatches(preference, keyword))
+                        .map(preference -> PreferenceMatcher.getPreferenceMatches(preference, needle))
                         .collect(Collectors.toList()));
     }
 }
