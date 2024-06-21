@@ -9,7 +9,7 @@ public class FragmentsFactory {
 
     public static Fragments createFragments(final Context context,
                                             final FragmentManager fragmentManager,
-                                            final @IdRes int containerResId) {
-        return new Fragments(context, new FragmentInitializer(fragmentManager, containerResId));
+                                            final @IdRes int containerViewId) {
+        return new Fragments(context, new FragmentInitializer(fragmentManager, containerViewId));
     }
 }

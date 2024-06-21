@@ -7,18 +7,18 @@ import androidx.fragment.app.FragmentManager;
 class FragmentInitializer {
 
     private final FragmentManager fragmentManager;
-    private final @IdRes int containerResId;
+    private final @IdRes int containerViewId;
 
-    public FragmentInitializer(final FragmentManager fragmentManager, final @IdRes int containerResId) {
+    public FragmentInitializer(final FragmentManager fragmentManager, final @IdRes int containerViewId) {
         this.fragmentManager = fragmentManager;
-        this.containerResId = containerResId;
+        this.containerViewId = containerViewId;
     }
 
     public void initialize(final Fragment fragment) {
         this
                 .fragmentManager
                 .beginTransaction()
-                .replace(this.containerResId, fragment)
+                .replace(this.containerViewId, fragment)
                 .commitNow();
     }
 }
