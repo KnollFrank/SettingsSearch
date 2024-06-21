@@ -58,11 +58,10 @@ public class SearchPreferenceFragment extends Fragment {
                                 R.id.dummyFragmentContainerView));
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
-                        searchConfiguration.rootPreferenceFragment.getName(),
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(getContext()));
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen();
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen) {

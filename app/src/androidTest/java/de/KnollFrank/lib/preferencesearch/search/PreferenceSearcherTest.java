@@ -103,11 +103,10 @@ public class PreferenceSearcherTest {
         final Fragments fragments = FragmentsFactory.createFragments(fragmentActivity);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
-                        preferenceScreen.getName(),
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity));
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen();
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceScreen.getName());
     }
 
     private static List<String> getTitles(final List<PreferenceMatch> preferenceMatches) {
