@@ -6,7 +6,6 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import de.KnollFrank.lib.preferencesearch.FragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
@@ -16,7 +15,10 @@ import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.fragment.FragmentInitializer;
+import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
+import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 
 public class SearchPreferenceFragment extends Fragment {
@@ -48,16 +50,18 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     private MergedPreferenceScreen geMergedPreferenceScreen() {
+        final Fragments fragments =
+                new Fragments(
+                        requireActivity(),
+                        new FragmentInitializer(
+                                getChildFragmentManager(),
+                                R.id.dummyFragmentContainerView));
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         searchConfiguration.rootPreferenceFragment.getName(),
-                        new PreferenceScreensProvider(
-                                new PreferenceScreenWithHostProvider(
-                                        requireActivity(),
-                                        new FragmentInitializer(
-                                                getChildFragmentManager(),
-                                                R.id.dummyFragmentContainerView))),
-                        getContext());
+                        fragments,
+                        new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
+                        new PreferenceScreensMerger(getContext()));
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen();
     }
 

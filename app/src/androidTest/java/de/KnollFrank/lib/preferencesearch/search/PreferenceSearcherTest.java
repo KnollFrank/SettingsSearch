@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
-import static de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProviderFactory.createPreferenceScreenWithHostProvider;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -25,10 +24,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.preferencesearch.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
+import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -97,11 +100,13 @@ public class PreferenceSearcherTest {
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
+        final Fragments fragments = FragmentsFactory.createFragments(fragmentActivity);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         preferenceScreen.getName(),
-                        new PreferenceScreensProvider(createPreferenceScreenWithHostProvider(fragmentActivity)),
-                        fragmentActivity);
+                        fragments,
+                        new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
+                        new PreferenceScreensMerger(fragmentActivity));
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen();
     }
 

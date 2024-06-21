@@ -1,34 +1,24 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import android.content.Context;
-
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
+
 public class PreferenceScreenWithHostProvider {
 
-    private final Context context;
-    public final FragmentInitializer fragmentInitializer;
+    private final Fragments fragments;
 
-    public PreferenceScreenWithHostProvider(final Context context,
-                                            final FragmentInitializer fragmentInitializer) {
-        this.context = context;
-        this.fragmentInitializer = fragmentInitializer;
+    public PreferenceScreenWithHostProvider(final Fragments fragments) {
+        this.fragments = fragments;
     }
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment) {
-        final Fragment _fragment = instantiateAndInitialize(fragment);
+        final Fragment _fragment = fragments.instantiateAndInitializeFragment(fragment);
         return _fragment instanceof PreferenceFragmentCompat ?
                 Optional.of(PreferenceScreenWithHost.fromPreferenceFragment((PreferenceFragmentCompat) _fragment)) :
                 Optional.empty();
-    }
-
-    // FK-TODO: move method to new class common.Fragments
-    private Fragment instantiateAndInitialize(final String fragment) {
-        final Fragment _fragment = Fragment.instantiate(context, fragment);
-        fragmentInitializer.initialize(_fragment);
-        return _fragment;
     }
 }

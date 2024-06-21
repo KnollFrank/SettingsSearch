@@ -2,7 +2,6 @@ package de.KnollFrank.lib.preferencesearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProviderFactory.createPreferenceScreenWithHostProvider;
 import static de.KnollFrank.lib.preferencesearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.preferencesearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
 
@@ -19,6 +18,7 @@ import org.junit.Test;
 
 import java.util.Set;
 
+import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceScreensProvider1Test {
@@ -32,9 +32,12 @@ public class PreferenceScreensProvider1Test {
 
     private static void shouldGetConnectedPreferenceScreens(final FragmentActivity activity) {
         // Given
+        final Fragments fragments = FragmentsFactory.createFragments(activity);
         final PreferenceScreensProvider preferenceScreensProvider =
-                new PreferenceScreensProvider(createPreferenceScreenWithHostProvider(activity));
-        final PreferenceFragmentCompat root = new Fragment1ConnectedToFragment2AndFragment4();
+                new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments));
+        final PreferenceFragmentCompat root =
+                (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                        Fragment1ConnectedToFragment2AndFragment4.class.getName());
 
         // When
         final Set<PreferenceScreenWithHost> preferenceScreens = preferenceScreensProvider.getConnectedPreferenceScreens(root);

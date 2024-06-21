@@ -43,6 +43,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     @NonNull
     @Override
     protected Adapter onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
+        // FK-TODO: die Preferences des preferenceScreen sollen ihren aktuellen Zustand widerspiegeln (z.B. soll der Haken einer CheckBoxPreference gemäß den darunterliegenden Daten gesetzt oder nicht gesetzt sein.)
         return new ClickablePreferenceGroupAdapter(
                 preferenceScreen,
                 this::showPreferenceScreenAndHighlightPreference);

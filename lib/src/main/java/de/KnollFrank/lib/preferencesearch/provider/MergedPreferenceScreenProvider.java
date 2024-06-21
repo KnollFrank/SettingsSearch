@@ -1,8 +1,5 @@
 package de.KnollFrank.lib.preferencesearch.provider;
 
-import android.content.Context;
-
-import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -16,21 +13,26 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
+import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 
 public class MergedPreferenceScreenProvider {
 
     private final String preferenceFragment;
+    private final Fragments fragments;
     private final PreferenceScreensProvider preferenceScreensProvider;
-    private final Context context;
+    private final PreferenceScreensMerger preferenceScreensMerger;
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
 
     public MergedPreferenceScreenProvider(final String preferenceFragment,
+                                          final Fragments fragments,
                                           final PreferenceScreensProvider preferenceScreensProvider,
-                                          final Context context) {
+                                          final PreferenceScreensMerger preferenceScreensMerger) {
+        // FK-TODO: move preferenceFragment as a parameter to method getMergedPreferenceScreen()
         this.preferenceFragment = preferenceFragment;
+        this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
-        this.context = context;
+        this.preferenceScreensMerger = preferenceScreensMerger;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen() {
@@ -47,8 +49,8 @@ public class MergedPreferenceScreenProvider {
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference = HostByPreferenceProvider.getHostByPreference(screens);
         // B:
         final PreferenceScreen preferenceScreen =
-                new PreferenceScreensMerger(context)
-                        .destructivelyMergeScreens(getPreferenceScreens(screens));
+                preferenceScreensMerger.destructivelyMergeScreens(
+                        getPreferenceScreens(screens));
         return new MergedPreferenceScreen(preferenceScreen, hostByPreference);
     }
 
@@ -57,7 +59,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     private PreferenceFragmentCompat instantiatePreferenceFragment() {
-        return (PreferenceFragmentCompat) Fragment.instantiate(context, preferenceFragment);
+        return (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(preferenceFragment);
     }
 
     private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {

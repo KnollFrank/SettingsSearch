@@ -11,7 +11,7 @@ import java.util.List;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
-class PreferenceScreensMerger {
+public class PreferenceScreensMerger {
 
     private final Context context;
 
