@@ -33,7 +33,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final String preferenceFragment) {
-        if (true/*!mergedPreferenceScreenByFragment.containsKey(preferenceFragment)*/) {
+        if (!mergedPreferenceScreenByFragment.containsKey(preferenceFragment)) {
             mergedPreferenceScreenByFragment.put(preferenceFragment, _getMergedPreferenceScreen(preferenceFragment));
         }
         return mergedPreferenceScreenByFragment.get(preferenceFragment);
