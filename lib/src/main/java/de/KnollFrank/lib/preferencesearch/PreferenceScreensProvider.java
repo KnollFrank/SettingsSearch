@@ -23,7 +23,7 @@ public class PreferenceScreensProvider {
     }
 
     public Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
-        this.preferenceScreenWithHostProvider.initialize(root);
+        this.preferenceScreenWithHostProvider.fragmentInitializer.initialize(root);
         return getConnectedPreferenceScreens(PreferenceScreenWithHost.fromPreferenceFragment(root));
     }
 

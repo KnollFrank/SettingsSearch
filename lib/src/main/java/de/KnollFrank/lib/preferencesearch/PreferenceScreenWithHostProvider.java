@@ -2,9 +2,7 @@ package de.KnollFrank.lib.preferencesearch;
 
 import android.content.Context;
 
-import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
@@ -12,37 +10,25 @@ import java.util.Optional;
 public class PreferenceScreenWithHostProvider {
 
     private final Context context;
-    private final FragmentManager fragmentManager;
-    private final @IdRes int containerResId;
+    public final FragmentInitializer fragmentInitializer;
 
     public PreferenceScreenWithHostProvider(final Context context,
-                                            final FragmentManager fragmentManager,
-                                            final @IdRes int containerResId) {
+                                            final FragmentInitializer fragmentInitializer) {
         this.context = context;
-        this.fragmentManager = fragmentManager;
-        this.containerResId = containerResId;
+        this.fragmentInitializer = fragmentInitializer;
     }
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment) {
-        return getPreferenceScreenOfFragment(Fragment.instantiate(this.context, fragment));
-    }
-
-    public void initialize(final Fragment fragment) {
-        this
-                .fragmentManager
-                .beginTransaction()
-                .replace(this.containerResId, fragment)
-                .commitNow();
-    }
-
-    private Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final Fragment fragment) {
-        return fragment instanceof PreferenceFragmentCompat ?
-                Optional.of(getPreferenceScreenOfFragment((PreferenceFragmentCompat) fragment)) :
+        final Fragment _fragment = instantiateAndInitialize(fragment);
+        return _fragment instanceof PreferenceFragmentCompat ?
+                Optional.of(PreferenceScreenWithHost.fromPreferenceFragment((PreferenceFragmentCompat) _fragment)) :
                 Optional.empty();
     }
 
-    private PreferenceScreenWithHost getPreferenceScreenOfFragment(final PreferenceFragmentCompat preferenceFragment) {
-        initialize(preferenceFragment);
-        return PreferenceScreenWithHost.fromPreferenceFragment(preferenceFragment);
+    // FK-TODO: move method to new class common.Fragments
+    private Fragment instantiateAndInitialize(final String fragment) {
+        final Fragment _fragment = Fragment.instantiate(context, fragment);
+        fragmentInitializer.initialize(_fragment);
+        return _fragment;
     }
 }

@@ -9,7 +9,8 @@ public class PreferenceScreenWithHostProviderFactory {
     public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final FragmentActivity activity) {
         return new PreferenceScreenWithHostProvider(
                 activity,
-                activity.getSupportFragmentManager(),
-                TestActivity.FRAGMENT_CONTAINER_VIEW);
+                new FragmentInitializer(
+                        activity.getSupportFragmentManager(),
+                        TestActivity.FRAGMENT_CONTAINER_VIEW));
     }
 }

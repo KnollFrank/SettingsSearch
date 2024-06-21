@@ -6,6 +6,7 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import de.KnollFrank.lib.preferencesearch.FragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
@@ -53,8 +54,9 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(
                                         requireActivity(),
-                                        getChildFragmentManager(),
-                                        R.id.dummyFragmentContainerView)),
+                                        new FragmentInitializer(
+                                                getChildFragmentManager(),
+                                                R.id.dummyFragmentContainerView))),
                         getContext());
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen();
     }
