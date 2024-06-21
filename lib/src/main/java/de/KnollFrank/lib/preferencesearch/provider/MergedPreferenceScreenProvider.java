@@ -49,7 +49,7 @@ public class MergedPreferenceScreenProvider {
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
         final Set<PreferenceScreenWithHost> screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
-        // MUST compute A (which just reads screens) before B (which destructs screens)
+        // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference = HostByPreferenceProvider.getHostByPreference(screens);
         // B:
