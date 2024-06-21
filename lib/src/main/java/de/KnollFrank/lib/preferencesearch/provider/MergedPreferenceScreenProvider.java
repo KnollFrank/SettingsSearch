@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
@@ -39,23 +40,23 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen _getMergedPreferenceScreen(final String preferenceFragment) {
-        final List<PreferenceScreenWithHost> screens = getPreferenceScreenWithHostList(preferenceFragment);
+        return getMergedPreferenceScreen(instantiateAndInitializeFragment(preferenceFragment));
+    }
+
+    private PreferenceFragmentCompat instantiateAndInitializeFragment(final String preferenceFragment) {
+        return (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(preferenceFragment);
+    }
+
+    private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
+        final Set<PreferenceScreenWithHost> screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
         // MUST compute A (which just reads screens) before B (which destructs screens)
         // A:
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference = HostByPreferenceProvider.getHostByPreference(screens);
         // B:
         final PreferenceScreen preferenceScreen =
                 preferenceScreensMerger.destructivelyMergeScreens(
-                        getPreferenceScreens(screens));
+                        getPreferenceScreens(new ArrayList<>(screens)));
         return new MergedPreferenceScreen(preferenceScreen, hostByPreference);
-    }
-
-    private List<PreferenceScreenWithHost> getPreferenceScreenWithHostList(final String preferenceFragment) {
-        return new ArrayList<>(preferenceScreensProvider.getConnectedPreferenceScreens(instantiatePreferenceFragment(preferenceFragment)));
-    }
-
-    private PreferenceFragmentCompat instantiatePreferenceFragment(final String preferenceFragment) {
-        return (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(preferenceFragment);
     }
 
     private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {

@@ -3,7 +3,7 @@ package de.KnollFrank.lib.preferencesearch.provider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,7 +14,7 @@ import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 class HostByPreferenceProvider {
 
-    public static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(final List<PreferenceScreenWithHost> preferenceScreenWithHostList) {
+    public static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(final Collection<PreferenceScreenWithHost> preferenceScreenWithHostList) {
         return Maps.merge(
                 preferenceScreenWithHostList
                         .stream()
