@@ -1,13 +1,11 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
-import android.util.TypedValue;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -15,6 +13,8 @@ import androidx.preference.PreferenceGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.threeten.bp.Duration;
+
+import de.KnollFrank.lib.preferencesearch.common.Attributes;
 
 class PreferenceHighlighter {
 
@@ -54,7 +54,7 @@ class PreferenceHighlighter {
                             final RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
                             if (holder != null) {
                                 final Drawable oldBackground = holder.itemView.getBackground();
-                                final int color = getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
+                                final @ColorInt int color = Attributes.getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
                                 holder.itemView.setBackgroundColor(color & 0xffffff | 0x33000000);
                                 new Handler().postDelayed(
                                         () -> holder.itemView.setBackgroundDrawable(oldBackground),
@@ -76,7 +76,7 @@ class PreferenceHighlighter {
         final Drawable oldIcon = preference.getIcon();
         final boolean oldSpaceReserved = preference.isIconSpaceReserved();
         final Drawable arrow = AppCompatResources.getDrawable(preferenceFragment.getContext(), R.drawable.searchpreference_ic_arrow_right);
-        final int color = getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
+        final @ColorInt int color = Attributes.getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
         arrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         preference.setIcon(arrow);
         preferenceFragment.scrollToPreference(preference);
@@ -86,24 +86,5 @@ class PreferenceHighlighter {
                     preference.setIconSpaceReserved(oldSpaceReserved);
                 },
                 highlightDuration.toMillis());
-    }
-
-    private static int getColorFromAttr(final Context context, final int attr) {
-        final TypedValue typedValue = getTypedValue(context, attr);
-        final TypedArray typedArray =
-                context.obtainStyledAttributes(
-                        typedValue.data,
-                        new int[]{android.R.attr.textColorPrimary});
-        final int color = typedArray.getColor(0, 0xff3F51B5);
-        typedArray.recycle();
-        return color;
-    }
-
-    private static TypedValue getTypedValue(final Context context, final int attr) {
-        final TypedValue typedValue = new TypedValue();
-        context
-                .getTheme()
-                .resolveAttribute(attr, typedValue, true);
-        return typedValue;
     }
 }

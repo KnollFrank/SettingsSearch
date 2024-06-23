@@ -1,13 +1,19 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 
 import androidx.preference.PreferenceScreen;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
+import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.R;
 
@@ -59,11 +65,35 @@ class PreferenceMatchesHighlighter {
                                              final String str,
                                              final Context context) {
         final SpannableString spannable = new SpannableString(str);
-        spannable.setSpan(
-                new TextAppearanceSpan(context, R.style.SearchPreferenceResultTextAppearance),
-                preferenceMatch.indexRange.startIndexInclusive,
-                preferenceMatch.indexRange.endIndexExclusive,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // FK-TODO: make List<Object> markups a parameter
+        PreferenceMatchesHighlighter
+                .getMarkups(context)
+                .forEach(
+                        markup ->
+                                spannable.setSpan(
+                                        markup,
+                                        preferenceMatch.indexRange.startIndexInclusive,
+                                        preferenceMatch.indexRange.endIndexExclusive,
+                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE));
         return spannable;
+    }
+
+    private static List<Object> getMarkups(final Context context) {
+        final ImmutableList.Builder<Object> markupsBuilder = ImmutableList.builder();
+        markupsBuilder.add(new TextAppearanceSpan(context, R.style.SearchPreferenceResultTextAppearance));
+        PreferenceMatchesHighlighter
+                .getBackgroundColor(context)
+                .map(BackgroundColorSpan::new)
+                .ifPresent(markupsBuilder::add);
+        return markupsBuilder.build();
+    }
+
+    private static Optional<Integer> getBackgroundColor(final Context context) {
+        try (final TypedArray typedArray = context.obtainStyledAttributes(R.style.SearchPreferenceResultBackgroundColor, R.styleable.SearchPreferenceResultBackgroundColor)) {
+            final int backgroundColorAttr = R.styleable.SearchPreferenceResultBackgroundColor_backgroundColor;
+            return typedArray.hasValue(backgroundColorAttr) ?
+                    Optional.of(typedArray.getColor(backgroundColorAttr, Color.GREEN)) :
+                    Optional.empty();
+        }
     }
 }

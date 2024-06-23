@@ -18,8 +18,12 @@
     </style>
 
     <style name="SearchPreferenceResultTextAppearance" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textStyle">bold|italic</item>
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:typeface">normal</item>
+    </style>
+
+    <style name="SearchPreferenceResultBackgroundColor">
+        <item name="backgroundColor">@color/backgroundColor</item>
     </style>
 </resources>
