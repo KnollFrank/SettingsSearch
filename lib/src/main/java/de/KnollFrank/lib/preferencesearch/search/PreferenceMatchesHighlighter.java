@@ -27,58 +27,65 @@ class PreferenceMatchesHighlighter {
     }
 
     private static void highlight(final List<PreferenceMatch> preferenceMatches, final Context context) {
-        preferenceMatches.forEach(preferenceMatch -> highlight(preferenceMatch, context));
+        final List<Object> markups = createMarkups(context);
+        for (final PreferenceMatch preferenceMatch : preferenceMatches) {
+            highlight(preferenceMatch, markups);
+        }
     }
 
-    private static void highlight(final PreferenceMatch preferenceMatch, final Context context) {
+    private static void highlight(final PreferenceMatch preferenceMatch, final List<Object> markups) {
         switch (preferenceMatch.type) {
             case TITLE: {
-                setTitle(preferenceMatch, context);
+                setTitle(preferenceMatch, markups);
                 break;
             }
             case SUMMARY: {
-                setSummary(preferenceMatch, context);
+                setSummary(preferenceMatch, markups);
                 break;
             }
         }
     }
 
-    private static void setTitle(final PreferenceMatch preferenceMatch, final Context context) {
+    private static void setTitle(final PreferenceMatch preferenceMatch, final List<Object> markups) {
         PreferenceAttributes.setTitle(
                 preferenceMatch.preference,
-                createSpannable(
-                        preferenceMatch,
+                createSpannableFromStrAndApplyMarkupsToIndexRange(
                         preferenceMatch.preference.getTitle().toString(),
-                        context));
+                        markups,
+                        preferenceMatch.indexRange));
     }
 
-    private static void setSummary(final PreferenceMatch preferenceMatch, final Context context) {
+    private static void setSummary(final PreferenceMatch preferenceMatch, final List<Object> markups) {
         PreferenceAttributes.setSummary(
                 preferenceMatch.preference,
-                createSpannable(
-                        preferenceMatch,
+                createSpannableFromStrAndApplyMarkupsToIndexRange(
                         preferenceMatch.preference.getSummary().toString(),
-                        context));
+                        markups,
+                        preferenceMatch.indexRange));
     }
 
-    private static Spannable createSpannable(final PreferenceMatch preferenceMatch,
-                                             final String str,
-                                             final Context context) {
+    private static Spannable createSpannableFromStrAndApplyMarkupsToIndexRange(
+            final String str,
+            final List<Object> markups,
+            final IndexRange indexRange) {
         final SpannableString spannable = new SpannableString(str);
-        // FK-TODO: make List<Object> markups a parameter
-        PreferenceMatchesHighlighter
-                .getMarkups(context)
-                .forEach(
-                        markup ->
-                                spannable.setSpan(
-                                        markup,
-                                        preferenceMatch.indexRange.startIndexInclusive,
-                                        preferenceMatch.indexRange.endIndexExclusive,
-                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE));
+        applyMarkupsToIndexRange(spannable, markups, indexRange);
         return spannable;
     }
 
-    private static List<Object> getMarkups(final Context context) {
+    private static void applyMarkupsToIndexRange(final SpannableString spannable,
+                                                 final List<Object> markups,
+                                                 final IndexRange indexRange) {
+        for (final Object markup : markups) {
+            spannable.setSpan(
+                    markup,
+                    indexRange.startIndexInclusive,
+                    indexRange.endIndexExclusive,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    private static List<Object> createMarkups(final Context context) {
         final ImmutableList.Builder<Object> markupsBuilder = ImmutableList.builder();
         markupsBuilder.add(new TextAppearanceSpan(context, R.style.SearchPreferenceResultTextAppearance));
         PreferenceMatchesHighlighter
