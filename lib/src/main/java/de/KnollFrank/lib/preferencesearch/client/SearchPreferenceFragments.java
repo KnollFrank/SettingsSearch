@@ -23,15 +23,15 @@ public class SearchPreferenceFragments {
     }
 
     public void showSearchPreferenceFragment() {
-        show(SearchPreferenceFragment.newInstance(this.searchConfiguration, fragmentFactory));
+        show(SearchPreferenceFragment.newInstance(searchConfiguration, fragmentFactory));
     }
 
     private void show(final Fragment fragment) {
         Navigation.show(
                 fragment,
                 true,
-                this.fragmentManager,
-                this.searchConfiguration.fragmentContainerViewId,
+                fragmentManager,
+                searchConfiguration.fragmentContainerViewId,
                 Commit.COMMIT_ASYNC);
     }
 }
