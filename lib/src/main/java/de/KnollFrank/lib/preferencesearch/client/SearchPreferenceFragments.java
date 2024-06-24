@@ -3,9 +3,9 @@ package de.KnollFrank.lib.preferencesearch.client;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import de.KnollFrank.lib.preferencesearch.Commit;
-import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.fragment.IFragmentFactory;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
 
 public class SearchPreferenceFragments {
@@ -32,6 +32,6 @@ public class SearchPreferenceFragments {
                 true,
                 this.fragmentManager,
                 this.searchConfiguration.fragmentContainerViewId,
-                Commit.COMMIT);
+                Commit.COMMIT_ASYNC);
     }
 }

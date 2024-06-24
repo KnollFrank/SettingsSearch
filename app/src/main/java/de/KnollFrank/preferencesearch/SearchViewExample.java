@@ -11,11 +11,11 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.preferencesearch.Commit;
-import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 
 // FK-TODO: README.md anpassen
 public class SearchViewExample extends AppCompatActivity {
@@ -32,7 +32,7 @@ public class SearchViewExample extends AppCompatActivity {
                     false,
                     getSupportFragmentManager(),
                     FRAGMENT_CONTAINER_VIEW,
-                    Commit.COMMIT);
+                    Commit.COMMIT_ASYNC);
         }
     }
 

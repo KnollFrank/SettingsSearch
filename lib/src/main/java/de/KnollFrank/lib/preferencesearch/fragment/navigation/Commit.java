@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.fragment.navigation;
 
 import androidx.fragment.app.FragmentTransaction;
 
@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 public enum Commit {
 
-    COMMIT(FragmentTransaction::commit),
+    COMMIT_ASYNC(FragmentTransaction::commit),
     COMMIT_NOW(FragmentTransaction::commitNow);
 
     private final Consumer<FragmentTransaction> commit;

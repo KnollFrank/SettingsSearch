@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.results;
 
+import static de.KnollFrank.lib.preferencesearch.BaseSearchPreferenceFragment.KEY_OF_PREFERENCE_2_HIGHLIGHT;
 import static de.KnollFrank.lib.preferencesearch.results.PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch;
 
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -14,7 +16,8 @@ import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.preferencesearch.Navigation;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
@@ -61,13 +64,27 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         this
                 .mergedPreferenceScreen
                 .findHostByPreference(preference)
-                .ifPresent(
-                        host ->
-                                Navigation.showPreferenceScreenAndHighlightPreference(
-                                        host,
-                                        preference.getKey(),
-                                        getActivity(),
-                                        this.fragmentContainerViewId));
+                .ifPresent(host -> showPreferenceScreenAndHighlightPreference(host, preference));
+    }
+
+    private void showPreferenceScreenAndHighlightPreference(
+            final Class<? extends PreferenceFragmentCompat> fragmentOfPreferenceScreen,
+            final Preference preference2Highlight) {
+        Navigation.show(
+                Fragment.instantiate(
+                        getActivity(),
+                        fragmentOfPreferenceScreen.getName(),
+                        createArguments(preference2Highlight.getKey())),
+                true,
+                getActivity().getSupportFragmentManager(),
+                this.fragmentContainerViewId,
+                Commit.COMMIT_ASYNC);
+    }
+
+    private static Bundle createArguments(final String keyOfPreference2Highlight) {
+        final Bundle arguments = new Bundle();
+        arguments.putString(KEY_OF_PREFERENCE_2_HIGHLIGHT, keyOfPreference2Highlight);
+        return arguments;
     }
 
     private class Factory {

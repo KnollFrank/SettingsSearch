@@ -6,9 +6,7 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import de.KnollFrank.lib.preferencesearch.Commit;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.R;
@@ -20,6 +18,8 @@ import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.IFragmentFactory;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
