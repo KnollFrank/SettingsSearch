@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 
@@ -47,7 +48,8 @@ public class SearchViewExample extends AppCompatActivity {
             final SearchPreferenceFragments searchPreferenceFragments =
                     new SearchPreferenceFragments(
                             createSearchConfiguration(PrefsFragmentFirst.class),
-                            getSupportFragmentManager());
+                            getSupportFragmentManager(),
+                            new DefaultFragmentFactory());
             searchPreferenceFragments.showSearchPreferenceFragment();
             return true;
         }

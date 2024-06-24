@@ -3,7 +3,6 @@ package de.KnollFrank.lib.preferencesearch.client;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
@@ -14,11 +13,6 @@ public class SearchPreferenceFragments {
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
     private final FragmentFactory fragmentFactory;
-
-    public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
-                                     final FragmentManager fragmentManager) {
-        this(searchConfiguration, fragmentManager, new DefaultFragmentFactory());
-    }
 
     public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
                                      final FragmentManager fragmentManager,
