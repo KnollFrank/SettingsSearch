@@ -19,7 +19,7 @@ public class Fragments {
     }
 
     public Fragment instantiateAndInitializeFragment(final String fragmentClassName) {
-        final Fragment _fragment = fragmentFactory.instantiate(context, fragmentClassName);
+        final Fragment _fragment = fragmentFactory.instantiate(fragmentClassName, context);
         fragmentInitializer.initialize(_fragment);
         return _fragment;
     }

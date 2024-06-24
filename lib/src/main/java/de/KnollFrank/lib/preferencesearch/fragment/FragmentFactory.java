@@ -7,5 +7,5 @@ import androidx.fragment.app.Fragment;
 @FunctionalInterface
 public interface FragmentFactory {
 
-    Fragment instantiate(Context context, String fragmentClassName);
+    Fragment instantiate(String fragmentClassName, Context context);
 }

@@ -14,6 +14,7 @@ import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
@@ -41,7 +42,7 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     public SearchPreferenceFragment() {
-        this(Fragment::instantiate);
+        this(new DefaultFragmentFactory());
     }
 
     @Override
