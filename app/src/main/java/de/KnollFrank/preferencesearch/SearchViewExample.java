@@ -15,6 +15,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProviderListener;
 
 // FK-TODO: README.md anpassen
@@ -61,8 +62,8 @@ public class SearchViewExample extends AppCompatActivity {
                         public void onFinishGetMergedPreferenceScreen(final String preferenceFragment) {
                             Log.i(this.getClass().getName(), String.format("onFinishGetMergedPreferenceScreen(%s)", preferenceFragment));
                         }
-                    }
-            );
+                    },
+                    new FragmentFactory());
             return true;
         }
         return super.onOptionsItemSelected(item);
