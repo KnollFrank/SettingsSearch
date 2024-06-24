@@ -47,8 +47,9 @@ public class SearchViewExample extends AppCompatActivity {
             final SearchPreferenceFragments searchPreferenceFragments =
                     new SearchPreferenceFragments(
                             createSearchConfiguration(PrefsFragmentFirst.class),
-                            getSupportFragmentManager());
-            searchPreferenceFragments.showSearchPreferenceFragment(new FragmentFactory());
+                            getSupportFragmentManager(),
+                            new FragmentFactory());
+            searchPreferenceFragments.showSearchPreferenceFragment();
             return true;
         }
         return super.onOptionsItemSelected(item);
