@@ -31,6 +31,7 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
+import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProviderListener;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
@@ -105,7 +106,17 @@ public class PreferenceSearcherTest {
                 new MergedPreferenceScreenProvider(
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
-                        new PreferenceScreensMerger(fragmentActivity));
+                        new PreferenceScreensMerger(fragmentActivity),
+                        new MergedPreferenceScreenProviderListener() {
+
+                            @Override
+                            public void onStartGetMergedPreferenceScreen(final String preferenceFragment) {
+                            }
+
+                            @Override
+                            public void onFinishGetMergedPreferenceScreen(final String preferenceFragment) {
+                            }
+                        });
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceScreen.getName());
     }
 
