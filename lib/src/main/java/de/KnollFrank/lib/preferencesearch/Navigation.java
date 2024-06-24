@@ -11,8 +11,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceFragmentCompat;
 
+// FK-TODO: move Navigation and Commit to package common.fragment.navigation
 public class Navigation {
 
+    // FK-TODO: move to caller class
     public static void showPreferenceScreenAndHighlightPreference(
             final Class<? extends PreferenceFragmentCompat> fragmentOfPreferenceScreen,
             final String keyOfPreference2Highlight,
@@ -26,15 +28,14 @@ public class Navigation {
                 true,
                 fragmentActivity.getSupportFragmentManager(),
                 containerViewId,
-                false);
+                Commit.COMMIT);
     }
 
     public static void show(final Fragment fragment,
                             final boolean addToBackStack,
                             final FragmentManager fragmentManager,
                             final @IdRes int containerViewId,
-                            // FK-TODO: replace boolean with enum
-                            final boolean commitNow) {
+                            final Commit commit) {
         final FragmentTransaction fragmentTransaction =
                 fragmentManager
                         .beginTransaction()
@@ -43,11 +44,7 @@ public class Navigation {
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }
-        if (commitNow) {
-            fragmentTransaction.commitNow();
-        } else {
-            fragmentTransaction.commit();
-        }
+        commit.commit(fragmentTransaction);
     }
 
     private static Bundle createArguments(final String keyOfPreference2Highlight) {
