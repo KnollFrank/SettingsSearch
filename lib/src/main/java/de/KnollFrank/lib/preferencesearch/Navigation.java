@@ -33,6 +33,7 @@ public class Navigation {
                             final boolean addToBackStack,
                             final FragmentManager fragmentManager,
                             final @IdRes int containerViewId,
+                            // FK-TODO: replace boolean with enum
                             final boolean commitNow) {
         final FragmentTransaction fragmentTransaction =
                 fragmentManager

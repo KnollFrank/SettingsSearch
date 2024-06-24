@@ -3,6 +3,7 @@ package de.KnollFrank.lib.preferencesearch.client;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.fragment.IFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
 
@@ -25,15 +26,11 @@ public class SearchPreferenceFragments {
     }
 
     private void show(final Fragment fragment) {
-        this
-                .fragmentManager
-                .beginTransaction()
-                .replace(
-                        this.searchConfiguration.fragmentContainerViewId,
-                        fragment,
-                        fragment.getClass().getName())
-                .addToBackStack(null)
-                .setReorderingAllowed(true)
-                .commit();
+        Navigation.show(
+                fragment,
+                true,
+                this.fragmentManager,
+                this.searchConfiguration.fragmentContainerViewId,
+                false);
     }
 }
