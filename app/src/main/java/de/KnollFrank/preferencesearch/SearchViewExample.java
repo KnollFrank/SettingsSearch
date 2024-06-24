@@ -45,15 +45,17 @@ public class SearchViewExample extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         if (item.getItemId() == R.id.search_action) {
-            final SearchPreferenceFragments searchPreferenceFragments =
-                    new SearchPreferenceFragments(
-                            createSearchConfiguration(PrefsFragmentFirst.class),
-                            getSupportFragmentManager(),
-                            new DefaultFragmentFactory());
-            searchPreferenceFragments.showSearchPreferenceFragment();
+            createSearchPreferenceFragments().showSearchPreferenceFragment();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private SearchPreferenceFragments createSearchPreferenceFragments() {
+        return new SearchPreferenceFragments(
+                createSearchConfiguration(PrefsFragmentFirst.class),
+                getSupportFragmentManager(),
+                new DefaultFragmentFactory());
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
