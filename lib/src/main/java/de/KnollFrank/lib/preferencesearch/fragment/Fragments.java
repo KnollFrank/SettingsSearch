@@ -6,11 +6,11 @@ import androidx.fragment.app.Fragment;
 
 public class Fragments {
 
-    private final IFragmentFactory fragmentFactory;
+    private final FragmentFactory fragmentFactory;
     private final FragmentInitializer fragmentInitializer;
     private final Context context;
 
-    public Fragments(final IFragmentFactory fragmentFactory,
+    public Fragments(final FragmentFactory fragmentFactory,
                      final FragmentInitializer fragmentInitializer,
                      final Context context) {
         this.fragmentFactory = fragmentFactory;

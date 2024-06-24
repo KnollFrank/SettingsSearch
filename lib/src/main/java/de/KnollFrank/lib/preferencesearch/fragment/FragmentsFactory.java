@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class FragmentsFactory {
 
-    public static Fragments createFragments(final IFragmentFactory fragmentFactory,
+    public static Fragments createFragments(final FragmentFactory fragmentFactory,
                                             final Context context,
                                             final FragmentManager fragmentManager,
                                             final @IdRes int containerViewId) {

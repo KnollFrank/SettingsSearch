@@ -4,10 +4,8 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
-public class FragmentFactory implements IFragmentFactory {
+@FunctionalInterface
+public interface FragmentFactory {
 
-    @Override
-    public Fragment instantiate(final Context context, final String fragmentClassName) {
-        return Fragment.instantiate(context, fragmentClassName);
-    }
+    Fragment instantiate(Context context, String fragmentClassName);
 }

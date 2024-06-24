@@ -17,7 +17,6 @@ import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
-import de.KnollFrank.lib.preferencesearch.fragment.IFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
@@ -26,23 +25,23 @@ import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragmen
 
 public class SearchPreferenceFragment extends Fragment {
 
-    private final IFragmentFactory fragmentFactory;
+    private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
 
     public static SearchPreferenceFragment newInstance(final SearchConfiguration searchConfiguration,
-                                                       final IFragmentFactory fragmentFactory) {
+                                                       final FragmentFactory fragmentFactory) {
         final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment(fragmentFactory);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
 
-    public SearchPreferenceFragment(final IFragmentFactory fragmentFactory) {
+    public SearchPreferenceFragment(final FragmentFactory fragmentFactory) {
         super(R.layout.searchpreference_fragment);
         this.fragmentFactory = fragmentFactory;
     }
 
     public SearchPreferenceFragment() {
-        this(new FragmentFactory());
+        this(Fragment::instantiate);
     }
 
     @Override
