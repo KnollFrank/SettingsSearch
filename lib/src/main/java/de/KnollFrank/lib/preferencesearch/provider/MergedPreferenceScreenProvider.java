@@ -21,18 +21,15 @@ public class MergedPreferenceScreenProvider {
     private final Fragments fragments;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
-    private final MergedPreferenceScreenProviderListener mergedPreferenceScreenProviderListener;
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
 
     public MergedPreferenceScreenProvider(final Fragments fragments,
                                           final PreferenceScreensProvider preferenceScreensProvider,
-                                          final PreferenceScreensMerger preferenceScreensMerger,
-                                          final MergedPreferenceScreenProviderListener mergedPreferenceScreenProviderListener) {
+                                          final PreferenceScreensMerger preferenceScreensMerger) {
         this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
-        this.mergedPreferenceScreenProviderListener = mergedPreferenceScreenProviderListener;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final String preferenceFragment) {
@@ -43,10 +40,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen _getMergedPreferenceScreen(final String preferenceFragment) {
-        mergedPreferenceScreenProviderListener.onStartGetMergedPreferenceScreen(preferenceFragment);
-        final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen(instantiateAndInitializeFragment(preferenceFragment));
-        mergedPreferenceScreenProviderListener.onFinishGetMergedPreferenceScreen(preferenceFragment);
-        return mergedPreferenceScreen;
+        return getMergedPreferenceScreen(instantiateAndInitializeFragment(preferenceFragment));
     }
 
     private PreferenceFragmentCompat instantiateAndInitializeFragment(final String preferenceFragment) {

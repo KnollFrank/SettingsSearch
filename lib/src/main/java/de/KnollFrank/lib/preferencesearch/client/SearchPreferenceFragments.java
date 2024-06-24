@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import de.KnollFrank.lib.preferencesearch.fragment.IFragmentFactory;
-import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProviderListener;
 import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
 
 public class SearchPreferenceFragments {
@@ -18,9 +17,8 @@ public class SearchPreferenceFragments {
         this.fragmentManager = fragmentManager;
     }
 
-    public void showSearchPreferenceFragment(final MergedPreferenceScreenProviderListener mergedPreferenceScreenProviderListener,
-                                             final IFragmentFactory fragmentFactory) {
-        show(SearchPreferenceFragment.newInstance(this.searchConfiguration, mergedPreferenceScreenProviderListener, fragmentFactory));
+    public void showSearchPreferenceFragment(final IFragmentFactory fragmentFactory) {
+        show(SearchPreferenceFragment.newInstance(this.searchConfiguration, fragmentFactory));
     }
 
     private void show(final Fragment fragment) {

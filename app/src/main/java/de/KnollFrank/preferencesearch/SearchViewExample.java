@@ -1,7 +1,6 @@
 package de.KnollFrank.preferencesearch;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,7 +15,6 @@ import de.KnollFrank.lib.preferencesearch.Navigation;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProviderListener;
 
 // FK-TODO: README.md anpassen
 public class SearchViewExample extends AppCompatActivity {
@@ -50,20 +48,7 @@ public class SearchViewExample extends AppCompatActivity {
                     new SearchPreferenceFragments(
                             createSearchConfiguration(PrefsFragmentFirst.class),
                             getSupportFragmentManager());
-            searchPreferenceFragments.showSearchPreferenceFragment(
-                    new MergedPreferenceScreenProviderListener() {
-
-                        @Override
-                        public void onStartGetMergedPreferenceScreen(final String preferenceFragment) {
-                            Log.i(this.getClass().getName(), String.format("onStartGetMergedPreferenceScreen(%s)", preferenceFragment));
-                        }
-
-                        @Override
-                        public void onFinishGetMergedPreferenceScreen(final String preferenceFragment) {
-                            Log.i(this.getClass().getName(), String.format("onFinishGetMergedPreferenceScreen(%s)", preferenceFragment));
-                        }
-                    },
-                    new FragmentFactory());
+            searchPreferenceFragments.showSearchPreferenceFragment(new FragmentFactory());
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -20,45 +20,28 @@ import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.IFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
-import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProviderListener;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 
 public class SearchPreferenceFragment extends Fragment {
 
-    private final MergedPreferenceScreenProviderListener mergedPreferenceScreenProviderListener;
     private final IFragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
 
     public static SearchPreferenceFragment newInstance(final SearchConfiguration searchConfiguration,
-                                                       // FK-TODO: delete MergedPreferenceScreenProviderListener
-                                                       final MergedPreferenceScreenProviderListener mergedPreferenceScreenProviderListener,
                                                        final IFragmentFactory fragmentFactory) {
-        final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment(mergedPreferenceScreenProviderListener, fragmentFactory);
+        final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment(fragmentFactory);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
 
-    public SearchPreferenceFragment(final MergedPreferenceScreenProviderListener mergedPreferenceScreenProviderListener,
-                                    final IFragmentFactory fragmentFactory) {
+    public SearchPreferenceFragment(final IFragmentFactory fragmentFactory) {
         super(R.layout.searchpreference_fragment);
-        this.mergedPreferenceScreenProviderListener = mergedPreferenceScreenProviderListener;
         this.fragmentFactory = fragmentFactory;
     }
 
     public SearchPreferenceFragment() {
-        this(
-                new MergedPreferenceScreenProviderListener() {
-
-                    @Override
-                    public void onStartGetMergedPreferenceScreen(final String preferenceFragment) {
-                    }
-
-                    @Override
-                    public void onFinishGetMergedPreferenceScreen(final String preferenceFragment) {
-                    }
-                },
-                new FragmentFactory());
+        this(new FragmentFactory());
     }
 
     @Override
@@ -86,8 +69,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new MergedPreferenceScreenProvider(
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
-                        new PreferenceScreensMerger(getContext()),
-                        mergedPreferenceScreenProviderListener);
+                        new PreferenceScreensMerger(getContext()));
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }
 
