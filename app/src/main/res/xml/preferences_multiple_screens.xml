@@ -32,10 +32,17 @@
     <PreferenceCategory
         android:key="key of PreferenceCategory"
         android:title="This is a preference category">
+
         <CheckBoxPreference
             android:key="checkbox2"
             android:summary="This is a checkbox preference inside a category"
             android:title="Checkbox in category" />
+
+        <CheckBoxPreference
+            android:key="keyOfInvisiblePreference"
+            android:summary="summary of invisible preference"
+            android:title="title of invisible preference"
+            app:isPreferenceVisible="false"/>
     </PreferenceCategory>
 
     <PreferenceScreen
