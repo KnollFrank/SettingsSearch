@@ -83,7 +83,7 @@ public class SearchViewExampleTest {
                 withParent(
                         allOf(
                                 withId(android.R.id.list_container),
-                                withParent(IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class)))),
+                                withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout.class)))),
                 isDisplayed());
     }
 
