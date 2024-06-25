@@ -48,15 +48,30 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
-        final Set<PreferenceScreenWithHost> screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
+        final Set<PreferenceScreenWithHost> screens = getConnectedPreferenceScreens(preferenceFragment);
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
-        final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference = HostByPreferenceProvider.getHostByPreference(screens);
+        final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
+                HostByPreferenceProvider.getHostByPreference(screens);
         // B:
-        final PreferenceScreen preferenceScreen =
-                preferenceScreensMerger.destructivelyMergeScreens(
-                        getPreferenceScreens(new ArrayList<>(screens)));
+        final PreferenceScreen preferenceScreen = destructivelyMergeScreens(screens);
         return new MergedPreferenceScreen(preferenceScreen, hostByPreference);
+    }
+
+    private Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {
+        final Set<PreferenceScreenWithHost> screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
+        removeInvisiblePreferences(screens);
+        return screens;
+    }
+
+    private static void removeInvisiblePreferences(final Set<PreferenceScreenWithHost> screens) {
+        for (final PreferenceScreenWithHost screen : screens) {
+            PreferencesRemover.removeInvisiblePreferences(screen.preferenceScreen);
+        }
+    }
+
+    private PreferenceScreen destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {
+        return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
     }
 
     private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {
