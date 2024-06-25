@@ -42,14 +42,14 @@ public class SearchViewExampleTest {
     public void shouldSearchAndFindPreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("fourth"), closeSoftKeyboard());
-        onView(recyclerView()).check(matches(recyclerViewHasItem(hasDescendant(withText("Checkbox fourth file")))));
+        onView(recyclerView()).check(matches(hasSearchResultWithText("Checkbox fourth file")));
     }
 
     @Test
     public void shouldSearchAndNotFindInvisiblePreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("invisible"), closeSoftKeyboard());
-        onView(recyclerView()).check(matches(not(recyclerViewHasItem(hasDescendant(withText("title of invisible preference"))))));
+        onView(recyclerView()).check(matches(not(hasSearchResultWithText("title of invisible preference"))));
     }
 
     private static Matcher<View> searchButton() {
@@ -85,5 +85,9 @@ public class SearchViewExampleTest {
                                 withId(android.R.id.list_container),
                                 withParent(IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class)))),
                 isDisplayed());
+    }
+
+    private static Matcher<View> hasSearchResultWithText(final String text) {
+        return recyclerViewHasItem(hasDescendant(withText(text)));
     }
 }
