@@ -17,7 +17,6 @@ import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 
-// FK-FIXME: suche in OsmAnd nach der Preference "display language" und klicke sie im Suchergebnis an. Daraufhin wird zwar der PreferenceScreen geladen, die Preference aber nicht angezeigt. Vielleicht ist sie unsichtbar und sollte deswegen auch in der Suche nicht erscheinen?
 // FK-TODO: README.md anpassen
 public class SearchViewExample extends AppCompatActivity {
 

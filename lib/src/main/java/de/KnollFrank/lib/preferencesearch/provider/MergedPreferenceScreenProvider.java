@@ -65,9 +65,10 @@ public class MergedPreferenceScreenProvider {
     }
 
     private static void removeInvisiblePreferences(final Set<PreferenceScreenWithHost> screens) {
-        for (final PreferenceScreenWithHost screen : screens) {
-            PreferencesRemover.removeInvisiblePreferences(screen.preferenceScreen);
-        }
+        screens
+                .stream()
+                .map(screen -> screen.preferenceScreen)
+                .forEach(PreferencesRemover::removeInvisiblePreferences);
     }
 
     private PreferenceScreen destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {
