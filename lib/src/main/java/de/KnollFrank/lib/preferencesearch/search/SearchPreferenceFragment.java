@@ -54,12 +54,12 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        final MergedPreferenceScreen mergedPreferenceScreen = geMergedPreferenceScreen();
+        final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen();
         showSearchResultsPreferenceFragment(mergedPreferenceScreen);
         configureSearchView(mergedPreferenceScreen);
     }
 
-    private MergedPreferenceScreen geMergedPreferenceScreen() {
+    private MergedPreferenceScreen getMergedPreferenceScreen() {
         final Fragments fragments =
                 FragmentsFactory.createFragments(
                         fragmentFactory,
