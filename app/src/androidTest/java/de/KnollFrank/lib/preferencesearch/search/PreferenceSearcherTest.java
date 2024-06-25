@@ -99,7 +99,8 @@ public class PreferenceSearcherTest {
         }
     }
 
-    private static List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
+    private static List<Preference> getPreferences(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
+                                                   final TestActivity fragmentActivity) {
         final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen(preferenceScreen, fragmentActivity);
         return Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen);
     }
