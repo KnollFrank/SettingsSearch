@@ -48,30 +48,35 @@ public class PreferenceSearcherTest {
 
     @Test
     public void shouldSearchAndFind() {
-        final String keyword = "fourth";
+        final String keyword = PrefsFragment.SEARCH_QUERY_FOR_SOME_PREFERENCE;
         testSearch(PrefsFragment.class, keyword, hasItem(containsString(keyword)));
     }
 
     @Test
     public void shouldSearchAndNotFind() {
-        final String keyword = "non_existing_keyword";
+        final String keyword = PrefsFragment.SEARCH_QUERY_FOR_SOME_NON_EXISTING_PREFERENCE;
         testSearch(PrefsFragment.class, keyword, not(hasItem(containsString(keyword))));
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {
 
+        public static final String SEARCH_QUERY_FOR_SOME_PREFERENCE = "fourth";
+        public static final String SEARCH_QUERY_FOR_SOME_NON_EXISTING_PREFERENCE = "non_existing_keyword";
+
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            screen.addPreference(createPreference(context));
+            setPreferenceScreen(screen);
+        }
 
+        private static Preference createPreference(final Context context) {
             final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(context);
             checkBoxPreference.setKey("fourthfile");
-            checkBoxPreference.setSummary("This checkbox is a preference coming from a fourth file");
-            checkBoxPreference.setTitle("Checkbox fourth file");
-
-            screen.addPreference(checkBoxPreference);
-            setPreferenceScreen(screen);
+            checkBoxPreference.setSummary(String.format("This checkbox is a preference coming from a %s file", SEARCH_QUERY_FOR_SOME_PREFERENCE));
+            checkBoxPreference.setTitle(String.format("Checkbox %s file", SEARCH_QUERY_FOR_SOME_PREFERENCE));
+            return checkBoxPreference;
         }
     }
 
@@ -99,7 +104,8 @@ public class PreferenceSearcherTest {
         return Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen);
     }
 
-    private static MergedPreferenceScreen getMergedPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen, final TestActivity fragmentActivity) {
+    private static MergedPreferenceScreen getMergedPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
+                                                                    final TestActivity fragmentActivity) {
         final Fragments fragments = FragmentsFactory.createFragments(fragmentActivity);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
