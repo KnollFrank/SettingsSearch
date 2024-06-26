@@ -5,6 +5,7 @@ import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.get
 
 import android.text.TextUtils;
 
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
 import java.util.Collections;
@@ -26,7 +27,8 @@ class PreferenceMatcher {
         }
         return Lists.concat(
                 getTitlePreferenceMatches(haystack, needle),
-                getSummaryPreferenceMatch(haystack, needle));
+                getSummaryPreferenceMatch(haystack, needle),
+                getListPreferenceEntryMatches(haystack, needle));
     }
 
     private static List<PreferenceMatch> getTitlePreferenceMatches(final Preference haystack,
@@ -45,7 +47,15 @@ class PreferenceMatcher {
                 indexRange -> new PreferenceMatch(haystack, Type.SUMMARY, indexRange));
     }
 
-    private static List<PreferenceMatch> getPreferenceMatches(
+    private static List<PreferenceMatch> getListPreferenceEntryMatches(final Preference haystack,
+                                                                       final String needle) {
+        if (!(haystack instanceof ListPreference)) {
+            return Collections.emptyList();
+        }
+        return ListPreferenceEntryMatcher.getEntryMatches((ListPreference) haystack, needle);
+    }
+
+    static List<PreferenceMatch> getPreferenceMatches(
             final Optional<String> haystack,
             final String needle,
             final Function<IndexRange, PreferenceMatch> createPreferenceMatch) {

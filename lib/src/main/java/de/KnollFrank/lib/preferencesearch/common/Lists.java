@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.common;
 
-import com.google.common.collect.ImmutableList;
-
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +13,7 @@ public class Lists {
                 .collect(Collectors.toList());
     }
 
-    public static <T> List<T> concat(final List<T> list1, final List<T> list2) {
-        return concat(ImmutableList.of(list1, list2));
+    public static <T> List<T> concat(final List<T>... lists) {
+        return concat(Arrays.asList(lists));
     }
 }

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import androidx.preference.CheckBoxPreference;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -53,6 +54,12 @@ public class PreferenceSearcherTest {
     }
 
     @Test
+    public void shouldSearchAndFindListPreference() {
+        final String keyword = PrefsFragment.SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_LIST_PREFERENCE;
+        testSearch(PrefsFragment.class, keyword, hasItem(containsString("List preference")));
+    }
+
+    @Test
     public void shouldSearchAndNotFind() {
         final String keyword = PrefsFragment.SEARCH_QUERY_FOR_SOME_NON_EXISTING_PREFERENCE;
         testSearch(PrefsFragment.class, keyword, not(hasItem(containsString(keyword))));
@@ -62,21 +69,33 @@ public class PreferenceSearcherTest {
 
         public static final String SEARCH_QUERY_FOR_SOME_PREFERENCE = "fourth";
         public static final String SEARCH_QUERY_FOR_SOME_NON_EXISTING_PREFERENCE = "non_existing_keyword";
+        public static final String SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_LIST_PREFERENCE = "entry of some Listpreference";
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
             screen.addPreference(createPreference(context));
+            screen.addPreference(createListPreference(context));
             setPreferenceScreen(screen);
         }
 
+        // FK-TODO: allow to create a Preference within test methods via a callback of type Context -> Preference
         private static Preference createPreference(final Context context) {
             final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(context);
             checkBoxPreference.setKey("fourthfile");
             checkBoxPreference.setSummary(String.format("This checkbox is a preference coming from a %s file", SEARCH_QUERY_FOR_SOME_PREFERENCE));
             checkBoxPreference.setTitle(String.format("Checkbox %s file", SEARCH_QUERY_FOR_SOME_PREFERENCE));
             return checkBoxPreference;
+        }
+
+        private static Preference createListPreference(final Context context) {
+            final ListPreference listPreference = new ListPreference(context);
+            listPreference.setKey("keyOfSomeListPreference");
+            listPreference.setSummary("This allows to select from a list");
+            listPreference.setTitle("List preference");
+            listPreference.setEntries(new String[]{SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_LIST_PREFERENCE});
+            return listPreference;
         }
     }
 
@@ -94,6 +113,7 @@ public class PreferenceSearcherTest {
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
 
                 // Then
+                // FK-TODO: replace titlesMatcher with a preferenceKeyMatcher?
                 assertThat(getTitles(preferenceMatches), titlesMatcher);
             });
         }
@@ -105,8 +125,9 @@ public class PreferenceSearcherTest {
         return Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen);
     }
 
-    private static MergedPreferenceScreen getMergedPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceScreen,
-                                                                    final TestActivity fragmentActivity) {
+    private static MergedPreferenceScreen getMergedPreferenceScreen(
+            final Class<? extends PreferenceFragmentCompat> preferenceScreen,
+            final TestActivity fragmentActivity) {
         final Fragments fragments = FragmentsFactory.createFragments(fragmentActivity);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(

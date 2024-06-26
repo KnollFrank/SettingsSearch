@@ -70,7 +70,6 @@
         android:summary="This allows to use a nice switch"
         android:title="Switch preference" />
 
-    <!-- FK-TODO: make ListPreference searchable -->
     <ListPreference
         android:entries="@android:array/emailAddressTypes"
         android:entryValues="@android:array/emailAddressTypes"
@@ -78,11 +77,11 @@
         android:summary="This allows to select from a list"
         android:title="List preference" />
 
-    <!-- FK-TODO: make MultiSelectListPreference searchable -->
+    <!-- FK-TODO: make android:entries of MultiSelectListPreference searchable -->
     <!-- FK-TODO: make custom Preferences searchable, e.g. ListPreferenceEx of OsmAnd -->
     <MultiSelectListPreference
-        android:entries="@android:array/emailAddressTypes"
-        android:entryValues="@android:array/emailAddressTypes"
+        android:entries="@android:array/phoneTypes"
+        android:entryValues="@android:array/phoneTypes"
         android:key="multilist"
         android:summary="This allows to select multiple entries from a list"
         android:title="Multi select list preference" />
