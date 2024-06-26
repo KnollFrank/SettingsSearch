@@ -13,7 +13,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Bundles;
 
-// FK-TODO: replace this base class with a Lifecycle-Aware Component? see https://developer.android.com/topic/libraries/architecture/lifecycle
 public abstract class BaseSearchPreferenceFragment extends PreferenceFragmentCompat {
 
     public static final String KEY_OF_PREFERENCE_2_HIGHLIGHT = "keyOfPreference2Highlight";
