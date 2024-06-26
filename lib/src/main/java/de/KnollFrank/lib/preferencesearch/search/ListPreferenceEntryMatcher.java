@@ -19,8 +19,10 @@ class ListPreferenceEntryMatcher {
                 Collections.emptyList();
     }
 
-    // FK-TODO: handle case: entries == null
     private static boolean matchesAnyEntry(final CharSequence[] entries, final String needle) {
+        if(entries == null) {
+            return false;
+        }
         return Arrays
                 .stream(entries)
                 .map(CharSequence::toString)
