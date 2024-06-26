@@ -14,7 +14,6 @@ import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
 
 class ListPreferenceEntryMatcher {
 
-    // FK-TODO: introduce EntriesProvider interface and wrap ListPreference and MultiSelectListPreference
     public static List<PreferenceMatch> getEntryMatches(final ListPreference haystack, final String needle) {
         return matchesAnyEntry(haystack.getEntries(), needle) ?
                 ImmutableList.of(new PreferenceMatch(haystack, Type.ENTRY, null)) :
