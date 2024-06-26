@@ -11,6 +11,7 @@ import android.os.Looper;
 
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
+import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -55,8 +56,18 @@ public class PreferenceSearcherTest {
 
     @Test
     public void shouldSearchAndFindListPreference() {
-        final String keyword = PrefsFragment.SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_LIST_PREFERENCE;
-        testSearch(PrefsFragment.class, keyword, hasItem(containsString("List preference")));
+        testSearch(
+                PrefsFragment.class,
+                PrefsFragment.SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_LIST_PREFERENCE,
+                hasItem(containsString("Select list preference")));
+    }
+
+    @Test
+    public void shouldSearchAndFindMultiSelectListPreference() {
+        testSearch(
+                PrefsFragment.class,
+                PrefsFragment.SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_MULTI_SELECT_LIST_PREFERENCE,
+                hasItem(containsString("Multi select list preference")));
     }
 
     @Test
@@ -69,7 +80,8 @@ public class PreferenceSearcherTest {
 
         public static final String SEARCH_QUERY_FOR_SOME_PREFERENCE = "fourth";
         public static final String SEARCH_QUERY_FOR_SOME_NON_EXISTING_PREFERENCE = "non_existing_keyword";
-        public static final String SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_LIST_PREFERENCE = "entry of some Listpreference";
+        public static final String SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_LIST_PREFERENCE = "entry of some ListPreference";
+        public static final String SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_MULTI_SELECT_LIST_PREFERENCE = "entry of some MultiSelectListPreference";
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -77,6 +89,7 @@ public class PreferenceSearcherTest {
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
             screen.addPreference(createPreference(context));
             screen.addPreference(createListPreference(context));
+            screen.addPreference(createMultiSelectListPreference(context));
             setPreferenceScreen(screen);
         }
 
@@ -93,9 +106,18 @@ public class PreferenceSearcherTest {
             final ListPreference listPreference = new ListPreference(context);
             listPreference.setKey("keyOfSomeListPreference");
             listPreference.setSummary("This allows to select from a list");
-            listPreference.setTitle("List preference");
+            listPreference.setTitle("Select list preference");
             listPreference.setEntries(new String[]{SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_LIST_PREFERENCE});
             return listPreference;
+        }
+
+        private static Preference createMultiSelectListPreference(final Context context) {
+            final MultiSelectListPreference multiSelectListPreference = new MultiSelectListPreference(context);
+            multiSelectListPreference.setKey("keyOfSomeMultiSelectListPreference");
+            multiSelectListPreference.setSummary("This allows to select multiple entries from a list");
+            multiSelectListPreference.setTitle("Multi select list preference");
+            multiSelectListPreference.setEntries(new String[]{SEARCH_QUERY_FOR_SOME_ENTRY_OF_A_MULTI_SELECT_LIST_PREFERENCE});
+            return multiSelectListPreference;
         }
     }
 

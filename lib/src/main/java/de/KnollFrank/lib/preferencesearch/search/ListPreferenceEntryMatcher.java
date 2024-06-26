@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
 import androidx.preference.ListPreference;
+import androidx.preference.MultiSelectListPreference;
 
 import com.google.common.collect.ImmutableList;
 
@@ -13,9 +14,16 @@ import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
 
 class ListPreferenceEntryMatcher {
 
+    // FK-TODO: introduce EntriesProvider interface and wrap ListPreference and MultiSelectListPreference
     public static List<PreferenceMatch> getEntryMatches(final ListPreference haystack, final String needle) {
         return matchesAnyEntry(haystack.getEntries(), needle) ?
-                ImmutableList.of(new PreferenceMatch(haystack, Type.LIST_PREFERENCE_ENTRY, null)) :
+                ImmutableList.of(new PreferenceMatch(haystack, Type.ENTRY, null)) :
+                Collections.emptyList();
+    }
+
+    public static List<PreferenceMatch> getEntryMatches(final MultiSelectListPreference haystack, final String needle) {
+        return matchesAnyEntry(haystack.getEntries(), needle) ?
+                ImmutableList.of(new PreferenceMatch(haystack, Type.ENTRY, null)) :
                 Collections.emptyList();
     }
 

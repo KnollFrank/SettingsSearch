@@ -77,7 +77,6 @@
         android:summary="This allows to select from a list"
         android:title="List preference" />
 
-    <!-- FK-TODO: make android:entries of MultiSelectListPreference searchable -->
     <!-- FK-TODO: make custom Preferences searchable, e.g. ListPreferenceEx of OsmAnd -->
     <MultiSelectListPreference
         android:entries="@android:array/phoneTypes"
