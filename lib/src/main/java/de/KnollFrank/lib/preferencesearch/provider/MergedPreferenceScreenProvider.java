@@ -40,11 +40,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen _getMergedPreferenceScreen(final String preferenceFragment) {
-        return getMergedPreferenceScreen(instantiateAndInitializeFragment(preferenceFragment));
-    }
-
-    private PreferenceFragmentCompat instantiateAndInitializeFragment(final String preferenceFragment) {
-        return (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(preferenceFragment);
+        return getMergedPreferenceScreen((PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(preferenceFragment));
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
