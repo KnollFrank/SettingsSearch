@@ -2,6 +2,7 @@ package de.KnollFrank.lib.preferencesearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
 
@@ -49,80 +50,93 @@ public class PreferenceSearcherTest {
     }
 
     @Test
-    public void shouldSearchAndFind() {
+    public void shouldSearchAndFindTitle() {
         final String keyword = "fourth";
-        final String title = String.format("Checkbox %s file", keyword);
+        final String keyOfPreference = "fourthfile";
         testSearch(
                 PreferenceFragment.fromSinglePreference(
                         context -> {
-                            final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(context);
-                            checkBoxPreference.setKey("fourthfile");
-                            checkBoxPreference.setSummary(
-                                    String.format(
-                                            "This checkbox is a preference coming from a %s file",
-                                            keyword));
-                            checkBoxPreference.setTitle(title);
-                            return checkBoxPreference;
+                            final CheckBoxPreference preference = new CheckBoxPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setTitle(String.format("Checkbox %s file", keyword));
+                            return preference;
                         }),
                 keyword,
-                hasItem(containsString(title)));
+                hasItem(containsString(keyOfPreference)));
+    }
+
+    @Test
+    public void shouldSearchAndFindSummary() {
+        final String keyword = "fourth";
+        final String keyOfPreference = "fourthfile";
+        testSearch(
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final CheckBoxPreference preference = new CheckBoxPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary(String.format("Checkbox %s file", keyword));
+                            return preference;
+                        }),
+                keyword,
+                hasItem(containsString(keyOfPreference)));
     }
 
     @Test
     public void shouldSearchAndFindListPreference() {
         final String keyword = "entry of some ListPreference";
-        final String title = "Select list preference";
+        final String keyOfPreference = "keyOfSomeListPreference";
         testSearch(
                 PreferenceFragment.fromSinglePreference(
                         context -> {
-                            final ListPreference listPreference = new ListPreference(context);
-                            listPreference.setKey("keyOfSomeListPreference");
-                            listPreference.setSummary("This allows to select from a list");
-                            listPreference.setTitle(title);
-                            listPreference.setEntries(new String[]{keyword});
-                            return listPreference;
+                            final ListPreference preference = new ListPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("This allows to select from a list");
+                            preference.setTitle("Select list preference");
+                            preference.setEntries(new String[]{keyword});
+                            return preference;
                         }),
                 keyword,
-                hasItem(containsString(title)));
+                hasItem(is(keyOfPreference)));
     }
 
     @Test
     public void shouldSearchAndFindMultiSelectListPreference() {
         final String keyword = "entry of some MultiSelectListPreference";
-        final String title = "Multi select list preference";
+        final String keyOfPreference = "keyOfSomeMultiSelectListPreference";
         testSearch(
                 PreferenceFragment.fromSinglePreference(
                         context -> {
-                            final MultiSelectListPreference multiSelectListPreference = new MultiSelectListPreference(context);
-                            multiSelectListPreference.setKey("keyOfSomeMultiSelectListPreference");
-                            multiSelectListPreference.setSummary("This allows to select multiple entries from a list");
-                            multiSelectListPreference.setTitle(title);
-                            multiSelectListPreference.setEntries(new String[]{keyword});
-                            return multiSelectListPreference;
+                            final MultiSelectListPreference preference = new MultiSelectListPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("This allows to select multiple entries from a list");
+                            preference.setTitle("Multi select list preference");
+                            preference.setEntries(new String[]{keyword});
+                            return preference;
                         }),
                 keyword,
-                hasItem(containsString(title)));
+                hasItem(containsString(keyOfPreference)));
     }
 
     @Test
     public void shouldSearchAndNotFind() {
         final String keyword = "non_existing_keyword";
+        final String keyOfPreference = "fourthfile";
         testSearch(
                 PreferenceFragment.fromSinglePreference(
                         context -> {
-                            final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(context);
-                            checkBoxPreference.setKey("fourthfile");
-                            checkBoxPreference.setSummary("This checkbox is a preference coming from a fourth file");
-                            checkBoxPreference.setTitle("Checkbox fourth file");
-                            return checkBoxPreference;
+                            final CheckBoxPreference preference = new CheckBoxPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("This checkbox is a preference coming from a fourth file");
+                            preference.setTitle("Checkbox fourth file");
+                            return preference;
                         }),
                 keyword,
-                not(hasItem(containsString(keyword))));
+                not(hasItem(containsString(keyOfPreference))));
     }
 
     private static void testSearch(final PreferenceFragmentCompat preferenceFragment,
                                    final String keyword,
-                                   final Matcher<Iterable<? super String>> titleMatcher) {
+                                   final Matcher<Iterable<? super String>> preferenceKeyMatcher) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -134,8 +148,7 @@ public class PreferenceSearcherTest {
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
 
                 // Then
-                // FK-TODO: replace titleMatcher with a preferenceKeyMatcher?
-                assertThat(getTitles(preferenceMatches), titleMatcher);
+                assertThat(getKeys(preferenceMatches), preferenceKeyMatcher);
             });
         }
     }
@@ -166,11 +179,11 @@ public class PreferenceSearcherTest {
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
 
-    private static Set<String> getTitles(final List<PreferenceMatch> preferenceMatches) {
+    private static Set<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .map(preferenceMatch -> preferenceMatch.preference)
-                .map(Preference::getTitle)
+                .map(Preference::getKey)
                 .filter(Objects::nonNull)
                 .map(CharSequence::toString)
                 .collect(Collectors.toSet());
