@@ -8,35 +8,37 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;
     private final PreferenceScreen preferenceScreen;
-    private final Map<Preference, Optional<CharSequence>> summaryByPreference;
+    private final PreferenceScreenResetter preferenceScreenResetter;
     private final Context context;
 
     public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
                             final PreferenceScreen preferenceScreen,
-                            final Map<Preference, Optional<CharSequence>> summaryByPreference,
+                            final PreferenceScreenResetter preferenceScreenResetter,
                             final Context context) {
         this.preferenceSearcher = preferenceSearcher;
         this.preferenceScreen = preferenceScreen;
-        this.summaryByPreference = summaryByPreference;
+        this.preferenceScreenResetter = preferenceScreenResetter;
         this.context = context;
     }
 
     public void searchForQueryAndDisplayResults(final String query) {
-        new PreferenceScreenResetter(summaryByPreference).reset(preferenceScreen);
-        addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry(preferenceScreen, query);
-        final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
+        final List<PreferenceMatch> preferenceMatches = searchFor(query);
         PreferenceMatchesHighlighter.highlight(preferenceMatches, context);
         PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
                 getPreferences(preferenceMatches),
                 preferenceScreen);
+    }
+
+    private List<PreferenceMatch> searchFor(final String query) {
+        preferenceScreenResetter.reset(preferenceScreen);
+        addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry(preferenceScreen, query);
+        return preferenceSearcher.searchFor(query);
     }
 
     private static List<Preference> getPreferences(final List<PreferenceMatch> preferenceMatches) {

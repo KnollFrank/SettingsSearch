@@ -18,7 +18,7 @@ class Summaries4MatchingEntriesAdapter {
             final PreferenceScreen preferenceScreen,
             final String query) {
         Preferences
-                .getAllChildren(preferenceScreen)
+                .getAllPreferences(preferenceScreen)
                 .forEach(preference -> _addEntries2SummaryOfPreferenceIfQueryMatchesAnyEntry(preference, query));
     }
 
