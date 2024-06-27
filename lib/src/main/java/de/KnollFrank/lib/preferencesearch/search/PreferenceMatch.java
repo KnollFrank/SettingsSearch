@@ -7,7 +7,7 @@ import java.util.Objects;
 class PreferenceMatch {
 
     public enum Type {
-        TITLE, SUMMARY, ENTRY
+        TITLE, SUMMARY
     }
 
     public final Preference preference;
