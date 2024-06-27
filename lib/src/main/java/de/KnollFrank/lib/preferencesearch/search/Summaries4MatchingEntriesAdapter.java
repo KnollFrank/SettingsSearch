@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
+import static de.KnollFrank.lib.preferencesearch.search.ListPreferenceEntryMatcher.matchesAnyEntry;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getOptionalSummary;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.setSummary;
 
@@ -14,18 +15,15 @@ import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 class Summaries4MatchingEntriesAdapter {
 
-    public static void addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry(
-            final PreferenceScreen preferenceScreen,
-            final String query) {
-        Preferences
-                .getAllPreferences(preferenceScreen)
-                .forEach(preference -> _addEntries2SummaryOfPreferenceIfQueryMatchesAnyEntry(preference, query));
-    }
-
-    private static void _addEntries2SummaryOfPreferenceIfQueryMatchesAnyEntry(final Preference preference, final String query) {
-        Summaries4MatchingEntriesAdapter
-                .getEntries(preference)
-                .ifPresent(entries -> addEntries2SummaryOfPreferenceIfQueryMatchesAnyEntry(preference, query, entries));
+    public static void addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry(final PreferenceScreen preferenceScreen,
+                                                                               final String query) {
+        for (final Preference preference : Preferences.getAllPreferences(preferenceScreen)) {
+            getEntries(preference).ifPresent(entries -> {
+                if (matchesAnyEntry(entries, query)) {
+                    setSummary(preference, getSummaryWithEntries(preference, entries));
+                }
+            });
+        }
     }
 
     private static Optional<CharSequence[]> getEntries(final Preference preference) {
@@ -36,14 +34,6 @@ class Summaries4MatchingEntriesAdapter {
             return Optional.ofNullable(multiSelectListPreference.getEntries());
         }
         return Optional.empty();
-    }
-
-    private static void addEntries2SummaryOfPreferenceIfQueryMatchesAnyEntry(final Preference preference,
-                                                                             final String query,
-                                                                             final CharSequence[] entries) {
-        if (ListPreferenceEntryMatcher.matchesAnyEntry(entries, query)) {
-            setSummary(preference, getSummaryWithEntries(preference, entries));
-        }
     }
 
     private static String getSummaryWithEntries(final Preference preference, final CharSequence[] entries) {
