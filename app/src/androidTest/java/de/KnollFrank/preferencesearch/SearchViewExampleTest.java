@@ -47,9 +47,12 @@ public class SearchViewExampleTest {
 
     @Test
     public void shouldSearchAndFindListPreference() {
+        final String entryOfSomeListPreference = "Home";
         onView(searchButton()).perform(click());
-        onView(searchView()).perform(replaceText("Home"), closeSoftKeyboard());
-        onView(recyclerView()).check(matches(hasSearchResultWithText("List preference")));
+        // When searching for an entry of a ListPreference
+        onView(searchView()).perform(replaceText(entryOfSomeListPreference), closeSoftKeyboard());
+        // Then this entry is displayed in search results
+        onView(recyclerView()).check(matches(hasSearchResultWithText(entryOfSomeListPreference)));
     }
 
     @Test
