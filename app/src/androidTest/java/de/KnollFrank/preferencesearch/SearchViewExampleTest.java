@@ -12,7 +12,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.preferencesearch.Matchers.childAtPosition;
@@ -42,7 +42,7 @@ public class SearchViewExampleTest {
     public void shouldSearchAndFindPreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("fourth"), closeSoftKeyboard());
-        onView(recyclerView()).check(matches(hasSearchResultWithText("Checkbox fourth file")));
+        onView(recyclerView()).check(matches(hasSearchResultWithSubstring("Checkbox fourth file")));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class SearchViewExampleTest {
         // When searching for an entry of a ListPreference
         onView(searchView()).perform(replaceText(entryOfSomeListPreference), closeSoftKeyboard());
         // Then this entry is displayed in search results
-        onView(recyclerView()).check(matches(hasSearchResultWithText(entryOfSomeListPreference)));
+        onView(recyclerView()).check(matches(hasSearchResultWithSubstring(entryOfSomeListPreference)));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class SearchViewExampleTest {
                 isDisplayed());
     }
 
-    private static Matcher<View> hasSearchResultWithText(final String text) {
-        return recyclerViewHasItem(hasDescendant(withText(text)));
+    private static Matcher<View> hasSearchResultWithSubstring(final String substring) {
+        return recyclerViewHasItem(hasDescendant(withSubstring(substring)));
     }
 }
