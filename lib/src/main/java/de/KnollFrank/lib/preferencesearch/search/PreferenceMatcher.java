@@ -1,12 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getSummaryAsString;
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getTitleAsString;
-
 import android.text.TextUtils;
 
-import androidx.preference.ListPreference;
-import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 
 import java.util.Collections;
@@ -28,15 +23,13 @@ class PreferenceMatcher {
         }
         return Lists.concat(
                 getTitlePreferenceMatches(haystack, needle),
-                getSummaryPreferenceMatch(haystack, needle),
-                getListPreferenceEntryMatches(haystack, needle),
-                getMultiSelectListPreferenceEntryMatches(haystack, needle));
+                getSummaryPreferenceMatch(haystack, needle));
     }
 
     private static List<PreferenceMatch> getTitlePreferenceMatches(final Preference haystack,
                                                                    final String needle) {
         return getPreferenceMatches(
-                getTitleAsString(haystack),
+                PreferenceAttributes.getOptionalTitle(haystack).map(CharSequence::toString),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.TITLE, indexRange));
     }
@@ -44,23 +37,11 @@ class PreferenceMatcher {
     private static List<PreferenceMatch> getSummaryPreferenceMatch(final Preference haystack,
                                                                    final String needle) {
         return getPreferenceMatches(
-                getSummaryAsString(haystack),
+                PreferenceAttributes
+                        .getOptionalSummary(haystack)
+                        .map(CharSequence::toString),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.SUMMARY, indexRange));
-    }
-
-    private static List<PreferenceMatch> getListPreferenceEntryMatches(final Preference haystack,
-                                                                       final String needle) {
-        return haystack instanceof final ListPreference listPreference ?
-                ListPreferenceEntryMatcher.getEntryMatches(listPreference, needle) :
-                Collections.emptyList();
-    }
-
-    private static List<PreferenceMatch> getMultiSelectListPreferenceEntryMatches(final Preference haystack,
-                                                                                  final String needle) {
-        return haystack instanceof final MultiSelectListPreference multiSelectListPreference ?
-                ListPreferenceEntryMatcher.getEntryMatches(multiSelectListPreference, needle) :
-                Collections.emptyList();
     }
 
     static List<PreferenceMatch> getPreferenceMatches(

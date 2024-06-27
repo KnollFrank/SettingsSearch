@@ -8,31 +8,23 @@ import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
-
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.R;
 
 class PreferenceMatchesHighlighter {
 
-    public static void highlight(final List<PreferenceMatch> preferenceMatches,
-                                  final Map<Preference, Optional<CharSequence>> summaryByPreference,
-                                  final Context context) {
+    public static void highlight(final List<PreferenceMatch> preferenceMatches, final Context context) {
         final List<Object> markups = createMarkups(context);
         for (final PreferenceMatch preferenceMatch : preferenceMatches) {
-            highlight(preferenceMatch, markups, summaryByPreference);
+            highlight(preferenceMatch, markups);
         }
     }
 
-    private static void highlight(final PreferenceMatch preferenceMatch,
-                                  final List<Object> markups,
-                                  final Map<Preference, Optional<CharSequence>> summaryByPreference) {
+    private static void highlight(final PreferenceMatch preferenceMatch, final List<Object> markups) {
         switch (preferenceMatch.type) {
             case TITLE:
                 setTitle(preferenceMatch, markups);
@@ -40,18 +32,6 @@ class PreferenceMatchesHighlighter {
             case SUMMARY:
                 setSummary(preferenceMatch, markups);
                 break;
-            case ENTRY: {
-                if (preferenceMatch.preference instanceof final ListPreference preference) {
-                    final String entries = String.join(", ", preference.getEntries());
-                    final Optional<CharSequence> summary = summaryByPreference.get(preference);
-                    final String newSummary =
-                            summary
-                                    .map(_summary -> String.format("%s\n%s", _summary, entries))
-                                    .orElse(entries);
-                    PreferenceAttributes.setSummary(preferenceMatch.preference, newSummary);
-                    break;
-                }
-            }
         }
     }
 

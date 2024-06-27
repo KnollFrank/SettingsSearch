@@ -13,7 +13,6 @@ import de.KnollFrank.lib.preferencesearch.R;
 import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
-import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
@@ -91,7 +90,7 @@ public class SearchPreferenceFragment extends Fragment {
                 searchView,
                 searchConfiguration.textHint,
                 new SearchAndDisplay(
-                        new PreferenceSearcher(Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen)),
+                        PreferenceSearcher.fromPreferenceScreen(mergedPreferenceScreen.preferenceScreen),
                         mergedPreferenceScreen.preferenceScreen,
                         mergedPreferenceScreen.summaryByPreference,
                         requireContext()));

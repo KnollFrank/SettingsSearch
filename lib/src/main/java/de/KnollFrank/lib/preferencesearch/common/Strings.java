@@ -2,6 +2,7 @@ package de.KnollFrank.lib.preferencesearch.common;
 
 import com.google.common.collect.ImmutableList;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +15,9 @@ public class Strings {
 
     private static Iterator<Integer> getIndicesOfNeedleWithinHaystackIterator(final String haystack,
                                                                               final String needle) {
+        if (needle.isEmpty()) {
+            return Collections.emptyIterator();
+        }
         return new Iterator<>() {
 
             private int nextIndex = getNextIndex(0);

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
+import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingEntriesAdapter.addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry;
+
 import android.content.Context;
 
 import androidx.preference.Preference;
@@ -29,9 +31,9 @@ class SearchAndDisplay {
 
     public void searchForQueryAndDisplayResults(final String query) {
         new PreferenceScreenResetter(summaryByPreference).reset(preferenceScreen);
-        // FK-TODO: if preferenceScreen has a Preference with an entry match, adapt the summary of this Preference to contain a list of those entries (such that the entry matches become summary matches in preferenceSearcher.searchFor())
+        addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry(preferenceScreen, query);
         final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
-        PreferenceMatchesHighlighter.highlight(preferenceMatches, summaryByPreference, context);
+        PreferenceMatchesHighlighter.highlight(preferenceMatches, context);
         PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
                 getPreferences(preferenceMatches),
                 preferenceScreen);

@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getTitleAsString;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getOptionalTitle;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.setSummary;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.setTitle;
 
@@ -27,7 +27,17 @@ class PreferenceScreenResetter {
     }
 
     private void reset(final Preference preference) {
-        setTitle(preference, getTitleAsString(preference).orElse(null));
-        setSummary(preference, summaryByPreference.get(preference).orElse(null));
+        setTitle(
+                preference,
+                asStringOrNull(getOptionalTitle(preference)));
+        setSummary(
+                preference,
+                asStringOrNull(summaryByPreference.get(preference)));
+    }
+
+    private static String asStringOrNull(final Optional<CharSequence> optionalCharSequence) {
+        return optionalCharSequence
+                .map(CharSequence::toString)
+                .orElse(null);
     }
 }

@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
+import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingEntriesAdapter.addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry;
 
 import android.os.Looper;
 
@@ -30,7 +31,6 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
-import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
@@ -141,23 +141,21 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
+                final MergedPreferenceScreen mergedPreferenceScreen =
+                        getMergedPreferenceScreen(preferenceFragment, fragmentActivity);
                 final PreferenceSearcher preferenceSearcher =
-                        new PreferenceSearcher(
-                                getPreferences(preferenceFragment, fragmentActivity));
+                        PreferenceSearcher.fromPreferenceScreen(mergedPreferenceScreen.preferenceScreen);
 
                 // When
+                addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry(
+                        mergedPreferenceScreen.preferenceScreen,
+                        keyword);
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
 
                 // Then
                 assertThat(getKeys(preferenceMatches), preferenceKeyMatcher);
             });
         }
-    }
-
-    private static List<Preference> getPreferences(final PreferenceFragmentCompat preferenceFragment,
-                                                   final FragmentActivity fragmentActivity) {
-        final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen(preferenceFragment, fragmentActivity);
-        return Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen);
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
