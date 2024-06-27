@@ -51,18 +51,16 @@ class PreferenceMatcher {
 
     private static List<PreferenceMatch> getListPreferenceEntryMatches(final Preference haystack,
                                                                        final String needle) {
-        if (!(haystack instanceof ListPreference)) {
-            return Collections.emptyList();
-        }
-        return ListPreferenceEntryMatcher.getEntryMatches((ListPreference) haystack, needle);
+        return haystack instanceof final ListPreference listPreference ?
+                ListPreferenceEntryMatcher.getEntryMatches(listPreference, needle) :
+                Collections.emptyList();
     }
 
     private static List<PreferenceMatch> getMultiSelectListPreferenceEntryMatches(final Preference haystack,
                                                                                   final String needle) {
-        if (!(haystack instanceof MultiSelectListPreference)) {
-            return Collections.emptyList();
-        }
-        return ListPreferenceEntryMatcher.getEntryMatches((MultiSelectListPreference) haystack, needle);
+        return haystack instanceof final MultiSelectListPreference multiSelectListPreference ?
+                ListPreferenceEntryMatcher.getEntryMatches(multiSelectListPreference, needle) :
+                Collections.emptyList();
     }
 
     static List<PreferenceMatch> getPreferenceMatches(
