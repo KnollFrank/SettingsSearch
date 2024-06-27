@@ -46,6 +46,13 @@ public class SearchViewExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFindListPreference() {
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText("Home"), closeSoftKeyboard());
+        onView(recyclerView()).check(matches(hasSearchResultWithText("List preference")));
+    }
+
+    @Test
     public void shouldSearchAndNotFindInvisiblePreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("invisible"), closeSoftKeyboard());
