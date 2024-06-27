@@ -37,6 +37,7 @@ import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvide
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
+// FK-TODO: when searching for a keyword which ist found in the entries of a ListPreference or a MultiSelectListPreference then display the found Preference in the search results with an enhanced summary containing all the entries and highlighted search results.
 public class PreferenceSearcherTest {
 
     @BeforeClass
