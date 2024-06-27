@@ -27,15 +27,23 @@ class PreferenceScreenResetter {
     }
 
     private void reset(final Preference preference) {
-        setTitle(
-                preference,
-                asStringOrNull(getOptionalTitle(preference)));
-        setSummary(
-                preference,
-                asStringOrNull(summaryByPreference.get(preference)));
+        unhighlightTitle(preference);
+        unhighlightAndResetSummary(preference);
     }
 
-    private static String asStringOrNull(final Optional<CharSequence> optionalCharSequence) {
+    private static void unhighlightTitle(final Preference preference) {
+        setTitle(
+                preference,
+                unhighlight(getOptionalTitle(preference)));
+    }
+
+    private void unhighlightAndResetSummary(final Preference preference) {
+        setSummary(
+                preference,
+                unhighlight(summaryByPreference.get(preference)));
+    }
+
+    private static String unhighlight(final Optional<CharSequence> optionalCharSequence) {
         return optionalCharSequence
                 .map(CharSequence::toString)
                 .orElse(null);
