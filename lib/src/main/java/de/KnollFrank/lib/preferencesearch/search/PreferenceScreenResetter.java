@@ -12,17 +12,22 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
-class PreferenceScreenUnhighlighter {
+class PreferenceScreenResetter {
 
-    public static void unhighlight(final PreferenceScreen preferenceScreen,
-                                   final Map<Preference, Optional<CharSequence>> summaryByPreference) {
-        Preferences
-                .getAllPreferences(preferenceScreen)
-                .forEach(preference -> unhighlight(preference, summaryByPreference.get(preference)));
+    private final Map<Preference, Optional<CharSequence>> summaryByPreference;
+
+    public PreferenceScreenResetter(final Map<Preference, Optional<CharSequence>> summaryByPreference) {
+        this.summaryByPreference = summaryByPreference;
     }
 
-    private static void unhighlight(final Preference preference, final Optional<CharSequence> summary) {
+    public void reset(final PreferenceScreen preferenceScreen) {
+        Preferences
+                .getAllPreferences(preferenceScreen)
+                .forEach(this::reset);
+    }
+
+    private void reset(final Preference preference) {
         setTitle(preference, getTitleAsString(preference).orElse(null));
-        setSummary(preference, summary.orElse(null));
+        setSummary(preference, summaryByPreference.get(preference).orElse(null));
     }
 }

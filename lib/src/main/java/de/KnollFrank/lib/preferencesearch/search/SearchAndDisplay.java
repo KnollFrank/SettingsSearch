@@ -28,8 +28,7 @@ class SearchAndDisplay {
     }
 
     public void searchForQueryAndDisplayResults(final String query) {
-        // FK-TODO: replace unhighlight() with a method which performs a RESET of preferenceScreen to its original state
-        PreferenceScreenUnhighlighter.unhighlight(preferenceScreen, summaryByPreference);
+        new PreferenceScreenResetter(summaryByPreference).reset(preferenceScreen);
         // FK-TODO: if preferenceScreen has a Preference with an entry match, adapt the summary of this Preference to contain a list of those entries (such that the entry matches become summary matches in preferenceSearcher.searchFor())
         final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
         PreferenceMatchesHighlighter.highlight(preferenceMatches, summaryByPreference, context);
