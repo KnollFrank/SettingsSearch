@@ -11,11 +11,14 @@ public class MergedPreferenceScreen {
 
     public final PreferenceScreen preferenceScreen;
     private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
+    public final Map<Preference, Optional<CharSequence>> summaryByPreference;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
-                                  final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
+                                  final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
+                                  final Map<Preference, Optional<CharSequence>> summaryByPreference) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
+        this.summaryByPreference = summaryByPreference;
     }
 
     public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHostByPreference(final Preference preference) {

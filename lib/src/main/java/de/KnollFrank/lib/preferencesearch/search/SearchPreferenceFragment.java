@@ -93,6 +93,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchAndDisplay(
                         new PreferenceSearcher(Preferences.getAllPreferences(mergedPreferenceScreen.preferenceScreen)),
                         mergedPreferenceScreen.preferenceScreen,
+                        mergedPreferenceScreen.summaryByPreference,
                         requireContext()));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);

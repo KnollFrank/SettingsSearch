@@ -15,6 +15,7 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
+import de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider;
 
 public class MergedPreferenceScreenProvider {
 
@@ -51,7 +52,10 @@ public class MergedPreferenceScreenProvider {
                 HostByPreferenceProvider.getHostByPreference(screens);
         // B:
         final PreferenceScreen preferenceScreen = destructivelyMergeScreens(screens);
-        return new MergedPreferenceScreen(preferenceScreen, hostByPreference);
+        return new MergedPreferenceScreen(
+                preferenceScreen,
+                hostByPreference,
+                PreferenceSummaryProvider.getSummaryByPreference(preferenceScreen));
     }
 
     private Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {
