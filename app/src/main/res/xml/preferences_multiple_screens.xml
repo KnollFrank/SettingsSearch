@@ -84,7 +84,7 @@
         android:summary="im Protocols title"
         android:title="im Protocols summary" />
 
-    <!-- FK-TODO: make custom Preferences searchable, e.g. ListPreferenceEx of OsmAnd -->
+    <!-- FK-TODO: make custom Preferences searchable, e.g. ColorPreferenceCompat, SwitchPreferenceEx, SizePreference, ListPreferenceEx, MultiSelectBooleanPreference, EditTextPreferenceEx of OsmAnd -->
     <MultiSelectListPreference
         android:entries="@android:array/phoneTypes"
         android:entryValues="@android:array/phoneTypes"
