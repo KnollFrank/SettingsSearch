@@ -77,6 +77,11 @@
         android:summary="This allows to select from a list"
         android:title="List preference" />
 
+    <de.KnollFrank.preferencesearch.ConstantListPreference
+        android:key="keyOfConstantListPreference"
+        android:summary="summary of ConstantListPreference"
+        android:title="title of ConstantListPreference" />
+
     <DropDownPreference
         android:entries="@android:array/imProtocols"
         android:entryValues="@android:array/imProtocols"

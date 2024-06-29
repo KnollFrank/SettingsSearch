@@ -49,7 +49,7 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     public SearchPreferenceFragment() {
-        this(new DefaultSearchableInfoProvider(), new DefaultFragmentFactory());
+        this(new BuiltinSearchableInfoProvider(), new DefaultFragmentFactory());
     }
 
     @Override

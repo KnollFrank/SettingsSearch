@@ -148,7 +148,7 @@ public class PreferenceSearcherTest {
                 // When
                 addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
                         mergedPreferenceScreen.preferenceScreen,
-                        new DefaultSearchableInfoProvider(),
+                        new BuiltinSearchableInfoProvider(),
                         keyword);
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
 
