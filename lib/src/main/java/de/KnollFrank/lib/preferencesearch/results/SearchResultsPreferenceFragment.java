@@ -18,10 +18,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
 
-import java.util.Optional;
-
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.preferencesearch.common.Bundles;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
@@ -79,7 +76,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 (PreferenceFragmentCompat) Fragment.instantiate(
                         getActivity(),
                         fragmentOfPreferenceScreen.getName(),
-                        createArguments(preference2Highlight.getKey()));
+                        Bundles.preferenceKey2Bundle(preference2Highlight.getKey()));
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         showFragment(
                 preferenceFragment,
@@ -90,32 +87,13 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment) {
-        SearchResultsPreferenceFragment
-                .getKeyOfPreference2Highlight(preferenceFragment)
-                .ifPresent(
-                        keyOfPreference2Highlight -> {
-                            // FK-TODO: was soll passieren, falls die Preference keinen key hat?
-                            preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
-                            PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
-                                    keyOfPreference2Highlight,
-                                    preferenceFragment,
-                                    Duration.ofSeconds(1));
-                        });
-    }
-
-    private static final String KEY_OF_PREFERENCE_2_HIGHLIGHT = "keyOfPreference2Highlight";
-
-    private static Bundle createArguments(final String keyOfPreference2Highlight) {
-        final Bundle arguments = new Bundle();
-        arguments.putString(KEY_OF_PREFERENCE_2_HIGHLIGHT, keyOfPreference2Highlight);
-        return arguments;
-    }
-
-    private static Optional<String> getKeyOfPreference2Highlight(final PreferenceFragmentCompat preferenceFragment) {
-        final Bundle arguments = preferenceFragment.getArguments();
-        return arguments != null ?
-                new Bundles(arguments).getOptionalString(KEY_OF_PREFERENCE_2_HIGHLIGHT) :
-                Optional.empty();
+        // FK-TODO: was soll passieren, falls die Preference keinen key hat?
+        final String keyOfPreference2Highlight = Bundles.bundle2PreferenceKey(preferenceFragment.requireArguments());
+        preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
+        PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
+                keyOfPreference2Highlight,
+                preferenceFragment,
+                Duration.ofSeconds(1));
     }
 
     private class Factory {
