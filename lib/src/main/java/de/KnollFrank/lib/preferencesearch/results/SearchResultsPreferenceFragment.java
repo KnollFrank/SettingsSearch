@@ -91,7 +91,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                                                   @NonNull final Fragment fragment) {
                         if (fragment == preferenceFragment) {
                             fragmentManager.unregisterFragmentLifecycleCallbacks(this);
-                            highlightPreference((PreferenceFragmentCompat) fragment);
+                            highlightPreference(preferenceFragment);
                         }
                     }
                 },
