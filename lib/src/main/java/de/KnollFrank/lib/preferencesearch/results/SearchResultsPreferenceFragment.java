@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.preferencesearch.results;
 
-import static de.KnollFrank.lib.preferencesearch.BaseSearchPreferenceFragment.KEY_OF_PREFERENCE_2_HIGHLIGHT;
 import static de.KnollFrank.lib.preferencesearch.results.PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch;
 
 import android.os.Bundle;
@@ -9,13 +8,20 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
+import org.threeten.bp.Duration;
+
+import java.util.Optional;
+
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.preferencesearch.common.Bundles;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 
@@ -67,24 +73,63 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 .ifPresent(host -> showPreferenceScreenAndHighlightPreference(host, preference));
     }
 
+    // FK-TODO: refactor
     private void showPreferenceScreenAndHighlightPreference(
             final Class<? extends PreferenceFragmentCompat> fragmentOfPreferenceScreen,
             final Preference preference2Highlight) {
-        Navigation.show(
-                Fragment.instantiate(
+        final PreferenceFragmentCompat preferenceFragment =
+                (PreferenceFragmentCompat) Fragment.instantiate(
                         getActivity(),
                         fragmentOfPreferenceScreen.getName(),
-                        createArguments(preference2Highlight.getKey())),
+                        createArguments(preference2Highlight.getKey()));
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.registerFragmentLifecycleCallbacks(
+                new FragmentLifecycleCallbacks() {
+
+                    @Override
+                    public void onFragmentStarted(@NonNull final FragmentManager fragmentManager, @NonNull final Fragment fragment) {
+                        if (fragment.getClass().equals(fragmentOfPreferenceScreen)) {
+                            fragmentManager.unregisterFragmentLifecycleCallbacks(this);
+                            highlightPreference((PreferenceFragmentCompat) fragment);
+                        }
+                    }
+                },
+                false);
+        Navigation.show(
+                preferenceFragment,
                 true,
-                getActivity().getSupportFragmentManager(),
+                fragmentManager,
                 this.fragmentContainerViewId,
                 Commit.COMMIT_ASYNC);
     }
+
+    private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment) {
+        SearchResultsPreferenceFragment
+                .getKeyOfPreference2Highlight(preferenceFragment)
+                .ifPresent(
+                        keyOfPreference2Highlight -> {
+                            // FK-TODO: was soll passieren, falls die Preference keinen key hat?
+                            preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
+                            PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
+                                    keyOfPreference2Highlight,
+                                    preferenceFragment,
+                                    Duration.ofSeconds(1));
+                        });
+    }
+
+    private static final String KEY_OF_PREFERENCE_2_HIGHLIGHT = "keyOfPreference2Highlight";
 
     private static Bundle createArguments(final String keyOfPreference2Highlight) {
         final Bundle arguments = new Bundle();
         arguments.putString(KEY_OF_PREFERENCE_2_HIGHLIGHT, keyOfPreference2Highlight);
         return arguments;
+    }
+
+    private static Optional<String> getKeyOfPreference2Highlight(final PreferenceFragmentCompat preferenceFragment) {
+        final Bundle arguments = preferenceFragment.getArguments();
+        return arguments != null ?
+                new Bundles(arguments).getOptionalString(KEY_OF_PREFERENCE_2_HIGHLIGHT) :
+                Optional.empty();
     }
 
     private class Factory {

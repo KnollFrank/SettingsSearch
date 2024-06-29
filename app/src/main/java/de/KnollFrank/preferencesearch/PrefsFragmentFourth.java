@@ -2,9 +2,9 @@ package de.KnollFrank.preferencesearch;
 
 import android.os.Bundle;
 
-import de.KnollFrank.lib.preferencesearch.BaseSearchPreferenceFragment;
+import androidx.preference.PreferenceFragmentCompat;
 
-public class PrefsFragmentFourth extends BaseSearchPreferenceFragment {
+public class PrefsFragmentFourth extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {

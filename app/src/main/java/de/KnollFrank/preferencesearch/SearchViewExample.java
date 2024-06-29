@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
@@ -14,8 +15,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
-import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 
 // FK-TODO: README.md anpassen
 public class SearchViewExample extends AppCompatActivity {
@@ -27,12 +26,7 @@ public class SearchViewExample extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.multiple_preference_screens_example);
         if (savedInstanceState == null) {
-            Navigation.show(
-                    new PrefsFragmentFirst(),
-                    false,
-                    getSupportFragmentManager(),
-                    FRAGMENT_CONTAINER_VIEW,
-                    Commit.COMMIT_ASYNC);
+            show(new PrefsFragmentFirst());
         }
     }
 
@@ -49,6 +43,14 @@ public class SearchViewExample extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void show(final Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(FRAGMENT_CONTAINER_VIEW, fragment)
+                .commit();
     }
 
     private void showSearchPreferenceFragment() {

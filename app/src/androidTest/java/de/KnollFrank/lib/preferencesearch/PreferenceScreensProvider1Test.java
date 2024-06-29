@@ -77,7 +77,7 @@ public class PreferenceScreensProvider1Test {
         }
     }
 
-    public static class Fragment3 extends BaseSearchPreferenceFragment {
+    public static class Fragment3 extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {

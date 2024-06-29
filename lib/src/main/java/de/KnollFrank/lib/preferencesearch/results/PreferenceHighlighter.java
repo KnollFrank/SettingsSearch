@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch;
+package de.KnollFrank.lib.preferencesearch.results;
 
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.threeten.bp.Duration;
 
+import de.KnollFrank.lib.preferencesearch.R;
 import de.KnollFrank.lib.preferencesearch.common.Attributes;
 
 class PreferenceHighlighter {
