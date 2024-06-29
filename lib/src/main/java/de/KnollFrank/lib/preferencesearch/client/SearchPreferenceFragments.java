@@ -24,9 +24,10 @@ public class SearchPreferenceFragments {
     public void showSearchPreferenceFragment() {
         showFragment(
                 SearchPreferenceFragment.newInstance(searchConfiguration, fragmentFactory),
+                searchPreferenceFragment -> {
+                },
                 true,
-                fragmentManager,
                 searchConfiguration.fragmentContainerViewId,
-                searchPreferenceFragment -> {});
+                fragmentManager);
     }
 }

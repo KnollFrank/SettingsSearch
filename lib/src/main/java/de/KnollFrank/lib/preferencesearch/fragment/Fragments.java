@@ -32,10 +32,10 @@ public class Fragments {
     }
 
     public static <T extends Fragment> void showFragment(final T fragment,
+                                                         final Consumer<T> onFragmentStarted,
                                                          final boolean addToBackStack,
-                                                         final FragmentManager fragmentManager,
                                                          final @IdRes int containerViewId,
-                                                         final Consumer<T> onFragmentStarted) {
+                                                         final FragmentManager fragmentManager) {
         final FragmentTransaction fragmentTransaction =
                 fragmentManager
                         .beginTransaction()

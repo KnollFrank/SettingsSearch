@@ -83,10 +83,11 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         showFragment(
                 preferenceFragment,
+                SearchResultsPreferenceFragment::highlightPreference,
                 true,
-                fragmentManager,
                 this.fragmentContainerViewId,
-                SearchResultsPreferenceFragment::highlightPreference);
+                fragmentManager
+        );
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment) {

@@ -82,10 +82,11 @@ public class SearchPreferenceFragment extends Fragment {
                 SearchResultsPreferenceFragment.newInstance(
                         searchConfiguration.fragmentContainerViewId,
                         mergedPreferenceScreen),
+                onFragmentStarted,
                 false,
-                getChildFragmentManager(),
                 R.id.searchResultsFragmentContainerView,
-                onFragmentStarted);
+                getChildFragmentManager()
+        );
     }
 
     private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {
