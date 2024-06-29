@@ -68,7 +68,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 .ifPresent(host -> showPreferenceScreenAndHighlightPreference(host, preference));
     }
 
-    // FK-TODO: refactor
     private void showPreferenceScreenAndHighlightPreference(
             final Class<? extends PreferenceFragmentCompat> fragmentOfPreferenceScreen,
             final Preference preference2Highlight) {
