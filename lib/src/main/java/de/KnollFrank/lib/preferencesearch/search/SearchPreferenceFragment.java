@@ -19,8 +19,7 @@ import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
-import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
-import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
+import de.KnollFrank.lib.preferencesearch.fragment.Navigation;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
@@ -85,7 +84,6 @@ public class SearchPreferenceFragment extends Fragment {
                 false,
                 getChildFragmentManager(),
                 R.id.searchResultsFragmentContainerView,
-                Commit.COMMIT_NOW,
                 onFragmentStarted);
     }
 
