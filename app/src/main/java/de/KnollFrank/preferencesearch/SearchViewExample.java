@@ -15,6 +15,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.lib.preferencesearch.search.DefaultSearchableInfoProvider;
 
 // FK-TODO: README.md anpassen
 public class SearchViewExample extends AppCompatActivity {
@@ -61,6 +62,7 @@ public class SearchViewExample extends AppCompatActivity {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 getSupportFragmentManager(),
+                new DefaultSearchableInfoProvider(),
                 new DefaultFragmentFactory());
     }
 

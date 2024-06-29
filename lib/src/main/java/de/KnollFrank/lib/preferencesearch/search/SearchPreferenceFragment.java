@@ -27,23 +27,29 @@ import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragmen
 
 public class SearchPreferenceFragment extends Fragment {
 
+    private final SearchableInfoProvider searchableInfoProvider;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
 
-    public static SearchPreferenceFragment newInstance(final SearchConfiguration searchConfiguration,
-                                                       final FragmentFactory fragmentFactory) {
-        final SearchPreferenceFragment searchPreferenceFragment = new SearchPreferenceFragment(fragmentFactory);
+    public static SearchPreferenceFragment newInstance(
+            final SearchConfiguration searchConfiguration,
+            final SearchableInfoProvider searchableInfoProvider,
+            final FragmentFactory fragmentFactory) {
+        final SearchPreferenceFragment searchPreferenceFragment =
+                new SearchPreferenceFragment(searchableInfoProvider, fragmentFactory);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
 
-    public SearchPreferenceFragment(final FragmentFactory fragmentFactory) {
+    public SearchPreferenceFragment(final SearchableInfoProvider searchableInfoProvider,
+                                    final FragmentFactory fragmentFactory) {
         super(R.layout.searchpreference_fragment);
+        this.searchableInfoProvider = searchableInfoProvider;
         this.fragmentFactory = fragmentFactory;
     }
 
     public SearchPreferenceFragment() {
-        this(new DefaultFragmentFactory());
+        this(new DefaultSearchableInfoProvider(), new DefaultFragmentFactory());
     }
 
     @Override
@@ -96,6 +102,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchAndDisplay(
                         PreferenceSearcher.fromPreferenceScreen(mergedPreferenceScreen.preferenceScreen),
                         mergedPreferenceScreen.preferenceScreen,
+                        searchableInfoProvider,
                         new PreferenceScreenResetter(mergedPreferenceScreen.summaryByPreference),
                         requireContext()));
         selectSearchView(searchView);

@@ -14,15 +14,18 @@ class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;
     private final PreferenceScreen preferenceScreen;
+    private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceScreenResetter preferenceScreenResetter;
     private final Context context;
 
     public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
                             final PreferenceScreen preferenceScreen,
+                            final SearchableInfoProvider searchableInfoProvider,
                             final PreferenceScreenResetter preferenceScreenResetter,
                             final Context context) {
         this.preferenceSearcher = preferenceSearcher;
         this.preferenceScreen = preferenceScreen;
+        this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceScreenResetter = preferenceScreenResetter;
         this.context = context;
     }
@@ -37,7 +40,10 @@ class SearchAndDisplay {
 
     private List<PreferenceMatch> searchFor(final String query) {
         preferenceScreenResetter.reset(preferenceScreen);
-        addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(preferenceScreen, query);
+        addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
+                preferenceScreen,
+                searchableInfoProvider,
+                query);
         return preferenceSearcher.searchFor(query);
     }
 
