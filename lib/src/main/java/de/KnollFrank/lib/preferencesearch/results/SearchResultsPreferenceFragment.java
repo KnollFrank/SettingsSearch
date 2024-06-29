@@ -87,8 +87,9 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 new FragmentLifecycleCallbacks() {
 
                     @Override
-                    public void onFragmentStarted(@NonNull final FragmentManager fragmentManager, @NonNull final Fragment fragment) {
-                        if (fragment.getClass().equals(fragmentOfPreferenceScreen)) {
+                    public void onFragmentStarted(@NonNull final FragmentManager fragmentManager,
+                                                  @NonNull final Fragment fragment) {
+                        if (fragment == preferenceFragment) {
                             fragmentManager.unregisterFragmentLifecycleCallbacks(this);
                             highlightPreference((PreferenceFragmentCompat) fragment);
                         }
