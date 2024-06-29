@@ -8,4 +8,13 @@ import java.util.Optional;
 public interface SearchableInfoProvider {
 
     Optional<String> getSearchableInfo(Preference preference);
+
+    default SearchableInfoProvider orElse(final SearchableInfoProvider other) {
+        return preference -> {
+            final Optional<String> searchableInfo = getSearchableInfo(preference);
+            return searchableInfo.isPresent() ?
+                    searchableInfo :
+                    other.getSearchableInfo(preference);
+        };
+    }
 }
