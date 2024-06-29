@@ -83,25 +83,34 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                         fragmentOfPreferenceScreen.getName(),
                         createArguments(preference2Highlight.getKey()));
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.registerFragmentLifecycleCallbacks(
-                new FragmentLifecycleCallbacks() {
-
-                    @Override
-                    public void onFragmentStarted(@NonNull final FragmentManager fragmentManager,
-                                                  @NonNull final Fragment fragment) {
-                        if (fragment == preferenceFragment) {
-                            fragmentManager.unregisterFragmentLifecycleCallbacks(this);
-                            highlightPreference(preferenceFragment);
-                        }
-                    }
-                },
-                false);
+        executeOnFragmentStarted(
+                preferenceFragment,
+                () -> highlightPreference(preferenceFragment),
+                fragmentManager);
         Navigation.show(
                 preferenceFragment,
                 true,
                 fragmentManager,
                 this.fragmentContainerViewId,
                 Commit.COMMIT_ASYNC);
+    }
+
+    private void executeOnFragmentStarted(final Fragment fragment,
+                                          final Runnable onFragmentStarted,
+                                          final FragmentManager fragmentManager) {
+        fragmentManager.registerFragmentLifecycleCallbacks(
+                new FragmentLifecycleCallbacks() {
+
+                    @Override
+                    public void onFragmentStarted(@NonNull final FragmentManager fragmentManager,
+                                                  @NonNull final Fragment _fragment) {
+                        if (_fragment == fragment) {
+                            fragmentManager.unregisterFragmentLifecycleCallbacks(this);
+                            onFragmentStarted.run();
+                        }
+                    }
+                },
+                false);
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment) {
