@@ -61,13 +61,7 @@ public class SearchViewExample extends AppCompatActivity {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 getSupportFragmentManager(),
-                // FK-TODO: replace with class named ConstantListPreferenceSearchableInfoProvider?
-                preference -> {
-                    if (preference instanceof final ConstantListPreference constantListPreference) {
-                        return Optional.of(String.join(", ", constantListPreference.getEntries()));
-                    }
-                    return Optional.empty();
-                },
+                new ConstantListPreferenceSearchableInfoProvider(),
                 new DefaultFragmentFactory());
     }
 
