@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.results;
 
+import static de.KnollFrank.lib.preferencesearch.fragment.Fragments.showFragment;
 import static de.KnollFrank.lib.preferencesearch.results.PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch;
 
 import android.os.Bundle;
@@ -21,7 +22,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Bundles;
-import de.KnollFrank.lib.preferencesearch.fragment.Navigation;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
@@ -81,7 +81,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                         fragmentOfPreferenceScreen.getName(),
                         createArguments(preference2Highlight.getKey()));
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        Navigation.show(
+        showFragment(
                 preferenceFragment,
                 true,
                 fragmentManager,

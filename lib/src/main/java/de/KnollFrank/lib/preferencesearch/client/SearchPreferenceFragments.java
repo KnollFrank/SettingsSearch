@@ -1,9 +1,10 @@
 package de.KnollFrank.lib.preferencesearch.client;
 
+import static de.KnollFrank.lib.preferencesearch.fragment.Fragments.showFragment;
+
 import androidx.fragment.app.FragmentManager;
 
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.preferencesearch.fragment.Navigation;
 import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
 
 public class SearchPreferenceFragments {
@@ -21,7 +22,7 @@ public class SearchPreferenceFragments {
     }
 
     public void showSearchPreferenceFragment() {
-        Navigation.show(
+        showFragment(
                 SearchPreferenceFragment.newInstance(searchConfiguration, fragmentFactory),
                 true,
                 fragmentManager,

@@ -2,10 +2,12 @@ package de.KnollFrank.lib.preferencesearch.fragment;
 
 import android.content.Context;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.function.Consumer;
 
@@ -29,7 +31,24 @@ public class Fragments {
         return _fragment;
     }
 
-    public static <T extends Fragment> void executeOnceOnFragmentStarted(
+    public static <T extends Fragment> void showFragment(final T fragment,
+                                                         final boolean addToBackStack,
+                                                         final FragmentManager fragmentManager,
+                                                         final @IdRes int containerViewId,
+                                                         final Consumer<T> onFragmentStarted) {
+        final FragmentTransaction fragmentTransaction =
+                fragmentManager
+                        .beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(containerViewId, fragment);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(null);
+        }
+        executeOnceOnFragmentStarted(fragment, onFragmentStarted, fragmentManager);
+        fragmentTransaction.commit();
+    }
+
+    private static <T extends Fragment> void executeOnceOnFragmentStarted(
             final T fragment,
             final Consumer<T> onFragmentStarted,
             final FragmentManager fragmentManager) {

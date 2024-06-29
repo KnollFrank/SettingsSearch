@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
+import static de.KnollFrank.lib.preferencesearch.fragment.Fragments.showFragment;
+
 import android.os.Bundle;
 import android.widget.SearchView;
 
@@ -19,7 +21,6 @@ import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
-import de.KnollFrank.lib.preferencesearch.fragment.Navigation;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
@@ -77,7 +78,7 @@ public class SearchPreferenceFragment extends Fragment {
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
                                                      final Consumer<SearchResultsPreferenceFragment> onFragmentStarted) {
-        Navigation.show(
+        showFragment(
                 SearchResultsPreferenceFragment.newInstance(
                         searchConfiguration.fragmentContainerViewId,
                         mergedPreferenceScreen),
