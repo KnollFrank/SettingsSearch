@@ -86,8 +86,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 SearchResultsPreferenceFragment::highlightPreference,
                 true,
                 this.fragmentContainerViewId,
-                fragmentManager
-        );
+                fragmentManager);
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment) {

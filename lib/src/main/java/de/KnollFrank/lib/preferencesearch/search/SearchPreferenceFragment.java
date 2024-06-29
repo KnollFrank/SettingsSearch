@@ -85,8 +85,7 @@ public class SearchPreferenceFragment extends Fragment {
                 onFragmentStarted,
                 false,
                 R.id.searchResultsFragmentContainerView,
-                getChildFragmentManager()
-        );
+                getChildFragmentManager());
     }
 
     private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {
