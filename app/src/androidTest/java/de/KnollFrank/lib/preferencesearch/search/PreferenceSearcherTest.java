@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
-import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingEntriesAdapter.addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry;
+import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingSearchableInfosAdapter.addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo;
 
 import android.os.Looper;
 
@@ -146,7 +146,7 @@ public class PreferenceSearcherTest {
                         PreferenceSearcher.fromPreferenceScreen(mergedPreferenceScreen.preferenceScreen);
 
                 // When
-                addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry(
+                addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
                         mergedPreferenceScreen.preferenceScreen,
                         keyword);
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);

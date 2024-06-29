@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
-import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingEntriesAdapter.addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry;
+import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingSearchableInfosAdapter.addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo;
 
 import android.content.Context;
 
@@ -37,7 +37,7 @@ class SearchAndDisplay {
 
     private List<PreferenceMatch> searchFor(final String query) {
         preferenceScreenResetter.reset(preferenceScreen);
-        addEntries2SummariesOfPreferencesIfQueryMatchesAnyEntry(preferenceScreen, query);
+        addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(preferenceScreen, query);
         return preferenceSearcher.searchFor(query);
     }
 
