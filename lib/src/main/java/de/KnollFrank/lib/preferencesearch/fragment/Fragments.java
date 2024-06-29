@@ -32,7 +32,7 @@ public class Fragments {
     }
 
     public static <T extends Fragment> void showFragment(final T fragment,
-                                                         final Consumer<T> onFragmentStarted,
+                                                         final Consumer<T> onFragmentShown,
                                                          final boolean addToBackStack,
                                                          final @IdRes int containerViewId,
                                                          final FragmentManager fragmentManager) {
@@ -44,7 +44,7 @@ public class Fragments {
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }
-        executeOnceOnFragmentStarted(fragment, onFragmentStarted, fragmentManager);
+        executeOnceOnFragmentStarted(fragment, onFragmentShown, fragmentManager);
         fragmentTransaction.commit();
     }
 
