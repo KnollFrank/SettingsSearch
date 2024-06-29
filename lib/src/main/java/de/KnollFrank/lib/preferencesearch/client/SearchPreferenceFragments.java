@@ -27,6 +27,7 @@ public class SearchPreferenceFragments {
                 true,
                 fragmentManager,
                 searchConfiguration.fragmentContainerViewId,
-                Commit.COMMIT_ASYNC);
+                Commit.COMMIT_ASYNC,
+                searchPreferenceFragment -> {});
     }
 }

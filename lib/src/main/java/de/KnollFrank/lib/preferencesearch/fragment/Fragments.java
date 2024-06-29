@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
 
+import java.util.function.Consumer;
+
 public class Fragments {
 
     private final FragmentFactory fragmentFactory;
@@ -27,9 +29,10 @@ public class Fragments {
         return _fragment;
     }
 
-    public static void executeOnceOnFragmentStarted(final Fragment fragment,
-                                                    final Runnable onFragmentStarted,
-                                                    final FragmentManager fragmentManager) {
+    public static <T extends Fragment> void executeOnceOnFragmentStarted(
+            final T fragment,
+            final Consumer<T> onFragmentStarted,
+            final FragmentManager fragmentManager) {
         fragmentManager.registerFragmentLifecycleCallbacks(
                 new FragmentLifecycleCallbacks() {
 
@@ -38,7 +41,7 @@ public class Fragments {
                                                   @NonNull final Fragment _fragment) {
                         if (_fragment == fragment) {
                             fragmentManager.unregisterFragmentLifecycleCallbacks(this);
-                            onFragmentStarted.run();
+                            onFragmentStarted.accept(fragment);
                         }
                     }
                 },

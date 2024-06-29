@@ -5,15 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.function.Consumer;
+
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 
 public class Navigation {
 
-    public static void show(final Fragment fragment,
-                            final boolean addToBackStack,
-                            final FragmentManager fragmentManager,
-                            final @IdRes int containerViewId,
-                            final Commit commit) {
+    public static <T extends Fragment> void show(final T fragment,
+                                                 final boolean addToBackStack,
+                                                 final FragmentManager fragmentManager,
+                                                 final @IdRes int containerViewId,
+                                                 final Commit commit,
+                                                 final Consumer<T> onFragmentStarted) {
         final FragmentTransaction fragmentTransaction =
                 fragmentManager
                         .beginTransaction()
@@ -22,15 +25,7 @@ public class Navigation {
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }
-        commit.commit(fragmentTransaction);
-    }
-
-    public static void show(final Fragment fragment,
-                            final boolean addToBackStack,
-                            final FragmentManager fragmentManager,
-                            final @IdRes int containerViewId,
-                            final Runnable onFragmentStarted) {
         Fragments.executeOnceOnFragmentStarted(fragment, onFragmentStarted, fragmentManager);
-        show(fragment, addToBackStack, fragmentManager, containerViewId, Commit.COMMIT_ASYNC);
+        commit.commit(fragmentTransaction);
     }
 }

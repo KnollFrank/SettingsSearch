@@ -6,6 +6,8 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.function.Consumer;
+
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
@@ -54,8 +56,9 @@ public class SearchPreferenceFragment extends Fragment {
     public void onStart() {
         super.onStart();
         final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen();
-        showSearchResultsPreferenceFragment(mergedPreferenceScreen);
-        configureSearchView(mergedPreferenceScreen);
+        showSearchResultsPreferenceFragment(
+                mergedPreferenceScreen,
+                searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen));
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {
@@ -73,7 +76,8 @@ public class SearchPreferenceFragment extends Fragment {
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }
 
-    private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen) {
+    private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
+                                                     final Consumer<SearchResultsPreferenceFragment> onFragmentStarted) {
         Navigation.show(
                 SearchResultsPreferenceFragment.newInstance(
                         searchConfiguration.fragmentContainerViewId,
@@ -81,7 +85,8 @@ public class SearchPreferenceFragment extends Fragment {
                 false,
                 getChildFragmentManager(),
                 R.id.searchResultsFragmentContainerView,
-                Commit.COMMIT_NOW);
+                Commit.COMMIT_NOW,
+                onFragmentStarted);
     }
 
     private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {

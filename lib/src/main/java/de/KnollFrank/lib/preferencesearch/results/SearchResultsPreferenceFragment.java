@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Bundles;
+import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
@@ -86,7 +87,8 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 true,
                 fragmentManager,
                 this.fragmentContainerViewId,
-                () -> highlightPreference(preferenceFragment));
+                Commit.COMMIT_ASYNC,
+                SearchResultsPreferenceFragment::highlightPreference);
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment) {
