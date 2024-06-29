@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -22,7 +21,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Bundles;
-import de.KnollFrank.lib.preferencesearch.fragment.navigation.Commit;
 import de.KnollFrank.lib.preferencesearch.fragment.navigation.Navigation;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
@@ -83,34 +81,12 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                         fragmentOfPreferenceScreen.getName(),
                         createArguments(preference2Highlight.getKey()));
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        executeOnFragmentStarted(
-                preferenceFragment,
-                () -> highlightPreference(preferenceFragment),
-                fragmentManager);
         Navigation.show(
                 preferenceFragment,
                 true,
                 fragmentManager,
                 this.fragmentContainerViewId,
-                Commit.COMMIT_ASYNC);
-    }
-
-    private void executeOnFragmentStarted(final Fragment fragment,
-                                          final Runnable onFragmentStarted,
-                                          final FragmentManager fragmentManager) {
-        fragmentManager.registerFragmentLifecycleCallbacks(
-                new FragmentLifecycleCallbacks() {
-
-                    @Override
-                    public void onFragmentStarted(@NonNull final FragmentManager fragmentManager,
-                                                  @NonNull final Fragment _fragment) {
-                        if (_fragment == fragment) {
-                            fragmentManager.unregisterFragmentLifecycleCallbacks(this);
-                            onFragmentStarted.run();
-                        }
-                    }
-                },
-                false);
+                () -> highlightPreference(preferenceFragment));
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment) {
