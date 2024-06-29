@@ -8,6 +8,7 @@ import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.search.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.search.SearchableInfoProvider;
+import de.KnollFrank.lib.preferencesearch.search.SearchableInfoProviders;
 
 public class SearchPreferenceFragments {
 
@@ -22,7 +23,10 @@ public class SearchPreferenceFragments {
                                      final FragmentFactory fragmentFactory) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
-        this.searchableInfoProvider = new BuiltinSearchableInfoProvider().orElse(searchableInfoProvider);
+        this.searchableInfoProvider =
+                SearchableInfoProviders.merge(
+                        new BuiltinSearchableInfoProvider(),
+                        searchableInfoProvider);
         this.fragmentFactory = fragmentFactory;
     }
 
