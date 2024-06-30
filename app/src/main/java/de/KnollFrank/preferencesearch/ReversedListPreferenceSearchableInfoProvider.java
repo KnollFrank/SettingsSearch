@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.search.SearchableInfoProvider;
 
-class ReversedListPreferenceSearchableInfoProvider implements SearchableInfoProvider {
+public class ReversedListPreferenceSearchableInfoProvider implements SearchableInfoProvider {
 
     @Override
     public Optional<String> getSearchableInfo(final Preference preference) {

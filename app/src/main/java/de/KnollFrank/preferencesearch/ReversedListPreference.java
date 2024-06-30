@@ -11,6 +11,10 @@ import java.util.Arrays;
 
 public class ReversedListPreference extends ListPreference {
 
+    public ReversedListPreference(@NonNull final Context context) {
+        super(context);
+    }
+
     public ReversedListPreference(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
         setEntries(getEntries());
@@ -35,7 +39,7 @@ public class ReversedListPreference extends ListPreference {
                 .toArray(String[]::new);
     }
 
-    private static String reverse(final String string) {
+    public static String reverse(final String string) {
         return new StringBuilder(string).reverse().toString();
     }
 }

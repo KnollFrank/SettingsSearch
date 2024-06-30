@@ -31,6 +31,8 @@ import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
+import de.KnollFrank.preferencesearch.ReversedListPreference;
+import de.KnollFrank.preferencesearch.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -86,6 +88,24 @@ public class PreferenceSearcherTest {
     }
 
     @Test
+    public void shouldSearchAndFindCustomReversedListPreferenceViaReversedKeyword() {
+        final String keyword = "Windows Live";
+        final String keyOfPreference = "keyOfReversedListPreference";
+        testSearch(
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final ReversedListPreference preference = new ReversedListPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("summary of ReversedListPreference");
+                            preference.setTitle("title of ReversedListPreference");
+                            preference.setEntries(new String[]{keyword});
+                            return preference;
+                        }),
+                ReversedListPreference.reverse(keyword),
+                hasItem(is(keyOfPreference)));
+    }
+
+    @Test
     public void shouldSearchAndFindMultiSelectListPreference() {
         final String keyword = "entry of some MultiSelectListPreference";
         final String keyOfPreference = "keyOfSomeMultiSelectListPreference";
@@ -134,7 +154,9 @@ public class PreferenceSearcherTest {
                 // When
                 addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
                         mergedPreferenceScreen.preferenceScreen,
-                        new BuiltinSearchableInfoProvider(),
+                        SearchableInfoProviders.merge(
+                                new BuiltinSearchableInfoProvider(),
+                                new ReversedListPreferenceSearchableInfoProvider()),
                         keyword);
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
 
