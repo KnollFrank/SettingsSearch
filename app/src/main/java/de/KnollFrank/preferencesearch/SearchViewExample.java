@@ -61,7 +61,7 @@ public class SearchViewExample extends AppCompatActivity {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 getSupportFragmentManager(),
-                new ConstantListPreferenceSearchableInfoProvider(),
+                new ReversedListPreferenceSearchableInfoProvider(),
                 new DefaultFragmentFactory());
     }
 
