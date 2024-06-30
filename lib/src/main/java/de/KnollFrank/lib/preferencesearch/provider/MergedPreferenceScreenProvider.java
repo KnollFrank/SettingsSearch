@@ -22,25 +22,31 @@ public class MergedPreferenceScreenProvider {
     private final Fragments fragments;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
+    private final boolean cacheMergedPreferenceScreens;
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
 
     public MergedPreferenceScreenProvider(final Fragments fragments,
                                           final PreferenceScreensProvider preferenceScreensProvider,
-                                          final PreferenceScreensMerger preferenceScreensMerger) {
+                                          final PreferenceScreensMerger preferenceScreensMerger,
+                                          final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
+        this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final String preferenceFragment) {
+        if (!cacheMergedPreferenceScreens) {
+            return computeMergedPreferenceScreen(preferenceFragment);
+        }
         if (!mergedPreferenceScreenByFragment.containsKey(preferenceFragment)) {
-            mergedPreferenceScreenByFragment.put(preferenceFragment, _getMergedPreferenceScreen(preferenceFragment));
+            mergedPreferenceScreenByFragment.put(preferenceFragment, computeMergedPreferenceScreen(preferenceFragment));
         }
         return mergedPreferenceScreenByFragment.get(preferenceFragment);
     }
 
-    private MergedPreferenceScreen _getMergedPreferenceScreen(final String preferenceFragment) {
+    private MergedPreferenceScreen computeMergedPreferenceScreen(final String preferenceFragment) {
         return getMergedPreferenceScreen((PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(preferenceFragment));
     }
 

@@ -7,8 +7,6 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.StringContains.containsString;
 import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingSearchableInfosAdapter.addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo;
 
-import android.os.Looper;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
@@ -19,8 +17,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
 import org.hamcrest.Matcher;
-import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -38,16 +34,6 @@ import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
-
-    @BeforeClass
-    public static void beforeClass() {
-        Looper.prepare();
-    }
-
-    @After
-    public void afterClass() {
-        // Looper.getMainLooper().quitSafely();
-    }
 
     @Test
     public void shouldSearchAndFindTitle() {
@@ -174,7 +160,8 @@ public class PreferenceSearcherTest {
                 new MergedPreferenceScreenProvider(
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
-                        new PreferenceScreensMerger(fragmentActivity));
+                        new PreferenceScreensMerger(fragmentActivity),
+                        false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
 
