@@ -42,7 +42,7 @@
             android:key="keyOfInvisiblePreference"
             android:summary="summary of invisible preference"
             android:title="title of invisible preference"
-            app:isPreferenceVisible="false"/>
+            app:isPreferenceVisible="false" />
     </PreferenceCategory>
 
     <PreferenceScreen
