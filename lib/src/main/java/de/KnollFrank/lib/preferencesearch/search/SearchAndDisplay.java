@@ -38,6 +38,7 @@ class SearchAndDisplay {
                 preferenceScreen);
     }
 
+    // FK-TODO: let preferenceSearcher implement a new Interface IPreferenceSearcher and extract of the following method a new subclass which implements IPreferenceSearcher. Use this new subclass in PreferenceSearcherTest.
     private List<PreferenceMatch> searchFor(final String query) {
         preferenceScreenResetter.reset(preferenceScreen);
         addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
