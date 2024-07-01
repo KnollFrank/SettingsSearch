@@ -22,6 +22,7 @@ public class MergedPreferenceScreenProvider {
     private final Fragments fragments;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
+    private final SearchablePreferencePredicate searchablePreferencePredicate;
     private final boolean cacheMergedPreferenceScreens;
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
@@ -29,10 +30,12 @@ public class MergedPreferenceScreenProvider {
     public MergedPreferenceScreenProvider(final Fragments fragments,
                                           final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
+                                          final SearchablePreferencePredicate searchablePreferencePredicate,
                                           final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
+        this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
     }
 
@@ -67,7 +70,16 @@ public class MergedPreferenceScreenProvider {
     private Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {
         final Set<PreferenceScreenWithHost> screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
         removeInvisiblePreferences(screens);
+        removeNonSearchablePreferences(screens);
         return screens;
+    }
+
+    private void removeNonSearchablePreferences(final Set<PreferenceScreenWithHost> screens) {
+        for (final PreferenceScreenWithHost preferenceScreenWithHost : screens) {
+            PreferencesRemover.removePreferences(
+                    preferenceScreenWithHost,
+                    (preference, host) -> !searchablePreferencePredicate.isPreferenceOfHostSearchable(preference, host));
+        }
     }
 
     private static void removeInvisiblePreferences(final Set<PreferenceScreenWithHost> screens) {

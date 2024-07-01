@@ -79,6 +79,7 @@ public class SearchPreferenceFragment extends Fragment {
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(getContext()),
+                        (preference, host) -> true,
                         true);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }

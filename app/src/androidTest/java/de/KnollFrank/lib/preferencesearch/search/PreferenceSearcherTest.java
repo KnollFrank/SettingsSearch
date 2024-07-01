@@ -2,9 +2,7 @@ package de.KnollFrank.lib.preferencesearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.StringContains.containsString;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -30,6 +28,7 @@ import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
+import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.preferencesearch.ReversedListPreference;
 import de.KnollFrank.preferencesearch.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.test.TestActivity;
@@ -48,8 +47,26 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         }),
+                (preference, host) -> true,
                 keyword,
-                hasItem(containsString(keyOfPreference)));
+                hasItem(keyOfPreference));
+    }
+
+    @Test
+    public void shouldSearchAndNotFindNonSearchablePreference() {
+        final String keyword = "fourth";
+        final String keyOfPreference = "fourthfile";
+        testSearch(
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final CheckBoxPreference preference = new CheckBoxPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setTitle(String.format("Checkbox %s file", keyword));
+                            return preference;
+                        }),
+                (preference, host) -> !keyOfPreference.equals(preference.getKey()),
+                keyword,
+                not(hasItem(keyOfPreference)));
     }
 
     @Test
@@ -64,8 +81,9 @@ public class PreferenceSearcherTest {
                             preference.setSummary(String.format("Checkbox %s file", keyword));
                             return preference;
                         }),
+                (preference, host) -> true,
                 keyword,
-                hasItem(containsString(keyOfPreference)));
+                hasItem(keyOfPreference));
     }
 
     @Test
@@ -82,8 +100,9 @@ public class PreferenceSearcherTest {
                             preference.setEntries(new String[]{keyword});
                             return preference;
                         }),
+                (preference, host) -> true,
                 keyword,
-                hasItem(is(keyOfPreference)));
+                hasItem(keyOfPreference));
     }
 
     @Test
@@ -100,8 +119,9 @@ public class PreferenceSearcherTest {
                             preference.setEntries(new String[]{keyword});
                             return preference;
                         }),
+                (preference, host) -> true,
                 ReversedListPreference.reverse(keyword),
-                hasItem(is(keyOfPreference)));
+                hasItem(keyOfPreference));
     }
 
     @Test
@@ -118,8 +138,9 @@ public class PreferenceSearcherTest {
                             preference.setEntries(new String[]{keyword});
                             return preference;
                         }),
+                (preference, host) -> true,
                 keyword,
-                hasItem(containsString(keyOfPreference)));
+                hasItem(keyOfPreference));
     }
 
     @Test
@@ -135,18 +156,23 @@ public class PreferenceSearcherTest {
                             preference.setTitle("Checkbox fourth file");
                             return preference;
                         }),
+                (preference, host) -> true,
                 keyword,
-                not(hasItem(containsString(keyOfPreference))));
+                not(hasItem(keyOfPreference)));
     }
 
     private static void testSearch(final PreferenceFragmentCompat preferenceFragment,
+                                   final SearchablePreferencePredicate searchablePreferencePredicate,
                                    final String keyword,
                                    final Matcher<Iterable<? super String>> preferenceKeyMatcher) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
                 final MergedPreferenceScreen mergedPreferenceScreen =
-                        getMergedPreferenceScreen(preferenceFragment, fragmentActivity);
+                        getMergedPreferenceScreen(
+                                preferenceFragment,
+                                searchablePreferencePredicate,
+                                fragmentActivity);
                 final PreferenceSearcher preferenceSearcher =
                         PreferenceSearcher.createPreferenceSearcher(
                                 mergedPreferenceScreen,
@@ -165,6 +191,7 @@ public class PreferenceSearcherTest {
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
             final PreferenceFragmentCompat preferenceFragment,
+            final SearchablePreferencePredicate searchablePreferencePredicate,
             final FragmentActivity fragmentActivity) {
         final Fragments fragments =
                 FragmentsFactory.createFragments(
@@ -180,6 +207,7 @@ public class PreferenceSearcherTest {
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity),
+                        searchablePreferencePredicate,
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
