@@ -74,19 +74,22 @@ public class MergedPreferenceScreenProvider {
         return screens;
     }
 
-    private void removeNonSearchablePreferences(final Set<PreferenceScreenWithHost> screens) {
-        for (final PreferenceScreenWithHost preferenceScreenWithHost : screens) {
-            PreferencesRemover.removePreferences(
-                    preferenceScreenWithHost,
-                    (preference, host) -> !searchablePreferencePredicate.isPreferenceOfHostSearchable(preference, host));
-        }
+    private static void removeInvisiblePreferences(final Set<PreferenceScreenWithHost> screens) {
+        PreferencesRemover.removePreferences(screens, MergedPreferenceScreenProvider::isInvisible);
     }
 
-    private static void removeInvisiblePreferences(final Set<PreferenceScreenWithHost> screens) {
-        screens
-                .stream()
-                .map(screen -> screen.preferenceScreen)
-                .forEach(PreferencesRemover::removeInvisiblePreferences);
+    private static boolean isInvisible(final Preference preference,
+                                       final Class<? extends PreferenceFragmentCompat> host) {
+        return !preference.isVisible();
+    }
+
+    private void removeNonSearchablePreferences(final Set<PreferenceScreenWithHost> screens) {
+        PreferencesRemover.removePreferences(screens, this::isNonSearchable);
+    }
+
+    private boolean isNonSearchable(final Preference preference,
+                                    final Class<? extends PreferenceFragmentCompat> host) {
+        return !searchablePreferencePredicate.isPreferenceOfHostSearchable(preference, host);
     }
 
     private PreferenceScreen destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {
