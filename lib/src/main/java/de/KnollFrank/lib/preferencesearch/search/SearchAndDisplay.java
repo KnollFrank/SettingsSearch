@@ -24,6 +24,10 @@ class SearchAndDisplay {
 
     public void searchForQueryAndDisplayResults(final String query) {
         final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
+        display(preferenceMatches);
+    }
+
+    private void display(final List<PreferenceMatch> preferenceMatches) {
         PreferenceMatchesHighlighter.highlight(preferenceMatches, context);
         PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
                 getPreferences(preferenceMatches),
