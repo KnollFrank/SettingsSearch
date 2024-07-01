@@ -120,7 +120,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, host) -> true,
-                ReversedListPreference.reverse(keyword),
+                ReversedListPreference.getReverse(keyword).toString(),
                 hasItem(keyOfPreference));
     }
 

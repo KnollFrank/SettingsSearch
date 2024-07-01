@@ -1,6 +1,7 @@
 package de.KnollFrank.preferencesearch;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
@@ -22,24 +23,17 @@ public class ReversedListPreference extends ListPreference {
 
     @Override
     public void setEntries(final CharSequence[] entries) {
-        super.setEntries(reverse(toStrings(entries)));
+        super.setEntries(reverse(entries));
     }
 
-    private static String[] toStrings(final CharSequence[] charSequences) {
+    private static CharSequence[] reverse(final CharSequence[] charSequences) {
         return Arrays
                 .stream(charSequences)
-                .map(CharSequence::toString)
-                .toArray(String[]::new);
+                .map(ReversedListPreference::getReverse)
+                .toArray(CharSequence[]::new);
     }
 
-    private static String[] reverse(final String[] strings) {
-        return Arrays
-                .stream(strings)
-                .map(ReversedListPreference::reverse)
-                .toArray(String[]::new);
-    }
-
-    public static String reverse(final String string) {
-        return new StringBuilder(string).reverse().toString();
+    public static CharSequence getReverse(final CharSequence charSequence) {
+        return TextUtils.getReverse(charSequence, 0, charSequence.length());
     }
 }
