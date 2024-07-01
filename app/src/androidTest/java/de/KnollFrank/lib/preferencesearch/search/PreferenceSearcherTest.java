@@ -148,9 +148,8 @@ public class PreferenceSearcherTest {
                 final MergedPreferenceScreen mergedPreferenceScreen =
                         getMergedPreferenceScreen(preferenceFragment, fragmentActivity);
                 final PreferenceSearcher preferenceSearcher =
-                        new PreferenceSearcher(
-                                mergedPreferenceScreen.preferenceScreen,
-                                new PreferenceScreenResetter(mergedPreferenceScreen.summaryByPreference),
+                        PreferenceSearcher.createPreferenceSearcher(
+                                mergedPreferenceScreen,
                                 SearchableInfoProviders.merge(
                                         new BuiltinSearchableInfoProvider(),
                                         new ReversedListPreferenceSearchableInfoProvider()));
