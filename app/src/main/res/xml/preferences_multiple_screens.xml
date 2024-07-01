@@ -104,12 +104,12 @@
         android:title="Checkbox 4" />
 
     <CheckBoxPreference
-        android:key="checkbox4"
+        android:key="checkbox5"
         android:summary="This checkbox is just there to fill the screen"
         android:title="Checkbox 5" />
 
     <CheckBoxPreference
-        android:key="checkbox4"
+        android:key="checkbox6"
         android:summary="This checkbox is just there to fill the screen"
         android:title="Checkbox 6" />
 
