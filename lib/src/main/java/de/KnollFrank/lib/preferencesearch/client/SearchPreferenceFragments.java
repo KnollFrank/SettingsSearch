@@ -14,24 +14,24 @@ import de.KnollFrank.lib.preferencesearch.search.SearchableInfoProviders;
 public class SearchPreferenceFragments {
 
     private final SearchConfiguration searchConfiguration;
-    private final FragmentManager fragmentManager;
     private final SearchablePreferencePredicate searchablePreferencePredicate;
     private final SearchableInfoProvider searchableInfoProvider;
     private final FragmentFactory fragmentFactory;
+    private final FragmentManager fragmentManager;
 
     public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
-                                     final FragmentManager fragmentManager,
                                      final SearchablePreferencePredicate searchablePreferencePredicate,
                                      final SearchableInfoProvider searchableInfoProvider,
-                                     final FragmentFactory fragmentFactory) {
+                                     final FragmentFactory fragmentFactory,
+                                     final FragmentManager fragmentManager) {
         this.searchConfiguration = searchConfiguration;
-        this.fragmentManager = fragmentManager;
         this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.searchableInfoProvider =
                 SearchableInfoProviders.merge(
                         new BuiltinSearchableInfoProvider(),
                         searchableInfoProvider);
         this.fragmentFactory = fragmentFactory;
+        this.fragmentManager = fragmentManager;
     }
 
     public void showSearchPreferenceFragment() {

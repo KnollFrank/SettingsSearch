@@ -60,10 +60,10 @@ public class SearchViewExample extends AppCompatActivity {
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
-                getSupportFragmentManager(),
                 (preference, host) -> true,
                 new ReversedListPreferenceSearchableInfoProvider(),
-                new DefaultFragmentFactory());
+                new DefaultFragmentFactory(),
+                getSupportFragmentManager());
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
