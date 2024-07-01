@@ -23,33 +23,44 @@ import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
+import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 
 public class SearchPreferenceFragment extends Fragment {
 
+    private final SearchablePreferencePredicate searchablePreferencePredicate;
     private final SearchableInfoProvider searchableInfoProvider;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
+            final SearchablePreferencePredicate searchablePreferencePredicate,
             final SearchableInfoProvider searchableInfoProvider,
             final FragmentFactory fragmentFactory) {
         final SearchPreferenceFragment searchPreferenceFragment =
-                new SearchPreferenceFragment(searchableInfoProvider, fragmentFactory);
+                new SearchPreferenceFragment(
+                        searchablePreferencePredicate,
+                        searchableInfoProvider,
+                        fragmentFactory);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
 
-    public SearchPreferenceFragment(final SearchableInfoProvider searchableInfoProvider,
+    public SearchPreferenceFragment(final SearchablePreferencePredicate searchablePreferencePredicate,
+                                    final SearchableInfoProvider searchableInfoProvider,
                                     final FragmentFactory fragmentFactory) {
         super(R.layout.searchpreference_fragment);
+        this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.searchableInfoProvider = searchableInfoProvider;
         this.fragmentFactory = fragmentFactory;
     }
 
     public SearchPreferenceFragment() {
-        this(new BuiltinSearchableInfoProvider(), new DefaultFragmentFactory());
+        this(
+                (preference, host) -> true,
+                new BuiltinSearchableInfoProvider(),
+                new DefaultFragmentFactory());
     }
 
     @Override
@@ -79,7 +90,7 @@ public class SearchPreferenceFragment extends Fragment {
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(getContext()),
-                        (preference, host) -> true,
+                        searchablePreferencePredicate,
                         true);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }

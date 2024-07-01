@@ -49,7 +49,7 @@ public class PreferenceScreensProvider {
                 .stream()
                 .map(Preference::getFragment)
                 .filter(Objects::nonNull)
-                // FK-TODO: warum werden in OsmAnd manche fragmente mehrfach instantiiert?
+                // FK-TODO: warum werden in OsmAnd manche PreferenceFragmentCompats mehrfach instantiiert?
                 .map(this.preferenceScreenWithHostProvider::getPreferenceScreenOfFragment)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
