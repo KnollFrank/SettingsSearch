@@ -11,15 +11,13 @@ public class ReversedListPreferenceSearchableInfoProvider implements SearchableI
     @Override
     public Optional<String> getSearchableInfo(final Preference preference) {
         return preference instanceof final ReversedListPreference reversedListPreference ?
-                Optional.of(enumerateNullableEntries(reversedListPreference.getEntries())) :
+                Optional.of(join(reversedListPreference.getEntries())) :
                 Optional.empty();
     }
 
-    private static String enumerateNullableEntries(final CharSequence[] entries) {
-        return entries == null ? "" : enumerate(entries);
-    }
-
-    private static String enumerate(final CharSequence[] entries) {
-        return String.join(", ", entries);
+    private static String join(final CharSequence[] charSequences) {
+        return charSequences == null ?
+                "" :
+                String.join(", ", charSequences);
     }
 }
