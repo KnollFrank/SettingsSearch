@@ -2,7 +2,7 @@ package de.KnollFrank.lib.preferencesearch.provider;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceGroup;
 
 import java.util.Collection;
 import java.util.function.BiPredicate;
@@ -24,16 +24,16 @@ class PreferencesRemover {
             final PreferenceScreenWithHost preferenceScreenWithHost,
             final BiPredicate<Preference, Class<? extends PreferenceFragmentCompat>> predicate) {
         Preferences
-                .getAllPreferences(preferenceScreenWithHost.preferenceScreen)
+                .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
                 .filter(preference -> predicate.test(preference, preferenceScreenWithHost.host))
-                .forEach(preference -> removePreferenceFromPreferenceScreen(preference, preferenceScreenWithHost.preferenceScreen));
+                .forEach(PreferencesRemover::removePreference);
     }
 
-    private static void removePreferenceFromPreferenceScreen(final Preference preference,
-                                                             final PreferenceScreen preferenceScreen) {
-        if (preference.hasKey()) {
-            preferenceScreen.removePreferenceRecursively(preference.getKey());
+    private static void removePreference(final Preference preference) {
+        final PreferenceGroup parent = preference.getParent();
+        if (parent != null) {
+            parent.removePreference(preference);
         }
     }
 }
