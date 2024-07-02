@@ -32,11 +32,11 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SearchViewExampleTest {
+public class PreferenceSearchExampleTest {
 
     @Rule
-    public ActivityScenarioRule<SearchViewExample> mActivityScenarioRule =
-            new ActivityScenarioRule<>(SearchViewExample.class);
+    public ActivityScenarioRule<PreferenceSearchExample> mActivityScenarioRule =
+            new ActivityScenarioRule<>(PreferenceSearchExample.class);
 
     @Test
     public void shouldSearchAndFindPreference() {

@@ -15,9 +15,11 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
+import de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: README.md anpassen
-public class SearchViewExample extends AppCompatActivity {
+public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
 

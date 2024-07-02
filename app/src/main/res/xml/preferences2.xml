@@ -9,7 +9,7 @@
         android:persistent="false"
         android:summary="some summary to third fragment"
         android:title="some title to third fragment"
-        app:fragment="de.KnollFrank.preferencesearch.PrefsFragmentThird" />
+        app:fragment="de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentThird" />
 
     <CheckBoxPreference
         android:key="secondfile"

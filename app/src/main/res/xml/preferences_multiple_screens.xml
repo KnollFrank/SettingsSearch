@@ -8,21 +8,21 @@
         android:persistent="false"
         android:summary="some summary to second fragment"
         android:title="some title to second fragment"
-        app:fragment="de.KnollFrank.preferencesearch.PrefsFragmentSecond" />
+        app:fragment="de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentSecond" />
 
     <Preference
         android:key="link_to_fourth_fragment"
         android:persistent="false"
         android:summary="some summary to fourth fragment"
         android:title="some title to fourth fragment"
-        app:fragment="de.KnollFrank.preferencesearch.PrefsFragmentFourth" />
+        app:fragment="de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFourth" />
 
     <Preference
         android:key="link_to_nonPreference_fragment"
         android:persistent="false"
         android:summary="some summary to nonPreference fragment"
         android:title="some title to nonPreference fragment"
-        app:fragment="de.KnollFrank.preferencesearch.NonPreferenceFragment" />
+        app:fragment="de.KnollFrank.preferencesearch.preference.fragment.NonPreferenceFragment" />
 
     <CheckBoxPreference
         android:key="checkbox"
@@ -77,7 +77,7 @@
         android:summary="This allows to select from a list"
         android:title="List preference" />
 
-    <de.KnollFrank.preferencesearch.ReversedListPreference
+    <de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference
         android:entries="@android:array/imProtocols"
         android:entryValues="@android:array/imProtocols"
         android:key="keyOfReversedListPreference"

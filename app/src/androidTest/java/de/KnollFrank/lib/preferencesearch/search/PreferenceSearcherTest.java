@@ -29,8 +29,8 @@ import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
-import de.KnollFrank.preferencesearch.ReversedListPreference;
-import de.KnollFrank.preferencesearch.ReversedListPreferenceSearchableInfoProvider;
+import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
+import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {

@@ -1,4 +1,4 @@
-package de.KnollFrank.preferencesearch;
+package de.KnollFrank.preferencesearch.preference.custom;
 
 import androidx.preference.Preference;
 
