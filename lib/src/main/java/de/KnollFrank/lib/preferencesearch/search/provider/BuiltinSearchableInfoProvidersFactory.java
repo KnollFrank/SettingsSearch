@@ -14,9 +14,15 @@ public class BuiltinSearchableInfoProvidersFactory {
     public static Map<Class<? extends Preference>, SearchableInfoProvider<?>> createBuiltinSearchableInfoProviders() {
         return ImmutableMap.
                 <Class<? extends Preference>, SearchableInfoProvider<?>>builder()
-                .put(ListPreference.class, new ListPreferenceSearchableInfoProvider())
-                .put(DropDownPreference.class, new DropDownPreferenceSearchableInfoProvider())
-                .put(MultiSelectListPreference.class, new MultiSelectListPreferenceSearchableInfoProvider())
+                .put(
+                        ListPreference.class,
+                        new ListPreferenceSearchableInfoProvider())
+                .put(
+                        DropDownPreference.class,
+                        new DropDownPreferenceSearchableInfoProvider())
+                .put(
+                        MultiSelectListPreference.class,
+                        new MultiSelectListPreferenceSearchableInfoProvider())
                 .build();
     }
 }
