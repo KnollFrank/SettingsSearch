@@ -11,28 +11,29 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
 
 class PreferenceSearcher {
 
     private final PreferenceScreen preferenceScreen;
     private final PreferenceScreenResetter preferenceScreenResetter;
-    private final SearchableInfoProvider searchableInfoProvider;
+    private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
 
     public PreferenceSearcher(final PreferenceScreen preferenceScreen,
                               final PreferenceScreenResetter preferenceScreenResetter,
-                              final SearchableInfoProvider searchableInfoProvider) {
+                              final ISearchableInfoProviderInternal searchableInfoProviderInternal) {
         this.preferenceScreen = preferenceScreen;
         this.preferenceScreenResetter = preferenceScreenResetter;
-        this.searchableInfoProvider = searchableInfoProvider;
+        this.searchableInfoProviderInternal = searchableInfoProviderInternal;
     }
 
     public static PreferenceSearcher createPreferenceSearcher(
             final MergedPreferenceScreen mergedPreferenceScreen,
-            final SearchableInfoProvider searchableInfoProvider) {
+            final ISearchableInfoProviderInternal searchableInfoProviderInternal) {
         return new PreferenceSearcher(
                 mergedPreferenceScreen.preferenceScreen,
                 new PreferenceScreenResetter(mergedPreferenceScreen.summaryByPreference),
-                searchableInfoProvider);
+                searchableInfoProviderInternal);
     }
 
     public List<PreferenceMatch> searchFor(final String needle) {
@@ -44,7 +45,7 @@ class PreferenceSearcher {
         preferenceScreenResetter.reset(preferenceScreen);
         addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
                 preferenceScreen,
-                searchableInfoProvider,
+                searchableInfoProviderInternal,
                 needle);
     }
 

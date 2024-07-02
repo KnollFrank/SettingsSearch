@@ -8,6 +8,12 @@ import java.util.List;
 
 public class Strings {
 
+    public static String join(final CharSequence[] charSequences) {
+        return charSequences == null ?
+                "" :
+                String.join(", ", charSequences);
+    }
+
     public static List<Integer> getIndicesOfNeedleWithinHaystack(final String haystack,
                                                                  final String needle) {
         return ImmutableList.copyOf(getIndicesOfNeedleWithinHaystackIterator(haystack, needle));

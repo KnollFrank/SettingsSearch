@@ -1,18 +1,12 @@
 package de.KnollFrank.preferencesearch.preference.custom;
 
-import androidx.preference.Preference;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider;
 
-import java.util.Optional;
-
-import de.KnollFrank.lib.preferencesearch.search.SearchableInfoProvider;
-
-public class ReversedListPreferenceSearchableInfoProvider implements SearchableInfoProvider {
+public class ReversedListPreferenceSearchableInfoProvider implements SearchableInfoProvider<ReversedListPreference> {
 
     @Override
-    public Optional<String> getSearchableInfo(final Preference preference) {
-        return preference instanceof final ReversedListPreference reversedListPreference ?
-                Optional.of(join(reversedListPreference.getEntries())) :
-                Optional.empty();
+    public String getSearchableInfo(final ReversedListPreference reversedListPreference) {
+        return join(reversedListPreference.getEntries());
     }
 
     private static String join(final CharSequence[] charSequences) {

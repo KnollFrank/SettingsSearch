@@ -10,11 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFirst;
 
@@ -63,7 +66,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 (preference, host) -> true,
-                new ReversedListPreferenceSearchableInfoProvider(),
+                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider()),
                 new DefaultFragmentFactory(),
                 getSupportFragmentManager());
     }

@@ -7,15 +7,16 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
 
 class Summaries4MatchingSearchableInfosAdapter {
 
     public static void addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
             final PreferenceScreen preferenceScreen,
-            final SearchableInfoProvider searchableInfoProvider,
+            final ISearchableInfoProviderInternal searchableInfoProviderInternal,
             final String query) {
         for (final Preference preference : Preferences.getAllPreferences(preferenceScreen)) {
-            searchableInfoProvider
+            searchableInfoProviderInternal
                     .getSearchableInfo(preference)
                     .ifPresent(searchableInfo -> {
                         if (matches(searchableInfo, query)) {

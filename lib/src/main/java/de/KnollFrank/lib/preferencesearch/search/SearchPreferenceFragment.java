@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
 import static de.KnollFrank.lib.preferencesearch.fragment.Fragments.showFragment;
+import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
 
 import android.os.Bundle;
 import android.widget.SearchView;
@@ -25,41 +26,43 @@ import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvide
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 
 public class SearchPreferenceFragment extends Fragment {
 
     private final SearchablePreferencePredicate searchablePreferencePredicate;
-    private final SearchableInfoProvider searchableInfoProvider;
+    private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
             final SearchablePreferencePredicate searchablePreferencePredicate,
-            final SearchableInfoProvider searchableInfoProvider,
+            final ISearchableInfoProviderInternal searchableInfoProviderInternal,
             final FragmentFactory fragmentFactory) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         searchablePreferencePredicate,
-                        searchableInfoProvider,
+                        searchableInfoProviderInternal,
                         fragmentFactory);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
 
     public SearchPreferenceFragment(final SearchablePreferencePredicate searchablePreferencePredicate,
-                                    final SearchableInfoProvider searchableInfoProvider,
+                                    final ISearchableInfoProviderInternal searchableInfoProviderInternal,
                                     final FragmentFactory fragmentFactory) {
         super(R.layout.searchpreference_fragment);
         this.searchablePreferencePredicate = searchablePreferencePredicate;
-        this.searchableInfoProvider = searchableInfoProvider;
+        this.searchableInfoProviderInternal = searchableInfoProviderInternal;
         this.fragmentFactory = fragmentFactory;
     }
 
     public SearchPreferenceFragment() {
         this(
                 (preference, host) -> true,
-                new BuiltinSearchableInfoProvider(),
+                new SearchableInfoProviderInternal(createBuiltinSearchableInfoProviders()),
                 new DefaultFragmentFactory());
     }
 
@@ -115,7 +118,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchAndDisplay(
                         PreferenceSearcher.createPreferenceSearcher(
                                 mergedPreferenceScreen,
-                                searchableInfoProvider),
+                                searchableInfoProviderInternal),
                         mergedPreferenceScreen.preferenceScreen,
                         requireContext()));
         selectSearchView(searchView);
