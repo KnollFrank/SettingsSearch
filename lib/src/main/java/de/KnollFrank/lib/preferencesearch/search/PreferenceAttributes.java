@@ -18,9 +18,4 @@ class PreferenceAttributes {
     public static Optional<CharSequence> getOptionalSummary(final Preference preference) {
         return Optional.ofNullable(preference.getSummary());
     }
-
-    public static void setSummary(final Preference preference, final CharSequence summary) {
-        preference.setSummary(null);
-        preference.setSummary(summary);
-    }
 }

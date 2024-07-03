@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class BuiltinSearchableInfoProvidersFactory {
 
+    // FK-TODO: CheckBoxPreference und SwitchPreference (und TwoStatePreference) behandeln
     public static Map<Class<? extends Preference>, SearchableInfoProvider<?>> createBuiltinSearchableInfoProviders() {
         return ImmutableMap.
                 <Class<? extends Preference>, SearchableInfoProvider<?>>builder()

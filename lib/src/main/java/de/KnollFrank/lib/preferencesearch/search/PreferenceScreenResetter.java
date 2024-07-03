@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getOptionalTitle;
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.setSummary;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.setTitle;
 
 import androidx.preference.Preference;
@@ -11,13 +10,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetter;
 
 class PreferenceScreenResetter {
 
-    private final Map<Preference, Optional<CharSequence>> summaryByPreference;
+    private final Map<Preference, SummaryResetter> summaryResetterByPreference;
 
-    public PreferenceScreenResetter(final Map<Preference, Optional<CharSequence>> summaryByPreference) {
-        this.summaryByPreference = summaryByPreference;
+    public PreferenceScreenResetter(final Map<Preference, SummaryResetter> summaryResetterByPreference) {
+        this.summaryResetterByPreference = summaryResetterByPreference;
     }
 
     public void reset(final PreferenceScreen preferenceScreen) {
@@ -28,7 +28,7 @@ class PreferenceScreenResetter {
 
     private void reset(final Preference preference) {
         unhighlightTitle(preference);
-        unhighlightAndResetSummary(preference);
+        resetSummary(preference);
     }
 
     private static void unhighlightTitle(final Preference preference) {
@@ -37,10 +37,9 @@ class PreferenceScreenResetter {
                 unhighlight(getOptionalTitle(preference)));
     }
 
-    private void unhighlightAndResetSummary(final Preference preference) {
-        setSummary(
-                preference,
-                unhighlight(summaryByPreference.get(preference)));
+    private void resetSummary(final Preference preference) {
+        // FK-TODO: hier braucht man keine Datenstruktur (Map), sondern einen Consumer<Preference>
+        summaryResetterByPreference.get(preference).resetSummary();
     }
 
     private static String unhighlight(final Optional<CharSequence> optionalCharSequence) {

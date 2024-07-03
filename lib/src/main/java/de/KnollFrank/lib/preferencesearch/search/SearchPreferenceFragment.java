@@ -119,6 +119,7 @@ public class SearchPreferenceFragment extends Fragment {
                         PreferenceSearcher.createPreferenceSearcher(
                                 mergedPreferenceScreen,
                                 searchableInfoProviderInternal),
+                        mergedPreferenceScreen.summaryResetterByPreference,
                         mergedPreferenceScreen.preferenceScreen,
                         requireContext()));
         selectSearchView(searchView);

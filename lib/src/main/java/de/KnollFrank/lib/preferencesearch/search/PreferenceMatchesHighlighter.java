@@ -8,29 +8,42 @@ import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.TextAppearanceSpan;
 
+import androidx.preference.Preference;
+
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.R;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
 class PreferenceMatchesHighlighter {
 
-    public static void highlight(final List<PreferenceMatch> preferenceMatches, final Context context) {
+    public static void highlight(
+            final List<PreferenceMatch> preferenceMatches,
+            final Map<Preference, ? extends SummarySetter> summarySetterByPreference,
+            final Context context) {
         final List<Object> markups = createMarkups(context);
         for (final PreferenceMatch preferenceMatch : preferenceMatches) {
-            highlight(preferenceMatch, markups);
+            highlight(
+                    preferenceMatch,
+                    markups,
+                    // FK-TODO: hier braucht man keine Datenstruktur (Map), sondern einfach einen Consumer<Preference>
+                    summarySetterByPreference.get(preferenceMatch.preference));
         }
     }
 
-    private static void highlight(final PreferenceMatch preferenceMatch, final List<Object> markups) {
+    private static void highlight(final PreferenceMatch preferenceMatch,
+                                  final List<Object> markups,
+                                  final SummarySetter summarySetter) {
         switch (preferenceMatch.type) {
             case TITLE:
                 setTitle(preferenceMatch, markups);
                 break;
             case SUMMARY:
-                setSummary(preferenceMatch, markups);
+                setSummary(preferenceMatch, markups, summarySetter);
                 break;
         }
     }
@@ -44,13 +57,16 @@ class PreferenceMatchesHighlighter {
                         preferenceMatch.indexRange));
     }
 
-    private static void setSummary(final PreferenceMatch preferenceMatch, final List<Object> markups) {
-        PreferenceAttributes.setSummary(
-                preferenceMatch.preference,
-                createSpannableFromStrAndApplyMarkupsToIndexRange(
-                        preferenceMatch.preference.getSummary().toString(),
-                        markups,
-                        preferenceMatch.indexRange));
+    private static void setSummary(
+            final PreferenceMatch preferenceMatch,
+            final List<Object> markups,
+            final SummarySetter summarySetter) {
+        summarySetter
+                .setSummary(
+                        createSpannableFromStrAndApplyMarkupsToIndexRange(
+                                preferenceMatch.preference.getSummary().toString(),
+                                markups,
+                                preferenceMatch.indexRange));
     }
 
     private static Spannable createSpannableFromStrAndApplyMarkupsToIndexRange(
