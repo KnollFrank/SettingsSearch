@@ -28,6 +28,7 @@ import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
 public class SearchPreferenceFragment extends Fragment {
 
@@ -119,7 +120,7 @@ public class SearchPreferenceFragment extends Fragment {
                         PreferenceSearcher.createPreferenceSearcher(
                                 mergedPreferenceScreen,
                                 searchableInfoProviderInternal),
-                        mergedPreferenceScreen.summarySetterByPreference,
+                        new SummarySetter(mergedPreferenceScreen.summarySetterByPreferenceClass),
                         mergedPreferenceScreen.preferenceScreen,
                         requireContext()));
         selectSearchView(searchView);

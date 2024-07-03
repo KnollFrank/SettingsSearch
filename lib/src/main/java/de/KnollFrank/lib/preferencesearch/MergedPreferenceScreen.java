@@ -14,16 +14,18 @@ public class MergedPreferenceScreen {
 
     public final PreferenceScreen preferenceScreen;
     private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
-    public final Map<Preference, ISummarySetter> summarySetterByPreference;
+    // FK-TODO: summarySetterByPreferenceClass has little to do with a MergedPreferenceScreen
+    public final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass;
+    // FK-TODO: summaryResetterByPreference has little to do with a MergedPreferenceScreen
     public final Map<Preference, ISummaryResetter> summaryResetterByPreference;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
                                   final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
-                                  final Map<Preference, ISummarySetter> summarySetterByPreference,
+                                  final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass,
                                   final Map<Preference, ISummaryResetter> summaryResetterByPreference) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
-        this.summarySetterByPreference = summarySetterByPreference;
+        this.summarySetterByPreferenceClass = summarySetterByPreferenceClass;
         this.summaryResetterByPreference = summaryResetterByPreference;
     }
 

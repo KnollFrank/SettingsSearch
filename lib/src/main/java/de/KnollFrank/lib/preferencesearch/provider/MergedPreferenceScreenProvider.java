@@ -64,7 +64,7 @@ public class MergedPreferenceScreenProvider {
         return new MergedPreferenceScreen(
                 preferenceScreen,
                 hostByPreference,
-                PreferenceSummaryProvider.getSummarySetterByPreference(preferenceScreen),
+                PreferenceSummaryProvider.getSummarySetterByPreferenceClass(),
                 PreferenceSummaryProvider.getSummaryResetterByPreference(preferenceScreen));
     }
 

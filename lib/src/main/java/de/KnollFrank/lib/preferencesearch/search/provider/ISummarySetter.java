@@ -1,7 +1,9 @@
 package de.KnollFrank.lib.preferencesearch.search.provider;
 
-@FunctionalInterface
-public interface ISummarySetter {
+import androidx.preference.Preference;
 
-    void setSummary(CharSequence summary);
+@FunctionalInterface
+public interface ISummarySetter<T extends Preference> {
+
+    void setSummary(T preference, CharSequence summary);
 }
