@@ -7,17 +7,17 @@ import androidx.preference.PreferenceScreen;
 import java.util.Map;
 import java.util.Optional;
 
-import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
 
 public class MergedPreferenceScreen {
 
     public final PreferenceScreen preferenceScreen;
     private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
-    public final Map<Preference, SummaryResetter> summaryResetterByPreference;
+    public final Map<Preference, ISummaryResetter> summaryResetterByPreference;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
                                   final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
-                                  final Map<Preference, SummaryResetter> summaryResetterByPreference) {
+                                  final Map<Preference, ISummaryResetter> summaryResetterByPreference) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
         this.summaryResetterByPreference = summaryResetterByPreference;

@@ -9,14 +9,14 @@ import java.util.Map;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 
 class Summaries4MatchingSearchableInfosAdapter {
 
     public static void addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
             final PreferenceScreen preferenceScreen,
             final ISearchableInfoProviderInternal searchableInfoProviderInternal,
-            final Map<Preference, ? extends SummarySetter> summarySetterByPreference,
+            final Map<Preference, ? extends ISummarySetter> summarySetterByPreference,
             final String query) {
         for (final Preference preference : Preferences.getAllPreferences(preferenceScreen)) {
             searchableInfoProviderInternal

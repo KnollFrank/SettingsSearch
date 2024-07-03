@@ -11,13 +11,14 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.DefaultSummaryResetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.ListPreferenceSummaryResetter;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SwitchPreferenceSummaryResetter;
 
+// FK-TODO: rename class
 public class PreferenceSummaryProvider {
 
-    public static Map<Preference, SummaryResetter> getSummaryResetterByPreference(final PreferenceScreen preferenceScreen) {
+    public static Map<Preference, ISummaryResetter> getSummaryResetterByPreference(final PreferenceScreen preferenceScreen) {
         return Preferences
                 .getAllPreferences(preferenceScreen)
                 .stream()
@@ -27,7 +28,7 @@ public class PreferenceSummaryProvider {
                                 PreferenceSummaryProvider::getSummary));
     }
 
-    private static SummaryResetter getSummary(final Preference preference) {
+    private static ISummaryResetter getSummary(final Preference preference) {
         // FK-TODO: hier noch andere Preferences behandeln: SwitchPreference, ...
         if (ListPreference.class.equals(preference.getClass())) {
             return new ListPreferenceSummaryResetter((ListPreference) preference);

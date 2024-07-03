@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 
 class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;
-    private final Map<Preference, ? extends SummarySetter> summarySetterByPreference;
+    private final Map<Preference, ? extends ISummarySetter> summarySetterByPreference;
     private final PreferenceScreen preferenceScreen;
     private final Context context;
 
     public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
-                            final Map<Preference, ? extends SummarySetter> summarySetterByPreference,
+                            final Map<Preference, ? extends ISummarySetter> summarySetterByPreference,
                             final PreferenceScreen preferenceScreen,
                             final Context context) {
         this.preferenceSearcher = preferenceSearcher;

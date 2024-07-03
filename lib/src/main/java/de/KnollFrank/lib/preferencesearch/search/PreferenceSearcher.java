@@ -14,18 +14,18 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 
 class PreferenceSearcher {
 
     private final PreferenceScreen preferenceScreen;
     private final PreferenceScreenResetter preferenceScreenResetter;
-    private final Map<Preference, ? extends SummarySetter> summarySetterByPreference;
+    private final Map<Preference, ? extends ISummarySetter> summarySetterByPreference;
     private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
 
     public PreferenceSearcher(final PreferenceScreen preferenceScreen,
                               final PreferenceScreenResetter preferenceScreenResetter,
-                              final Map<Preference, ? extends SummarySetter> summarySetterByPreference,
+                              final Map<Preference, ? extends ISummarySetter> summarySetterByPreference,
                               final ISearchableInfoProviderInternal searchableInfoProviderInternal) {
         this.preferenceScreen = preferenceScreen;
         this.preferenceScreenResetter = preferenceScreenResetter;

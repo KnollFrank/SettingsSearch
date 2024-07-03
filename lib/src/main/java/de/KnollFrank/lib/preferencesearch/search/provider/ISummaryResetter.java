@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.search.provider;
 
-public interface SummaryResetter extends SummarySetter {
+public interface ISummaryResetter extends ISummarySetter {
 
     void resetSummary();
 }

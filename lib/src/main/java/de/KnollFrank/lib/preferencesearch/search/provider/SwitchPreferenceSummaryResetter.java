@@ -2,7 +2,7 @@ package de.KnollFrank.lib.preferencesearch.search.provider;
 
 import androidx.preference.SwitchPreference;
 
-public class SwitchPreferenceSummaryResetter implements SummaryResetter {
+public class SwitchPreferenceSummaryResetter implements ISummaryResetter {
 
     private final SwitchPreference switchPreference;
     private final CharSequence summary;

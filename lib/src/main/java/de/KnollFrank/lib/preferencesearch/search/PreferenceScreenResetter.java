@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
 
 class PreferenceScreenResetter {
 
-    private final Map<Preference, SummaryResetter> summaryResetterByPreference;
+    private final Map<Preference, ISummaryResetter> summaryResetterByPreference;
 
-    public PreferenceScreenResetter(final Map<Preference, SummaryResetter> summaryResetterByPreference) {
+    public PreferenceScreenResetter(final Map<Preference, ISummaryResetter> summaryResetterByPreference) {
         this.summaryResetterByPreference = summaryResetterByPreference;
     }
 

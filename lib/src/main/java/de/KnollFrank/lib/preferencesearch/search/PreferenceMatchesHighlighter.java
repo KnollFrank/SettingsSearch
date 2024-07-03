@@ -17,13 +17,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.R;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 
 class PreferenceMatchesHighlighter {
 
     public static void highlight(
             final List<PreferenceMatch> preferenceMatches,
-            final Map<Preference, ? extends SummarySetter> summarySetterByPreference,
+            final Map<Preference, ? extends ISummarySetter> summarySetterByPreference,
             final Context context) {
         final List<Object> markups = createMarkups(context);
         for (final PreferenceMatch preferenceMatch : preferenceMatches) {
@@ -37,7 +37,7 @@ class PreferenceMatchesHighlighter {
 
     private static void highlight(final PreferenceMatch preferenceMatch,
                                   final List<Object> markups,
-                                  final SummarySetter summarySetter) {
+                                  final ISummarySetter summarySetter) {
         switch (preferenceMatch.type) {
             case TITLE:
                 setTitle(preferenceMatch, markups);
@@ -60,7 +60,7 @@ class PreferenceMatchesHighlighter {
     private static void setSummary(
             final PreferenceMatch preferenceMatch,
             final List<Object> markups,
-            final SummarySetter summarySetter) {
+            final ISummarySetter summarySetter) {
         summarySetter
                 .setSummary(
                         createSpannableFromStrAndApplyMarkupsToIndexRange(
