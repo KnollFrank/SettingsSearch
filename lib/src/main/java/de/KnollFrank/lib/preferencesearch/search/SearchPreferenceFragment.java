@@ -8,8 +8,12 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
@@ -27,6 +31,8 @@ import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
@@ -34,6 +40,8 @@ public class SearchPreferenceFragment extends Fragment {
 
     private final SearchablePreferencePredicate searchablePreferencePredicate;
     private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
+    private final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass;
+    private final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
 
@@ -41,11 +49,15 @@ public class SearchPreferenceFragment extends Fragment {
             final SearchConfiguration searchConfiguration,
             final SearchablePreferencePredicate searchablePreferencePredicate,
             final ISearchableInfoProviderInternal searchableInfoProviderInternal,
+            final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass,
+            final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass,
             final FragmentFactory fragmentFactory) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         searchablePreferencePredicate,
                         searchableInfoProviderInternal,
+                        summarySetterByPreferenceClass,
+                        summaryResetterFactoryByPreferenceClass,
                         fragmentFactory);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
@@ -53,10 +65,14 @@ public class SearchPreferenceFragment extends Fragment {
 
     public SearchPreferenceFragment(final SearchablePreferencePredicate searchablePreferencePredicate,
                                     final ISearchableInfoProviderInternal searchableInfoProviderInternal,
+                                    final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass,
+                                    final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass,
                                     final FragmentFactory fragmentFactory) {
         super(R.layout.searchpreference_fragment);
         this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.searchableInfoProviderInternal = searchableInfoProviderInternal;
+        this.summarySetterByPreferenceClass = summarySetterByPreferenceClass;
+        this.summaryResetterFactoryByPreferenceClass = summaryResetterFactoryByPreferenceClass;
         this.fragmentFactory = fragmentFactory;
     }
 
@@ -64,6 +80,8 @@ public class SearchPreferenceFragment extends Fragment {
         this(
                 (preference, host) -> true,
                 new SearchableInfoProviderInternal(createBuiltinSearchableInfoProviders()),
+                Collections.emptyMap(),
+                Collections.emptyMap(),
                 new DefaultFragmentFactory());
     }
 
@@ -95,6 +113,8 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(getContext()),
                         searchablePreferencePredicate,
+                        summarySetterByPreferenceClass,
+                        summaryResetterFactoryByPreferenceClass,
                         true);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }

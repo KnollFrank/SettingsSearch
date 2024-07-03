@@ -8,6 +8,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
@@ -19,6 +20,8 @@ import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
+import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
+import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummarySetter;
 import de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: README.md anpassen
@@ -66,7 +69,12 @@ public class PreferenceSearchExample extends AppCompatActivity {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 (preference, host) -> true,
+                // FK-TODO: die folgenden drei Parameter in einer neuen Klasse CustomPreferenceDescription zusammenfassen
                 ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider()),
+                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSummarySetter()),
+                ImmutableMap.of(
+                        ReversedListPreference.class,
+                        (final Preference preference) -> new ReversedListPreferenceSummaryResetter((ReversedListPreference) preference)),
                 new DefaultFragmentFactory(),
                 getSupportFragmentManager());
     }
