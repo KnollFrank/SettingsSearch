@@ -17,8 +17,8 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         this.preferenceFactory = preferenceFactory;
     }
 
-    public static PreferenceFragment fromSinglePreference(final Function<Context, Preference> contextPreferenceFunction) {
-        return new PreferenceFragment(contextPreferenceFunction);
+    public static PreferenceFragment fromSinglePreference(final Function<Context, Preference> preferenceFactory) {
+        return new PreferenceFragment(preferenceFactory);
     }
 
     @Override

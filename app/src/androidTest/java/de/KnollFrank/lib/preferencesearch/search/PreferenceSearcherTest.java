@@ -13,6 +13,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableMap;
@@ -92,7 +93,7 @@ public class PreferenceSearcherTest {
     }
 
     @Test
-    public void shouldSearchAndFindListPreference() {
+    public void shouldSearchAndFindListPreference_entries() {
         final String keyword = "entry of some ListPreference";
         final String keyOfPreference = "keyOfSomeListPreference";
         testSearch(
@@ -107,6 +108,44 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
+                hasItem(keyOfPreference));
+    }
+
+    @Test
+    public void shouldSearchAndFindLSwitchPreference_summaryOff() {
+        final String summaryOff = "switch is off";
+        final String keyOfPreference = "keyOfSomeSwitchPreference";
+        testSearch(
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final SwitchPreference preference = new SwitchPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("This allows to use a switch");
+                            preference.setSummaryOff(summaryOff);
+                            preference.setSummaryOn("switch is on");
+                            return preference;
+                        }),
+                (preference, host) -> true,
+                summaryOff,
+                hasItem(keyOfPreference));
+    }
+
+    @Test
+    public void shouldSearchAndFindLSwitchPreference_summaryOn() {
+        final String summaryOn = "switch is on";
+        final String keyOfPreference = "keyOfSomeSwitchPreference";
+        testSearch(
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final SwitchPreference preference = new SwitchPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("This allows to use a switch");
+                            preference.setSummaryOff("switch is off");
+                            preference.setSummaryOn(summaryOn);
+                            return preference;
+                        }),
+                (preference, host) -> true,
+                summaryOn,
                 hasItem(keyOfPreference));
     }
 

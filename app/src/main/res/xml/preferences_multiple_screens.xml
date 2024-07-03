@@ -67,8 +67,10 @@
 
     <SwitchPreference
         android:key="switch"
-        android:summary="This allows to use a nice switch"
-        android:title="Switch preference" />
+        android:summary="This allows to use a switch"
+        android:title="Switch preference"
+        android:summaryOff="switch is off"
+        android:summaryOn="switch is on"/>
 
     <ListPreference
         android:entries="@android:array/emailAddressTypes"
