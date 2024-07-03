@@ -39,7 +39,7 @@ class PreferenceSearcher {
         return new PreferenceSearcher(
                 mergedPreferenceScreen.preferenceScreen,
                 new PreferenceScreenResetter(mergedPreferenceScreen.summaryResetterByPreference),
-                mergedPreferenceScreen.summaryResetterByPreference,
+                mergedPreferenceScreen.summarySetterByPreference,
                 searchableInfoProviderInternal);
     }
 

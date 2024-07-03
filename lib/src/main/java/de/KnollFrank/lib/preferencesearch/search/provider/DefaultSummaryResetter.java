@@ -2,7 +2,7 @@ package de.KnollFrank.lib.preferencesearch.search.provider;
 
 import androidx.preference.Preference;
 
-public class DefaultSummaryResetter implements ISummaryResetter {
+public class DefaultSummaryResetter implements ISummarySetter, ISummaryResetter {
 
     private final Preference preference;
     private final CharSequence summary;

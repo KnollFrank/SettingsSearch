@@ -3,7 +3,7 @@ package de.KnollFrank.lib.preferencesearch.search.provider;
 import androidx.preference.ListPreference;
 
 // FK-TODO: kann auch durch den DefaultSummaryResetter ersetzt werden
-public class ListPreferenceSummaryResetter implements ISummaryResetter {
+public class ListPreferenceSummaryResetter implements ISummarySetter, ISummaryResetter {
 
     private final ListPreference listPreference;
     private final CharSequence summary;
