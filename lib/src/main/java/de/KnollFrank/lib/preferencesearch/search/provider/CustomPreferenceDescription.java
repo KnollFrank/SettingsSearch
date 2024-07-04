@@ -4,18 +4,18 @@ import androidx.preference.Preference;
 
 import java.util.function.Function;
 
-public class CustomPreferenceDescription {
+public class CustomPreferenceDescription<T extends Preference> {
 
-    public final Class<? extends Preference> preferenceClass;
-    public final SearchableInfoProvider<?> searchableInfoProvider;
-    public final ISummarySetter summarySetter;
-    public final Function<Preference, ? extends ISummaryResetter> summaryResetterFactory;
+    public final Class<T> preferenceClass;
+    public final SearchableInfoProvider<T> searchableInfoProvider;
+    public final ISummarySetter<T> summarySetter;
+    public final Function<T, ? extends ISummaryResetter> summaryResetterFactory;
 
     public CustomPreferenceDescription(
-            final Class<? extends Preference> preferenceClass,
-            final SearchableInfoProvider<?> searchableInfoProvider,
-            final ISummarySetter summarySetter,
-            final Function<Preference, ? extends ISummaryResetter> summaryResetterFactory) {
+            final Class<T> preferenceClass,
+            final SearchableInfoProvider<T> searchableInfoProvider,
+            final ISummarySetter<T> summarySetter,
+            final Function<T, ? extends ISummaryResetter> summaryResetterFactory) {
         this.preferenceClass = preferenceClass;
         this.searchableInfoProvider = searchableInfoProvider;
         this.summarySetter = summarySetter;
