@@ -4,6 +4,8 @@ import androidx.preference.Preference;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.preferencesearch.common.Maps;
+
 public class SearchableInfoProviderInternal implements ISearchableInfoProviderInternal {
 
     private final SearchableInfoProviders searchableInfoProviders;
@@ -20,9 +22,10 @@ public class SearchableInfoProviderInternal implements ISearchableInfoProviderIn
     }
 
     private Optional<SearchableInfoProvider> getSearchableInfoProvider(final Class<? extends Preference> preferenceClass) {
-        if (!searchableInfoProviders.searchableInfoProvidersByPreferenceClass.containsKey(preferenceClass)) {
-            return Optional.empty();
-        }
-        return Optional.of(searchableInfoProviders.searchableInfoProvidersByPreferenceClass.get(preferenceClass));
+        final Optional<SearchableInfoProvider<?>> searchableInfoProvider =
+                Maps.get(
+                        searchableInfoProviders.searchableInfoProvidersByPreferenceClass,
+                        preferenceClass);
+        return Optional.ofNullable(searchableInfoProvider.orElse(null));
     }
 }
