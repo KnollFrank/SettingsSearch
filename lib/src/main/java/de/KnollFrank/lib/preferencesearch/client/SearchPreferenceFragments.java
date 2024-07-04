@@ -1,6 +1,8 @@
 package de.KnollFrank.lib.preferencesearch.client;
 
 import static de.KnollFrank.lib.preferencesearch.fragment.Fragments.showFragment;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.combineSummaryResetterFactories;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummaryResetterFactories;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummarySetters;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
 import static de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders.combineSearchableInfoProviders;
@@ -36,7 +38,7 @@ public class SearchPreferenceFragments {
                                      final SearchablePreferencePredicate searchablePreferencePredicate,
                                      final Map<Class<? extends Preference>, SearchableInfoProvider<?>> searchableInfoProviders,
                                      final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass,
-                                     final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass,
+                                     final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactories,
                                      final FragmentFactory fragmentFactory,
                                      final FragmentManager fragmentManager) {
         this.searchConfiguration = searchConfiguration;
@@ -51,7 +53,10 @@ public class SearchPreferenceFragments {
                         combineSummarySetters(
                                 createBuiltinSummarySetters(),
                                 summarySetterByPreferenceClass));
-        this.summaryResetterFactoryByPreferenceClass = summaryResetterFactoryByPreferenceClass;
+        this.summaryResetterFactoryByPreferenceClass =
+                combineSummaryResetterFactories(
+                        createBuiltinSummaryResetterFactories(),
+                        summaryResetterFactories);
         this.fragmentFactory = fragmentFactory;
         this.fragmentManager = fragmentManager;
     }
