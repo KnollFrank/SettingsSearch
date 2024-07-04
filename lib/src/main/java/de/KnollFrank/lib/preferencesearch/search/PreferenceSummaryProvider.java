@@ -59,16 +59,4 @@ public class PreferenceSummaryProvider {
                 .getOrDefault(preference.getClass(), DefaultSummaryResetter::new)
                 .apply(preference);
     }
-
-    // FK-TODO: move to another class?
-    public static SummaryResetterFactories combineSummaryResetterFactories(
-            final SummaryResetterFactories summaryResetterFactories1,
-            final SummaryResetterFactories summaryResetterFactories2) {
-        return new SummaryResetterFactories(
-                ImmutableMap
-                        .<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>>builder()
-                        .putAll(summaryResetterFactories1.summaryResetterFactoryByPreferenceClass)
-                        .putAll(summaryResetterFactories2.summaryResetterFactoryByPreferenceClass)
-                        .build());
-    }
 }

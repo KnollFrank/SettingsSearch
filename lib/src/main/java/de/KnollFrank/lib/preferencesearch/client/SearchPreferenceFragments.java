@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.client;
 
 import static de.KnollFrank.lib.preferencesearch.fragment.Fragments.showFragment;
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.combineSummaryResetterFactories;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummaryResetterFactories;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummarySetters;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
@@ -52,10 +51,7 @@ public class SearchPreferenceFragments {
                         combineSummarySetters(
                                 createBuiltinSummarySetters(),
                                 summarySetterByPreferenceClass));
-        this.summaryResetterFactories =
-                combineSummaryResetterFactories(
-                        createBuiltinSummaryResetterFactories(),
-                        summaryResetterFactories);
+        this.summaryResetterFactories = createBuiltinSummaryResetterFactories().combineWith(summaryResetterFactories);
         this.fragmentFactory = fragmentFactory;
         this.fragmentManager = fragmentManager;
     }
