@@ -14,6 +14,7 @@ import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.DefaultSummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SwitchPreferenceSummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SwitchPreferenceSummarySetter;
 
@@ -29,17 +30,18 @@ public class PreferenceSummaryProvider {
     }
 
     // FK-TODO: hier noch andere Preferences behandeln: SwitchPreference, ...
-    public static Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> createBuiltinSummaryResetterFactories() {
-        return ImmutableMap
-                .<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>>builder()
-                .put(SwitchPreference.class, preference -> new SwitchPreferenceSummaryResetter((SwitchPreference) preference))
-                .build();
+    public static SummaryResetterFactories createBuiltinSummaryResetterFactories() {
+        return new SummaryResetterFactories(
+                ImmutableMap
+                        .<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>>builder()
+                        .put(SwitchPreference.class, preference -> new SwitchPreferenceSummaryResetter((SwitchPreference) preference))
+                        .build());
     }
 
     // FK-TODO: move to another class?
     public static Map<Preference, ISummaryResetter> getSummaryResetters(
             final PreferenceScreen preferenceScreen,
-            final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactories) {
+            final SummaryResetterFactories summaryResetterFactories) {
         return Preferences
                 .getAllPreferences(preferenceScreen)
                 .stream()
@@ -51,21 +53,22 @@ public class PreferenceSummaryProvider {
 
     private static ISummaryResetter getSummaryResetter(
             final Preference preference,
-            // FK-TODO: führe eine neue Klasse ein, die diese Map beerbt und als abkürzende Schreibweise verwendet werden soll.
-            final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactories) {
+            final SummaryResetterFactories summaryResetterFactories) {
         return summaryResetterFactories
+                .summaryResetterFactoryByPreferenceClass
                 .getOrDefault(preference.getClass(), DefaultSummaryResetter::new)
                 .apply(preference);
     }
 
     // FK-TODO: move to another class?
-    public static Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> combineSummaryResetterFactories(
-            final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactories1,
-            final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactories2) {
-        return ImmutableMap
-                .<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>>builder()
-                .putAll(summaryResetterFactories1)
-                .putAll(summaryResetterFactories2)
-                .build();
+    public static SummaryResetterFactories combineSummaryResetterFactories(
+            final SummaryResetterFactories summaryResetterFactories1,
+            final SummaryResetterFactories summaryResetterFactories2) {
+        return new SummaryResetterFactories(
+                ImmutableMap
+                        .<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>>builder()
+                        .putAll(summaryResetterFactories1.summaryResetterFactoryByPreferenceClass)
+                        .putAll(summaryResetterFactories2.summaryResetterFactoryByPreferenceClass)
+                        .build());
     }
 }

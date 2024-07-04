@@ -37,6 +37,7 @@ import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvide
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
@@ -260,9 +261,10 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
-                        ImmutableMap.of(
-                                ReversedListPreference.class,
-                                (final Preference preference) -> new ReversedListPreferenceSummaryResetter((ReversedListPreference) preference)),
+                        new SummaryResetterFactories(
+                                ImmutableMap.of(
+                                        ReversedListPreference.class,
+                                        (final Preference preference) -> new ReversedListPreferenceSummaryResetter((ReversedListPreference) preference))),
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }

@@ -18,6 +18,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
@@ -72,9 +73,10 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 // FK-TODO: die folgenden drei Parameter in einer neuen Klasse CustomPreferenceDescription zusammenfassen
                 ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider()),
                 ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSummarySetter()),
-                ImmutableMap.of(
-                        ReversedListPreference.class,
-                        (final Preference preference) -> new ReversedListPreferenceSummaryResetter((ReversedListPreference) preference)),
+                new SummaryResetterFactories(
+                        ImmutableMap.of(
+                                ReversedListPreference.class,
+                                (final Preference preference) -> new ReversedListPreferenceSummaryResetter((ReversedListPreference) preference))),
                 new DefaultFragmentFactory(),
                 getSupportFragmentManager());
     }

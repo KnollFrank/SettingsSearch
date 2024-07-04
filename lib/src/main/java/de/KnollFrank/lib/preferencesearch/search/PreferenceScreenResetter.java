@@ -6,13 +6,11 @@ import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.set
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
-import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 
 public class PreferenceScreenResetter {
 
@@ -27,13 +25,13 @@ public class PreferenceScreenResetter {
 
     public static PreferenceScreenResetter createPreferenceScreenResetter(
             final PreferenceScreen preferenceScreen,
-            final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass) {
+            final SummaryResetterFactories summaryResetterFactories) {
         return new PreferenceScreenResetter(
                 preferenceScreen,
                 new SummaryResetter(
                         PreferenceSummaryProvider.getSummaryResetters(
                                 preferenceScreen,
-                                summaryResetterFactoryByPreferenceClass)));
+                                summaryResetterFactories)));
     }
 
     public void reset() {
