@@ -9,10 +9,11 @@ import java.util.stream.Collectors;
 
 public class CustomPreferenceDescriptions {
 
-    public static Map<Class<? extends Preference>, SearchableInfoProvider<?>> getSearchableInfoProviders(final List<CustomPreferenceDescription> customPreferenceDescriptions) {
-        return collect(
-                customPreferenceDescriptions,
-                customPreferenceDescription -> customPreferenceDescription.searchableInfoProvider);
+    public static SearchableInfoProviders getSearchableInfoProviders(final List<CustomPreferenceDescription> customPreferenceDescriptions) {
+        return new SearchableInfoProviders(
+                collect(
+                        customPreferenceDescriptions,
+                        customPreferenceDescription -> customPreferenceDescription.searchableInfoProvider));
     }
 
     public static SummarySetters getSummarySetters(final List<CustomPreferenceDescription> customPreferenceDescriptions) {

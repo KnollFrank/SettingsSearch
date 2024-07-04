@@ -2,20 +2,22 @@ package de.KnollFrank.lib.preferencesearch.search.provider;
 
 import androidx.preference.Preference;
 
-import com.google.common.collect.ImmutableMap;
-
 import java.util.Map;
+
+import de.KnollFrank.lib.preferencesearch.common.Maps;
 
 public class SearchableInfoProviders {
 
-    // FK-TODO: Wrapperklasse SearchableInfoProviders für Map<Class<? extends Preference>, SearchableInfoProvider<?>> einführen
-    public static Map<Class<? extends Preference>, SearchableInfoProvider<?>> combineSearchableInfoProviders(
-            final Map<Class<? extends Preference>, SearchableInfoProvider<?>> searchableInfoProviders1,
-            final Map<Class<? extends Preference>, SearchableInfoProvider<?>> searchableInfoProviders2) {
-        return ImmutableMap.
-                <Class<? extends Preference>, SearchableInfoProvider<?>>builder()
-                .putAll(searchableInfoProviders1)
-                .putAll(searchableInfoProviders2)
-                .build();
+    public final Map<Class<? extends Preference>, SearchableInfoProvider<?>> searchableInfoProvidersByPreferenceClass;
+
+    public SearchableInfoProviders(final Map<Class<? extends Preference>, SearchableInfoProvider<?>> searchableInfoProvidersByPreferenceClass) {
+        this.searchableInfoProvidersByPreferenceClass = searchableInfoProvidersByPreferenceClass;
+    }
+
+    public SearchableInfoProviders combineWith(final SearchableInfoProviders other) {
+        return new SearchableInfoProviders(
+                Maps.merge(
+                        this.searchableInfoProvidersByPreferenceClass,
+                        other.searchableInfoProvidersByPreferenceClass));
     }
 }

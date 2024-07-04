@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummarySetters;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
-import static de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders.combineSearchableInfoProviders;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -36,6 +35,7 @@ import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvide
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters;
@@ -45,6 +45,7 @@ import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSu
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummarySetter;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
+// FK-TODO: use CustomPreferenceDescription
 public class PreferenceSearcherTest {
 
     @Test
@@ -231,9 +232,8 @@ public class PreferenceSearcherTest {
                                                                 ReversedListPreference.class,
                                                                 new ReversedListPreferenceSummarySetter())))),
                                 new SearchableInfoProviderInternal(
-                                        combineSearchableInfoProviders(
-                                                createBuiltinSearchableInfoProviders(),
-                                                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider()))));
+                                        createBuiltinSearchableInfoProviders().combineWith(
+                                                new SearchableInfoProviders(ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider())))));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
