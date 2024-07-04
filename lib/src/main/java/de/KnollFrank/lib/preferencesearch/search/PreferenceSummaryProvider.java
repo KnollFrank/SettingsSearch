@@ -21,12 +21,11 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SwitchPreferenceSummar
 public class PreferenceSummaryProvider {
 
     // FK-TODO: refactor
-    public static Map<Class<? extends Preference>, ISummarySetter> getSummarySetters(
-            final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass) {
-        return ImmutableMap.
-                <Class<? extends Preference>, ISummarySetter>builder()
-                .putAll(getBuiltinSummarySetters())
-                .putAll(summarySetterByPreferenceClass)
+    // FK-TODO: hier noch andere Preferences behandeln: SwitchPreference, ...
+    public static Map<Class<? extends Preference>, ISummarySetter> createBuiltinSummarySetters() {
+        return ImmutableMap
+                .<Class<? extends Preference>, ISummarySetter>builder()
+                .put(SwitchPreference.class, new SwitchPreferenceSummarySetter())
                 .build();
     }
 
@@ -40,14 +39,6 @@ public class PreferenceSummaryProvider {
                         Collectors.toMap(
                                 Function.identity(),
                                 preference -> getSummaryResetter(preference, summaryResetterFactoryByPreferenceClass)));
-    }
-
-    // FK-TODO: hier noch andere Preferences behandeln: SwitchPreference, ...
-    private static Map<Class<? extends Preference>, ISummarySetter> getBuiltinSummarySetters() {
-        return ImmutableMap
-                .<Class<? extends Preference>, ISummarySetter>builder()
-                .put(SwitchPreference.class, new SwitchPreferenceSummarySetter())
-                .build();
     }
 
     private static ISummaryResetter getSummaryResetter(

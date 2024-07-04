@@ -8,24 +8,19 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
-import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 
 public class MergedPreferenceScreen {
 
     public final PreferenceScreen preferenceScreen;
     private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
-    // FK-TODO: summarySetterByPreferenceClass has little to do with a MergedPreferenceScreen
-    public final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass;
-    // FK-TODO: summaryResetterByPreference has little to do with a MergedPreferenceScreen
+    // FK-TODO: verwende gleich den SummaryResetter statt einer Map
     public final Map<Preference, ISummaryResetter> summaryResetterByPreference;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
                                   final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
-                                  final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass,
                                   final Map<Preference, ISummaryResetter> summaryResetterByPreference) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
-        this.summarySetterByPreferenceClass = summarySetterByPreferenceClass;
         this.summaryResetterByPreference = summaryResetterByPreference;
     }
 

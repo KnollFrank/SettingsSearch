@@ -18,7 +18,6 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
-import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 
 public class MergedPreferenceScreenProvider {
 
@@ -26,7 +25,6 @@ public class MergedPreferenceScreenProvider {
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
     private final SearchablePreferencePredicate searchablePreferencePredicate;
-    private final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass;
     private final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass;
     private final boolean cacheMergedPreferenceScreens;
 
@@ -36,14 +34,12 @@ public class MergedPreferenceScreenProvider {
                                           final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
                                           final SearchablePreferencePredicate searchablePreferencePredicate,
-                                          final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass,
                                           final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass,
                                           final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
         this.searchablePreferencePredicate = searchablePreferencePredicate;
-        this.summarySetterByPreferenceClass = summarySetterByPreferenceClass;
         this.summaryResetterFactoryByPreferenceClass = summaryResetterFactoryByPreferenceClass;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
     }
@@ -73,7 +69,6 @@ public class MergedPreferenceScreenProvider {
         return new MergedPreferenceScreen(
                 preferenceScreen,
                 hostByPreference,
-                PreferenceSummaryProvider.getSummarySetters(summarySetterByPreferenceClass),
                 PreferenceSummaryProvider.getSummaryResetters(preferenceScreen, summaryResetterFactoryByPreferenceClass));
     }
 

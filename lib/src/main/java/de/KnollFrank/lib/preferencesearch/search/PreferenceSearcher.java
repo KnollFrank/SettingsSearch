@@ -34,11 +34,12 @@ class PreferenceSearcher {
 
     public static PreferenceSearcher createPreferenceSearcher(
             final MergedPreferenceScreen mergedPreferenceScreen,
-            final ISearchableInfoProviderInternal searchableInfoProviderInternal) {
+            final ISearchableInfoProviderInternal searchableInfoProviderInternal,
+            final SummarySetter summarySetter) {
         return new PreferenceSearcher(
                 mergedPreferenceScreen.preferenceScreen,
                 new PreferenceScreenResetter(new SummaryResetter(mergedPreferenceScreen.summaryResetterByPreference)),
-                new SummarySetter(mergedPreferenceScreen.summarySetterByPreferenceClass),
+                summarySetter,
                 searchableInfoProviderInternal);
     }
 

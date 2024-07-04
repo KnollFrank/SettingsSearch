@@ -1,8 +1,10 @@
 package de.KnollFrank.lib.preferencesearch.client;
 
 import static de.KnollFrank.lib.preferencesearch.fragment.Fragments.showFragment;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummarySetters;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
 import static de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders.combineSearchableInfoProviders;
+import static de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters.combineSummarySetters;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
@@ -18,13 +20,14 @@ import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
 public class SearchPreferenceFragments {
 
     private final SearchConfiguration searchConfiguration;
     private final SearchablePreferencePredicate searchablePreferencePredicate;
     private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
-    private final Map<Class<? extends Preference>, ISummarySetter> summarySetterByPreferenceClass;
+    private final SummarySetter summarySetter;
     private final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass;
     private final FragmentFactory fragmentFactory;
     private final FragmentManager fragmentManager;
@@ -43,7 +46,11 @@ public class SearchPreferenceFragments {
                         combineSearchableInfoProviders(
                                 createBuiltinSearchableInfoProviders(),
                                 searchableInfoProviders));
-        this.summarySetterByPreferenceClass = summarySetterByPreferenceClass;
+        this.summarySetter =
+                new SummarySetter(
+                        combineSummarySetters(
+                                createBuiltinSummarySetters(),
+                                summarySetterByPreferenceClass));
         this.summaryResetterFactoryByPreferenceClass = summaryResetterFactoryByPreferenceClass;
         this.fragmentFactory = fragmentFactory;
         this.fragmentManager = fragmentManager;
@@ -55,7 +62,7 @@ public class SearchPreferenceFragments {
                         searchConfiguration,
                         searchablePreferencePredicate,
                         searchableInfoProviderInternal,
-                        summarySetterByPreferenceClass,
+                        summarySetter,
                         summaryResetterFactoryByPreferenceClass,
                         fragmentFactory),
                 searchPreferenceFragment -> {
