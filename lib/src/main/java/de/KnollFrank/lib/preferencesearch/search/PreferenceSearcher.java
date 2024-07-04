@@ -12,6 +12,7 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
 class PreferenceSearcher {
@@ -36,7 +37,7 @@ class PreferenceSearcher {
             final ISearchableInfoProviderInternal searchableInfoProviderInternal) {
         return new PreferenceSearcher(
                 mergedPreferenceScreen.preferenceScreen,
-                new PreferenceScreenResetter(mergedPreferenceScreen.summaryResetterByPreference),
+                new PreferenceScreenResetter(new SummaryResetter(mergedPreferenceScreen.summaryResetterByPreference)),
                 new SummarySetter(mergedPreferenceScreen.summarySetterByPreferenceClass),
                 searchableInfoProviderInternal);
     }
