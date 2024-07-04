@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class SearchableInfoProviders {
 
+    // FK-TODO: Wrapperklasse SearchableInfoProviders für Map<Class<? extends Preference>, SearchableInfoProvider<?>> einführen
     public static Map<Class<? extends Preference>, SearchableInfoProvider<?>> combineSearchableInfoProviders(
             final Map<Class<? extends Preference>, SearchableInfoProvider<?>> searchableInfoProviders1,
             final Map<Class<? extends Preference>, SearchableInfoProvider<?>> searchableInfoProviders2) {

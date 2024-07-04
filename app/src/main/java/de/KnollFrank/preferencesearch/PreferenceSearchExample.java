@@ -11,15 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters;
+import de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescription;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
@@ -71,12 +70,11 @@ public class PreferenceSearchExample extends AppCompatActivity {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 (preference, host) -> true,
-                // FK-TODO: die folgenden drei Parameter in einer neuen Klasse CustomPreferenceDescription zusammenfassen
-                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider()),
-                new SummarySetters(ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSummarySetter())),
-                new SummaryResetterFactories(
-                        ImmutableMap.of(
+                ImmutableList.of(
+                        new CustomPreferenceDescription(
                                 ReversedListPreference.class,
+                                new ReversedListPreferenceSearchableInfoProvider(),
+                                new ReversedListPreferenceSummarySetter(),
                                 (final Preference preference) -> new ReversedListPreferenceSummaryResetter((ReversedListPreference) preference))),
                 new DefaultFragmentFactory(),
                 getSupportFragmentManager());
