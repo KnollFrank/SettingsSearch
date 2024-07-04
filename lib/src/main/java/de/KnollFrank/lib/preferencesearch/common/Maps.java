@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.common;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -16,5 +17,9 @@ public class Maps {
                         Collectors.toMap(
                                 Map.Entry::getKey,
                                 Map.Entry::getValue));
+    }
+
+    public static <K, V> Map<K, V> merge(final Map<K, V>... maps) {
+        return merge(Arrays.asList(maps));
     }
 }

@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummarySetters;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
 import static de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders.combineSearchableInfoProviders;
-import static de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters.combineSummarySetters;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -39,6 +38,7 @@ import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
@@ -225,9 +225,11 @@ public class PreferenceSearcherTest {
                                         searchablePreferencePredicate,
                                         fragmentActivity),
                                 new SummarySetter(
-                                        combineSummarySetters(
-                                                createBuiltinSummarySetters(),
-                                                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSummarySetter()))),
+                                        createBuiltinSummarySetters().combineWith(
+                                                new SummarySetters(
+                                                        ImmutableMap.of(
+                                                                ReversedListPreference.class,
+                                                                new ReversedListPreferenceSummarySetter())))),
                                 new SearchableInfoProviderInternal(
                                         combineSearchableInfoProviders(
                                                 createBuiltinSearchableInfoProviders(),

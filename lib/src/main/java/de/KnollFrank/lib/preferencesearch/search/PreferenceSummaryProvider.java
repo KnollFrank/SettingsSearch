@@ -15,6 +15,7 @@ import de.KnollFrank.lib.preferencesearch.search.provider.DefaultSummaryResetter
 import de.KnollFrank.lib.preferencesearch.search.provider.ISummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISummarySetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters;
 import de.KnollFrank.lib.preferencesearch.search.provider.SwitchPreferenceSummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SwitchPreferenceSummarySetter;
 
@@ -22,11 +23,12 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SwitchPreferenceSummar
 public class PreferenceSummaryProvider {
 
     // FK-TODO: hier noch andere Preferences behandeln: SwitchPreference, ...
-    public static Map<Class<? extends Preference>, ISummarySetter> createBuiltinSummarySetters() {
-        return ImmutableMap
-                .<Class<? extends Preference>, ISummarySetter>builder()
-                .put(SwitchPreference.class, new SwitchPreferenceSummarySetter())
-                .build();
+    public static SummarySetters createBuiltinSummarySetters() {
+        return new SummarySetters(
+                ImmutableMap
+                        .<Class<? extends Preference>, ISummarySetter>builder()
+                        .put(SwitchPreference.class, new SwitchPreferenceSummarySetter())
+                        .build());
     }
 
     // FK-TODO: hier noch andere Preferences behandeln: SwitchPreference, ...

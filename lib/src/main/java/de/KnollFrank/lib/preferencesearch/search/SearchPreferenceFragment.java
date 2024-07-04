@@ -31,6 +31,7 @@ import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProvide
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters;
 
 public class SearchPreferenceFragment extends Fragment {
 
@@ -76,7 +77,7 @@ public class SearchPreferenceFragment extends Fragment {
         this(
                 (preference, host) -> true,
                 new SearchableInfoProviderInternal(createBuiltinSearchableInfoProviders()),
-                new SummarySetter(Collections.emptyMap()),
+                new SummarySetter(new SummarySetters(Collections.emptyMap())),
                 new SummaryResetterFactories(Collections.emptyMap()),
                 new DefaultFragmentFactory());
     }

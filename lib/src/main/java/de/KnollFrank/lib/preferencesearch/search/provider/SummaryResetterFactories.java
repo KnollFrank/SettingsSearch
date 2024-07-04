@@ -2,10 +2,10 @@ package de.KnollFrank.lib.preferencesearch.search.provider;
 
 import androidx.preference.Preference;
 
-import com.google.common.collect.ImmutableMap;
-
 import java.util.Map;
 import java.util.function.Function;
+
+import de.KnollFrank.lib.preferencesearch.common.Maps;
 
 public class SummaryResetterFactories {
 
@@ -17,10 +17,8 @@ public class SummaryResetterFactories {
 
     public SummaryResetterFactories combineWith(final SummaryResetterFactories other) {
         return new SummaryResetterFactories(
-                ImmutableMap
-                        .<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>>builder()
-                        .putAll(this.summaryResetterFactoryByPreferenceClass)
-                        .putAll(other.summaryResetterFactoryByPreferenceClass)
-                        .build());
+                Maps.merge(
+                        this.summaryResetterFactoryByPreferenceClass,
+                        other.summaryResetterFactoryByPreferenceClass));
     }
 }
