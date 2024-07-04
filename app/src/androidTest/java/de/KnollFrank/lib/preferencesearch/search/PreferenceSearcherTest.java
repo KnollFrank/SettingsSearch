@@ -5,6 +5,9 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummarySetters;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
+import static de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescriptions.getSearchableInfoProviders;
+import static de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescriptions.getSummaryResetterFactories;
+import static de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescriptions.getSummarySetters;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -16,7 +19,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -34,11 +37,10 @@ import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
+import de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
-import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
@@ -219,21 +221,26 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
+                final List<CustomPreferenceDescription> customPreferenceDescriptions =
+                        ImmutableList.of(
+                                new CustomPreferenceDescription<>(
+                                        ReversedListPreference.class,
+                                        new ReversedListPreferenceSearchableInfoProvider(),
+                                        new ReversedListPreferenceSummarySetter(),
+                                        ReversedListPreferenceSummaryResetter::new));
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 getMergedPreferenceScreen(
                                         preferenceFragment,
                                         searchablePreferencePredicate,
+                                        getSummaryResetterFactories(customPreferenceDescriptions),
                                         fragmentActivity),
                                 new SummarySetter(
                                         createBuiltinSummarySetters().combineWith(
-                                                new SummarySetters(
-                                                        ImmutableMap.of(
-                                                                ReversedListPreference.class,
-                                                                new ReversedListPreferenceSummarySetter())))),
+                                                getSummarySetters(customPreferenceDescriptions))),
                                 new SearchableInfoProviderInternal(
                                         createBuiltinSearchableInfoProviders().combineWith(
-                                                new SearchableInfoProviders(ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider())))));
+                                                getSearchableInfoProviders(customPreferenceDescriptions))));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
@@ -247,6 +254,7 @@ public class PreferenceSearcherTest {
     private static MergedPreferenceScreen getMergedPreferenceScreen(
             final PreferenceFragmentCompat preferenceFragment,
             final SearchablePreferencePredicate searchablePreferencePredicate,
+            final SummaryResetterFactories summaryResetterFactories,
             final FragmentActivity fragmentActivity) {
         final Fragments fragments =
                 FragmentsFactory.createFragments(
@@ -263,10 +271,7 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
-                        new SummaryResetterFactories(
-                                ImmutableMap.of(
-                                        ReversedListPreference.class,
-                                        (final Preference preference) -> new ReversedListPreferenceSummaryResetter((ReversedListPreference) preference))),
+                        summaryResetterFactories,
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
