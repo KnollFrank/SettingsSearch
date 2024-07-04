@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.preferencesearch;
 
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceScreenResetter.createPreferenceScreenResetter;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -21,7 +23,7 @@ public class MergedPreferenceScreen {
                                   final SummaryResetterFactories summaryResetterFactories) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
-        this.preferenceScreenResetter = PreferenceScreenResetter.createPreferenceScreenResetter(preferenceScreen, summaryResetterFactories);
+        this.preferenceScreenResetter = createPreferenceScreenResetter(preferenceScreen, summaryResetterFactories);
     }
 
     public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHostByPreference(final Preference preference) {

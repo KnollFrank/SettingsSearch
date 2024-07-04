@@ -11,6 +11,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
+import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactory;
 
 public class PreferenceScreenResetter {
 
@@ -28,10 +29,7 @@ public class PreferenceScreenResetter {
             final SummaryResetterFactories summaryResetterFactories) {
         return new PreferenceScreenResetter(
                 preferenceScreen,
-                new SummaryResetter(
-                        PreferenceSummaryProvider.getSummaryResetters(
-                                preferenceScreen,
-                                summaryResetterFactories)));
+                SummaryResetterFactory.createSummaryResetter(preferenceScreen, summaryResetterFactories));
     }
 
     public void reset() {
