@@ -217,22 +217,20 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final MergedPreferenceScreen mergedPreferenceScreen =
-                        getMergedPreferenceScreen(
-                                preferenceFragment,
-                                searchablePreferencePredicate,
-                                fragmentActivity);
                 final PreferenceSearcher preferenceSearcher =
-                        PreferenceSearcher.createPreferenceSearcher(
-                                mergedPreferenceScreen,
-                                new SearchableInfoProviderInternal(
-                                        combineSearchableInfoProviders(
-                                                createBuiltinSearchableInfoProviders(),
-                                                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider()))),
+                        new PreferenceSearcher(
+                                getMergedPreferenceScreen(
+                                        preferenceFragment,
+                                        searchablePreferencePredicate,
+                                        fragmentActivity),
                                 new SummarySetter(
                                         combineSummarySetters(
                                                 createBuiltinSummarySetters(),
-                                                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSummarySetter()))));
+                                                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSummarySetter()))),
+                                new SearchableInfoProviderInternal(
+                                        combineSearchableInfoProviders(
+                                                createBuiltinSearchableInfoProviders(),
+                                                ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSearchableInfoProvider()))));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);

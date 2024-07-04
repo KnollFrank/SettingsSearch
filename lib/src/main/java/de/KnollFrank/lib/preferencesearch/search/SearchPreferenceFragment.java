@@ -135,10 +135,10 @@ public class SearchPreferenceFragment extends Fragment {
                 searchView,
                 searchConfiguration.textHint,
                 new SearchAndDisplay(
-                        PreferenceSearcher.createPreferenceSearcher(
+                        new PreferenceSearcher(
                                 mergedPreferenceScreen,
-                                searchableInfoProviderInternal,
-                                summarySetter),
+                                summarySetter,
+                                searchableInfoProviderInternal),
                         summarySetter,
                         mergedPreferenceScreen.preferenceScreen,
                         requireContext()));

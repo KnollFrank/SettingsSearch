@@ -3,7 +3,6 @@ package de.KnollFrank.lib.preferencesearch.search;
 import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingSearchableInfosAdapter.addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo;
 
 import androidx.preference.PreferenceGroup;
-import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,35 +11,20 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
 class PreferenceSearcher {
 
-    private final PreferenceScreen preferenceScreen;
-    private final PreferenceScreenResetter preferenceScreenResetter;
+    private final MergedPreferenceScreen mergedPreferenceScreen;
     private final SummarySetter summarySetter;
     private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
 
-    public PreferenceSearcher(final PreferenceScreen preferenceScreen,
-                              final PreferenceScreenResetter preferenceScreenResetter,
+    public PreferenceSearcher(final MergedPreferenceScreen mergedPreferenceScreen,
                               final SummarySetter summarySetter,
                               final ISearchableInfoProviderInternal searchableInfoProviderInternal) {
-        this.preferenceScreen = preferenceScreen;
-        this.preferenceScreenResetter = preferenceScreenResetter;
+        this.mergedPreferenceScreen = mergedPreferenceScreen;
         this.summarySetter = summarySetter;
         this.searchableInfoProviderInternal = searchableInfoProviderInternal;
-    }
-
-    public static PreferenceSearcher createPreferenceSearcher(
-            final MergedPreferenceScreen mergedPreferenceScreen,
-            final ISearchableInfoProviderInternal searchableInfoProviderInternal,
-            final SummarySetter summarySetter) {
-        return new PreferenceSearcher(
-                mergedPreferenceScreen.preferenceScreen,
-                new PreferenceScreenResetter(new SummaryResetter(mergedPreferenceScreen.summaryResetterByPreference)),
-                summarySetter,
-                searchableInfoProviderInternal);
     }
 
     public List<PreferenceMatch> searchFor(final String needle) {
@@ -49,9 +33,9 @@ class PreferenceSearcher {
     }
 
     private void prepareSearch(final String needle) {
-        preferenceScreenResetter.reset(preferenceScreen);
+        mergedPreferenceScreen.resetPreferenceScreen();
         addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
-                preferenceScreen,
+                mergedPreferenceScreen.preferenceScreen,
                 searchableInfoProviderInternal,
                 summarySetter,
                 needle);
@@ -60,7 +44,7 @@ class PreferenceSearcher {
     private List<PreferenceMatch> getPreferenceMatches(final String needle) {
         return Lists.concat(
                 Preferences
-                        .getAllPreferences(preferenceScreen)
+                        .getAllPreferences(mergedPreferenceScreen.preferenceScreen)
                         .stream()
                         .filter(preference -> !(preference instanceof PreferenceGroup))
                         .map(preference -> PreferenceMatcher.getPreferenceMatches(preference, needle))
