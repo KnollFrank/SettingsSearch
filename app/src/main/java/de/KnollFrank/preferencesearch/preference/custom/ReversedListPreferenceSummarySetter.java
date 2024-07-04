@@ -7,6 +7,16 @@ public class ReversedListPreferenceSummarySetter implements ISummarySetter<Rever
 
     @Override
     public void setSummary(final ReversedListPreference reversedListPreference, final CharSequence summary) {
-        new DefaultSummarySetter().setSummary(reversedListPreference, summary);
+        doWithSummarySetterEnabled(
+                reversedListPreference,
+                () -> new DefaultSummarySetter().setSummary(reversedListPreference, summary));
+    }
+
+    private void doWithSummarySetterEnabled(final ReversedListPreference reversedListPreference,
+                                            final Runnable runnable) {
+        final boolean memo = reversedListPreference.isSummarySetterEnabled();
+        reversedListPreference.setSummarySetterEnabled(true);
+        runnable.run();
+        reversedListPreference.setSummarySetterEnabled(memo);
     }
 }

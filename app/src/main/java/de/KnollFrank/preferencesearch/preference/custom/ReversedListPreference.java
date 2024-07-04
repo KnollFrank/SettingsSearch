@@ -12,6 +12,8 @@ import java.util.Arrays;
 
 public class ReversedListPreference extends ListPreference {
 
+    private boolean summarySetterEnabled = false;
+
     public ReversedListPreference(@NonNull final Context context) {
         super(context);
     }
@@ -24,6 +26,27 @@ public class ReversedListPreference extends ListPreference {
     @Override
     public void setEntries(final CharSequence[] entries) {
         super.setEntries(reverse(entries));
+    }
+
+    public void setSummarySetterEnabled(final boolean summarySetterEnabled) {
+        this.summarySetterEnabled = summarySetterEnabled;
+    }
+
+    public boolean isSummarySetterEnabled() {
+        return summarySetterEnabled;
+    }
+
+    @Override
+    public void setSummary(@Nullable final CharSequence summary) {
+        if (isSummarySetterEnabled()) {
+            super.setSummary(summary);
+        }
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getSummary() {
+        return super.getSummary();
     }
 
     private static CharSequence[] reverse(final CharSequence[] charSequences) {

@@ -21,7 +21,6 @@ import com.google.common.collect.ImmutableMap;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -38,6 +37,8 @@ import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
+import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
+import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummarySetter;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -254,9 +255,10 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
-                        // FK-TODO: brauchen Test, der ohne brauchbare Werte für die folgenden zwei Parameter für ReversedListPreference scheitert.
-                        Collections.emptyMap(),
-                        Collections.emptyMap(),
+                        ImmutableMap.of(ReversedListPreference.class, new ReversedListPreferenceSummarySetter()),
+                        ImmutableMap.of(
+                                ReversedListPreference.class,
+                                (final Preference preference) -> new ReversedListPreferenceSummaryResetter((ReversedListPreference) preference)),
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
