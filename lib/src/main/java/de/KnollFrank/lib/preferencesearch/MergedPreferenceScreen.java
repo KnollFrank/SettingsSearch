@@ -9,6 +9,7 @@ import androidx.preference.PreferenceScreen;
 import java.util.Map;
 import java.util.Optional;
 
+import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.search.PreferenceScreenResetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 
@@ -27,9 +28,7 @@ public class MergedPreferenceScreen {
     }
 
     public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHostByPreference(final Preference preference) {
-        return hostByPreference.containsKey(preference) ?
-                Optional.of(hostByPreference.get(preference)) :
-                Optional.empty();
+        return Maps.get(hostByPreference, preference);
     }
 
     public void resetPreferenceScreen() {
