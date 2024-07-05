@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
 import static de.KnollFrank.lib.preferencesearch.fragment.Fragments.showFragment;
-import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
 
 import android.os.Bundle;
 import android.widget.SearchView;
@@ -29,6 +28,7 @@ import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetters;
@@ -76,7 +76,7 @@ public class SearchPreferenceFragment extends Fragment {
     public SearchPreferenceFragment() {
         this(
                 (preference, host) -> true,
-                new SearchableInfoProviderInternal(createBuiltinSearchableInfoProviders()),
+                new SearchableInfoProviderInternal(new SearchableInfoProviders(Collections.emptyMap())),
                 new SummarySetter(new SummarySetters(Collections.emptyMap())),
                 new SummaryResetterFactories(Collections.emptyMap()),
                 new DefaultFragmentFactory());

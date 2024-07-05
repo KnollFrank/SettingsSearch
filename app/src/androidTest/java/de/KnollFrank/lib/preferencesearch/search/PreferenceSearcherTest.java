@@ -3,6 +3,7 @@ package de.KnollFrank.lib.preferencesearch.search;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
+import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
 import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
 import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSummaryResetterFactories;
 import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSummarySetters;
@@ -45,7 +46,6 @@ import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSu
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummarySetter;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
-// FK-TODO: use CustomPreferenceDescription
 public class PreferenceSearcherTest {
 
     @Test
@@ -220,12 +220,18 @@ public class PreferenceSearcherTest {
             scenario.onActivity(fragmentActivity -> {
                 // Given
                 final List<PreferenceDescription> preferenceDescriptions =
-                        ImmutableList.of(
-                                new PreferenceDescription<>(
-                                        ReversedListPreference.class,
-                                        new ReversedListPreferenceSearchableInfoProvider(),
-                                        new ReversedListPreferenceSummarySetter(),
-                                        ReversedListPreferenceSummaryResetter::new));
+                        ImmutableList
+                                .<PreferenceDescription>builder()
+                                .addAll(createBuiltinPreferenceDescriptions())
+                                .addAll(
+                                        ImmutableList.of(
+                                                new PreferenceDescription<>(
+                                                        ReversedListPreference.class,
+                                                        new ReversedListPreferenceSearchableInfoProvider(),
+                                                        new ReversedListPreferenceSummarySetter(),
+                                                        ReversedListPreferenceSummaryResetter::new)))
+                                .build();
+
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 getMergedPreferenceScreen(
@@ -233,12 +239,8 @@ public class PreferenceSearcherTest {
                                         searchablePreferencePredicate,
                                         getSummaryResetterFactories(preferenceDescriptions),
                                         fragmentActivity),
-                                new SummarySetter(
-                                        createBuiltinSummarySetters().combineWith(
-                                                getSummarySetters(preferenceDescriptions))),
-                                new SearchableInfoProviderInternal(
-                                        createBuiltinSearchableInfoProviders().combineWith(
-                                                getSearchableInfoProviders(preferenceDescriptions))));
+                                new SummarySetter(getSummarySetters(preferenceDescriptions)),
+                                new SearchableInfoProviderInternal(getSearchableInfoProviders(preferenceDescriptions)));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
@@ -280,7 +282,6 @@ public class PreferenceSearcherTest {
                 .map(preferenceMatch -> preferenceMatch.preference)
                 .map(Preference::getKey)
                 .filter(Objects::nonNull)
-                .map(CharSequence::toString)
                 .collect(Collectors.toSet());
     }
 }
