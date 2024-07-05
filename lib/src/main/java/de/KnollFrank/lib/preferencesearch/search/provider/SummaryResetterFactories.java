@@ -15,6 +15,7 @@ public class SummaryResetterFactories {
         this.summaryResetterFactoryByPreferenceClass = summaryResetterFactoryByPreferenceClass;
     }
 
+    // FK-TODO: remove all unused combineWith() methods of multiples classes
     public SummaryResetterFactories combineWith(final SummaryResetterFactories other) {
         return new SummaryResetterFactories(
                 Maps.merge(
