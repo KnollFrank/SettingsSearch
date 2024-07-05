@@ -8,13 +8,9 @@ class SwitchPreferenceSearchableInfoProvider implements SearchableInfoProvider<S
 
     @Override
     public String getSearchableInfo(final SwitchPreference preference) {
-        final String summary =
-                joinNonNullCharSequences(
-                        ", ",
-                        preference.getSummaryOff(),
-                        preference.getSummaryOn());
-        preference.setSummaryOn(null);
-        preference.setSummaryOff(null);
-        return summary;
+        return joinNonNullCharSequences(
+                ", ",
+                preference.getSummaryOff(),
+                preference.getSummaryOn());
     }
 }

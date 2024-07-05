@@ -29,6 +29,7 @@ public class PreferenceSummaryProvider {
     }
 
     // FK-TODO: hier noch andere Preferences behandeln: SwitchPreference, ...
+    // FK-TODO: use CustomPreferenceDescription<SwitchPreference>
     public static SummaryResetterFactories createBuiltinSummaryResetterFactories() {
         return new SummaryResetterFactories(
                 ImmutableMap

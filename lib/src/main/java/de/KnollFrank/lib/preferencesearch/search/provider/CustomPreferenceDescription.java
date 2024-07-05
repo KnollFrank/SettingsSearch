@@ -4,6 +4,7 @@ import androidx.preference.Preference;
 
 import java.util.function.Function;
 
+// FK-TODO: rename to PreferenceDescription
 public class CustomPreferenceDescription<T extends Preference> {
 
     public final Class<T> preferenceClass;
