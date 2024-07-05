@@ -9,34 +9,34 @@ import java.util.stream.Collectors;
 
 public class CustomPreferenceDescriptions {
 
-    public static SearchableInfoProviders getSearchableInfoProviders(final List<CustomPreferenceDescription> customPreferenceDescriptions) {
+    public static SearchableInfoProviders getSearchableInfoProviders(final List<PreferenceDescription> preferenceDescriptions) {
         return new SearchableInfoProviders(
                 collect(
-                        customPreferenceDescriptions,
-                        customPreferenceDescription -> customPreferenceDescription.searchableInfoProvider));
+                        preferenceDescriptions,
+                        preferenceDescription -> preferenceDescription.searchableInfoProvider));
     }
 
-    public static SummarySetters getSummarySetters(final List<CustomPreferenceDescription> customPreferenceDescriptions) {
+    public static SummarySetters getSummarySetters(final List<PreferenceDescription> preferenceDescriptions) {
         return new SummarySetters(
                 collect(
-                        customPreferenceDescriptions,
-                        customPreferenceDescription -> customPreferenceDescription.summarySetter));
+                        preferenceDescriptions,
+                        preferenceDescription -> preferenceDescription.summarySetter));
     }
 
-    public static SummaryResetterFactories getSummaryResetterFactories(final List<CustomPreferenceDescription> customPreferenceDescriptions) {
+    public static SummaryResetterFactories getSummaryResetterFactories(final List<PreferenceDescription> preferenceDescriptions) {
         return new SummaryResetterFactories(
                 collect(
-                        customPreferenceDescriptions,
-                        customPreferenceDescription -> customPreferenceDescription.summaryResetterFactory));
+                        preferenceDescriptions,
+                        preferenceDescription -> preferenceDescription.summaryResetterFactory));
     }
 
-    private static <T> Map<Class<? extends Preference>, T> collect(final List<CustomPreferenceDescription> customPreferenceDescriptions,
-                                                                   final Function<CustomPreferenceDescription, T> valueMapper) {
-        return customPreferenceDescriptions
+    private static <T> Map<Class<? extends Preference>, T> collect(final List<PreferenceDescription> preferenceDescriptions,
+                                                                   final Function<PreferenceDescription, T> valueMapper) {
+        return preferenceDescriptions
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                customPreferenceDescription -> customPreferenceDescription.preferenceClass,
+                                preferenceDescription -> preferenceDescription.preferenceClass,
                                 valueMapper));
     }
 }

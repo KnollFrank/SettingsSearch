@@ -17,7 +17,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescription;
+import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
@@ -70,7 +70,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 (preference, host) -> true,
                 ImmutableList.of(
-                        new CustomPreferenceDescription<>(
+                        new PreferenceDescription<>(
                                 ReversedListPreference.class,
                                 new ReversedListPreferenceSearchableInfoProvider(),
                                 new ReversedListPreferenceSummarySetter(),

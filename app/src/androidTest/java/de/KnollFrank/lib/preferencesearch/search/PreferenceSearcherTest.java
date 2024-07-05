@@ -37,7 +37,7 @@ import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
-import de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescription;
+import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
@@ -221,9 +221,9 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final List<CustomPreferenceDescription> customPreferenceDescriptions =
+                final List<PreferenceDescription> preferenceDescriptions =
                         ImmutableList.of(
-                                new CustomPreferenceDescription<>(
+                                new PreferenceDescription<>(
                                         ReversedListPreference.class,
                                         new ReversedListPreferenceSearchableInfoProvider(),
                                         new ReversedListPreferenceSummarySetter(),
@@ -233,14 +233,14 @@ public class PreferenceSearcherTest {
                                 getMergedPreferenceScreen(
                                         preferenceFragment,
                                         searchablePreferencePredicate,
-                                        getSummaryResetterFactories(customPreferenceDescriptions),
+                                        getSummaryResetterFactories(preferenceDescriptions),
                                         fragmentActivity),
                                 new SummarySetter(
                                         createBuiltinSummarySetters().combineWith(
-                                                getSummarySetters(customPreferenceDescriptions))),
+                                                getSummarySetters(preferenceDescriptions))),
                                 new SearchableInfoProviderInternal(
                                         createBuiltinSearchableInfoProviders().combineWith(
-                                                getSearchableInfoProviders(customPreferenceDescriptions))));
+                                                getSearchableInfoProviders(preferenceDescriptions))));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);

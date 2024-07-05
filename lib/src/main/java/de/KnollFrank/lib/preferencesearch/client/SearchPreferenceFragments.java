@@ -15,8 +15,8 @@ import java.util.List;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
-import de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
@@ -33,7 +33,7 @@ public class SearchPreferenceFragments {
 
     public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
                                      final SearchablePreferencePredicate searchablePreferencePredicate,
-                                     final List<CustomPreferenceDescription> customPreferenceDescriptions,
+                                     final List<PreferenceDescription> preferenceDescriptions,
                                      final FragmentFactory fragmentFactory,
                                      final FragmentManager fragmentManager) {
         this.searchConfiguration = searchConfiguration;
@@ -41,14 +41,14 @@ public class SearchPreferenceFragments {
         this.searchableInfoProviderInternal =
                 new SearchableInfoProviderInternal(
                         createBuiltinSearchableInfoProviders().combineWith(
-                                getSearchableInfoProviders(customPreferenceDescriptions)));
+                                getSearchableInfoProviders(preferenceDescriptions)));
         this.summarySetter =
                 new SummarySetter(
                         createBuiltinSummarySetters().combineWith(
-                                getSummarySetters(customPreferenceDescriptions)));
+                                getSummarySetters(preferenceDescriptions)));
         this.summaryResetterFactories =
                 createBuiltinSummaryResetterFactories().combineWith(
-                        getSummaryResetterFactories(customPreferenceDescriptions));
+                        getSummaryResetterFactories(preferenceDescriptions));
         this.fragmentFactory = fragmentFactory;
         this.fragmentManager = fragmentManager;
     }

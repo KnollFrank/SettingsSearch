@@ -4,15 +4,14 @@ import androidx.preference.Preference;
 
 import java.util.function.Function;
 
-// FK-TODO: rename to PreferenceDescription
-public class CustomPreferenceDescription<T extends Preference> {
+public class PreferenceDescription<T extends Preference> {
 
     public final Class<T> preferenceClass;
     public final SearchableInfoProvider<T> searchableInfoProvider;
     public final ISummarySetter<T> summarySetter;
     public final Function<T, ? extends ISummaryResetter> summaryResetterFactory;
 
-    public CustomPreferenceDescription(
+    public PreferenceDescription(
             final Class<T> preferenceClass,
             final SearchableInfoProvider<T> searchableInfoProvider,
             final ISummarySetter<T> summarySetter,
