@@ -3,11 +3,9 @@ package de.KnollFrank.lib.preferencesearch.search;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummaryProvider.createBuiltinSummarySetters;
-import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinSearchableInfoProvidersFactory.createBuiltinSearchableInfoProviders;
-import static de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescriptions.getSearchableInfoProviders;
-import static de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescriptions.getSummaryResetterFactories;
-import static de.KnollFrank.lib.preferencesearch.search.provider.CustomPreferenceDescriptions.getSummarySetters;
+import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
+import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSummaryResetterFactories;
+import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSummarySetters;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;

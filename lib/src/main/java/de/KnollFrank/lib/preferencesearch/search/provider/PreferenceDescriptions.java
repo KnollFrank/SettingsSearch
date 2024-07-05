@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CustomPreferenceDescriptions {
+public class PreferenceDescriptions {
 
     public static SearchableInfoProviders getSearchableInfoProviders(final List<PreferenceDescription> preferenceDescriptions) {
         return new SearchableInfoProviders(
