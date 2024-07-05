@@ -5,21 +5,11 @@ import androidx.preference.Preference;
 import java.util.Map;
 import java.util.function.Function;
 
-import de.KnollFrank.lib.preferencesearch.common.Maps;
-
 public class SummaryResetterFactories {
 
     public final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass;
 
     public SummaryResetterFactories(final Map<Class<? extends Preference>, Function<Preference, ? extends ISummaryResetter>> summaryResetterFactoryByPreferenceClass) {
         this.summaryResetterFactoryByPreferenceClass = summaryResetterFactoryByPreferenceClass;
-    }
-
-    // FK-TODO: remove all unused combineWith() methods of multiples classes
-    public SummaryResetterFactories combineWith(final SummaryResetterFactories other) {
-        return new SummaryResetterFactories(
-                Maps.merge(
-                        this.summaryResetterFactoryByPreferenceClass,
-                        other.summaryResetterFactoryByPreferenceClass));
     }
 }
