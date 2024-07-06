@@ -15,7 +15,6 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 
 public class MergedPreferenceScreenProvider {
 
@@ -23,7 +22,6 @@ public class MergedPreferenceScreenProvider {
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
     private final SearchablePreferencePredicate searchablePreferencePredicate;
-    private final SummaryResetterFactories summaryResetterFactories;
     private final boolean cacheMergedPreferenceScreens;
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
@@ -32,13 +30,11 @@ public class MergedPreferenceScreenProvider {
                                           final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
                                           final SearchablePreferencePredicate searchablePreferencePredicate,
-                                          final SummaryResetterFactories summaryResetterFactories,
                                           final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
         this.searchablePreferencePredicate = searchablePreferencePredicate;
-        this.summaryResetterFactories = summaryResetterFactories;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
     }
 
@@ -64,7 +60,7 @@ public class MergedPreferenceScreenProvider {
                 HostByPreferenceProvider.getHostByPreference(screens);
         // B:
         final PreferenceScreen preferenceScreen = destructivelyMergeScreens(screens);
-        return new MergedPreferenceScreen(preferenceScreen, hostByPreference, summaryResetterFactories);
+        return new MergedPreferenceScreen(preferenceScreen, hostByPreference);
     }
 
     private Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {

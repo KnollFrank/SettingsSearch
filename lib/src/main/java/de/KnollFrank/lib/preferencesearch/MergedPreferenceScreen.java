@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceScreenResetter.createPreferenceScreenResetter;
-
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -11,7 +9,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.search.PreferenceScreenResetter;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
 
 public class MergedPreferenceScreen {
 
@@ -20,11 +17,10 @@ public class MergedPreferenceScreen {
     private final PreferenceScreenResetter preferenceScreenResetter;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
-                                  final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
-                                  final SummaryResetterFactories summaryResetterFactories) {
+                                  final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
-        this.preferenceScreenResetter = createPreferenceScreenResetter(preferenceScreen, summaryResetterFactories);
+        this.preferenceScreenResetter = new PreferenceScreenResetter(preferenceScreen);
     }
 
     public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHostByPreference(final Preference preference) {

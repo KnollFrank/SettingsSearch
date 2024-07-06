@@ -20,8 +20,6 @@ import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
-import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
-import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummarySetter;
 import de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: README.md anpassen
@@ -72,9 +70,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 ImmutableList.of(
                         new PreferenceDescription<>(
                                 ReversedListPreference.class,
-                                new ReversedListPreferenceSearchableInfoProvider(),
-                                new ReversedListPreferenceSummarySetter(),
-                                ReversedListPreferenceSummaryResetter::new)),
+                                new ReversedListPreferenceSearchableInfoProvider())),
                 new DefaultFragmentFactory(),
                 getSupportFragmentManager());
     }

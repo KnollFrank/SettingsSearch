@@ -15,23 +15,15 @@ public class BuiltinPreferenceDescriptionsFactory {
         return Arrays.asList(
                 new PreferenceDescription<>(
                         ListPreference.class,
-                        new ListPreferenceSearchableInfoProvider(),
-                        (preference, summary) -> new DefaultSummarySetter().setSummary(preference, summary),
-                        DefaultSummaryResetter::new),
+                        new ListPreferenceSearchableInfoProvider()),
                 new PreferenceDescription<>(
                         SwitchPreference.class,
-                        new SwitchPreferenceSearchableInfoProvider(),
-                        new SwitchPreferenceSummarySetter(),
-                        SwitchPreferenceSummaryResetter::new),
+                        new SwitchPreferenceSearchableInfoProvider()),
                 new PreferenceDescription<>(
                         DropDownPreference.class,
-                        new DropDownPreferenceSearchableInfoProvider(),
-                        (preference, summary) -> new DefaultSummarySetter().setSummary(preference, summary),
-                        DefaultSummaryResetter::new),
+                        new DropDownPreferenceSearchableInfoProvider()),
                 new PreferenceDescription<>(
                         MultiSelectListPreference.class,
-                        new MultiSelectListPreferenceSearchableInfoProvider(),
-                        (preference, summary) -> new DefaultSummarySetter().setSummary(preference, summary),
-                        DefaultSummaryResetter::new));
+                        new MultiSelectListPreferenceSearchableInfoProvider()));
     }
 }
