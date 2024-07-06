@@ -13,17 +13,21 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Strings;
 import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
 
 class PreferenceMatcher {
 
-    public static List<PreferenceMatch> getPreferenceMatches(final Preference haystack,
-                                                             final String needle) {
+    public static List<PreferenceMatch> getPreferenceMatches(
+            final Preference haystack,
+            final String needle,
+            final SearchableInfoGetter searchableInfoGetter) {
         if (TextUtils.isEmpty(needle)) {
             return Collections.emptyList();
         }
         return Lists.concat(
                 getTitlePreferenceMatches(haystack, needle),
-                getSummaryPreferenceMatch(haystack, needle));
+                getSummaryPreferenceMatch(haystack, needle),
+                getSearchableInfoPreferenceMatch(haystack, needle, searchableInfoGetter));
     }
 
     private static List<PreferenceMatch> getTitlePreferenceMatches(final Preference haystack,
@@ -42,6 +46,18 @@ class PreferenceMatcher {
                         .map(CharSequence::toString),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.SUMMARY, indexRange));
+    }
+
+    private static List<PreferenceMatch> getSearchableInfoPreferenceMatch(
+            final Preference haystack,
+            final String needle,
+            final SearchableInfoGetter searchableInfoGetter) {
+        return getPreferenceMatches(
+                searchableInfoGetter
+                        .getSearchableInfo(haystack)
+                        .map(CharSequence::toString),
+                needle,
+                indexRange -> new PreferenceMatch(haystack, Type.SEARCHABLE_INFO, indexRange));
     }
 
     static List<PreferenceMatch> getPreferenceMatches(

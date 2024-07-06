@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
-import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingSearchableInfosAdapter.addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo;
+import static de.KnollFrank.lib.preferencesearch.search.Summaries4MatchingSearchableInfosAdapter.showSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo;
 
 import androidx.preference.PreferenceGroup;
 
@@ -11,19 +11,19 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 
 class PreferenceSearcher {
 
     private final MergedPreferenceScreen mergedPreferenceScreen;
-    private final SummarySetter summarySetter;
+    private final SearchableInfoAttribute searchableInfoAttribute;
     private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
 
     public PreferenceSearcher(final MergedPreferenceScreen mergedPreferenceScreen,
-                              final SummarySetter summarySetter,
+                              final SearchableInfoAttribute searchableInfoAttribute,
                               final ISearchableInfoProviderInternal searchableInfoProviderInternal) {
         this.mergedPreferenceScreen = mergedPreferenceScreen;
-        this.summarySetter = summarySetter;
+        this.searchableInfoAttribute = searchableInfoAttribute;
         this.searchableInfoProviderInternal = searchableInfoProviderInternal;
     }
 
@@ -34,10 +34,10 @@ class PreferenceSearcher {
 
     private void prepareSearch(final String needle) {
         mergedPreferenceScreen.resetPreferenceScreen();
-        addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
+        showSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 mergedPreferenceScreen.preferenceScreen,
                 searchableInfoProviderInternal,
-                summarySetter,
+                searchableInfoAttribute,
                 needle);
     }
 
@@ -47,7 +47,11 @@ class PreferenceSearcher {
                         .getAllPreferences(mergedPreferenceScreen.preferenceScreen)
                         .stream()
                         .filter(preference -> !(preference instanceof PreferenceGroup))
-                        .map(preference -> PreferenceMatcher.getPreferenceMatches(preference, needle))
+                        .map(preference ->
+                                PreferenceMatcher.getPreferenceMatches(
+                                        preference,
+                                        needle,
+                                        searchableInfoAttribute))
                         .collect(Collectors.toList()));
     }
 }

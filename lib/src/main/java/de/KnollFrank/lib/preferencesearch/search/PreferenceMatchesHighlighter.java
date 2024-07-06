@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.R;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
 class PreferenceMatchesHighlighter {
@@ -21,22 +22,27 @@ class PreferenceMatchesHighlighter {
     public static void highlight(
             final List<PreferenceMatch> preferenceMatches,
             final SummarySetter summarySetter,
+            final SearchableInfoAttribute searchableInfoAttribute,
             final Context context) {
         final List<Object> markups = createMarkups(context);
         for (final PreferenceMatch preferenceMatch : preferenceMatches) {
-            highlight(preferenceMatch, markups, summarySetter);
+            highlight(preferenceMatch, markups, summarySetter, searchableInfoAttribute);
         }
     }
 
     private static void highlight(final PreferenceMatch preferenceMatch,
                                   final List<Object> markups,
-                                  final SummarySetter summarySetter) {
+                                  final SummarySetter summarySetter,
+                                  final SearchableInfoAttribute searchableInfoAttribute) {
         switch (preferenceMatch.type) {
             case TITLE:
                 setTitle(preferenceMatch, markups);
                 break;
             case SUMMARY:
                 setSummary(preferenceMatch, markups, summarySetter);
+                break;
+            case SEARCHABLE_INFO:
+                setSearchableInfo(preferenceMatch, markups, searchableInfoAttribute);
                 break;
         }
     }
@@ -58,6 +64,21 @@ class PreferenceMatchesHighlighter {
                 preferenceMatch.preference,
                 createSpannableFromStrAndApplyMarkupsToIndexRange(
                         preferenceMatch.preference.getSummary().toString(),
+                        markups,
+                        preferenceMatch.indexRange));
+    }
+
+    private static void setSearchableInfo(
+            final PreferenceMatch preferenceMatch,
+            final List<Object> markups,
+            final SearchableInfoAttribute searchableInfoAttribute) {
+        searchableInfoAttribute.setSearchableInfo(
+                preferenceMatch.preference,
+                createSpannableFromStrAndApplyMarkupsToIndexRange(
+                        searchableInfoAttribute
+                                .getSearchableInfo(preferenceMatch.preference)
+                                .map(CharSequence::toString)
+                                .orElse(""),
                         markups,
                         preferenceMatch.indexRange));
     }

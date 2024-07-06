@@ -35,9 +35,10 @@ class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     @NonNull
     @Override
     public PreferenceViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+        // FK-TODO: replace summary TextView with a LinearLayout containing the original summary TextView and the SearchableInfoView
         final LinearLayout container = createLinearLayout(parent.getContext());
         container.addView(super.onCreateViewHolder(parent, viewType).itemView);
-        container.addView(createSearchableInfo("", parent.getContext()));
+        container.addView(createSearchableInfoView("", parent.getContext()));
         return PreferenceViewHolder.createInstanceForTests(container);
     }
 
@@ -45,7 +46,7 @@ class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     public void onBindViewHolder(@NonNull final PreferenceViewHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
         final Preference preference = getItem(position);
-        getSearchableInfo(holder).setText(searchableInfoGetter.getSearchableInfo(preference));
+        displaySearchableInfo(holder, preference);
         UIUtils.setOnClickListener(
                 holder.itemView,
                 v -> onPreferenceClickListener.accept(preference));
@@ -62,18 +63,27 @@ class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
         return container;
     }
 
-    private static TextView createSearchableInfo(final String text, final Context context) {
-        final TextView searchableInfo = new TextView(context);
-        searchableInfo.setLayoutParams(
+    private static TextView createSearchableInfoView(final String text, final Context context) {
+        final TextView searchableInfoView = new TextView(context);
+        searchableInfoView.setLayoutParams(
                 new LinearLayout.LayoutParams(
                         LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT));
-        searchableInfo.setText(text);
-        searchableInfo.setId(SEARCHABLE_INFO_VIEW_ID);
-        return searchableInfo;
+        searchableInfoView.setText(text);
+        searchableInfoView.setId(SEARCHABLE_INFO_VIEW_ID);
+        return searchableInfoView;
     }
 
-    private static TextView getSearchableInfo(final PreferenceViewHolder holder) {
+    private static TextView getSearchableInfoView(final PreferenceViewHolder holder) {
         return (TextView) holder.findViewById(SEARCHABLE_INFO_VIEW_ID);
+    }
+
+    private void displaySearchableInfo(final PreferenceViewHolder holder, final Preference preference) {
+        final TextView searchableInfoView = getSearchableInfoView(holder);
+        final CharSequence searchableInfo =
+                searchableInfoGetter
+                        .getSearchableInfo(preference)
+                        .orElse(null);
+        searchableInfoView.setText(searchableInfo);
     }
 }

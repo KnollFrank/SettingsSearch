@@ -7,30 +7,23 @@ import androidx.preference.PreferenceScreen;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoSetter;
 
 class Summaries4MatchingSearchableInfosAdapter {
 
-    public static void addSearchableInfos2SummariesOfPreferencesIfQueryMatchesSearchableInfo(
+    public static void showSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
             final PreferenceScreen preferenceScreen,
             final ISearchableInfoProviderInternal searchableInfoProviderInternal,
-            final SummarySetter summarySetter,
+            final SearchableInfoSetter searchableInfoSetter,
             final String query) {
         for (final Preference preference : Preferences.getAllPreferences(preferenceScreen)) {
             searchableInfoProviderInternal
                     .getSearchableInfo(preference)
                     .ifPresent(searchableInfo -> {
                         if (matches(searchableInfo, query)) {
-                            summarySetter.setSummary(preference, getSummaryWithSearchableInfo(preference, searchableInfo));
+                            searchableInfoSetter.setSearchableInfo(preference, searchableInfo);
                         }
                     });
         }
-    }
-
-    private static String getSummaryWithSearchableInfo(final Preference preference, final String searchableInfo) {
-        return PreferenceAttributes
-                .getOptionalSummary(preference)
-                .map(summary -> String.format("%s\n%s", summary, searchableInfo))
-                .orElse(searchableInfo);
     }
 }

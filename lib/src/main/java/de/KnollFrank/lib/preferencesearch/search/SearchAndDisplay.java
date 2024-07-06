@@ -8,21 +8,25 @@ import androidx.preference.PreferenceScreen;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
 class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;
     private final SummarySetter summarySetter;
+    private final SearchableInfoAttribute searchableInfoAttribute;
     private final PreferenceScreen preferenceScreen;
     private final Context context;
 
     public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
                             final SummarySetter summarySetter,
+                            final SearchableInfoAttribute searchableInfoAttribute,
                             final PreferenceScreen preferenceScreen,
                             final Context context) {
         this.preferenceSearcher = preferenceSearcher;
         this.summarySetter = summarySetter;
+        this.searchableInfoAttribute = searchableInfoAttribute;
         this.preferenceScreen = preferenceScreen;
         this.context = context;
     }
@@ -33,7 +37,11 @@ class SearchAndDisplay {
     }
 
     private void display(final List<PreferenceMatch> preferenceMatches) {
-        PreferenceMatchesHighlighter.highlight(preferenceMatches, summarySetter, context);
+        PreferenceMatchesHighlighter.highlight(
+                preferenceMatches,
+                summarySetter,
+                searchableInfoAttribute,
+                context);
         PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
                 getPreferences(preferenceMatches),
                 preferenceScreen);

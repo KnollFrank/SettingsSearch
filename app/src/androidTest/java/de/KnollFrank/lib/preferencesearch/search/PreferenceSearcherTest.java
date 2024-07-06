@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
 import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
 import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSummaryResetterFactories;
-import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSummarySetters;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -40,7 +39,6 @@ import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummaryResetterFactories;
-import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSummaryResetter;
@@ -240,7 +238,7 @@ public class PreferenceSearcherTest {
                                         searchablePreferencePredicate,
                                         getSummaryResetterFactories(preferenceDescriptions),
                                         fragmentActivity),
-                                new SummarySetter(getSummarySetters(preferenceDescriptions), new DefaultSearchableInfoAttribute()),
+                                new DefaultSearchableInfoAttribute(),
                                 new SearchableInfoProviderInternal(getSearchableInfoProviders(preferenceDescriptions)));
 
                 // When
