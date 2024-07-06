@@ -19,17 +19,21 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import org.threeten.bp.Duration;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private MergedPreferenceScreen mergedPreferenceScreen;
     private @IdRes int fragmentContainerViewId;
+    private SearchableInfoGetter searchableInfoGetter;
 
     public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId,
+                                                              final SearchableInfoGetter searchableInfoGetter,
                                                               final MergedPreferenceScreen mergedPreferenceScreen) {
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment = Factory.newInstance(fragmentContainerViewId);
         searchResultsPreferenceFragment.setMergedPreferenceScreen(mergedPreferenceScreen);
+        searchResultsPreferenceFragment.setSearchableInfoGetter(searchableInfoGetter);
         return searchResultsPreferenceFragment;
     }
 
@@ -48,14 +52,19 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     protected Adapter onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
         // FK-TODO: die Preferences des preferenceScreen sollen ihren aktuellen Zustand widerspiegeln (z.B. soll der Haken einer CheckBoxPreference gemäß den darunterliegenden Daten gesetzt oder nicht gesetzt sein.)
-        return new ClickablePreferenceGroupAdapter(
+        return new SearchablePreferenceGroupAdapter(
                 preferenceScreen,
+                searchableInfoGetter,
                 this::showPreferenceScreenAndHighlightPreference);
     }
 
     private void setMergedPreferenceScreen(final MergedPreferenceScreen mergedPreferenceScreen) {
         preparePreferenceScreenForSearch(mergedPreferenceScreen.preferenceScreen);
         this.mergedPreferenceScreen = mergedPreferenceScreen;
+    }
+
+    public void setSearchableInfoGetter(final SearchableInfoGetter searchableInfoGetter) {
+        this.searchableInfoGetter = searchableInfoGetter;
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {

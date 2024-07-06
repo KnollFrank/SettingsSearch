@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
+import de.KnollFrank.lib.preferencesearch.client.DefaultSearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
@@ -239,7 +240,7 @@ public class PreferenceSearcherTest {
                                         searchablePreferencePredicate,
                                         getSummaryResetterFactories(preferenceDescriptions),
                                         fragmentActivity),
-                                new SummarySetter(getSummarySetters(preferenceDescriptions)),
+                                new SummarySetter(getSummarySetters(preferenceDescriptions), new DefaultSearchableInfoAttribute()),
                                 new SearchableInfoProviderInternal(getSearchableInfoProviders(preferenceDescriptions)));
 
                 // When

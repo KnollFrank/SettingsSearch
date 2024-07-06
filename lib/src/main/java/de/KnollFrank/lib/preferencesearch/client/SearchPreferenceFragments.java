@@ -16,6 +16,7 @@ import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SummarySetter;
 
@@ -45,12 +46,16 @@ public class SearchPreferenceFragments {
     }
 
     public void showSearchPreferenceFragment() {
+        final SearchableInfoAttribute searchableInfoAttribute = new DefaultSearchableInfoAttribute();
         showFragment(
                 SearchPreferenceFragment.newInstance(
                         searchConfiguration,
                         searchablePreferencePredicate,
                         new SearchableInfoProviderInternal(getSearchableInfoProviders(preferenceDescriptions)),
-                        new SummarySetter(getSummarySetters(preferenceDescriptions)),
+                        searchableInfoAttribute,
+                        new SummarySetter(
+                                getSummarySetters(preferenceDescriptions),
+                                searchableInfoAttribute),
                         getSummaryResetterFactories(preferenceDescriptions),
                         fragmentFactory),
                 searchPreferenceFragment -> {

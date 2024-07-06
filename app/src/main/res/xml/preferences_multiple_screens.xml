@@ -68,9 +68,9 @@
     <SwitchPreference
         android:key="switch"
         android:summary="This allows to use a switch"
-        android:title="Switch preference"
         android:summaryOff="switch is off"
-        android:summaryOn="switch is on"/>
+        android:summaryOn="switch is on"
+        android:title="Switch preference" />
 
     <ListPreference
         android:entries="@android:array/emailAddressTypes"
@@ -90,8 +90,8 @@
         android:entries="@android:array/imProtocols"
         android:entryValues="@android:array/imProtocols"
         android:key="keyOfImProtocols"
-        android:summary="im Protocols title"
-        android:title="im Protocols summary" />
+        android:summary="im Protocols summary"
+        android:title="im Protocols title" />
 
     <MultiSelectListPreference
         android:entries="@android:array/phoneTypes"
