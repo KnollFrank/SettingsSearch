@@ -5,6 +5,7 @@ import androidx.preference.Preference;
 public class SummarySetter {
 
     private final SummarySetters summarySetters;
+    // FK-TODO: remove searchableInfoSetter
     private final SearchableInfoSetter searchableInfoSetter;
 
     public SummarySetter(final SummarySetters summarySetters,

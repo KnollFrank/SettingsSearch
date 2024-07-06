@@ -26,6 +26,10 @@ public class SearchableInfoProviderInternal implements ISearchableInfoProviderIn
                 Maps.get(
                         searchableInfoProviders.searchableInfoProvidersByPreferenceClass,
                         preferenceClass);
+        return convert(searchableInfoProvider);
+    }
+
+    private static Optional<SearchableInfoProvider> convert(final Optional<SearchableInfoProvider<?>> searchableInfoProvider) {
         return Optional.ofNullable(searchableInfoProvider.orElse(null));
     }
 }
