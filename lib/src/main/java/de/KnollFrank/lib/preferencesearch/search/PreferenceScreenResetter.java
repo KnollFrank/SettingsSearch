@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getOptionalSummary;
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.getOptionalTitle;
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.setSummary;
-import static de.KnollFrank.lib.preferencesearch.search.PreferenceAttributes.setTitle;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummary.getOptionalSummary;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceSummary.setSummary;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceTitle.getOptionalTitle;
+import static de.KnollFrank.lib.preferencesearch.search.PreferenceTitle.setTitle;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;

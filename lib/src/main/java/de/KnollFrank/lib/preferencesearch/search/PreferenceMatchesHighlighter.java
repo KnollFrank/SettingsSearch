@@ -45,7 +45,7 @@ class PreferenceMatchesHighlighter {
     }
 
     private static void setTitle(final PreferenceMatch preferenceMatch, final List<Object> markups) {
-        PreferenceAttributes.setTitle(
+        PreferenceTitle.setTitle(
                 preferenceMatch.preference,
                 createSpannableFromStrAndApplyMarkupsToIndexRange(
                         preferenceMatch.preference.getTitle().toString(),
@@ -55,7 +55,7 @@ class PreferenceMatchesHighlighter {
 
     private static void setSummary(final PreferenceMatch preferenceMatch,
                                    final List<Object> markups) {
-        PreferenceAttributes.setSummary(
+        PreferenceSummary.setSummary(
                 preferenceMatch.preference,
                 createSpannableFromStrAndApplyMarkupsToIndexRange(
                         preferenceMatch.preference.getSummary().toString(),

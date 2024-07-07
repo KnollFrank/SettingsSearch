@@ -33,7 +33,7 @@ class PreferenceMatcher {
     private static List<PreferenceMatch> getTitlePreferenceMatches(final Preference haystack,
                                                                    final String needle) {
         return getPreferenceMatches(
-                PreferenceAttributes.getOptionalTitle(haystack).map(CharSequence::toString),
+                PreferenceTitle.getOptionalTitle(haystack).map(CharSequence::toString),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.TITLE, indexRange));
     }
@@ -41,7 +41,7 @@ class PreferenceMatcher {
     private static List<PreferenceMatch> getSummaryPreferenceMatch(final Preference haystack,
                                                                    final String needle) {
         return getPreferenceMatches(
-                PreferenceAttributes
+                PreferenceSummary
                         .getOptionalSummary(haystack)
                         .map(CharSequence::toString),
                 needle,
