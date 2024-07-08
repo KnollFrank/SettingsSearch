@@ -18,6 +18,7 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribut
 
 class PreferenceMatchesHighlighter {
 
+    // FK-FIXME: Titel einer Preference: "title of ReversedListPreference ReversedListPreference", Suche nach "ReversedListPreference", dann wird nur eines der Vorkommen von "ReversedListPreference" im Titel gehighlightet anstatt wie gewünscht alle beide Vorkommen.
     public static void highlight(
             final List<PreferenceMatch> preferenceMatches,
             final SearchableInfoAttribute searchableInfoAttribute,
