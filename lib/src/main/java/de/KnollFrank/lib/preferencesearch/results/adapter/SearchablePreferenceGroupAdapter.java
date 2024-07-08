@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.results.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,7 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     @Override
     public PreferenceViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         final PreferenceViewHolder preferenceViewHolder = super.onCreateViewHolder(parent, viewType);
-        createSearchableInfoViewBelowSummary(preferenceViewHolder, parent.getContext());
+        createSearchableInfoView(preferenceViewHolder, parent.getContext());
         return preferenceViewHolder;
     }
 
@@ -44,10 +45,23 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
                 v -> onPreferenceClickListener.accept(preference));
     }
 
-    private static void createSearchableInfoViewBelowSummary(final PreferenceViewHolder preferenceViewHolder, final Context context) {
+    private static void createSearchableInfoView(final PreferenceViewHolder holder, final Context context) {
         ViewAdder.addSecondViewBelowFirstView(
-                preferenceViewHolder.findViewById(android.R.id.summary),
+                getSummaryViewOrTitleView(holder),
                 SearchableInfoView.createSearchableInfoView("", context),
                 context);
+    }
+
+    private static View getSummaryViewOrTitleView(final PreferenceViewHolder holder) {
+        final View summaryView = getSummaryView(holder);
+        return summaryView != null ? summaryView : getTitleView(holder);
+    }
+
+    private static View getSummaryView(final PreferenceViewHolder holder) {
+        return holder.findViewById(android.R.id.summary);
+    }
+
+    private static View getTitleView(final PreferenceViewHolder holder) {
+        return holder.findViewById(android.R.id.title);
     }
 }
