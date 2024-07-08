@@ -32,6 +32,7 @@ class PreferenceMatchesHighlighter {
     private static void highlight(final PreferenceMatch preferenceMatch,
                                   final List<Object> markups,
                                   final SearchableInfoAttribute searchableInfoAttribute) {
+        // FK-TODO: replace switch with inheritance?
         switch (preferenceMatch.type) {
             case TITLE:
                 setTitle(preferenceMatch, markups);
