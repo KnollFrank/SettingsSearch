@@ -17,7 +17,7 @@ class ViewAdder {
         addView2LinearLayout(secondView, container);
     }
 
-    private static LinearLayout createLinearLayout(final Context context, final LayoutParams layoutParams) {
+    public static LinearLayout createLinearLayout(final Context context, final LayoutParams layoutParams) {
         final LinearLayout container = new LinearLayout(context);
         container.setLayoutParams(layoutParams);
         container.setOrientation(LinearLayout.VERTICAL);

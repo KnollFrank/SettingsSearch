@@ -3,6 +3,9 @@ package de.KnollFrank.lib.preferencesearch.results.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
@@ -31,8 +34,29 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     @Override
     public PreferenceViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         final PreferenceViewHolder preferenceViewHolder = super.onCreateViewHolder(parent, viewType);
-        createSearchableInfoView(preferenceViewHolder, parent.getContext());
-        return preferenceViewHolder;
+        final Context context = parent.getContext();
+        // FK-TODO: add test for Preference without title
+        // FK-TODO: add test for Preference without summary
+        // FK-TODO: refactor
+        final View summaryViewOrTitleView = getSummaryViewOrTitleView(preferenceViewHolder);
+        final TextView searchableInfoView = SearchableInfoView.createSearchableInfoView("", context);
+        if (summaryViewOrTitleView != null) {
+            ViewAdder.addSecondViewBelowFirstView(summaryViewOrTitleView, searchableInfoView, context);
+            return preferenceViewHolder;
+        } else {
+            final LinearLayout container = createLinearLayout(context);
+            container.addView(preferenceViewHolder.itemView);
+            container.addView(searchableInfoView);
+            return PreferenceViewHolder.createInstanceForTests(container);
+        }
+    }
+
+    private static LinearLayout createLinearLayout(final Context context) {
+        return ViewAdder.createLinearLayout(
+                context,
+                new LinearLayout.LayoutParams(
+                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.WRAP_CONTENT));
     }
 
     @Override
@@ -43,13 +67,6 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
         ClickListenerSetter.setOnClickListener(
                 holder.itemView,
                 v -> onPreferenceClickListener.accept(preference));
-    }
-
-    private static void createSearchableInfoView(final PreferenceViewHolder holder, final Context context) {
-        ViewAdder.addSecondViewBelowFirstView(
-                getSummaryViewOrTitleView(holder),
-                SearchableInfoView.createSearchableInfoView("", context),
-                context);
     }
 
     private static View getSummaryViewOrTitleView(final PreferenceViewHolder holder) {
