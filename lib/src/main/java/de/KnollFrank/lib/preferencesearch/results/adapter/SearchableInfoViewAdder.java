@@ -1,26 +1,24 @@
 package de.KnollFrank.lib.preferencesearch.results.adapter;
 
-import static de.KnollFrank.lib.preferencesearch.results.adapter.UIUtils.findViewById;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
+import androidx.annotation.IdRes;
 import androidx.preference.PreferenceViewHolder;
 
 import java.util.Optional;
-
-import de.KnollFrank.lib.preferencesearch.common.Options;
 
 class SearchableInfoViewAdder {
 
     public static PreferenceViewHolder addSearchableInfoView(final View searchableInfoView,
                                                              final PreferenceViewHolder holder,
                                                              final Context context) {
-        if (hasSummaryViewOrTitleView(holder)) {
+        final Optional<View> summaryView = findViewById(holder, android.R.id.summary);
+        if (summaryView.isPresent()) {
             ViewAdder.addSecondViewBelowFirstView(
-                    getSummaryViewOrTitleView(holder).get(),
+                    summaryView.get(),
                     searchableInfoView,
                     context);
             return holder;
@@ -32,16 +30,6 @@ class SearchableInfoViewAdder {
                             context);
             return PreferenceViewHolder.createInstanceForTests(container);
         }
-    }
-
-    private static boolean hasSummaryViewOrTitleView(final PreferenceViewHolder holder) {
-        return getSummaryViewOrTitleView(holder).isPresent();
-    }
-
-    private static Optional<View> getSummaryViewOrTitleView(final PreferenceViewHolder holder) {
-        return Options.or(
-                findViewById(holder, android.R.id.summary),
-                () -> findViewById(holder, android.R.id.title));
     }
 
     private static LinearLayout createLinearLayoutWithTwoChildren(final View firstChild,
@@ -56,5 +44,9 @@ class SearchableInfoViewAdder {
         ViewAdder.addView2LinearLayout(firstChild, container);
         ViewAdder.addView2LinearLayout(secondChild, container);
         return container;
+    }
+
+    private static Optional<View> findViewById(final PreferenceViewHolder holder, final @IdRes int id) {
+        return Optional.ofNullable(holder.findViewById(id));
     }
 }
