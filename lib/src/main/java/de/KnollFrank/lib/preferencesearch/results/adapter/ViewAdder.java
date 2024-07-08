@@ -33,11 +33,10 @@ class ViewAdder {
     }
 
     private static void addView2LinearLayout(final View view, final LinearLayout linearLayout) {
-        view.setLayoutParams(createLinearLayoutParams());
+        view.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT));
         linearLayout.addView(view);
-    }
-
-    private static LinearLayout.LayoutParams createLinearLayoutParams() {
-        return new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
     }
 }
