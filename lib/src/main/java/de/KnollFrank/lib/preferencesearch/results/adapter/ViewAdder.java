@@ -17,6 +17,14 @@ class ViewAdder {
         addView2LinearLayout(secondView, container);
     }
 
+    public static void addView2LinearLayout(final View view, final LinearLayout linearLayout) {
+        view.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT));
+        linearLayout.addView(view);
+    }
+
     public static LinearLayout createLinearLayout(final Context context, final LayoutParams layoutParams) {
         final LinearLayout container = new LinearLayout(context);
         container.setLayoutParams(layoutParams);
@@ -30,13 +38,5 @@ class ViewAdder {
         final int indexOfOldView = oldViewParent.indexOfChild(oldView);
         oldViewParent.removeViewAt(indexOfOldView);
         oldViewParent.addView(newView, indexOfOldView);
-    }
-
-    private static void addView2LinearLayout(final View view, final LinearLayout linearLayout) {
-        view.setLayoutParams(
-                new LinearLayout.LayoutParams(
-                        LayoutParams.WRAP_CONTENT,
-                        LayoutParams.WRAP_CONTENT));
-        linearLayout.addView(view);
     }
 }
