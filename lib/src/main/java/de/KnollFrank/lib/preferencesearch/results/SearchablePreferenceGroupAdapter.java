@@ -39,13 +39,13 @@ class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
         super.onBindViewHolder(holder, position);
         final Preference preference = getItem(position);
         SearchableInfoView.displaySearchableInfo(holder, searchableInfoGetter.getSearchableInfo(preference));
-        UIUtils.setOnClickListener(
+        ClickListenerSetter.setOnClickListener(
                 holder.itemView,
                 v -> onPreferenceClickListener.accept(preference));
     }
 
     private static void createSearchableInfoViewBelowSummary(final PreferenceViewHolder preferenceViewHolder, final Context context) {
-        UIUtils.addSecondViewBelowFirstView(
+        ViewAdder.addSecondViewBelowFirstView(
                 preferenceViewHolder.findViewById(android.R.id.summary),
                 SearchableInfoView.createSearchableInfoView("", context),
                 context);
