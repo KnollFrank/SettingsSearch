@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch.results;
+package de.KnollFrank.lib.preferencesearch.results.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -24,6 +24,7 @@ class ViewAdder {
         return container;
     }
 
+    // taken from https://stackoverflow.com/a/56793843
     private static void replaceView(final View oldView, final View newView) {
         final ViewGroup oldViewParent = (ViewGroup) oldView.getParent();
         final int indexOfOldView = oldViewParent.indexOfChild(oldView);

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import org.threeten.bp.Duration;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.preferencesearch.results.adapter.SearchablePreferenceGroupAdapter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch.results;
+package de.KnollFrank.lib.preferencesearch.results.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;

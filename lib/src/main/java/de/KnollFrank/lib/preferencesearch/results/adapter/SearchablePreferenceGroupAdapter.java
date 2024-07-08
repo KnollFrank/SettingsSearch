@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.preferencesearch.results;
+package de.KnollFrank.lib.preferencesearch.results.adapter;
 
 import android.content.Context;
 import android.view.ViewGroup;
@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
 
-class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
+public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
 
     private final SearchableInfoGetter searchableInfoGetter;
     private final Consumer<Preference> onPreferenceClickListener;
