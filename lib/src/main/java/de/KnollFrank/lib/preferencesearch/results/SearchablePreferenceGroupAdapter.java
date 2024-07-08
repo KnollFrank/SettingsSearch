@@ -13,6 +13,7 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceViewHolder;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
@@ -35,11 +36,9 @@ class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     @NonNull
     @Override
     public PreferenceViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        // FK-TODO: replace summary TextView with a LinearLayout containing the original summary TextView and the SearchableInfoView
-        final LinearLayout container = createLinearLayout(parent.getContext());
-        container.addView(super.onCreateViewHolder(parent, viewType).itemView);
-        container.addView(createSearchableInfoView("", parent.getContext()));
-        return PreferenceViewHolder.createInstanceForTests(container);
+        final PreferenceViewHolder preferenceViewHolder = super.onCreateViewHolder(parent, viewType);
+        addSearchableInfoView(parent, preferenceViewHolder);
+        return preferenceViewHolder;
     }
 
     @Override
@@ -52,13 +51,34 @@ class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
                 v -> onPreferenceClickListener.accept(preference));
     }
 
-    // FK-TODO: move UI code to new class
-    private static LinearLayout createLinearLayout(final Context context) {
-        final LinearLayout container = new LinearLayout(context);
-        container.setLayoutParams(
+    private void addSearchableInfoView(final ViewGroup parent, final PreferenceViewHolder preferenceViewHolder) {
+        addSecondViewBelowFirstView(
+                preferenceViewHolder.findViewById(android.R.id.summary),
+                createSearchableInfoView("", parent.getContext()), parent.getContext());
+    }
+
+    private void addSecondViewBelowFirstView(final View firstView, final View secondView, final Context context) {
+        final LinearLayout container = createContainer(context, firstView.getLayoutParams());
+        replaceView(firstView, container);
+        firstView.setLayoutParams(
                 new LinearLayout.LayoutParams(
-                        LayoutParams.MATCH_PARENT,
+                        LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT));
+        container.addView(firstView);
+        container.addView(secondView);
+    }
+
+    private void replaceView(final View oldView, final View newView) {
+        final ViewGroup oldViewParent = (ViewGroup) oldView.getParent();
+        final int indexOfOldView = oldViewParent.indexOfChild(oldView);
+        oldViewParent.removeViewAt(indexOfOldView);
+        oldViewParent.addView(newView, indexOfOldView);
+    }
+
+    // FK-TODO: move UI code to new class
+    private static LinearLayout createContainer(final Context context, final LayoutParams layoutParams) {
+        final LinearLayout container = new LinearLayout(context);
+        container.setLayoutParams(layoutParams);
         container.setOrientation(LinearLayout.VERTICAL);
         return container;
     }
@@ -71,6 +91,7 @@ class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
                         LayoutParams.WRAP_CONTENT));
         searchableInfoView.setText(text);
         searchableInfoView.setId(SEARCHABLE_INFO_VIEW_ID);
+        searchableInfoView.setVisibility(View.GONE);
         return searchableInfoView;
     }
 
@@ -80,10 +101,12 @@ class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
 
     private void displaySearchableInfo(final PreferenceViewHolder holder, final Preference preference) {
         final TextView searchableInfoView = getSearchableInfoView(holder);
-        final CharSequence searchableInfo =
-                searchableInfoGetter
-                        .getSearchableInfo(preference)
-                        .orElse(null);
-        searchableInfoView.setText(searchableInfo);
+        final Optional<CharSequence> searchableInfo = searchableInfoGetter.getSearchableInfo(preference);
+        if (searchableInfo.isPresent()) {
+            searchableInfoView.setText(searchableInfo.get());
+            searchableInfoView.setVisibility(View.VISIBLE);
+        } else {
+            searchableInfoView.setVisibility(View.GONE);
+        }
     }
 }
