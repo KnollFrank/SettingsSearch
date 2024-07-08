@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.common;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,9 +27,9 @@ public class Strings {
     }
 
     private static <T> List<T> asList(final Optional<T[]> elements) {
-        final Builder<T> builder = ImmutableList.builder();
-        elements.map(Arrays::asList).ifPresent(builder::addAll);
-        return builder.build();
+        return elements
+                .map(Arrays::asList)
+                .orElseGet(Collections::emptyList);
     }
 
     private static <T> List<T> filterNonNull(final List<T> ts) {
