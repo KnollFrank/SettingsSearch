@@ -35,8 +35,8 @@ class SearchAndDisplay {
     private void display(final List<PreferenceMatch> preferenceMatches) {
         PreferenceMatchesHighlighter.highlight(
                 preferenceMatches,
-                searchableInfoAttribute,
-                context);
+                () -> MarkupFactory.createMarkups(context),
+                searchableInfoAttribute);
         PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
                 getPreferences(preferenceMatches),
                 preferenceScreen);

@@ -4,7 +4,6 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
-import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Pair;
@@ -19,16 +18,6 @@ import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 
 class PreferenceMatchesHighlighter {
-
-    public static void highlight(
-            final List<PreferenceMatch> preferenceMatches,
-            final SearchableInfoAttribute searchableInfoAttribute,
-            final Context context) {
-        highlight(
-                preferenceMatches,
-                () -> MarkupFactory.createMarkups(context),
-                searchableInfoAttribute);
-    }
 
     public static void highlight(final List<PreferenceMatch> preferenceMatches,
                                  final Supplier<List<Object>> markupsFactory,
