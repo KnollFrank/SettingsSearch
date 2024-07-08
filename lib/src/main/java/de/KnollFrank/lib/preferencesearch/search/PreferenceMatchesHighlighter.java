@@ -1,122 +1,147 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.TextAppearanceSpan;
+import android.util.Pair;
 
-import com.google.common.collect.ImmutableList;
+import androidx.preference.Preference;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.function.Supplier;
 
-import de.KnollFrank.lib.preferencesearch.R;
+import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 
 class PreferenceMatchesHighlighter {
 
-    // FK-FIXME: Titel einer Preference: "title of ReversedListPreference ReversedListPreference", Suche nach "ReversedListPreference", dann wird nur eines der Vorkommen von "ReversedListPreference" im Titel gehighlightet anstatt wie gewünscht alle beide Vorkommen.
     public static void highlight(
             final List<PreferenceMatch> preferenceMatches,
             final SearchableInfoAttribute searchableInfoAttribute,
             final Context context) {
-        final List<Object> markups = createMarkups(context);
-        for (final PreferenceMatch preferenceMatch : preferenceMatches) {
-            highlight(preferenceMatch, markups, searchableInfoAttribute);
-        }
+        highlight(
+                preferenceMatches,
+                () -> MarkupFactory.createMarkups(context),
+                searchableInfoAttribute);
     }
 
-    private static void highlight(final PreferenceMatch preferenceMatch,
-                                  final List<Object> markups,
+    public static void highlight(final List<PreferenceMatch> preferenceMatches,
+                                 final Supplier<List<Object>> markupsFactory,
+                                 final SearchableInfoAttribute searchableInfoAttribute) {
+        PreferenceMatchesHighlighter
+                .getIndexRangesByPreferenceAndType(preferenceMatches)
+                .forEach(
+                        (preferenceAndType, indexRanges) ->
+                                highlight(
+                                        preferenceAndType.first,
+                                        preferenceAndType.second,
+                                        indexRanges,
+                                        markupsFactory,
+                                        searchableInfoAttribute));
+    }
+
+    private static Map<Pair<Preference, Type>, List<IndexRange>> getIndexRangesByPreferenceAndType(
+            final List<PreferenceMatch> preferenceMatches) {
+        return preferenceMatches
+                .stream()
+                .collect(
+                        groupingBy(
+                                preferenceMatch ->
+                                        Pair.create(
+                                                preferenceMatch.preference,
+                                                preferenceMatch.type),
+                                mapping(
+                                        preferenceMatch -> preferenceMatch.indexRange,
+                                        toList())));
+    }
+
+    private static void highlight(final Preference preference,
+                                  final Type type,
+                                  final List<IndexRange> indexRanges,
+                                  final Supplier<List<Object>> markupsFactory,
                                   final SearchableInfoAttribute searchableInfoAttribute) {
         // FK-TODO: replace switch with inheritance?
-        switch (preferenceMatch.type) {
+        switch (type) {
             case TITLE:
-                setTitle(preferenceMatch, markups);
+                setTitle(preference, indexRanges, markupsFactory);
                 break;
             case SUMMARY:
-                setSummary(preferenceMatch, markups);
+                setSummary(preference, indexRanges, markupsFactory);
                 break;
             case SEARCHABLE_INFO:
-                setSearchableInfo(preferenceMatch, markups, searchableInfoAttribute);
+                setSearchableInfo(preference, indexRanges, markupsFactory, searchableInfoAttribute);
                 break;
         }
     }
 
-    private static void setTitle(final PreferenceMatch preferenceMatch, final List<Object> markups) {
+    private static void setTitle(final Preference preference,
+                                 final List<IndexRange> indexRanges,
+                                 final Supplier<List<Object>> markupsFactory) {
         PreferenceTitle.setTitle(
-                preferenceMatch.preference,
-                createSpannableFromStrAndApplyMarkupsToIndexRange(
-                        preferenceMatch.preference.getTitle().toString(),
-                        markups,
-                        preferenceMatch.indexRange));
+                preference,
+                createSpannableFromStrAndApplyMarkupsToIndexRanges(
+                        preference.getTitle().toString(),
+                        markupsFactory,
+                        indexRanges));
     }
 
-    private static void setSummary(final PreferenceMatch preferenceMatch,
-                                   final List<Object> markups) {
+    private static void setSummary(final Preference preference,
+                                   final List<IndexRange> indexRanges,
+                                   final Supplier<List<Object>> markupsFactory) {
         PreferenceSummary.setSummary(
-                preferenceMatch.preference,
-                createSpannableFromStrAndApplyMarkupsToIndexRange(
-                        preferenceMatch.preference.getSummary().toString(),
-                        markups,
-                        preferenceMatch.indexRange));
+                preference,
+                createSpannableFromStrAndApplyMarkupsToIndexRanges(
+                        preference.getSummary().toString(),
+                        markupsFactory,
+                        indexRanges));
     }
 
-    private static void setSearchableInfo(
-            final PreferenceMatch preferenceMatch,
-            final List<Object> markups,
-            final SearchableInfoAttribute searchableInfoAttribute) {
+    private static void setSearchableInfo(final Preference preference,
+                                          final List<IndexRange> indexRanges,
+                                          final Supplier<List<Object>> markupsFactory,
+                                          final SearchableInfoAttribute searchableInfoAttribute) {
         searchableInfoAttribute.setSearchableInfo(
-                preferenceMatch.preference,
-                createSpannableFromStrAndApplyMarkupsToIndexRange(
+                preference,
+                createSpannableFromStrAndApplyMarkupsToIndexRanges(
                         searchableInfoAttribute
-                                .getSearchableInfo(preferenceMatch.preference)
+                                .getSearchableInfo(preference)
                                 .map(CharSequence::toString)
                                 .orElse(""),
-                        markups,
-                        preferenceMatch.indexRange));
+                        markupsFactory,
+                        indexRanges));
     }
 
-    private static Spannable createSpannableFromStrAndApplyMarkupsToIndexRange(
+    private static SpannableString createSpannableFromStrAndApplyMarkupsToIndexRanges(
             final String str,
-            final List<Object> markups,
-            final IndexRange indexRange) {
+            final Supplier<List<Object>> markupsFactory,
+            final List<IndexRange> indexRanges) {
         final SpannableString spannable = new SpannableString(str);
-        applyMarkupsToIndexRange(spannable, markups, indexRange);
+        applyMarkupsToIndexRanges(spannable, markupsFactory, indexRanges);
         return spannable;
     }
 
-    private static void applyMarkupsToIndexRange(final SpannableString spannable,
-                                                 final List<Object> markups,
+    private static void applyMarkupsToIndexRanges(final SpannableString spannable,
+                                                  final Supplier<List<Object>> markupsFactory,
+                                                  final List<IndexRange> indexRanges) {
+        for (final IndexRange indexRange : indexRanges) {
+            applyMarkupsToIndexRange(spannable, markupsFactory, indexRange);
+        }
+    }
+
+    private static void applyMarkupsToIndexRange(final Spannable spannable,
+                                                 final Supplier<List<Object>> markupsFactory,
                                                  final IndexRange indexRange) {
-        for (final Object markup : markups) {
+        for (final Object markup : markupsFactory.get()) {
             spannable.setSpan(
                     markup,
                     indexRange.startIndexInclusive,
                     indexRange.endIndexExclusive,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-    }
-
-    private static List<Object> createMarkups(final Context context) {
-        final ImmutableList.Builder<Object> markupsBuilder = ImmutableList.builder();
-        markupsBuilder.add(new TextAppearanceSpan(context, R.style.SearchPreferenceResultTextAppearance));
-        PreferenceMatchesHighlighter
-                .getBackgroundColor(context)
-                .map(BackgroundColorSpan::new)
-                .ifPresent(markupsBuilder::add);
-        return markupsBuilder.build();
-    }
-
-    private static Optional<Integer> getBackgroundColor(final Context context) {
-        try (final TypedArray typedArray = context.obtainStyledAttributes(R.style.SearchPreferenceResultBackgroundColor, R.styleable.SearchPreferenceResultBackgroundColor)) {
-            final int backgroundColorAttr = R.styleable.SearchPreferenceResultBackgroundColor_backgroundColor;
-            return typedArray.hasValue(backgroundColorAttr) ?
-                    Optional.of(typedArray.getColor(backgroundColorAttr, Color.GREEN)) :
-                    Optional.empty();
         }
     }
 }
