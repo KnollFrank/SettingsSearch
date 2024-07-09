@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.search.PreferenceScreenResetter;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreen {
 
@@ -17,10 +18,11 @@ public class MergedPreferenceScreen {
     private final PreferenceScreenResetter preferenceScreenResetter;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
-                                  final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
+                                  final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
+                                  final SearchableInfoAttribute searchableInfoAttribute) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
-        this.preferenceScreenResetter = new PreferenceScreenResetter(preferenceScreen);
+        this.preferenceScreenResetter = new PreferenceScreenResetter(preferenceScreen, searchableInfoAttribute);
     }
 
     public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHostByPreference(final Preference preference) {

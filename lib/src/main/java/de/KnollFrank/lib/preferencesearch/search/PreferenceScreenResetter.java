@@ -11,14 +11,17 @@ import androidx.preference.PreferenceScreen;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 
-// FK-FIXME: es fehlt eine Methode unhighlightSearchableInfo(), denn in OsmAnd wird bei der Suche nach Kalman in den SearchableInfos fälschlicherweise der einzelne Buchstabe K gehighlightet.
 public class PreferenceScreenResetter {
 
     private final PreferenceScreen preferenceScreen;
+    private final SearchableInfoAttribute searchableInfoAttribute;
 
-    public PreferenceScreenResetter(final PreferenceScreen preferenceScreen) {
+    public PreferenceScreenResetter(final PreferenceScreen preferenceScreen,
+                                    final SearchableInfoAttribute searchableInfoAttribute) {
         this.preferenceScreen = preferenceScreen;
+        this.searchableInfoAttribute = searchableInfoAttribute;
     }
 
     public void reset() {
@@ -30,6 +33,7 @@ public class PreferenceScreenResetter {
     private void reset(final Preference preference) {
         unhighlightTitle(preference);
         unhighlightSummary(preference);
+        unhighlightSearchableInfo(preference);
     }
 
     private static void unhighlightTitle(final Preference preference) {
@@ -42,6 +46,12 @@ public class PreferenceScreenResetter {
         setSummary(
                 preference,
                 unhighlight(getOptionalSummary(preference)));
+    }
+
+    private void unhighlightSearchableInfo(final Preference preference) {
+        searchableInfoAttribute.setSearchableInfo(
+                preference,
+                unhighlight(searchableInfoAttribute.getSearchableInfo(preference)));
     }
 
     private static String unhighlight(final Optional<CharSequence> optionalCharSequence) {
