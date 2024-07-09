@@ -36,12 +36,13 @@ public class PreferenceMatchesHighlighterTest {
                         ImmutableList.of(
                                 new PreferenceMatch(preference, Type.TITLE, new IndexRange(0, 4)),
                                 new PreferenceMatch(preference, Type.TITLE, new IndexRange(7, 11)));
+                final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
+                        new PreferenceMatchesHighlighter(
+                                markupsFactory,
+                                new DefaultSearchableInfoAttribute());
 
                 // When
-                PreferenceMatchesHighlighter.highlight(
-                        preferenceMatches,
-                        markupsFactory,
-                        new DefaultSearchableInfoAttribute());
+                preferenceMatchesHighlighter.highlight(preferenceMatches);
 
                 // Then
                 final Spannable title = (Spannable) preference.getTitle();
@@ -66,12 +67,13 @@ public class PreferenceMatchesHighlighterTest {
                         ImmutableList.of(
                                 new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(0, 6)),
                                 new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(9, 15)));
+                final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
+                        new PreferenceMatchesHighlighter(
+                                markupsFactory,
+                                new DefaultSearchableInfoAttribute());
 
                 // When
-                PreferenceMatchesHighlighter.highlight(
-                        preferenceMatches,
-                        markupsFactory,
-                        new DefaultSearchableInfoAttribute());
+                preferenceMatchesHighlighter.highlight(preferenceMatches);
 
                 // Then
                 final Spannable summary = (Spannable) preference.getSummary();
@@ -97,12 +99,13 @@ public class PreferenceMatchesHighlighterTest {
                         ImmutableList.of(
                                 new PreferenceMatch(preference, Type.SEARCHABLE_INFO, new IndexRange(0, 3)),
                                 new PreferenceMatch(preference, Type.SEARCHABLE_INFO, new IndexRange(6, 9)));
+                final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
+                        new PreferenceMatchesHighlighter(
+                                markupsFactory,
+                                searchableInfoAttribute);
 
                 // When
-                PreferenceMatchesHighlighter.highlight(
-                        preferenceMatches,
-                        markupsFactory,
-                        searchableInfoAttribute);
+                preferenceMatchesHighlighter.highlight(preferenceMatches);
 
                 // Then
                 final Spannable searchableInfo =

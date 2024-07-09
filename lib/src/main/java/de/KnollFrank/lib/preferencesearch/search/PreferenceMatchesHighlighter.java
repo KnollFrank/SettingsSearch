@@ -19,9 +19,16 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribut
 
 class PreferenceMatchesHighlighter {
 
-    public static void highlight(final List<PreferenceMatch> preferenceMatches,
-                                 final Supplier<List<Object>> markupsFactory,
-                                 final SearchableInfoAttribute searchableInfoAttribute) {
+    private final Supplier<List<Object>> markupsFactory;
+    private final SearchableInfoAttribute searchableInfoAttribute;
+
+    public PreferenceMatchesHighlighter(final Supplier<List<Object>> markupsFactory,
+                                        final SearchableInfoAttribute searchableInfoAttribute) {
+        this.markupsFactory = markupsFactory;
+        this.searchableInfoAttribute = searchableInfoAttribute;
+    }
+
+    public void highlight(final List<PreferenceMatch> preferenceMatches) {
         PreferenceMatchesHighlighter
                 .getIndexRangesByPreferenceAndType(preferenceMatches)
                 .forEach(
@@ -29,9 +36,7 @@ class PreferenceMatchesHighlighter {
                                 highlight(
                                         preferenceAndType.first,
                                         preferenceAndType.second,
-                                        indexRanges,
-                                        markupsFactory,
-                                        searchableInfoAttribute));
+                                        indexRanges));
     }
 
     private static Map<Pair<Preference, Type>, List<IndexRange>> getIndexRangesByPreferenceAndType(
@@ -49,51 +54,40 @@ class PreferenceMatchesHighlighter {
                                         toList())));
     }
 
-    private static void highlight(final Preference preference,
-                                  final Type type,
-                                  final List<IndexRange> indexRanges,
-                                  final Supplier<List<Object>> markupsFactory,
-                                  final SearchableInfoAttribute searchableInfoAttribute) {
+    private void highlight(final Preference preference,
+                           final Type type,
+                           final List<IndexRange> indexRanges) {
         // FK-TODO: replace switch with inheritance?
         switch (type) {
             case TITLE:
-                setTitle(preference, indexRanges, markupsFactory);
+                setTitle(preference, indexRanges);
                 break;
             case SUMMARY:
-                setSummary(preference, indexRanges, markupsFactory);
+                setSummary(preference, indexRanges);
                 break;
             case SEARCHABLE_INFO:
-                setSearchableInfo(preference, indexRanges, markupsFactory, searchableInfoAttribute);
+                setSearchableInfo(preference, indexRanges);
                 break;
         }
     }
 
-    private static void setTitle(final Preference preference,
-                                 final List<IndexRange> indexRanges,
-                                 final Supplier<List<Object>> markupsFactory) {
+    private void setTitle(final Preference preference, final List<IndexRange> indexRanges) {
         PreferenceTitle.setTitle(
                 preference,
                 createSpannableFromStrAndApplyMarkupsToIndexRanges(
                         preference.getTitle().toString(),
-                        markupsFactory,
                         indexRanges));
     }
 
-    private static void setSummary(final Preference preference,
-                                   final List<IndexRange> indexRanges,
-                                   final Supplier<List<Object>> markupsFactory) {
+    private void setSummary(final Preference preference, final List<IndexRange> indexRanges) {
         PreferenceSummary.setSummary(
                 preference,
                 createSpannableFromStrAndApplyMarkupsToIndexRanges(
                         preference.getSummary().toString(),
-                        markupsFactory,
                         indexRanges));
     }
 
-    private static void setSearchableInfo(final Preference preference,
-                                          final List<IndexRange> indexRanges,
-                                          final Supplier<List<Object>> markupsFactory,
-                                          final SearchableInfoAttribute searchableInfoAttribute) {
+    private void setSearchableInfo(final Preference preference, final List<IndexRange> indexRanges) {
         searchableInfoAttribute.setSearchableInfo(
                 preference,
                 createSpannableFromStrAndApplyMarkupsToIndexRanges(
@@ -101,13 +95,11 @@ class PreferenceMatchesHighlighter {
                                 .getSearchableInfo(preference)
                                 .map(CharSequence::toString)
                                 .orElse(""),
-                        markupsFactory,
                         indexRanges));
     }
 
-    private static SpannableString createSpannableFromStrAndApplyMarkupsToIndexRanges(
+    private SpannableString createSpannableFromStrAndApplyMarkupsToIndexRanges(
             final String str,
-            final Supplier<List<Object>> markupsFactory,
             final List<IndexRange> indexRanges) {
         final SpannableString spannable = new SpannableString(str);
         applyMarkupsToIndexRanges(spannable, markupsFactory, indexRanges);
