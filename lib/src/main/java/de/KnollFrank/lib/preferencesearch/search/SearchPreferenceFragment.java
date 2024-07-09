@@ -16,7 +16,6 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.R;
 import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
-import de.KnollFrank.lib.preferencesearch.client.DefaultSearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
@@ -71,7 +70,7 @@ public class SearchPreferenceFragment extends Fragment {
         this(
                 (preference, host) -> true,
                 new SearchableInfoProviderInternal(new SearchableInfoProviders(Collections.emptyMap())),
-                new DefaultSearchableInfoAttribute(),
+                new SearchableInfoAttribute(),
                 new DefaultFragmentFactory());
     }
 

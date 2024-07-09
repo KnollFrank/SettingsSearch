@@ -15,7 +15,6 @@ import org.junit.Test;
 import java.util.List;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.preferencesearch.client.DefaultSearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.PreferenceMatch.Type;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.preferencesearch.test.TestActivity;
@@ -39,7 +38,7 @@ public class PreferenceMatchesHighlighterTest {
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(
                                 markupsFactory,
-                                new DefaultSearchableInfoAttribute());
+                                new SearchableInfoAttribute());
 
                 // When
                 preferenceMatchesHighlighter.highlight(preferenceMatches);
@@ -70,7 +69,7 @@ public class PreferenceMatchesHighlighterTest {
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(
                                 markupsFactory,
-                                new DefaultSearchableInfoAttribute());
+                                new SearchableInfoAttribute());
 
                 // When
                 preferenceMatchesHighlighter.highlight(preferenceMatches);
@@ -91,7 +90,7 @@ public class PreferenceMatchesHighlighterTest {
                 // Given
                 final Preference preference = new Preference(context);
                 preference.setKey("feedback");
-                final SearchableInfoAttribute searchableInfoAttribute = new DefaultSearchableInfoAttribute();
+                final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
                 searchableInfoAttribute.setSearchableInfo(preference, "info, info");
 
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
