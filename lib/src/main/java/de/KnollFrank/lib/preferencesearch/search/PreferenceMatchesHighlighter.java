@@ -57,40 +57,39 @@ class PreferenceMatchesHighlighter {
     private void highlight(final Preference preference,
                            final Type type,
                            final List<IndexRange> indexRanges) {
-        // FK-TODO: replace switch with inheritance?
         switch (type) {
             case TITLE:
-                setTitle(preference, indexRanges);
+                highlightTitle(preference, indexRanges);
                 break;
             case SUMMARY:
-                setSummary(preference, indexRanges);
+                highlightSummary(preference, indexRanges);
                 break;
             case SEARCHABLE_INFO:
-                setSearchableInfo(preference, indexRanges);
+                highlightSearchableInfo(preference, indexRanges);
                 break;
         }
     }
 
-    private void setTitle(final Preference preference, final List<IndexRange> indexRanges) {
+    private void highlightTitle(final Preference preference, final List<IndexRange> indexRanges) {
         PreferenceTitle.setTitle(
                 preference,
-                createSpannableFromStrAndApplyMarkupsToIndexRanges(
+                highlight(
                         preference.getTitle().toString(),
                         indexRanges));
     }
 
-    private void setSummary(final Preference preference, final List<IndexRange> indexRanges) {
+    private void highlightSummary(final Preference preference, final List<IndexRange> indexRanges) {
         PreferenceSummary.setSummary(
                 preference,
-                createSpannableFromStrAndApplyMarkupsToIndexRanges(
+                highlight(
                         preference.getSummary().toString(),
                         indexRanges));
     }
 
-    private void setSearchableInfo(final Preference preference, final List<IndexRange> indexRanges) {
+    private void highlightSearchableInfo(final Preference preference, final List<IndexRange> indexRanges) {
         searchableInfoAttribute.setSearchableInfo(
                 preference,
-                createSpannableFromStrAndApplyMarkupsToIndexRanges(
+                highlight(
                         searchableInfoAttribute
                                 .getSearchableInfo(preference)
                                 .map(CharSequence::toString)
@@ -98,25 +97,19 @@ class PreferenceMatchesHighlighter {
                         indexRanges));
     }
 
-    private SpannableString createSpannableFromStrAndApplyMarkupsToIndexRanges(
-            final String str,
-            final List<IndexRange> indexRanges) {
+    private SpannableString highlight(final String str, final List<IndexRange> indexRanges) {
         final SpannableString spannable = new SpannableString(str);
-        applyMarkupsToIndexRanges(spannable, markupsFactory, indexRanges);
+        highlight(spannable, indexRanges);
         return spannable;
     }
 
-    private static void applyMarkupsToIndexRanges(final SpannableString spannable,
-                                                  final Supplier<List<Object>> markupsFactory,
-                                                  final List<IndexRange> indexRanges) {
+    private void highlight(final SpannableString spannable, final List<IndexRange> indexRanges) {
         for (final IndexRange indexRange : indexRanges) {
-            applyMarkupsToIndexRange(spannable, markupsFactory, indexRange);
+            highlight(spannable, indexRange);
         }
     }
 
-    private static void applyMarkupsToIndexRange(final Spannable spannable,
-                                                 final Supplier<List<Object>> markupsFactory,
-                                                 final IndexRange indexRange) {
+    private void highlight(final Spannable spannable, final IndexRange indexRange) {
         for (final Object markup : markupsFactory.get()) {
             spannable.setSpan(
                     markup,
