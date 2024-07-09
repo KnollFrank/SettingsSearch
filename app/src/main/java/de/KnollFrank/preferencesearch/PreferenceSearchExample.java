@@ -23,6 +23,7 @@ import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSe
 import de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: README.md anpassen
+// FK-TODO: rename project to SettingsSearch, also rename the preferencesearch part of java packages to settingssearch
 public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
