@@ -34,8 +34,8 @@ public class PreferenceMatchesHighlighterTest {
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
                 final List<PreferenceMatch> preferenceMatches =
                         ImmutableList.of(
-                                new PreferenceMatch(preference, Type.TITLE, new IndexRange(0, 4)),
-                                new PreferenceMatch(preference, Type.TITLE, new IndexRange(7, 11)));
+                                new PreferenceMatch(preference, Type.TITLE, new IndexRange(0, 5)),
+                                new PreferenceMatch(preference, Type.TITLE, new IndexRange(7, 12)));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(
                                 markupsFactory,
@@ -47,8 +47,8 @@ public class PreferenceMatchesHighlighterTest {
                 // Then
                 final Spannable title = (Spannable) preference.getTitle();
                 final int markupsSize = markupsFactory.get().size();
-                assertThat(title.getSpans(0, 4, Object.class), arrayWithSize(markupsSize));
-                assertThat(title.getSpans(7, 11, Object.class), arrayWithSize(markupsSize));
+                assertThat(title.getSpans(0, 5, Object.class), arrayWithSize(markupsSize));
+                assertThat(title.getSpans(7, 12, Object.class), arrayWithSize(markupsSize));
             });
         }
     }
@@ -65,8 +65,8 @@ public class PreferenceMatchesHighlighterTest {
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
                 final List<PreferenceMatch> preferenceMatches =
                         ImmutableList.of(
-                                new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(0, 6)),
-                                new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(9, 15)));
+                                new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(0, 7)),
+                                new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(9, 16)));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(
                                 markupsFactory,
@@ -78,8 +78,8 @@ public class PreferenceMatchesHighlighterTest {
                 // Then
                 final Spannable summary = (Spannable) preference.getSummary();
                 final int markupsSize = markupsFactory.get().size();
-                assertThat(summary.getSpans(0, 6, Object.class), arrayWithSize(markupsSize));
-                assertThat(summary.getSpans(9, 15, Object.class), arrayWithSize(markupsSize));
+                assertThat(summary.getSpans(0, 7, Object.class), arrayWithSize(markupsSize));
+                assertThat(summary.getSpans(9, 16, Object.class), arrayWithSize(markupsSize));
             });
         }
     }
@@ -97,8 +97,8 @@ public class PreferenceMatchesHighlighterTest {
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
                 final List<PreferenceMatch> preferenceMatches =
                         ImmutableList.of(
-                                new PreferenceMatch(preference, Type.SEARCHABLE_INFO, new IndexRange(0, 3)),
-                                new PreferenceMatch(preference, Type.SEARCHABLE_INFO, new IndexRange(6, 9)));
+                                new PreferenceMatch(preference, Type.SEARCHABLE_INFO, new IndexRange(0, 4)),
+                                new PreferenceMatch(preference, Type.SEARCHABLE_INFO, new IndexRange(6, 10)));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(
                                 markupsFactory,
@@ -113,8 +113,8 @@ public class PreferenceMatchesHighlighterTest {
                                 .getSearchableInfo(preference)
                                 .get();
                 final int markupsSize = markupsFactory.get().size();
-                assertThat(searchableInfo.getSpans(0, 3, Object.class), arrayWithSize(markupsSize));
-                assertThat(searchableInfo.getSpans(6, 9, Object.class), arrayWithSize(markupsSize));
+                assertThat(searchableInfo.getSpans(0, 4, Object.class), arrayWithSize(markupsSize));
+                assertThat(searchableInfo.getSpans(6, 10, Object.class), arrayWithSize(markupsSize));
             });
         }
     }
