@@ -6,17 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class SearchableInfoAttribute implements SearchableInfoGetter, SearchableInfoSetter {
+public class SearchableInfoAttribute implements SearchableInfoSetter, SearchableInfoGetter {
 
     private final Map<Preference, CharSequence> searchableInfoByPreference = new HashMap<>();
 
     @Override
-    public Optional<CharSequence> getSearchableInfo(final Preference preference) {
-        return Optional.ofNullable(searchableInfoByPreference.get(preference));
+    public void setSearchableInfo(final Preference preference, final CharSequence searchableInfo) {
+        searchableInfoByPreference.put(preference, searchableInfo);
     }
 
     @Override
-    public void setSearchableInfo(final Preference preference, final CharSequence searchableInfo) {
-        searchableInfoByPreference.put(preference, searchableInfo);
+    public Optional<CharSequence> getSearchableInfo(final Preference preference) {
+        return Optional.ofNullable(searchableInfoByPreference.get(preference));
     }
 }
