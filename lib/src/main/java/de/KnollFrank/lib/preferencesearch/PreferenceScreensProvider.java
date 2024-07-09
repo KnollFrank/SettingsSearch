@@ -3,8 +3,7 @@ package de.KnollFrank.lib.preferencesearch;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.common.collect.ImmutableSet;
-
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -12,7 +11,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
-import de.KnollFrank.lib.preferencesearch.common.Sets;
 
 public class PreferenceScreensProvider {
 
@@ -23,24 +21,22 @@ public class PreferenceScreensProvider {
     }
 
     public Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
-        return getConnectedPreferenceScreens(PreferenceScreenWithHost.fromPreferenceFragment(root));
+        final Set<PreferenceScreenWithHost> connectedPreferenceScreens = new HashSet<>();
+        getConnectedPreferenceScreens(
+                PreferenceScreenWithHost.fromPreferenceFragment(root),
+                connectedPreferenceScreens);
+        return connectedPreferenceScreens;
     }
 
-    private Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceScreenWithHost root) {
-        return ImmutableSet
-                .<PreferenceScreenWithHost>builder()
-                .add(root)
-                .addAll(getPreferenceScreensOfChildren(root))
-                .build();
-    }
-
-    private Set<PreferenceScreenWithHost> getPreferenceScreensOfChildren(final PreferenceScreenWithHost root) {
-        return Sets.union(
-                this
-                        .getChildren(root)
-                        .stream()
-                        .map(this::getConnectedPreferenceScreens)
-                        .collect(Collectors.toSet()));
+    private void getConnectedPreferenceScreens(final PreferenceScreenWithHost root,
+                                               final Set<PreferenceScreenWithHost> connectedPreferenceScreens) {
+        if (connectedPreferenceScreens.contains(root)) {
+            return;
+        }
+        connectedPreferenceScreens.add(root);
+        for (final PreferenceScreenWithHost child : this.getChildren(root)) {
+            getConnectedPreferenceScreens(child, connectedPreferenceScreens);
+        }
     }
 
     private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreenWithHost) {
@@ -49,7 +45,6 @@ public class PreferenceScreensProvider {
                 .stream()
                 .map(Preference::getFragment)
                 .filter(Objects::nonNull)
-                // FK-TODO: warum werden in OsmAnd manche PreferenceFragmentCompats mehrfach instantiiert?
                 .map(this.preferenceScreenWithHostProvider::getPreferenceScreenOfFragment)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
