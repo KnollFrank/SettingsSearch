@@ -34,7 +34,7 @@ public class PreferenceScreensProvider {
             return;
         }
         connectedPreferenceScreens.add(root);
-        for (final PreferenceScreenWithHost child : this.getChildren(root)) {
+        for (final PreferenceScreenWithHost child : getChildren(root)) {
             getConnectedPreferenceScreens(child, connectedPreferenceScreens);
         }
     }

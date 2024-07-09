@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
+// FK-FIXME: es fehlt eine Methode unhighlightSearchableInfo(), denn in OsmAnd wird bei der Suche nach Kalman in den SearchableInfos fälschlicherweise der einzelne Buchstabe K gehighlightet.
 public class PreferenceScreenResetter {
 
     private final PreferenceScreen preferenceScreen;
