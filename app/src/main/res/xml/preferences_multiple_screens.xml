@@ -73,6 +73,7 @@
         android:title="Switch preference" />
 
     <ListPreference
+        android:dialogTitle="this is the dialog title"
         android:entries="@android:array/emailAddressTypes"
         android:entryValues="@android:array/emailAddressTypes"
         android:key="list"
@@ -94,6 +95,7 @@
         android:title="im Protocols title" />
 
     <MultiSelectListPreference
+        android:dialogTitle="dialog title of a multi select list preference"
         android:entries="@android:array/phoneTypes"
         android:entryValues="@android:array/phoneTypes"
         android:key="multilist"

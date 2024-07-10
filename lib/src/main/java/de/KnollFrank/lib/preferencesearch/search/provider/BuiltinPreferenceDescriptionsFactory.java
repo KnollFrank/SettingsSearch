@@ -5,11 +5,14 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.SwitchPreference;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import de.KnollFrank.lib.preferencesearch.common.Strings;
+import de.KnollFrank.lib.preferencesearch.common.Lists;
 
 public class BuiltinPreferenceDescriptionsFactory {
 
@@ -26,37 +29,50 @@ public class BuiltinPreferenceDescriptionsFactory {
         return new PreferenceDescription<>(
                 ListPreference.class,
                 preference ->
-                        Strings.join(
+                        String.join(
                                 ", ",
-                                Optional.ofNullable(preference.getEntries())));
+                                concat(
+                                        Optional.ofNullable(preference.getEntries()),
+                                        Optional.ofNullable(preference.getDialogTitle()))));
     }
 
     private static PreferenceDescription<SwitchPreference> getSwitchPreferenceDescription() {
         return new PreferenceDescription<>(
                 SwitchPreference.class,
                 preference ->
-                        Strings.joinNonNullElements(
+                        String.join(
                                 ", ",
-                                Arrays.asList(
-                                        preference.getSummaryOff(),
-                                        preference.getSummaryOn())));
+                                Lists.getNonEmptyElements(
+                                        ImmutableList.of(
+                                                Optional.ofNullable(preference.getSummaryOff()),
+                                                Optional.ofNullable(preference.getSummaryOn())))));
     }
 
     private static PreferenceDescription<DropDownPreference> getDropDownPreferenceDescription() {
         return new PreferenceDescription<>(
                 DropDownPreference.class,
                 preference ->
-                        Strings.join(
+                        String.join(
                                 ", ",
-                                Optional.ofNullable(preference.getEntries())));
+                                Lists.asList(Optional.ofNullable(preference.getEntries()))));
     }
 
     private static PreferenceDescription<MultiSelectListPreference> getMultiSelectListPreferenceDescription() {
         return new PreferenceDescription<>(
                 MultiSelectListPreference.class,
                 preference ->
-                        Strings.join(
+                        String.join(
                                 ", ",
-                                Optional.ofNullable(preference.getEntries())));
+                                concat(
+                                        Optional.ofNullable(preference.getEntries()),
+                                        Optional.ofNullable(preference.getDialogTitle()))));
+    }
+
+    private static List<CharSequence> concat(final Optional<CharSequence[]> elements,
+                                             final Optional<? extends CharSequence> element) {
+        final Builder<CharSequence> builder = ImmutableList.builder();
+        builder.addAll(Lists.asList(elements));
+        element.ifPresent(builder::add);
+        return builder.build();
     }
 }

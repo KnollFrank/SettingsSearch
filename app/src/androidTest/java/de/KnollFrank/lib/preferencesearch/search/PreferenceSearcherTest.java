@@ -114,6 +114,25 @@ public class PreferenceSearcherTest {
     }
 
     @Test
+    public void shouldSearchAndFindListPreference_dialogTitle() {
+        final String keyword = "this is the dialog title";
+        final String keyOfPreference = "keyOfSomeListPreference";
+        testSearch(
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final ListPreference preference = new ListPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("This allows to select from a list");
+                            preference.setTitle("Select list preference");
+                            preference.setDialogTitle(keyword);
+                            return preference;
+                        }),
+                (preference, host) -> true,
+                keyword,
+                hasItem(keyOfPreference));
+    }
+
+    @Test
     public void shouldSearchAndFindLSwitchPreference_summaryOff() {
         final String summaryOff = "switch is off";
         final String keyOfPreference = "keyOfSomeSwitchPreference";
@@ -182,6 +201,25 @@ public class PreferenceSearcherTest {
                             preference.setSummary("This allows to select multiple entries from a list");
                             preference.setTitle("Multi select list preference");
                             preference.setEntries(new String[]{keyword});
+                            return preference;
+                        }),
+                (preference, host) -> true,
+                keyword,
+                hasItem(keyOfPreference));
+    }
+
+    @Test
+    public void shouldSearchAndFindMultiSelectListPreference_dialogTitle() {
+        final String keyword = "dialog title of some MultiSelectListPreference";
+        final String keyOfPreference = "keyOfSomeMultiSelectListPreference";
+        testSearch(
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final MultiSelectListPreference preference = new MultiSelectListPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("This allows to select multiple entries from a list");
+                            preference.setTitle("Multi select list preference");
+                            preference.setDialogTitle(keyword);
                             return preference;
                         }),
                 (preference, host) -> true,
