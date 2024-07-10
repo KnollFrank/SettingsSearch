@@ -25,7 +25,7 @@ public class Lists {
                 .orElseGet(Collections::emptyList);
     }
 
-    public static <T> List<T> getNonEmptyElements(final List<Optional<T>> elements) {
+    public static <T> List<? extends T> getNonEmptyElements(final List<Optional<? extends T>> elements) {
         return elements
                 .stream()
                 .filter(Optional::isPresent)

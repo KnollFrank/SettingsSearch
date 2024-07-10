@@ -6,7 +6,6 @@ import androidx.preference.MultiSelectListPreference;
 import androidx.preference.SwitchPreference;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -69,10 +68,11 @@ public class BuiltinPreferenceDescriptionsFactory {
     }
 
     private static List<CharSequence> concat(final Optional<CharSequence[]> elements,
-                                             final Optional<? extends CharSequence> element) {
-        final Builder<CharSequence> builder = ImmutableList.builder();
-        builder.addAll(Lists.asList(elements));
-        element.ifPresent(builder::add);
-        return builder.build();
+                                             final Optional<? extends CharSequence>... evenMoreElements) {
+        return ImmutableList
+                .<CharSequence>builder()
+                .addAll(Lists.asList(elements))
+                .addAll(Lists.getNonEmptyElements(Arrays.asList(evenMoreElements)))
+                .build();
     }
 }
