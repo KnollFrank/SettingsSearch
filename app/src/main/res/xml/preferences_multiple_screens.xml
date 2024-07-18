@@ -87,6 +87,11 @@
         android:summary="summary of ReversedListPreference"
         android:title="title of ReversedListPreference" />
 
+    <de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference
+        android:key="keyOfSomeCustomDialogPreference"
+        android:summary="summary of custom DialogPreference"
+        android:title="some custom DialogPreference" />
+
     <DropDownPreference
         android:entries="@android:array/imProtocols"
         android:entryValues="@android:array/imProtocols"
