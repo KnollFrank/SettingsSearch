@@ -37,6 +37,7 @@ import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
+import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.test.TestActivity;
@@ -190,6 +191,24 @@ public class PreferenceSearcherTest {
     }
 
     @Test
+    public void shouldSearchAndFindInCustomDialogPreference() {
+        final String keyword = "some text in a custom dialog";
+        final String keyOfPreference = "keyOfCustomDialogPreference";
+        testSearch(
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final CustomDialogPreference preference = new CustomDialogPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setSummary("summary of CustomDialogPreference");
+                            preference.setTitle("title of CustomDialogPreference");
+                            return preference;
+                        }),
+                (preference, host) -> true,
+                keyword,
+                hasItem(keyOfPreference));
+    }
+
+    @Test
     public void shouldSearchAndFindMultiSelectListPreference() {
         final String keyword = "entry of some MultiSelectListPreference";
         final String keyOfPreference = "keyOfSomeMultiSelectListPreference";
@@ -256,11 +275,9 @@ public class PreferenceSearcherTest {
                         ImmutableList
                                 .<PreferenceDescription>builder()
                                 .addAll(createBuiltinPreferenceDescriptions())
-                                .addAll(
-                                        ImmutableList.of(
-                                                new PreferenceDescription<>(
-                                                        ReversedListPreference.class,
-                                                        new ReversedListPreferenceSearchableInfoProvider())))
+                                .add(new PreferenceDescription<>(
+                                        ReversedListPreference.class,
+                                        new ReversedListPreferenceSearchableInfoProvider()))
                                 .build();
 
                 final PreferenceSearcher preferenceSearcher =
@@ -296,6 +313,7 @@ public class PreferenceSearcherTest {
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
+                        fragmentActivity.getSupportFragmentManager(),
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity),

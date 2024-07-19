@@ -7,6 +7,9 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
 import java.util.function.Consumer;
@@ -18,6 +21,7 @@ import de.KnollFrank.lib.preferencesearch.R;
 import de.KnollFrank.lib.preferencesearch.SearchConfigurations;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.common.Keyboard;
+import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
@@ -26,7 +30,7 @@ import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvide
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
-import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
@@ -34,7 +38,7 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider
 public class SearchPreferenceFragment extends Fragment {
 
     private final SearchablePreferencePredicate searchablePreferencePredicate;
-    private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
+    private final SearchableInfoProviders searchableInfoProviders;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
@@ -42,13 +46,13 @@ public class SearchPreferenceFragment extends Fragment {
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
             final SearchablePreferencePredicate searchablePreferencePredicate,
-            final ISearchableInfoProviderInternal searchableInfoProviderInternal,
+            final SearchableInfoProviders searchableInfoProviders,
             final SearchableInfoAttribute searchableInfoAttribute,
             final FragmentFactory fragmentFactory) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         searchablePreferencePredicate,
-                        searchableInfoProviderInternal,
+                        searchableInfoProviders,
                         searchableInfoAttribute,
                         fragmentFactory);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
@@ -56,12 +60,12 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     public SearchPreferenceFragment(final SearchablePreferencePredicate searchablePreferencePredicate,
-                                    final ISearchableInfoProviderInternal searchableInfoProviderInternal,
+                                    final SearchableInfoProviders searchableInfoProviders,
                                     final SearchableInfoAttribute searchableInfoAttribute,
                                     final FragmentFactory fragmentFactory) {
         super(R.layout.searchpreference_fragment);
         this.searchablePreferencePredicate = searchablePreferencePredicate;
-        this.searchableInfoProviderInternal = searchableInfoProviderInternal;
+        this.searchableInfoProviders = searchableInfoProviders;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.fragmentFactory = fragmentFactory;
     }
@@ -69,7 +73,7 @@ public class SearchPreferenceFragment extends Fragment {
     public SearchPreferenceFragment() {
         this(
                 (preference, host) -> true,
-                new SearchableInfoProviderInternal(new SearchableInfoProviders(Collections.emptyMap())),
+                new SearchableInfoProviders(Collections.emptyMap()),
                 new SearchableInfoAttribute(),
                 new DefaultFragmentFactory());
     }
@@ -90,14 +94,16 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {
+        final FragmentManager fragmentManager = getChildFragmentManager();
         final Fragments fragments =
                 FragmentsFactory.createFragments(
                         fragmentFactory,
                         requireActivity(),
-                        getChildFragmentManager(),
+                        fragmentManager,
                         R.id.dummyFragmentContainerView);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
+                        fragmentManager,
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(getContext()),
@@ -129,12 +135,21 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
                                 searchableInfoAttribute,
-                                searchableInfoProviderInternal),
+                                getSearchableInfoProviderInternal(mergedPreferenceScreen)),
                         searchableInfoAttribute,
                         mergedPreferenceScreen.preferenceScreen,
                         requireContext()));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
+    }
+
+    private SearchableInfoProviderInternal getSearchableInfoProviderInternal(final MergedPreferenceScreen mergedPreferenceScreen) {
+        return new SearchableInfoProviderInternal(
+                new SearchableInfoProviders(
+                        Maps.merge(
+                                ImmutableList.of(
+                                        searchableInfoProviders.searchableInfoProvidersByPreferenceClass,
+                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())))));
     }
 
     private void selectSearchView(final SearchView searchView) {
