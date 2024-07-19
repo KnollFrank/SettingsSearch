@@ -19,7 +19,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat {
     @Override
     public void onDisplayPreferenceDialog(final @NonNull Preference preference) {
         if (preference instanceof CustomDialogPreference) {
-            CustomDialogFragment.showInstance(getParentFragmentManager());
+            CustomDialogFragment.showInstance(getChildFragmentManager());
         } else {
             super.onDisplayPreferenceDialog(preference);
         }

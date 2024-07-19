@@ -4,15 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider2;
 import de.KnollFrank.preferencesearch.R;
 
-public class CustomDialogFragment extends DialogFragment {
+public class CustomDialogFragment extends DialogFragment implements SearchableInfoProvider2 {
+
+    public static final String TAG = CustomDialogFragment.class.getName();
+
+    public static void showInstance(final FragmentManager fragmentManager) {
+        final CustomDialogFragment dialogFragment = new CustomDialogFragment();
+        dialogFragment.show(fragmentManager, CustomDialogFragment.TAG);
+    }
 
     @Nullable
     @Override
@@ -20,8 +29,9 @@ public class CustomDialogFragment extends DialogFragment {
         return inflater.inflate(R.layout.custom_dialog, container, false);
     }
 
-    public static void showInstance(final FragmentManager fragmentManager) {
-        final DialogFragment dialogFragment = new CustomDialogFragment();
-        dialogFragment.show(fragmentManager, null);
+    @Override
+    public String getSearchableInfo() {
+        final TextView textView = getView().findViewById(R.id.textView);
+        return textView.getText().toString();
     }
 }

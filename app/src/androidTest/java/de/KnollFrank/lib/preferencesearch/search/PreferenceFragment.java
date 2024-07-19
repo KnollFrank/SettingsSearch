@@ -3,11 +3,15 @@ package de.KnollFrank.lib.preferencesearch.search;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import java.util.function.Function;
+
+import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
+import de.KnollFrank.preferencesearch.preference.fragment.CustomDialogFragment;
 
 public class PreferenceFragment extends PreferenceFragmentCompat {
 
@@ -27,5 +31,14 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
         screen.addPreference(preferenceFactory.apply(context));
         setPreferenceScreen(screen);
+    }
+
+    @Override
+    public void onDisplayPreferenceDialog(final @NonNull Preference preference) {
+        if (preference instanceof CustomDialogPreference) {
+            CustomDialogFragment.showInstance(getChildFragmentManager());
+        } else {
+            super.onDisplayPreferenceDialog(preference);
+        }
     }
 }
