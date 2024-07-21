@@ -3,12 +3,12 @@ package de.KnollFrank.lib.preferencesearch.provider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.DialogPreference;
+import androidx.preference.Preference;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
@@ -21,14 +21,14 @@ class SearchableInfoByDialogPreferenceProvider {
 
     private final Fragments fragments;
     private final FragmentManager fragmentManager;
-    private final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo;
+    private final Map<Class<? extends Preference>, String> tagOfDialogFragmentByPreference;
 
     public SearchableInfoByDialogPreferenceProvider(final Fragments fragments,
                                                     final FragmentManager fragmentManager,
-                                                    final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo) {
+                                                    final Map<Class<? extends Preference>, String> tagOfDialogFragmentByPreference) {
         this.fragments = fragments;
         this.fragmentManager = fragmentManager;
-        this.hasDialogPreferenceWithSearchableInfo = hasDialogPreferenceWithSearchableInfo;
+        this.tagOfDialogFragmentByPreference = tagOfDialogFragmentByPreference;
     }
 
     public Map<DialogPreference, String> getSearchableInfoByDialogPreference(
@@ -58,7 +58,7 @@ class SearchableInfoByDialogPreferenceProvider {
                 .stream()
                 .filter(preference -> preference instanceof DialogPreference)
                 .map(preference -> (DialogPreference) preference)
-                .filter(hasDialogPreferenceWithSearchableInfo)
+                .filter(dialogPreference -> tagOfDialogFragmentByPreference.containsKey(dialogPreference.getClass()))
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
@@ -69,9 +69,11 @@ class SearchableInfoByDialogPreferenceProvider {
     }
 
     private Optional<String> getSearchableInfo(final DialogPreference dialogPreference) {
-        return new DialogPreferences(fragmentManager).getStringFromDialogFragment(
-                dialogPreference,
-                this::getSearchableInfo);
+        final DialogPreferences dialogPreferences =
+                new DialogPreferences(
+                        fragmentManager,
+                        tagOfDialogFragmentByPreference.get(dialogPreference.getClass()));
+        return dialogPreferences.getStringFromDialogFragment(dialogPreference, this::getSearchableInfo);
     }
 
     private Optional<String> getSearchableInfo(final DialogFragment dialogFragment) {

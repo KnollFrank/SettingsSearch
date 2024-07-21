@@ -8,13 +8,13 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.DialogPreference;
+import androidx.preference.Preference;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
@@ -44,7 +44,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
-    final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo;
+    private final Map<Class<? extends Preference>, String> tagOfDialogFragmentByPreference;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
@@ -52,14 +52,14 @@ public class SearchPreferenceFragment extends Fragment {
             final SearchableInfoProviders searchableInfoProviders,
             final SearchableInfoAttribute searchableInfoAttribute,
             final FragmentFactory fragmentFactory,
-            final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo) {
+            final Map<Class<? extends Preference>, String> tagOfDialogFragmentByPreference) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         searchablePreferencePredicate,
                         searchableInfoProviders,
                         searchableInfoAttribute,
                         fragmentFactory,
-                        hasDialogPreferenceWithSearchableInfo);
+                        tagOfDialogFragmentByPreference);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
@@ -68,13 +68,13 @@ public class SearchPreferenceFragment extends Fragment {
                                     final SearchableInfoProviders searchableInfoProviders,
                                     final SearchableInfoAttribute searchableInfoAttribute,
                                     final FragmentFactory fragmentFactory,
-                                    final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo) {
+                                    final Map<Class<? extends Preference>, String> tagOfDialogFragmentByPreference) {
         super(R.layout.searchpreference_fragment);
         this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.searchableInfoProviders = searchableInfoProviders;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.fragmentFactory = fragmentFactory;
-        this.hasDialogPreferenceWithSearchableInfo = hasDialogPreferenceWithSearchableInfo;
+        this.tagOfDialogFragmentByPreference = tagOfDialogFragmentByPreference;
     }
 
     public SearchPreferenceFragment() {
@@ -83,7 +83,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchableInfoProviders(Collections.emptyMap()),
                 new SearchableInfoAttribute(),
                 new DefaultFragmentFactory(),
-                dialogPreference -> true);
+                Collections.emptyMap());
     }
 
     @Override
@@ -117,7 +117,7 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceScreensMerger(getContext()),
                         searchablePreferencePredicate,
                         searchableInfoAttribute,
-                        hasDialogPreferenceWithSearchableInfo,
+                        tagOfDialogFragmentByPreference,
                         true);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }

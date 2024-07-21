@@ -11,9 +11,11 @@ import java.util.function.Function;
 class DialogPreferences {
 
     private final FragmentManager fragmentManager;
+    private final String tagOfDialogFragment;
 
-    public DialogPreferences(final FragmentManager fragmentManager) {
+    public DialogPreferences(final FragmentManager fragmentManager, final String tagOfDialogFragment) {
         this.fragmentManager = fragmentManager;
+        this.tagOfDialogFragment = tagOfDialogFragment;
     }
 
     public Optional<String> getStringFromDialogFragment(
@@ -32,11 +34,6 @@ class DialogPreferences {
         }
         dialogPreference.performClick();
         fragmentManager.executePendingTransactions();
-        return fragmentManager
-                .getFragments()
-                .stream()
-                .filter(fragment -> fragment instanceof DialogFragment)
-                .map(fragment -> (DialogFragment) fragment)
-                .findFirst();
+        return Optional.of((DialogFragment) fragmentManager.findFragmentByTag(tagOfDialogFragment));
     }
 }

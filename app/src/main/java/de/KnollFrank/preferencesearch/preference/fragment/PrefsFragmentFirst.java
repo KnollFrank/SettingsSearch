@@ -2,7 +2,6 @@ package de.KnollFrank.preferencesearch.preference.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -17,7 +16,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat {
     }
 
     @Override
-    public void onDisplayPreferenceDialog(final @NonNull Preference preference) {
+    public void onDisplayPreferenceDialog(final Preference preference) {
         if (preference instanceof CustomDialogPreference) {
             CustomDialogFragment.showInstance(getParentFragmentManager());
         } else {

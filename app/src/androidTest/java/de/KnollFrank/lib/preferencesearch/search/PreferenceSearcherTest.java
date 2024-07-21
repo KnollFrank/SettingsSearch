@@ -16,6 +16,7 @@ import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -42,6 +43,7 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider
 import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
+import de.KnollFrank.preferencesearch.preference.fragment.CustomDialogFragment;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -329,7 +331,7 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
                         new SearchableInfoAttribute(),
-                        dialogPreference -> true,
+                        ImmutableMap.of(CustomDialogPreference.class, CustomDialogFragment.TAG),
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
