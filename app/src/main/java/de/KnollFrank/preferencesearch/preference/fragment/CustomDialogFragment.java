@@ -11,10 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
-import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider2;
+import de.KnollFrank.lib.preferencesearch.search.provider.HasSearchableInfo;
 import de.KnollFrank.preferencesearch.R;
 
-public class CustomDialogFragment extends DialogFragment implements SearchableInfoProvider2 {
+public class CustomDialogFragment extends DialogFragment implements HasSearchableInfo {
 
     public static final String TAG = CustomDialogFragment.class.getName();
 

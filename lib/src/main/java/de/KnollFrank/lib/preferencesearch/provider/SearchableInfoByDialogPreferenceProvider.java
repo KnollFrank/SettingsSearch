@@ -14,7 +14,7 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
-import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider2;
+import de.KnollFrank.lib.preferencesearch.search.provider.HasSearchableInfo;
 
 class SearchableInfoByDialogPreferenceProvider {
 
@@ -70,8 +70,8 @@ class SearchableInfoByDialogPreferenceProvider {
     }
 
     private Optional<String> getSearchableInfo(final DialogFragment dialogFragment) {
-        return dialogFragment instanceof final SearchableInfoProvider2 searchableInfoProvider ?
-                Optional.of(searchableInfoProvider.getSearchableInfo()) :
+        return dialogFragment instanceof final HasSearchableInfo hasSearchableInfo ?
+                Optional.of(hasSearchableInfo.getSearchableInfo()) :
                 Optional.empty();
     }
 }
