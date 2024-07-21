@@ -101,12 +101,11 @@ class SearchableInfoByDialogPreferenceProvider {
         dialogPreference.performClick();
         fragmentManager.executePendingTransactions();
         return fragmentManager
-                .getFragments()
-                .stream()
-                .filter(fragment -> fragment instanceof DialogFragment)
-                .map(fragment -> (DialogFragment) fragment)
-                .findFirst();
-        // FK-TODO: das ist doch immer ein echtes DialogFragment und nie ein Optional.empty(), oder?
+                        .getFragments()
+                        .stream()
+                        .filter(fragment -> fragment instanceof DialogFragment)
+                        .map(fragment -> (DialogFragment) fragment)
+                        .findFirst();
     }
 
     private Optional<String> getSearchableInfo(final DialogFragment dialogFragment) {
