@@ -16,11 +16,8 @@ import de.KnollFrank.preferencesearch.R;
 
 public class CustomDialogFragment extends DialogFragment implements HasSearchableInfo {
 
-    public static final String TAG = CustomDialogFragment.class.getName();
-
     public static void showInstance(final FragmentManager fragmentManager) {
-        final CustomDialogFragment dialogFragment = new CustomDialogFragment();
-        dialogFragment.show(fragmentManager, CustomDialogFragment.TAG);
+        new CustomDialogFragment().show(fragmentManager, null);
     }
 
     @Nullable
