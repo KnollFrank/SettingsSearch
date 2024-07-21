@@ -58,9 +58,9 @@ class SearchableInfoByDialogPreferenceProvider {
                         Collectors.toMap(
                                 Function.identity(),
                                 dialogPreference ->
-                                        dialogPreference.getKey() != null ?
-                                                getSearchableInfo(preferenceFragment.findPreference(dialogPreference.getKey())) :
-                                                Optional.empty()));
+                                        this
+                                                .findDialogPreference(preferenceFragment, Optional.ofNullable(dialogPreference.getKey()))
+                                                .flatMap(this::getSearchableInfo)));
     }
 
     private PreferenceFragmentCompat instantiateAndInitialize(final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment) {
@@ -68,6 +68,11 @@ class SearchableInfoByDialogPreferenceProvider {
                 (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(classOfPreferenceFragment.getName());
         preferenceFragment.onStart();
         return preferenceFragment;
+    }
+
+    private Optional<DialogPreference> findDialogPreference(final PreferenceFragmentCompat preferenceFragment,
+                                                            final Optional<String> key) {
+        return key.map(preferenceFragment::findPreference);
     }
 
     // FK-TODO: refactor
