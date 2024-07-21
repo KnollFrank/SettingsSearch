@@ -4,7 +4,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.DialogPreference;
 import androidx.preference.DropDownPreference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Collection;
 import java.util.Map;
@@ -47,8 +46,10 @@ class SearchableInfoByDialogPreferenceProvider {
 
     private Map<DialogPreference, Optional<String>> getOptionalSearchableInfoByDialogPreference(
             final PreferenceScreenWithHost preferenceScreenWithHost) {
-        final PreferenceFragmentCompat preferenceFragment =
-                instantiateAndInitialize(preferenceScreenWithHost.host);
+        final ClickableDialogPreferenceProvider clickableDialogPreferenceProvider =
+                ClickableDialogPreferenceProvider.create(
+                        preferenceScreenWithHost.host,
+                        fragments::instantiateAndInitializeFragment);
         return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
@@ -58,43 +59,27 @@ class SearchableInfoByDialogPreferenceProvider {
                         Collectors.toMap(
                                 Function.identity(),
                                 dialogPreference ->
-                                        this
-                                                .rereadDialogPreference(dialogPreference, preferenceFragment)
+                                        clickableDialogPreferenceProvider
+                                                .getClickableDialogPreference(dialogPreference)
                                                 .flatMap(this::getSearchableInfo)));
-    }
-
-    private PreferenceFragmentCompat instantiateAndInitialize(final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment) {
-        final PreferenceFragmentCompat preferenceFragment =
-                (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(classOfPreferenceFragment.getName());
-        preferenceFragment.onStart();
-        return preferenceFragment;
-    }
-
-    private Optional<DialogPreference> rereadDialogPreference(final DialogPreference dialogPreference,
-                                                              final PreferenceFragmentCompat preferenceFragment) {
-        return findDialogPreference(preferenceFragment, Optional.ofNullable(dialogPreference.getKey()));
-    }
-
-    private Optional<DialogPreference> findDialogPreference(final PreferenceFragmentCompat preferenceFragment,
-                                                            final Optional<String> key) {
-        return key.map(preferenceFragment::findPreference);
     }
 
     private Optional<String> getSearchableInfo(final DialogPreference dialogPreference) {
         return getStringFromDialogFragment(dialogPreference, this::getSearchableInfo);
     }
 
+    // FK-TODO: diese Dialog-Methoden in eine neue Klasse verschieben
     private Optional<String> getStringFromDialogFragment(
             final DialogPreference dialogPreference,
             final Function<DialogFragment, Optional<? extends String>> getString) {
         // FK-TODO: refactor
-        final Optional<DialogFragment> dialogFragment = getDialog(dialogPreference);
+        final Optional<DialogFragment> dialogFragment = getDialogFragment(dialogPreference);
         final Optional<String> searchableInfo = dialogFragment.flatMap(getString);
         dialogFragment.ifPresent(DialogFragment::dismiss);
         return searchableInfo;
     }
 
-    private Optional<DialogFragment> getDialog(final DialogPreference dialogPreference) {
+    private Optional<DialogFragment> getDialogFragment(final DialogPreference dialogPreference) {
         // prevent NullPointerException
         if (dialogPreference instanceof DropDownPreference) {
             return Optional.empty();
