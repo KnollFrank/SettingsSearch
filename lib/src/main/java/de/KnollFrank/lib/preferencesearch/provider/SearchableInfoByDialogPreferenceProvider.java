@@ -8,6 +8,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -42,17 +43,24 @@ class SearchableInfoByDialogPreferenceProvider {
     private Map<DialogPreference, String> getSearchableInfoByDialogPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
         final PreferenceFragmentCompat preferenceFragment = (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(preferenceScreenWithHost.host.getName());
         preferenceFragment.onStart();
-        return Preferences
+        final Map<DialogPreference, Optional<String>> collect = Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
                 .filter(preference -> preference instanceof DialogPreference)
                 .map(preference -> (DialogPreference) preference)
                 .filter(dialogPreference -> dialogPreference.getKey() != null && !(preferenceFragment.findPreference(dialogPreference.getKey()) instanceof DropDownPreference))
-                .filter(dialogPreference -> getSearchableInfo(preferenceFragment.findPreference(dialogPreference.getKey())).isPresent())
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                dialogPreference -> getSearchableInfo(preferenceFragment.findPreference(dialogPreference.getKey())).get()));
+                                dialogPreference -> getSearchableInfo(preferenceFragment.findPreference(dialogPreference.getKey()))));
+        return collect
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().isPresent())
+                .collect(
+                        Collectors.toMap(
+                                Entry::getKey,
+                                entry -> entry.getValue().get()));
     }
 
     // FK-TODO: refactor
