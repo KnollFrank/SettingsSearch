@@ -57,7 +57,10 @@ class SearchableInfoByDialogPreferenceProvider {
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                dialogPreference -> getOptionalSearchableInfo(dialogPreference, preferenceFragment)));
+                                dialogPreference ->
+                                        this
+                                                .rereadDialogPreference(dialogPreference, preferenceFragment)
+                                                .flatMap(this::getSearchableInfo)));
     }
 
     private PreferenceFragmentCompat instantiateAndInitialize(final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment) {
@@ -67,11 +70,9 @@ class SearchableInfoByDialogPreferenceProvider {
         return preferenceFragment;
     }
 
-    private Optional<String> getOptionalSearchableInfo(final DialogPreference dialogPreference,
-                                                       final PreferenceFragmentCompat preferenceFragment) {
-        return this
-                .findDialogPreference(preferenceFragment, Optional.ofNullable(dialogPreference.getKey()))
-                .flatMap(this::getSearchableInfo);
+    private Optional<DialogPreference> rereadDialogPreference(final DialogPreference dialogPreference,
+                                                              final PreferenceFragmentCompat preferenceFragment) {
+        return findDialogPreference(preferenceFragment, Optional.ofNullable(dialogPreference.getKey()));
     }
 
     private Optional<DialogPreference> findDialogPreference(final PreferenceFragmentCompat preferenceFragment,
@@ -80,10 +81,6 @@ class SearchableInfoByDialogPreferenceProvider {
     }
 
     private Optional<String> getSearchableInfo(final DialogPreference dialogPreference) {
-        // prevent NullPointerException
-        if (dialogPreference instanceof DropDownPreference) {
-            return Optional.empty();
-        }
         return getStringFromDialogFragment(dialogPreference, this::getSearchableInfo);
     }
 
@@ -98,14 +95,18 @@ class SearchableInfoByDialogPreferenceProvider {
     }
 
     private Optional<DialogFragment> getDialog(final DialogPreference dialogPreference) {
+        // prevent NullPointerException
+        if (dialogPreference instanceof DropDownPreference) {
+            return Optional.empty();
+        }
         dialogPreference.performClick();
         fragmentManager.executePendingTransactions();
         return fragmentManager
-                        .getFragments()
-                        .stream()
-                        .filter(fragment -> fragment instanceof DialogFragment)
-                        .map(fragment -> (DialogFragment) fragment)
-                        .findFirst();
+                .getFragments()
+                .stream()
+                .filter(fragment -> fragment instanceof DialogFragment)
+                .map(fragment -> (DialogFragment) fragment)
+                .findFirst();
     }
 
     private Optional<String> getSearchableInfo(final DialogFragment dialogFragment) {
