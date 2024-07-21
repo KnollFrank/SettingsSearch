@@ -71,6 +71,14 @@ class SearchableInfoByDialogPreferenceProvider {
             ((DialogFragment) searchableInfoProvider.get()).dismiss();
             return Optional.of(searchableInfo);
         } else {
+            final Optional<DialogFragment> dialogFragment =
+                    fragmentManager
+                            .getFragments()
+                            .stream()
+                            .filter(fragment -> fragment instanceof DialogFragment)
+                            .map(fragment -> (DialogFragment) fragment)
+                            .findFirst();
+            dialogFragment.ifPresent(DialogFragment::dismiss);
             return Optional.empty();
         }
     }
