@@ -308,17 +308,6 @@ public class PreferenceSearcherTest {
         }
     }
 
-    private static SearchableInfoProviderInternal getSearchableInfoProviderInternal(
-            final MergedPreferenceScreen mergedPreferenceScreen,
-            final List<PreferenceDescription> preferenceDescriptions) {
-        return new SearchableInfoProviderInternal(
-                new SearchableInfoProviders(
-                        Maps.merge(
-                                ImmutableList.of(
-                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(preferenceDescriptions),
-                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())))));
-    }
-
     private static MergedPreferenceScreen getMergedPreferenceScreen(
             final PreferenceFragmentCompat preferenceFragment,
             final SearchablePreferencePredicate searchablePreferencePredicate,
@@ -342,6 +331,17 @@ public class PreferenceSearcherTest {
                         new SearchableInfoAttribute(),
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
+    }
+
+    private static SearchableInfoProviderInternal getSearchableInfoProviderInternal(
+            final MergedPreferenceScreen mergedPreferenceScreen,
+            final List<PreferenceDescription> preferenceDescriptions) {
+        return new SearchableInfoProviderInternal(
+                new SearchableInfoProviders(
+                        Maps.merge(
+                                ImmutableList.of(
+                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(preferenceDescriptions),
+                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())))));
     }
 
     private static Set<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
