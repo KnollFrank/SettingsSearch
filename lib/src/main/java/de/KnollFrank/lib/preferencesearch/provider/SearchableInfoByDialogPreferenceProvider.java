@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
@@ -20,11 +21,14 @@ class SearchableInfoByDialogPreferenceProvider {
 
     private final Fragments fragments;
     private final FragmentManager fragmentManager;
+    private final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo;
 
     public SearchableInfoByDialogPreferenceProvider(final Fragments fragments,
-                                                    final FragmentManager fragmentManager) {
+                                                    final FragmentManager fragmentManager,
+                                                    final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo) {
         this.fragments = fragments;
         this.fragmentManager = fragmentManager;
+        this.hasDialogPreferenceWithSearchableInfo = hasDialogPreferenceWithSearchableInfo;
     }
 
     public Map<DialogPreference, String> getSearchableInfoByDialogPreference(
@@ -54,6 +58,7 @@ class SearchableInfoByDialogPreferenceProvider {
                 .stream()
                 .filter(preference -> preference instanceof DialogPreference)
                 .map(preference -> (DialogPreference) preference)
+                .filter(hasDialogPreferenceWithSearchableInfo)
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),

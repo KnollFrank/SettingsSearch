@@ -8,11 +8,13 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.DialogPreference;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
@@ -42,19 +44,22 @@ public class SearchPreferenceFragment extends Fragment {
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
+    final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
             final SearchablePreferencePredicate searchablePreferencePredicate,
             final SearchableInfoProviders searchableInfoProviders,
             final SearchableInfoAttribute searchableInfoAttribute,
-            final FragmentFactory fragmentFactory) {
+            final FragmentFactory fragmentFactory,
+            final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         searchablePreferencePredicate,
                         searchableInfoProviders,
                         searchableInfoAttribute,
-                        fragmentFactory);
+                        fragmentFactory,
+                        hasDialogPreferenceWithSearchableInfo);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
@@ -62,12 +67,14 @@ public class SearchPreferenceFragment extends Fragment {
     public SearchPreferenceFragment(final SearchablePreferencePredicate searchablePreferencePredicate,
                                     final SearchableInfoProviders searchableInfoProviders,
                                     final SearchableInfoAttribute searchableInfoAttribute,
-                                    final FragmentFactory fragmentFactory) {
+                                    final FragmentFactory fragmentFactory,
+                                    final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo) {
         super(R.layout.searchpreference_fragment);
         this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.searchableInfoProviders = searchableInfoProviders;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.fragmentFactory = fragmentFactory;
+        this.hasDialogPreferenceWithSearchableInfo = hasDialogPreferenceWithSearchableInfo;
     }
 
     public SearchPreferenceFragment() {
@@ -75,7 +82,8 @@ public class SearchPreferenceFragment extends Fragment {
                 (preference, host) -> true,
                 new SearchableInfoProviders(Collections.emptyMap()),
                 new SearchableInfoAttribute(),
-                new DefaultFragmentFactory());
+                new DefaultFragmentFactory(),
+                dialogPreference -> true);
     }
 
     @Override
@@ -109,6 +117,7 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceScreensMerger(getContext()),
                         searchablePreferencePredicate,
                         searchableInfoAttribute,
+                        dialogPreference -> true,
                         true);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }

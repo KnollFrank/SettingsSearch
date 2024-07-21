@@ -329,6 +329,7 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
                         new SearchableInfoAttribute(),
+                        dialogPreference -> true,
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }

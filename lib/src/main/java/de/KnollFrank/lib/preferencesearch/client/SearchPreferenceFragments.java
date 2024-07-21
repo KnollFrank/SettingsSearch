@@ -5,10 +5,12 @@ import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferen
 import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.DialogPreference;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
@@ -23,12 +25,14 @@ public class SearchPreferenceFragments {
     private final FragmentFactory fragmentFactory;
     private final FragmentManager fragmentManager;
     private final List<PreferenceDescription> preferenceDescriptions;
+    private final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo;
 
     public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
                                      final SearchablePreferencePredicate searchablePreferencePredicate,
                                      final List<PreferenceDescription> preferenceDescriptions,
                                      final FragmentFactory fragmentFactory,
-                                     final FragmentManager fragmentManager) {
+                                     final FragmentManager fragmentManager,
+                                     final Predicate<DialogPreference> hasDialogPreferenceWithSearchableInfo) {
         this.searchConfiguration = searchConfiguration;
         this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.preferenceDescriptions =
@@ -39,6 +43,7 @@ public class SearchPreferenceFragments {
                         .build();
         this.fragmentFactory = fragmentFactory;
         this.fragmentManager = fragmentManager;
+        this.hasDialogPreferenceWithSearchableInfo = hasDialogPreferenceWithSearchableInfo;
     }
 
     public void showSearchPreferenceFragment() {
@@ -48,7 +53,8 @@ public class SearchPreferenceFragments {
                         searchablePreferencePredicate,
                         getSearchableInfoProviders(preferenceDescriptions),
                         new SearchableInfoAttribute(),
-                        fragmentFactory),
+                        fragmentFactory,
+                        hasDialogPreferenceWithSearchableInfo),
                 searchPreferenceFragment -> {
                 },
                 true,

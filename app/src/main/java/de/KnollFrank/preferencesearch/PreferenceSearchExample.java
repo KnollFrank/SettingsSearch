@@ -73,7 +73,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 ReversedListPreference.class,
                                 new ReversedListPreferenceSearchableInfoProvider())),
                 new DefaultFragmentFactory(),
-                getSupportFragmentManager());
+                getSupportFragmentManager(),
+                dialogPreference -> true);
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
