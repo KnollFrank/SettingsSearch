@@ -79,35 +79,39 @@ class SearchableInfoByDialogPreferenceProvider {
         return key.map(preferenceFragment::findPreference);
     }
 
-    // FK-TODO: refactor
     private Optional<String> getSearchableInfo(final DialogPreference dialogPreference) {
         // prevent NullPointerException
         if (dialogPreference instanceof DropDownPreference) {
             return Optional.empty();
         }
+        return getStringFromDialogFragment(dialogPreference, this::getSearchableInfo);
+    }
+
+    private Optional<String> getStringFromDialogFragment(
+            final DialogPreference dialogPreference,
+            final Function<DialogFragment, Optional<? extends String>> getString) {
+        // FK-TODO: refactor
+        final Optional<DialogFragment> dialogFragment = getDialog(dialogPreference);
+        final Optional<String> searchableInfo = dialogFragment.flatMap(getString);
+        dialogFragment.ifPresent(DialogFragment::dismiss);
+        return searchableInfo;
+    }
+
+    private Optional<DialogFragment> getDialog(final DialogPreference dialogPreference) {
         dialogPreference.performClick();
         fragmentManager.executePendingTransactions();
-        final Optional<SearchableInfoProvider2> searchableInfoProvider =
-                fragmentManager
-                        .getFragments()
-                        .stream()
-                        .filter(fragment -> fragment instanceof SearchableInfoProvider2)
-                        .map(fragment -> (SearchableInfoProvider2) fragment)
-                        .findFirst();
-        if (searchableInfoProvider.isPresent()) {
-            final String searchableInfo = searchableInfoProvider.get().getSearchableInfo();
-            ((DialogFragment) searchableInfoProvider.get()).dismiss();
-            return Optional.of(searchableInfo);
-        } else {
-            final Optional<DialogFragment> dialogFragment =
-                    fragmentManager
-                            .getFragments()
-                            .stream()
-                            .filter(fragment -> fragment instanceof DialogFragment)
-                            .map(fragment -> (DialogFragment) fragment)
-                            .findFirst();
-            dialogFragment.ifPresent(DialogFragment::dismiss);
-            return Optional.empty();
-        }
+        return fragmentManager
+                .getFragments()
+                .stream()
+                .filter(fragment -> fragment instanceof DialogFragment)
+                .map(fragment -> (DialogFragment) fragment)
+                .findFirst();
+        // FK-TODO: das ist doch immer ein echtes DialogFragment und nie ein Optional.empty(), oder?
+    }
+
+    private Optional<String> getSearchableInfo(final DialogFragment dialogFragment) {
+        return dialogFragment instanceof final SearchableInfoProvider2 searchableInfoProvider ?
+                Optional.of(searchableInfoProvider.getSearchableInfo()) :
+                Optional.empty();
     }
 }
