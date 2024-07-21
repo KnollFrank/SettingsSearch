@@ -106,6 +106,7 @@ public class PreferenceSearcherTest {
                             preference.setKey(keyOfPreference);
                             preference.setSummary("This allows to select from a list");
                             preference.setTitle("Select list preference");
+                            preference.setEntryValues(new String[]{"some entry value"});
                             preference.setEntries(new String[]{keyword});
                             return preference;
                         }),
@@ -125,6 +126,8 @@ public class PreferenceSearcherTest {
                             preference.setKey(keyOfPreference);
                             preference.setSummary("This allows to select from a list");
                             preference.setTitle("Select list preference");
+                            preference.setEntries(new String[]{"some entry"});
+                            preference.setEntryValues(new String[]{"some entry value"});
                             preference.setDialogTitle(keyword);
                             return preference;
                         }),
@@ -182,6 +185,7 @@ public class PreferenceSearcherTest {
                             preference.setKey(keyOfPreference);
                             preference.setSummary("summary of ReversedListPreference");
                             preference.setTitle("title of ReversedListPreference");
+                            preference.setEntryValues(new String[]{"some entry value"});
                             preference.setEntries(new String[]{keyword});
                             return preference;
                         }),
@@ -220,6 +224,7 @@ public class PreferenceSearcherTest {
                             preference.setSummary("This allows to select multiple entries from a list");
                             preference.setTitle("Multi select list preference");
                             preference.setEntries(new String[]{keyword});
+                            preference.setEntryValues(new String[]{"some entry value"});
                             return preference;
                         }),
                 (preference, host) -> true,
@@ -238,6 +243,8 @@ public class PreferenceSearcherTest {
                             preference.setKey(keyOfPreference);
                             preference.setSummary("This allows to select multiple entries from a list");
                             preference.setTitle("Multi select list preference");
+                            preference.setEntryValues(new String[]{"some entry value"});
+                            preference.setEntries(new String[]{"some entry"});
                             preference.setDialogTitle(keyword);
                             return preference;
                         }),
