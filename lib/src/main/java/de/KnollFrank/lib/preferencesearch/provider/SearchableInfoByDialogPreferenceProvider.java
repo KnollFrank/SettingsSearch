@@ -8,7 +8,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -40,10 +39,14 @@ class SearchableInfoByDialogPreferenceProvider {
     }
 
     // FK-TODO: refactor
-    private Map<DialogPreference, String> getSearchableInfoByDialogPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
-        final PreferenceFragmentCompat preferenceFragment = (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(preferenceScreenWithHost.host.getName());
-        preferenceFragment.onStart();
-        final Map<DialogPreference, Optional<String>> collect = Preferences
+    private Map<DialogPreference, String> getSearchableInfoByDialogPreference(
+            final PreferenceScreenWithHost preferenceScreenWithHost) {
+        return Maps.filterPresentValues(getOptionalSearchableInfoByDialogPreference(preferenceScreenWithHost));
+    }
+
+    private Map<DialogPreference, Optional<String>> getOptionalSearchableInfoByDialogPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
+        final PreferenceFragmentCompat preferenceFragment = instantiateAndInitialize(preferenceScreenWithHost.host);
+        return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
                 .filter(preference -> preference instanceof DialogPreference)
@@ -53,14 +56,13 @@ class SearchableInfoByDialogPreferenceProvider {
                         Collectors.toMap(
                                 Function.identity(),
                                 dialogPreference -> getSearchableInfo(preferenceFragment.findPreference(dialogPreference.getKey()))));
-        return collect
-                .entrySet()
-                .stream()
-                .filter(entry -> entry.getValue().isPresent())
-                .collect(
-                        Collectors.toMap(
-                                Entry::getKey,
-                                entry -> entry.getValue().get()));
+    }
+
+    private PreferenceFragmentCompat instantiateAndInitialize(final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment) {
+        final PreferenceFragmentCompat preferenceFragment =
+                (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(classOfPreferenceFragment.getName());
+        preferenceFragment.onStart();
+        return preferenceFragment;
     }
 
     // FK-TODO: refactor
