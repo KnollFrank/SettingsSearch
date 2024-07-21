@@ -34,6 +34,6 @@ class DialogFragments {
         }
         preference.performClick();
         fragmentManager.executePendingTransactions();
-        return Optional.of((DialogFragment) fragmentManager.findFragmentByTag(tagOfDialogFragment));
+        return Optional.ofNullable((DialogFragment) fragmentManager.findFragmentByTag(tagOfDialogFragment));
     }
 }
