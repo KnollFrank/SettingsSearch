@@ -12,7 +12,7 @@ public class PreferenceDescriptions {
         return new SearchableInfoProviders(getSearchableInfoProvidersByPreferenceClass(preferenceDescriptions));
     }
 
-    public static Map<Class<? extends Preference>, SearchableInfoProvider<?>> getSearchableInfoProvidersByPreferenceClass(final List<PreferenceDescription> preferenceDescriptions) {
+    public static Map<Class<? extends Preference>, SearchableInfoProvider> getSearchableInfoProvidersByPreferenceClass(final List<PreferenceDescription> preferenceDescriptions) {
         return preferenceDescriptions
                 .stream()
                 .collect(

@@ -27,24 +27,28 @@ public class BuiltinPreferenceDescriptionsFactory {
     private static PreferenceDescription<ListPreference> getListPreferenceDescription() {
         return new PreferenceDescription<>(
                 ListPreference.class,
-                preference ->
-                        String.join(
-                                ", ",
-                                concat(
-                                        Optional.ofNullable(preference.getEntries()),
-                                        Optional.ofNullable(preference.getDialogTitle()))));
+                preference -> {
+                    final ListPreference listPreference = (ListPreference) preference;
+                    return String.join(
+                            ", ",
+                            concat(
+                                    Optional.ofNullable(listPreference.getEntries()),
+                                    Optional.ofNullable(listPreference.getDialogTitle())));
+                });
     }
 
     private static PreferenceDescription<SwitchPreference> getSwitchPreferenceDescription() {
         return new PreferenceDescription<>(
                 SwitchPreference.class,
-                preference ->
-                        String.join(
-                                ", ",
-                                Lists.getNonEmptyElements(
-                                        ImmutableList.of(
-                                                Optional.ofNullable(preference.getSummaryOff()),
-                                                Optional.ofNullable(preference.getSummaryOn())))));
+                preference -> {
+                    final SwitchPreference switchPreference = (SwitchPreference) preference;
+                    return String.join(
+                            ", ",
+                            Lists.getNonEmptyElements(
+                                    ImmutableList.of(
+                                            Optional.ofNullable(switchPreference.getSummaryOff()),
+                                            Optional.ofNullable(switchPreference.getSummaryOn()))));
+                });
     }
 
     private static PreferenceDescription<DropDownPreference> getDropDownPreferenceDescription() {
@@ -53,18 +57,20 @@ public class BuiltinPreferenceDescriptionsFactory {
                 preference ->
                         String.join(
                                 ", ",
-                                Lists.asList(Optional.ofNullable(preference.getEntries()))));
+                                Lists.asList(Optional.ofNullable(((DropDownPreference) preference).getEntries()))));
     }
 
     private static PreferenceDescription<MultiSelectListPreference> getMultiSelectListPreferenceDescription() {
         return new PreferenceDescription<>(
                 MultiSelectListPreference.class,
-                preference ->
-                        String.join(
-                                ", ",
-                                concat(
-                                        Optional.ofNullable(preference.getEntries()),
-                                        Optional.ofNullable(preference.getDialogTitle()))));
+                preference -> {
+                    final MultiSelectListPreference multiSelectListPreference = (MultiSelectListPreference) preference;
+                    return String.join(
+                            ", ",
+                            concat(
+                                    Optional.ofNullable(multiSelectListPreference.getEntries()),
+                                    Optional.ofNullable(multiSelectListPreference.getDialogTitle())));
+                });
     }
 
     private static List<CharSequence> concat(final Optional<CharSequence[]> elements,

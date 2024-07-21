@@ -158,7 +158,8 @@ public class SearchPreferenceFragment extends Fragment {
                         Maps.merge(
                                 ImmutableList.of(
                                         searchableInfoProviders.searchableInfoProvidersByPreferenceClass,
-                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())))));
+                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
+                                (searchableInfoProvider1, searchableInfoProvider2) -> searchableInfoProvider1.mergeWith(searchableInfoProvider2))));
     }
 
     private void selectSearchView(final SearchView searchView) {
