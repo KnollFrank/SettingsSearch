@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
-import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -29,14 +28,17 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
+import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
+import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
 import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
@@ -278,23 +280,24 @@ public class PreferenceSearcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final List<PreferenceDescription> preferenceDescriptions =
-                        ImmutableList
-                                .<PreferenceDescription>builder()
-                                .addAll(createBuiltinPreferenceDescriptions())
-                                .add(new PreferenceDescription<>(
-                                        ReversedListPreference.class,
-                                        new ReversedListPreferenceSearchableInfoProvider()))
-                                .build();
-
+                final MergedPreferenceScreen mergedPreferenceScreen =
+                        getMergedPreferenceScreen(
+                                preferenceFragment,
+                                searchablePreferencePredicate,
+                                fragmentActivity);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
-                                getMergedPreferenceScreen(
-                                        preferenceFragment,
-                                        searchablePreferencePredicate,
-                                        fragmentActivity),
+                                mergedPreferenceScreen,
                                 new SearchableInfoAttribute(),
-                                new SearchableInfoProviderInternal(getSearchableInfoProviders(preferenceDescriptions)));
+                                getSearchableInfoProviderInternal(
+                                        mergedPreferenceScreen,
+                                        ImmutableList
+                                                .<PreferenceDescription>builder()
+                                                .addAll(createBuiltinPreferenceDescriptions())
+                                                .add(new PreferenceDescription<>(
+                                                        ReversedListPreference.class,
+                                                        new ReversedListPreferenceSearchableInfoProvider()))
+                                                .build()));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
@@ -303,6 +306,17 @@ public class PreferenceSearcherTest {
                 assertThat(getKeys(preferenceMatches), preferenceKeyMatcher);
             });
         }
+    }
+
+    private static SearchableInfoProviderInternal getSearchableInfoProviderInternal(
+            final MergedPreferenceScreen mergedPreferenceScreen,
+            final List<PreferenceDescription> preferenceDescriptions) {
+        return new SearchableInfoProviderInternal(
+                new SearchableInfoProviders(
+                        Maps.merge(
+                                ImmutableList.of(
+                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(preferenceDescriptions),
+                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())))));
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
