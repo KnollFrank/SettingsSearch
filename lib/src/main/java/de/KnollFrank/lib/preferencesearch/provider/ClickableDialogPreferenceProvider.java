@@ -14,7 +14,7 @@ class ClickableDialogPreferenceProvider {
 
     public static ClickableDialogPreferenceProvider create(final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment,
                                                            final Function<String, Fragment> instantiateAndInitializeFragment) {
-        return new ClickableDialogPreferenceProvider(instantiateAndInitialize(classOfPreferenceFragment, instantiateAndInitializeFragment));
+        return new ClickableDialogPreferenceProvider((PreferenceFragmentCompat) instantiateAndInitializeFragment.apply(classOfPreferenceFragment.getName()));
     }
 
     public ClickableDialogPreferenceProvider(final PreferenceFragmentCompat preferenceFragment) {
@@ -27,13 +27,5 @@ class ClickableDialogPreferenceProvider {
 
     private Optional<DialogPreference> rereadDialogPreference(final Optional<String> key) {
         return key.map(preferenceFragment::findPreference);
-    }
-
-    private static PreferenceFragmentCompat instantiateAndInitialize(final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment,
-                                                                     final Function<String, Fragment> instantiateAndInitializeFragment) {
-        final PreferenceFragmentCompat preferenceFragment =
-                (PreferenceFragmentCompat) instantiateAndInitializeFragment.apply(classOfPreferenceFragment.getName());
-        preferenceFragment.onStart();
-        return preferenceFragment;
     }
 }

@@ -85,8 +85,8 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen();
         showSearchResultsPreferenceFragment(
                 mergedPreferenceScreen,
