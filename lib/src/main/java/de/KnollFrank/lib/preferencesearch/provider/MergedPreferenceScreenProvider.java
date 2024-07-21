@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.preferencesearch.provider;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -70,14 +69,14 @@ public class MergedPreferenceScreenProvider {
         // A:
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens);
-        final Map<DialogPreference, String> searchableInfoByDialogPreference =
-                new SearchableInfoByDialogPreferenceProvider(fragments, fragmentManager, tagOfDialogFragmentByPreference).getSearchableInfoByDialogPreference(screens);
+        final Map<Preference, String> searchableInfoByPreference =
+                new SearchableInfoByPreferenceProvider(fragments, fragmentManager, tagOfDialogFragmentByPreference).getSearchableInfoByPreference(screens);
         // B:
         final PreferenceScreen preferenceScreen = destructivelyMergeScreens(screens);
         return new MergedPreferenceScreen(
                 preferenceScreen,
                 hostByPreference,
-                searchableInfoByDialogPreference,
+                searchableInfoByPreference,
                 searchableInfoAttribute);
     }
 

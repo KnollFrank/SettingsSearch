@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.preferencesearch;
 
-import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -19,16 +18,16 @@ public class MergedPreferenceScreen {
 
     public final PreferenceScreen preferenceScreen;
     private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
-    private final Map<DialogPreference, String> searchableInfoByDialogPreference;
+    private final Map<Preference, String> searchableInfoByPreference;
     private final PreferenceScreenResetter preferenceScreenResetter;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
                                   final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
-                                  final Map<DialogPreference, String> searchableInfoByDialogPreference,
+                                  final Map<Preference, String> searchableInfoByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
-        this.searchableInfoByDialogPreference = searchableInfoByDialogPreference;
+        this.searchableInfoByPreference = searchableInfoByPreference;
         this.preferenceScreenResetter = new PreferenceScreenResetter(preferenceScreen, searchableInfoAttribute);
     }
 
@@ -38,10 +37,10 @@ public class MergedPreferenceScreen {
     }
 
     public List<PreferenceDescription> getPreferenceDescriptions() {
-        return searchableInfoByDialogPreference
+        return searchableInfoByPreference
                 .keySet()
                 .stream()
-                .map(dialogPreference -> new PreferenceDescription<>(dialogPreference.getClass(), searchableInfoByDialogPreference::get))
+                .map(preference -> new PreferenceDescription<>(preference.getClass(), searchableInfoByPreference::get))
                 .collect(Collectors.toList());
     }
 
