@@ -57,10 +57,7 @@ class SearchableInfoByDialogPreferenceProvider {
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                dialogPreference ->
-                                        this
-                                                .findDialogPreference(preferenceFragment, Optional.ofNullable(dialogPreference.getKey()))
-                                                .flatMap(this::getSearchableInfo)));
+                                dialogPreference -> getOptionalSearchableInfo(dialogPreference, preferenceFragment)));
     }
 
     private PreferenceFragmentCompat instantiateAndInitialize(final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment) {
@@ -70,6 +67,13 @@ class SearchableInfoByDialogPreferenceProvider {
         return preferenceFragment;
     }
 
+    private Optional<String> getOptionalSearchableInfo(final DialogPreference dialogPreference,
+                                                       final PreferenceFragmentCompat preferenceFragment) {
+        return this
+                .findDialogPreference(preferenceFragment, Optional.ofNullable(dialogPreference.getKey()))
+                .flatMap(this::getSearchableInfo);
+    }
+
     private Optional<DialogPreference> findDialogPreference(final PreferenceFragmentCompat preferenceFragment,
                                                             final Optional<String> key) {
         return key.map(preferenceFragment::findPreference);
@@ -77,7 +81,7 @@ class SearchableInfoByDialogPreferenceProvider {
 
     // FK-TODO: refactor
     private Optional<String> getSearchableInfo(final DialogPreference dialogPreference) {
-        // circumnavigate NullPointerException
+        // prevent NullPointerException
         if (dialogPreference instanceof DropDownPreference) {
             return Optional.empty();
         }
