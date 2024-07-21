@@ -38,24 +38,29 @@ class SearchableInfoByDialogPreferenceProvider {
                         .collect(Collectors.toList()));
     }
 
-    // FK-TODO: refactor
     private Map<DialogPreference, String> getSearchableInfoByDialogPreference(
             final PreferenceScreenWithHost preferenceScreenWithHost) {
-        return Maps.filterPresentValues(getOptionalSearchableInfoByDialogPreference(preferenceScreenWithHost));
+        return Maps.filterPresentValues(
+                getOptionalSearchableInfoByDialogPreference(
+                        preferenceScreenWithHost));
     }
 
-    private Map<DialogPreference, Optional<String>> getOptionalSearchableInfoByDialogPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
-        final PreferenceFragmentCompat preferenceFragment = instantiateAndInitialize(preferenceScreenWithHost.host);
+    private Map<DialogPreference, Optional<String>> getOptionalSearchableInfoByDialogPreference(
+            final PreferenceScreenWithHost preferenceScreenWithHost) {
+        final PreferenceFragmentCompat preferenceFragment =
+                instantiateAndInitialize(preferenceScreenWithHost.host);
         return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
                 .filter(preference -> preference instanceof DialogPreference)
                 .map(preference -> (DialogPreference) preference)
-                .filter(dialogPreference -> dialogPreference.getKey() != null && !(preferenceFragment.findPreference(dialogPreference.getKey()) instanceof DropDownPreference))
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                dialogPreference -> getSearchableInfo(preferenceFragment.findPreference(dialogPreference.getKey()))));
+                                dialogPreference ->
+                                        dialogPreference.getKey() != null ?
+                                                getSearchableInfo(preferenceFragment.findPreference(dialogPreference.getKey())) :
+                                                Optional.empty()));
     }
 
     private PreferenceFragmentCompat instantiateAndInitialize(final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment) {
@@ -67,6 +72,10 @@ class SearchableInfoByDialogPreferenceProvider {
 
     // FK-TODO: refactor
     private Optional<String> getSearchableInfo(final DialogPreference dialogPreference) {
+        // circumnavigate NullPointerException
+        if (dialogPreference instanceof DropDownPreference) {
+            return Optional.empty();
+        }
         dialogPreference.performClick();
         fragmentManager.executePendingTransactions();
         final Optional<SearchableInfoProvider2> searchableInfoProvider =
