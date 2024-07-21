@@ -21,7 +21,7 @@ class ClickableDialogPreferenceProvider {
         this.preferenceFragment = preferenceFragment;
     }
 
-    public Optional<DialogPreference> getClickableDialogPreference(final DialogPreference dialogPreference) {
+    public Optional<DialogPreference> asClickableDialogPreference(final DialogPreference dialogPreference) {
         return rereadDialogPreference(Optional.ofNullable(dialogPreference.getKey()));
     }
 

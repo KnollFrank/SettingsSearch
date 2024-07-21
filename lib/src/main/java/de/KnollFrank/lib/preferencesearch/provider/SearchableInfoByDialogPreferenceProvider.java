@@ -3,7 +3,6 @@ package de.KnollFrank.lib.preferencesearch.provider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.DialogPreference;
-import androidx.preference.DropDownPreference;
 
 import java.util.Collection;
 import java.util.Map;
@@ -60,38 +59,14 @@ class SearchableInfoByDialogPreferenceProvider {
                                 Function.identity(),
                                 dialogPreference ->
                                         clickableDialogPreferenceProvider
-                                                .getClickableDialogPreference(dialogPreference)
+                                                .asClickableDialogPreference(dialogPreference)
                                                 .flatMap(this::getSearchableInfo)));
     }
 
     private Optional<String> getSearchableInfo(final DialogPreference dialogPreference) {
-        return getStringFromDialogFragment(dialogPreference, this::getSearchableInfo);
-    }
-
-    // FK-TODO: diese Dialog-Methoden in eine neue Klasse verschieben
-    private Optional<String> getStringFromDialogFragment(
-            final DialogPreference dialogPreference,
-            final Function<DialogFragment, Optional<? extends String>> getString) {
-        // FK-TODO: refactor
-        final Optional<DialogFragment> dialogFragment = getDialogFragment(dialogPreference);
-        final Optional<String> searchableInfo = dialogFragment.flatMap(getString);
-        dialogFragment.ifPresent(DialogFragment::dismiss);
-        return searchableInfo;
-    }
-
-    private Optional<DialogFragment> getDialogFragment(final DialogPreference dialogPreference) {
-        // prevent NullPointerException
-        if (dialogPreference instanceof DropDownPreference) {
-            return Optional.empty();
-        }
-        dialogPreference.performClick();
-        fragmentManager.executePendingTransactions();
-        return fragmentManager
-                .getFragments()
-                .stream()
-                .filter(fragment -> fragment instanceof DialogFragment)
-                .map(fragment -> (DialogFragment) fragment)
-                .findFirst();
+        return new DialogPreferences(fragmentManager).getStringFromDialogFragment(
+                dialogPreference,
+                this::getSearchableInfo);
     }
 
     private Optional<String> getSearchableInfo(final DialogFragment dialogFragment) {
