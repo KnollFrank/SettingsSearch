@@ -3,6 +3,7 @@ package de.KnollFrank.lib.preferencesearch.provider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Collection;
 import java.util.Map;
@@ -20,14 +21,14 @@ class SearchableInfoByPreferenceProvider {
 
     private final Fragments fragments;
     private final FragmentManager fragmentManager;
-    private final Map<Class<? extends Preference>, String> tagOfDialogFragmentByPreference;
+    private final DialogFragmentByPreference dialogFragmentByPreference;
 
     public SearchableInfoByPreferenceProvider(final Fragments fragments,
                                               final FragmentManager fragmentManager,
-                                              final Map<Class<? extends Preference>, String> tagOfDialogFragmentByPreference) {
+                                              final DialogFragmentByPreference dialogFragmentByPreference) {
         this.fragments = fragments;
         this.fragmentManager = fragmentManager;
-        this.tagOfDialogFragmentByPreference = tagOfDialogFragmentByPreference;
+        this.dialogFragmentByPreference = dialogFragmentByPreference;
     }
 
     public Map<Preference, String> getSearchableInfoByPreference(
@@ -55,21 +56,22 @@ class SearchableInfoByPreferenceProvider {
         return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
-                .filter(preference -> tagOfDialogFragmentByPreference.containsKey(preference.getClass()))
+                .filter(preference -> dialogFragmentByPreference.hasDialogFragment(preferenceScreenWithHost.host, preference))
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
                                 preference ->
                                         clickablePreferenceProvider
                                                 .asClickablePreference(preference)
-                                                .flatMap(this::getSearchableInfo)));
+                                                .flatMap(clickablePreference -> getSearchableInfo(preferenceScreenWithHost.host, clickablePreference))));
     }
 
-    private Optional<String> getSearchableInfo(final Preference preference) {
+    private Optional<String> getSearchableInfo(final Class<? extends PreferenceFragmentCompat> host,
+                                               final Preference preference) {
         final DialogFragments dialogFragments =
                 new DialogFragments(
                         fragmentManager,
-                        tagOfDialogFragmentByPreference.get(preference.getClass()));
+                        fragmentManager -> dialogFragmentByPreference.getDialogFragment(host, preference, fragmentManager));
         return dialogFragments.getStringFromDialogFragment(preference, this::getSearchableInfo);
     }
 

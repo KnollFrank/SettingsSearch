@@ -5,8 +5,10 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
@@ -16,7 +18,6 @@ import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -32,6 +33,7 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
+import de.KnollFrank.lib.preferencesearch.provider.DialogFragmentByPreference;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
@@ -331,7 +333,18 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
                         new SearchableInfoAttribute(),
-                        ImmutableMap.of(CustomDialogPreference.class, CustomDialogFragment.TAG),
+                        new DialogFragmentByPreference() {
+
+                            @Override
+                            public boolean hasDialogFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                                return preference instanceof CustomDialogPreference;
+                            }
+
+                            @Override
+                            public DialogFragment getDialogFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                                return (DialogFragment) fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
+                            }
+                        },
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
