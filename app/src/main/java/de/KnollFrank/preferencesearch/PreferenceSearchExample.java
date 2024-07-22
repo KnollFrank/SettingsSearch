@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
@@ -20,7 +19,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.preferencesearch.provider.DialogFragmentByPreference;
+import de.KnollFrank.lib.preferencesearch.provider.FragmentByPreference;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
@@ -80,16 +79,19 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 new ReversedListPreferenceSearchableInfoProvider())),
                 new DefaultFragmentFactory(),
                 getSupportFragmentManager(),
-                new DialogFragmentByPreference() {
+                new FragmentByPreference() {
 
                     @Override
-                    public boolean hasDialogFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
-                        return preference instanceof CustomDialogPreference;
+                    public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                        return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey());
                     }
 
                     @Override
-                    public DialogFragment getDialogFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
-                        return (DialogFragment) fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
+                    public Fragment getFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                        if (preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey())) {
+                            return fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
+                        }
+                        throw new IllegalArgumentException();
                     }
                 });
     }

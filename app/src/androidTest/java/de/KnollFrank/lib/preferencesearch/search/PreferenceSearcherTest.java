@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -33,7 +32,7 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
-import de.KnollFrank.lib.preferencesearch.provider.DialogFragmentByPreference;
+import de.KnollFrank.lib.preferencesearch.provider.FragmentByPreference;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
@@ -46,6 +45,7 @@ import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.preferencesearch.preference.fragment.CustomDialogFragment;
+import de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.preferencesearch.test.TestActivity;
 
 public class PreferenceSearcherTest {
@@ -64,7 +64,8 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
@@ -81,7 +82,8 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> !keyOfPreference.equals(preference.getKey()),
                 keyword,
-                not(hasItem(keyOfPreference)));
+                not(hasItem(keyOfPreference)),
+                getDefaultFragmentByPreference());
     }
 
     @Test
@@ -98,7 +100,8 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
@@ -118,7 +121,8 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
@@ -139,11 +143,12 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
-    public void shouldSearchAndFindLSwitchPreference_summaryOff() {
+    public void shouldSearchAndFindSwitchPreference_summaryOff() {
         final String summaryOff = "switch is off";
         final String keyOfPreference = "keyOfSomeSwitchPreference";
         testSearch(
@@ -158,11 +163,12 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 summaryOff,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
-    public void shouldSearchAndFindLSwitchPreference_summaryOn() {
+    public void shouldSearchAndFindSwitchPreference_summaryOn() {
         final String summaryOn = "switch is on";
         final String keyOfPreference = "keyOfSomeSwitchPreference";
         testSearch(
@@ -177,7 +183,8 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 summaryOn,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
@@ -197,11 +204,13 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
     public void shouldSearchAndFindInCustomDialogPreference() {
+        // FK-TODO: make hard coded text "some text in a custom dialog" configurable in CustomDialogFragment
         final String keyword = "some text in a custom dialog";
         final String keyOfPreference = "keyOfCustomDialogPreference";
         testSearch(
@@ -215,7 +224,47 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                new FragmentByPreference() {
+
+                    @Override
+                    public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                        return preference instanceof CustomDialogPreference;
+                    }
+
+                    @Override
+                    public Fragment getFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                        if (preference instanceof CustomDialogPreference) {
+                            return fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
+                        }
+                        throw new IllegalArgumentException();
+                    }
+                });
+    }
+
+    @Test
+    public void shouldSearchAndFindInPreferenceWithOnPreferenceClickListener() {
+        final String keyword = "some text in a custom dialog";
+        final String keyOfPreference = "keyOfPreferenceWithOnPreferenceClickListener";
+        testSearch(
+                new PrefsFragmentFirst(),
+                (preference, host) -> true,
+                keyword,
+                hasItem(keyOfPreference), new FragmentByPreference() {
+
+                    @Override
+                    public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                        return keyOfPreference.equals(preference.getKey());
+                    }
+
+                    @Override
+                    public Fragment getFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                        if (keyOfPreference.equals(preference.getKey())) {
+                            return fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
+                        }
+                        throw new IllegalArgumentException();
+                    }
+                });
     }
 
     @Test
@@ -235,7 +284,8 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
@@ -256,7 +306,8 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference));
+                hasItem(keyOfPreference),
+                getDefaultFragmentByPreference());
     }
 
     @Test
@@ -274,13 +325,15 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                not(hasItem(keyOfPreference)));
+                not(hasItem(keyOfPreference)),
+                getDefaultFragmentByPreference());
     }
 
     private static void testSearch(final PreferenceFragmentCompat preferenceFragment,
                                    final SearchablePreferencePredicate searchablePreferencePredicate,
                                    final String keyword,
-                                   final Matcher<Iterable<? super String>> preferenceKeyMatcher) {
+                                   final Matcher<Iterable<? super String>> preferenceKeyMatcher,
+                                   final FragmentByPreference fragmentByPreference) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -288,7 +341,8 @@ public class PreferenceSearcherTest {
                         getMergedPreferenceScreen(
                                 preferenceFragment,
                                 searchablePreferencePredicate,
-                                fragmentActivity);
+                                fragmentActivity,
+                                fragmentByPreference);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
@@ -315,7 +369,8 @@ public class PreferenceSearcherTest {
     private static MergedPreferenceScreen getMergedPreferenceScreen(
             final PreferenceFragmentCompat preferenceFragment,
             final SearchablePreferencePredicate searchablePreferencePredicate,
-            final FragmentActivity fragmentActivity) {
+            final FragmentActivity fragmentActivity,
+            final FragmentByPreference fragmentByPreference) {
         final Fragments fragments =
                 FragmentsFactory.createFragments(
                         (fragmentClassName, context) ->
@@ -333,18 +388,7 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
                         new SearchableInfoAttribute(),
-                        new DialogFragmentByPreference() {
-
-                            @Override
-                            public boolean hasDialogFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
-                                return preference instanceof CustomDialogPreference;
-                            }
-
-                            @Override
-                            public DialogFragment getDialogFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
-                                return (DialogFragment) fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
-                            }
-                        },
+                        fragmentByPreference,
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
@@ -368,5 +412,20 @@ public class PreferenceSearcherTest {
                 .map(Preference::getKey)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
+    }
+
+    private static FragmentByPreference getDefaultFragmentByPreference() {
+        return new FragmentByPreference() {
+
+            @Override
+            public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                return false;
+            }
+
+            @Override
+            public Fragment getFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                throw new IllegalArgumentException();
+            }
+        };
     }
 }

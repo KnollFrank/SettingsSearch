@@ -92,6 +92,11 @@
         android:summary="summary of custom DialogPreference"
         android:title="some custom DialogPreference" />
 
+    <Preference
+        android:key="keyOfPreferenceWithOnPreferenceClickListener"
+        android:summary="some summary for PreferenceWithOnPreferenceClickListener"
+        android:title="some title for PreferenceWithOnPreferenceClickListener" />
+
     <DropDownPreference
         android:entries="@android:array/imProtocols"
         android:entryValues="@android:array/imProtocols"
