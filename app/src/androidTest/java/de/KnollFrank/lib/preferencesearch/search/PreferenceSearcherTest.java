@@ -32,13 +32,14 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentsFactory;
-import de.KnollFrank.lib.preferencesearch.provider.FragmentByPreference;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
+import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
 import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
@@ -225,7 +226,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                new FragmentByPreference() {
+                new PreferenceDialogProvider() {
 
                     @Override
                     public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
@@ -250,7 +251,7 @@ public class PreferenceSearcherTest {
                 new PrefsFragmentFirst(),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference), new FragmentByPreference() {
+                hasItem(keyOfPreference), new PreferenceDialogProvider() {
 
                     @Override
                     public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
@@ -333,7 +334,7 @@ public class PreferenceSearcherTest {
                                    final SearchablePreferencePredicate searchablePreferencePredicate,
                                    final String keyword,
                                    final Matcher<Iterable<? super String>> preferenceKeyMatcher,
-                                   final FragmentByPreference fragmentByPreference) {
+                                   final PreferenceDialogProvider preferenceDialogProvider) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -342,7 +343,7 @@ public class PreferenceSearcherTest {
                                 preferenceFragment,
                                 searchablePreferencePredicate,
                                 fragmentActivity,
-                                fragmentByPreference);
+                                preferenceDialogProvider);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
@@ -370,7 +371,7 @@ public class PreferenceSearcherTest {
             final PreferenceFragmentCompat preferenceFragment,
             final SearchablePreferencePredicate searchablePreferencePredicate,
             final FragmentActivity fragmentActivity,
-            final FragmentByPreference fragmentByPreference) {
+            final PreferenceDialogProvider preferenceDialogProvider) {
         final Fragments fragments =
                 FragmentsFactory.createFragments(
                         (fragmentClassName, context) ->
@@ -388,7 +389,7 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
                         new SearchableInfoAttribute(),
-                        fragmentByPreference,
+                        preferenceDialogProvider,
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
@@ -402,7 +403,7 @@ public class PreferenceSearcherTest {
                                 ImmutableList.of(
                                         PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(preferenceDescriptions),
                                         PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
-                                (searchableInfoProvider1, searchableInfoProvider2) -> searchableInfoProvider1.mergeWith(searchableInfoProvider2))));
+                                SearchableInfoProvider::mergeWith)));
     }
 
     private static Set<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
@@ -414,8 +415,8 @@ public class PreferenceSearcherTest {
                 .collect(Collectors.toSet());
     }
 
-    private static FragmentByPreference getDefaultFragmentByPreference() {
-        return new FragmentByPreference() {
+    private static PreferenceDialogProvider getDefaultFragmentByPreference() {
+        return new PreferenceDialogProvider() {
 
             @Override
             public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {

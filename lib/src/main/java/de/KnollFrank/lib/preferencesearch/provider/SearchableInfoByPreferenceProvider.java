@@ -21,14 +21,14 @@ class SearchableInfoByPreferenceProvider {
 
     private final Fragments fragments;
     private final FragmentManager fragmentManager;
-    private final FragmentByPreference fragmentByPreference;
+    private final PreferenceDialogProvider preferenceDialogProvider;
 
     public SearchableInfoByPreferenceProvider(final Fragments fragments,
                                               final FragmentManager fragmentManager,
-                                              final FragmentByPreference fragmentByPreference) {
+                                              final PreferenceDialogProvider preferenceDialogProvider) {
         this.fragments = fragments;
         this.fragmentManager = fragmentManager;
-        this.fragmentByPreference = fragmentByPreference;
+        this.preferenceDialogProvider = preferenceDialogProvider;
     }
 
     public Map<Preference, String> getSearchableInfoByPreference(
@@ -56,7 +56,7 @@ class SearchableInfoByPreferenceProvider {
         return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
-                .filter(preference -> fragmentByPreference.hasFragment(preferenceScreenWithHost.host, preference))
+                .filter(preference -> preferenceDialogProvider.hasFragment(preferenceScreenWithHost.host, preference))
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
@@ -71,7 +71,7 @@ class SearchableInfoByPreferenceProvider {
         final DialogFragments dialogFragments =
                 new DialogFragments(
                         fragmentManager,
-                        fragmentManager -> fragmentByPreference.getFragment(host, preference, fragmentManager));
+                        fragmentManager -> preferenceDialogProvider.getFragment(host, preference, fragmentManager));
         return dialogFragments.getStringFromDialogFragment(preference, this::getSearchableInfo);
     }
 

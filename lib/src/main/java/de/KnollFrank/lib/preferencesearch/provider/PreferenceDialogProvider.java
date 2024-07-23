@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-public interface FragmentByPreference {
+public interface PreferenceDialogProvider {
 
     boolean hasFragment(Class<? extends PreferenceFragmentCompat> host, Preference preference);
 
