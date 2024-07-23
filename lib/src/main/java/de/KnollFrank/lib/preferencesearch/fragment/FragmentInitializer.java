@@ -4,7 +4,7 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class FragmentInitializer {
+public class FragmentInitializer implements PreferenceDialogs {
 
     private final FragmentManager fragmentManager;
     private final @IdRes int containerViewId;
@@ -22,7 +22,7 @@ public class FragmentInitializer {
                 .commitNow();
     }
 
-    // FK-TODO: move showPreferenceDialog() and hidePreferenceDialog() to their own class named PreferenceDialogInitializer
+    @Override
     public void showPreferenceDialog(final Fragment preferenceDialog) {
         this
                 .fragmentManager
@@ -31,6 +31,7 @@ public class FragmentInitializer {
                 .commitNow();
     }
 
+    @Override
     public void hidePreferenceDialog(final Fragment preferenceDialog) {
         this
                 .fragmentManager

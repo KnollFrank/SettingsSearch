@@ -12,17 +12,17 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
-import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
+import de.KnollFrank.lib.preferencesearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.preferencesearch.search.provider.HasSearchableInfo;
 
 class SearchableInfoByPreferenceProvider {
 
-    private final Fragments fragments;
+    private final PreferenceDialogs preferenceDialogs;
     private final PreferenceDialogProvider preferenceDialogProvider;
 
-    public SearchableInfoByPreferenceProvider(final Fragments fragments,
+    public SearchableInfoByPreferenceProvider(final PreferenceDialogs preferenceDialogs,
                                               final PreferenceDialogProvider preferenceDialogProvider) {
-        this.fragments = fragments;
+        this.preferenceDialogs = preferenceDialogs;
         this.preferenceDialogProvider = preferenceDialogProvider;
     }
 
@@ -58,11 +58,11 @@ class SearchableInfoByPreferenceProvider {
 
     // FK-TODO: kein Optional<String>, sondern direkt String?
     private Optional<String> getSearchableInfo(final Fragment preferenceDialog) {
-        fragments.fragmentInitializer.showPreferenceDialog(preferenceDialog);
+        preferenceDialogs.showPreferenceDialog(preferenceDialog);
         final Optional<String> searchableInfo = preferenceDialog instanceof final HasSearchableInfo hasSearchableInfo ?
                 Optional.of(hasSearchableInfo.getSearchableInfo()) :
                 Optional.empty();
-        fragments.fragmentInitializer.hidePreferenceDialog(preferenceDialog);
+        preferenceDialogs.hidePreferenceDialog(preferenceDialog);
         return searchableInfo;
     }
 }

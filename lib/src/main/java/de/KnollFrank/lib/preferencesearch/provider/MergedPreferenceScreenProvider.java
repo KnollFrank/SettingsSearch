@@ -15,11 +15,13 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
+import de.KnollFrank.lib.preferencesearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreenProvider {
 
     private final Fragments fragments;
+    private final PreferenceDialogs preferenceDialogs;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
     private final SearchablePreferencePredicate searchablePreferencePredicate;
@@ -30,6 +32,7 @@ public class MergedPreferenceScreenProvider {
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
 
     public MergedPreferenceScreenProvider(final Fragments fragments,
+                                          final PreferenceDialogs preferenceDialogs,
                                           final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
                                           final SearchablePreferencePredicate searchablePreferencePredicate,
@@ -37,6 +40,7 @@ public class MergedPreferenceScreenProvider {
                                           final PreferenceDialogProvider preferenceDialogProvider,
                                           final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
+        this.preferenceDialogs = preferenceDialogs;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
         this.searchablePreferencePredicate = searchablePreferencePredicate;
@@ -66,7 +70,7 @@ public class MergedPreferenceScreenProvider {
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens);
         final Map<Preference, String> searchableInfoByPreference =
-                new SearchableInfoByPreferenceProvider(fragments, preferenceDialogProvider).getSearchableInfoByPreference(screens);
+                new SearchableInfoByPreferenceProvider(preferenceDialogs, preferenceDialogProvider).getSearchableInfoByPreference(screens);
         // B:
         final PreferenceScreen preferenceScreen = destructivelyMergeScreens(screens);
         return new MergedPreferenceScreen(
