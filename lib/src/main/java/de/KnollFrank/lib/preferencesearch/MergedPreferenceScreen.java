@@ -31,8 +31,7 @@ public class MergedPreferenceScreen {
         this.preferenceScreenResetter = new PreferenceScreenResetter(preferenceScreen, searchableInfoAttribute);
     }
 
-    // FK-TODO: rename to findHost()
-    public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHostByPreference(final Preference preference) {
+    public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHost(final Preference preference) {
         return Maps.get(hostByPreference, preference);
     }
 

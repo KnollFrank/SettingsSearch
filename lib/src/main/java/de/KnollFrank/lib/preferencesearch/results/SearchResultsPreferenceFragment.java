@@ -74,7 +74,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         }
         this
                 .mergedPreferenceScreen
-                .findHostByPreference(preference)
+                .findHost(preference)
                 .ifPresent(host -> showPreferenceScreenAndHighlightPreference(host, preference));
     }
 
