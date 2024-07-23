@@ -4,7 +4,7 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class FragmentInitializer implements PreferenceDialogs {
+public class FragmentInitializer implements IFragmentInitializer, PreferenceDialogs {
 
     private final FragmentManager fragmentManager;
     private final @IdRes int containerViewId;
@@ -14,6 +14,7 @@ public class FragmentInitializer implements PreferenceDialogs {
         this.containerViewId = containerViewId;
     }
 
+    @Override
     public void initialize(final Fragment fragment) {
         this
                 .fragmentManager
