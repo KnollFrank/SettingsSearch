@@ -2,7 +2,6 @@ package de.KnollFrank.lib.preferencesearch.provider;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.Preference;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -24,17 +23,14 @@ class DialogFragments {
         this.fragmentSupplier = fragmentSupplier;
     }
 
-    public Optional<String> getStringFromDialogFragment(
-            final Preference preference,
-            final Function<Fragment, Optional<String>> getString) {
-        final Fragment preferenceDialog = openPreferenceDialog(preference);
+    public Optional<String> getStringFromDialogFragment(final Function<Fragment, Optional<String>> getString) {
+        final Fragment preferenceDialog = openPreferenceDialog();
         final Optional<String> searchableInfo = getString.apply(preferenceDialog);
         closePreferenceDialog(preferenceDialog);
         return searchableInfo;
     }
 
-    // FK-TODO: remove preference
-    private Fragment openPreferenceDialog(final Preference preference) {
+    private Fragment openPreferenceDialog() {
         final Fragment preferenceDialog = fragmentSupplier.apply(fragmentManager);
         fragmentInitializer.initializePreferenceDialog(preferenceDialog);
         return preferenceDialog;

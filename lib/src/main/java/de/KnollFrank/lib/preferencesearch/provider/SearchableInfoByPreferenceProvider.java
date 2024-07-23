@@ -74,11 +74,11 @@ class SearchableInfoByPreferenceProvider {
                         fragments.fragmentInitializer,
                         fragmentManager,
                         fragmentManager -> preferenceDialogProvider.getPreferenceDialog(host, preference, fragmentManager));
-        return dialogFragments.getStringFromDialogFragment(preference, this::getSearchableInfo);
+        return dialogFragments.getStringFromDialogFragment(this::getSearchableInfo);
     }
 
-    private Optional<String> getSearchableInfo(final Fragment fragment) {
-        return fragment instanceof final HasSearchableInfo hasSearchableInfo ?
+    private Optional<String> getSearchableInfo(final Fragment preferenceDialog) {
+        return preferenceDialog instanceof final HasSearchableInfo hasSearchableInfo ?
                 Optional.of(hasSearchableInfo.getSearchableInfo()) :
                 Optional.empty();
     }
