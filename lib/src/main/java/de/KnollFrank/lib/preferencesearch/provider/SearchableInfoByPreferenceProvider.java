@@ -56,14 +56,12 @@ class SearchableInfoByPreferenceProvider {
                                 preference ->
                                         preferenceDialogProvider
                                                 .getPreferenceDialog(preferenceScreenWithHost.host, preference)
-                                                .flatMap(this::getSearchableInfo)));
+                                                .map(this::getSearchableInfo)));
     }
 
-    // FK-TODO: kein Optional<String>, sondern direkt String?
-    private Optional<String> getSearchableInfo(final Fragment preferenceDialog) {
+    private String getSearchableInfo(final Fragment preferenceDialog) {
         preferenceDialogs.showPreferenceDialog(preferenceDialog);
-        final Optional<String> searchableInfo =
-                Optional.of(searchableInfoByPreferenceDialogProvider.getSearchableInfo(preferenceDialog));
+        final String searchableInfo = searchableInfoByPreferenceDialogProvider.getSearchableInfo(preferenceDialog);
         preferenceDialogs.hidePreferenceDialog(preferenceDialog);
         return searchableInfo;
     }
