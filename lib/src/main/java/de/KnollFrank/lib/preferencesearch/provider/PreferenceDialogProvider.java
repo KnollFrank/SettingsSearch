@@ -4,9 +4,10 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Optional;
+
+@FunctionalInterface
 public interface PreferenceDialogProvider {
 
-    boolean hasPreferenceDialog(Class<? extends PreferenceFragmentCompat> hostOfPreference, Preference preference);
-
-    Fragment getPreferenceDialog(Class<? extends PreferenceFragmentCompat> hostOfPreference, Preference preference);
+    Optional<Fragment> getPreferenceDialog(Class<? extends PreferenceFragmentCompat> hostOfPreference, Preference preference);
 }

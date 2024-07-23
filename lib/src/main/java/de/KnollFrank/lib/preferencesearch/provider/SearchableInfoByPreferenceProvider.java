@@ -47,15 +47,13 @@ class SearchableInfoByPreferenceProvider {
         return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
-                .filter(preference -> preferenceDialogProvider.hasPreferenceDialog(preferenceScreenWithHost.host, preference))
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
                                 preference ->
-                                        getSearchableInfo(
-                                                preferenceDialogProvider.getPreferenceDialog(
-                                                        preferenceScreenWithHost.host,
-                                                        preference))));
+                                        preferenceDialogProvider
+                                                .getPreferenceDialog(preferenceScreenWithHost.host, preference)
+                                                .flatMap(this::getSearchableInfo)));
     }
 
     // FK-TODO: kein Optional<String>, sondern direkt String?

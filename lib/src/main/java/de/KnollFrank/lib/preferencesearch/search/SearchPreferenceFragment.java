@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
@@ -85,18 +83,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchableInfoProviders(Collections.emptyMap()),
                 new SearchableInfoAttribute(),
                 new DefaultFragmentFactory(),
-                new PreferenceDialogProvider() {
-
-                    @Override
-                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
-                        return false;
-                    }
-
-                    @Override
-                    public DialogFragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
-                        throw new IllegalArgumentException();
-                    }
-                });
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Override

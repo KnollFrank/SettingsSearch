@@ -16,6 +16,7 @@ import de.KnollFrank.preferencesearch.R;
 
 public class CustomDialogFragment extends DialogFragment implements HasSearchableInfo {
 
+    // FK-TODO: remove TAG
     public static final String TAG = CustomDialogFragment.class.getName();
 
     public static void showInstance(final FragmentManager fragmentManager) {

@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -83,7 +84,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> !keyOfPreference.equals(preference.getKey()),
                 keyword,
                 not(hasItem(keyOfPreference)),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -101,7 +102,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -122,7 +123,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -144,7 +145,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -164,7 +165,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 summaryOff,
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -184,7 +185,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 summaryOn,
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -205,7 +206,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -225,21 +226,10 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                new PreferenceDialogProvider() {
-
-                    @Override
-                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
-                        return preference instanceof CustomDialogPreference;
-                    }
-
-                    @Override
-                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
-                        if (preference instanceof CustomDialogPreference) {
-                            return new CustomDialogFragment();
-                        }
-                        throw new IllegalArgumentException();
-                    }
-                });
+                (hostOfPreference, preference) ->
+                        preference instanceof CustomDialogPreference ?
+                                Optional.of(new CustomDialogFragment()) :
+                                Optional.empty());
     }
 
     @Test
@@ -251,21 +241,10 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                new PreferenceDialogProvider() {
-
-                    @Override
-                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
-                        return keyOfPreference.equals(preference.getKey());
-                    }
-
-                    @Override
-                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
-                        if (keyOfPreference.equals(preference.getKey())) {
-                            return new CustomDialogFragment();
-                        }
-                        throw new IllegalArgumentException();
-                    }
-                });
+                (hostOfPreference, preference) ->
+                        keyOfPreference.equals(preference.getKey()) ?
+                                Optional.of(new CustomDialogFragment()) :
+                                Optional.empty());
     }
 
     @Test
@@ -286,7 +265,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -308,7 +287,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 hasItem(keyOfPreference),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     @Test
@@ -327,7 +306,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 not(hasItem(keyOfPreference)),
-                getDefaultFragmentByPreference());
+                (hostOfPreference, preference) -> Optional.empty());
     }
 
     private static void testSearch(final PreferenceFragmentCompat preferenceFragment,
@@ -412,20 +391,5 @@ public class PreferenceSearcherTest {
                 .map(Preference::getKey)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
-    }
-
-    private static PreferenceDialogProvider getDefaultFragmentByPreference() {
-        return new PreferenceDialogProvider() {
-
-            @Override
-            public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
-                return false;
-            }
-
-            @Override
-            public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
-                throw new IllegalArgumentException();
-            }
-        };
     }
 }
