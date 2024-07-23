@@ -82,12 +82,12 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 new PreferenceDialogProvider() {
 
                     @Override
-                    public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
                         return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey());
                     }
 
                     @Override
-                    public Fragment getFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
                         if (preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey())) {
                             return fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
                         }

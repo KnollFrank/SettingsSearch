@@ -89,12 +89,12 @@ public class SearchPreferenceFragment extends Fragment {
                 new PreferenceDialogProvider() {
 
                     @Override
-                    public boolean hasFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
                         return false;
                     }
 
                     @Override
-                    public DialogFragment getFragment(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                    public DialogFragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
                         throw new IllegalArgumentException();
                     }
                 });
