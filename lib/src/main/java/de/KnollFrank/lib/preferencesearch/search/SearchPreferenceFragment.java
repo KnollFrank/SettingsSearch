@@ -8,7 +8,6 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -94,7 +93,7 @@ public class SearchPreferenceFragment extends Fragment {
                     }
 
                     @Override
-                    public DialogFragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                    public DialogFragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
                         throw new IllegalArgumentException();
                     }
                 });
@@ -116,16 +115,14 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {
-        final FragmentManager fragmentManager = getChildFragmentManager();
         final Fragments fragments =
                 FragmentsFactory.createFragments(
                         fragmentFactory,
                         requireActivity(),
-                        fragmentManager,
+                        getChildFragmentManager(),
                         R.id.dummyFragmentContainerView);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
-                        fragmentManager,
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(getContext()),

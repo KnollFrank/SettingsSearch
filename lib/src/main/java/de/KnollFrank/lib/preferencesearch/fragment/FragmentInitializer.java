@@ -22,8 +22,8 @@ public class FragmentInitializer {
                 .commitNow();
     }
 
-    // FK-TODO: move initializePreferenceDialog() and removePreferenceDialog() to their own class named PreferenceDialogInitializer
-    public void initializePreferenceDialog(final Fragment preferenceDialog) {
+    // FK-TODO: move showPreferenceDialog() and hidePreferenceDialog() to their own class named PreferenceDialogInitializer
+    public void showPreferenceDialog(final Fragment preferenceDialog) {
         this
                 .fragmentManager
                 .beginTransaction()
@@ -31,7 +31,7 @@ public class FragmentInitializer {
                 .commitNow();
     }
 
-    public void removePreferenceDialog(final Fragment preferenceDialog) {
+    public void hidePreferenceDialog(final Fragment preferenceDialog) {
         this
                 .fragmentManager
                 .beginTransaction()

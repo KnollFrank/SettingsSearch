@@ -7,7 +7,6 @@ import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferen
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
@@ -233,9 +232,8 @@ public class PreferenceSearcherTest {
                         return preference instanceof CustomDialogPreference;
                     }
 
-                    // FK-TODO: remove FragmentManager parameter
                     @Override
-                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
                         if (preference instanceof CustomDialogPreference) {
                             return new CustomDialogFragment();
                         }
@@ -261,7 +259,7 @@ public class PreferenceSearcherTest {
                     }
 
                     @Override
-                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
                         if (keyOfPreference.equals(preference.getKey())) {
                             return new CustomDialogFragment();
                         }
@@ -385,7 +383,6 @@ public class PreferenceSearcherTest {
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
-                        fragmentActivity.getSupportFragmentManager(),
                         fragments,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity),
@@ -426,7 +423,7 @@ public class PreferenceSearcherTest {
             }
 
             @Override
-            public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+            public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
                 throw new IllegalArgumentException();
             }
         };

@@ -8,7 +8,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -87,7 +86,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                     }
 
                     @Override
-                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
+                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
                         if (preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey())) {
                             return new CustomDialogFragment();
                         }

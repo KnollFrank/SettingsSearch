@@ -1,9 +1,7 @@
 package de.KnollFrank.lib.preferencesearch.provider;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Collection;
 import java.util.Map;
@@ -20,14 +18,11 @@ import de.KnollFrank.lib.preferencesearch.search.provider.HasSearchableInfo;
 class SearchableInfoByPreferenceProvider {
 
     private final Fragments fragments;
-    private final FragmentManager fragmentManager;
     private final PreferenceDialogProvider preferenceDialogProvider;
 
     public SearchableInfoByPreferenceProvider(final Fragments fragments,
-                                              final FragmentManager fragmentManager,
                                               final PreferenceDialogProvider preferenceDialogProvider) {
         this.fragments = fragments;
-        this.fragmentManager = fragmentManager;
         this.preferenceDialogProvider = preferenceDialogProvider;
     }
 
@@ -63,23 +58,20 @@ class SearchableInfoByPreferenceProvider {
                                 preference ->
                                         clickablePreferenceProvider
                                                 .asClickablePreference(preference)
-                                                .flatMap(clickablePreference -> getSearchableInfo(preferenceScreenWithHost.host, clickablePreference))));
+                                                .flatMap(clickablePreference ->
+                                                        getSearchableInfo(
+                                                                preferenceDialogProvider.getPreferenceDialog(
+                                                                        preferenceScreenWithHost.host,
+                                                                        clickablePreference)))));
     }
 
     // FK-TODO: kein Optional<String>, sondern direkt String?
-    private Optional<String> getSearchableInfo(final Class<? extends PreferenceFragmentCompat> host,
-                                               final Preference preference) {
-        final DialogFragments dialogFragments =
-                new DialogFragments(
-                        fragments.fragmentInitializer,
-                        fragmentManager,
-                        fragmentManager -> preferenceDialogProvider.getPreferenceDialog(host, preference, fragmentManager));
-        return dialogFragments.getStringFromDialogFragment(this::getSearchableInfo);
-    }
-
     private Optional<String> getSearchableInfo(final Fragment preferenceDialog) {
-        return preferenceDialog instanceof final HasSearchableInfo hasSearchableInfo ?
+        fragments.fragmentInitializer.showPreferenceDialog(preferenceDialog);
+        final Optional<String> searchableInfo = preferenceDialog instanceof final HasSearchableInfo hasSearchableInfo ?
                 Optional.of(hasSearchableInfo.getSearchableInfo()) :
                 Optional.empty();
+        fragments.fragmentInitializer.hidePreferenceDialog(preferenceDialog);
+        return searchableInfo;
     }
 }

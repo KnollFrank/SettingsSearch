@@ -8,6 +8,7 @@ import com.google.common.base.Function;
 
 import java.util.Optional;
 
+// FK-TODO: remove this class completely, no inling, no clickability of Preferences needed any more
 class ClickablePreferenceProvider {
 
     private final PreferenceFragmentCompat preferenceFragment;
