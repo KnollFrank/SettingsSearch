@@ -11,10 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
-import de.KnollFrank.lib.preferencesearch.search.provider.HasSearchableInfo;
 import de.KnollFrank.preferencesearch.R;
 
-public class CustomDialogFragment extends DialogFragment implements HasSearchableInfo {
+public class CustomDialogFragment extends DialogFragment {
 
     public static void showInstance(final FragmentManager fragmentManager) {
         new CustomDialogFragment().show(fragmentManager, null);
@@ -26,7 +25,6 @@ public class CustomDialogFragment extends DialogFragment implements HasSearchabl
         return inflater.inflate(R.layout.custom_dialog, container, false);
     }
 
-    @Override
     public String getSearchableInfo() {
         final TextView textView = getView().findViewById(R.id.textView);
         return textView.getText().toString();

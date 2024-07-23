@@ -13,17 +13,20 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.fragment.PreferenceDialogs;
-import de.KnollFrank.lib.preferencesearch.search.provider.HasSearchableInfo;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoByPreferenceDialogProvider;
 
 class SearchableInfoByPreferenceProvider {
 
     private final PreferenceDialogs preferenceDialogs;
     private final PreferenceDialogProvider preferenceDialogProvider;
+    private final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider;
 
     public SearchableInfoByPreferenceProvider(final PreferenceDialogs preferenceDialogs,
-                                              final PreferenceDialogProvider preferenceDialogProvider) {
+                                              final PreferenceDialogProvider preferenceDialogProvider,
+                                              final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
         this.preferenceDialogs = preferenceDialogs;
         this.preferenceDialogProvider = preferenceDialogProvider;
+        this.searchableInfoByPreferenceDialogProvider = searchableInfoByPreferenceDialogProvider;
     }
 
     public Map<Preference, String> getSearchableInfoByPreference(
@@ -59,9 +62,8 @@ class SearchableInfoByPreferenceProvider {
     // FK-TODO: kein Optional<String>, sondern direkt String?
     private Optional<String> getSearchableInfo(final Fragment preferenceDialog) {
         preferenceDialogs.showPreferenceDialog(preferenceDialog);
-        final Optional<String> searchableInfo = preferenceDialog instanceof final HasSearchableInfo hasSearchableInfo ?
-                Optional.of(hasSearchableInfo.getSearchableInfo()) :
-                Optional.empty();
+        final Optional<String> searchableInfo =
+                Optional.of(searchableInfoByPreferenceDialogProvider.getSearchableInfo(preferenceDialog));
         preferenceDialogs.hidePreferenceDialog(preferenceDialog);
         return searchableInfo;
     }

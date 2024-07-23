@@ -33,6 +33,7 @@ import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
@@ -45,6 +46,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
     private final PreferenceDialogProvider preferenceDialogProvider;
+    private final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
@@ -52,14 +54,16 @@ public class SearchPreferenceFragment extends Fragment {
             final SearchableInfoProviders searchableInfoProviders,
             final SearchableInfoAttribute searchableInfoAttribute,
             final FragmentFactory fragmentFactory,
-            final PreferenceDialogProvider preferenceDialogProvider) {
+            final PreferenceDialogProvider preferenceDialogProvider,
+            final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         searchablePreferencePredicate,
                         searchableInfoProviders,
                         searchableInfoAttribute,
                         fragmentFactory,
-                        preferenceDialogProvider);
+                        preferenceDialogProvider,
+                        searchableInfoByPreferenceDialogProvider);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
@@ -68,13 +72,14 @@ public class SearchPreferenceFragment extends Fragment {
                                     final SearchableInfoProviders searchableInfoProviders,
                                     final SearchableInfoAttribute searchableInfoAttribute,
                                     final FragmentFactory fragmentFactory,
-                                    final PreferenceDialogProvider preferenceDialogProvider) {
+                                    final PreferenceDialogProvider preferenceDialogProvider, final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
         super(R.layout.searchpreference_fragment);
         this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.searchableInfoProviders = searchableInfoProviders;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.fragmentFactory = fragmentFactory;
         this.preferenceDialogProvider = preferenceDialogProvider;
+        this.searchableInfoByPreferenceDialogProvider = searchableInfoByPreferenceDialogProvider;
     }
 
     public SearchPreferenceFragment() {
@@ -83,7 +88,8 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchableInfoProviders(Collections.emptyMap()),
                 new SearchableInfoAttribute(),
                 new DefaultFragmentFactory(),
-                (hostOfPreference, preference) -> Optional.empty());
+                (hostOfPreference, preference) -> Optional.empty(),
+                preferenceDialog -> "");
     }
 
     @Override
@@ -113,6 +119,7 @@ public class SearchPreferenceFragment extends Fragment {
                         searchablePreferencePredicate,
                         searchableInfoAttribute,
                         preferenceDialogProvider,
+                        searchableInfoByPreferenceDialogProvider,
                         true);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
     }

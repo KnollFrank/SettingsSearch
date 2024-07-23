@@ -79,7 +79,13 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 (hostOfPreference, preference) ->
                         preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                 Optional.of(new CustomDialogFragment()) :
-                                Optional.empty());
+                                Optional.empty(),
+                preferenceDialog -> {
+                    if (preferenceDialog instanceof final CustomDialogFragment customDialogFragment) {
+                        return customDialogFragment.getSearchableInfo();
+                    }
+                    throw new IllegalArgumentException();
+                });
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
