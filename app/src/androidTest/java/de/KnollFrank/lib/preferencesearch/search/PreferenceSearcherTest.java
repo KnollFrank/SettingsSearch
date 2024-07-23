@@ -233,10 +233,11 @@ public class PreferenceSearcherTest {
                         return preference instanceof CustomDialogPreference;
                     }
 
+                    // FK-TODO: remove FragmentManager parameter
                     @Override
                     public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
                         if (preference instanceof CustomDialogPreference) {
-                            return fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
+                            return new CustomDialogFragment();
                         }
                         throw new IllegalArgumentException();
                     }
@@ -262,7 +263,7 @@ public class PreferenceSearcherTest {
                     @Override
                     public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
                         if (keyOfPreference.equals(preference.getKey())) {
-                            return fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
+                            return new CustomDialogFragment();
                         }
                         throw new IllegalArgumentException();
                     }

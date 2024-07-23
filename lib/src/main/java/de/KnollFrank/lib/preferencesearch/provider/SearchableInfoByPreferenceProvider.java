@@ -66,10 +66,12 @@ class SearchableInfoByPreferenceProvider {
                                                 .flatMap(clickablePreference -> getSearchableInfo(preferenceScreenWithHost.host, clickablePreference))));
     }
 
+    // FK-TODO: kein Optional<String>, sondern direkt String?
     private Optional<String> getSearchableInfo(final Class<? extends PreferenceFragmentCompat> host,
                                                final Preference preference) {
         final DialogFragments dialogFragments =
                 new DialogFragments(
+                        fragments.fragmentInitializer,
                         fragmentManager,
                         fragmentManager -> preferenceDialogProvider.getPreferenceDialog(host, preference, fragmentManager));
         return dialogFragments.getStringFromDialogFragment(preference, this::getSearchableInfo);

@@ -89,7 +89,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                     @Override
                     public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference, final FragmentManager fragmentManager) {
                         if (preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey())) {
-                            return fragmentManager.findFragmentByTag(CustomDialogFragment.TAG);
+                            return new CustomDialogFragment();
                         }
                         throw new IllegalArgumentException();
                     }

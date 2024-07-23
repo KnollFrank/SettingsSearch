@@ -4,7 +4,7 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-class FragmentInitializer {
+public class FragmentInitializer {
 
     private final FragmentManager fragmentManager;
     private final @IdRes int containerViewId;
@@ -19,6 +19,23 @@ class FragmentInitializer {
                 .fragmentManager
                 .beginTransaction()
                 .replace(this.containerViewId, fragment)
+                .commitNow();
+    }
+
+    // FK-TODO: move initializePreferenceDialog() and removePreferenceDialog() to their own class named PreferenceDialogInitializer
+    public void initializePreferenceDialog(final Fragment preferenceDialog) {
+        this
+                .fragmentManager
+                .beginTransaction()
+                .add(this.containerViewId, preferenceDialog)
+                .commitNow();
+    }
+
+    public void removePreferenceDialog(final Fragment preferenceDialog) {
+        this
+                .fragmentManager
+                .beginTransaction()
+                .remove(preferenceDialog)
                 .commitNow();
     }
 }

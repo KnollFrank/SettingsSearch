@@ -14,7 +14,8 @@ import java.util.function.Consumer;
 public class Fragments {
 
     private final FragmentFactory fragmentFactory;
-    private final FragmentInitializer fragmentInitializer;
+    // FK-TODO: make private again
+    public final FragmentInitializer fragmentInitializer;
     private final Context context;
 
     public Fragments(final FragmentFactory fragmentFactory,
