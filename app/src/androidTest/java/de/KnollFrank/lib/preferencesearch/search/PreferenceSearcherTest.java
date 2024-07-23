@@ -251,7 +251,8 @@ public class PreferenceSearcherTest {
                 new PrefsFragmentFirst(),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference), new PreferenceDialogProvider() {
+                hasItem(keyOfPreference),
+                new PreferenceDialogProvider() {
 
                     @Override
                     public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
