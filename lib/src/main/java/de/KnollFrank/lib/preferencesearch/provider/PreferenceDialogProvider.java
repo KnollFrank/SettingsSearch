@@ -6,7 +6,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 public interface PreferenceDialogProvider {
 
-    boolean hasPreferenceDialog(Class<? extends PreferenceFragmentCompat> host, Preference preference);
+    boolean hasPreferenceDialog(Class<? extends PreferenceFragmentCompat> hostOfPreference, Preference preference);
 
-    Fragment getPreferenceDialog(Class<? extends PreferenceFragmentCompat> host, Preference preference);
+    Fragment getPreferenceDialog(Class<? extends PreferenceFragmentCompat> hostOfPreference, Preference preference);
 }

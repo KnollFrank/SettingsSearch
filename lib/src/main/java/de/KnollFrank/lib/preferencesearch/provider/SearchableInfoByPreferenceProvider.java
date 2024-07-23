@@ -44,10 +44,6 @@ class SearchableInfoByPreferenceProvider {
 
     private Map<Preference, Optional<String>> getOptionalSearchableInfoByPreference(
             final PreferenceScreenWithHost preferenceScreenWithHost) {
-        final ClickablePreferenceProvider clickablePreferenceProvider =
-                ClickablePreferenceProvider.create(
-                        preferenceScreenWithHost.host,
-                        fragments::instantiateAndInitializeFragment);
         return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()
@@ -56,13 +52,10 @@ class SearchableInfoByPreferenceProvider {
                         Collectors.toMap(
                                 Function.identity(),
                                 preference ->
-                                        clickablePreferenceProvider
-                                                .asClickablePreference(preference)
-                                                .flatMap(clickablePreference ->
-                                                        getSearchableInfo(
-                                                                preferenceDialogProvider.getPreferenceDialog(
-                                                                        preferenceScreenWithHost.host,
-                                                                        clickablePreference)))));
+                                        getSearchableInfo(
+                                                preferenceDialogProvider.getPreferenceDialog(
+                                                        preferenceScreenWithHost.host,
+                                                        preference))));
     }
 
     // FK-TODO: kein Optional<String>, sondern direkt String?

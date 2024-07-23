@@ -228,12 +228,12 @@ public class PreferenceSearcherTest {
                 new PreferenceDialogProvider() {
 
                     @Override
-                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
                         return preference instanceof CustomDialogPreference;
                     }
 
                     @Override
-                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
                         if (preference instanceof CustomDialogPreference) {
                             return new CustomDialogFragment();
                         }
@@ -254,12 +254,12 @@ public class PreferenceSearcherTest {
                 new PreferenceDialogProvider() {
 
                     @Override
-                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                    public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
                         return keyOfPreference.equals(preference.getKey());
                     }
 
                     @Override
-                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+                    public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
                         if (keyOfPreference.equals(preference.getKey())) {
                             return new CustomDialogFragment();
                         }
@@ -418,12 +418,12 @@ public class PreferenceSearcherTest {
         return new PreferenceDialogProvider() {
 
             @Override
-            public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+            public boolean hasPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
                 return false;
             }
 
             @Override
-            public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> host, final Preference preference) {
+            public Fragment getPreferenceDialog(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final Preference preference) {
                 throw new IllegalArgumentException();
             }
         };
