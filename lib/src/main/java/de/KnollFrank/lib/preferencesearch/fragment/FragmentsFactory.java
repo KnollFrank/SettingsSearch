@@ -13,7 +13,7 @@ public class FragmentsFactory {
                                             final @IdRes int containerViewId) {
         return new Fragments(
                 fragmentFactory,
-                new FragmentInitializer(fragmentManager, containerViewId),
+                new DefaultFragmentInitializer(fragmentManager, containerViewId),
                 context);
     }
 }

@@ -14,11 +14,11 @@ import java.util.function.Consumer;
 public class Fragments {
 
     private final FragmentFactory fragmentFactory;
-    private final IFragmentInitializer fragmentInitializer;
+    private final FragmentInitializer fragmentInitializer;
     private final Context context;
 
     public Fragments(final FragmentFactory fragmentFactory,
-                     final IFragmentInitializer fragmentInitializer,
+                     final FragmentInitializer fragmentInitializer,
                      final Context context) {
         this.fragmentFactory = fragmentFactory;
         this.fragmentInitializer = fragmentInitializer;

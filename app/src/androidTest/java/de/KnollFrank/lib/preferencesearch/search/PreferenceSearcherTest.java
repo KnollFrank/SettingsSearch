@@ -30,7 +30,7 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
-import de.KnollFrank.lib.preferencesearch.fragment.FragmentInitializer;
+import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogProvider;
@@ -351,8 +351,8 @@ public class PreferenceSearcherTest {
             final SearchablePreferencePredicate searchablePreferencePredicate,
             final FragmentActivity fragmentActivity,
             final PreferenceDialogProvider preferenceDialogProvider) {
-        final FragmentInitializer fragmentInitializer =
-                new FragmentInitializer(
+        final DefaultFragmentInitializer defaultFragmentInitializer =
+                new DefaultFragmentInitializer(
                         fragmentActivity.getSupportFragmentManager(),
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
         final Fragments fragments =
@@ -361,12 +361,12 @@ public class PreferenceSearcherTest {
                                 fragmentClassName.equals(preferenceFragment.getClass().getName()) ?
                                         preferenceFragment :
                                         Fragment.instantiate(context, fragmentClassName),
-                        fragmentInitializer,
+                        defaultFragmentInitializer,
                         fragmentActivity);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         fragments,
-                        fragmentInitializer,
+                        defaultFragmentInitializer,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity),
                         searchablePreferencePredicate,
