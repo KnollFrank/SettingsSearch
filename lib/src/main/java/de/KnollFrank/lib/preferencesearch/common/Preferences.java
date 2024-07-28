@@ -23,8 +23,8 @@ public class Preferences {
         final ImmutableList.Builder<Preference> childrenBuilder = ImmutableList.builder();
         for (final Preference child : getDirectChildren(preferenceGroup)) {
             childrenBuilder.add(child);
-            if (child instanceof PreferenceGroup) {
-                childrenBuilder.addAll(getAllChildren((PreferenceGroup) child));
+            if (child instanceof final PreferenceGroup childPreferenceGroup) {
+                childrenBuilder.addAll(getAllChildren(childPreferenceGroup));
             }
         }
         return childrenBuilder.build();
