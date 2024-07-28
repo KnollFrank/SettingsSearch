@@ -17,8 +17,8 @@ public class PreferenceScreenWithHostProvider {
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment) {
         final Fragment _fragment = fragments.instantiateAndInitializeFragment(fragment);
-        return _fragment instanceof PreferenceFragmentCompat ?
-                Optional.of(PreferenceScreenWithHost.fromPreferenceFragment((PreferenceFragmentCompat) _fragment)) :
+        return _fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
+                Optional.of(PreferenceScreenWithHost.fromPreferenceFragment(preferenceFragment)) :
                 Optional.empty();
     }
 }

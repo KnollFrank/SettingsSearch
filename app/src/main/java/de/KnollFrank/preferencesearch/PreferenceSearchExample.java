@@ -26,6 +26,10 @@ import de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: README.md anpassen
 // FK-TODO: rename project to SettingsSearch, also rename the preferencesearch part of java packages to settingssearch
+// FK-FIXME: type in search field "in a" => crash
+//           java.lang.IllegalStateException: Two different ViewHolders have the same stable ID. Stable IDs in your adapter MUST BE unique and SHOULD NOT change.
+//                                                                                                     ViewHolder 1:PreferenceViewHolder{73d5ea1 position=4 id=6, oldPos=-1, pLpos:-1 not recyclable(1)}
+//                                                                                                     View Holder 2:PreferenceViewHolder{b834bb4 position=2 id=6, oldPos=-1, pLpos:-1} androidx.recyclerview.widget.RecyclerView{da9791d VFED.V... ......ID 0,0-1080,862 #7f080173 app:id/recycler_view}, adapter:de.KnollFrank.lib.preferencesearch.results.adapter.SearchablePreferenceGroupAdapter@20368e1, layout:androidx.recyclerview.widget.LinearLayoutManager@d7d9792, context:de.KnollFrank.preferencesearch.PreferenceSearchExample@e249b2
 public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
