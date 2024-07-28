@@ -236,7 +236,6 @@ public class PreferenceSearcherTest {
 
     @Test
     public void shouldSearchAndFindInCustomDialogPreference() {
-        // FK-TODO: make hard coded text "some text in a custom dialog" configurable in CustomDialogFragment
         final String keyword = "some text in a custom dialog";
         final String keyOfPreference = "keyOfCustomDialogPreference";
         testSearch(
