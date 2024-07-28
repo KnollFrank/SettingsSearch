@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.preferencesearch.ConnectedPreferenceScreens;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
@@ -86,10 +87,10 @@ public class MergedPreferenceScreenProvider {
     }
 
     private Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {
-        final Set<PreferenceScreenWithHost> screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
-        removeInvisiblePreferences(screens);
-        removeNonSearchablePreferences(screens);
-        return screens;
+        final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
+        removeInvisiblePreferences(screens.connectedPreferenceScreens);
+        removeNonSearchablePreferences(screens.connectedPreferenceScreens);
+        return screens.connectedPreferenceScreens;
     }
 
     private static void removeInvisiblePreferences(final Set<PreferenceScreenWithHost> screens) {

@@ -40,7 +40,10 @@ public class PreferenceScreensProvider1Test {
                         Fragment1ConnectedToFragment2AndFragment4.class.getName());
 
         // When
-        final Set<PreferenceScreenWithHost> preferenceScreens = preferenceScreensProvider.getConnectedPreferenceScreens(root);
+        final Set<PreferenceScreenWithHost> preferenceScreens =
+                preferenceScreensProvider
+                        .getConnectedPreferenceScreens(root)
+                        .connectedPreferenceScreens;
 
         // Then
         assertThat(

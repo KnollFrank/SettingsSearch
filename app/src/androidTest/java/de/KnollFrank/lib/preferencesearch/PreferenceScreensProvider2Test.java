@@ -41,7 +41,10 @@ public class PreferenceScreensProvider2Test {
                         FragmentConnectedToNonPreferenceFragment.class.getName());
 
         // When
-        final Set<PreferenceScreenWithHost> preferenceScreens = preferenceScreensProvider.getConnectedPreferenceScreens(root);
+        final Set<PreferenceScreenWithHost> preferenceScreens =
+                preferenceScreensProvider
+                        .getConnectedPreferenceScreens(root)
+                        .connectedPreferenceScreens;
 
         // Then
         assertThat(

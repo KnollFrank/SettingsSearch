@@ -20,12 +20,12 @@ public class PreferenceScreensProvider {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
-    public Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
+    public ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
         final Set<PreferenceScreenWithHost> connectedPreferenceScreens = new HashSet<>();
         getConnectedPreferenceScreens(
                 PreferenceScreenWithHost.fromPreferenceFragment(root),
                 connectedPreferenceScreens);
-        return connectedPreferenceScreens;
+        return new ConnectedPreferenceScreens(connectedPreferenceScreens);
     }
 
     private void getConnectedPreferenceScreens(final PreferenceScreenWithHost root,
