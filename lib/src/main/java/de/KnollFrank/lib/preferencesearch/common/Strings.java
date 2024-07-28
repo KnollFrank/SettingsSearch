@@ -35,6 +35,7 @@ public class Strings {
             }
 
             private int getNextIndex(final int fromIndex) {
+                // FK-TODO: Suche nicht nur mit indexOf(), sondern ähnlich zur Suche in AndroidStudio, z.B. Strg-Alt-T, dann "mergedscreen" eingeben, es wird dann sogar MergedPreferenceScreen gefunden und die passenden Teile gehighlightet.
                 return haystack.indexOf(needle, fromIndex);
             }
         };
