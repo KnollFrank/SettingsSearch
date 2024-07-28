@@ -53,8 +53,9 @@ class Matchers {
             @Override
             public boolean matchesSafely(final View view) {
                 final ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
+                return parent instanceof final ViewGroup viewGroup
+                        && parentMatcher.matches(parent)
+                        && view.equals(viewGroup.getChildAt(position));
             }
         };
     }
