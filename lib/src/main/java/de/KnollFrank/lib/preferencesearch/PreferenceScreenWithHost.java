@@ -34,4 +34,11 @@ public class PreferenceScreenWithHost {
     public int hashCode() {
         return Objects.hash(host);
     }
+
+    @Override
+    public String toString() {
+        return "PreferenceScreenWithHost{" +
+                "host=" + host +
+                '}';
+    }
 }

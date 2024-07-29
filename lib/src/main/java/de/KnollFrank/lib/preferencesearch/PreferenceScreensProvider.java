@@ -3,11 +3,15 @@ package de.KnollFrank.lib.preferencesearch;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.HashSet;
+import org.jgrapht.Graph;
+import org.jgrapht.Graphs;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
@@ -21,21 +25,24 @@ public class PreferenceScreensProvider {
     }
 
     public ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
-        final Set<PreferenceScreenWithHost> connectedPreferenceScreens = new HashSet<>();
-        getConnectedPreferenceScreens(
+        final Graph<PreferenceScreenWithHost, DefaultEdge> preferenceScreenGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+        buildPreferenceScreenGraph(
                 PreferenceScreenWithHost.fromPreferenceFragment(root),
-                connectedPreferenceScreens);
-        return new ConnectedPreferenceScreens(connectedPreferenceScreens);
+                preferenceScreenGraph);
+        return new ConnectedPreferenceScreens(
+                preferenceScreenGraph.vertexSet(),
+                Collections.emptyMap());
     }
 
-    private void getConnectedPreferenceScreens(final PreferenceScreenWithHost root,
-                                               final Set<PreferenceScreenWithHost> connectedPreferenceScreens) {
-        if (connectedPreferenceScreens.contains(root)) {
+    private void buildPreferenceScreenGraph(final PreferenceScreenWithHost root,
+                                            final Graph<PreferenceScreenWithHost, DefaultEdge> preferenceScreenGraph) {
+        if (preferenceScreenGraph.containsVertex(root)) {
             return;
         }
-        connectedPreferenceScreens.add(root);
+        preferenceScreenGraph.addVertex(root);
         for (final PreferenceScreenWithHost child : getChildren(root)) {
-            getConnectedPreferenceScreens(child, connectedPreferenceScreens);
+            buildPreferenceScreenGraph(child, preferenceScreenGraph);
+            Graphs.addEdgeWithVertices(preferenceScreenGraph, root, child);
         }
     }
 
