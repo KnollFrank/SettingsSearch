@@ -1,15 +1,17 @@
 package de.KnollFrank.lib.preferencesearch;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 class PreferenceScreenGraphProvider {
@@ -32,22 +34,31 @@ class PreferenceScreenGraphProvider {
             return;
         }
         preferenceScreenGraph.addVertex(root);
-        for (final PreferenceScreenWithHost child : getChildren(root)) {
-            buildPreferenceScreenGraph(child, preferenceScreenGraph);
-            preferenceScreenGraph.addVertex(child);
-            preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(null));
-        }
+        this
+                .getConnectedPreferenceScreenByPreference(root.preferenceScreen)
+                .forEach(
+                        (preference, child) -> {
+                            buildPreferenceScreenGraph(child, preferenceScreenGraph);
+                            preferenceScreenGraph.addVertex(child);
+                            preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(preference));
+                        });
     }
 
-    private List<PreferenceScreenWithHost> getChildren(final PreferenceScreenWithHost preferenceScreenWithHost) {
-        return Preferences
-                .getAllChildren(preferenceScreenWithHost.preferenceScreen)
-                .stream()
-                .map(Preference::getFragment)
-                .filter(Objects::nonNull)
-                .map(this.preferenceScreenWithHostProvider::getPreferenceScreenOfFragment)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+    private Map<Preference, PreferenceScreenWithHost> getConnectedPreferenceScreenByPreference(final PreferenceScreen preferenceScreen) {
+        return Maps.filterPresentValues(
+                Preferences
+                        .getAllChildren(preferenceScreen)
+                        .stream()
+                        .collect(
+                                Collectors.toMap(
+                                        Function.identity(),
+                                        this::getConnectedPreferenceScreen)));
+    }
+
+    private Optional<PreferenceScreenWithHost> getConnectedPreferenceScreen(final Preference preference) {
+        final String fragment = preference.getFragment();
+        return fragment != null ?
+                this.preferenceScreenWithHostProvider.getPreferenceScreenOfFragment(fragment) :
+                Optional.empty();
     }
 }
