@@ -40,6 +40,7 @@ class PreferenceScreensProviderTestHelper {
                                                          final Context context) {
         final Preference preference = new Preference(context);
         preference.setFragment(fragment.getName());
+        preference.setTitle("preference connected to " + fragment.getSimpleName());
         return preference;
     }
 }
