@@ -3,9 +3,7 @@ package de.KnollFrank.lib.preferencesearch;
 import androidx.preference.Preference;
 
 import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,21 +20,22 @@ class PreferenceScreenGraphProvider {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
-    public Graph<PreferenceScreenWithHost, DefaultEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
-        final Graph<PreferenceScreenWithHost, DefaultEdge> preferenceScreenGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+    public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
+        final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
         buildPreferenceScreenGraph(root, preferenceScreenGraph);
         return preferenceScreenGraph;
     }
 
     private void buildPreferenceScreenGraph(final PreferenceScreenWithHost root,
-                                            final Graph<PreferenceScreenWithHost, DefaultEdge> preferenceScreenGraph) {
+                                            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         if (preferenceScreenGraph.containsVertex(root)) {
             return;
         }
         preferenceScreenGraph.addVertex(root);
         for (final PreferenceScreenWithHost child : getChildren(root)) {
             buildPreferenceScreenGraph(child, preferenceScreenGraph);
-            Graphs.addEdgeWithVertices(preferenceScreenGraph, root, child);
+            preferenceScreenGraph.addVertex(child);
+            preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(null));
         }
     }
 

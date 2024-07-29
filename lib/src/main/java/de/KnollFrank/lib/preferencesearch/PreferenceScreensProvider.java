@@ -3,7 +3,6 @@ package de.KnollFrank.lib.preferencesearch;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
 
 import java.util.Collections;
 
@@ -21,7 +20,7 @@ public class PreferenceScreensProvider {
                 Collections.emptyMap());
     }
 
-    private Graph<PreferenceScreenWithHost, DefaultEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
+    private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
         return new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider)
                 .getPreferenceScreenGraph(
                         PreferenceScreenWithHost.fromPreferenceFragment(root));
