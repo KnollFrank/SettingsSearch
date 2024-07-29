@@ -17,19 +17,19 @@ import de.KnollFrank.lib.preferencesearch.common.Preferences;
 class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
+    private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
-        final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
-        buildPreferenceScreenGraph(root, preferenceScreenGraph);
+        preferenceScreenGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
+        buildPreferenceScreenGraph(root);
         return preferenceScreenGraph;
     }
 
-    private void buildPreferenceScreenGraph(final PreferenceScreenWithHost root,
-                                            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+    private void buildPreferenceScreenGraph(final PreferenceScreenWithHost root) {
         if (preferenceScreenGraph.containsVertex(root)) {
             return;
         }
@@ -38,7 +38,7 @@ class PreferenceScreenGraphProvider {
                 .getConnectedPreferenceScreenByPreference(root.preferenceScreen)
                 .forEach(
                         (preference, child) -> {
-                            buildPreferenceScreenGraph(child, preferenceScreenGraph);
+                            buildPreferenceScreenGraph(child);
                             preferenceScreenGraph.addVertex(child);
                             preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(preference));
                         });
@@ -58,7 +58,7 @@ class PreferenceScreenGraphProvider {
     private Optional<PreferenceScreenWithHost> getConnectedPreferenceScreen(final Preference preference) {
         final String fragment = preference.getFragment();
         return fragment != null ?
-                this.preferenceScreenWithHostProvider.getPreferenceScreenOfFragment(fragment) :
+                preferenceScreenWithHostProvider.getPreferenceScreenOfFragment(fragment) :
                 Optional.empty();
     }
 }
