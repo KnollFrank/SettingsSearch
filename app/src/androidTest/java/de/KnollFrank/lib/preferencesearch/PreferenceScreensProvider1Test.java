@@ -7,18 +7,18 @@ import static de.KnollFrank.lib.preferencesearch.PreferenceScreensProviderTestHe
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.MoreCollectors;
 
 import org.junit.Test;
 
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.function.BiPredicate;
 
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
@@ -74,43 +74,50 @@ public class PreferenceScreensProvider1Test {
                         preferenceScreensProvider.getConnectedPreferenceScreens(root);
 
                 // Then
-                final Set<Preference> preferences = getPreferences(connectedPreferenceScreens.connectedPreferenceScreens);
-                final Preference preferencePointingToFragment3 =
-                        getPreferencePointingToFragment(
-                                preferences,
+                final Preference preferenceOfFragment2PointingToFragment3 =
+                        getPreference(
+                                connectedPreferenceScreens,
+                                Fragment2ConnectedToFragment3.class,
                                 Fragment3.class);
+                final Preference preferenceOfFragment1PointingToFragment2 =
+                        getPreference(
+                                connectedPreferenceScreens,
+                                Fragment1ConnectedToFragment2AndFragment4.class,
+                                Fragment2ConnectedToFragment3.class);
                 assertThat(
-                        connectedPreferenceScreens.preferencePathByPreference.get(preferencePointingToFragment3),
+                        connectedPreferenceScreens.preferencePathByPreference.get(preferenceOfFragment2PointingToFragment3),
                         is(
                                 new PreferencePath(
                                         ImmutableList.of(
-                                                getPreferencePointingToFragment(
-                                                        preferences,
-                                                        Fragment2ConnectedToFragment3.class),
-                                                preferencePointingToFragment3))));
+                                                preferenceOfFragment1PointingToFragment2,
+                                                preferenceOfFragment2PointingToFragment3))));
             });
         }
     }
 
-    private static Set<Preference> getPreferences(final Set<PreferenceScreenWithHost> preferenceScreenWithHostSet) {
-        return preferenceScreenWithHostSet
-                .stream()
-                .map(preferenceScreenWithHost -> preferenceScreenWithHost.preferenceScreen)
-                .flatMap(
-                        preferenceScreen ->
-                                Preferences
-                                        .getAllChildren(preferenceScreen)
-                                        .stream())
-                .collect(Collectors.toSet());
+    private static Preference getPreference(
+            final ConnectedPreferenceScreens connectedPreferenceScreens,
+            final Class<? extends PreferenceFragmentCompat> hostOfPreference,
+            final Class<? extends PreferenceFragmentCompat> fragmentPointedTo) {
+        return getPreference(
+                connectedPreferenceScreens.connectedPreferenceScreens,
+                (_hostOfPreference, preference) ->
+                        hostOfPreference.equals(_hostOfPreference) &&
+                                fragmentPointedTo.getName().equals(preference.getFragment()));
     }
 
-    private static Preference getPreferencePointingToFragment(final Set<Preference> preferences,
-                                                              final Class<? extends Fragment> fragmentPointedTo) {
-        return preferences
+    private static Preference getPreference(
+            final Set<PreferenceScreenWithHost> preferenceScreenWithHostSet,
+            final BiPredicate<Class<? extends PreferenceFragmentCompat>, Preference> predicate) {
+        return preferenceScreenWithHostSet
                 .stream()
-                .filter(preference -> fragmentPointedTo.getName().equals(preference.getFragment()))
-                .findFirst()
-                .get();
+                .flatMap(
+                        preferenceScreenWithHost ->
+                                Preferences
+                                        .getAllChildren(preferenceScreenWithHost.preferenceScreen)
+                                        .stream()
+                                        .filter(preference -> predicate.test(preferenceScreenWithHost.host, preference)))
+                .collect(MoreCollectors.onlyElement());
     }
 
     public static class Fragment1ConnectedToFragment2AndFragment4 extends PreferenceFragmentCompat {
