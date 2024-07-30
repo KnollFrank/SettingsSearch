@@ -2,6 +2,9 @@ package de.KnollFrank.lib.preferencesearch;
 
 import androidx.preference.Preference;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap.Builder;
+
 import org.jgrapht.Graph;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
@@ -18,8 +21,14 @@ class PreferencePathByPreferenceProvider {
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         final BreadthFirstIterator<PreferenceScreenWithHost, PreferenceEdge> iterator =
                 new BreadthFirstIterator<>(preferenceScreenGraph);
+        final Map<PreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen = getPreferencePathByPreferenceScreen(preferenceScreenGraph, iterator);
+        return getPreferencePathByPreference(preferencePathByPreferenceScreen);
+    }
+
+    private static Map<PreferenceScreenWithHost, PreferencePath> getPreferencePathByPreferenceScreen(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph, final BreadthFirstIterator<PreferenceScreenWithHost, PreferenceEdge> iterator) {
         // FK-TODO: use guava's MapBuilder instead of Map
         final Map<PreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen = new HashMap<>();
+        // FK-TODO: introduce new iterator for graphs
         while (iterator.hasNext()) {
             final PreferenceScreenWithHost preferenceScreen = iterator.next();
             final PreferenceScreenWithHost parentPreferenceScreen = iterator.getParent(preferenceScreen);
@@ -29,17 +38,7 @@ class PreferencePathByPreferenceProvider {
                             getPreferencePath(preferenceScreenGraph, preferencePathByPreferenceScreen, preferenceScreen, parentPreferenceScreen) :
                             new PreferencePath(Collections.emptyList()));
         }
-        // FK-TODO: use guava's MapBuilder instead of Map
-        final Map<Preference, PreferencePath> preferencePathByPreference = new HashMap<>();
-        preferencePathByPreferenceScreen.forEach(
-                (preferenceScreen, preferencePath) ->
-                        Preferences
-                                .getAllChildren(preferenceScreen.preferenceScreen)
-                                .forEach(preference ->
-                                        preferencePathByPreference.put(
-                                                preference,
-                                                preferencePath.add(preference))));
-        return preferencePathByPreference;
+        return preferencePathByPreferenceScreen;
     }
 
     private static PreferencePath getPreferencePath(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
@@ -52,5 +51,20 @@ class PreferencePathByPreferenceProvider {
                         .getEdge(parentPreferenceScreen, preferenceScreen)
                         .preference;
         return parentPreferencePath.add(preference);
+    }
+
+    private static Map<Preference, PreferencePath> getPreferencePathByPreference(
+            final Map<PreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen) {
+        final Builder<Preference, PreferencePath> preferencePathByPreferenceBuilder = ImmutableMap.builder();
+        preferencePathByPreferenceScreen.forEach(
+                (preferenceScreen, preferencePath) ->
+                        Preferences
+                                .getAllChildren(preferenceScreen.preferenceScreen)
+                                .forEach(
+                                        preference ->
+                                                preferencePathByPreferenceBuilder.put(
+                                                        preference,
+                                                        preferencePath.add(preference))));
+        return preferencePathByPreferenceBuilder.build();
     }
 }
