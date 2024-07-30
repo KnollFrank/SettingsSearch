@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.KnollFrank.lib.preferencesearch.common.BreadthFirstGraphVisitor;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 class PreferencePathByPreferenceProvider {
@@ -24,33 +25,35 @@ class PreferencePathByPreferenceProvider {
 
     private static Map<PreferenceScreenWithHost, PreferencePath> getPreferencePathByPreferenceScreen(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         final Map<PreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen = new HashMap<>();
-        new BreadthFirstVisitor() {
+        final BreadthFirstGraphVisitor<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraphVisitor =
+                new BreadthFirstGraphVisitor<>() {
 
-            @Override
-            protected void visitRootNode(final PreferenceScreenWithHost preferenceScreen) {
-                preferencePathByPreferenceScreen.put(
-                        preferenceScreen,
-                        new PreferencePath(Collections.emptyList()));
-            }
+                    @Override
+                    protected void visitRootNode(final PreferenceScreenWithHost preferenceScreen) {
+                        preferencePathByPreferenceScreen.put(
+                                preferenceScreen,
+                                new PreferencePath(Collections.emptyList()));
+                    }
 
-            @Override
-            protected void visitInnerNode(final PreferenceScreenWithHost preferenceScreen,
-                                          final PreferenceScreenWithHost parentPreferenceScreen) {
-                preferencePathByPreferenceScreen.put(
-                        preferenceScreen,
-                        getPreferencePath(preferenceScreen, parentPreferenceScreen));
-            }
+                    @Override
+                    protected void visitInnerNode(final PreferenceScreenWithHost preferenceScreen,
+                                                  final PreferenceScreenWithHost parentPreferenceScreen) {
+                        preferencePathByPreferenceScreen.put(
+                                preferenceScreen,
+                                getPreferencePathOfPreferenceScreen(preferenceScreen, parentPreferenceScreen));
+                    }
 
-            private PreferencePath getPreferencePath(final PreferenceScreenWithHost preferenceScreen,
-                                                     final PreferenceScreenWithHost parentPreferenceScreen) {
-                final PreferencePath parentPreferencePath = preferencePathByPreferenceScreen.get(parentPreferenceScreen);
-                final Preference preference =
-                        preferenceScreenGraph
-                                .getEdge(parentPreferenceScreen, preferenceScreen)
-                                .preference;
-                return parentPreferencePath.add(preference);
-            }
-        }.visit(preferenceScreenGraph);
+                    private PreferencePath getPreferencePathOfPreferenceScreen(final PreferenceScreenWithHost preferenceScreen,
+                                                                               final PreferenceScreenWithHost parentPreferenceScreen) {
+                        final PreferencePath parentPreferencePath = preferencePathByPreferenceScreen.get(parentPreferenceScreen);
+                        final Preference preference =
+                                preferenceScreenGraph
+                                        .getEdge(parentPreferenceScreen, preferenceScreen)
+                                        .preference;
+                        return parentPreferencePath.add(preference);
+                    }
+                };
+        preferenceScreenGraphVisitor.visit(preferenceScreenGraph);
         return preferencePathByPreferenceScreen;
     }
 
