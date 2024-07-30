@@ -95,19 +95,20 @@ public class PreferenceScreensProvider1Test {
     private static Set<Preference> getPreferences(final Set<PreferenceScreenWithHost> preferenceScreenWithHostSet) {
         return preferenceScreenWithHostSet
                 .stream()
+                .map(preferenceScreenWithHost -> preferenceScreenWithHost.preferenceScreen)
                 .flatMap(
-                        preferenceScreenWithHost ->
+                        preferenceScreen ->
                                 Preferences
-                                        .getAllChildren(preferenceScreenWithHost.preferenceScreen)
+                                        .getAllChildren(preferenceScreen)
                                         .stream())
                 .collect(Collectors.toSet());
     }
 
     private static Preference getPreferencePointingToFragment(final Set<Preference> preferences,
-                                                              final Class<? extends Fragment> fragment) {
+                                                              final Class<? extends Fragment> fragmentPointedTo) {
         return preferences
                 .stream()
-                .filter(preference -> fragment.getName().equals(preference.getFragment()))
+                .filter(preference -> fragmentPointedTo.getName().equals(preference.getFragment()))
                 .findFirst()
                 .get();
     }

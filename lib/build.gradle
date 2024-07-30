@@ -40,8 +40,6 @@ dependencies {
     implementation 'org.threeten:threetenbp:1.6.9'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core
     implementation 'org.jgrapht:jgrapht-core:1.5.2'
-    // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-io
-    implementation 'org.jgrapht:jgrapht-io:1.5.2'
 }
 
 publishing {

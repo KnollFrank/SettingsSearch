@@ -2,6 +2,8 @@ package de.KnollFrank.lib.preferencesearch;
 
 import androidx.preference.Preference;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +13,15 @@ public class PreferencePath {
 
     public PreferencePath(final List<Preference> preferences) {
         this.preferences = preferences;
+    }
+
+    public PreferencePath add(final Preference preference) {
+        return new PreferencePath(
+                ImmutableList
+                        .<Preference>builder()
+                        .addAll(preferences)
+                        .add(preference)
+                        .build());
     }
 
     @Override
