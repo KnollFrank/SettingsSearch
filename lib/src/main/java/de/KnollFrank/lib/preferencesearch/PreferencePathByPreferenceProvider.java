@@ -16,17 +16,15 @@ import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 class PreferencePathByPreferenceProvider {
 
-    // FK-TODO: refactor
     public static Map<Preference, PreferencePath> getPreferencePathByPreference(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        final BreadthFirstIterator<PreferenceScreenWithHost, PreferenceEdge> iterator =
-                new BreadthFirstIterator<>(preferenceScreenGraph);
-        final Map<PreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen = getPreferencePathByPreferenceScreen(preferenceScreenGraph, iterator);
-        return getPreferencePathByPreference(preferencePathByPreferenceScreen);
+        return getPreferencePathByPreference(
+                getPreferencePathByPreferenceScreen(
+                        preferenceScreenGraph));
     }
 
-    private static Map<PreferenceScreenWithHost, PreferencePath> getPreferencePathByPreferenceScreen(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph, final BreadthFirstIterator<PreferenceScreenWithHost, PreferenceEdge> iterator) {
-        // FK-TODO: use guava's MapBuilder instead of Map
+    private static Map<PreferenceScreenWithHost, PreferencePath> getPreferencePathByPreferenceScreen(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+        final BreadthFirstIterator<PreferenceScreenWithHost, PreferenceEdge> iterator = new BreadthFirstIterator<>(preferenceScreenGraph);
         final Map<PreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen = new HashMap<>();
         // FK-TODO: introduce new iterator for graphs
         while (iterator.hasNext()) {
