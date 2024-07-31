@@ -6,17 +6,22 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
+import java.util.List;
+
 class ViewAdder {
 
-    public static void addSecondAndThirdViewBelowFirstView(final View firstView,
-                                                           final View secondView,
-                                                           final View thirdView,
-                                                           final Context context) {
-        final LinearLayout container = createLinearLayout(context, firstView.getLayoutParams());
-        replaceView(firstView, container);
-        addView2LinearLayout(firstView, container);
-        addView2LinearLayout(secondView, container);
-        addView2LinearLayout(thirdView, container);
+    public static void replaceViewWithViews(final View viewToReplace,
+                                            final List<View> replacingViews,
+                                            final Context context) {
+        final LinearLayout container = createLinearLayout(context, viewToReplace.getLayoutParams());
+        replaceView(viewToReplace, container);
+        addViews2LinearLayout(replacingViews, container);
+    }
+
+    public static void addViews2LinearLayout(final List<View> children, final LinearLayout linearLayout) {
+        for (final View child : children) {
+            addView2LinearLayout(child, linearLayout);
+        }
     }
 
     public static void addView2LinearLayout(final View view, final LinearLayout linearLayout) {
