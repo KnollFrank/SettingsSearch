@@ -4,7 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
+
+import java.text.MessageFormat;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.PreferencePath;
 
@@ -22,11 +26,24 @@ class PreferencePathView {
     public static void displayPreferencePath(final PreferenceViewHolder holder,
                                              final PreferencePath preferencePath) {
         final TextView preferencePathView = getPreferencePathView(holder);
-        preferencePathView.setText(preferencePath.toString());
+        preferencePathView.setText(
+                MessageFormat.format(
+                        "Path: {0}",
+                        preferencePath != null ? toString(preferencePath) : ""));
         preferencePathView.setVisibility(View.VISIBLE);
     }
 
     private static TextView getPreferencePathView(final PreferenceViewHolder holder) {
         return (TextView) holder.findViewById(PREFERENCE_PATH_VIEW_ID);
+    }
+
+    private static String toString(final PreferencePath preferencePath) {
+        return String.join(
+                " > ",
+                preferencePath
+                        .preferences
+                        .stream()
+                        .map(Preference::getTitle)
+                        .collect(Collectors.toList()));
     }
 }

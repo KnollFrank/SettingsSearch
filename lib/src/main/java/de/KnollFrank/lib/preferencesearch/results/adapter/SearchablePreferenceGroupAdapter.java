@@ -15,7 +15,7 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceViewHolder;
 
-import java.util.Collections;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.preferencesearch.PreferencePath;
@@ -24,13 +24,16 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
 public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
 
     private final SearchableInfoGetter searchableInfoGetter;
+    private final Map<Preference, PreferencePath> preferencePathByPreference;
     private final Consumer<Preference> onPreferenceClickListener;
 
     public SearchablePreferenceGroupAdapter(final PreferenceGroup preferenceGroup,
                                             final SearchableInfoGetter searchableInfoGetter,
+                                            final Map<Preference, PreferencePath> preferencePathByPreference,
                                             final Consumer<Preference> onPreferenceClickListener) {
         super(preferenceGroup);
         this.searchableInfoGetter = searchableInfoGetter;
+        this.preferencePathByPreference = preferencePathByPreference;
         this.onPreferenceClickListener = onPreferenceClickListener;
     }
 
@@ -49,7 +52,7 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
         super.onBindViewHolder(holder, position);
         final Preference preference = getItem(position);
         displaySearchableInfo(holder, searchableInfoGetter.getSearchableInfo(preference));
-        displayPreferencePath(holder, new PreferencePath(Collections.emptyList()));
+        displayPreferencePath(holder, preferencePathByPreference.get(preference));
         setOnClickListener(
                 holder.itemView,
                 v -> onPreferenceClickListener.accept(preference));

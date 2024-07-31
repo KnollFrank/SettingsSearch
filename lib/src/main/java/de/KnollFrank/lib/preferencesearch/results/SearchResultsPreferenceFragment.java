@@ -57,6 +57,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         return new SearchablePreferenceGroupAdapter(
                 preferenceScreen,
                 searchableInfoGetter,
+                mergedPreferenceScreen.preferencePathByPreference,
                 this::showPreferenceScreenAndHighlightPreference);
     }
 

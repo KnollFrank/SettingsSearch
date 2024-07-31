@@ -72,7 +72,8 @@ public class SearchPreferenceFragment extends Fragment {
                                     final SearchableInfoProviders searchableInfoProviders,
                                     final SearchableInfoAttribute searchableInfoAttribute,
                                     final FragmentFactory fragmentFactory,
-                                    final PreferenceDialogProvider preferenceDialogProvider, final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
+                                    final PreferenceDialogProvider preferenceDialogProvider,
+                                    final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
         super(R.layout.searchpreference_fragment);
         this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.searchableInfoProviders = searchableInfoProviders;

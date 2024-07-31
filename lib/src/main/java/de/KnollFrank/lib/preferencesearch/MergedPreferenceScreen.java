@@ -19,15 +19,18 @@ public class MergedPreferenceScreen {
     public final PreferenceScreen preferenceScreen;
     private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
     private final Map<Preference, String> searchableInfoByPreference;
+    public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferenceScreenResetter preferenceScreenResetter;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
                                   final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
                                   final Map<Preference, String> searchableInfoByPreference,
+                                  final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute) {
         this.preferenceScreen = preferenceScreen;
         this.hostByPreference = hostByPreference;
         this.searchableInfoByPreference = searchableInfoByPreference;
+        this.preferencePathByPreference = preferencePathByPreference;
         this.preferenceScreenResetter = new PreferenceScreenResetter(preferenceScreen, searchableInfoAttribute);
     }
 

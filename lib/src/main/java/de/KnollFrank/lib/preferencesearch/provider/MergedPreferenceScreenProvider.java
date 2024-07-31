@@ -69,28 +69,29 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
-        final Set<PreferenceScreenWithHost> screens = getConnectedPreferenceScreens(preferenceFragment);
+        final ConnectedPreferenceScreens screens = getConnectedPreferenceScreens(preferenceFragment);
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
-                HostByPreferenceProvider.getHostByPreference(screens);
+                HostByPreferenceProvider.getHostByPreference(screens.connectedPreferenceScreens);
         final Map<Preference, String> searchableInfoByPreference =
                 new SearchableInfoByPreferenceProvider(preferenceDialogs, preferenceDialogProvider, searchableInfoByPreferenceDialogProvider)
-                        .getSearchableInfoByPreference(screens);
+                        .getSearchableInfoByPreference(screens.connectedPreferenceScreens);
         // B:
-        final PreferenceScreen preferenceScreen = destructivelyMergeScreens(screens);
+        final PreferenceScreen preferenceScreen = destructivelyMergeScreens(screens.connectedPreferenceScreens);
         return new MergedPreferenceScreen(
                 preferenceScreen,
                 hostByPreference,
                 searchableInfoByPreference,
+                screens.preferencePathByPreference,
                 searchableInfoAttribute);
     }
 
-    private Set<PreferenceScreenWithHost> getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {
+    private ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {
         final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
         removeInvisiblePreferences(screens.connectedPreferenceScreens);
         removeNonSearchablePreferences(screens.connectedPreferenceScreens);
-        return screens.connectedPreferenceScreens;
+        return screens;
     }
 
     private static void removeInvisiblePreferences(final Set<PreferenceScreenWithHost> screens) {
