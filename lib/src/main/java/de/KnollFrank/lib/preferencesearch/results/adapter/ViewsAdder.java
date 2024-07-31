@@ -10,31 +10,37 @@ import androidx.preference.PreferenceViewHolder;
 
 import java.util.Optional;
 
-class SearchableInfoViewAdder {
+class ViewsAdder {
 
-    public static PreferenceViewHolder addSearchableInfoView(final View searchableInfoView,
-                                                             final PreferenceViewHolder holder,
-                                                             final Context context) {
+    public static PreferenceViewHolder addSearchableInfoViewAndPreferencePathView(
+            final View searchableInfoView,
+            final View preferencePathView,
+            final PreferenceViewHolder holder,
+            final Context context) {
         final Optional<View> summaryView = findViewById(holder, android.R.id.summary);
         if (summaryView.isPresent()) {
-            ViewAdder.addSecondViewBelowFirstView(
+            ViewAdder.addSecondAndThirdViewBelowFirstView(
                     summaryView.get(),
                     searchableInfoView,
+                    preferencePathView,
                     context);
             return holder;
         } else {
             final LinearLayout container =
-                    createLinearLayoutWithTwoChildren(
+                    createLinearLayoutWithThreeChildren(
                             holder.itemView,
                             searchableInfoView,
+                            preferencePathView,
                             context);
             return PreferenceViewHolder.createInstanceForTests(container);
         }
     }
 
-    private static LinearLayout createLinearLayoutWithTwoChildren(final View firstChild,
-                                                                  final View secondChild,
-                                                                  final Context context) {
+    // FK-TODO: replace the three Views with a List<View>
+    private static LinearLayout createLinearLayoutWithThreeChildren(final View firstChild,
+                                                                    final View secondChild,
+                                                                    final View thirdChild,
+                                                                    final Context context) {
         final LinearLayout container =
                 ViewAdder.createLinearLayout(
                         context,
@@ -43,6 +49,7 @@ class SearchableInfoViewAdder {
                                 LayoutParams.WRAP_CONTENT));
         ViewAdder.addView2LinearLayout(firstChild, container);
         ViewAdder.addView2LinearLayout(secondChild, container);
+        ViewAdder.addView2LinearLayout(thirdChild, container);
         return container;
     }
 

@@ -8,13 +8,15 @@ import android.widget.LinearLayout;
 
 class ViewAdder {
 
-    public static void addSecondViewBelowFirstView(final View firstView,
-                                                   final View secondView,
-                                                   final Context context) {
+    public static void addSecondAndThirdViewBelowFirstView(final View firstView,
+                                                           final View secondView,
+                                                           final View thirdView,
+                                                           final Context context) {
         final LinearLayout container = createLinearLayout(context, firstView.getLayoutParams());
         replaceView(firstView, container);
         addView2LinearLayout(firstView, container);
         addView2LinearLayout(secondView, container);
+        addView2LinearLayout(thirdView, container);
     }
 
     public static void addView2LinearLayout(final View view, final LinearLayout linearLayout) {
