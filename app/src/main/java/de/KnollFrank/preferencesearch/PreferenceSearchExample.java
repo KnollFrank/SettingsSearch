@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceGroup;
 
 import com.google.common.collect.ImmutableList;
 
@@ -74,7 +75,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 (preference, host) -> true,
-                preference -> true,
+                preference -> !(preference instanceof PreferenceGroup),
                 ImmutableList.of(
                         new PreferenceDescription<>(
                                 ReversedListPreference.class,
