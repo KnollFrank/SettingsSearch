@@ -25,7 +25,6 @@ import de.KnollFrank.lib.preferencesearch.results.adapter.SearchablePreferenceGr
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
 
 // FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
-// FK-TODO: Breadcrumb (= Pfad, vielleicht soll sogar jedes Pfadelement anklickbar sein, um dorthin zu navigieren?) zu jedem Suchergebnis anzeigen, damit der Benutzer weiß, wie er selbst zum Suchergebnis navigieren könnte, ohne die Suchfunktion verwenden zu müssen.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private MergedPreferenceScreen mergedPreferenceScreen;
