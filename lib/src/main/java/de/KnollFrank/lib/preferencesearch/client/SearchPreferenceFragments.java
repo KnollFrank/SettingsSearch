@@ -24,7 +24,6 @@ public class SearchPreferenceFragments {
 
     private final SearchConfiguration searchConfiguration;
     private final SearchablePreferencePredicate searchablePreferencePredicate;
-    // FK-TODO: move showPreferencePathForPreference into SearchConfiguration
     private final Predicate<Preference> showPreferencePathForPreference;
     private final FragmentFactory fragmentFactory;
     private final FragmentManager fragmentManager;
