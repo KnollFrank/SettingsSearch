@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
 
+import java.util.function.Predicate;
+
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.results.adapter.SearchablePreferenceGroupAdapter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
@@ -28,14 +30,17 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private MergedPreferenceScreen mergedPreferenceScreen;
     private @IdRes int fragmentContainerViewId;
+    private Predicate<Preference> showPreferencePathForPreference;
     private SearchableInfoGetter searchableInfoGetter;
 
     public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId,
                                                               final SearchableInfoGetter searchableInfoGetter,
+                                                              final Predicate<Preference> showPreferencePathForPreference,
                                                               final MergedPreferenceScreen mergedPreferenceScreen) {
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment = Factory.newInstance(fragmentContainerViewId);
         searchResultsPreferenceFragment.setMergedPreferenceScreen(mergedPreferenceScreen);
         searchResultsPreferenceFragment.setSearchableInfoGetter(searchableInfoGetter);
+        searchResultsPreferenceFragment.setShowPreferencePathForPreference(showPreferencePathForPreference);
         return searchResultsPreferenceFragment;
     }
 
@@ -58,6 +63,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 preferenceScreen,
                 searchableInfoGetter,
                 mergedPreferenceScreen.preferencePathByPreference,
+                showPreferencePathForPreference,
                 this::showPreferenceScreenAndHighlightPreference);
     }
 
@@ -66,8 +72,12 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         this.mergedPreferenceScreen = mergedPreferenceScreen;
     }
 
-    public void setSearchableInfoGetter(final SearchableInfoGetter searchableInfoGetter) {
+    private void setSearchableInfoGetter(final SearchableInfoGetter searchableInfoGetter) {
         this.searchableInfoGetter = searchableInfoGetter;
+    }
+
+    private void setShowPreferencePathForPreference(final Predicate<Preference> showPreferencePathForPreference) {
+        this.showPreferencePathForPreference = showPreferencePathForPreference;
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {

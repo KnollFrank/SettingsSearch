@@ -74,6 +74,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
                 (preference, host) -> true,
+                preference -> true,
                 ImmutableList.of(
                         new PreferenceDescription<>(
                                 ReversedListPreference.class,

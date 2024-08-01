@@ -24,13 +24,18 @@ class PreferencePathView {
     }
 
     public static void displayPreferencePath(final PreferenceViewHolder holder,
-                                             final PreferencePath preferencePath) {
+                                             final PreferencePath preferencePath,
+                                             final boolean showPreferencePath) {
         final TextView preferencePathView = getPreferencePathView(holder);
-        preferencePathView.setText(
-                MessageFormat.format(
-                        "Path: {0}",
-                        preferencePath != null ? toString(preferencePath) : ""));
-        preferencePathView.setVisibility(View.VISIBLE);
+        if (showPreferencePath) {
+            preferencePathView.setText(
+                    MessageFormat.format(
+                            "Path: {0}",
+                            preferencePath != null ? toString(preferencePath) : ""));
+            preferencePathView.setVisibility(View.VISIBLE);
+        } else {
+            preferencePathView.setVisibility(View.GONE);
+        }
     }
 
     private static TextView getPreferencePathView(final PreferenceViewHolder holder) {

@@ -7,12 +7,14 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
@@ -43,6 +45,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final SearchablePreferencePredicate searchablePreferencePredicate;
     private final SearchableInfoProviders searchableInfoProviders;
     private final SearchableInfoAttribute searchableInfoAttribute;
+    private final Predicate<Preference> showPreferencePathForPreference;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
     private final PreferenceDialogProvider preferenceDialogProvider;
@@ -53,6 +56,7 @@ public class SearchPreferenceFragment extends Fragment {
             final SearchablePreferencePredicate searchablePreferencePredicate,
             final SearchableInfoProviders searchableInfoProviders,
             final SearchableInfoAttribute searchableInfoAttribute,
+            final Predicate<Preference> showPreferencePathForPreference,
             final FragmentFactory fragmentFactory,
             final PreferenceDialogProvider preferenceDialogProvider,
             final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
@@ -61,9 +65,9 @@ public class SearchPreferenceFragment extends Fragment {
                         searchablePreferencePredicate,
                         searchableInfoProviders,
                         searchableInfoAttribute,
+                        showPreferencePathForPreference,
                         fragmentFactory,
-                        preferenceDialogProvider,
-                        searchableInfoByPreferenceDialogProvider);
+                        preferenceDialogProvider, searchableInfoByPreferenceDialogProvider);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
@@ -71,6 +75,7 @@ public class SearchPreferenceFragment extends Fragment {
     public SearchPreferenceFragment(final SearchablePreferencePredicate searchablePreferencePredicate,
                                     final SearchableInfoProviders searchableInfoProviders,
                                     final SearchableInfoAttribute searchableInfoAttribute,
+                                    final Predicate<Preference> showPreferencePathForPreference,
                                     final FragmentFactory fragmentFactory,
                                     final PreferenceDialogProvider preferenceDialogProvider,
                                     final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
@@ -78,6 +83,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.searchablePreferencePredicate = searchablePreferencePredicate;
         this.searchableInfoProviders = searchableInfoProviders;
         this.searchableInfoAttribute = searchableInfoAttribute;
+        this.showPreferencePathForPreference = showPreferencePathForPreference;
         this.fragmentFactory = fragmentFactory;
         this.preferenceDialogProvider = preferenceDialogProvider;
         this.searchableInfoByPreferenceDialogProvider = searchableInfoByPreferenceDialogProvider;
@@ -88,6 +94,7 @@ public class SearchPreferenceFragment extends Fragment {
                 (preference, host) -> true,
                 new SearchableInfoProviders(Collections.emptyMap()),
                 new SearchableInfoAttribute(),
+                preference -> true,
                 new DefaultFragmentFactory(),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> "");
@@ -131,6 +138,7 @@ public class SearchPreferenceFragment extends Fragment {
                 SearchResultsPreferenceFragment.newInstance(
                         searchConfiguration.fragmentContainerViewId,
                         searchableInfoAttribute,
+                        showPreferencePathForPreference,
                         mergedPreferenceScreen),
                 onFragmentStarted,
                 false,
