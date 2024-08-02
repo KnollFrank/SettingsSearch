@@ -22,12 +22,12 @@ import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableList;
 
-import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
@@ -70,11 +70,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -91,11 +94,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> !keyOfPreference.equals(preference.getKey()),
                 keyword,
-                not(hasItem(keyOfPreference)),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                not(hasItem(keyOfPreference))));
     }
 
     @Test
@@ -112,11 +118,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -136,11 +145,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -161,11 +173,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -184,11 +199,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 summaryOff,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -207,11 +225,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 summaryOn,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -231,11 +252,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -253,7 +277,6 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) ->
                         preference instanceof CustomDialogPreference ?
                                 Optional.of(new CustomDialogFragment()) :
@@ -263,7 +286,11 @@ public class PreferenceSearcherTest {
                         return customDialogFragment.getSearchableInfo();
                     }
                     throw new IllegalArgumentException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -274,7 +301,6 @@ public class PreferenceSearcherTest {
                 new PrefsFragmentFirst(),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) ->
                         keyOfPreference.equals(preference.getKey()) ?
                                 Optional.of(new CustomDialogFragment()) :
@@ -284,7 +310,11 @@ public class PreferenceSearcherTest {
                         return customDialogFragment.getSearchableInfo();
                     }
                     throw new IllegalArgumentException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -304,11 +334,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -329,11 +362,14 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                hasItem(keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
     }
 
     @Test
@@ -351,26 +387,32 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> true,
                 keyword,
-                not(hasItem(keyOfPreference)),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                not(hasItem(keyOfPreference))));
     }
 
     @Test
     public void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths() {
         final String keyword = "some preference of Fragment2";
         final String keyOfPreference = "keyOfPreferenceOfFragment2";
-        testSearch2(
+        testSearch(
                 new Fragment1ConnectedToFragment2(),
                 (preference, host) -> true,
                 keyword,
-                contains(keyOfPreference, keyOfPreference),
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
-                });
+                },
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                contains(keyOfPreference, keyOfPreference)));
     }
 
     public static class Fragment1ConnectedToFragment2 extends PreferenceFragmentCompat {
@@ -416,52 +458,12 @@ public class PreferenceSearcherTest {
         }
     }
 
-    // FK-TODO: combine methods testSearch2() and testSearch()
-    private static void testSearch2(final PreferenceFragmentCompat preferenceFragment,
-                                    final SearchablePreferencePredicate searchablePreferencePredicate,
-                                    final String keyword,
-                                    final Matcher<Iterable<? extends String>> preferenceKeyMatcher,
-                                    final PreferenceDialogProvider preferenceDialogProvider,
-                                    final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
-        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(fragmentActivity -> {
-                // Given
-                final MergedPreferenceScreen mergedPreferenceScreen =
-                        getMergedPreferenceScreen(
-                                preferenceFragment,
-                                searchablePreferencePredicate,
-                                fragmentActivity,
-                                preferenceDialogProvider,
-                                searchableInfoByPreferenceDialogProvider);
-                final PreferenceSearcher preferenceSearcher =
-                        new PreferenceSearcher(
-                                mergedPreferenceScreen,
-                                new SearchableInfoAttribute(),
-                                getSearchableInfoProviderInternal(
-                                        mergedPreferenceScreen,
-                                        ImmutableList
-                                                .<PreferenceDescription>builder()
-                                                .addAll(createBuiltinPreferenceDescriptions())
-                                                .add(new PreferenceDescription<>(
-                                                        ReversedListPreference.class,
-                                                        new ReversedListPreferenceSearchableInfoProvider()))
-                                                .build()));
-
-                // When
-                final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
-
-                // Then
-                assertThat(getKeys(preferenceMatches), preferenceKeyMatcher);
-            });
-        }
-    }
-
     private static void testSearch(final PreferenceFragmentCompat preferenceFragment,
                                    final SearchablePreferencePredicate searchablePreferencePredicate,
                                    final String keyword,
-                                   final Matcher<Iterable<? super String>> preferenceKeyMatcher,
                                    final PreferenceDialogProvider preferenceDialogProvider,
-                                   final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
+                                   final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider,
+                                   final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -490,7 +492,7 @@ public class PreferenceSearcherTest {
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
 
                 // Then
-                assertThat(getKeys(preferenceMatches), preferenceKeyMatcher);
+                checkPreferenceMatches.accept(preferenceMatches);
             });
         }
     }
