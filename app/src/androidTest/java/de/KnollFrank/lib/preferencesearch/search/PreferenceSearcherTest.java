@@ -1,9 +1,13 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
+
+import android.content.Context;
+import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -12,6 +16,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
 
@@ -23,7 +28,6 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
@@ -354,6 +358,104 @@ public class PreferenceSearcherTest {
                 });
     }
 
+    @Test
+    public void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths() {
+        final String keyword = "some preference of Fragment2";
+        final String keyOfPreference = "keyOfPreferenceOfFragment2";
+        testSearch2(
+                new Fragment1ConnectedToFragment2(),
+                (preference, host) -> true,
+                keyword,
+                contains(keyOfPreference, keyOfPreference),
+                (hostOfPreference, preference) -> Optional.empty(),
+                preferenceDialog -> {
+                    throw new IllegalStateException();
+                });
+    }
+
+    public static class Fragment1ConnectedToFragment2 extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            final Context context = getPreferenceManager().getContext();
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            screen.setTitle("first screen");
+            final Class<? extends Fragment> connectedFragment = Fragment2.class;
+            {
+                final Preference preference = createPreferenceConnectedTo(connectedFragment, context);
+                preference.setTitle("first preference connected to Fragment2");
+                screen.addPreference(preference);
+            }
+            {
+                final Preference preference = createPreferenceConnectedTo(connectedFragment, context);
+                preference.setTitle("second preference connected to Fragment2");
+                screen.addPreference(preference);
+            }
+            setPreferenceScreen(screen);
+        }
+
+        private static Preference createPreferenceConnectedTo(final Class<? extends Fragment> connectedFragment, final Context context) {
+            final Preference preference = new Preference(context);
+            preference.setFragment(connectedFragment.getName());
+            return preference;
+        }
+    }
+
+    public static class Fragment2 extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            final Context context = getPreferenceManager().getContext();
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            screen.setTitle("second screen");
+            final Preference preference = new Preference(context);
+            preference.setKey("keyOfPreferenceOfFragment2");
+            preference.setTitle("some preference of Fragment2");
+            screen.addPreference(preference);
+            setPreferenceScreen(screen);
+        }
+    }
+
+    // FK-TODO: combine methods testSearch2() and testSearch()
+    private static void testSearch2(final PreferenceFragmentCompat preferenceFragment,
+                                    final SearchablePreferencePredicate searchablePreferencePredicate,
+                                    final String keyword,
+                                    final Matcher<Iterable<? extends String>> preferenceKeyMatcher,
+                                    final PreferenceDialogProvider preferenceDialogProvider,
+                                    final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
+            scenario.onActivity(fragmentActivity -> {
+                // Given
+                final MergedPreferenceScreen mergedPreferenceScreen =
+                        getMergedPreferenceScreen(
+                                preferenceFragment,
+                                searchablePreferencePredicate,
+                                fragmentActivity,
+                                preferenceDialogProvider,
+                                searchableInfoByPreferenceDialogProvider);
+                final PreferenceSearcher preferenceSearcher =
+                        new PreferenceSearcher(
+                                mergedPreferenceScreen,
+                                new SearchableInfoAttribute(),
+                                getSearchableInfoProviderInternal(
+                                        mergedPreferenceScreen,
+                                        ImmutableList
+                                                .<PreferenceDescription>builder()
+                                                .addAll(createBuiltinPreferenceDescriptions())
+                                                .add(new PreferenceDescription<>(
+                                                        ReversedListPreference.class,
+                                                        new ReversedListPreferenceSearchableInfoProvider()))
+                                                .build()));
+
+                // When
+                final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
+
+                // Then
+                assertThat(getKeys(preferenceMatches), preferenceKeyMatcher);
+            });
+        }
+    }
+
     private static void testSearch(final PreferenceFragmentCompat preferenceFragment,
                                    final SearchablePreferencePredicate searchablePreferencePredicate,
                                    final String keyword,
@@ -437,12 +539,12 @@ public class PreferenceSearcherTest {
                                 SearchableInfoProvider::mergeWith)));
     }
 
-    private static Set<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
+    private static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .map(preferenceMatch -> preferenceMatch.preference)
                 .map(Preference::getKey)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }
