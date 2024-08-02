@@ -443,15 +443,15 @@ public class PreferenceSearcherTest {
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
-            screen.setTitle("first screen");
+            screen.setTitle("screen with connection");
             {
                 final Preference preference = createPreferenceConnectedTo(connectedFragment, context);
-                preference.setTitle("first preference connected to Fragment2");
+                preference.setTitle("first preference connected to " + connectedFragment.getSimpleName());
                 screen.addPreference(preference);
             }
             {
                 final Preference preference = createPreferenceConnectedTo(connectedFragment, context);
-                preference.setTitle("second preference connected to Fragment2");
+                preference.setTitle("second preference connected to " + connectedFragment.getSimpleName());
                 screen.addPreference(preference);
             }
             setPreferenceScreen(screen);
