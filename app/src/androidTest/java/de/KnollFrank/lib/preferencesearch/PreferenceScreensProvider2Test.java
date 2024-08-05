@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableSet;
 
 import org.junit.Test;
 
+import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
@@ -38,7 +39,8 @@ public class PreferenceScreensProvider2Test {
                 new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments));
         final PreferenceFragmentCompat root =
                 (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                        FragmentConnectedToNonPreferenceFragment.class.getName());
+                        FragmentConnectedToNonPreferenceFragment.class.getName(),
+                        Optional.empty());
 
         // When
         final Set<PreferenceScreenWithHost> preferenceScreens =

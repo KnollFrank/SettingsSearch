@@ -17,6 +17,7 @@ import com.google.common.collect.MoreCollectors;
 
 import org.junit.Test;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
@@ -36,7 +37,8 @@ public class PreferenceScreensProvider1Test {
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments));
                 final PreferenceFragmentCompat root =
                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                                Fragment1ConnectedToFragment2AndFragment4.class.getName());
+                                Fragment1ConnectedToFragment2AndFragment4.class.getName(),
+                                Optional.empty());
 
                 // When
                 final Set<PreferenceScreenWithHost> preferenceScreens =
@@ -67,7 +69,8 @@ public class PreferenceScreensProvider1Test {
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments));
                 final PreferenceFragmentCompat root =
                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                                Fragment1ConnectedToFragment2AndFragment4.class.getName());
+                                Fragment1ConnectedToFragment2AndFragment4.class.getName(),
+                                Optional.empty());
 
                 // When
                 final ConnectedPreferenceScreens connectedPreferenceScreens =

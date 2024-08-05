@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.preferencesearch;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
@@ -14,8 +15,9 @@ public class PreferenceScreenWithHostProvider {
         this.fragments = fragments;
     }
 
-    public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment) {
-        return fragments.instantiateAndInitializeFragment(fragment) instanceof final PreferenceFragmentCompat preferenceFragment ?
+    public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment,
+                                                                            final Optional<Preference> src) {
+        return fragments.instantiateAndInitializeFragment(fragment, src) instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(PreferenceScreenWithHost.fromPreferenceFragment(preferenceFragment)) :
                 Optional.empty();
     }

@@ -482,7 +482,7 @@ public class PreferenceSearcherTest {
     }
 
     private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat... preferenceFragments) {
-        return (fragmentClassName, context) -> {
+        return (fragmentClassName, src, context) -> {
             for (final PreferenceFragmentCompat preferenceFragment : preferenceFragments) {
                 if (preferenceFragment.getClass().getName().equals(fragmentClassName)) {
                     return preferenceFragment;

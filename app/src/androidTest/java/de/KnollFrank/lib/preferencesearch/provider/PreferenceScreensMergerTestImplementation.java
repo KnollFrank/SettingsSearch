@@ -10,6 +10,7 @@ import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
 import java.util.List;
+import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.FragmentsFactory;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
@@ -59,7 +60,7 @@ class PreferenceScreensMergerTestImplementation {
     private static PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceFragment,
                                                         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
         return preferenceScreenWithHostProvider
-                .getPreferenceScreenOfFragment(preferenceFragment.getName())
+                .getPreferenceScreenOfFragment(preferenceFragment.getName(), Optional.empty())
                 .get()
                 .preferenceScreen;
     }
