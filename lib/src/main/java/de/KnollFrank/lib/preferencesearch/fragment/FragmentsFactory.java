@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 
+import de.KnollFrank.lib.preferencesearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+
 public class FragmentsFactory {
 
     public static Fragments createFragments(final FragmentFactory fragmentFactory,

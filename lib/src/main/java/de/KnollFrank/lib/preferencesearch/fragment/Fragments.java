@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
+import de.KnollFrank.lib.preferencesearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 
 public class Fragments {
 
