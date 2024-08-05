@@ -27,18 +27,19 @@ public class PreferenceScreenWithHost {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final PreferenceScreenWithHost that = (PreferenceScreenWithHost) o;
-        return Objects.equals(host, that.host);
+        return Objects.equals(preferenceScreen, that.preferenceScreen);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(host);
+        return Objects.hashCode(preferenceScreen);
     }
 
     @Override
     public String toString() {
         return "PreferenceScreenWithHost{" +
-                "host=" + host +
+                "preferenceScreen=" + preferenceScreen +
+                ", host=" + host +
                 '}';
     }
 }
