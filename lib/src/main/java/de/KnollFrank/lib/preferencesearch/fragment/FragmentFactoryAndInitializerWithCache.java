@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class FragmentFactoryAndInitializerWithCache implements FragmentFactoryAndInitializer {
+public class FragmentFactoryAndInitializerWithCache {
 
     private final FragmentFactoryAndInitializer delegate;
     private final Map<Arguments, Fragment> fragmentByArguments = new HashMap<>();
@@ -19,7 +19,6 @@ public class FragmentFactoryAndInitializerWithCache implements FragmentFactoryAn
         this.delegate = delegate;
     }
 
-    @Override
     public Fragment instantiateAndInitializeFragment(final String fragmentClassName,
                                                      final Optional<Preference> src,
                                                      final Context context) {

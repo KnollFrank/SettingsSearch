@@ -34,9 +34,10 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
-import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactoryAndInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogProvider;
@@ -548,9 +549,10 @@ public class PreferenceSearcherTest {
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
         final Fragments fragments =
                 new Fragments(
-                        new DefaultFragmentFactoryAndInitializer(
-                                fragmentFactory,
-                                defaultFragmentInitializer),
+                        new FragmentFactoryAndInitializerWithCache(
+                                new FragmentFactoryAndInitializer(
+                                        fragmentFactory,
+                                        defaultFragmentInitializer)),
                         fragmentActivity);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(

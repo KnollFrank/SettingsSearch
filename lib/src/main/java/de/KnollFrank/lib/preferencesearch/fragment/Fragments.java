@@ -15,13 +15,12 @@ import java.util.function.Consumer;
 
 public class Fragments {
 
-    private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
+    private final FragmentFactoryAndInitializerWithCache fragmentFactoryAndInitializer;
     private final Context context;
 
-    public Fragments(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
+    public Fragments(final FragmentFactoryAndInitializerWithCache fragmentFactoryAndInitializer,
                      final Context context) {
-        this.fragmentFactoryAndInitializer =
-                new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer);
+        this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.context = context;
     }
 
