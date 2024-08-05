@@ -12,8 +12,9 @@ public class FragmentsFactory {
                                             final FragmentManager fragmentManager,
                                             final @IdRes int containerViewId) {
         return new Fragments(
-                fragmentFactory,
-                new DefaultFragmentInitializer(fragmentManager, containerViewId),
+                new DefaultFragmentFactoryAndInitializer(
+                        fragmentFactory,
+                        new DefaultFragmentInitializer(fragmentManager, containerViewId)),
                 context);
     }
 }
