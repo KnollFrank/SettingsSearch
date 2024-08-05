@@ -3,9 +3,10 @@ package de.KnollFrank.lib.preferencesearch.fragment;
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 
 import java.util.Optional;
+
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 
 public class FragmentFactoryAndInitializer {
 
@@ -19,7 +20,7 @@ public class FragmentFactoryAndInitializer {
     }
 
     public Fragment instantiateAndInitializeFragment(final String fragmentClassName,
-                                                     final Optional<Preference> src,
+                                                     final Optional<PreferenceWithHost> src,
                                                      final Context context) {
         final Fragment fragment = fragmentFactory.instantiate(fragmentClassName, src, context);
         fragmentInitializer.initialize(fragment);

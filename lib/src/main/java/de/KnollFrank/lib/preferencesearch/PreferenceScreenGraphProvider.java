@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.preferencesearch;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -35,7 +35,7 @@ class PreferenceScreenGraphProvider {
         }
         preferenceScreenGraph.addVertex(root);
         this
-                .getConnectedPreferenceScreenByPreference(root.preferenceScreen)
+                .getConnectedPreferenceScreenByPreference(root)
                 .forEach(
                         (preference, child) -> {
                             buildPreferenceScreenGraph(child);
@@ -44,23 +44,25 @@ class PreferenceScreenGraphProvider {
                         });
     }
 
-    private Map<Preference, PreferenceScreenWithHost> getConnectedPreferenceScreenByPreference(final PreferenceScreen preferenceScreen) {
+    private Map<Preference, PreferenceScreenWithHost> getConnectedPreferenceScreenByPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
         return Maps.filterPresentValues(
                 Preferences
-                        .getAllChildren(preferenceScreen)
+                        .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                         .stream()
                         .collect(
                                 Collectors.toMap(
                                         Function.identity(),
-                                        this::getConnectedPreferenceScreen)));
+                                        preference -> getConnectedPreferenceScreen(preference, preferenceScreenWithHost.host))));
     }
 
-    private Optional<PreferenceScreenWithHost> getConnectedPreferenceScreen(final Preference preference) {
+    private Optional<PreferenceScreenWithHost> getConnectedPreferenceScreen(
+            final Preference preference,
+            final Class<? extends PreferenceFragmentCompat> host) {
         final String fragmentConnectedToPreference = preference.getFragment();
         return fragmentConnectedToPreference != null ?
                 preferenceScreenWithHostProvider.getPreferenceScreenOfFragment(
                         fragmentConnectedToPreference,
-                        Optional.of(preference)) :
+                        Optional.of(new PreferenceWithHost(preference, host))) :
                 Optional.empty();
     }
 }

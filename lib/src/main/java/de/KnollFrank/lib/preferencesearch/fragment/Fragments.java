@@ -8,10 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.Preference;
 
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 
 public class Fragments {
 
@@ -25,7 +26,7 @@ public class Fragments {
     }
 
     public Fragment instantiateAndInitializeFragment(final String fragmentClassName,
-                                                     final Optional<Preference> src) {
+                                                     final Optional<PreferenceWithHost> src) {
         return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(fragmentClassName, src, context);
     }
 
