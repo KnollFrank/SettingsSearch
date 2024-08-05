@@ -2,6 +2,7 @@ package de.KnollFrank.lib.preferencesearch.fragment;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
@@ -22,7 +23,7 @@ public class FragmentFactoryAndInitializerWithCache {
     public Fragment instantiateAndInitializeFragment(final String fragmentClassName,
                                                      final Optional<Preference> src,
                                                      final Context context) {
-        final Arguments arguments = Arguments.createArguments(fragmentClassName, src);
+        final Arguments arguments = new Arguments(fragmentClassName, getKey(src));
         if (!fragmentByArguments.containsKey(arguments)) {
             final Fragment fragment = delegate.instantiateAndInitializeFragment(fragmentClassName, src, context);
             fragmentByArguments.put(arguments, fragment);
@@ -30,23 +31,20 @@ public class FragmentFactoryAndInitializerWithCache {
         return fragmentByArguments.get(arguments);
     }
 
+    private static @Nullable String getKey(final Optional<Preference> preference) {
+        return preference
+                .map(Preference::getKey)
+                .orElse(null);
+    }
+
     private static class Arguments {
 
         private final String fragmentClassName;
         private final String keyOfPreference;
 
-        private Arguments(final String fragmentClassName, final String keyOfPreference) {
+        public Arguments(final String fragmentClassName, final String keyOfPreference) {
             this.fragmentClassName = fragmentClassName;
             this.keyOfPreference = keyOfPreference;
-        }
-
-        public static Arguments createArguments(final String fragmentClassName,
-                                                final Optional<Preference> src) {
-            return new Arguments(
-                    fragmentClassName,
-                    src
-                            .map(Preference::getKey)
-                            .orElse(null));
         }
 
         @Override
