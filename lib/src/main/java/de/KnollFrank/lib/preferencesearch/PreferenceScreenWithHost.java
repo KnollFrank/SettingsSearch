@@ -27,12 +27,12 @@ public class PreferenceScreenWithHost {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final PreferenceScreenWithHost that = (PreferenceScreenWithHost) o;
-        return Objects.equals(preferenceScreen, that.preferenceScreen);
+        return Objects.equals(preferenceScreen, that.preferenceScreen) && Objects.equals(host, that.host);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(preferenceScreen);
+        return Objects.hash(preferenceScreen, host);
     }
 
     @Override
