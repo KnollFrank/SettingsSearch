@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
+import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
@@ -485,13 +486,23 @@ public class PreferenceSearcherTest {
     }
 
     private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat... preferenceFragments) {
-        return (fragmentClassName, src, context) ->
-                Arrays
+        return new FragmentFactory() {
+
+            @Override
+            public Fragment instantiate(final String fragmentClassName, final Optional<PreferenceWithHost> src, final Context context) {
+                return this
+                        .getFragment(fragmentClassName)
+                        .orElseGet(() -> Fragment.instantiate(context, fragmentClassName));
+            }
+
+            private Optional<Fragment> getFragment(final String fragmentClassName) {
+                return Arrays
                         .stream(preferenceFragments)
                         .filter(preferenceFragment -> preferenceFragment.getClass().getName().equals(fragmentClassName))
                         .findFirst()
-                        .map(Fragment.class::cast)
-                        .orElseGet(() -> Fragment.instantiate(context, fragmentClassName));
+                        .map(Fragment.class::cast);
+            }
+        };
     }
 
     private static void testSearch(
