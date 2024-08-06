@@ -15,9 +15,12 @@ import java.util.Optional;
 
 class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
 
+    private static final String KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "some preference of connected fragment";
+    private static final String KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "keyOfPreferenceOfConnectedFragment";
+
     public static void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths() {
-        final String keyword = "some preference of connected fragment";
-        final String keyOfPreference = "keyOfPreferenceOfConnectedFragment";
+        final String keyword = KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT;
+        final String keyOfPreference = KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT;
         final FragmentWith2Connections fragmentWith2ConnectionsToPreferenceFragmentWithSinglePreference =
                 FragmentWith2Connections.createFragmentWith2ConnectionsTo(PreferenceFragmentWithSinglePreference.class);
         PreferenceSearcherTest.testSearch(
@@ -79,8 +82,8 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
         @Override
         protected Preference createPreference(final Context context) {
             final Preference preference = new Preference(context);
-            preference.setKey("keyOfPreferenceOfConnectedFragment");
-            preference.setTitle("some preference of connected fragment");
+            preference.setKey(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT);
+            preference.setTitle(KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT);
             return preference;
         }
     }
