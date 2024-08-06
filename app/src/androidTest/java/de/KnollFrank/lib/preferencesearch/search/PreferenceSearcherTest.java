@@ -414,32 +414,32 @@ public class PreferenceSearcherTest {
                             preference.setTitle(keyword);
                             return preference;
                         });
-        final FragmentWithConnection fragmentWithConnection =
-                FragmentWithConnection.createFragmentConnectedTo(connectedFragment.getClass());
+        final FragmentWith2Connections fragmentWith2ConnectionsToConnectedFragment =
+                FragmentWith2Connections.createFragmentWith2ConnectionsTo(connectedFragment.getClass());
         testSearch(
-                fragmentWithConnection,
+                fragmentWith2ConnectionsToConnectedFragment,
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
                 preferenceDialog -> {
                     throw new IllegalStateException();
                 },
-                createFragmentFactoryReturning(fragmentWithConnection, connectedFragment),
+                createFragmentFactoryReturning(fragmentWith2ConnectionsToConnectedFragment, connectedFragment),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
                                 contains(keyOfPreference, keyOfPreference)));
     }
 
-    public static class FragmentWithConnection extends PreferenceFragmentCompat {
+    public static class FragmentWith2Connections extends PreferenceFragmentCompat {
 
         private final Class<? extends PreferenceFragmentCompat> connectedFragment;
 
-        public static FragmentWithConnection createFragmentConnectedTo(final Class<? extends PreferenceFragmentCompat> connectedFragment) {
-            return new FragmentWithConnection(connectedFragment);
+        public static FragmentWith2Connections createFragmentWith2ConnectionsTo(final Class<? extends PreferenceFragmentCompat> connectedFragment) {
+            return new FragmentWith2Connections(connectedFragment);
         }
 
-        public FragmentWithConnection(final Class<? extends PreferenceFragmentCompat> connectedFragment) {
+        public FragmentWith2Connections(final Class<? extends PreferenceFragmentCompat> connectedFragment) {
             this.connectedFragment = connectedFragment;
         }
 
