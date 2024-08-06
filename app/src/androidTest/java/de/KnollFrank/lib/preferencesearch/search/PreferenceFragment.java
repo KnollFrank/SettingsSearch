@@ -1,19 +1,12 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
 import android.content.Context;
-import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 
 import java.util.function.Function;
 
-import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
-import de.KnollFrank.preferencesearch.preference.fragment.CustomDialogFragment;
-
-public class PreferenceFragment extends PreferenceFragmentCompat {
+public class PreferenceFragment extends PreferenceFragmentTemplateWithSinglePreference {
 
     private final Function<Context, Preference> preferenceFactory;
 
@@ -26,19 +19,7 @@ public class PreferenceFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final Context context = getPreferenceManager().getContext();
-        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
-        screen.addPreference(preferenceFactory.apply(context));
-        setPreferenceScreen(screen);
-    }
-
-    @Override
-    public void onDisplayPreferenceDialog(final @NonNull Preference preference) {
-        if (preference instanceof CustomDialogPreference) {
-            CustomDialogFragment.showInstance(getParentFragmentManager());
-        } else {
-            super.onDisplayPreferenceDialog(preference);
-        }
+    protected Preference createPreference(final Context context) {
+        return preferenceFactory.apply(context);
     }
 }
