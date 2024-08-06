@@ -1,13 +1,11 @@
 package de.KnollFrank.lib.preferencesearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -16,7 +14,6 @@ import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
 
@@ -404,115 +401,16 @@ public class PreferenceSearcherTest {
 
     @Test
     public void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths() {
-        final String keyword = "some preference of connected fragment";
-        final String keyOfPreference = "keyOfPreferenceOfConnectedFragment";
-        final PreferenceFragment connectedFragment =
-                PreferenceFragment.fromSinglePreference(
-                        context -> {
-                            final Preference preference = new Preference(context);
-                            preference.setKey(keyOfPreference);
-                            preference.setTitle(keyword);
-                            return preference;
-                        });
-        final FragmentWith2Connections fragmentWith2ConnectionsToConnectedFragment =
-                FragmentWith2Connections.createFragmentWith2ConnectionsTo(connectedFragment.getClass());
-        testSearch(
-                fragmentWith2ConnectionsToConnectedFragment,
-                (preference, host) -> true,
-                keyword,
-                (hostOfPreference, preference) -> Optional.empty(),
-                preferenceDialog -> {
-                    throw new IllegalStateException();
-                },
-                createFragmentFactoryReturning(fragmentWith2ConnectionsToConnectedFragment, connectedFragment),
-                preferenceMatches ->
-                        assertThat(
-                                getKeys(preferenceMatches),
-                                contains(keyOfPreference, keyOfPreference)));
+        PreferenceSearcherTestCaseTwoDifferentPreferencePaths.shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths();
     }
 
-    public static class FragmentWith2Connections extends PreferenceFragmentCompat {
-
-        private final Class<? extends PreferenceFragmentCompat> connectedFragment;
-
-        public static FragmentWith2Connections createFragmentWith2ConnectionsTo(final Class<? extends PreferenceFragmentCompat> connectedFragment) {
-            return new FragmentWith2Connections(connectedFragment);
-        }
-
-        public FragmentWith2Connections(final Class<? extends PreferenceFragmentCompat> connectedFragment) {
-            this.connectedFragment = connectedFragment;
-        }
-
-        @Override
-        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            final Context context = getPreferenceManager().getContext();
-            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
-            screen.setTitle("screen with connection");
-            {
-                final Preference preference = createPreferenceConnectedTo(connectedFragment, context);
-                preference.setTitle("first preference connected to " + connectedFragment.getSimpleName());
-                screen.addPreference(preference);
-            }
-            {
-                final Preference preference = createPreferenceConnectedTo(connectedFragment, context);
-                preference.setTitle("second preference connected to " + connectedFragment.getSimpleName());
-                screen.addPreference(preference);
-            }
-            setPreferenceScreen(screen);
-        }
-
-        private static Preference createPreferenceConnectedTo(final Class<? extends Fragment> connectedFragment,
-                                                              final Context context) {
-            final Preference preference = new Preference(context);
-            preference.setFragment(connectedFragment.getName());
-            return preference;
-        }
-    }
-
-    private static void testSearch(final PreferenceFragmentCompat preferenceFragment,
-                                   final SearchablePreferencePredicate searchablePreferencePredicate,
-                                   final String keyword,
-                                   final PreferenceDialogProvider preferenceDialogProvider,
-                                   final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider,
-                                   final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
-        testSearch(
-                preferenceFragment,
-                searchablePreferencePredicate,
-                keyword,
-                preferenceDialogProvider,
-                searchableInfoByPreferenceDialogProvider,
-                createFragmentFactoryReturning(preferenceFragment),
-                checkPreferenceMatches);
-    }
-
-    private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat... preferenceFragments) {
-        return new FragmentFactory() {
-
-            @Override
-            public Fragment instantiate(final String fragmentClassName, final Optional<PreferenceWithHost> src, final Context context) {
-                return this
-                        .getFragment(fragmentClassName)
-                        .orElseGet(() -> Fragment.instantiate(context, fragmentClassName));
-            }
-
-            private Optional<Fragment> getFragment(final String fragmentClassName) {
-                return Arrays
-                        .stream(preferenceFragments)
-                        .filter(preferenceFragment -> preferenceFragment.getClass().getName().equals(fragmentClassName))
-                        .findFirst()
-                        .map(Fragment.class::cast);
-            }
-        };
-    }
-
-    private static void testSearch(
-            final PreferenceFragmentCompat preferenceFragment,
-            final SearchablePreferencePredicate searchablePreferencePredicate,
-            final String keyword,
-            final PreferenceDialogProvider preferenceDialogProvider,
-            final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider,
-            final FragmentFactory fragmentFactory,
-            final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
+    static void testSearch(final PreferenceFragmentCompat preferenceFragment,
+                           final SearchablePreferencePredicate searchablePreferencePredicate,
+                           final String keyword,
+                           final PreferenceDialogProvider preferenceDialogProvider,
+                           final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider,
+                           final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
+        final FragmentFactory fragmentFactory = createFragmentFactoryReturning(preferenceFragment);
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -545,6 +443,26 @@ public class PreferenceSearcherTest {
                 checkPreferenceMatches.accept(preferenceMatches);
             });
         }
+    }
+
+    private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat... preferenceFragments) {
+        return new FragmentFactory() {
+
+            @Override
+            public Fragment instantiate(final String fragmentClassName, final Optional<PreferenceWithHost> src, final Context context) {
+                return this
+                        .getFragment(fragmentClassName)
+                        .orElseGet(() -> Fragment.instantiate(context, fragmentClassName));
+            }
+
+            private Optional<Fragment> getFragment(final String fragmentClassName) {
+                return Arrays
+                        .stream(preferenceFragments)
+                        .filter(preferenceFragment -> preferenceFragment.getClass().getName().equals(fragmentClassName))
+                        .findFirst()
+                        .map(Fragment.class::cast);
+            }
+        };
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
@@ -591,7 +509,7 @@ public class PreferenceSearcherTest {
                                 SearchableInfoProvider::mergeWith)));
     }
 
-    private static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
+    static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .map(preferenceMatch -> preferenceMatch.preference)
