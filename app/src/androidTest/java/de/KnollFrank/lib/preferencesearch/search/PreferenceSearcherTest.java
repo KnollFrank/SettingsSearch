@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableList;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -484,14 +485,13 @@ public class PreferenceSearcherTest {
     }
 
     private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat... preferenceFragments) {
-        return (fragmentClassName, src, context) -> {
-            for (final PreferenceFragmentCompat preferenceFragment : preferenceFragments) {
-                if (preferenceFragment.getClass().getName().equals(fragmentClassName)) {
-                    return preferenceFragment;
-                }
-            }
-            return Fragment.instantiate(context, fragmentClassName);
-        };
+        return (fragmentClassName, src, context) ->
+                Arrays
+                        .stream(preferenceFragments)
+                        .filter(preferenceFragment -> preferenceFragment.getClass().getName().equals(fragmentClassName))
+                        .findFirst()
+                        .map(Fragment.class::cast)
+                        .orElseGet(() -> Fragment.instantiate(context, fragmentClassName));
     }
 
     private static void testSearch(
