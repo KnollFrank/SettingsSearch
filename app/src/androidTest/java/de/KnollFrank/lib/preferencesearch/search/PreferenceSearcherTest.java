@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
 
-import android.content.Context;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
@@ -21,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -31,7 +28,6 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
-import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
@@ -410,7 +406,6 @@ public class PreferenceSearcherTest {
                            final PreferenceDialogProvider preferenceDialogProvider,
                            final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider,
                            final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
-        final FragmentFactory fragmentFactory = createFragmentFactoryReturning(preferenceFragment);
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -421,7 +416,7 @@ public class PreferenceSearcherTest {
                                 fragmentActivity,
                                 preferenceDialogProvider,
                                 searchableInfoByPreferenceDialogProvider,
-                                fragmentFactory);
+                                createFragmentFactoryReturning(preferenceFragment));
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
@@ -445,24 +440,11 @@ public class PreferenceSearcherTest {
         }
     }
 
-    private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat... preferenceFragments) {
-        return new FragmentFactory() {
-
-            @Override
-            public Fragment instantiate(final String fragmentClassName, final Optional<PreferenceWithHost> src, final Context context) {
-                return this
-                        .getFragment(fragmentClassName)
-                        .orElseGet(() -> Fragment.instantiate(context, fragmentClassName));
-            }
-
-            private Optional<Fragment> getFragment(final String fragmentClassName) {
-                return Arrays
-                        .stream(preferenceFragments)
-                        .filter(preferenceFragment -> preferenceFragment.getClass().getName().equals(fragmentClassName))
-                        .findFirst()
-                        .map(Fragment.class::cast);
-            }
-        };
+    private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat preferenceFragment) {
+        return (fragmentClassName, src, context) ->
+                preferenceFragment.getClass().getName().equals(fragmentClassName) ?
+                        preferenceFragment :
+                        Fragment.instantiate(context, fragmentClassName);
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
