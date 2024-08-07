@@ -6,6 +6,7 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -13,6 +14,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.preferencesearch.Matchers.childAtPosition;
@@ -42,7 +44,15 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFindPreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("fourth"), closeSoftKeyboard());
-        onView(recyclerView()).check(matches(hasSearchResultWithSubstring("Checkbox fourth file")));
+        onView(searchResultsView()).check(matches(hasSearchResultWithSubstring("Checkbox fourth file")));
+    }
+
+    @Test
+    public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult() {
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText("dst preference"), closeSoftKeyboard());
+        onView(searchResultsView()).perform(actionOnItemAtPosition(1, click()));
+        onView(summaryOfPreference()).check(matches(withText("copied summary: summary of src preference")));
     }
 
     @Test
@@ -52,14 +62,14 @@ public class PreferenceSearchExampleTest {
         // When searching for an entry of a ListPreference
         onView(searchView()).perform(replaceText(entryOfSomeListPreference), closeSoftKeyboard());
         // Then this entry is displayed in search results
-        onView(recyclerView()).check(matches(hasSearchResultWithSubstring(entryOfSomeListPreference)));
+        onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(entryOfSomeListPreference)));
     }
 
     @Test
     public void shouldSearchAndNotFindInvisiblePreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("invisible"), closeSoftKeyboard());
-        onView(recyclerView()).check(doesNotExist());
+        onView(searchResultsView()).check(doesNotExist());
     }
 
     private static Matcher<View> searchButton() {
@@ -87,7 +97,7 @@ public class PreferenceSearchExampleTest {
                 isDisplayed());
     }
 
-    private static Matcher<View> recyclerView() {
+    private static Matcher<View> searchResultsView() {
         return allOf(
                 withId(androidx.preference.R.id.recycler_view),
                 withParent(
@@ -99,5 +109,12 @@ public class PreferenceSearchExampleTest {
 
     private static Matcher<View> hasSearchResultWithSubstring(final String substring) {
         return recyclerViewHasItem(hasDescendant(withSubstring(substring)));
+    }
+
+    private static Matcher<View> summaryOfPreference() {
+        return allOf(
+                withId(android.R.id.summary),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout.class))),
+                isDisplayed());
     }
 }
