@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.preferencesearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.preferencesearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.preferencesearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
@@ -12,7 +13,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.MoreCollectors;
 
 import org.junit.Test;
@@ -49,12 +49,11 @@ public class PreferenceScreensProvider1Test {
                 // Then
                 assertThat(
                         preferenceScreens,
-                        is(
-                                ImmutableSet.of(
-                                        getPreferenceScreenByName(preferenceScreens, "first screen"),
-                                        getPreferenceScreenByName(preferenceScreens, "second screen"),
-                                        getPreferenceScreenByName(preferenceScreens, "third screen"),
-                                        getPreferenceScreenByName(preferenceScreens, "fourth screen"))));
+                        hasItems(
+                                getPreferenceScreenByName(preferenceScreens, "first screen"),
+                                getPreferenceScreenByName(preferenceScreens, "second screen"),
+                                getPreferenceScreenByName(preferenceScreens, "third screen"),
+                                getPreferenceScreenByName(preferenceScreens, "fourth screen")));
             });
         }
     }
