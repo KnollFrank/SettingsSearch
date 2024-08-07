@@ -22,8 +22,11 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
 
     public static void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths() {
         testSearch(
+                // Given a fragment with TWO connections to a connected fragment
                 new FragmentWith2Connections(),
+                // When searching for KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT of that connected fragment
                 KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT,
+                // Then there are TWO preference search results
                 preferenceMatches ->
                         assertThat(
                                 PreferenceSearcherTest.getKeys(preferenceMatches),
