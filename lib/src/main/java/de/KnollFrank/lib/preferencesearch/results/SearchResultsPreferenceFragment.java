@@ -51,7 +51,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        setPreferenceScreen(this.mergedPreferenceScreen.preferenceScreen);
+        setPreferenceScreen(mergedPreferenceScreen.preferenceScreen);
     }
 
     @NonNull
@@ -103,7 +103,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 preferenceFragment,
                 SearchResultsPreferenceFragment::highlightPreference,
                 true,
-                this.fragmentContainerViewId,
+                fragmentContainerViewId,
                 fragmentManager);
     }
 
@@ -128,8 +128,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         }
 
         public void setInstanceVariables() {
-            SearchResultsPreferenceFragment.this.fragmentContainerViewId =
-                    requireArguments().getInt(FRAGMENT_CONTAINER_VIEW_ID);
+            fragmentContainerViewId = requireArguments().getInt(FRAGMENT_CONTAINER_VIEW_ID);
         }
 
         private static Bundle createArguments(final @IdRes int fragmentContainerViewId) {
