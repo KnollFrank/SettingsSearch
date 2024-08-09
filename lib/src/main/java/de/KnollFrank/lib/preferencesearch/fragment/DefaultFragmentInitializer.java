@@ -21,6 +21,11 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
                 .beginTransaction()
                 .replace(this.containerViewId, fragment)
                 .commitNow();
+        this
+                .fragmentManager
+                .beginTransaction()
+                .remove(fragment)
+                .commitNow();
     }
 
     @Override

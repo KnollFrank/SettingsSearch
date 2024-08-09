@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -92,24 +91,18 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     private void showPreferenceScreenAndHighlightPreference(
             final PreferenceFragmentCompat fragmentOfPreferenceScreen,
             final Preference preference2Highlight) {
-        // FK-FIXME: dieses Fragment.instantiate() ist nicht korrekt, denn es fehlen die Parameter im Bundle, welche zum korrekten Instanziieren des Fragments notwendig sind. Verwende stattdessen die FragmentFactory von SearchPreferenceFragments. Schreibe einen Unittest dazu.
-        final PreferenceFragmentCompat preferenceFragment =
-                (PreferenceFragmentCompat) Fragment.instantiate(
-                        getActivity(),
-                        fragmentOfPreferenceScreen.getClass().getName(),
-                        Bundles.preferenceKey2Bundle(preference2Highlight.getKey()));
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         showFragment(
-                preferenceFragment,
-                SearchResultsPreferenceFragment::highlightPreference,
+                fragmentOfPreferenceScreen,
+                _fragmentOfPreferenceScreen -> highlightPreference(_fragmentOfPreferenceScreen, preference2Highlight.getKey()),
                 true,
                 fragmentContainerViewId,
                 fragmentManager);
     }
 
-    private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment) {
-        // FK-TODO: was soll passieren, falls die Preference keinen key hat?
-        final String keyOfPreference2Highlight = Bundles.bundle2PreferenceKey(preferenceFragment.requireArguments());
+    private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment,
+                                            final String keyOfPreference2Highlight) {
+        // FK-TODO: was soll passieren, falls die Preference keinen key hat, also keyOfPreference2Highlight == null ist?
         preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
         PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
                 keyOfPreference2Highlight,
