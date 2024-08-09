@@ -12,6 +12,5 @@ import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 public interface FragmentFactory {
 
     // instantiate fragmentClassName, where fragmentClassName.equals(src.get().preference.getFragment()) if src.isPresent()
-    // FK-TODO: PreferenceWithHost.host könnte auch eine Instanz von PreferenceFragmentCompat sein anstatt nur die Klasse?
     Fragment instantiate(String fragmentClassName, Optional<PreferenceWithHost> src, Context context);
 }

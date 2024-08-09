@@ -24,6 +24,6 @@ class ArgumentsFactory {
     }
 
     private static Optional<Class<? extends PreferenceFragmentCompat>> getHostOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
-        return preferenceWithHost.map(_preferenceWithHost -> _preferenceWithHost.host);
+        return preferenceWithHost.map(_preferenceWithHost -> _preferenceWithHost.host.getClass());
     }
 }

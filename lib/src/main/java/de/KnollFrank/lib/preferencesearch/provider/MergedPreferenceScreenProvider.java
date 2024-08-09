@@ -76,7 +76,7 @@ public class MergedPreferenceScreenProvider {
         final ConnectedPreferenceScreens screens = getConnectedPreferenceScreens(preferenceFragment);
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
-        final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
+        final Map<Preference, PreferenceFragmentCompat> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens.connectedPreferenceScreens);
         final Map<Preference, String> searchableInfoByPreference =
                 new SearchableInfoByPreferenceProvider(preferenceDialogs, preferenceDialogProvider, searchableInfoByPreferenceDialogProvider)
@@ -103,7 +103,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     private static boolean isInvisible(final Preference preference,
-                                       final Class<? extends PreferenceFragmentCompat> host) {
+                                       final PreferenceFragmentCompat host) {
         return !preference.isVisible();
     }
 
@@ -112,7 +112,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     private boolean isNonSearchable(final Preference preference,
-                                    final Class<? extends PreferenceFragmentCompat> host) {
+                                    final PreferenceFragmentCompat host) {
         return !searchablePreferencePredicate.isPreferenceOfHostSearchable(preference, host);
     }
 

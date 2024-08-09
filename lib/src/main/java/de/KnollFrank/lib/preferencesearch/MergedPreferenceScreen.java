@@ -17,13 +17,13 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribut
 public class MergedPreferenceScreen {
 
     public final PreferenceScreen preferenceScreen;
-    private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
+    private final Map<Preference, PreferenceFragmentCompat> hostByPreference;
     private final Map<Preference, String> searchableInfoByPreference;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferenceScreenResetter preferenceScreenResetter;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
-                                  final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
+                                  final Map<Preference, PreferenceFragmentCompat> hostByPreference,
                                   final Map<Preference, String> searchableInfoByPreference,
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute) {
@@ -34,7 +34,7 @@ public class MergedPreferenceScreen {
         this.preferenceScreenResetter = new PreferenceScreenResetter(preferenceScreen, searchableInfoAttribute);
     }
 
-    public Optional<? extends Class<? extends PreferenceFragmentCompat>> findHost(final Preference preference) {
+    public Optional<? extends PreferenceFragmentCompat> findHost(final Preference preference) {
         return Maps.get(hostByPreference, preference);
     }
 

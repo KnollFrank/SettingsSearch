@@ -57,7 +57,7 @@ class PreferenceScreenGraphProvider {
 
     private Optional<PreferenceScreenWithHost> getConnectedPreferenceScreen(
             final Preference preference,
-            final Class<? extends PreferenceFragmentCompat> host) {
+            final PreferenceFragmentCompat host) {
         final String fragmentConnectedToPreference = preference.getFragment();
         return fragmentConnectedToPreference != null ?
                 preferenceScreenWithHostProvider.getPreferenceScreenOfFragment(

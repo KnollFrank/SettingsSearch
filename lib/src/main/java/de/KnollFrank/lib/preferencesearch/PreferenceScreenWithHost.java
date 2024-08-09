@@ -7,11 +7,12 @@ import java.util.Objects;
 
 public class PreferenceScreenWithHost {
 
+    // FK-TODO: remove instance variable preferenceScreen, because preferenceScreen is always derivable from host via host.getPreferenceScreen()
     public final PreferenceScreen preferenceScreen;
-    public final Class<? extends PreferenceFragmentCompat> host;
+    public final PreferenceFragmentCompat host;
 
     public PreferenceScreenWithHost(final PreferenceScreen preferenceScreen,
-                                    final Class<? extends PreferenceFragmentCompat> host) {
+                                    final PreferenceFragmentCompat host) {
         this.preferenceScreen = preferenceScreen;
         this.host = host;
     }
@@ -19,7 +20,7 @@ public class PreferenceScreenWithHost {
     public static PreferenceScreenWithHost fromPreferenceFragment(final PreferenceFragmentCompat preferenceFragment) {
         return new PreferenceScreenWithHost(
                 preferenceFragment.getPreferenceScreen(),
-                preferenceFragment.getClass());
+                preferenceFragment);
     }
 
     @Override
@@ -27,12 +28,12 @@ public class PreferenceScreenWithHost {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final PreferenceScreenWithHost that = (PreferenceScreenWithHost) o;
-        return Objects.equals(preferenceScreen, that.preferenceScreen) && Objects.equals(host, that.host);
+        return Objects.equals(preferenceScreen, that.preferenceScreen) && Objects.equals(host.getClass(), that.host.getClass());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(preferenceScreen, host);
+        return Objects.hash(preferenceScreen, host.getClass());
     }
 
     @Override

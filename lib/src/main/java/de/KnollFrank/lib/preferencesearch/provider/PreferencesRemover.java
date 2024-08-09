@@ -14,7 +14,7 @@ class PreferencesRemover {
 
     public static void removePreferences(
             final Collection<PreferenceScreenWithHost> preferenceScreenWithHostCollection,
-            final BiPredicate<Preference, Class<? extends PreferenceFragmentCompat>> predicate) {
+            final BiPredicate<Preference, PreferenceFragmentCompat> predicate) {
         for (final PreferenceScreenWithHost preferenceScreenWithHost : preferenceScreenWithHostCollection) {
             removePreferences(preferenceScreenWithHost, predicate);
         }
@@ -22,7 +22,7 @@ class PreferencesRemover {
 
     public static void removePreferences(
             final PreferenceScreenWithHost preferenceScreenWithHost,
-            final BiPredicate<Preference, Class<? extends PreferenceFragmentCompat>> predicate) {
+            final BiPredicate<Preference, PreferenceFragmentCompat> predicate) {
         Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()

@@ -14,7 +14,7 @@ import de.KnollFrank.lib.preferencesearch.common.Preferences;
 
 class HostByPreferenceProvider {
 
-    public static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
+    public static Map<Preference, PreferenceFragmentCompat> getHostByPreference(
             final Collection<PreferenceScreenWithHost> preferenceScreenWithHostList) {
         return Maps.merge(
                 preferenceScreenWithHostList
@@ -23,7 +23,7 @@ class HostByPreferenceProvider {
                         .collect(Collectors.toList()));
     }
 
-    private static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
+    private static Map<Preference, PreferenceFragmentCompat> getHostByPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
         return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen)
                 .stream()

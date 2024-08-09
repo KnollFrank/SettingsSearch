@@ -90,13 +90,13 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void showPreferenceScreenAndHighlightPreference(
-            final Class<? extends PreferenceFragmentCompat> fragmentOfPreferenceScreen,
+            final PreferenceFragmentCompat fragmentOfPreferenceScreen,
             final Preference preference2Highlight) {
         // FK-FIXME: dieses Fragment.instantiate() ist nicht korrekt, denn es fehlen die Parameter im Bundle, welche zum korrekten Instanziieren des Fragments notwendig sind. Verwende stattdessen die FragmentFactory von SearchPreferenceFragments. Schreibe einen Unittest dazu.
         final PreferenceFragmentCompat preferenceFragment =
                 (PreferenceFragmentCompat) Fragment.instantiate(
                         getActivity(),
-                        fragmentOfPreferenceScreen.getName(),
+                        fragmentOfPreferenceScreen.getClass().getName(),
                         Bundles.preferenceKey2Bundle(preference2Highlight.getKey()));
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         showFragment(

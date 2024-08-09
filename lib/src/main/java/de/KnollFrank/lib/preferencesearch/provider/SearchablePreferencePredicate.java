@@ -6,5 +6,5 @@ import androidx.preference.PreferenceFragmentCompat;
 @FunctionalInterface
 public interface SearchablePreferencePredicate {
 
-    boolean isPreferenceOfHostSearchable(Preference preference, Class<? extends PreferenceFragmentCompat> host);
+    boolean isPreferenceOfHostSearchable(Preference preference, PreferenceFragmentCompat host);
 }

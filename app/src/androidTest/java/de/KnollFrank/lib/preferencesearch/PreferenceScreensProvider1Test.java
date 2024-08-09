@@ -104,13 +104,13 @@ public class PreferenceScreensProvider1Test {
         return getPreference(
                 connectedPreferenceScreens.connectedPreferenceScreens,
                 (_hostOfPreference, preference) ->
-                        hostOfPreference.equals(_hostOfPreference) &&
+                        hostOfPreference.equals(_hostOfPreference.getClass()) &&
                                 fragmentPointedTo.getName().equals(preference.getFragment()));
     }
 
     private static Preference getPreference(
             final Set<PreferenceScreenWithHost> preferenceScreenWithHostSet,
-            final BiPredicate<Class<? extends PreferenceFragmentCompat>, Preference> predicate) {
+            final BiPredicate<PreferenceFragmentCompat, Preference> predicate) {
         return preferenceScreenWithHostSet
                 .stream()
                 .flatMap(

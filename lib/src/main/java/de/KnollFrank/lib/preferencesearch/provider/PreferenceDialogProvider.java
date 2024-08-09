@@ -9,5 +9,5 @@ import java.util.Optional;
 @FunctionalInterface
 public interface PreferenceDialogProvider {
 
-    Optional<Fragment> getPreferenceDialog(Class<? extends PreferenceFragmentCompat> hostOfPreference, Preference preference);
+    Optional<Fragment> getPreferenceDialog(PreferenceFragmentCompat hostOfPreference, Preference preference);
 }
