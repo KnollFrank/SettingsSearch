@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public class PreferenceScreenWithHost {
 
-    // FK-TODO: remove instance variable preferenceScreen, because preferenceScreen is always derivable from host via host.getPreferenceScreen()
     public final PreferenceScreen preferenceScreen;
     public final PreferenceFragmentCompat host;
 
