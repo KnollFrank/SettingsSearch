@@ -52,8 +52,8 @@ public class PreferenceSearchExampleTest {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("dst preference"), closeSoftKeyboard());
         onView(searchResultsView()).perform(actionOnItemAtPosition(1, click()));
-        final String summaryOfFullyInstantiatedPreferenceFragment = "copied summary: summary of src preference";
-        onView(summaryOfPreference()).check(matches(withText(summaryOfFullyInstantiatedPreferenceFragment)));
+        final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: summary of src preference";
+        onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
     }
 
     @Test
