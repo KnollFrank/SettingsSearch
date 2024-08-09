@@ -1,16 +1,13 @@
 package de.KnollFrank.preferencesearch;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 
@@ -18,10 +15,9 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.preferencesearch.PreferenceWithHost;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
-import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
@@ -84,7 +80,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         new PreferenceDescription<>(
                                 ReversedListPreference.class,
                                 new ReversedListPreferenceSearchableInfoProvider())),
-                getFragmentFactory(),
+                new DefaultFragmentFactory(),
                 getSupportFragmentManager(),
                 (hostOfPreference, preference) ->
                         preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
@@ -96,25 +92,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
                     }
                     throw new IllegalArgumentException();
                 });
-    }
-
-    private static FragmentFactory getFragmentFactory() {
-        return new FragmentFactory() {
-
-            @Override
-            public Fragment instantiate(final String fragmentClassName,
-                                        final Optional<PreferenceWithHost> src,
-                                        final Context context) {
-                return Fragment.instantiate(context, fragmentClassName, getExtrasOfPreference(src));
-            }
-
-            private static @Nullable Bundle getExtrasOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
-                return preferenceWithHost
-                        .map(_preferenceWithHost -> _preferenceWithHost.preference)
-                        .map(Preference::getExtras)
-                        .orElse(null);
-            }
-        };
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {

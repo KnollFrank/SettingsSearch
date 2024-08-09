@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
@@ -29,6 +28,7 @@ import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
+import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactoryAndInitializer;
@@ -441,10 +441,11 @@ public class PreferenceSearcherTest {
     }
 
     private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat preferenceFragment) {
+        final DefaultFragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
         return (fragmentClassName, src, context) ->
                 preferenceFragment.getClass().getName().equals(fragmentClassName) ?
                         preferenceFragment :
-                        Fragment.instantiate(context, fragmentClassName);
+                        defaultFragmentFactory.instantiate(fragmentClassName, src, context);
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
