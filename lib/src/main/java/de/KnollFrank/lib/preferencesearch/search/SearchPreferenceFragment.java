@@ -7,14 +7,12 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHostProvider;
@@ -30,10 +28,11 @@ import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.preferencesearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
-import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
+import de.KnollFrank.lib.preferencesearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.preferencesearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
@@ -43,45 +42,45 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider
 
 public class SearchPreferenceFragment extends Fragment {
 
-    private final SearchablePreferencePredicate searchablePreferencePredicate;
+    private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoProviders searchableInfoProviders;
     private final SearchableInfoAttribute searchableInfoAttribute;
-    private final Predicate<Preference> showPreferencePathForPreference;
+    private final ShowPreferencePath showPreferencePath;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
-            final SearchablePreferencePredicate searchablePreferencePredicate,
+            final IsPreferenceSearchable isPreferenceSearchable,
             final SearchableInfoProviders searchableInfoProviders,
             final SearchableInfoAttribute searchableInfoAttribute,
-            final Predicate<Preference> showPreferencePathForPreference,
+            final ShowPreferencePath showPreferencePath,
             final FragmentFactory fragmentFactory,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
-                        searchablePreferencePredicate,
+                        isPreferenceSearchable,
                         searchableInfoProviders,
                         searchableInfoAttribute,
-                        showPreferencePathForPreference,
+                        showPreferencePath,
                         fragmentFactory,
                         preferenceDialogAndSearchableInfoProvider);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
 
-    public SearchPreferenceFragment(final SearchablePreferencePredicate searchablePreferencePredicate,
+    public SearchPreferenceFragment(final IsPreferenceSearchable isPreferenceSearchable,
                                     final SearchableInfoProviders searchableInfoProviders,
                                     final SearchableInfoAttribute searchableInfoAttribute,
-                                    final Predicate<Preference> showPreferencePathForPreference,
+                                    final ShowPreferencePath showPreferencePath,
                                     final FragmentFactory fragmentFactory,
                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         super(R.layout.searchpreference_fragment);
-        this.searchablePreferencePredicate = searchablePreferencePredicate;
+        this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProviders = searchableInfoProviders;
         this.searchableInfoAttribute = searchableInfoAttribute;
-        this.showPreferencePathForPreference = showPreferencePathForPreference;
+        this.showPreferencePath = showPreferencePath;
         this.fragmentFactory = fragmentFactory;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
     }
@@ -126,7 +125,7 @@ public class SearchPreferenceFragment extends Fragment {
                         defaultFragmentInitializer,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(getContext()),
-                        searchablePreferencePredicate,
+                        isPreferenceSearchable,
                         searchableInfoAttribute,
                         preferenceDialogAndSearchableInfoProvider,
                         true);
@@ -139,7 +138,7 @@ public class SearchPreferenceFragment extends Fragment {
                 SearchResultsPreferenceFragment.newInstance(
                         searchConfiguration.fragmentContainerViewId,
                         searchableInfoAttribute,
-                        showPreferencePathForPreference,
+                        showPreferencePath,
                         mergedPreferenceScreen),
                 onFragmentStarted,
                 false,

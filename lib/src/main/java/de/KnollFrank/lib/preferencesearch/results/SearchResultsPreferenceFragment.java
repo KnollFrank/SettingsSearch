@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
 
-import java.util.function.Predicate;
-
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.preferencesearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.preferencesearch.results.adapter.SearchablePreferenceGroupAdapter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
 
@@ -27,17 +26,17 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private MergedPreferenceScreen mergedPreferenceScreen;
     private @IdRes int fragmentContainerViewId;
-    private Predicate<Preference> showPreferencePathForPreference;
+    private ShowPreferencePath showPreferencePath;
     private SearchableInfoGetter searchableInfoGetter;
 
     public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId,
                                                               final SearchableInfoGetter searchableInfoGetter,
-                                                              final Predicate<Preference> showPreferencePathForPreference,
+                                                              final ShowPreferencePath showPreferencePath,
                                                               final MergedPreferenceScreen mergedPreferenceScreen) {
         final SearchResultsPreferenceFragment searchResultsPreferenceFragment = Factory.newInstance(fragmentContainerViewId);
         searchResultsPreferenceFragment.setMergedPreferenceScreen(mergedPreferenceScreen);
         searchResultsPreferenceFragment.setSearchableInfoGetter(searchableInfoGetter);
-        searchResultsPreferenceFragment.setShowPreferencePathForPreference(showPreferencePathForPreference);
+        searchResultsPreferenceFragment.setShowPreferencePathPredicate(showPreferencePath);
         return searchResultsPreferenceFragment;
     }
 
@@ -60,7 +59,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 preferenceScreen,
                 searchableInfoGetter,
                 mergedPreferenceScreen.preferencePathByPreference,
-                showPreferencePathForPreference,
+                showPreferencePath,
                 this::showPreferenceScreenAndHighlightPreference);
     }
 
@@ -73,8 +72,8 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         this.searchableInfoGetter = searchableInfoGetter;
     }
 
-    private void setShowPreferencePathForPreference(final Predicate<Preference> showPreferencePathForPreference) {
-        this.showPreferencePathForPreference = showPreferencePathForPreference;
+    public void setShowPreferencePathPredicate(final ShowPreferencePath showPreferencePath) {
+        this.showPreferencePath = showPreferencePath;
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {

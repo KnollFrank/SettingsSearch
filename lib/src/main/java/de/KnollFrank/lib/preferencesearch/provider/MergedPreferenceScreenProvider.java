@@ -26,7 +26,7 @@ public class MergedPreferenceScreenProvider {
     private final PreferenceDialogs preferenceDialogs;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
-    private final SearchablePreferencePredicate searchablePreferencePredicate;
+    private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final boolean cacheMergedPreferenceScreens;
@@ -37,7 +37,7 @@ public class MergedPreferenceScreenProvider {
                                           final PreferenceDialogs preferenceDialogs,
                                           final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
-                                          final SearchablePreferencePredicate searchablePreferencePredicate,
+                                          final IsPreferenceSearchable isPreferenceSearchable,
                                           final SearchableInfoAttribute searchableInfoAttribute,
                                           final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                           final boolean cacheMergedPreferenceScreens) {
@@ -45,7 +45,7 @@ public class MergedPreferenceScreenProvider {
         this.preferenceDialogs = preferenceDialogs;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
-        this.searchablePreferencePredicate = searchablePreferencePredicate;
+        this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
@@ -109,7 +109,7 @@ public class MergedPreferenceScreenProvider {
 
     private boolean isNonSearchable(final Preference preference,
                                     final PreferenceFragmentCompat host) {
-        return !searchablePreferencePredicate.isPreferenceOfHostSearchable(preference, host);
+        return !isPreferenceSearchable.isPreferenceOfHostSearchable(preference, host);
     }
 
     private PreferenceScreen destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {

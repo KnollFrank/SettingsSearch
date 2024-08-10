@@ -4,7 +4,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 @FunctionalInterface
-public interface SearchablePreferencePredicate {
+public interface IsPreferenceSearchable {
 
     boolean isPreferenceOfHostSearchable(Preference preference, PreferenceFragmentCompat host);
 }

@@ -5,16 +5,15 @@ import static de.KnollFrank.lib.preferencesearch.search.provider.BuiltinPreferen
 import static de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.Preference;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.preferencesearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoProvider;
-import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
+import de.KnollFrank.lib.preferencesearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.preferencesearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
@@ -22,23 +21,23 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribut
 public class SearchPreferenceFragments {
 
     private final SearchConfiguration searchConfiguration;
-    private final SearchablePreferencePredicate searchablePreferencePredicate;
-    private final Predicate<Preference> showPreferencePathForPreference;
+    private final IsPreferenceSearchable isPreferenceSearchable;
+    private final ShowPreferencePath showPreferencePath;
     private final FragmentFactory fragmentFactory;
     private final FragmentManager fragmentManager;
     private final List<PreferenceDescription> preferenceDescriptions;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
 
     public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
-                                     final SearchablePreferencePredicate searchablePreferencePredicate,
-                                     final Predicate<Preference> showPreferencePathForPreference,
+                                     final IsPreferenceSearchable isPreferenceSearchable,
+                                     final ShowPreferencePath showPreferencePath,
                                      final List<PreferenceDescription> preferenceDescriptions,
                                      final FragmentFactory fragmentFactory,
                                      final FragmentManager fragmentManager,
                                      final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         this.searchConfiguration = searchConfiguration;
-        this.searchablePreferencePredicate = searchablePreferencePredicate;
-        this.showPreferencePathForPreference = showPreferencePathForPreference;
+        this.isPreferenceSearchable = isPreferenceSearchable;
+        this.showPreferencePath = showPreferencePath;
         this.preferenceDescriptions =
                 ImmutableList
                         .<PreferenceDescription>builder()
@@ -54,10 +53,10 @@ public class SearchPreferenceFragments {
         showFragment(
                 SearchPreferenceFragment.newInstance(
                         searchConfiguration,
-                        searchablePreferencePredicate,
+                        isPreferenceSearchable,
                         getSearchableInfoProviders(preferenceDescriptions),
                         new SearchableInfoAttribute(),
-                        showPreferencePathForPreference,
+                        showPreferencePath,
                         fragmentFactory,
                         preferenceDialogAndSearchableInfoProvider),
                 searchPreferenceFragment -> {

@@ -34,11 +34,11 @@ import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.preferencesearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.preferencesearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialog;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
-import de.KnollFrank.lib.preferencesearch.provider.SearchablePreferencePredicate;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
@@ -362,7 +362,7 @@ public class PreferenceSearcherTest {
     }
 
     static void testSearch(final PreferenceFragmentCompat preferenceFragment,
-                           final SearchablePreferencePredicate searchablePreferencePredicate,
+                           final IsPreferenceSearchable isPreferenceSearchable,
                            final String keyword,
                            final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                            final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
@@ -372,7 +372,7 @@ public class PreferenceSearcherTest {
                 final MergedPreferenceScreen mergedPreferenceScreen =
                         getMergedPreferenceScreen(
                                 preferenceFragment,
-                                searchablePreferencePredicate,
+                                isPreferenceSearchable,
                                 fragmentActivity,
                                 preferenceDialogAndSearchableInfoProvider,
                                 createFragmentFactoryReturning(preferenceFragment));
@@ -409,7 +409,7 @@ public class PreferenceSearcherTest {
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
             final PreferenceFragmentCompat preferenceFragment,
-            final SearchablePreferencePredicate searchablePreferencePredicate,
+            final IsPreferenceSearchable isPreferenceSearchable,
             final FragmentActivity fragmentActivity,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final FragmentFactory fragmentFactory) {
@@ -430,7 +430,7 @@ public class PreferenceSearcherTest {
                         defaultFragmentInitializer,
                         new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
                         new PreferenceScreensMerger(fragmentActivity),
-                        searchablePreferencePredicate,
+                        isPreferenceSearchable,
                         new SearchableInfoAttribute(),
                         preferenceDialogAndSearchableInfoProvider,
                         false);

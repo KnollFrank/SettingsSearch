@@ -8,6 +8,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 
@@ -18,7 +19,10 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.lib.preferencesearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialog;
+import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoProvider;
+import de.KnollFrank.lib.preferencesearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
@@ -75,21 +79,38 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
-                (preference, host) -> true,
-                preference -> !(preference instanceof PreferenceGroup),
+                new IsPreferenceSearchable() {
+
+                    @Override
+                    public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat host) {
+                        return true;
+                    }
+                },
+                new ShowPreferencePath() {
+
+                    @Override
+                    public boolean showPreferencePath(final Preference preference) {
+                        return !(preference instanceof PreferenceGroup);
+                    }
+                },
                 ImmutableList.of(
                         new PreferenceDescription<>(
                                 ReversedListPreference.class,
                                 new ReversedListPreferenceSearchableInfoProvider())),
                 new DefaultFragmentFactory(),
                 getSupportFragmentManager(),
-                (hostOfPreference, preference) ->
-                        preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
+                new PreferenceDialogAndSearchableInfoProvider() {
+
+                    @Override
+                    public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialog> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
+                        return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                 Optional.of(
                                         new PreferenceDialogAndSearchableInfoByPreferenceDialog(
                                                 new CustomDialogFragment(),
                                                 customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
-                                Optional.empty());
+                                Optional.empty();
+                    }
+                });
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
