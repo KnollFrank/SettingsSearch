@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -91,13 +90,12 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     private void showPreferenceScreenAndHighlightPreference(
             final PreferenceFragmentCompat fragmentOfPreferenceScreen,
             final Preference preference2Highlight) {
-        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         showFragment(
                 fragmentOfPreferenceScreen,
                 _fragmentOfPreferenceScreen -> highlightPreference(_fragmentOfPreferenceScreen, preference2Highlight.getKey()),
                 true,
                 fragmentContainerViewId,
-                fragmentManager);
+                requireActivity().getSupportFragmentManager());
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment,
