@@ -82,9 +82,6 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preferenceDialog -> {
-                    throw new IllegalStateException();
-                },
                 checkPreferenceMatches);
     }
 }

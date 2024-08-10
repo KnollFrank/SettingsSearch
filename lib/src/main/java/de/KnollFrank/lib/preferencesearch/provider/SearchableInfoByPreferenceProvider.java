@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.preferencesearch.provider;
 
-import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
 import java.util.Collection;
@@ -13,20 +12,16 @@ import de.KnollFrank.lib.preferencesearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
 import de.KnollFrank.lib.preferencesearch.fragment.PreferenceDialogs;
-import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoByPreferenceDialogProvider;
 
 class SearchableInfoByPreferenceProvider {
 
     private final PreferenceDialogs preferenceDialogs;
-    private final PreferenceDialogProvider preferenceDialogProvider;
-    private final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider;
+    private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
 
     public SearchableInfoByPreferenceProvider(final PreferenceDialogs preferenceDialogs,
-                                              final PreferenceDialogProvider preferenceDialogProvider,
-                                              final SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
+                                              final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         this.preferenceDialogs = preferenceDialogs;
-        this.preferenceDialogProvider = preferenceDialogProvider;
-        this.searchableInfoByPreferenceDialogProvider = searchableInfoByPreferenceDialogProvider;
+        this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
     }
 
     public Map<Preference, String> getSearchableInfoByPreference(
@@ -54,15 +49,15 @@ class SearchableInfoByPreferenceProvider {
                         Collectors.toMap(
                                 Function.identity(),
                                 preference ->
-                                        preferenceDialogProvider
-                                                .getPreferenceDialog(preferenceScreenWithHost.host, preference)
+                                        preferenceDialogAndSearchableInfoProvider
+                                                .getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(preferenceScreenWithHost.host, preference)
                                                 .map(this::getSearchableInfo)));
     }
 
-    private String getSearchableInfo(final Fragment preferenceDialog) {
-        preferenceDialogs.showPreferenceDialog(preferenceDialog);
-        final String searchableInfo = searchableInfoByPreferenceDialogProvider.getSearchableInfo(preferenceDialog);
-        preferenceDialogs.hidePreferenceDialog(preferenceDialog);
+    private String getSearchableInfo(final PreferenceDialogAndSearchableInfoByPreferenceDialog data) {
+        preferenceDialogs.showPreferenceDialog(data.preferenceDialog);
+        final String searchableInfo = data.searchableInfoByPreferenceDialogProvider.getSearchableInfo(data.preferenceDialog);
+        preferenceDialogs.hidePreferenceDialog(data.preferenceDialog);
         return searchableInfo;
     }
 }

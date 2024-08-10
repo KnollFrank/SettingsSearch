@@ -18,6 +18,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
+import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialog;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
 import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
@@ -84,14 +85,11 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 getSupportFragmentManager(),
                 (hostOfPreference, preference) ->
                         preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
-                                Optional.of(new CustomDialogFragment()) :
-                                Optional.empty(),
-                preferenceDialog -> {
-                    if (preferenceDialog instanceof final CustomDialogFragment customDialogFragment) {
-                        return customDialogFragment.getSearchableInfo();
-                    }
-                    throw new IllegalArgumentException();
-                });
+                                Optional.of(
+                                        new PreferenceDialogAndSearchableInfoByPreferenceDialog(
+                                                new CustomDialogFragment(),
+                                                customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
+                                Optional.empty());
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
