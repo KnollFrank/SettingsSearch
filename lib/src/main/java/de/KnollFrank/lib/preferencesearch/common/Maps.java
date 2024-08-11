@@ -32,9 +32,7 @@ public class Maps {
     }
 
     public static <K, V> Optional<V> get(final Map<K, V> map, final K key) {
-        return map.containsKey(key) ?
-                Optional.of(map.get(key)) :
-                Optional.empty();
+        return Optional.ofNullable(map.get(key));
     }
 
     public static <K, V> Map<K, V> filterPresentValues(final Map<K, Optional<V>> map) {
