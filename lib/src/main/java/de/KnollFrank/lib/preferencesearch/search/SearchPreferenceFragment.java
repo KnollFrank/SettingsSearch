@@ -169,7 +169,7 @@ public class SearchPreferenceFragment extends Fragment {
                         Maps.merge(
                                 ImmutableList.of(
                                         searchableInfoProviders.searchableInfoProviderByPreferenceClass,
-                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
+                                        PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
                                 SearchableInfoProvider::mergeWith)));
     }
 

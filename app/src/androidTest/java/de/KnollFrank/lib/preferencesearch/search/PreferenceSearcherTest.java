@@ -444,8 +444,8 @@ public class PreferenceSearcherTest {
                 new SearchableInfoProviders(
                         Maps.merge(
                                 ImmutableList.of(
-                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(preferenceDescriptions),
-                                        PreferenceDescriptions.getSearchableInfoProvidersByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
+                                        PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(preferenceDescriptions),
+                                        PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
                                 SearchableInfoProvider::mergeWith)));
     }
 
