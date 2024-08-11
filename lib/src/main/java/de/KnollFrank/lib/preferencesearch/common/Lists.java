@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 public class Lists {
 
-    public static <T> List<T> concat(final List<List<T>> listOfLists) {
-        return listOfLists
+    public static <T> List<T> concat(final List<List<T>> lists) {
+        return lists
                 .stream()
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
