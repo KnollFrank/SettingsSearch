@@ -22,7 +22,7 @@ public class SearchableInfoProviderInternal {
 
     private Optional<SearchableInfoProvider> getSearchableInfoProvider(final Class<? extends Preference> preferenceClass) {
         return Maps.get(
-                searchableInfoProviders.searchableInfoProvidersByPreferenceClass,
+                searchableInfoProviders.searchableInfoProviderByPreferenceClass,
                 preferenceClass);
     }
 }

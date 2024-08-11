@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class SearchableInfoProviders {
 
-    public final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProvidersByPreferenceClass;
+    public final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProviderByPreferenceClass;
 
-    public SearchableInfoProviders(final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProvidersByPreferenceClass) {
-        this.searchableInfoProvidersByPreferenceClass = searchableInfoProvidersByPreferenceClass;
+    public SearchableInfoProviders(final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProviderByPreferenceClass) {
+        this.searchableInfoProviderByPreferenceClass = searchableInfoProviderByPreferenceClass;
     }
 }
