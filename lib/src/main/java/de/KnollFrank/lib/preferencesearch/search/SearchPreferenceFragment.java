@@ -7,10 +7,12 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -38,12 +40,11 @@ import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
-import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
 
 public class SearchPreferenceFragment extends Fragment {
 
     private final IsPreferenceSearchable isPreferenceSearchable;
-    private final SearchableInfoProviders searchableInfoProviders;
+    private final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProviderByPreferenceClass;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final ShowPreferencePath showPreferencePath;
     private final FragmentFactory fragmentFactory;
@@ -53,7 +54,7 @@ public class SearchPreferenceFragment extends Fragment {
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
             final IsPreferenceSearchable isPreferenceSearchable,
-            final SearchableInfoProviders searchableInfoProviders,
+            final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProviderByPreferenceClass,
             final SearchableInfoAttribute searchableInfoAttribute,
             final ShowPreferencePath showPreferencePath,
             final FragmentFactory fragmentFactory,
@@ -61,7 +62,7 @@ public class SearchPreferenceFragment extends Fragment {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         isPreferenceSearchable,
-                        searchableInfoProviders,
+                        searchableInfoProviderByPreferenceClass,
                         searchableInfoAttribute,
                         showPreferencePath,
                         fragmentFactory,
@@ -71,14 +72,14 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     public SearchPreferenceFragment(final IsPreferenceSearchable isPreferenceSearchable,
-                                    final SearchableInfoProviders searchableInfoProviders,
+                                    final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProviderByPreferenceClass,
                                     final SearchableInfoAttribute searchableInfoAttribute,
                                     final ShowPreferencePath showPreferencePath,
                                     final FragmentFactory fragmentFactory,
                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         super(R.layout.searchpreference_fragment);
         this.isPreferenceSearchable = isPreferenceSearchable;
-        this.searchableInfoProviders = searchableInfoProviders;
+        this.searchableInfoProviderByPreferenceClass = searchableInfoProviderByPreferenceClass;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.showPreferencePath = showPreferencePath;
         this.fragmentFactory = fragmentFactory;
@@ -88,7 +89,7 @@ public class SearchPreferenceFragment extends Fragment {
     public SearchPreferenceFragment() {
         this(
                 (preference, host) -> true,
-                new SearchableInfoProviders(Collections.emptyMap()),
+                Collections.emptyMap(),
                 new SearchableInfoAttribute(),
                 preference -> true,
                 new DefaultFragmentFactory(),
@@ -165,12 +166,11 @@ public class SearchPreferenceFragment extends Fragment {
 
     private SearchableInfoProviderInternal getSearchableInfoProviderInternal(final MergedPreferenceScreen mergedPreferenceScreen) {
         return new SearchableInfoProviderInternal(
-                new SearchableInfoProviders(
-                        Maps.merge(
-                                ImmutableList.of(
-                                        searchableInfoProviders.searchableInfoProviderByPreferenceClass,
-                                        PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
-                                SearchableInfoProvider::mergeWith)));
+                Maps.merge(
+                        ImmutableList.of(
+                                searchableInfoProviderByPreferenceClass,
+                                PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
+                        SearchableInfoProvider::mergeWith));
     }
 
     private void selectSearchView(final SearchView searchView) {

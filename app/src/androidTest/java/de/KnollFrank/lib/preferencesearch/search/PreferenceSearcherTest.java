@@ -44,7 +44,6 @@ import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescriptions
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
-import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviders;
 import de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.preferencesearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
@@ -441,12 +440,11 @@ public class PreferenceSearcherTest {
             final MergedPreferenceScreen mergedPreferenceScreen,
             final List<PreferenceDescription> preferenceDescriptions) {
         return new SearchableInfoProviderInternal(
-                new SearchableInfoProviders(
-                        Maps.merge(
-                                ImmutableList.of(
-                                        PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(preferenceDescriptions),
-                                        PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
-                                SearchableInfoProvider::mergeWith)));
+                Maps.merge(
+                        ImmutableList.of(
+                                PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(preferenceDescriptions),
+                                PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
+                        SearchableInfoProvider::mergeWith));
     }
 
     static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {

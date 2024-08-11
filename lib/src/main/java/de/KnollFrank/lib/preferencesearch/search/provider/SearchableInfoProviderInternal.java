@@ -2,16 +2,17 @@ package de.KnollFrank.lib.preferencesearch.search.provider;
 
 import androidx.preference.Preference;
 
+import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 
 public class SearchableInfoProviderInternal {
 
-    private final SearchableInfoProviders searchableInfoProviders;
+    private final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProviderByPreferenceClass;
 
-    public SearchableInfoProviderInternal(final SearchableInfoProviders searchableInfoProviders) {
-        this.searchableInfoProviders = searchableInfoProviders;
+    public SearchableInfoProviderInternal(final Map<Class<? extends Preference>, SearchableInfoProvider> searchableInfoProviderByPreferenceClass) {
+        this.searchableInfoProviderByPreferenceClass = searchableInfoProviderByPreferenceClass;
     }
 
     public Optional<String> getSearchableInfo(final Preference preference) {
@@ -22,7 +23,7 @@ public class SearchableInfoProviderInternal {
 
     private Optional<SearchableInfoProvider> getSearchableInfoProvider(final Class<? extends Preference> preferenceClass) {
         return Maps.get(
-                searchableInfoProviders.searchableInfoProviderByPreferenceClass,
+                searchableInfoProviderByPreferenceClass,
                 preferenceClass);
     }
 }
