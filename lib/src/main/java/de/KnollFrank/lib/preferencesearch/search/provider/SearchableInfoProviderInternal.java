@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.preferencesearch.common.Maps;
 
-public class SearchableInfoProviderInternal implements ISearchableInfoProviderInternal {
+public class SearchableInfoProviderInternal {
 
     private final SearchableInfoProviders searchableInfoProviders;
 
@@ -14,7 +14,6 @@ public class SearchableInfoProviderInternal implements ISearchableInfoProviderIn
         this.searchableInfoProviders = searchableInfoProviders;
     }
 
-    @Override
     public Optional<String> getSearchableInfo(final Preference preference) {
         return this
                 .getSearchableInfoProvider(preference.getClass())

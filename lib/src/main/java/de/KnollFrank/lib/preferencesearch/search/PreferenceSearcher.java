@@ -10,18 +10,18 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.preferencesearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.preferencesearch.common.Lists;
 import de.KnollFrank.lib.preferencesearch.common.Preferences;
-import de.KnollFrank.lib.preferencesearch.search.provider.ISearchableInfoProviderInternal;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribute;
+import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoProviderInternal;
 
 class PreferenceSearcher {
 
     private final MergedPreferenceScreen mergedPreferenceScreen;
     private final SearchableInfoAttribute searchableInfoAttribute;
-    private final ISearchableInfoProviderInternal searchableInfoProviderInternal;
+    private final SearchableInfoProviderInternal searchableInfoProviderInternal;
 
     public PreferenceSearcher(final MergedPreferenceScreen mergedPreferenceScreen,
                               final SearchableInfoAttribute searchableInfoAttribute,
-                              final ISearchableInfoProviderInternal searchableInfoProviderInternal) {
+                              final SearchableInfoProviderInternal searchableInfoProviderInternal) {
         this.mergedPreferenceScreen = mergedPreferenceScreen;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.searchableInfoProviderInternal = searchableInfoProviderInternal;
