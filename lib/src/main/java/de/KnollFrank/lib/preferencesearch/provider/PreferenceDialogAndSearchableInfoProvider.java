@@ -8,5 +8,5 @@ import java.util.Optional;
 @FunctionalInterface
 public interface PreferenceDialogAndSearchableInfoProvider {
 
-    Optional<PreferenceDialogAndSearchableInfoByPreferenceDialog> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(PreferenceFragmentCompat hostOfPreference, Preference preference);
+    Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(PreferenceFragmentCompat hostOfPreference, Preference preference);
 }

@@ -54,7 +54,7 @@ class SearchableInfoByPreferenceProvider {
                                                 .map(this::getSearchableInfo)));
     }
 
-    private String getSearchableInfo(final PreferenceDialogAndSearchableInfoByPreferenceDialog data) {
+    private String getSearchableInfo(final PreferenceDialogAndSearchableInfoByPreferenceDialogProvider data) {
         preferenceDialogs.showPreferenceDialog(data.preferenceDialog);
         final String searchableInfo = data.searchableInfoByPreferenceDialogProvider.getSearchableInfo(data.preferenceDialog);
         preferenceDialogs.hidePreferenceDialog(data.preferenceDialog);

@@ -20,7 +20,7 @@ import de.KnollFrank.lib.preferencesearch.client.SearchConfiguration;
 import de.KnollFrank.lib.preferencesearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.preferencesearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.preferencesearch.provider.IsPreferenceSearchable;
-import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialog;
+import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
@@ -102,10 +102,10 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 new PreferenceDialogAndSearchableInfoProvider() {
 
                     @Override
-                    public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialog> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
+                    public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
                         return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                 Optional.of(
-                                        new PreferenceDialogAndSearchableInfoByPreferenceDialog(
+                                        new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
                                                 new CustomDialogFragment(),
                                                 customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
                                 Optional.empty();

@@ -36,7 +36,7 @@ import de.KnollFrank.lib.preferencesearch.fragment.Fragments;
 import de.KnollFrank.lib.preferencesearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.preferencesearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.preferencesearch.provider.MergedPreferenceScreenProvider;
-import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialog;
+import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.preferencesearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.preferencesearch.search.provider.PreferenceDescription;
@@ -254,7 +254,7 @@ public class PreferenceSearcherTest {
                 (hostOfPreference, preference) ->
                         preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                 Optional.of(
-                                        new PreferenceDialogAndSearchableInfoByPreferenceDialog(
+                                        new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
                                                 new CustomDialogFragment(),
                                                 customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
                                 Optional.empty(),
@@ -275,7 +275,7 @@ public class PreferenceSearcherTest {
                 (hostOfPreference, preference) ->
                         preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                 Optional.of(
-                                        new PreferenceDialogAndSearchableInfoByPreferenceDialog(
+                                        new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
                                                 new CustomDialogFragment(),
                                                 customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
                                 Optional.empty(),
