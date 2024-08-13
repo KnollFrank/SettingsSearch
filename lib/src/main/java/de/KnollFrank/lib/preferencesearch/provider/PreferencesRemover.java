@@ -20,7 +20,7 @@ class PreferencesRemover {
         }
     }
 
-    public static void removePreferences(
+    private static void removePreferences(
             final PreferenceScreenWithHost preferenceScreenWithHost,
             final BiPredicate<Preference, PreferenceFragmentCompat> predicate) {
         Preferences
