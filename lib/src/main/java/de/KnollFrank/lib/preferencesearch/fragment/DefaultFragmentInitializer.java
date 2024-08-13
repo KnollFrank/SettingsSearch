@@ -19,6 +19,7 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
         this
                 .fragmentManager
                 .beginTransaction()
+                // FK-TODO: add() instead of replace() analogous to showPreferenceDialog()?
                 .replace(this.containerViewId, fragment)
                 .commitNow();
         this
