@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.threeten.bp.Duration;
 
+import java.util.OptionalInt;
+
 import de.KnollFrank.lib.preferencesearch.R;
 import de.KnollFrank.lib.preferencesearch.common.Attributes;
 
@@ -44,31 +46,52 @@ class PreferenceHighlighter {
             Log.e("doHighlight", "Preference not found on given screen");
             return;
         }
-        final RecyclerView recyclerView = preferenceFragment.getListView();
-        final RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
-        if (adapter instanceof final PreferenceGroup.PreferencePositionCallback callback) {
-            final int position = callback.getPreferenceAdapterPosition(preference);
+        final OptionalInt preferenceAdapterPosition =
+                getPreferenceAdapterPosition(
+                        preference,
+                        preferenceFragment.getListView().getAdapter());
+        if (preferenceAdapterPosition.isPresent()) {
+            highlightPreference(
+                    preference,
+                    preferenceFragment,
+                    highlightDuration,
+                    preferenceAdapterPosition.getAsInt());
+        } else {
+            highlightFallback(preference, preferenceFragment, highlightDuration);
+        }
+    }
+
+    private static OptionalInt getPreferenceAdapterPosition(final Preference preference, final RecyclerView.Adapter<?> adapter) {
+        if (adapter instanceof final PreferenceGroup.PreferencePositionCallback preferencePosition) {
+            final int position = preferencePosition.getPreferenceAdapterPosition(preference);
             if (position != RecyclerView.NO_POSITION) {
-                recyclerView.scrollToPosition(position);
-                recyclerView.postDelayed(
-                        () -> {
-                            final RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
-                            if (holder != null) {
-                                final Drawable oldBackground = holder.itemView.getBackground();
-                                final @ColorInt int color = Attributes.getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
-                                holder.itemView.setBackgroundColor(color & 0xffffff | 0x33000000);
-                                new Handler().postDelayed(
-                                        () -> holder.itemView.setBackgroundDrawable(oldBackground),
-                                        highlightDuration.toMillis());
-                            } else {
-                                highlightFallback(preference, preferenceFragment, highlightDuration);
-                            }
-                        },
-                        200);
-                return;
+                return OptionalInt.of(position);
             }
         }
-        highlightFallback(preference, preferenceFragment, highlightDuration);
+        return OptionalInt.empty();
+    }
+
+    private static void highlightPreference(final Preference preference,
+                                            final PreferenceFragmentCompat preferenceFragment,
+                                            final Duration highlightDuration,
+                                            final int position) {
+        final RecyclerView recyclerView = preferenceFragment.getListView();
+        recyclerView.scrollToPosition(position);
+        recyclerView.postDelayed(
+                () -> {
+                    final RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
+                    if (holder != null) {
+                        final Drawable oldBackground = holder.itemView.getBackground();
+                        final @ColorInt int color = Attributes.getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
+                        holder.itemView.setBackgroundColor(color & 0xffffff | 0x33000000);
+                        new Handler().postDelayed(
+                                () -> holder.itemView.setBackgroundDrawable(oldBackground),
+                                highlightDuration.toMillis());
+                    } else {
+                        highlightFallback(preference, preferenceFragment, highlightDuration);
+                    }
+                },
+                200);
     }
 
     private static void highlightFallback(final Preference preference,
