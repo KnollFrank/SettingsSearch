@@ -33,11 +33,11 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                                                               final SearchableInfoGetter searchableInfoGetter,
                                                               final ShowPreferencePath showPreferencePath,
                                                               final MergedPreferenceScreen mergedPreferenceScreen) {
-        final SearchResultsPreferenceFragment searchResultsPreferenceFragment = Factory.newInstance(fragmentContainerViewId);
-        searchResultsPreferenceFragment.setMergedPreferenceScreen(mergedPreferenceScreen);
-        searchResultsPreferenceFragment.setSearchableInfoGetter(searchableInfoGetter);
-        searchResultsPreferenceFragment.setShowPreferencePathPredicate(showPreferencePath);
-        return searchResultsPreferenceFragment;
+        final SearchResultsPreferenceFragment fragment = Factory.newInstance(fragmentContainerViewId);
+        fragment.setMergedPreferenceScreen(mergedPreferenceScreen);
+        fragment.setSearchableInfoGetter(searchableInfoGetter);
+        fragment.setShowPreferencePathPredicate(showPreferencePath);
+        return fragment;
     }
 
     @Override
