@@ -16,34 +16,33 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
 
     @Override
     public void initialize(final Fragment fragment) {
-        this
-                .fragmentManager
-                .beginTransaction()
-                // FK-TODO: add() instead of replace() analogous to showPreferenceDialog()?
-                .replace(this.containerViewId, fragment)
-                .commitNow();
-        this
-                .fragmentManager
-                .beginTransaction()
-                .remove(fragment)
-                .commitNow();
+        add(fragment);
+        remove(fragment);
     }
 
     @Override
     public void showPreferenceDialog(final Fragment preferenceDialog) {
-        this
-                .fragmentManager
-                .beginTransaction()
-                .add(this.containerViewId, preferenceDialog)
-                .commitNow();
+        add(preferenceDialog);
     }
 
     @Override
     public void hidePreferenceDialog(final Fragment preferenceDialog) {
+        remove(preferenceDialog);
+    }
+
+    private void add(final Fragment fragment) {
         this
                 .fragmentManager
                 .beginTransaction()
-                .remove(preferenceDialog)
+                .add(this.containerViewId, fragment)
+                .commitNow();
+    }
+
+    private void remove(final Fragment fragment) {
+        this
+                .fragmentManager
+                .beginTransaction()
+                .remove(fragment)
                 .commitNow();
     }
 }
