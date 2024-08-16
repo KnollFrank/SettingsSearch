@@ -49,7 +49,9 @@ class PreferenceScreensMergerTestImplementation {
 
         // When
         final PreferenceScreen mergedPreferenceScreen =
-                preferenceScreensMerger.destructivelyMergeScreens(screens);
+                preferenceScreensMerger
+                        .destructivelyMergeScreens(screens)
+                        .preferenceScreen;
 
         // Then
         assertThatPreferenceScreensAreEqual(
