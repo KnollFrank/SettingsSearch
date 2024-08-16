@@ -1,4 +1,4 @@
-# SearchPreference
+Registry# SettingsSearch
 
 This is a library for Android apps that allows to search inside Preference xml files. The library provides a subclass of `Preference` that can be integrated into existing apps easily.
 
@@ -9,7 +9,7 @@ This is a library for Android apps that allows to search inside Preference xml f
 Add PreferenceSearch to your `app/build.gradle`:
 
     dependencies {
-        implementation 'com.github.ByteHamster:SearchPreference:v1.0.3'
+        implementation 'com.github.KnollFrank:SettingsSearch:v1.0.3'
     }
 
 Add PreferenceSearch to your `build.gradle`:
