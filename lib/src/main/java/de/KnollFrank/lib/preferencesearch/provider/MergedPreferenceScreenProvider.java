@@ -78,9 +78,10 @@ public class MergedPreferenceScreenProvider {
                 new SearchableInfoByPreferenceProvider(preferenceDialogs, preferenceDialogAndSearchableInfoProvider)
                         .getSearchableInfoByPreference(screens.connectedPreferenceScreens);
         // B:
-        final PreferenceScreen preferenceScreen = destructivelyMergeScreens(screens.connectedPreferenceScreens);
+        final PreferenceScreensMerger.PreferenceScreenAndIsNonClickable preferenceScreenAndIsNonClickable = destructivelyMergeScreens(screens.connectedPreferenceScreens);
         return new MergedPreferenceScreen(
-                preferenceScreen,
+                preferenceScreenAndIsNonClickable.preferenceScreen,
+                preferenceScreenAndIsNonClickable.isNonClickable,
                 hostByPreference,
                 searchableInfoByPreference,
                 screens.preferencePathByPreference,
@@ -112,7 +113,7 @@ public class MergedPreferenceScreenProvider {
         return !isPreferenceSearchable.isPreferenceOfHostSearchable(preference, host);
     }
 
-    private PreferenceScreen destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {
+    private PreferenceScreensMerger.PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
     }
 

@@ -1,12 +1,14 @@
 package de.KnollFrank.lib.preferencesearch;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.preferencesearch.common.Maps;
@@ -17,17 +19,20 @@ import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoAttribut
 public class MergedPreferenceScreen {
 
     public final PreferenceScreen preferenceScreen;
+    public final Set<PreferenceCategory> isNonClickable;
     private final Map<Preference, PreferenceFragmentCompat> hostByPreference;
     private final Map<Preference, String> searchableInfoByPreference;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferenceScreenResetter preferenceScreenResetter;
 
     public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
+                                  final Set<PreferenceCategory> isNonClickable,
                                   final Map<Preference, PreferenceFragmentCompat> hostByPreference,
                                   final Map<Preference, String> searchableInfoByPreference,
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute) {
         this.preferenceScreen = preferenceScreen;
+        this.isNonClickable = isNonClickable;
         this.hostByPreference = hostByPreference;
         this.searchableInfoByPreference = searchableInfoByPreference;
         this.preferencePathByPreference = preferencePathByPreference;

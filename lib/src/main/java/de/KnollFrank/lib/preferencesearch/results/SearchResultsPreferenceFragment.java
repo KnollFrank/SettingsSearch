@@ -21,7 +21,6 @@ import de.KnollFrank.lib.preferencesearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.preferencesearch.results.adapter.SearchablePreferenceGroupAdapter;
 import de.KnollFrank.lib.preferencesearch.search.provider.SearchableInfoGetter;
 
-// FK-TODO: die PreferenceCategory im Suchergebnis, die den Namen eines PreferenceScreens anzeigt, soll nicht anklickbar sein.
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private MergedPreferenceScreen mergedPreferenceScreen;
@@ -60,6 +59,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 searchableInfoGetter,
                 mergedPreferenceScreen.preferencePathByPreference,
                 showPreferencePath,
+                mergedPreferenceScreen.isNonClickable,
                 this::showPreferenceScreenAndHighlightPreference);
     }
 

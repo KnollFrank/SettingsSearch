@@ -7,15 +7,19 @@ import static de.KnollFrank.lib.preferencesearch.results.adapter.SearchableInfoV
 import static de.KnollFrank.lib.preferencesearch.results.adapter.SearchableInfoView.displaySearchableInfo;
 import static de.KnollFrank.lib.preferencesearch.results.adapter.ViewsAdder.addSearchableInfoViewAndPreferencePathView;
 
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceViewHolder;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.preferencesearch.PreferencePath;
@@ -27,17 +31,20 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     private final SearchableInfoGetter searchableInfoGetter;
     private final Map<Preference, PreferencePath> preferencePathByPreference;
     private final ShowPreferencePath showPreferencePath;
+    private final Set<PreferenceCategory> isNonClickable;
     private final Consumer<Preference> onPreferenceClickListener;
 
     public SearchablePreferenceGroupAdapter(final PreferenceGroup preferenceGroup,
                                             final SearchableInfoGetter searchableInfoGetter,
                                             final Map<Preference, PreferencePath> preferencePathByPreference,
                                             final ShowPreferencePath showPreferencePath,
+                                            final Set<PreferenceCategory> isNonClickable,
                                             final Consumer<Preference> onPreferenceClickListener) {
         super(preferenceGroup);
         this.searchableInfoGetter = searchableInfoGetter;
         this.preferencePathByPreference = preferencePathByPreference;
         this.showPreferencePath = showPreferencePath;
+        this.isNonClickable = isNonClickable;
         this.onPreferenceClickListener = onPreferenceClickListener;
     }
 
@@ -62,6 +69,12 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
                 showPreferencePath.showPreferencePath(preference));
         setOnClickListener(
                 holder.itemView,
-                v -> onPreferenceClickListener.accept(preference));
+                getOnClickListener(preference));
+    }
+
+    private Optional<View.OnClickListener> getOnClickListener(final Preference preference) {
+        return isNonClickable.contains(preference) ?
+                Optional.empty() :
+                Optional.of(v -> onPreferenceClickListener.accept(preference));
     }
 }
