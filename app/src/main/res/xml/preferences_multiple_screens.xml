@@ -8,21 +8,21 @@
         android:persistent="false"
         android:summary="some summary to second fragment"
         android:title="some title to second fragment"
-        app:fragment="de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentSecond" />
+        app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond" />
 
     <Preference
         android:key="link_to_fourth_fragment"
         android:persistent="false"
         android:summary="some summary to fourth fragment"
         android:title="some title to fourth fragment"
-        app:fragment="de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentFourth" />
+        app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFourth" />
 
     <Preference
         android:key="link_to_nonPreference_fragment"
         android:persistent="false"
         android:summary="some summary to nonPreference fragment"
         android:title="some title to nonPreference fragment"
-        app:fragment="de.KnollFrank.preferencesearch.preference.fragment.NonPreferenceFragment" />
+        app:fragment="de.KnollFrank.settingssearch.preference.fragment.NonPreferenceFragment" />
 
     <CheckBoxPreference
         android:key="checkbox"
@@ -80,14 +80,14 @@
         android:summary="This allows to select from a list"
         android:title="List preference" />
 
-    <de.KnollFrank.preferencesearch.preference.custom.ReversedListPreference
+    <de.KnollFrank.settingssearch.preference.custom.ReversedListPreference
         android:entries="@android:array/imProtocols"
         android:entryValues="@android:array/imProtocols"
         android:key="keyOfReversedListPreference"
         android:summary="summary of ReversedListPreference"
         android:title="title of ReversedListPreference" />
 
-    <de.KnollFrank.preferencesearch.preference.custom.CustomDialogPreference
+    <de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference
         android:key="keyOfSomeCustomDialogPreference"
         android:summary="summary of custom DialogPreference"
         android:title="some custom DialogPreference" />

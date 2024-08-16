@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:search="http://schemas.android.com/apk/de.KnollFrank.lib.preferencesearch"
+    xmlns:search="http://schemas.android.com/apk/de.KnollFrank.lib.settingssearch"
     android:title="second screen">
 
     <Preference
@@ -9,7 +9,7 @@
         android:persistent="false"
         android:summary="some summary to third fragment"
         android:title="some title to third fragment"
-        app:fragment="de.KnollFrank.preferencesearch.preference.fragment.PrefsFragmentThird" />
+        app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird" />
 
     <CheckBoxPreference
         android:key="secondfile"

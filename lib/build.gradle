@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 android {
-    namespace "de.KnollFrank.lib.preferencesearch"
+    namespace "de.KnollFrank.lib.settingssearch"
     compileSdk 34
 
     defaultConfig {

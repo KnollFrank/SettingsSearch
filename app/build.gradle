@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "de.KnollFrank.preferencesearch"
+    namespace "de.KnollFrank.settingssearch"
     compileSdk 34
 
     defaultConfig {
-        applicationId "de.KnollFrank.preferencesearch"
+        applicationId "de.KnollFrank.settingssearch"
         minSdkVersion 24
         targetSdkVersion 34
         versionCode 1
