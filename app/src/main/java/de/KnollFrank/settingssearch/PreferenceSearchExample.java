@@ -79,6 +79,23 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return new SearchPreferenceFragments(
                 createSearchConfiguration(PrefsFragmentFirst.class),
+                new DefaultFragmentFactory(),
+                ImmutableList.of(
+                        new PreferenceDescription<>(
+                                ReversedListPreference.class,
+                                new ReversedListPreferenceSearchableInfoProvider())),
+                new PreferenceDialogAndSearchableInfoProvider() {
+
+                    @Override
+                    public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
+                        return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
+                                Optional.of(
+                                        new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
+                                                new CustomDialogFragment(),
+                                                customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
+                                Optional.empty();
+                    }
+                },
                 new IsPreferenceSearchable() {
 
                     @Override
@@ -96,24 +113,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 .orElse(false);
                     }
                 },
-                ImmutableList.of(
-                        new PreferenceDescription<>(
-                                ReversedListPreference.class,
-                                new ReversedListPreferenceSearchableInfoProvider())),
-                new DefaultFragmentFactory(),
-                getSupportFragmentManager(),
-                new PreferenceDialogAndSearchableInfoProvider() {
-
-                    @Override
-                    public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
-                        return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
-                                Optional.of(
-                                        new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
-                                                new CustomDialogFragment(),
-                                                customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
-                                Optional.empty();
-                    }
-                });
+                getSupportFragmentManager());
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
