@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
-import androidx.preference.Preference;
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 
 @FunctionalInterface
 public interface ShowPreferencePath {
 
-    boolean showPreferencePath(Preference preference);
+    boolean show(PreferencePath preferencePath);
 }

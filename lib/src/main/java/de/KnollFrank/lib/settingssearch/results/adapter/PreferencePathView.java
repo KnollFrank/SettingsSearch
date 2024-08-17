@@ -8,6 +8,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
 import java.text.MessageFormat;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -24,14 +25,14 @@ class PreferencePathView {
     }
 
     public static void displayPreferencePath(final PreferenceViewHolder holder,
-                                             final PreferencePath preferencePath,
+                                             final Optional<PreferencePath> preferencePath,
                                              final boolean showPreferencePath) {
         final TextView preferencePathView = getPreferencePathView(holder);
-        if (showPreferencePath) {
+        if (showPreferencePath && preferencePath.isPresent()) {
             preferencePathView.setText(
                     MessageFormat.format(
                             "Path: {0}",
-                            preferencePath != null ? toString(preferencePath) : ""));
+                            toString(preferencePath.get())));
             preferencePathView.setVisibility(View.VISIBLE);
         } else {
             preferencePathView.setVisibility(View.GONE);

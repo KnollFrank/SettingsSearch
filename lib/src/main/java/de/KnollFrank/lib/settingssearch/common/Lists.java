@@ -32,4 +32,10 @@ public class Lists {
                 .map(Optional::get)
                 .collect(Collectors.toList());
     }
+
+    public static <T> Optional<T> getLast(final List<T> ts) {
+        return ts.isEmpty() ?
+                Optional.empty() :
+                Optional.of(ts.get(ts.size() - 1));
+    }
 }

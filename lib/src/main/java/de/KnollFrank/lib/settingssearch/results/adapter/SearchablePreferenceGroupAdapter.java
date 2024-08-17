@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.results.adapter;
 
 import static de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter.setOnClickListener;
 import static de.KnollFrank.lib.settingssearch.results.adapter.PreferencePathView.createPreferencePathView;
-import static de.KnollFrank.lib.settingssearch.results.adapter.PreferencePathView.displayPreferencePath;
 import static de.KnollFrank.lib.settingssearch.results.adapter.SearchableInfoView.createSearchableInfoView;
 import static de.KnollFrank.lib.settingssearch.results.adapter.SearchableInfoView.displaySearchableInfo;
 import static de.KnollFrank.lib.settingssearch.results.adapter.ViewsAdder.addSearchableInfoViewAndPreferencePathView;
@@ -23,6 +22,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoGetter;
 
@@ -64,12 +64,22 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
         final Preference preference = getItem(position);
         displaySearchableInfo(holder, searchableInfoGetter.getSearchableInfo(preference));
         displayPreferencePath(
-                holder,
-                preferencePathByPreference.get(preference),
-                showPreferencePath.showPreferencePath(preference));
+                Maps.get(preferencePathByPreference, preference),
+                holder);
         setOnClickListener(
                 holder.itemView,
                 getOnClickListener(preference));
+    }
+
+    private void displayPreferencePath(final Optional<PreferencePath> preferencePath, final PreferenceViewHolder holder) {
+        PreferencePathView.displayPreferencePath(
+                holder,
+                preferencePath,
+                showPreferencePath(preferencePath));
+    }
+
+    private boolean showPreferencePath(final Optional<PreferencePath> preferencePath) {
+        return preferencePath.isPresent() ? showPreferencePath.show(preferencePath.get()) : false;
     }
 
     private Optional<View.OnClickListener> getOnClickListener(final Preference preference) {

@@ -6,6 +6,9 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+
+import de.KnollFrank.lib.settingssearch.common.Lists;
 
 public class PreferencePath {
 
@@ -13,6 +16,10 @@ public class PreferencePath {
 
     public PreferencePath(final List<Preference> preferences) {
         this.preferences = preferences;
+    }
+
+    public Optional<Preference> getPreference() {
+        return Lists.getLast(preferences);
     }
 
     public PreferencePath add(final Preference preference) {

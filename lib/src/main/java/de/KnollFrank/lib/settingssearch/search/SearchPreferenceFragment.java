@@ -91,7 +91,7 @@ public class SearchPreferenceFragment extends Fragment {
                 (preference, host) -> true,
                 Collections.emptyMap(),
                 new SearchableInfoAttribute(),
-                preference -> true,
+                preferencePath -> true,
                 new DefaultFragmentFactory(),
                 (hostOfPreference, preference) -> Optional.empty());
     }

@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -88,8 +89,11 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 new ShowPreferencePath() {
 
                     @Override
-                    public boolean showPreferencePath(final Preference preference) {
-                        return !(preference instanceof PreferenceGroup);
+                    public boolean show(final PreferencePath preferencePath) {
+                        return preferencePath
+                                .getPreference()
+                                .map(preference -> !(preference instanceof PreferenceGroup))
+                                .orElse(false);
                     }
                 },
                 ImmutableList.of(
