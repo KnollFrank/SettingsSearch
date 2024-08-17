@@ -34,8 +34,10 @@ public class Lists {
     }
 
     public static <T> Optional<T> getLast(final List<T> ts) {
-        return ts.isEmpty() ?
-                Optional.empty() :
-                Optional.of(ts.get(ts.size() - 1));
+        if (ts.isEmpty()) {
+            return Optional.empty();
+        }
+        final T last = ts.get(ts.size() - 1);
+        return Optional.of(last);
     }
 }
