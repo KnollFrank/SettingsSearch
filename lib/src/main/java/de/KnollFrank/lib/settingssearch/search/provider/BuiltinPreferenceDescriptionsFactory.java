@@ -44,7 +44,7 @@ public class BuiltinPreferenceDescriptionsFactory {
                     final SwitchPreference switchPreference = (SwitchPreference) preference;
                     return String.join(
                             ", ",
-                            Lists.getNonEmptyElements(
+                            Lists.getPresentElements(
                                     ImmutableList.of(
                                             Optional.ofNullable(switchPreference.getSummaryOff()),
                                             Optional.ofNullable(switchPreference.getSummaryOn()))));
@@ -78,7 +78,7 @@ public class BuiltinPreferenceDescriptionsFactory {
         return ImmutableList
                 .<CharSequence>builder()
                 .addAll(Lists.asList(elements))
-                .addAll(Lists.getNonEmptyElements(Arrays.asList(evenMoreElements)))
+                .addAll(Lists.getPresentElements(Arrays.asList(evenMoreElements)))
                 .build();
     }
 }

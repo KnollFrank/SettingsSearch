@@ -19,7 +19,7 @@ public class PreferencePath {
     }
 
     public Optional<Preference> getPreference() {
-        return Lists.getLast(preferences);
+        return Lists.getLastElement(preferences);
     }
 
     public PreferencePath add(final Preference preference) {

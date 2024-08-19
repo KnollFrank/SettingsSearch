@@ -25,7 +25,7 @@ public class Lists {
                 .orElseGet(Collections::emptyList);
     }
 
-    public static <T> List<? extends T> getNonEmptyElements(final List<Optional<? extends T>> elements) {
+    public static <T> List<? extends T> getPresentElements(final List<Optional<? extends T>> elements) {
         return elements
                 .stream()
                 .filter(Optional::isPresent)
@@ -33,7 +33,7 @@ public class Lists {
                 .collect(Collectors.toList());
     }
 
-    public static <T> Optional<T> getLast(final List<T> ts) {
+    public static <T> Optional<T> getLastElement(final List<T> ts) {
         if (ts.isEmpty()) {
             return Optional.empty();
         }
