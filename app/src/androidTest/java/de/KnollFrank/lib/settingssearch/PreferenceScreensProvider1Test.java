@@ -164,7 +164,7 @@ public class PreferenceScreensProvider1Test {
             configureConnectedPreferencesOfFragment(
                     this,
                     "fourth screen",
-                    ImmutableList.of(Fragment3.class));
+                    ImmutableList.of());
         }
     }
 }
