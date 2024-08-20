@@ -9,11 +9,11 @@ class Arguments {
 
     private final String fragmentClassName;
     private final Optional<String> keyOfPreference;
-    private final Optional<Class<? extends PreferenceFragmentCompat>> hostOfPreference;
+    private final Optional<PreferenceFragmentCompat> hostOfPreference;
 
     public Arguments(final String fragmentClassName,
                      final Optional<String> keyOfPreference,
-                     final Optional<Class<? extends PreferenceFragmentCompat>> hostOfPreference) {
+                     final Optional<PreferenceFragmentCompat> hostOfPreference) {
         this.fragmentClassName = fragmentClassName;
         this.keyOfPreference = keyOfPreference;
         this.hostOfPreference = hostOfPreference;

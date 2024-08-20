@@ -9,21 +9,21 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 
 class ArgumentsFactory {
 
-    public static Arguments createArguments(final String fragmentClassName,
-                                            final Optional<PreferenceWithHost> preferenceWithHost) {
-        return new Arguments(
-                fragmentClassName,
-                getKeyOfPreference(preferenceWithHost),
-                getHostOfPreference(preferenceWithHost));
-    }
+	public static Arguments createArguments(final String fragmentClassName,
+											final Optional<PreferenceWithHost> preferenceWithHost) {
+		return new Arguments(
+				fragmentClassName,
+				getKeyOfPreference(preferenceWithHost),
+				getHostOfPreference(preferenceWithHost));
+	}
 
-    private static Optional<String> getKeyOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
-        return preferenceWithHost
-                .map(_preferenceWithHost -> _preferenceWithHost.preference)
-                .map(Preference::getKey);
-    }
+	private static Optional<String> getKeyOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
+		return preferenceWithHost
+				.map(_preferenceWithHost -> _preferenceWithHost.preference)
+				.map(Preference::getKey);
+	}
 
-    private static Optional<Class<? extends PreferenceFragmentCompat>> getHostOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
-        return preferenceWithHost.map(_preferenceWithHost -> _preferenceWithHost.host.getClass());
-    }
+	private static Optional<PreferenceFragmentCompat> getHostOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
+		return preferenceWithHost.map(_preferenceWithHost -> _preferenceWithHost.host);
+	}
 }
