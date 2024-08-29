@@ -4,7 +4,7 @@ import androidx.preference.Preference;
 
 import org.jgrapht.graph.DefaultEdge;
 
-class PreferenceEdge extends DefaultEdge {
+public class PreferenceEdge extends DefaultEdge {
 
     public Preference preference;
 

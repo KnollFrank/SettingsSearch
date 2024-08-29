@@ -29,6 +29,7 @@ public class MergedPreferenceScreenProvider {
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
+    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final boolean cacheMergedPreferenceScreens;
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
@@ -40,6 +41,7 @@ public class MergedPreferenceScreenProvider {
                                           final IsPreferenceSearchable isPreferenceSearchable,
                                           final SearchableInfoAttribute searchableInfoAttribute,
                                           final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+                                          final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                           final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
         this.preferenceDialogs = preferenceDialogs;
@@ -48,6 +50,7 @@ public class MergedPreferenceScreenProvider {
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
+        this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
     }
 
@@ -92,6 +95,7 @@ public class MergedPreferenceScreenProvider {
         final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
         removeInvisiblePreferences(screens.connectedPreferenceScreens);
         removeNonSearchablePreferences(screens.connectedPreferenceScreens);
+        preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(screens.preferenceScreenGraph);
         return screens;
     }
 

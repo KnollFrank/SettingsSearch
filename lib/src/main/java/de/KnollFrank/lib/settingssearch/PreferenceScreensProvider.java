@@ -16,6 +16,7 @@ public class PreferenceScreensProvider {
         final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph =
                 getPreferenceScreenGraph(root);
         return new ConnectedPreferenceScreens(
+                preferenceScreenGraph,
                 preferenceScreenGraph.vertexSet(),
                 PreferencePathByPreferenceProvider.getPreferencePathByPreference(preferenceScreenGraph));
     }
