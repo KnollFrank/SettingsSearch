@@ -13,17 +13,15 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 
 import org.jgrapht.Graph;
-import org.jgrapht.nio.Attribute;
 import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.ExportException;
 import org.jgrapht.nio.dot.DOTExporter;
 
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
@@ -123,8 +121,13 @@ public class PreferenceSearchExample extends AppCompatActivity {
 						renderPreferenceScreenGraph(preferenceScreenGraph);
 					}
 
-					private static void renderPreferenceScreenGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph)
-							throws ExportException {
+					private static void renderPreferenceScreenGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) throws ExportException {
+						final Writer writer = new StringWriter();
+						getDOTExporter().exportGraph(preferenceScreenGraph, writer);
+						System.out.println(writer);
+					}
+
+					private static DOTExporter<PreferenceScreenWithHost, PreferenceEdge> getDOTExporter() {
 						final DOTExporter<PreferenceScreenWithHost, PreferenceEdge> exporter =
 								new DOTExporter<>(
 										preferenceScreenWithHost -> {
@@ -134,14 +137,11 @@ public class PreferenceSearchExample extends AppCompatActivity {
 													"no_title";
 										});
 						exporter.setVertexAttributeProvider(
-								preferenceScreenWithHost -> {
-									final Map<String, Attribute> map = new LinkedHashMap<>();
-									map.put("label", DefaultAttribute.createAttribute(preferenceScreenWithHost.preferenceScreen.toString()));
-									return map;
-								});
-						final Writer writer = new StringWriter();
-						exporter.exportGraph(preferenceScreenGraph, writer);
-						System.out.println(writer);
+								preferenceScreenWithHost ->
+										ImmutableMap.of(
+												"label",
+												DefaultAttribute.createAttribute(preferenceScreenWithHost.preferenceScreen.toString())));
+						return exporter;
 					}
 				},
 				new ShowPreferencePath() {
