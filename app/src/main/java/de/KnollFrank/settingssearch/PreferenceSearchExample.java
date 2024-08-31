@@ -13,15 +13,9 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import org.jgrapht.Graph;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.ExportException;
-import org.jgrapht.nio.dot.DOTExporter;
 
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
@@ -118,30 +112,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
 
 					@Override
 					public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-						renderPreferenceScreenGraph(preferenceScreenGraph);
-					}
-
-					private static void renderPreferenceScreenGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) throws ExportException {
-						final Writer writer = new StringWriter();
-						getDOTExporter().exportGraph(preferenceScreenGraph, writer);
-						System.out.println(writer);
-					}
-
-					private static DOTExporter<PreferenceScreenWithHost, PreferenceEdge> getDOTExporter() {
-						final DOTExporter<PreferenceScreenWithHost, PreferenceEdge> exporter =
-								new DOTExporter<>(
-										preferenceScreenWithHost -> {
-											final CharSequence title = preferenceScreenWithHost.preferenceScreen.getTitle();
-											return title != null ?
-													title.toString().replace(' ', '_') :
-													"no_title";
-										});
-						exporter.setVertexAttributeProvider(
-								preferenceScreenWithHost ->
-										ImmutableMap.of(
-												"label",
-												DefaultAttribute.createAttribute(preferenceScreenWithHost.preferenceScreen.toString())));
-						return exporter;
+						PreferenceScreenGraphRenderer.renderPreferenceScreenGraph(preferenceScreenGraph);
 					}
 				},
 				new ShowPreferencePath() {
