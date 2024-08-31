@@ -1,6 +1,7 @@
 package de.KnollFrank.settingssearch;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -112,7 +113,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
 
 					@Override
 					public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-						PreferenceScreenGraphRenderer.renderPreferenceScreenGraph(preferenceScreenGraph);
+						Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
 					}
 				},
 				new ShowPreferencePath() {

@@ -20,19 +20,19 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 
-class PreferenceScreenGraphRenderer {
+class PreferenceScreenGraph2DOTConverter {
 
-	public static void renderPreferenceScreenGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) throws ExportException {
+	public static String graph2DOT(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) throws ExportException {
 		final Writer writer = new StringWriter();
 		getDOTExporter().exportGraph(preferenceScreenGraph, writer);
-		System.out.println(writer);
+		return writer.toString();
 	}
 
 	private static DOTExporter<PreferenceScreenWithHost, PreferenceEdge> getDOTExporter() {
 		final DOTExporter<PreferenceScreenWithHost, PreferenceEdge> exporter =
-				new DOTExporter<>(PreferenceScreenGraphRenderer::getVertexId);
-		exporter.setVertexAttributeProvider(PreferenceScreenGraphRenderer::getVertexAttribute);
-		exporter.setEdgeAttributeProvider(PreferenceScreenGraphRenderer::getEdgeAttribute);
+				new DOTExporter<>(PreferenceScreenGraph2DOTConverter::getVertexId);
+		exporter.setVertexAttributeProvider(PreferenceScreenGraph2DOTConverter::getVertexAttribute);
+		exporter.setEdgeAttributeProvider(PreferenceScreenGraph2DOTConverter::getEdgeAttribute);
 		return exporter;
 	}
 
