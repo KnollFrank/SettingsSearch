@@ -56,7 +56,7 @@ class PreferenceScreenGraph2DOTConverter {
 	}
 
 	private static String getLabel(final PreferenceScreen preferenceScreen) {
-		return preferenceScreen.toString() + "\\n\\n" + getPreferences(preferenceScreen);
+		return preferenceScreen.toString() + "\\l\\l" + getPreferences(preferenceScreen);
 	}
 
 	private static String getPreferences(final PreferenceScreen preferenceScreen) {
@@ -64,7 +64,7 @@ class PreferenceScreenGraph2DOTConverter {
 				.getAllChildren(preferenceScreen)
 				.stream()
 				.map(Preference::toString)
-				.collect(Collectors.joining("\\n"));
+				.collect(Collectors.joining("\\l")) + "\\l";
 	}
 
 	private static Map<String, Attribute> getEdgeAttribute(final PreferenceEdge preferenceEdge) {
