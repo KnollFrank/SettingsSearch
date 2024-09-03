@@ -87,7 +87,11 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
             final Preference preference2Highlight) {
         showFragment(
                 fragmentOfPreferenceScreen,
-                _fragmentOfPreferenceScreen -> highlightPreference(_fragmentOfPreferenceScreen, preference2Highlight.getKey()),
+                _fragmentOfPreferenceScreen -> {
+                    if (preference2Highlight.hasKey()) {
+                        highlightPreference(_fragmentOfPreferenceScreen, preference2Highlight.getKey());
+                    }
+                },
                 true,
                 fragmentContainerViewId,
                 requireActivity().getSupportFragmentManager());
@@ -95,7 +99,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment,
                                             final String keyOfPreference2Highlight) {
-        // FK-TODO: was soll passieren, falls die Preference keinen key hat, also keyOfPreference2Highlight == null ist?
         preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
         PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
                 keyOfPreference2Highlight,
