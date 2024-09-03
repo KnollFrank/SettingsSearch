@@ -10,6 +10,7 @@ import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
@@ -63,6 +64,27 @@ public class PreferenceSearcherTest {
 							final CheckBoxPreference preference = new CheckBoxPreference(context);
 							preference.setKey(keyOfPreference);
 							preference.setTitle(String.format("Checkbox %s file", keyword));
+							return preference;
+						}),
+				(preference, host) -> true,
+				keyword,
+				(hostOfPreference, preference) -> Optional.empty(),
+				preferenceMatches ->
+						assertThat(
+								getKeys(preferenceMatches),
+								hasItem(keyOfPreference)));
+	}
+
+	@Test
+	public void shouldSearchAndFindTitleOfPreferenceCategory() {
+		final String keyword = "This is a preference category";
+		final String keyOfPreference = "keyOfPreferenceCategory";
+		testSearch(
+				PreferenceFragment.fromSinglePreference(
+						context -> {
+							final PreferenceCategory preference = new PreferenceCategory(context);
+							preference.setKey(keyOfPreference);
+							preference.setTitle(String.format(keyword));
 							return preference;
 						}),
 				(preference, host) -> true,

@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.search.Summaries4MatchingSearchableInfosAdapter.showSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo;
 
-import androidx.preference.PreferenceGroup;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +44,6 @@ class PreferenceSearcher {
                 Preferences
                         .getAllPreferences(mergedPreferenceScreen.preferenceScreen)
                         .stream()
-                        .filter(preference -> !(preference instanceof PreferenceGroup))
                         .map(preference ->
                                 PreferenceMatcher.getPreferenceMatches(
                                         preference,
