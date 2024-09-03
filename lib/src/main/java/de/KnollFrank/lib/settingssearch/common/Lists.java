@@ -37,7 +37,7 @@ public class Lists {
         if (ts.isEmpty()) {
             return Optional.empty();
         }
-        final T last = ts.get(ts.size() - 1);
-        return Optional.of(last);
+        final T lastElement = ts.get(ts.size() - 1);
+        return Optional.of(lastElement);
     }
 }
