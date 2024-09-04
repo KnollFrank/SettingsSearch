@@ -46,7 +46,7 @@ public class PreferenceScreensProvider2Test {
         final Set<PreferenceScreenWithHost> preferenceScreens =
                 preferenceScreensProvider
                         .getConnectedPreferenceScreens(root)
-                        .connectedPreferenceScreens;
+                        .getConnectedPreferenceScreens();
 
         // Then
         assertThat(

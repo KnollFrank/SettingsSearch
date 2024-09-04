@@ -76,12 +76,12 @@ public class MergedPreferenceScreenProvider {
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, PreferenceFragmentCompat> hostByPreference =
-                HostByPreferenceProvider.getHostByPreference(screens.connectedPreferenceScreens);
+                HostByPreferenceProvider.getHostByPreference(screens.getConnectedPreferenceScreens());
         final Map<Preference, String> searchableInfoByPreference =
                 new SearchableInfoByPreferenceProvider(preferenceDialogs, preferenceDialogAndSearchableInfoProvider)
-                        .getSearchableInfoByPreference(screens.connectedPreferenceScreens);
+                        .getSearchableInfoByPreference(screens.getConnectedPreferenceScreens());
         // B:
-        final PreferenceScreensMerger.PreferenceScreenAndIsNonClickable preferenceScreenAndIsNonClickable = destructivelyMergeScreens(screens.connectedPreferenceScreens);
+        final PreferenceScreensMerger.PreferenceScreenAndIsNonClickable preferenceScreenAndIsNonClickable = destructivelyMergeScreens(screens.getConnectedPreferenceScreens());
         return new MergedPreferenceScreen(
                 preferenceScreenAndIsNonClickable.preferenceScreen,
                 preferenceScreenAndIsNonClickable.isNonClickable,
@@ -93,8 +93,8 @@ public class MergedPreferenceScreenProvider {
 
     private ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {
         final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
-        removeInvisiblePreferences(screens.connectedPreferenceScreens);
-        removeNonSearchablePreferences(screens.connectedPreferenceScreens);
+        removeInvisiblePreferences(screens.getConnectedPreferenceScreens());
+        removeNonSearchablePreferences(screens.getConnectedPreferenceScreens());
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(screens.preferenceScreenGraph);
         return screens;
     }
