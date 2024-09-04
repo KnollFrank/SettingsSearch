@@ -87,7 +87,7 @@ public class PreferenceScreensProvider1Test {
                                 Fragment1ConnectedToFragment2AndFragment4.class,
                                 Fragment2ConnectedToFragment3.class);
                 assertThat(
-                        connectedPreferenceScreens.preferencePathByPreference.get(preferenceOfFragment2PointingToFragment3),
+                        connectedPreferenceScreens.getPreferencePathByPreference().get(preferenceOfFragment2PointingToFragment3),
                         is(
                                 new PreferencePath(
                                         ImmutableList.of(

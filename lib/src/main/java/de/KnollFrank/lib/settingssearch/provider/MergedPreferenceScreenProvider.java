@@ -87,7 +87,7 @@ public class MergedPreferenceScreenProvider {
                 preferenceScreenAndIsNonClickable.isNonClickable,
                 hostByPreference,
                 searchableInfoByPreference,
-                screens.preferencePathByPreference,
+                screens.getPreferencePathByPreference(),
                 searchableInfoAttribute);
     }
 

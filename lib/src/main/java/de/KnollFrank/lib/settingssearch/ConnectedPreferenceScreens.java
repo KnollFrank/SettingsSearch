@@ -9,17 +9,19 @@ import java.util.Set;
 
 public class ConnectedPreferenceScreens {
 
-	public final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
-    // FK-TODO: replace with PreferencePathByPreferenceProvider.getPreferencePathByPreference(preferenceScreenGraph) ?
-	public final Map<Preference, PreferencePath> preferencePathByPreference;
+    public final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
+    private final Map<Preference, PreferencePath> preferencePathByPreference;
 
-	public ConnectedPreferenceScreens(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
-									  final Map<Preference, PreferencePath> preferencePathByPreference) {
-		this.preferenceScreenGraph = preferenceScreenGraph;
-        this.preferencePathByPreference = preferencePathByPreference;
-	}
+    public ConnectedPreferenceScreens(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+        this.preferenceScreenGraph = preferenceScreenGraph;
+        this.preferencePathByPreference = PreferencePathByPreferenceProvider.getPreferencePathByPreference(preferenceScreenGraph);
+    }
 
-	public Set<PreferenceScreenWithHost> getConnectedPreferenceScreens() {
-		return preferenceScreenGraph.vertexSet();
-	}
+    public Set<PreferenceScreenWithHost> getConnectedPreferenceScreens() {
+        return preferenceScreenGraph.vertexSet();
+    }
+
+    public Map<Preference, PreferencePath> getPreferencePathByPreference() {
+        return preferencePathByPreference;
+    }
 }

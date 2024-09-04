@@ -13,11 +13,7 @@ public class PreferenceScreensProvider {
     }
 
     public ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
-        final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph =
-                getPreferenceScreenGraph(root);
-        return new ConnectedPreferenceScreens(
-                preferenceScreenGraph,
-                PreferencePathByPreferenceProvider.getPreferencePathByPreference(preferenceScreenGraph));
+        return new ConnectedPreferenceScreens(getPreferenceScreenGraph(root));
     }
 
     private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(
