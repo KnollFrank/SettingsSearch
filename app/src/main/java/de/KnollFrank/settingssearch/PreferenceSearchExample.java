@@ -17,6 +17,7 @@ import com.google.common.collect.ImmutableList;
 import org.jgrapht.Graph;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -122,7 +123,15 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         return preferencePath.getPreference().isPresent();
                     }
                 },
-                getSupportFragmentManager());
+                getSupportFragmentManager(),
+                // FK-TODO: introduce interface named PrepareShow
+                new Consumer<PreferenceFragmentCompat>() {
+
+                    @Override
+                    public void accept(final PreferenceFragmentCompat preferenceFragment) {
+                        Log.i(this.getClass().getSimpleName(), "prepareShow " + preferenceFragment.getClass().getSimpleName());
+                    }
+                });
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
