@@ -6,7 +6,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 public class PreferenceEdge extends DefaultEdge {
 
-    public Preference preference;
+    public final Preference preference;
 
     public PreferenceEdge(final Preference preference) {
         this.preference = preference;
