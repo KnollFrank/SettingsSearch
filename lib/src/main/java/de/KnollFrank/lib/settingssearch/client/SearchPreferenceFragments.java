@@ -29,8 +29,8 @@ public class SearchPreferenceFragments {
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final ShowPreferencePath showPreferencePath;
-    private final FragmentManager fragmentManager;
     private final PrepareShow prepareShow;
+    private final FragmentManager fragmentManager;
 
     public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
                                      final FragmentFactory fragmentFactory,
@@ -39,8 +39,8 @@ public class SearchPreferenceFragments {
                                      final IsPreferenceSearchable isPreferenceSearchable,
                                      final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                      final ShowPreferencePath showPreferencePath,
-                                     final FragmentManager fragmentManager,
-                                     final PrepareShow prepareShow) {
+                                     final PrepareShow prepareShow,
+                                     final FragmentManager fragmentManager) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.preferenceDescriptions =
@@ -53,8 +53,8 @@ public class SearchPreferenceFragments {
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.showPreferencePath = showPreferencePath;
-        this.fragmentManager = fragmentManager;
         this.prepareShow = prepareShow;
+        this.fragmentManager = fragmentManager;
     }
 
     public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
@@ -63,8 +63,8 @@ public class SearchPreferenceFragments {
                                      final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                      final IsPreferenceSearchable isPreferenceSearchable,
                                      final ShowPreferencePath showPreferencePath,
-                                     final FragmentManager fragmentManager,
-                                     final PrepareShow prepareShow) {
+                                     final PrepareShow prepareShow,
+                                     final FragmentManager fragmentManager) {
         this(
                 searchConfiguration,
                 fragmentFactory,
@@ -74,8 +74,8 @@ public class SearchPreferenceFragments {
                 preferenceScreenGraph -> {
                 },
                 showPreferencePath,
-                fragmentManager,
-                prepareShow);
+                prepareShow,
+                fragmentManager);
     }
 
     public void showSearchPreferenceFragment() {

@@ -123,13 +123,13 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         return preferencePath.getPreference().isPresent();
                     }
                 },
-                getSupportFragmentManager(),
                 new PrepareShow() {
 
                     @Override
                     public void prepareShow(final PreferenceFragmentCompat preferenceFragment) {
                     }
-                });
+                },
+                getSupportFragmentManager());
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
