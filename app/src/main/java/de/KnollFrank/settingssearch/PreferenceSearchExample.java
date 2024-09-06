@@ -17,7 +17,6 @@ import com.google.common.collect.ImmutableList;
 import org.jgrapht.Graph;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -29,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
@@ -124,12 +124,10 @@ public class PreferenceSearchExample extends AppCompatActivity {
                     }
                 },
                 getSupportFragmentManager(),
-                // FK-TODO: introduce interface named PrepareShow
-                new Consumer<PreferenceFragmentCompat>() {
+                new PrepareShow() {
 
                     @Override
-                    public void accept(final PreferenceFragmentCompat preferenceFragment) {
-                        Log.i(this.getClass().getSimpleName(), "prepareShow " + preferenceFragment.getClass().getSimpleName());
+                    public void prepareShow(final PreferenceFragmentCompat preferenceFragment) {
                     }
                 });
     }

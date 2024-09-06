@@ -5,17 +5,16 @@ import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinPreference
 import static de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
@@ -31,7 +30,7 @@ public class SearchPreferenceFragments {
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final ShowPreferencePath showPreferencePath;
     private final FragmentManager fragmentManager;
-    private final Consumer<PreferenceFragmentCompat> prepareShow;
+    private final PrepareShow prepareShow;
 
     public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
                                      final FragmentFactory fragmentFactory,
@@ -41,7 +40,7 @@ public class SearchPreferenceFragments {
                                      final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                      final ShowPreferencePath showPreferencePath,
                                      final FragmentManager fragmentManager,
-                                     final Consumer<PreferenceFragmentCompat> prepareShow) {
+                                     final PrepareShow prepareShow) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.preferenceDescriptions =
@@ -65,7 +64,7 @@ public class SearchPreferenceFragments {
                                      final IsPreferenceSearchable isPreferenceSearchable,
                                      final ShowPreferencePath showPreferencePath,
                                      final FragmentManager fragmentManager,
-                                     final Consumer<PreferenceFragmentCompat> prepareShow) {
+                                     final PrepareShow prepareShow) {
         this(
                 searchConfiguration,
                 fragmentFactory,

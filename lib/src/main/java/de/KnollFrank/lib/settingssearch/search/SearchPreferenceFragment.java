@@ -8,7 +8,6 @@ import android.widget.SearchView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableList;
 
@@ -36,6 +35,7 @@ import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
+import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescriptions;
@@ -53,7 +53,7 @@ public class SearchPreferenceFragment extends Fragment {
     private SearchConfiguration searchConfiguration;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
-    private final Consumer<PreferenceFragmentCompat> prepareShow;
+    private final PrepareShow prepareShow;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
@@ -64,7 +64,7 @@ public class SearchPreferenceFragment extends Fragment {
             final FragmentFactory fragmentFactory,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-            final Consumer<PreferenceFragmentCompat> prepareShow) {
+            final PrepareShow prepareShow) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         isPreferenceSearchable,
@@ -86,7 +86,7 @@ public class SearchPreferenceFragment extends Fragment {
                                     final FragmentFactory fragmentFactory,
                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                                    final Consumer<PreferenceFragmentCompat> prepareShow) {
+                                    final PrepareShow prepareShow) {
         super(R.layout.searchpreference_fragment);
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProviderByPreferenceClass = searchableInfoProviderByPreferenceClass;

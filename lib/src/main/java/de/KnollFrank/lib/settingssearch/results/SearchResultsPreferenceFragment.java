@@ -15,9 +15,8 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
 
-import java.util.function.Consumer;
-
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.results.adapter.SearchablePreferenceGroupAdapter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoGetter;
@@ -28,13 +27,13 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     private @IdRes int fragmentContainerViewId;
     private ShowPreferencePath showPreferencePath;
     private SearchableInfoGetter searchableInfoGetter;
-    private Consumer<PreferenceFragmentCompat> prepareShow;
+    private PrepareShow prepareShow;
 
     public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId,
                                                               final SearchableInfoGetter searchableInfoGetter,
                                                               final ShowPreferencePath showPreferencePath,
                                                               final MergedPreferenceScreen mergedPreferenceScreen,
-                                                              final Consumer<PreferenceFragmentCompat> prepareShow) {
+                                                              final PrepareShow prepareShow) {
         final SearchResultsPreferenceFragment fragment = Factory.newInstance(fragmentContainerViewId);
         fragment.setMergedPreferenceScreen(mergedPreferenceScreen);
         fragment.setSearchableInfoGetter(searchableInfoGetter);
@@ -80,7 +79,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         this.showPreferencePath = showPreferencePath;
     }
 
-    private void setPrepareShow(final Consumer<PreferenceFragmentCompat> prepareShow) {
+    private void setPrepareShow(final PrepareShow prepareShow) {
         this.prepareShow = prepareShow;
     }
 
@@ -94,7 +93,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     private void showPreferenceScreenAndHighlightPreference(
             final PreferenceFragmentCompat fragmentOfPreferenceScreen,
             final Preference preference2Highlight) {
-        prepareShow.accept(fragmentOfPreferenceScreen);
+        prepareShow.prepareShow(fragmentOfPreferenceScreen);
         showFragment(
                 fragmentOfPreferenceScreen,
                 _fragmentOfPreferenceScreen -> {
