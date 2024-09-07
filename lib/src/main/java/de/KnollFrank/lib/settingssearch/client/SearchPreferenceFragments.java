@@ -32,15 +32,20 @@ public class SearchPreferenceFragments {
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
 
-    public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
-                                     final FragmentFactory fragmentFactory,
-                                     final List<PreferenceDescription> preferenceDescriptions,
-                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                                     final IsPreferenceSearchable isPreferenceSearchable,
-                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                                     final ShowPreferencePath showPreferencePath,
-                                     final PrepareShow prepareShow,
-                                     final FragmentManager fragmentManager) {
+    public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
+                                                           final FragmentManager fragmentManager) {
+        return new SearchPreferenceFragmentsBuilder(searchConfiguration, fragmentManager);
+    }
+
+    protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
+                                        final FragmentFactory fragmentFactory,
+                                        final List<PreferenceDescription> preferenceDescriptions,
+                                        final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+                                        final IsPreferenceSearchable isPreferenceSearchable,
+                                        final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
+                                        final ShowPreferencePath showPreferencePath,
+                                        final PrepareShow prepareShow,
+                                        final FragmentManager fragmentManager) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.preferenceDescriptions =
@@ -55,27 +60,6 @@ public class SearchPreferenceFragments {
         this.showPreferencePath = showPreferencePath;
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
-    }
-
-    public SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
-                                     final FragmentFactory fragmentFactory,
-                                     final List<PreferenceDescription> preferenceDescriptions,
-                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                                     final IsPreferenceSearchable isPreferenceSearchable,
-                                     final ShowPreferencePath showPreferencePath,
-                                     final PrepareShow prepareShow,
-                                     final FragmentManager fragmentManager) {
-        this(
-                searchConfiguration,
-                fragmentFactory,
-                preferenceDescriptions,
-                preferenceDialogAndSearchableInfoProvider,
-                isPreferenceSearchable,
-                preferenceScreenGraph -> {
-                },
-                showPreferencePath,
-                prepareShow,
-                fragmentManager);
     }
 
     public void showSearchPreferenceFragment() {

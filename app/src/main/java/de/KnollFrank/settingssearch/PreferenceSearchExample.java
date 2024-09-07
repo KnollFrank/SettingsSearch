@@ -19,17 +19,12 @@ import org.jgrapht.Graph;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
-import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
@@ -83,53 +78,37 @@ public class PreferenceSearchExample extends AppCompatActivity {
     }
 
     private SearchPreferenceFragments createSearchPreferenceFragments() {
-        return new SearchPreferenceFragments(
-                createSearchConfiguration(PrefsFragmentFirst.class),
-                new DefaultFragmentFactory(),
-                ImmutableList.of(
-                        new PreferenceDescription<>(
-                                ReversedListPreference.class,
-                                new ReversedListPreferenceSearchableInfoProvider())),
-                new PreferenceDialogAndSearchableInfoProvider() {
+        return SearchPreferenceFragments
+                .builder(
+                        createSearchConfiguration(PrefsFragmentFirst.class),
+                        getSupportFragmentManager())
+                .withPreferenceDescriptions(
+                        ImmutableList.of(
+                                new PreferenceDescription<>(
+                                        ReversedListPreference.class,
+                                        new ReversedListPreferenceSearchableInfoProvider())))
+                .withPreferenceDialogAndSearchableInfoProvider(
+                        new PreferenceDialogAndSearchableInfoProvider() {
 
-                    @Override
-                    public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
-                        return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
-                                Optional.of(
-                                        new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
-                                                new CustomDialogFragment(),
-                                                customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
-                                Optional.empty();
-                    }
-                },
-                new IsPreferenceSearchable() {
+                            @Override
+                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
+                                return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
+                                        Optional.of(
+                                                new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
+                                                        new CustomDialogFragment(),
+                                                        customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
+                                        Optional.empty();
+                            }
+                        })
+                .withPreferenceScreenGraphAvailableListener(
+                        new PreferenceScreenGraphAvailableListener() {
 
-                    @Override
-                    public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat host) {
-                        return true;
-                    }
-                },
-                new PreferenceScreenGraphAvailableListener() {
-
-                    @Override
-                    public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-                        Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
-                    }
-                },
-                new ShowPreferencePath() {
-
-                    @Override
-                    public boolean show(final PreferencePath preferencePath) {
-                        return preferencePath.getPreference().isPresent();
-                    }
-                },
-                new PrepareShow() {
-
-                    @Override
-                    public void prepareShow(final PreferenceFragmentCompat preferenceFragment) {
-                    }
-                },
-                getSupportFragmentManager());
+                            @Override
+                            public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+                                Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
+                            }
+                        })
+                .build();
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
