@@ -43,21 +43,21 @@ class SearchableInfoByPreferenceProvider {
     private Map<Preference, Optional<String>> getOptionalSearchableInfoByPreference(
             final PreferenceScreenWithHost preferenceScreenWithHost) {
         return Preferences
-                .getAllChildren(preferenceScreenWithHost.preferenceScreen)
+                .getAllChildren(preferenceScreenWithHost.preferenceScreen())
                 .stream()
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
                                 preference ->
                                         preferenceDialogAndSearchableInfoProvider
-                                                .getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(preferenceScreenWithHost.host, preference)
+                                                .getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(preferenceScreenWithHost.host(), preference)
                                                 .map(this::getSearchableInfo)));
     }
 
     private String getSearchableInfo(final PreferenceDialogAndSearchableInfoByPreferenceDialogProvider data) {
-        preferenceDialogs.showPreferenceDialog(data.preferenceDialog);
-        final String searchableInfo = data.searchableInfoByPreferenceDialogProvider.getSearchableInfo(data.preferenceDialog);
-        preferenceDialogs.hidePreferenceDialog(data.preferenceDialog);
+        preferenceDialogs.showPreferenceDialog(data.preferenceDialog());
+        final String searchableInfo = data.searchableInfoByPreferenceDialogProvider().getSearchableInfo(data.preferenceDialog());
+        preferenceDialogs.hidePreferenceDialog(data.preferenceDialog());
         return searchableInfo;
     }
 }

@@ -5,17 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-public class SearchConfiguration {
+public record SearchConfiguration(@IdRes int fragmentContainerViewId, Optional<String> textHint,
+                                  Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
 
-    public final @IdRes int fragmentContainerViewId;
-    public final Optional<String> textHint;
-    public final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
-
-    public SearchConfiguration(final @IdRes int fragmentContainerViewId,
-                               final Optional<String> textHint,
-                               final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
-        this.fragmentContainerViewId = fragmentContainerViewId;
-        this.textHint = textHint;
-        this.rootPreferenceFragment = rootPreferenceFragment;
-    }
 }

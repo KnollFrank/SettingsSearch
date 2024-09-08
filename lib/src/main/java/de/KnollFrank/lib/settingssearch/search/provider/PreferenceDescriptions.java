@@ -17,7 +17,7 @@ public class PreferenceDescriptions {
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                preferenceDescription -> preferenceDescription.preferenceClass,
-                                preferenceDescription -> preferenceDescription.searchableInfoProvider));
+                                PreferenceDescription::preferenceClass,
+                                PreferenceDescription::searchableInfoProvider));
     }
 }

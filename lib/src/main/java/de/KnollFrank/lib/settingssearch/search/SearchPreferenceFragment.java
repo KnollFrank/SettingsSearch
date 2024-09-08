@@ -147,14 +147,14 @@ public class SearchPreferenceFragment extends Fragment {
                         preferenceDialogAndSearchableInfoProvider,
                         preferenceScreenGraphAvailableListener,
                         true);
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment.getName());
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment().getName());
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
                                                      final Consumer<SearchResultsPreferenceFragment> onFragmentStarted) {
         showFragment(
                 SearchResultsPreferenceFragment.newInstance(
-                        searchConfiguration.fragmentContainerViewId,
+                        searchConfiguration.fragmentContainerViewId(),
                         searchableInfoAttribute,
                         showPreferencePath,
                         mergedPreferenceScreen,
@@ -169,7 +169,7 @@ public class SearchPreferenceFragment extends Fragment {
         final SearchView searchView = requireView().findViewById(R.id.searchView);
         SearchViewConfigurer.configureSearchView(
                 searchView,
-                searchConfiguration.textHint,
+                searchConfiguration.textHint(),
                 new SearchAndDisplay(
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,

@@ -14,9 +14,9 @@ public class SearchConfigurations {
     public static Bundle toBundle(final SearchConfiguration searchConfiguration) {
         final Bundle bundle = new Bundle();
         final Bundles bundles = new Bundles(bundle);
-        bundles.putOptionalString(ARGUMENT_TEXT_HINT, searchConfiguration.textHint);
-        bundles.putClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT, searchConfiguration.rootPreferenceFragment);
-        bundle.putInt(ARGUMENT_FRAGMENT_CONTAINER_VIEW_ID, searchConfiguration.fragmentContainerViewId);
+        bundles.putOptionalString(ARGUMENT_TEXT_HINT, searchConfiguration.textHint());
+        bundles.putClass(ARGUMENT_ROOT_PREFERENCE_FRAGMENT, searchConfiguration.rootPreferenceFragment());
+        bundle.putInt(ARGUMENT_FRAGMENT_CONTAINER_VIEW_ID, searchConfiguration.fragmentContainerViewId());
         return bundle;
     }
 

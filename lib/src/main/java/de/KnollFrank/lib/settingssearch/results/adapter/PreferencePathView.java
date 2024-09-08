@@ -44,12 +44,10 @@ class PreferencePathView {
     }
 
     private static String toString(final PreferencePath preferencePath) {
-        return String.join(
-                " > ",
-                preferencePath
-                        .preferences
-                        .stream()
-                        .map(Preference::getTitle)
-                        .collect(Collectors.toList()));
+        return preferencePath
+                .preferences()
+                .stream()
+                .map(Preference::getTitle)
+                .collect(Collectors.joining(" > "));
     }
 }

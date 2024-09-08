@@ -47,10 +47,10 @@ class PreferenceMatchesHighlighter {
                         groupingBy(
                                 preferenceMatch ->
                                         Pair.create(
-                                                preferenceMatch.preference,
-                                                preferenceMatch.type),
+                                                preferenceMatch.preference(),
+                                                preferenceMatch.type()),
                                 mapping(
-                                        preferenceMatch -> preferenceMatch.indexRange,
+                                        PreferenceMatch::indexRange,
                                         toList())));
     }
 
@@ -113,8 +113,8 @@ class PreferenceMatchesHighlighter {
         for (final Object markup : markupsFactory.get()) {
             spannable.setSpan(
                     markup,
-                    indexRange.startIndexInclusive,
-                    indexRange.endIndexExclusive,
+                    indexRange.startIndexInclusive(),
+                    indexRange.endIndexExclusive(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }

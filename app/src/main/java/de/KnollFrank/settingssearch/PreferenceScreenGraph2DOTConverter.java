@@ -38,10 +38,10 @@ class PreferenceScreenGraph2DOTConverter {
 
 	private static String getVertexId(final PreferenceScreenWithHost preferenceScreenWithHost) {
 		return preferenceScreenWithHost
-				.preferenceScreen
+				.preferenceScreen()
 				.toString()
 				.concat("_")
-				.concat(Integer.toHexString(preferenceScreenWithHost.preferenceScreen.hashCode()))
+				.concat(Integer.toHexString(preferenceScreenWithHost.preferenceScreen().hashCode()))
 				.replace(' ', '_');
 	}
 
@@ -50,7 +50,7 @@ class PreferenceScreenGraph2DOTConverter {
 				.<String, Attribute>builder()
 				.put(
 						"label",
-						DefaultAttribute.createAttribute(getLabel(preferenceScreenWithHost.preferenceScreen)))
+						DefaultAttribute.createAttribute(getLabel(preferenceScreenWithHost.preferenceScreen())))
 				.put("shape", DefaultAttribute.createAttribute("box"))
 				.build();
 	}

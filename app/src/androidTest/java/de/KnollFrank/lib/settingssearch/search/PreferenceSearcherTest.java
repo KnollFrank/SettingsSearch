@@ -474,7 +474,7 @@ public class PreferenceSearcherTest {
 	static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
 		return preferenceMatches
 				.stream()
-				.map(preferenceMatch -> preferenceMatch.preference)
+				.map(PreferenceMatch::preference)
 				.map(Preference::getKey)
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());

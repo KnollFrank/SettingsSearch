@@ -83,8 +83,8 @@ public class MergedPreferenceScreenProvider {
         // B:
         final PreferenceScreensMerger.PreferenceScreenAndIsNonClickable preferenceScreenAndIsNonClickable = destructivelyMergeScreens(screens.getConnectedPreferenceScreens());
         return new MergedPreferenceScreen(
-                preferenceScreenAndIsNonClickable.preferenceScreen,
-                preferenceScreenAndIsNonClickable.isNonClickable,
+                preferenceScreenAndIsNonClickable.preferenceScreen(),
+                preferenceScreenAndIsNonClickable.isNonClickable(),
                 hostByPreference,
                 searchableInfoByPreference,
                 screens.preferencePathByPreference,
@@ -124,7 +124,7 @@ public class MergedPreferenceScreenProvider {
     private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {
         return screens
                 .stream()
-                .map(preferenceScreenWithHost -> preferenceScreenWithHost.preferenceScreen)
+                .map(PreferenceScreenWithHost::preferenceScreen)
                 .collect(Collectors.toList());
     }
 }

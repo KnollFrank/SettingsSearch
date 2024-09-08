@@ -20,7 +20,7 @@ public class DefaultFragmentFactory implements FragmentFactory {
 
     private static @Nullable Bundle getExtrasOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
         return preferenceWithHost
-                .map(_preferenceWithHost -> _preferenceWithHost.preference)
+                .map(PreferenceWithHost::preference)
                 .map(Preference::getExtras)
                 .orElse(null);
     }

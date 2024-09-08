@@ -19,11 +19,11 @@ class ArgumentsFactory {
 
 	private static Optional<String> getKeyOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
 		return preferenceWithHost
-				.map(_preferenceWithHost -> _preferenceWithHost.preference)
+				.map(PreferenceWithHost::preference)
 				.map(Preference::getKey);
 	}
 
 	private static Optional<PreferenceFragmentCompat> getHostOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
-		return preferenceWithHost.map(_preferenceWithHost -> _preferenceWithHost.host);
+		return preferenceWithHost.map(PreferenceWithHost::host);
 	}
 }

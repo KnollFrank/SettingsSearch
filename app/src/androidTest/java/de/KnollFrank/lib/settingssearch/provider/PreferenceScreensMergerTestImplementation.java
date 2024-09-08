@@ -51,7 +51,7 @@ class PreferenceScreensMergerTestImplementation {
         final PreferenceScreen mergedPreferenceScreen =
                 preferenceScreensMerger
                         .destructivelyMergeScreens(screens)
-                        .preferenceScreen;
+                        .preferenceScreen();
 
         // Then
         assertThatPreferenceScreensAreEqual(
@@ -64,7 +64,7 @@ class PreferenceScreensMergerTestImplementation {
         return preferenceScreenWithHostProvider
                 .getPreferenceScreenOfFragment(preferenceFragment.getName(), Optional.empty())
                 .get()
-                .preferenceScreen;
+                .preferenceScreen();
     }
 
     private static void assertThatPreferenceScreensAreEqual(final PreferenceScreen actual,

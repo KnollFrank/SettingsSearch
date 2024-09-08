@@ -77,7 +77,7 @@ public class SearchPreferenceFragments {
                 searchPreferenceFragment -> {
                 },
                 true,
-                searchConfiguration.fragmentContainerViewId,
+                searchConfiguration.fragmentContainerViewId(),
                 fragmentManager);
     }
 }

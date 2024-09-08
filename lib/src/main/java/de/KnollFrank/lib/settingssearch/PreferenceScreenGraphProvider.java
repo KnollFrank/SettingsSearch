@@ -47,12 +47,12 @@ class PreferenceScreenGraphProvider {
     private Map<Preference, PreferenceScreenWithHost> getConnectedPreferenceScreenByPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
         return Maps.filterPresentValues(
                 Preferences
-                        .getAllChildren(preferenceScreenWithHost.preferenceScreen)
+                        .getAllChildren(preferenceScreenWithHost.preferenceScreen())
                         .stream()
                         .collect(
                                 Collectors.toMap(
                                         Function.identity(),
-                                        preference -> getConnectedPreferenceScreen(preference, preferenceScreenWithHost.host))));
+                                        preference -> getConnectedPreferenceScreen(preference, preferenceScreenWithHost.host()))));
     }
 
     private Optional<PreferenceScreenWithHost> getConnectedPreferenceScreen(

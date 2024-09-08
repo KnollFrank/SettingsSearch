@@ -50,7 +50,7 @@ class SearchAndDisplay {
     private static List<Preference> getPreferences(final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
-                .map(preferenceMatch -> preferenceMatch.preference)
+                .map(PreferenceMatch::preference)
                 .collect(Collectors.toList());
     }
 }

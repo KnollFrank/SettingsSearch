@@ -24,9 +24,9 @@ class PreferencesRemover {
             final PreferenceScreenWithHost preferenceScreenWithHost,
             final BiPredicate<Preference, PreferenceFragmentCompat> predicate) {
         Preferences
-                .getAllChildren(preferenceScreenWithHost.preferenceScreen)
+                .getAllChildren(preferenceScreenWithHost.preferenceScreen())
                 .stream()
-                .filter(preference -> predicate.test(preference, preferenceScreenWithHost.host))
+                .filter(preference -> predicate.test(preference, preferenceScreenWithHost.host()))
                 .forEach(PreferencesRemover::removePreference);
     }
 

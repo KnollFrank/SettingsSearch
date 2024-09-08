@@ -18,17 +18,9 @@ public class PreferenceScreensMerger {
 
     private final Context context;
 
-    public static class PreferenceScreenAndIsNonClickable {
+    public record PreferenceScreenAndIsNonClickable(PreferenceScreen preferenceScreen,
+                                                    Set<PreferenceCategory> isNonClickable) {
 
-        public final PreferenceScreen preferenceScreen;
-        public final Set<PreferenceCategory> isNonClickable;
-
-        public PreferenceScreenAndIsNonClickable(
-                final PreferenceScreen preferenceScreen,
-                final Set<PreferenceCategory> isNonClickable) {
-            this.preferenceScreen = preferenceScreen;
-            this.isNonClickable = isNonClickable;
-        }
     }
 
     public PreferenceScreensMerger(final Context context) {
