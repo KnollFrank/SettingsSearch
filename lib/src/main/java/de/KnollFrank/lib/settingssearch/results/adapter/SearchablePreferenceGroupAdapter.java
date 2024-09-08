@@ -79,7 +79,7 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     }
 
     private boolean showPreferencePath(final Optional<PreferencePath> preferencePath) {
-        return preferencePath.isPresent() ? showPreferencePath.show(preferencePath.get()) : false;
+        return preferencePath.filter(showPreferencePath::show).isPresent();
     }
 
     private Optional<View.OnClickListener> getOnClickListener(final Preference preference) {
