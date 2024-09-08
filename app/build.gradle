@@ -32,14 +32,14 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.2.1'
     // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation 'com.google.guava:guava:33.2.0-android'
     implementation project(":lib")
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.activity:activity:1.9.0'
+    implementation 'androidx.activity:activity:1.9.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-io
     implementation 'org.jgrapht:jgrapht-io:1.5.2'
@@ -56,7 +56,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.github.npathai/hamcrest-optional
     androidTestImplementation group: 'com.github.npathai', name: 'hamcrest-optional', version: '2.0.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    androidTestImplementation 'androidx.test:runner:1.6.1'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
     androidTestImplementation 'androidx.test:rules:1.6.1'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.6.1'
 }
