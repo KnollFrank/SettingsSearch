@@ -78,3 +78,5 @@ Make the Preferences of your `PreferenceFragment` searchable using a SearchPrefe
 
 Now, when your app displays the PreferenceScreen defined in your `PreferenceFragment` to your users, they see a SearchPreference
 as the first preference of the PreferenceScreen which they can use to search and find preferences.
+
+For a complete example use the activity `de.KnollFrank.settingssearch.PreferenceSearchExampleHavingSearchPreference`.
