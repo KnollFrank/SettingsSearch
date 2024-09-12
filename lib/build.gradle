@@ -46,7 +46,7 @@ publishing {
     publications {
         release(MavenPublication) {
             groupId = 'com.github.KnollFrank'
-            artifactId = 'SearchPreference'
+            artifactId = 'SettingsSearch'
             version = 'v2.5.1'
 
             afterEvaluate {
