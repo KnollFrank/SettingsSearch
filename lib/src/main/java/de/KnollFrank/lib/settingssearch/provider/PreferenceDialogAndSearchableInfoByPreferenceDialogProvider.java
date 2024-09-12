@@ -7,5 +7,4 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoByPreferen
 public record PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
         Fragment preferenceDialog,
         SearchableInfoByPreferenceDialogProvider searchableInfoByPreferenceDialogProvider) {
-
 }

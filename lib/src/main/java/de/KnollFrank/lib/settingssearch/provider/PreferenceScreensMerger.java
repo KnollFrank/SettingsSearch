@@ -20,7 +20,6 @@ public class PreferenceScreensMerger {
 
     public record PreferenceScreenAndIsNonClickable(PreferenceScreen preferenceScreen,
                                                     Set<PreferenceCategory> isNonClickable) {
-
     }
 
     public PreferenceScreensMerger(final Context context) {
