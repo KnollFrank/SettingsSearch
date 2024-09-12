@@ -70,44 +70,56 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         searchPreference.setKey("keyOfSearchPreference");
         searchPreference.setSummary("Search Summary");
         searchPreference.setOrder(0);
-        final SearchPreferenceFragments searchPreferenceFragments =
-                SearchPreferenceFragments
-                        .builder(
-                                new SearchConfiguration(getId(), Optional.empty(), PrefsFragmentFirstHavingSearchPreference.this.getClass()),
-                                getParentFragmentManager())
-                        .withIsPreferenceSearchable(
-                                new IsPreferenceSearchable() {
-
-                                    @Override
-                                    public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat host) {
-                                        return !searchPreference.getKey().equals(preference.getKey());
-                                    }
-                                })
-                        .withPreferenceDescriptions(
-                                ImmutableList.of(
-                                        new PreferenceDescription<>(
-                                                ReversedListPreference.class,
-                                                new ReversedListPreferenceSearchableInfoProvider())))
-                        .withPreferenceDialogAndSearchableInfoProvider(
-                                new PreferenceDialogAndSearchableInfoProvider() {
-
-                                    @Override
-                                    public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
-                                        return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
-                                                Optional.of(
-                                                        new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
-                                                                new CustomDialogFragment(),
-                                                                customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
-                                                Optional.empty();
-                                    }
-                                })
-                        .build();
         searchPreference.setOnPreferenceClickListener(
-                preference -> {
-                    searchPreferenceFragments.showSearchPreferenceFragment();
-                    return true;
-                }
-        );
+                new OnPreferenceClickListener() {
+
+                    private final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments(searchPreference.getKey());
+
+                    @Override
+                    public boolean onPreferenceClick(@NonNull final Preference preference) {
+                        searchPreferenceFragments.showSearchPreferenceFragment();
+                        return true;
+                    }
+                });
         return searchPreference;
+    }
+
+    private SearchPreferenceFragments createSearchPreferenceFragments(final String keyOfSearchPreference) {
+        final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment = getClass();
+        return SearchPreferenceFragments
+                .builder(
+                        new SearchConfiguration(getId(), Optional.empty(), classOfPreferenceFragment),
+                        getParentFragmentManager())
+                .withIsPreferenceSearchable(
+                        new IsPreferenceSearchable() {
+
+                            @Override
+                            public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat host) {
+                                return !isSearchPreference(preference, host);
+                            }
+
+                            private boolean isSearchPreference(final Preference preference, final PreferenceFragmentCompat host) {
+                                return host.getClass().equals(classOfPreferenceFragment) && keyOfSearchPreference.equals(preference.getKey());
+                            }
+                        })
+                .withPreferenceDescriptions(
+                        ImmutableList.of(
+                                new PreferenceDescription<>(
+                                        ReversedListPreference.class,
+                                        new ReversedListPreferenceSearchableInfoProvider())))
+                .withPreferenceDialogAndSearchableInfoProvider(
+                        new PreferenceDialogAndSearchableInfoProvider() {
+
+                            @Override
+                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
+                                return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
+                                        Optional.of(
+                                                new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
+                                                        new CustomDialogFragment(),
+                                                        customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
+                                        Optional.empty();
+                            }
+                        })
+                .build();
     }
 }
