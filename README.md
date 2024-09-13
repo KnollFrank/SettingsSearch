@@ -34,16 +34,14 @@ Make the Preferences of your `PreferenceFragment` searchable using a SearchPrefe
             getPreferenceScreen().addPreference(createSearchPreference());
         }
        
-        private Preference createSearchPreference() {
-            final Preference searchPreference = new Preference(getContext());
-            searchPreference.setTitle("Search Title");
+        private SearchPreference createSearchPreference() {
+            final SearchPreference searchPreference = new SearchPreference(getContext());
             searchPreference.setKey("keyOfSearchPreference");
-            searchPreference.setSummary("Search Summary");
-            searchPreference.setOrder(0);
+            searchPreference.setOrder(-1);
             searchPreference.setOnPreferenceClickListener(
                     new OnPreferenceClickListener() {
     
-                        private final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments(searchPreference.getKey());
+                        private final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
     
                         @Override
                         public boolean onPreferenceClick(@NonNull final Preference preference) {
@@ -53,25 +51,12 @@ Make the Preferences of your `PreferenceFragment` searchable using a SearchPrefe
                     });
             return searchPreference;
         }
-
-        private SearchPreferenceFragments createSearchPreferenceFragments(final String keyOfSearchPreference) {
-            final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment = getClass();
+    
+        private SearchPreferenceFragments createSearchPreferenceFragments() {
             return SearchPreferenceFragments
                     .builder(
-                            new SearchConfiguration(getId(), Optional.empty(), classOfPreferenceFragment),
+                            new SearchConfiguration(getId(), Optional.empty(), getClass()),
                             getParentFragmentManager())
-                    .withIsPreferenceSearchable(
-                            new IsPreferenceSearchable() {
-    
-                                @Override
-                                public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat host) {
-                                    return !isSearchPreference(preference, host);
-                                }
-    
-                                private boolean isSearchPreference(final Preference preference, final PreferenceFragmentCompat host) {
-                                    return host.getClass().equals(classOfPreferenceFragment) && keyOfSearchPreference.equals(preference.getKey());
-                                }
-                            })
                     .build();
         }
     }

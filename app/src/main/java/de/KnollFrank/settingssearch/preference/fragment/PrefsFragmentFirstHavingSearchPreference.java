@@ -14,7 +14,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
@@ -71,7 +70,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         searchPreference.setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
 
-                    private final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments(searchPreference.getKey());
+                    private final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
 
                     @Override
                     public boolean onPreferenceClick(@NonNull final Preference preference) {
@@ -82,24 +81,11 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         return searchPreference;
     }
 
-    private SearchPreferenceFragments createSearchPreferenceFragments(final String keyOfSearchPreference) {
-        final Class<? extends PreferenceFragmentCompat> classOfPreferenceFragment = getClass();
+    private SearchPreferenceFragments createSearchPreferenceFragments() {
         return SearchPreferenceFragments
                 .builder(
-                        new SearchConfiguration(getId(), Optional.empty(), classOfPreferenceFragment),
+                        new SearchConfiguration(getId(), Optional.empty(), getClass()),
                         getParentFragmentManager())
-                .withIsPreferenceSearchable(
-                        new IsPreferenceSearchable() {
-
-                            @Override
-                            public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat host) {
-                                return !isSearchPreference(preference, host);
-                            }
-
-                            private boolean isSearchPreference(final Preference preference, final PreferenceFragmentCompat host) {
-                                return host.getClass().equals(classOfPreferenceFragment) && keyOfSearchPreference.equals(preference.getKey());
-                            }
-                        })
                 .withPreferenceDescriptions(
                         ImmutableList.of(
                                 new PreferenceDescription<>(
