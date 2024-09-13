@@ -8,9 +8,9 @@ import java.util.Optional;
 class SearchViewConfigurer {
 
     public static void configureSearchView(final SearchView searchView,
-                                           final Optional<String> textHint,
+                                           final Optional<String> queryHint,
                                            final SearchAndDisplay searchAndDisplay) {
-        textHint.ifPresent(searchView::setQueryHint);
+        queryHint.ifPresent(searchView::setQueryHint);
         searchView.setOnQueryTextListener(createOnQueryTextListener(searchAndDisplay));
     }
 

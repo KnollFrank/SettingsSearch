@@ -1,19 +1,24 @@
 package de.KnollFrank.lib.settingssearch.preference;
 
+import static de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter.setOnClickListener;
+
 import android.content.Context;
 import android.text.InputType;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.EditText;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.settingssearch.R;
 
 public class SearchPreference extends Preference {
+
+    private Optional<String> queryHint = Optional.empty();
 
     public SearchPreference(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
@@ -25,19 +30,27 @@ public class SearchPreference extends Preference {
         setLayoutResource(R.layout.searchpreference_preference);
     }
 
-    @Override
-    public void onBindViewHolder(PreferenceViewHolder holder) {
-        final EditText searchText = (EditText) holder.findViewById(R.id.search);
-        searchText.setFocusable(false);
-        searchText.setInputType(InputType.TYPE_NULL);
-        searchText.setOnClickListener(getOnClickListener());
-        searchText.setHint("Search");
-        holder.findViewById(R.id.search_card).setOnClickListener(getOnClickListener());
-        holder.itemView.setOnClickListener(getOnClickListener());
-        holder.itemView.setBackgroundColor(0x0);
+    public void setQueryHint(final String queryHint) {
+        this.queryHint = Optional.ofNullable(queryHint);
     }
 
-    private View.OnClickListener getOnClickListener() {
-        return view -> getOnPreferenceClickListener().onPreferenceClick(SearchPreference.this);
+    @Override
+    public void onBindViewHolder(@NonNull final PreferenceViewHolder holder) {
+        setOnClickListener(
+                holder.itemView,
+                Optional.of(view -> onPreferenceClick()));
+        configure((SearchView) holder.findViewById(R.id.searchView));
+    }
+
+    private void configure(final SearchView searchView) {
+        searchView.setFocusable(false);
+        searchView.setClickable(false);
+        searchView.setOnQueryTextFocusChangeListener((view, hasFocus) -> onPreferenceClick());
+        searchView.setInputType(InputType.TYPE_NULL);
+        queryHint.ifPresent(searchView::setQueryHint);
+    }
+
+    private void onPreferenceClick() {
+        getOnPreferenceClickListener().onPreferenceClick(this);
     }
 }

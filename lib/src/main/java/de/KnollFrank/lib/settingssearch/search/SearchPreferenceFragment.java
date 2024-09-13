@@ -169,7 +169,7 @@ public class SearchPreferenceFragment extends Fragment {
         final SearchView searchView = requireView().findViewById(R.id.searchView);
         SearchViewConfigurer.configureSearchView(
                 searchView,
-                searchConfiguration.textHint(),
+                searchConfiguration.queryHint(),
                 new SearchAndDisplay(
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,

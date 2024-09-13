@@ -31,7 +31,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
         getPreferenceScreen().addPreference(createPreferenceConnectedToPreferenceFragmentWithSinglePreference());
         findPreference("keyOfPreferenceWithOnPreferenceClickListener").setOnPreferenceClickListener(this);
-        getPreferenceScreen().addPreference(createSearchPreference());
+        getPreferenceScreen().addPreference(createSearchPreference(createSearchPreferenceFragments()));
     }
 
     @Override
@@ -63,23 +63,6 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         return preference;
     }
 
-    private SearchPreference createSearchPreference() {
-        final SearchPreference searchPreference = new SearchPreference(getContext());
-        searchPreference.setOrder(-1);
-        searchPreference.setOnPreferenceClickListener(
-                new OnPreferenceClickListener() {
-
-                    private final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
-
-                    @Override
-                    public boolean onPreferenceClick(@NonNull final Preference preference) {
-                        searchPreferenceFragments.showSearchPreferenceFragment();
-                        return true;
-                    }
-                });
-        return searchPreference;
-    }
-
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return SearchPreferenceFragments
                 .builder(
@@ -104,5 +87,17 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                             }
                         })
                 .build();
+    }
+
+    private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {
+        final SearchPreference searchPreference = new SearchPreference(getContext());
+        searchPreference.setOrder(-1);
+        searchPreferenceFragments.searchConfiguration.queryHint().ifPresent(searchPreference::setQueryHint);
+        searchPreference.setOnPreferenceClickListener(
+                preference -> {
+                    searchPreferenceFragments.showSearchPreferenceFragment();
+                    return true;
+                });
+        return searchPreference;
     }
 }

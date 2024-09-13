@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import java.util.Optional;
 
-class ClickListenerSetter {
+public class ClickListenerSetter {
 
     public static void setOnClickListener(final View view, final Optional<View.OnClickListener> onClickListener) {
         setClickableRecursive(view, false);

@@ -7,12 +7,7 @@
     android:orientation="vertical"
     android:paddingTop="?android:attr/actionBarSize">
 
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:iconifiedByDefault="false"
-        android:queryHint="Search Preferences" />
+    <include layout="@layout/searchpreference_searchbar" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/searchResultsFragmentContainerView"

@@ -22,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class SearchPreferenceFragments {
 
-    private final SearchConfiguration searchConfiguration;
+    public final SearchConfiguration searchConfiguration;
     private final FragmentFactory fragmentFactory;
     private final List<PreferenceDescription> preferenceDescriptions;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
