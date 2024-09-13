@@ -32,25 +32,26 @@ Make the Preferences of your `PreferenceFragment` searchable using a SearchPrefe
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             ...
-            getPreferenceScreen().addPreference(createSearchPreference());
+            getPreferenceScreen().addPreference(createSearchPreference(createSearchPreferenceFragments()));
         }
        
-        private SearchPreference createSearchPreference() {
+        private SearchPreferenceFragments createSearchPreferenceFragments() {
+            return SearchPreferenceFragments
+                    .builder(
+                            new SearchConfiguration(getId(), Optional.empty(), getClass()),
+                            getParentFragmentManager())
+                    .build();
+        }
+    
+        private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {
             final SearchPreference searchPreference = new SearchPreference(getContext());
             searchPreference.setOrder(-1);
-            {
-                final SearchPreferenceFragments searchPreferenceFragments =
-                        SearchPreferenceFragments
-                                .builder(
-                                        new SearchConfiguration(getId(), Optional.empty(), getClass()),
-                                        getParentFragmentManager())
-                                .build();
-                searchPreference.setOnPreferenceClickListener(
-                        preference -> {
-                            searchPreferenceFragments.showSearchPreferenceFragment();
-                            return true;
-                        });
-            }
+            searchPreferenceFragments.searchConfiguration.queryHint().ifPresent(searchPreference::setQueryHint);
+            searchPreference.setOnPreferenceClickListener(
+                    preference -> {
+                        searchPreferenceFragments.showSearchPreferenceFragment();
+                        return true;
+                    });
             return searchPreference;
         }
     }
