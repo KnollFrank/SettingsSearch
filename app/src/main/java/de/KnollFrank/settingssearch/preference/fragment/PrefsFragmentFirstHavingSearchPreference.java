@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -63,13 +64,10 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         return preference;
     }
 
-    private Preference createSearchPreference() {
-        final Preference searchPreference = new Preference(getContext());
-        // FK-TODO: make this Preference look like an EditText
-        searchPreference.setTitle("Search Title");
+    private SearchPreference createSearchPreference() {
+        final SearchPreference searchPreference = new SearchPreference(getContext());
         searchPreference.setKey("keyOfSearchPreference");
-        searchPreference.setSummary("Search Summary");
-        searchPreference.setOrder(0);
+        searchPreference.setOrder(-1);
         searchPreference.setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
 
