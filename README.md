@@ -2,6 +2,7 @@
 
 This is a library for Android apps that allows to search Preferences.
 
+FK-TODO: Bilder aktualisieren
 <img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/main.png" />
 <img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/history.png" />
 <img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/suggestions.png" />
@@ -36,28 +37,21 @@ Make the Preferences of your `PreferenceFragment` searchable using a SearchPrefe
        
         private SearchPreference createSearchPreference() {
             final SearchPreference searchPreference = new SearchPreference(getContext());
-            searchPreference.setKey("keyOfSearchPreference");
             searchPreference.setOrder(-1);
-            searchPreference.setOnPreferenceClickListener(
-                    new OnPreferenceClickListener() {
-    
-                        private final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
-    
-                        @Override
-                        public boolean onPreferenceClick(@NonNull final Preference preference) {
+            {
+                final SearchPreferenceFragments searchPreferenceFragments =
+                        SearchPreferenceFragments
+                                .builder(
+                                        new SearchConfiguration(getId(), Optional.empty(), getClass()),
+                                        getParentFragmentManager())
+                                .build();
+                searchPreference.setOnPreferenceClickListener(
+                        preference -> {
                             searchPreferenceFragments.showSearchPreferenceFragment();
                             return true;
-                        }
-                    });
+                        });
+            }
             return searchPreference;
-        }
-    
-        private SearchPreferenceFragments createSearchPreferenceFragments() {
-            return SearchPreferenceFragments
-                    .builder(
-                            new SearchConfiguration(getId(), Optional.empty(), getClass()),
-                            getParentFragmentManager())
-                    .build();
         }
     }
 

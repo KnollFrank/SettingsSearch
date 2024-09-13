@@ -65,7 +65,6 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
 
     private SearchPreference createSearchPreference() {
         final SearchPreference searchPreference = new SearchPreference(getContext());
-        searchPreference.setKey("keyOfSearchPreference");
         searchPreference.setOrder(-1);
         searchPreference.setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
