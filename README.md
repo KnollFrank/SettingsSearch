@@ -2,7 +2,7 @@
 
 This is a library for Android apps that allows to search Preferences.
 
-FK-TODO: Bilder aktualisieren
+FK-TODO: Bilder aktualisieren oder durch ein Video ersetzen
 <img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/main.png" />
 <img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/history.png" />
 <img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/suggestions.png" />
@@ -55,7 +55,9 @@ Make the Preferences of your `PreferenceFragment` searchable using a SearchPrefe
         }
     }
 
-Now, when your app displays the PreferenceScreen defined in your `PreferenceFragment` to your users, they see a SearchPreference
-as the first preference of the PreferenceScreen which they can use to search and find preferences.
+Now, when your app displays the PreferenceScreen defined in your `PreferenceFragment` to your users,
+they will see a SearchPreference as the first preference of the PreferenceScreen which they can use
+to search and find preferences.
 
-For a complete example use the activity `de.KnollFrank.settingssearch.PreferenceSearchExampleHavingSearchPreference`.
+For a complete example use the
+activity `de.KnollFrank.settingssearch.PreferenceSearchExampleHavingSearchPreference`.
