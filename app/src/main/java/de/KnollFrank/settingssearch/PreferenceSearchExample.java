@@ -32,7 +32,6 @@ import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSear
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
-// FK-TODO: README.md anpassen
 // FK-FIXME: type in search field "in a" => crash
 //           java.lang.IllegalStateException: Two different ViewHolders have the same stable ID. Stable IDs in your adapter MUST BE unique and SHOULD NOT change.
 //                                                                                                     ViewHolder 1:PreferenceViewHolder{73d5ea1 position=4 id=6, oldPos=-1, pLpos:-1 not recyclable(1)}
