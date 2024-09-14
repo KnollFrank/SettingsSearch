@@ -57,4 +57,5 @@ they will see a SearchPreference as the first preference of the PreferenceScreen
 to search and find preferences.
 
 For a complete example use the
-activity `de.KnollFrank.settingssearch.PreferenceSearchExampleHavingSearchPreference`.
+activity `de.KnollFrank.settingssearch.PreferenceSearchExampleHavingSearchPreference`
+or `de.KnollFrank.settingssearch.PreferenceSearchExample`.
