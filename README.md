@@ -2,11 +2,7 @@
 
 This is a library for Android apps that allows to search Preferences.
 
-FK-TODO: Bilder aktualisieren oder durch ein Video ersetzen
-<img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/main.png" />
-<img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/history.png" />
-<img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/suggestions.png" />
-<img width="200" src="https://raw.githubusercontent.com/ByteHamster/PreferenceSearch/master/screenshots/result.png" />
+https://github.com/user-attachments/assets/ef45f7a5-e267-4455-967e-9657e90063c1
 
 ## Add SettingsSearch to your app
 
