@@ -32,8 +32,8 @@ public class BuiltinPreferenceDescriptionsFactory {
                     return String.join(
                             ", ",
                             concat(
-                                    Optional.ofNullable(listPreference.getEntries()),
-                                    Optional.ofNullable(listPreference.getDialogTitle())));
+                                    Optional.ofNullable(listPreference.getDialogTitle()),
+                                    Optional.ofNullable(listPreference.getEntries())));
                 });
     }
 
@@ -68,17 +68,17 @@ public class BuiltinPreferenceDescriptionsFactory {
                     return String.join(
                             ", ",
                             concat(
-                                    Optional.ofNullable(multiSelectListPreference.getEntries()),
-                                    Optional.ofNullable(multiSelectListPreference.getDialogTitle())));
+                                    Optional.ofNullable(multiSelectListPreference.getDialogTitle()),
+                                    Optional.ofNullable(multiSelectListPreference.getEntries())));
                 });
     }
 
-    private static List<CharSequence> concat(final Optional<CharSequence[]> elements,
-                                             final Optional<CharSequence>... evenMoreElements) {
+    private static List<CharSequence> concat(final Optional<CharSequence> dialogTitle,
+                                             final Optional<CharSequence[]> entries) {
         return ImmutableList
                 .<CharSequence>builder()
-                .addAll(Lists.asList(elements))
-                .addAll(Lists.getPresentElements(Arrays.asList(evenMoreElements)))
+                .addAll(Lists.getPresentElements(Arrays.asList(dialogTitle)))
+                .addAll(Lists.asList(entries))
                 .build();
     }
 }
