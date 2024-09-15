@@ -74,7 +74,7 @@ public class BuiltinPreferenceDescriptionsFactory {
     }
 
     private static List<CharSequence> concat(final Optional<CharSequence[]> elements,
-                                             final Optional<? extends CharSequence>... evenMoreElements) {
+                                             final Optional<CharSequence>... evenMoreElements) {
         return ImmutableList
                 .<CharSequence>builder()
                 .addAll(Lists.asList(elements))
