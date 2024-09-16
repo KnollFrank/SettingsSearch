@@ -58,8 +58,13 @@ public class PreferenceScreensMerger {
 
     private static void movePreference2PreferenceGroup(final Preference preference,
                                                        final PreferenceGroup preferenceGroup) {
+        preservePreferenceDataStore(preference);
         removePreferenceFromItsParent(preference);
         preferenceGroup.addPreference(preference);
+    }
+
+    private static void preservePreferenceDataStore(final Preference preference) {
+        preference.setPreferenceDataStore(preference.getPreferenceDataStore());
     }
 
     private static void removePreferenceFromItsParent(final Preference preference) {
