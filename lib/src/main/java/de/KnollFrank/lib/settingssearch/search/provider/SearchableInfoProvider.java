@@ -3,11 +3,11 @@ package de.KnollFrank.lib.settingssearch.search.provider;
 import androidx.preference.Preference;
 
 @FunctionalInterface
-public interface SearchableInfoProvider {
+public interface SearchableInfoProvider<T extends Preference> {
 
-    String getSearchableInfo(Preference preference);
+    String getSearchableInfo(T preference);
 
-    default SearchableInfoProvider mergeWith(final SearchableInfoProvider searchableInfoProvider) {
+    default SearchableInfoProvider<T> mergeWith(final SearchableInfoProvider<T> searchableInfoProvider) {
         return preference ->
                 String.format(
                         "%s\n%s",
