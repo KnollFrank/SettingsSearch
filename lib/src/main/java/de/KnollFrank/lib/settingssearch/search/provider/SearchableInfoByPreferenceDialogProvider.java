@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.search.provider;
 import androidx.fragment.app.Fragment;
 
 @FunctionalInterface
-public interface SearchableInfoByPreferenceDialogProvider {
+public interface SearchableInfoByPreferenceDialogProvider<T extends Fragment> {
 
-    String getSearchableInfo(Fragment preferenceDialog);
+    String getSearchableInfo(T preferenceDialog);
 }

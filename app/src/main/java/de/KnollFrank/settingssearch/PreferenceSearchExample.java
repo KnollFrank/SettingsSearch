@@ -93,9 +93,9 @@ public class PreferenceSearchExample extends AppCompatActivity {
                             public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
                                 return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                         Optional.of(
-                                                new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
+                                                new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(
                                                         new CustomDialogFragment(),
-                                                        customDialogFragment -> ((CustomDialogFragment) customDialogFragment).getSearchableInfo())) :
+                                                        CustomDialogFragment::getSearchableInfo)) :
                                         Optional.empty();
                             }
                         })
