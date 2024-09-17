@@ -2,8 +2,11 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
+
+import android.content.Context;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
@@ -23,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
@@ -283,6 +287,45 @@ public class PreferenceSearcherTest {
                         assertThat(
                                 getKeys(preferenceMatches),
                                 hasItem(keyOfPreference)));
+    }
+
+    @Test
+    public void shouldSearchAndFindInTwoCustomDialogPreferences() {
+        final String keyword = "some text in a custom dialog";
+        final String keyOfPreference1 = "keyOfCustomDialogPreference1";
+        final String keyOfPreference2 = "keyOfCustomDialogPreference2";
+        testSearch(
+                new PreferenceFragment(
+                        new Function<>() {
+
+                            @Override
+                            public List<Preference> apply(final Context context) {
+                                return List.of(
+                                        createCustomDialogPreference(context, keyOfPreference1),
+                                        createCustomDialogPreference(context, keyOfPreference2));
+                            }
+
+                            private CustomDialogPreference createCustomDialogPreference(final Context context, final String keyOfPreference) {
+                                final CustomDialogPreference preference = new CustomDialogPreference(context);
+                                preference.setKey(keyOfPreference);
+                                preference.setSummary("summary of CustomDialogPreference");
+                                preference.setTitle("title of CustomDialogPreference");
+                                return preference;
+                            }
+                        }),
+                (preference, host) -> true,
+                keyword,
+                (hostOfPreference, preference) ->
+                        preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
+                                Optional.of(
+                                        new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(
+                                                new CustomDialogFragment(),
+                                                CustomDialogFragment::getSearchableInfo)) :
+                                Optional.empty(),
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItems(keyOfPreference1, keyOfPreference1)));
     }
 
     @Test

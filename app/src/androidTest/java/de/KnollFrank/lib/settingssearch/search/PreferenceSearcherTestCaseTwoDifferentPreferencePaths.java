@@ -63,14 +63,14 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
         }
     }
 
-    public static class PreferenceFragmentWithSinglePreference extends PreferenceFragmentTemplateWithSinglePreference {
+    public static class PreferenceFragmentWithSinglePreference extends PreferenceFragmentTemplateWithPreferences {
 
         @Override
-        protected Preference createPreference(final Context context) {
+        protected List<Preference> createPreferences(final Context context) {
             final Preference preference = new Preference(context);
             preference.setKey(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT);
             preference.setTitle(KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT);
-            return preference;
+            return List.of(preference);
         }
     }
 

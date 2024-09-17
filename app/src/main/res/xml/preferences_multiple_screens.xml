@@ -89,10 +89,17 @@
         android:summary="summary of ReversedListPreference"
         android:title="title of ReversedListPreference" />
 
+<!--
     <de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference
         android:key="keyOfSomeCustomDialogPreference"
         android:summary="summary of custom DialogPreference"
         android:title="some custom DialogPreference" />
+-->
+
+    <de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference
+        android:key="keyOfSomeCustomDialogPreference2"
+        android:summary="summary of custom DialogPreference2"
+        android:title="some custom DialogPreference2" />
 
     <Preference
         android:key="keyOfPreferenceWithOnPreferenceClickListener"
