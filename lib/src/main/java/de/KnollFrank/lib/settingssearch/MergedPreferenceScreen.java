@@ -43,7 +43,7 @@ public class MergedPreferenceScreen {
         return Maps.get(hostByPreference, preference);
     }
 
-    public List<PreferenceDescription> getPreferenceDescriptions() {
+    public List<PreferenceDescription<? extends Preference>> getPreferenceDescriptions() {
         return searchableInfoByPreference
                 .keySet()
                 .stream()

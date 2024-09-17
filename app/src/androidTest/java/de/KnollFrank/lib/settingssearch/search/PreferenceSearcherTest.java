@@ -404,7 +404,7 @@ public class PreferenceSearcherTest {
 								getSearchableInfoProviderInternal(
 										mergedPreferenceScreen,
 										ImmutableList
-												.<PreferenceDescription>builder()
+												.<PreferenceDescription<? extends Preference>>builder()
 												.addAll(createBuiltinPreferenceDescriptions())
 												.add(new PreferenceDescription<>(
 														ReversedListPreference.class,
@@ -462,7 +462,7 @@ public class PreferenceSearcherTest {
 
 	private static SearchableInfoProviderInternal getSearchableInfoProviderInternal(
 			final MergedPreferenceScreen mergedPreferenceScreen,
-			final List<PreferenceDescription> preferenceDescriptions) {
+			final List<PreferenceDescription<? extends Preference>> preferenceDescriptions) {
 		return new SearchableInfoProviderInternal(
 				Maps.merge(
 						ImmutableList.of(

@@ -5,6 +5,7 @@ import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinPreference
 import static de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.Preference;
 
 import com.google.common.collect.ImmutableList;
 
@@ -24,7 +25,7 @@ public class SearchPreferenceFragments {
 
     public final SearchConfiguration searchConfiguration;
     private final FragmentFactory fragmentFactory;
-    private final List<PreferenceDescription> preferenceDescriptions;
+    private final List<PreferenceDescription<? extends Preference>> preferenceDescriptions;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
@@ -39,7 +40,7 @@ public class SearchPreferenceFragments {
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
                                         final FragmentFactory fragmentFactory,
-                                        final List<PreferenceDescription> preferenceDescriptions,
+                                        final List<PreferenceDescription<? extends Preference>> preferenceDescriptions,
                                         final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                         final IsPreferenceSearchable isPreferenceSearchable,
                                         final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
@@ -50,7 +51,7 @@ public class SearchPreferenceFragments {
         this.fragmentFactory = fragmentFactory;
         this.preferenceDescriptions =
                 ImmutableList
-                        .<PreferenceDescription>builder()
+                        .<PreferenceDescription<? extends Preference>>builder()
                         .addAll(createBuiltinPreferenceDescriptions())
                         .addAll(preferenceDescriptions)
                         .build();

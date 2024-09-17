@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 
 public class PreferenceDescriptions {
 
-    public static Map<Class<? extends Preference>, SearchableInfoProvider> getSearchableInfoProviders(final List<PreferenceDescription> preferenceDescriptions) {
+    public static Map<Class<? extends Preference>, SearchableInfoProvider> getSearchableInfoProviders(
+            final List<PreferenceDescription<? extends Preference>> preferenceDescriptions) {
         return getSearchableInfoProviderByPreferenceClass(preferenceDescriptions);
     }
 
-    public static Map<Class<? extends Preference>, SearchableInfoProvider> getSearchableInfoProviderByPreferenceClass(final List<PreferenceDescription> preferenceDescriptions) {
+    public static Map<Class<? extends Preference>, SearchableInfoProvider> getSearchableInfoProviderByPreferenceClass(
+            final List<PreferenceDescription<? extends Preference>> preferenceDescriptions) {
         return preferenceDescriptions
                 .stream()
                 .collect(
