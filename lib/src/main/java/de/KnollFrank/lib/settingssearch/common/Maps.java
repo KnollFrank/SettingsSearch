@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -18,17 +17,6 @@ public class Maps {
                         Collectors.toMap(
                                 Map.Entry::getKey,
                                 Map.Entry::getValue));
-    }
-
-    public static <K, V> Map<K, V> merge(final Collection<Map<K, V>> maps,
-                                         final BinaryOperator<V> mergeFunction) {
-        return Maps
-                .getEntryStream(maps)
-                .collect(
-                        Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue,
-                                mergeFunction));
     }
 
     public static <K, V> Optional<V> get(final Map<K, V> map, final K key) {

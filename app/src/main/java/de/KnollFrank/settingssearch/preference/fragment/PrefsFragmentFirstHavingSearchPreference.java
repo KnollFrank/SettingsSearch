@@ -7,8 +7,6 @@ import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
@@ -16,10 +14,8 @@ import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
-import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 
 public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragmentCompat implements OnPreferenceClickListener {
@@ -68,11 +64,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                 .builder(
                         new SearchConfiguration(getId(), Optional.empty(), getClass()),
                         getParentFragmentManager())
-                .withPreferenceDescriptions(
-                        ImmutableList.of(
-                                new PreferenceDescription<>(
-                                        ReversedListPreference.class,
-                                        new ReversedListPreferenceSearchableInfoProvider())))
+                .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceDialogAndSearchableInfoProvider(
                         new PreferenceDialogAndSearchableInfoProvider() {
 

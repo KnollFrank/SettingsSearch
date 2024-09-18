@@ -1,10 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.Preference;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -14,14 +11,14 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
-import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
+import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragmentsBuilder {
 
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
-    private List<PreferenceDescription<? extends Preference>> preferenceDescriptions = Collections.emptyList();
+    private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (hostOfPreference, preference) -> Optional.empty();
     private IsPreferenceSearchable isPreferenceSearchable = (preference, host) -> true;
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
@@ -41,8 +38,8 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withPreferenceDescriptions(final List<PreferenceDescription<? extends Preference>> preferenceDescriptions) {
-        this.preferenceDescriptions = preferenceDescriptions;
+    public SearchPreferenceFragmentsBuilder withSearchableInfoProvider(final SearchableInfoProvider searchableInfoProvider) {
+        this.searchableInfoProvider = searchableInfoProvider;
         return this;
     }
 
@@ -75,7 +72,7 @@ public class SearchPreferenceFragmentsBuilder {
         return new SearchPreferenceFragments(
                 searchConfiguration,
                 fragmentFactory,
-                preferenceDescriptions,
+                searchableInfoProvider,
                 preferenceDialogAndSearchableInfoProvider,
                 isPreferenceSearchable,
                 preferenceScreenGraphAvailableListener,

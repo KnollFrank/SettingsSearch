@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
-import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
+import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProviderFactory.getBuiltinSearchableInfoProvider;
 
 import android.content.Context;
 
@@ -18,8 +18,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
 
-import com.google.common.collect.ImmutableList;
-
 import org.junit.Test;
 
 import java.util.List;
@@ -32,7 +30,6 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProvider;
-import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -44,10 +41,7 @@ import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
-import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
-import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescriptions;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
@@ -325,7 +319,7 @@ public class PreferenceSearcherTest {
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
-                                hasItems(keyOfPreference1, keyOfPreference1)));
+                                hasItems(keyOfPreference1, keyOfPreference2)));
     }
 
     @Test
@@ -444,15 +438,11 @@ public class PreferenceSearcherTest {
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
                                 new SearchableInfoAttribute(),
-                                getSearchableInfoProviderInternal(
-                                        mergedPreferenceScreen,
-                                        ImmutableList
-                                                .<PreferenceDescription<? extends Preference>>builder()
-                                                .addAll(createBuiltinPreferenceDescriptions())
-                                                .add(new PreferenceDescription<>(
-                                                        ReversedListPreference.class,
-                                                        new ReversedListPreferenceSearchableInfoProvider()))
-                                                .build()));
+                                new SearchableInfoProviderInternal(
+                                        mergedPreferenceScreen
+                                                .getSearchableInfoProvider()
+                                                .orElse(new ReversedListPreferenceSearchableInfoProvider())
+                                                .orElse(getBuiltinSearchableInfoProvider())));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
@@ -501,17 +491,6 @@ public class PreferenceSearcherTest {
                         },
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
-    }
-
-    private static SearchableInfoProviderInternal getSearchableInfoProviderInternal(
-            final MergedPreferenceScreen mergedPreferenceScreen,
-            final List<PreferenceDescription<? extends Preference>> preferenceDescriptions) {
-        return new SearchableInfoProviderInternal(
-                Maps.merge(
-                        ImmutableList.of(
-                                PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(preferenceDescriptions),
-                                PreferenceDescriptions.getSearchableInfoProviderByPreferenceClass(mergedPreferenceScreen.getPreferenceDescriptions())),
-                        SearchableInfoProvider::mergeWith));
     }
 
     static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {

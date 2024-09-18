@@ -2,16 +2,17 @@ package de.KnollFrank.lib.settingssearch.search.provider;
 
 import androidx.preference.Preference;
 
+import java.util.Optional;
+
 @FunctionalInterface
-public interface SearchableInfoProvider<T extends Preference> {
+public interface SearchableInfoProvider {
 
-    String getSearchableInfo(T preference);
+    Optional<String> getSearchableInfo(Preference preference);
 
-    default SearchableInfoProvider<T> mergeWith(final SearchableInfoProvider<T> searchableInfoProvider) {
+    default SearchableInfoProvider orElse(final SearchableInfoProvider other) {
         return preference ->
-                String.format(
-                        "%s\n%s",
-                        getSearchableInfo(preference),
-                        searchableInfoProvider.getSearchableInfo(preference));
+                this
+                        .getSearchableInfo(preference)
+                        .or(() -> other.getSearchableInfo(preference));
     }
 }

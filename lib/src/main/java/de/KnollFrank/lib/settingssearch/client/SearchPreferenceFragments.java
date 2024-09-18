@@ -1,15 +1,9 @@
 package de.KnollFrank.lib.settingssearch.client;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
-import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinPreferenceDescriptionsFactory.createBuiltinPreferenceDescriptions;
-import static de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescriptions.getSearchableInfoProviders;
+import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProviderFactory.getBuiltinSearchableInfoProvider;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.Preference;
-
-import com.google.common.collect.ImmutableList;
-
-import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
@@ -18,14 +12,14 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
+import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragments {
 
     public final SearchConfiguration searchConfiguration;
     private final FragmentFactory fragmentFactory;
-    private final List<PreferenceDescription<? extends Preference>> preferenceDescriptions;
+    private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
@@ -40,7 +34,7 @@ public class SearchPreferenceFragments {
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
                                         final FragmentFactory fragmentFactory,
-                                        final List<PreferenceDescription<? extends Preference>> preferenceDescriptions,
+                                        final SearchableInfoProvider searchableInfoProvider,
                                         final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                         final IsPreferenceSearchable isPreferenceSearchable,
                                         final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
@@ -49,12 +43,7 @@ public class SearchPreferenceFragments {
                                         final FragmentManager fragmentManager) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
-        this.preferenceDescriptions =
-                ImmutableList
-                        .<PreferenceDescription<? extends Preference>>builder()
-                        .addAll(createBuiltinPreferenceDescriptions())
-                        .addAll(preferenceDescriptions)
-                        .build();
+        this.searchableInfoProvider = searchableInfoProvider.orElse(getBuiltinSearchableInfoProvider());
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
@@ -68,7 +57,7 @@ public class SearchPreferenceFragments {
                 SearchPreferenceFragment.newInstance(
                         searchConfiguration,
                         isPreferenceSearchable,
-                        getSearchableInfoProviders(preferenceDescriptions),
+                        searchableInfoProvider,
                         new SearchableInfoAttribute(),
                         showPreferencePath,
                         fragmentFactory,

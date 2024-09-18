@@ -5,16 +5,14 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
-import de.KnollFrank.lib.settingssearch.search.provider.PreferenceDescription;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
+import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class MergedPreferenceScreen {
 
@@ -43,12 +41,8 @@ public class MergedPreferenceScreen {
         return Maps.get(hostByPreference, preference);
     }
 
-    public List<PreferenceDescription<? extends Preference>> getPreferenceDescriptions() {
-        return searchableInfoByPreference
-                .keySet()
-                .stream()
-                .map(preference -> new PreferenceDescription<>(preference.getClass(), searchableInfoByPreference::get))
-                .collect(Collectors.toList());
+    public SearchableInfoProvider getSearchableInfoProvider() {
+        return preference -> Maps.get(searchableInfoByPreference, preference);
     }
 
     public void resetPreferenceScreen() {
