@@ -166,7 +166,9 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
                                 searchableInfoAttribute,
-                                mergedPreferenceScreen.getSearchableInfoProvider().orElse(searchableInfoProvider)),
+                                mergedPreferenceScreen
+                                        .getSearchableInfoProvider()
+                                        .orElse(searchableInfoProvider)),
                         searchableInfoAttribute,
                         mergedPreferenceScreen.preferenceScreen,
                         requireContext()));
