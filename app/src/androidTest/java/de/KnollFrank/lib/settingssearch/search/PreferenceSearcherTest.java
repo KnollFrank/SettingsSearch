@@ -42,7 +42,6 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProviderInternal;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
@@ -438,11 +437,10 @@ public class PreferenceSearcherTest {
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
                                 new SearchableInfoAttribute(),
-                                new SearchableInfoProviderInternal(
-                                        mergedPreferenceScreen
-                                                .getSearchableInfoProvider()
-                                                .orElse(new ReversedListPreferenceSearchableInfoProvider())
-                                                .orElse(getBuiltinSearchableInfoProvider())));
+                                mergedPreferenceScreen
+                                        .getSearchableInfoProvider()
+                                        .orElse(new ReversedListPreferenceSearchableInfoProvider())
+                                        .orElse(getBuiltinSearchableInfoProvider()));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);

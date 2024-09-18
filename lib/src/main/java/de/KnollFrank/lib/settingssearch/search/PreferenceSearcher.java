@@ -9,20 +9,20 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProviderInternal;
+import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 class PreferenceSearcher {
 
     private final MergedPreferenceScreen mergedPreferenceScreen;
     private final SearchableInfoAttribute searchableInfoAttribute;
-    private final SearchableInfoProviderInternal searchableInfoProviderInternal;
+    private final SearchableInfoProvider searchableInfoProvider;
 
     public PreferenceSearcher(final MergedPreferenceScreen mergedPreferenceScreen,
                               final SearchableInfoAttribute searchableInfoAttribute,
-                              final SearchableInfoProviderInternal searchableInfoProviderInternal) {
+                              final SearchableInfoProvider searchableInfoProvider) {
         this.mergedPreferenceScreen = mergedPreferenceScreen;
         this.searchableInfoAttribute = searchableInfoAttribute;
-        this.searchableInfoProviderInternal = searchableInfoProviderInternal;
+        this.searchableInfoProvider = searchableInfoProvider;
     }
 
     public List<PreferenceMatch> searchFor(final String needle) {
@@ -34,7 +34,7 @@ class PreferenceSearcher {
         mergedPreferenceScreen.resetPreferenceScreen();
         showSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 mergedPreferenceScreen.preferenceScreen,
-                searchableInfoProviderInternal,
+                searchableInfoProvider,
                 searchableInfoAttribute,
                 needle);
     }

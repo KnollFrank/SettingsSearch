@@ -34,7 +34,6 @@ import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProviderInternal;
 
 public class SearchPreferenceFragment extends Fragment {
 
@@ -167,16 +166,12 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
                                 searchableInfoAttribute,
-                                getSearchableInfoProviderInternal(mergedPreferenceScreen)),
+                                mergedPreferenceScreen.getSearchableInfoProvider().orElse(searchableInfoProvider)),
                         searchableInfoAttribute,
                         mergedPreferenceScreen.preferenceScreen,
                         requireContext()));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
-    }
-
-    private SearchableInfoProviderInternal getSearchableInfoProviderInternal(final MergedPreferenceScreen mergedPreferenceScreen) {
-        return new SearchableInfoProviderInternal(mergedPreferenceScreen.getSearchableInfoProvider().orElse(searchableInfoProvider));
     }
 
     private void selectSearchView(final SearchView searchView) {
