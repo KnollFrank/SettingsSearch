@@ -418,6 +418,11 @@ public class PreferenceSearcherTest {
         PreferenceSearcherTestCaseTwoDifferentPreferencePaths.shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths();
     }
 
+    @Test
+    public void shouldSearchAndFindPreferenceOfNonStandardConnectedFragment() {
+        PreferenceSearcherTestCaseTwoNonStandardConnectedFragments.shouldSearchAndFindPreferenceOfNonStandardConnectedFragment();
+    }
+
     static void testSearch(final PreferenceFragmentCompat preferenceFragment,
                            final IsPreferenceSearchable isPreferenceSearchable,
                            final String keyword,
