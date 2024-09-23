@@ -63,6 +63,7 @@ class PreferenceScreenGraphProvider {
             final Preference preference,
             final PreferenceFragmentCompat host) {
         final Optional<String> fragmentConnectedToPreference = getConnectedPreferenceFragment(preference);
+        // FK-TODO: use methods of Optional
         return fragmentConnectedToPreference.isPresent() ?
                 preferenceScreenWithHostProvider.getPreferenceScreenOfFragment(
                         fragmentConnectedToPreference.get(),
@@ -71,12 +72,11 @@ class PreferenceScreenGraphProvider {
     }
 
     private Optional<String> getConnectedPreferenceFragment(final Preference preference) {
-        final String fragmentConnectedToPreference = preference.getFragment();
-        if (fragmentConnectedToPreference != null) {
-            return Optional.of(fragmentConnectedToPreference);
-        }
-        return preferenceConnected2PreferenceFragmentProvider
-                .getConnectedPreferenceFragment(preference)
-                .map(Class::getName);
+        return Optional
+                .ofNullable(preference.getFragment())
+                .or(() ->
+                        preferenceConnected2PreferenceFragmentProvider
+                                .getConnectedPreferenceFragment(preference)
+                                .map(Class::getName));
     }
 }
