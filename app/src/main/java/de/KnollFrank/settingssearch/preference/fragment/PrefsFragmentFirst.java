@@ -18,7 +18,7 @@ import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPreferenceClickListener {
 
     public static final String SUMMARY_OF_SRC_PREFERENCE = "summaryOfSrcPreference";
-    private static final String NON_STANDARD_LINK_TO_SECOND_FRAGMENT = "non_standard_link_to_second_fragment";
+    public static final String NON_STANDARD_LINK_TO_SECOND_FRAGMENT = "non_standard_link_to_second_fragment";
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {

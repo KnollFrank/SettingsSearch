@@ -34,7 +34,9 @@ public class PreferenceScreensProvider1Test {
                 // Given
                 final Fragments fragments = FragmentsFactory.createFragments(activity);
                 final PreferenceScreensProvider preferenceScreensProvider =
-                        new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments));
+                        new PreferenceScreensProvider(
+                                new PreferenceScreenWithHostProvider(fragments),
+                                preference -> Optional.empty());
                 final PreferenceFragmentCompat root =
                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                                 Fragment1ConnectedToFragment2AndFragment4.class.getName(),
@@ -65,7 +67,9 @@ public class PreferenceScreensProvider1Test {
                 // Given
                 final Fragments fragments = FragmentsFactory.createFragments(activity);
                 final PreferenceScreensProvider preferenceScreensProvider =
-                        new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments));
+                        new PreferenceScreensProvider(
+                                new PreferenceScreenWithHostProvider(fragments),
+                                preference -> Optional.empty());
                 final PreferenceFragmentCompat root =
                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                                 Fragment1ConnectedToFragment2AndFragment4.class.getName(),

@@ -26,6 +26,7 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
@@ -46,6 +47,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final PrepareShow prepareShow;
+    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
@@ -56,7 +58,8 @@ public class SearchPreferenceFragment extends Fragment {
             final FragmentFactory fragmentFactory,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-            final PrepareShow prepareShow) {
+            final PrepareShow prepareShow,
+            final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         isPreferenceSearchable,
@@ -66,7 +69,8 @@ public class SearchPreferenceFragment extends Fragment {
                         fragmentFactory,
                         preferenceDialogAndSearchableInfoProvider,
                         preferenceScreenGraphAvailableListener,
-                        prepareShow);
+                        prepareShow,
+                        preferenceConnected2PreferenceFragmentProvider);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
@@ -78,7 +82,8 @@ public class SearchPreferenceFragment extends Fragment {
                                     final FragmentFactory fragmentFactory,
                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                                    final PrepareShow prepareShow) {
+                                    final PrepareShow prepareShow,
+                                    final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         super(R.layout.searchpreference_fragment);
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -88,6 +93,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.prepareShow = prepareShow;
+        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
     }
 
     public SearchPreferenceFragment() {
@@ -101,7 +107,8 @@ public class SearchPreferenceFragment extends Fragment {
                 preferenceScreenGraph -> {
                 },
                 preferenceFragmentCompat -> {
-                });
+                },
+                preference -> Optional.empty());
     }
 
     @Override
@@ -132,7 +139,9 @@ public class SearchPreferenceFragment extends Fragment {
                 new MergedPreferenceScreenProvider(
                         fragments,
                         defaultFragmentInitializer,
-                        new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
+                        new PreferenceScreensProvider(
+                                new PreferenceScreenWithHostProvider(fragments),
+                                preferenceConnected2PreferenceFragmentProvider),
                         new PreferenceScreensMerger(getContext()),
                         isPreferenceSearchable,
                         searchableInfoAttribute,

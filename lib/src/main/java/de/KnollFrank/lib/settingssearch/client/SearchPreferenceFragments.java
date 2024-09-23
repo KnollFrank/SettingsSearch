@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -26,6 +27,7 @@ public class SearchPreferenceFragments {
     private final ShowPreferencePath showPreferencePath;
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
+    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager) {
@@ -40,7 +42,8 @@ public class SearchPreferenceFragments {
                                         final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                         final ShowPreferencePath showPreferencePath,
                                         final PrepareShow prepareShow,
-                                        final FragmentManager fragmentManager) {
+                                        final FragmentManager fragmentManager,
+                                        final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(getBuiltinSearchableInfoProvider());
@@ -50,6 +53,7 @@ public class SearchPreferenceFragments {
         this.showPreferencePath = showPreferencePath;
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
+        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
     }
 
     public void showSearchPreferenceFragment() {
@@ -63,7 +67,8 @@ public class SearchPreferenceFragments {
                         fragmentFactory,
                         preferenceDialogAndSearchableInfoProvider,
                         preferenceScreenGraphAvailableListener,
-                        prepareShow),
+                        prepareShow,
+                        preferenceConnected2PreferenceFragmentProvider),
                 searchPreferenceFragment -> {
                 },
                 true,

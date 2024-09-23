@@ -38,6 +38,7 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
@@ -66,6 +67,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -87,6 +89,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -108,6 +111,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> !keyOfPreference.equals(preference.getKey()),
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -129,6 +133,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -153,6 +158,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -178,6 +184,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -201,6 +208,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 summaryOff,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -224,6 +232,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 summaryOn,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -248,6 +257,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -276,6 +286,7 @@ public class PreferenceSearcherTest {
                                                 new CustomDialogFragment(),
                                                 CustomDialogFragment::getSearchableInfo)) :
                                 Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -315,6 +326,7 @@ public class PreferenceSearcherTest {
                                                 new CustomDialogFragment(),
                                                 CustomDialogFragment::getSearchableInfo)) :
                                 Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -336,6 +348,7 @@ public class PreferenceSearcherTest {
                                                 new CustomDialogFragment(),
                                                 CustomDialogFragment::getSearchableInfo)) :
                                 Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -360,6 +373,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -385,6 +399,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -407,6 +422,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preference -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -427,6 +443,7 @@ public class PreferenceSearcherTest {
                            final IsPreferenceSearchable isPreferenceSearchable,
                            final String keyword,
                            final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+                           final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                            final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
@@ -437,7 +454,8 @@ public class PreferenceSearcherTest {
                                 isPreferenceSearchable,
                                 fragmentActivity,
                                 preferenceDialogAndSearchableInfoProvider,
-                                createFragmentFactoryReturning(preferenceFragment));
+                                createFragmentFactoryReturning(preferenceFragment),
+                                preferenceConnected2PreferenceFragmentProvider);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
@@ -469,7 +487,8 @@ public class PreferenceSearcherTest {
             final IsPreferenceSearchable isPreferenceSearchable,
             final FragmentActivity fragmentActivity,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final FragmentFactory fragmentFactory) {
+            final FragmentFactory fragmentFactory,
+            final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         final DefaultFragmentInitializer defaultFragmentInitializer =
                 new DefaultFragmentInitializer(
                         fragmentActivity.getSupportFragmentManager(),
@@ -485,7 +504,9 @@ public class PreferenceSearcherTest {
                 new MergedPreferenceScreenProvider(
                         fragments,
                         defaultFragmentInitializer,
-                        new PreferenceScreensProvider(new PreferenceScreenWithHostProvider(fragments)),
+                        new PreferenceScreensProvider(
+                                new PreferenceScreenWithHostProvider(fragments),
+                                preferenceConnected2PreferenceFragmentProvider),
                         new PreferenceScreensMerger(fragmentActivity),
                         isPreferenceSearchable,
                         new SearchableInfoAttribute(),

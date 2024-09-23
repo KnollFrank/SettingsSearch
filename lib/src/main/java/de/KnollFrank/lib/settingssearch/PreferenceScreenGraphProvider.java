@@ -13,14 +13,18 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 
 class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
+    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
 
-    public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
+    public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
+                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
+        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
@@ -58,11 +62,21 @@ class PreferenceScreenGraphProvider {
     private Optional<PreferenceScreenWithHost> getConnectedPreferenceScreen(
             final Preference preference,
             final PreferenceFragmentCompat host) {
-        final String fragmentConnectedToPreference = preference.getFragment();
-        return fragmentConnectedToPreference != null ?
+        final Optional<String> fragmentConnectedToPreference = getConnectedPreferenceFragment(preference);
+        return fragmentConnectedToPreference.isPresent() ?
                 preferenceScreenWithHostProvider.getPreferenceScreenOfFragment(
-                        fragmentConnectedToPreference,
+                        fragmentConnectedToPreference.get(),
                         Optional.of(new PreferenceWithHost(preference, host))) :
                 Optional.empty();
+    }
+
+    private Optional<String> getConnectedPreferenceFragment(final Preference preference) {
+        final String fragmentConnectedToPreference = preference.getFragment();
+        if (fragmentConnectedToPreference != null) {
+            return Optional.of(fragmentConnectedToPreference);
+        }
+        return preferenceConnected2PreferenceFragmentProvider
+                .getConnectedPreferenceFragment(preference)
+                .map(Class::getName);
     }
 }

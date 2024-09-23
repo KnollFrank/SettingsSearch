@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
+
 class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
 
     private static final String KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "some preference of connected fragment";
@@ -23,6 +25,10 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
         testSearch(
                 // Given a fragment with a non standard connected fragment
                 new FragmentWithNonStandardConnection(),
+                preference ->
+                        "key".equals(preference.getKey()) ?
+                                Optional.of(PreferenceFragmentWithSinglePreference.class) :
+                                Optional.empty(),
                 // When searching for KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT of that connected fragment
                 KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT,
                 // Then the preference of the non standard connected fragment is found
@@ -61,6 +67,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
     }
 
     private static void testSearch(final FragmentWithNonStandardConnection fragmentWithNonStandardConnection,
+                                   final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                    final String keyword,
                                    final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
         PreferenceSearcherTest.testSearch(
@@ -68,6 +75,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
+                preferenceConnected2PreferenceFragmentProvider,
                 checkPreferenceMatches);
     }
 }

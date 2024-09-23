@@ -20,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
@@ -27,6 +28,7 @@ import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
+import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
 // FK-FIXME: type in search field "in a" => crash
 //           java.lang.IllegalStateException: Two different ViewHolders have the same stable ID. Stable IDs in your adapter MUST BE unique and SHOULD NOT change.
@@ -78,6 +80,16 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         createSearchConfiguration(PrefsFragmentFirst.class),
                         getSupportFragmentManager())
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
+                .withPreferenceConnected2PreferenceFragmentProvider(
+                        new PreferenceConnected2PreferenceFragmentProvider() {
+
+                            @Override
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getConnectedPreferenceFragment(final Preference preference) {
+                                return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
+                                        Optional.of(PrefsFragmentSecond.class) :
+                                        Optional.empty();
+                            }
+                        })
                 .withPreferenceDialogAndSearchableInfoProvider(
                         new PreferenceDialogAndSearchableInfoProvider() {
 

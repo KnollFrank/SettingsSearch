@@ -7,6 +7,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -26,6 +27,7 @@ public class SearchPreferenceFragmentsBuilder {
     private ShowPreferencePath showPreferencePath = preferencePath -> preferencePath.getPreference().isPresent();
     private PrepareShow prepareShow = preferenceFragment -> {
     };
+    private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = preference -> Optional.empty();
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager) {
@@ -68,6 +70,11 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
+    public SearchPreferenceFragmentsBuilder withPreferenceConnected2PreferenceFragmentProvider(final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
+        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
+        return this;
+    }
+
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
                 searchConfiguration,
@@ -78,6 +85,7 @@ public class SearchPreferenceFragmentsBuilder {
                 preferenceScreenGraphAvailableListener,
                 showPreferencePath,
                 prepareShow,
-                fragmentManager);
+                fragmentManager,
+                preferenceConnected2PreferenceFragmentProvider);
     }
 }
