@@ -12,10 +12,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.R;
 
 class PreferencePathView {
 
-    private static final int PREFERENCE_PATH_VIEW_ID = View.generateViewId();
+    private static final int PREFERENCE_PATH_VIEW_ID = R.id.preference_path;
 
     public static TextView createPreferencePathView(final Context context) {
         final TextView preferencePathView = new TextView(context);
@@ -37,6 +38,10 @@ class PreferencePathView {
         } else {
             preferencePathView.setVisibility(View.GONE);
         }
+    }
+
+    public static boolean hasPreferencePathView(final PreferenceViewHolder holder) {
+        return holder.findViewById(PREFERENCE_PATH_VIEW_ID) != null;
     }
 
     private static TextView getPreferencePathView(final PreferenceViewHolder holder) {

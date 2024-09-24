@@ -11,6 +11,12 @@
         android:title="some title to third fragment"
         app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird" />
 
+    <Preference
+        android:key="keyOfPreferenceWithCustomLayout"
+        android:summary="summary of preference with custom layout"
+        android:title="title of preference with custom layout"
+        app:layout="@layout/custom_preference" />
+
     <CheckBoxPreference
         android:key="secondfile"
         android:summary="This checkbox is a preference coming from a second file"

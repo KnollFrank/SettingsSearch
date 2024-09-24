@@ -15,28 +15,29 @@ import java.util.Optional;
 
 class ViewsAdder {
 
-    public static PreferenceViewHolder addSearchableInfoViewAndPreferencePathView(
-            final View searchableInfoView,
-            final View preferencePathView,
+    public static PreferenceViewHolder addViews(
+            final List<View> views,
             final PreferenceViewHolder holder,
             final Context context) {
         final Optional<View> summaryView = findViewById(holder, android.R.id.summary);
         if (summaryView.isPresent()) {
             ViewAdder.replaceViewWithViews(
                     summaryView.get(),
-                    ImmutableList.of(
-                            summaryView.get(),
-                            searchableInfoView,
-                            preferencePathView),
+                    ImmutableList
+                            .<View>builder()
+                            .add(summaryView.get())
+                            .addAll(views)
+                            .build(),
                     context);
             return holder;
         } else {
             final LinearLayout container =
                     createLinearLayoutWithChildren(
-                            ImmutableList.of(
-                                    holder.itemView,
-                                    searchableInfoView,
-                                    preferencePathView),
+                            ImmutableList
+                                    .<View>builder()
+                                    .add(holder.itemView)
+                                    .addAll(views)
+                                    .build(),
                             context);
             return PreferenceViewHolder.createInstanceForTests(container);
         }
