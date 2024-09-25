@@ -84,7 +84,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         new PreferenceConnected2PreferenceFragmentProvider() {
 
                             @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getConnectedPreferenceFragment(final Preference preference) {
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
                                 return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
                                         Optional.of(PrefsFragmentSecond.class) :
                                         Optional.empty();

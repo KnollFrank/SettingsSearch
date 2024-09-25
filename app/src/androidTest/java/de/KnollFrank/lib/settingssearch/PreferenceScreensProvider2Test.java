@@ -38,7 +38,7 @@ public class PreferenceScreensProvider2Test {
         final PreferenceScreensProvider preferenceScreensProvider =
                 new PreferenceScreensProvider(
                         new PreferenceScreenWithHostProvider(fragments),
-                        preference -> Optional.empty());
+                        (preference, hostOfPreference) -> Optional.empty());
         final PreferenceFragmentCompat root =
                 (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                         FragmentConnectedToNonPreferenceFragment.class.getName(),

@@ -67,7 +67,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -89,7 +89,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -111,7 +111,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> !keyOfPreference.equals(preference.getKey()),
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -133,7 +133,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -158,7 +158,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -184,7 +184,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -208,7 +208,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 summaryOff,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -232,7 +232,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 summaryOn,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -257,7 +257,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -286,7 +286,7 @@ public class PreferenceSearcherTest {
                                                 new CustomDialogFragment(),
                                                 CustomDialogFragment::getSearchableInfo)) :
                                 Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -326,7 +326,7 @@ public class PreferenceSearcherTest {
                                                 new CustomDialogFragment(),
                                                 CustomDialogFragment::getSearchableInfo)) :
                                 Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -348,7 +348,7 @@ public class PreferenceSearcherTest {
                                                 new CustomDialogFragment(),
                                                 CustomDialogFragment::getSearchableInfo)) :
                                 Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -373,7 +373,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -399,7 +399,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),
@@ -422,7 +422,7 @@ public class PreferenceSearcherTest {
                 (preference, host) -> true,
                 keyword,
                 (hostOfPreference, preference) -> Optional.empty(),
-                preference -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeys(preferenceMatches),

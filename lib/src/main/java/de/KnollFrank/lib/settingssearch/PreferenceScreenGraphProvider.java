@@ -63,7 +63,7 @@ class PreferenceScreenGraphProvider {
             final Preference preference,
             final PreferenceFragmentCompat host) {
         return this
-                .getConnectedPreferenceFragment(preference)
+                .getConnectedPreferenceFragment(preference, host)
                 .flatMap(
                         fragmentConnectedToPreference ->
                                 preferenceScreenWithHostProvider
@@ -72,12 +72,12 @@ class PreferenceScreenGraphProvider {
                                                 Optional.of(new PreferenceWithHost(preference, host))));
     }
 
-    private Optional<String> getConnectedPreferenceFragment(final Preference preference) {
+    private Optional<String> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {
         return Optional
                 .ofNullable(preference.getFragment())
                 .or(() ->
                         preferenceConnected2PreferenceFragmentProvider
-                                .getConnectedPreferenceFragment(preference)
+                                .getConnectedPreferenceFragment(preference, host)
                                 .map(Class::getName));
     }
 }

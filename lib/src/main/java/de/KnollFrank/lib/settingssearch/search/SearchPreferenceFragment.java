@@ -108,7 +108,7 @@ public class SearchPreferenceFragment extends Fragment {
                 },
                 preferenceFragmentCompat -> {
                 },
-                preference -> Optional.empty());
+                (preference, hostOfPreference) -> Optional.empty());
     }
 
     @Override

@@ -36,7 +36,7 @@ public class PreferenceScreensProvider1Test {
                 final PreferenceScreensProvider preferenceScreensProvider =
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
-                                preference -> Optional.empty());
+                                (preference, hostOfPreference) -> Optional.empty());
                 final PreferenceFragmentCompat root =
                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                                 Fragment1ConnectedToFragment2AndFragment4.class.getName(),
@@ -69,7 +69,7 @@ public class PreferenceScreensProvider1Test {
                 final PreferenceScreensProvider preferenceScreensProvider =
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
-                                preference -> Optional.empty());
+                                (preference, hostOfPreference) -> Optional.empty());
                 final PreferenceFragmentCompat root =
                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                                 Fragment1ConnectedToFragment2AndFragment4.class.getName(),

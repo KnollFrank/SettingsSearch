@@ -25,7 +25,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
         testSearch(
                 // Given a fragment with a non standard connected fragment
                 new FragmentWithNonStandardConnection(),
-                preference ->
+                (preference, hostOfPreference) ->
                         "key".equals(preference.getKey()) ?
                                 Optional.of(PreferenceFragmentWithSinglePreference.class) :
                                 Optional.empty(),

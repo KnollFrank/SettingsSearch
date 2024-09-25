@@ -27,7 +27,7 @@ public class SearchPreferenceFragmentsBuilder {
     private ShowPreferencePath showPreferencePath = preferencePath -> preferencePath.getPreference().isPresent();
     private PrepareShow prepareShow = preferenceFragment -> {
     };
-    private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = preference -> Optional.empty();
+    private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager) {
