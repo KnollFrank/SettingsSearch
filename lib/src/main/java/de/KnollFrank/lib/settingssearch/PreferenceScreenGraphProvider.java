@@ -75,9 +75,6 @@ class PreferenceScreenGraphProvider {
     private Optional<String> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {
         return Optional
                 .ofNullable(preference.getFragment())
-                .or(() ->
-                        preferenceConnected2PreferenceFragmentProvider
-                                .getConnectedPreferenceFragment(preference, host)
-                                .map(Class::getName));
+                .or(() -> preferenceConnected2PreferenceFragmentProvider.getClassNameOfConnectedPreferenceFragment(preference, host));
     }
 }
