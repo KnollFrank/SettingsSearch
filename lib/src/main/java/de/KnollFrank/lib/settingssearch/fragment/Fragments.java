@@ -44,23 +44,23 @@ public class Fragments {
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }
-        executeOnceOnFragmentStarted(fragment, onFragmentShown, fragmentManager);
+        executeOnceOnFragmentResumed(fragment, onFragmentShown, fragmentManager);
         fragmentTransaction.commit();
     }
 
-    private static <T extends Fragment> void executeOnceOnFragmentStarted(
+    private static <T extends Fragment> void executeOnceOnFragmentResumed(
             final T fragment,
-            final Consumer<T> onFragmentStarted,
+            final Consumer<T> onFragmentResumed,
             final FragmentManager fragmentManager) {
         fragmentManager.registerFragmentLifecycleCallbacks(
                 new FragmentLifecycleCallbacks() {
 
                     @Override
-                    public void onFragmentStarted(@NonNull final FragmentManager fragmentManager,
+                    public void onFragmentResumed(@NonNull final FragmentManager fragmentManager,
                                                   @NonNull final Fragment _fragment) {
                         if (_fragment == fragment) {
                             fragmentManager.unregisterFragmentLifecycleCallbacks(this);
-                            onFragmentStarted.accept(fragment);
+                            onFragmentResumed.accept(fragment);
                         }
                     }
                 },
