@@ -5,6 +5,8 @@ import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchable
 
 import androidx.fragment.app.FragmentManager;
 
+import java.util.function.Consumer;
+
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -57,6 +59,12 @@ public class SearchPreferenceFragments {
     }
 
     public void showSearchPreferenceFragment() {
+        showSearchPreferenceFragment(
+                searchPreferenceFragment -> {
+                });
+    }
+
+    public void showSearchPreferenceFragment(final Consumer<SearchPreferenceFragment> onFragmentShown) {
         showFragment(
                 SearchPreferenceFragment.newInstance(
                         searchConfiguration,
@@ -69,8 +77,7 @@ public class SearchPreferenceFragments {
                         preferenceScreenGraphAvailableListener,
                         prepareShow,
                         preferenceConnected2PreferenceFragmentProvider),
-                searchPreferenceFragment -> {
-                },
+                onFragmentShown,
                 true,
                 searchConfiguration.fragmentContainerViewId(),
                 fragmentManager);
