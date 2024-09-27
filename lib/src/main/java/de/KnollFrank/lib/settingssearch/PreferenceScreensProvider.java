@@ -21,8 +21,7 @@ public class PreferenceScreensProvider {
         return new ConnectedPreferenceScreens(getPreferenceScreenGraph(root));
     }
 
-    private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(
-            final PreferenceFragmentCompat root) {
+    private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
         return new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
                 .getPreferenceScreenGraph(
                         PreferenceScreenWithHost.fromPreferenceFragment(root));

@@ -54,25 +54,25 @@ public class MergedPreferenceScreenProvider {
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
     }
 
-    public MergedPreferenceScreen getMergedPreferenceScreen(final String preferenceFragment) {
+    public MergedPreferenceScreen getMergedPreferenceScreen(final String rootPreferenceFragment) {
         if (!cacheMergedPreferenceScreens) {
-            return computeMergedPreferenceScreen(preferenceFragment);
+            return computeMergedPreferenceScreen(rootPreferenceFragment);
         }
-        if (!mergedPreferenceScreenByFragment.containsKey(preferenceFragment)) {
-            mergedPreferenceScreenByFragment.put(preferenceFragment, computeMergedPreferenceScreen(preferenceFragment));
+        if (!mergedPreferenceScreenByFragment.containsKey(rootPreferenceFragment)) {
+            mergedPreferenceScreenByFragment.put(rootPreferenceFragment, computeMergedPreferenceScreen(rootPreferenceFragment));
         }
-        return mergedPreferenceScreenByFragment.get(preferenceFragment);
+        return mergedPreferenceScreenByFragment.get(rootPreferenceFragment);
     }
 
-    private MergedPreferenceScreen computeMergedPreferenceScreen(final String preferenceFragment) {
+    private MergedPreferenceScreen computeMergedPreferenceScreen(final String rootPreferenceFragment) {
         return getMergedPreferenceScreen(
                 (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                        preferenceFragment,
+                        rootPreferenceFragment,
                         Optional.empty()));
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
-        final ConnectedPreferenceScreens screens = getConnectedPreferenceScreens(preferenceFragment);
+    private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat root) {
+        final ConnectedPreferenceScreens screens = getConnectedPreferenceScreens(root);
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, PreferenceFragmentCompat> hostByPreference =
@@ -91,8 +91,8 @@ public class MergedPreferenceScreenProvider {
                 searchableInfoAttribute);
     }
 
-    private ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat preferenceFragment) {
-        final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(preferenceFragment);
+    private ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
+        final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(root);
         removeInvisiblePreferences(screens.getConnectedPreferenceScreens());
         removeNonSearchablePreferences(screens.getConnectedPreferenceScreens());
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(screens.preferenceScreenGraph);
