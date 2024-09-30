@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch;
 import android.content.Context;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
@@ -36,7 +35,7 @@ class PreferenceScreenCopier {
     private static <T extends PreferenceGroup> void copySrc2Dst(final PreferenceGroup src, final T dst) {
         for (final Preference child : Preferences.getDirectChildren(src)) {
             if (child instanceof final PreferenceGroup childPreferenceGroup) {
-                final PreferenceGroup copy = createPreferenceGroup(childPreferenceGroup);
+                final PreferenceGroup copy = copy(childPreferenceGroup);
                 dst.addPreference(copy);
                 copySrc2Dst(childPreferenceGroup, copy);
             } else {
@@ -45,14 +44,8 @@ class PreferenceScreenCopier {
         }
     }
 
-    private static PreferenceGroup createPreferenceGroup(final PreferenceGroup childPreferenceGroup) {
-        final PreferenceGroup copy = new PreferenceCategory(childPreferenceGroup.getContext());
-        copy.setTitle(childPreferenceGroup.getTitle());
-        return copy;
-    }
-
-    private static Preference copy(final Preference preference) {
-        final Preference copy = createInstance(preference);
+    private static <T extends Preference> T copy(final T preference) {
+        final T copy = createInstance(preference);
         copy.setKey(preference.getKey());
         copy.setIcon(preference.getIcon());
         copy.setLayoutResource(preference.getLayoutResource());
@@ -64,7 +57,7 @@ class PreferenceScreenCopier {
         return copy;
     }
 
-    private static Preference createInstance(final Preference preference) {
+    private static <T extends Preference> T createInstance(final T preference) {
         try {
             return _createInstance(preference);
         } catch (final Exception e) {
@@ -72,9 +65,9 @@ class PreferenceScreenCopier {
         }
     }
 
-    private static Preference _createInstance(final Preference preference) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        final Class<? extends Preference> clazz = preference.getClass();
-        final Constructor<? extends Preference> constructor = clazz.getConstructor(Context.class);
+    private static <T extends Preference> T _createInstance(final T preference) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        final Class<T> clazz = (Class<T>) preference.getClass();
+        final Constructor<T> constructor = clazz.getConstructor(Context.class);
         constructor.setAccessible(true);
         return constructor.newInstance(preference.getContext());
     }
