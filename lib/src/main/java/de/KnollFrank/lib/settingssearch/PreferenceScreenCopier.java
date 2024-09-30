@@ -1,10 +1,15 @@
 package de.KnollFrank.lib.settingssearch;
 
+import android.content.Context;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 
@@ -47,7 +52,7 @@ class PreferenceScreenCopier {
     }
 
     private static Preference copy(final Preference preference) {
-        final Preference copy = new Preference(preference.getContext());
+        final Preference copy = createInstance(preference);
         copy.setKey(preference.getKey());
         copy.setIcon(preference.getIcon());
         copy.setLayoutResource(preference.getLayoutResource());
@@ -57,5 +62,20 @@ class PreferenceScreenCopier {
         copy.setFragment(preference.getFragment());
         copy.getExtras().putAll(preference.getExtras());
         return copy;
+    }
+
+    private static Preference createInstance(final Preference preference) {
+        try {
+            return _createInstance(preference);
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Preference _createInstance(final Preference preference) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        final Class<? extends Preference> clazz = preference.getClass();
+        final Constructor<? extends Preference> constructor = clazz.getConstructor(Context.class);
+        constructor.setAccessible(true);
+        return constructor.newInstance(preference.getContext());
     }
 }
