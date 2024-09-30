@@ -1,23 +1,35 @@
 package de.KnollFrank.lib.settingssearch.db;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
+import java.util.List;
+import java.util.Optional;
+
+import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchablePreferenceTransformer {
 
     private final PreferenceManager preferenceManager;
     private final SearchableInfoProvider searchableInfoProvider;
+    private final PreferenceFragmentCompat host;
+    private final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider;
 
     public SearchablePreferenceTransformer(final PreferenceManager preferenceManager,
-                                           final SearchableInfoProvider searchableInfoProvider) {
+                                           final SearchableInfoProvider searchableInfoProvider,
+                                           final PreferenceFragmentCompat host,
+                                           final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider) {
         this.preferenceManager = preferenceManager;
         this.searchableInfoProvider = searchableInfoProvider;
+        this.host = host;
+        this.searchableInfoByPreferenceProvider = searchableInfoByPreferenceProvider;
     }
 
     public PreferenceScreen transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
@@ -41,9 +53,21 @@ public class SearchablePreferenceTransformer {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         preference.getContext(),
-                        searchableInfoProvider.getSearchableInfo(preference));
+                        getSearchableInfo(preference));
         copyAttributes(preference, searchablePreference);
         return searchablePreference;
+    }
+
+    private Optional<String> getSearchableInfo(final Preference preference) {
+        final Optional<String> searchableInfo = searchableInfoProvider.getSearchableInfo(preference);
+        final Optional<String> searchableInfoOfDialogOfPreference = searchableInfoByPreferenceProvider.getSearchableDialogInfoOfPreference(preference, host);
+        return searchableInfo.isPresent() || searchableInfoOfDialogOfPreference.isPresent() ?
+                Optional.of(join(searchableInfo, searchableInfoOfDialogOfPreference, "\n")) :
+                Optional.empty();
+    }
+
+    private static String join(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
+        return String.join(delimiter, Lists.getPresentElements(List.of(str1, str2)));
     }
 
     private static void copyAttributes(final Preference src, final Preference dst) {

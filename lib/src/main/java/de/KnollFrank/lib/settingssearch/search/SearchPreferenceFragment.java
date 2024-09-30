@@ -24,6 +24,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -31,6 +32,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
+import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -135,18 +137,21 @@ public class SearchPreferenceFragment extends Fragment {
                                         fragmentFactory,
                                         defaultFragmentInitializer)),
                         requireActivity());
+        final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider =
+                new SearchableDialogInfoOfProvider(
+                        defaultFragmentInitializer,
+                        preferenceDialogAndSearchableInfoProvider);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         fragments,
-                        defaultFragmentInitializer,
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
                                 preferenceConnected2PreferenceFragmentProvider,
-                                searchableInfoProvider),
+                                searchableInfoProvider,
+                                searchableDialogInfoOfProvider),
                         new PreferenceScreensMerger(getContext()),
                         isPreferenceSearchable,
                         searchableInfoAttribute,
-                        preferenceDialogAndSearchableInfoProvider,
                         preferenceScreenGraphAvailableListener,
                         true);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment().getName());

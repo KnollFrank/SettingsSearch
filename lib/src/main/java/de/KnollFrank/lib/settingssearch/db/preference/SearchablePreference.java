@@ -20,7 +20,8 @@ public class SearchablePreference extends PreferenceCategory {
         this.searchableInfo = searchableInfo;
     }
 
-    public SearchablePreference(@NonNull final Context context, final Optional<String> searchableInfo) {
+    public SearchablePreference(@NonNull final Context context,
+                                final Optional<String> searchableInfo) {
         this(context, null, searchableInfo);
     }
 

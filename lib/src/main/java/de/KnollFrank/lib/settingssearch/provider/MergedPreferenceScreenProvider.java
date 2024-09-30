@@ -17,39 +17,32 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreenProvider {
 
     private final Fragments fragments;
-    private final PreferenceDialogs preferenceDialogs;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoAttribute searchableInfoAttribute;
-    private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final boolean cacheMergedPreferenceScreens;
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
 
     public MergedPreferenceScreenProvider(final Fragments fragments,
-                                          final PreferenceDialogs preferenceDialogs,
                                           final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
                                           final IsPreferenceSearchable isPreferenceSearchable,
                                           final SearchableInfoAttribute searchableInfoAttribute,
-                                          final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                           final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                           final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
-        this.preferenceDialogs = preferenceDialogs;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoAttribute = searchableInfoAttribute;
-        this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
     }
@@ -80,16 +73,12 @@ public class MergedPreferenceScreenProvider {
         // A:
         final Map<Preference, PreferenceFragmentCompat> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens.getConnectedPreferenceScreens());
-        final Map<Preference, String> searchableInfoByPreference =
-                new SearchableInfoByPreferenceProvider(preferenceDialogs, preferenceDialogAndSearchableInfoProvider)
-                        .getSearchableInfoByPreference(screens.getConnectedPreferenceScreens());
         // B:
         final PreferenceScreensMerger.PreferenceScreenAndIsNonClickable preferenceScreenAndIsNonClickable = destructivelyMergeScreens(screens.getConnectedPreferenceScreens());
         return new MergedPreferenceScreen(
                 preferenceScreenAndIsNonClickable.preferenceScreen(),
                 preferenceScreenAndIsNonClickable.isNonClickable(),
                 hostByPreference,
-                searchableInfoByPreference,
                 screens.preferencePathByPreference,
                 searchableInfoAttribute);
     }
