@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.client;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
-import static de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProviderFactory.getBuiltinSearchableInfoProvider;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -15,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
+import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -48,7 +48,7 @@ public class SearchPreferenceFragments {
                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
-        this.searchableInfoProvider = searchableInfoProvider.orElse(getBuiltinSearchableInfoProvider());
+        this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;

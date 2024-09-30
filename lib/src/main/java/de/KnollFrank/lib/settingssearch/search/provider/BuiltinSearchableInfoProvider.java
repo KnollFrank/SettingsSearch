@@ -13,25 +13,23 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
 
-// FK-TODO: refactor to "public class BuiltinSearchableInfoProvider implements SearchableInfoProvider { ... }"
-public class BuiltinSearchableInfoProviderFactory {
+public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
 
-    public static SearchableInfoProvider getBuiltinSearchableInfoProvider() {
-        return preference -> {
-            if (hasClass(preference, ListPreference.class)) {
-                return Optional.of(getListPreferenceSearchableInfo((ListPreference) preference));
-            }
-            if (hasClass(preference, SwitchPreference.class)) {
-                return Optional.of(getSwitchPreferenceSearchableInfo((SwitchPreference) preference));
-            }
-            if (hasClass(preference, DropDownPreference.class)) {
-                return Optional.of(getDropDownPreferenceSearchableInfo((DropDownPreference) preference));
-            }
-            if (hasClass(preference, MultiSelectListPreference.class)) {
-                return Optional.of(getMultiSelectListPreferenceSearchableInfo((MultiSelectListPreference) preference));
-            }
-            return Optional.empty();
-        };
+    @Override
+    public Optional<String> getSearchableInfo(final Preference preference) {
+        if (hasClass(preference, ListPreference.class)) {
+            return Optional.of(getListPreferenceSearchableInfo((ListPreference) preference));
+        }
+        if (hasClass(preference, SwitchPreference.class)) {
+            return Optional.of(getSwitchPreferenceSearchableInfo((SwitchPreference) preference));
+        }
+        if (hasClass(preference, DropDownPreference.class)) {
+            return Optional.of(getDropDownPreferenceSearchableInfo((DropDownPreference) preference));
+        }
+        if (hasClass(preference, MultiSelectListPreference.class)) {
+            return Optional.of(getMultiSelectListPreferenceSearchableInfo((MultiSelectListPreference) preference));
+        }
+        return Optional.empty();
     }
 
     private static boolean hasClass(final Preference preference, final Class<? extends Preference> preferenceClass) {
