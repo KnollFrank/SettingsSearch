@@ -55,6 +55,7 @@ class PreferenceScreenCopier {
         copy.setTitle(preference.getTitle());
         copy.setWidgetLayoutResource(preference.getWidgetLayoutResource());
         copy.setFragment(preference.getFragment());
+        copy.getExtras().putAll(preference.getExtras());
         return copy;
     }
 }
