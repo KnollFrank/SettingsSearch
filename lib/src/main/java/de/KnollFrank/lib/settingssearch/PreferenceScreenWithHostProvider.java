@@ -5,6 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class PreferenceScreenWithHostProvider {
 
@@ -16,9 +17,10 @@ public class PreferenceScreenWithHostProvider {
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(
             final String fragment,
-            final Optional<PreferenceWithHost> src) {
+            final Optional<PreferenceWithHost> src,
+            final SearchableInfoProvider searchableInfoProvider) {
         return fragments.instantiateAndInitializeFragment(fragment, src) instanceof final PreferenceFragmentCompat preferenceFragment ?
-                Optional.of(PreferenceScreenWithHost.fromPreferenceFragment(preferenceFragment)) :
+                Optional.of(PreferenceScreenWithHost.fromPreferenceFragment(preferenceFragment, searchableInfoProvider)) :
                 Optional.empty();
     }
 }

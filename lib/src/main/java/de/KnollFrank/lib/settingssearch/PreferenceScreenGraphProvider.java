@@ -14,17 +14,21 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
+import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
+    private final SearchableInfoProvider searchableInfoProvider;
     private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
+                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                                         final SearchableInfoProvider searchableInfoProvider) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
+        this.searchableInfoProvider = searchableInfoProvider;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
@@ -69,7 +73,8 @@ class PreferenceScreenGraphProvider {
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenOfFragment(
                                                 fragmentConnectedToPreference,
-                                                Optional.of(new PreferenceWithHost(preference, host))));
+                                                Optional.of(new PreferenceWithHost(preference, host)),
+                                                searchableInfoProvider));
     }
 
     private Optional<String> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {

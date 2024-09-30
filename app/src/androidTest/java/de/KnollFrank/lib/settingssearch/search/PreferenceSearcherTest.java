@@ -459,11 +459,7 @@ public class PreferenceSearcherTest {
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
-                                new SearchableInfoAttribute(),
-                                mergedPreferenceScreen
-                                        .getSearchableInfoProvider()
-                                        .orElse(new ReversedListPreferenceSearchableInfoProvider())
-                                        .orElse(new BuiltinSearchableInfoProvider()));
+                                new SearchableInfoAttribute());
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
@@ -506,7 +502,8 @@ public class PreferenceSearcherTest {
                         defaultFragmentInitializer,
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
-                                preferenceConnected2PreferenceFragmentProvider),
+                                preferenceConnected2PreferenceFragmentProvider,
+                                new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider())),
                         new PreferenceScreensMerger(fragmentActivity),
                         isPreferenceSearchable,
                         new SearchableInfoAttribute(),

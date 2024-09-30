@@ -141,7 +141,8 @@ public class SearchPreferenceFragment extends Fragment {
                         defaultFragmentInitializer,
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
-                                preferenceConnected2PreferenceFragmentProvider),
+                                preferenceConnected2PreferenceFragmentProvider,
+                                searchableInfoProvider),
                         new PreferenceScreensMerger(getContext()),
                         isPreferenceSearchable,
                         searchableInfoAttribute,
@@ -174,10 +175,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchAndDisplay(
                         new PreferenceSearcher(
                                 mergedPreferenceScreen,
-                                searchableInfoAttribute,
-                                mergedPreferenceScreen
-                                        .getSearchableInfoProvider()
-                                        .orElse(searchableInfoProvider)),
+                                searchableInfoAttribute),
                         searchableInfoAttribute,
                         mergedPreferenceScreen.preferenceScreen,
                         requireContext()));
