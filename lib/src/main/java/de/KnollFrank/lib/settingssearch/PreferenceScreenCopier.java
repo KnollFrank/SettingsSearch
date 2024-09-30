@@ -21,43 +21,41 @@ class PreferenceScreenCopier {
     }
 
     public PreferenceScreen copy(final PreferenceScreen preferenceScreen) {
-        final PreferenceScreen copy = createPreferenceScreen(preferenceScreen);
-        copySrc2Dst(preferenceScreen, copy);
+        final PreferenceScreen copy = createCopyWithAttributes(preferenceScreen);
+        copyPreferencesOfSrc2Dst(preferenceScreen, copy);
         return copy;
     }
 
-    private PreferenceScreen createPreferenceScreen(final PreferenceScreen preferenceScreen) {
-        final PreferenceScreen copy = preferenceManager.createPreferenceScreen(preferenceManager.getContext());
-        copy.setTitle(preferenceScreen.getTitle());
-        return copy;
-    }
-
-    private static <T extends PreferenceGroup> void copySrc2Dst(final PreferenceGroup src, final T dst) {
+    private void copyPreferencesOfSrc2Dst(final PreferenceGroup src, final PreferenceGroup dst) {
         for (final Preference child : Preferences.getDirectChildren(src)) {
             if (child instanceof final PreferenceGroup childPreferenceGroup) {
-                final PreferenceGroup copy = copy(childPreferenceGroup);
+                final PreferenceGroup copy = createCopyWithAttributes(childPreferenceGroup);
                 dst.addPreference(copy);
-                copySrc2Dst(childPreferenceGroup, copy);
+                copyPreferencesOfSrc2Dst(childPreferenceGroup, copy);
             } else {
-                dst.addPreference(copy(child));
+                dst.addPreference(createCopyWithAttributes(child));
             }
         }
     }
 
-    private static <T extends Preference> T copy(final T preference) {
+    private <T extends Preference> T createCopyWithAttributes(final T preference) {
         final T copy = createInstance(preference);
-        copy.setKey(preference.getKey());
-        copy.setIcon(preference.getIcon());
-        copy.setLayoutResource(preference.getLayoutResource());
-        copy.setSummary(preference.getSummary());
-        copy.setTitle(preference.getTitle());
-        copy.setWidgetLayoutResource(preference.getWidgetLayoutResource());
-        copy.setFragment(preference.getFragment());
-        copy.getExtras().putAll(preference.getExtras());
+        copyAttributes(preference, copy);
         return copy;
     }
 
-    private static <T extends Preference> T createInstance(final T preference) {
+    private static <T extends Preference> void copyAttributes(final T src, final T dst) {
+        dst.setKey(src.getKey());
+        dst.setIcon(src.getIcon());
+        dst.setLayoutResource(src.getLayoutResource());
+        dst.setSummary(src.getSummary());
+        dst.setTitle(src.getTitle());
+        dst.setWidgetLayoutResource(src.getWidgetLayoutResource());
+        dst.setFragment(src.getFragment());
+        dst.getExtras().putAll(src.getExtras());
+    }
+
+    private <T extends Preference> T createInstance(final T preference) {
         try {
             return _createInstance(preference);
         } catch (final Exception e) {
@@ -65,7 +63,10 @@ class PreferenceScreenCopier {
         }
     }
 
-    private static <T extends Preference> T _createInstance(final T preference) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    private <T extends Preference> T _createInstance(final T preference) throws NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        if (preference instanceof PreferenceScreen) {
+            return (T) preferenceManager.createPreferenceScreen(preferenceManager.getContext());
+        }
         final Class<T> clazz = (Class<T>) preference.getClass();
         final Constructor<T> constructor = clazz.getConstructor(Context.class);
         constructor.setAccessible(true);
