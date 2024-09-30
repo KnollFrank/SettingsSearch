@@ -72,7 +72,10 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat root) {
-        final ConnectedPreferenceScreens screens = getConnectedPreferenceScreens(root);
+        return getMergedPreferenceScreen(getConnectedPreferenceScreens(root));
+    }
+
+    private MergedPreferenceScreen getMergedPreferenceScreen(final ConnectedPreferenceScreens screens) {
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, PreferenceFragmentCompat> hostByPreference =

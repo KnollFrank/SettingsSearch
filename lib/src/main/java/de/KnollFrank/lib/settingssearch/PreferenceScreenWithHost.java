@@ -8,7 +8,8 @@ public record PreferenceScreenWithHost(PreferenceScreen preferenceScreen,
 
     public static PreferenceScreenWithHost fromPreferenceFragment(final PreferenceFragmentCompat preferenceFragment) {
         return new PreferenceScreenWithHost(
-                preferenceFragment.getPreferenceScreen(),
+                new PreferenceScreenCopier(preferenceFragment.getPreferenceManager())
+                        .copy(preferenceFragment.getPreferenceScreen()),
                 preferenceFragment);
     }
 }
