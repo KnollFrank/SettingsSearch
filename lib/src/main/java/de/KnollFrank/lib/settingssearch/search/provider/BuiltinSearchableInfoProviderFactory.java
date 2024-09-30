@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
 
+// FK-TODO: refactor to "public class BuiltinSearchableInfoProvider implements SearchableInfoProvider { ... }"
 public class BuiltinSearchableInfoProviderFactory {
 
     public static SearchableInfoProvider getBuiltinSearchableInfoProvider() {
