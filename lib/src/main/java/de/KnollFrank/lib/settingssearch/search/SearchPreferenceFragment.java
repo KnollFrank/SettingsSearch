@@ -149,10 +149,11 @@ public class SearchPreferenceFragment extends Fragment {
                                 preferenceConnected2PreferenceFragmentProvider,
                                 searchableInfoProvider,
                                 searchableDialogInfoOfProvider,
-                                (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference)),
+                                // FK-TODO: extreact class or function:
+                                (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference),
+                                preferenceScreenGraphAvailableListener),
                         new PreferenceScreensMerger(getContext()),
                         searchableInfoAttribute,
-                        preferenceScreenGraphAvailableListener,
                         true);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment().getName());
     }

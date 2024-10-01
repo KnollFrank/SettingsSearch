@@ -489,11 +489,11 @@ public class PreferenceSearcherTest {
                                 new SearchableDialogInfoOfProvider(
                                         fragmentInitializer,
                                         preferenceDialogAndSearchableInfoProvider),
-                                (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference)),
+                                (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference),
+                                preferenceScreenGraph -> {
+                                }),
                         new PreferenceScreensMerger(fragmentActivity),
                         new SearchableInfoAttribute(),
-                        preferenceScreenGraph -> {
-                        },
                         false);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }

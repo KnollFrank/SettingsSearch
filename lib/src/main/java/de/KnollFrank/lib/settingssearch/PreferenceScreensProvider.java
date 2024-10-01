@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.common.BreadthFirstGraphVisitor;
 import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class PreferenceScreensProvider {
@@ -21,17 +22,20 @@ public class PreferenceScreensProvider {
     private final SearchableInfoProvider searchableInfoProvider;
     private final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider;
     private final IsPreferenceSearchable isPreferenceSearchable;
+    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
 
     public PreferenceScreensProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                      final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                      final SearchableInfoProvider searchableInfoProvider,
                                      final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider,
-                                     final IsPreferenceSearchable isPreferenceSearchable) {
+                                     final IsPreferenceSearchable isPreferenceSearchable,
+                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.searchableInfoProvider = searchableInfoProvider;
         this.searchableDialogInfoOfProvider = searchableDialogInfoOfProvider;
         this.isPreferenceSearchable = isPreferenceSearchable;
+        this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
     }
 
     public ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
@@ -39,11 +43,13 @@ public class PreferenceScreensProvider {
     }
 
     private Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
-        return transformPreferences2SearchablePreferences(
+        final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph =
                 new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
                         .getPreferenceScreenGraph(
                                 PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(
-                                        root)));
+                                        root));
+        preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
+        return transformPreferences2SearchablePreferences(preferenceScreenGraph);
     }
 
     // FK-TODO: refactor to GraphTransformer

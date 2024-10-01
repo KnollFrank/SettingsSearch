@@ -25,7 +25,6 @@ public class MergedPreferenceScreenProvider {
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
     private final SearchableInfoAttribute searchableInfoAttribute;
-    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final boolean cacheMergedPreferenceScreens;
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
@@ -34,13 +33,11 @@ public class MergedPreferenceScreenProvider {
                                           final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
                                           final SearchableInfoAttribute searchableInfoAttribute,
-                                          final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                           final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
         this.searchableInfoAttribute = searchableInfoAttribute;
-        this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
     }
 
@@ -62,7 +59,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat root) {
-        return getMergedPreferenceScreen(getConnectedPreferenceScreens(root));
+        return getMergedPreferenceScreen(preferenceScreensProvider.getConnectedPreferenceScreens(root));
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final ConnectedPreferenceScreens screens) {
@@ -78,13 +75,6 @@ public class MergedPreferenceScreenProvider {
                 hostByPreference,
                 screens.preferencePathByPreference,
                 searchableInfoAttribute);
-    }
-
-    private ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
-        final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(root);
-        // FK-TODO: onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable() auf dem originalen noch nicht transformierten Graph aufrufen.
-        preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(screens.preferenceScreenGraph);
-        return screens;
     }
 
     private PreferenceScreensMerger.PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final Set<SearchablePreferenceScreenWithHost> screens) {

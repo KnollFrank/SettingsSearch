@@ -41,7 +41,9 @@ public class PreferenceScreensProvider2Test {
                         (preference, hostOfPreference) -> Optional.empty(),
                         preference -> Optional.empty(),
                         (preference, hostOfPreference) -> Optional.empty(),
-                        (preference, hostOfPreference) -> true);
+                        (preference, hostOfPreference) -> true,
+                        preferenceScreenGraph -> {
+                        });
         final PreferenceFragmentCompat root =
                 (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                         FragmentConnectedToNonPreferenceFragment.class.getName(),
