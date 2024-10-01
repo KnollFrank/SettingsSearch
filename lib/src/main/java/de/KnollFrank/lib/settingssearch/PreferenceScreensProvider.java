@@ -3,7 +3,12 @@ package de.KnollFrank.lib.settingssearch;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import de.KnollFrank.lib.settingssearch.common.BreadthFirstGraphVisitor;
 import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -33,18 +38,55 @@ public class PreferenceScreensProvider {
         return new ConnectedPreferenceScreens(getPreferenceScreenGraph(root));
     }
 
-    private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
-        return new PreferenceScreenGraphProvider(
-                preferenceScreenWithHostProvider,
-                preferenceConnected2PreferenceFragmentProvider,
-                searchableInfoProvider,
-                searchableDialogInfoOfProvider,
-                isPreferenceSearchable)
-                .getPreferenceScreenGraph(
-                        PreferenceScreenWithHostFactory.createSearchablePreferenceScreenWithHost(
-                                root,
-                                searchableInfoProvider,
-                                searchableDialogInfoOfProvider,
-                                isPreferenceSearchable));
+    private Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
+        return transformPreferences2SearchablePreferences(
+                new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
+                        .getPreferenceScreenGraph(
+                                PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(
+                                        root)));
+    }
+
+    // FK-TODO: refactor to GraphTransformer
+    private Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> transformPreferences2SearchablePreferences(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+        final DefaultDirectedGraph<SearchablePreferenceScreenWithHost, PreferenceEdge> transformedGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
+        final Map<PreferenceScreenWithHost, SearchablePreferenceScreenWithHost> newNodeByOldNode = new HashMap<>();
+        final BreadthFirstGraphVisitor<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraphVisitor =
+                new BreadthFirstGraphVisitor<>() {
+
+                    @Override
+                    protected void visitRootNode(final PreferenceScreenWithHost rootNode) {
+                        final SearchablePreferenceScreenWithHost searchablePreferenceScreenWithHost =
+                                PreferenceScreenWithHostFactory.createSearchablePreferenceScreenWithHost(
+                                        rootNode.host(),
+                                        searchableInfoProvider,
+                                        searchableDialogInfoOfProvider,
+                                        isPreferenceSearchable);
+                        newNodeByOldNode.put(rootNode, searchablePreferenceScreenWithHost);
+                        transformedGraph.addVertex(searchablePreferenceScreenWithHost);
+                    }
+
+                    @Override
+                    protected void visitInnerNode(final PreferenceScreenWithHost node, final PreferenceScreenWithHost parentNode) {
+                        final SearchablePreferenceScreenWithHost searchableNode =
+                                PreferenceScreenWithHostFactory.createSearchablePreferenceScreenWithHost(
+                                        node.host(),
+                                        searchableInfoProvider,
+                                        searchableDialogInfoOfProvider,
+                                        isPreferenceSearchable);
+                        newNodeByOldNode.put(node, searchableNode);
+                        transformedGraph.addVertex(searchableNode);
+                        transformedGraph.addEdge(
+                                newNodeByOldNode.get(parentNode),
+                                newNodeByOldNode.get(node),
+                                new PreferenceEdge(
+                                        newNodeByOldNode
+                                                .get(parentNode)
+                                                .searchablePreferenceScreen()
+                                                .newPreferenceByOldPreference()
+                                                .get(preferenceScreenGraph.getEdge(parentNode, node).preference)));
+                    }
+                };
+        preferenceScreenGraphVisitor.visit(preferenceScreenGraph);
+        return transformedGraph;
     }
 }

@@ -6,6 +6,8 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,20 +39,24 @@ public class SearchablePreferenceTransformer {
         this.isPreferenceSearchable = isPreferenceSearchable;
     }
 
-    public PreferenceScreen transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
+    public SearchablePreferenceScreen transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
         final PreferenceScreen searchablePreferenceScreen = preferenceManager.createPreferenceScreen(preferenceManager.getContext());
         copyAttributes(preferenceScreen, searchablePreferenceScreen);
-        copyPreferences(preferenceScreen, searchablePreferenceScreen);
-        return searchablePreferenceScreen;
+        final ImmutableMap.Builder<Preference, SearchablePreference> newPreferenceByOldPreferenceBuilder = ImmutableMap.builder();
+        copyPreferences(preferenceScreen, searchablePreferenceScreen, newPreferenceByOldPreferenceBuilder);
+        return new SearchablePreferenceScreen(searchablePreferenceScreen, newPreferenceByOldPreferenceBuilder.buildOrThrow());
     }
 
     // FK-TODO: rename method because it doesn't copy, it transforms?
-    private void copyPreferences(final PreferenceGroup src, final PreferenceGroup dst) {
+    private void copyPreferences(final PreferenceGroup src,
+                                 final PreferenceGroup dst,
+                                 final ImmutableMap.Builder<Preference, SearchablePreference> newPreferenceByOldPreferenceBuilder) {
         for (final Preference child : getFilteredDirectChildren(src)) {
             final SearchablePreference searchablePreference = createSearchablePreferenceWithAttributes(child);
+            newPreferenceByOldPreferenceBuilder.put(child, searchablePreference);
             dst.addPreference(searchablePreference);
             if (child instanceof final PreferenceGroup childPreferenceGroup) {
-                copyPreferences(childPreferenceGroup, searchablePreference);
+                copyPreferences(childPreferenceGroup, searchablePreference, newPreferenceByOldPreferenceBuilder);
             }
         }
     }

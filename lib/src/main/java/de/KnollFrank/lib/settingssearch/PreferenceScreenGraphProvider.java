@@ -13,30 +13,18 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
-import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
-    private final SearchableInfoProvider searchableInfoProvider;
-    private final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider;
     private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
-    private final IsPreferenceSearchable isPreferenceSearchable;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                         final SearchableInfoProvider searchableInfoProvider,
-                                         final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider,
-                                         final IsPreferenceSearchable isPreferenceSearchable) {
+                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
-        this.searchableInfoProvider = searchableInfoProvider;
-        this.searchableInfoByPreferenceProvider = searchableDialogInfoOfProvider;
-        this.isPreferenceSearchable = isPreferenceSearchable;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
@@ -81,10 +69,8 @@ class PreferenceScreenGraphProvider {
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenOfFragment(
                                                 fragmentConnectedToPreference,
-                                                Optional.of(new PreferenceWithHost(preference, host)),
-                                                searchableInfoProvider,
-                                                searchableInfoByPreferenceProvider,
-                                                isPreferenceSearchable));
+                                                Optional.of(new PreferenceWithHost(preference, host))
+                                        ));
     }
 
     private Optional<String> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {

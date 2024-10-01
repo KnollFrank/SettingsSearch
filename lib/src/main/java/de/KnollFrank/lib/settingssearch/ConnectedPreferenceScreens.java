@@ -9,15 +9,15 @@ import java.util.Set;
 
 public class ConnectedPreferenceScreens {
 
-    public final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
+    public final Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
 
-    public ConnectedPreferenceScreens(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+    public ConnectedPreferenceScreens(final Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         this.preferenceScreenGraph = preferenceScreenGraph;
         this.preferencePathByPreference = PreferencePathByPreferenceProvider.getPreferencePathByPreference(preferenceScreenGraph);
     }
 
-    public Set<PreferenceScreenWithHost> getConnectedPreferenceScreens() {
+    public Set<SearchablePreferenceScreenWithHost> getConnectedPreferenceScreens() {
         return preferenceScreenGraph.vertexSet();
     }
 }

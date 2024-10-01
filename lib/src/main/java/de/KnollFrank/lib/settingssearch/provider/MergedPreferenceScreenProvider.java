@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.ConnectedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -82,18 +82,19 @@ public class MergedPreferenceScreenProvider {
 
     private ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
         final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(root);
+        // FK-TODO: onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable() auf dem originalen noch nicht transformierten Graph aufrufen.
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(screens.preferenceScreenGraph);
         return screens;
     }
 
-    private PreferenceScreensMerger.PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {
+    private PreferenceScreensMerger.PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final Set<SearchablePreferenceScreenWithHost> screens) {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
     }
 
-    private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {
+    private static List<PreferenceScreen> getPreferenceScreens(final List<SearchablePreferenceScreenWithHost> screens) {
         return screens
                 .stream()
-                .map(PreferenceScreenWithHost::preferenceScreen)
+                .map(searchablePreferenceScreenWithHost -> searchablePreferenceScreenWithHost.searchablePreferenceScreen().searchablePreferenceScreen())
                 .collect(Collectors.toList());
     }
 }

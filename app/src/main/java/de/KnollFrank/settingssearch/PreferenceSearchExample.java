@@ -17,7 +17,7 @@ import org.jgrapht.Graph;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -107,7 +107,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         new PreferenceScreenGraphAvailableListener() {
 
                             @Override
-                            public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+                            public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
                                 Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
                             }
                         })

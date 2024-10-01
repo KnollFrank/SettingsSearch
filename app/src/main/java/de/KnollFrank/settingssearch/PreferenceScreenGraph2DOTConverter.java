@@ -17,40 +17,41 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 
 class PreferenceScreenGraph2DOTConverter {
 
-	public static String graph2DOT(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) throws ExportException {
+	public static String graph2DOT(final Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) throws ExportException {
 		final Writer writer = new StringWriter();
 		getDOTExporter().exportGraph(preferenceScreenGraph, writer);
 		return writer.toString();
 	}
 
-	private static DOTExporter<PreferenceScreenWithHost, PreferenceEdge> getDOTExporter() {
-		final DOTExporter<PreferenceScreenWithHost, PreferenceEdge> exporter =
+	private static DOTExporter<SearchablePreferenceScreenWithHost, PreferenceEdge> getDOTExporter() {
+		final DOTExporter<SearchablePreferenceScreenWithHost, PreferenceEdge> exporter =
 				new DOTExporter<>(PreferenceScreenGraph2DOTConverter::getVertexId);
 		exporter.setVertexAttributeProvider(PreferenceScreenGraph2DOTConverter::getVertexAttribute);
 		exporter.setEdgeAttributeProvider(PreferenceScreenGraph2DOTConverter::getEdgeAttribute);
 		return exporter;
 	}
 
-	private static String getVertexId(final PreferenceScreenWithHost preferenceScreenWithHost) {
-		return preferenceScreenWithHost
-				.preferenceScreen()
+	private static String getVertexId(final SearchablePreferenceScreenWithHost searchablePreferenceScreenWithHost) {
+		return searchablePreferenceScreenWithHost
+				.searchablePreferenceScreen()
+				.searchablePreferenceScreen()
 				.toString()
 				.concat("_")
-				.concat(Integer.toHexString(preferenceScreenWithHost.preferenceScreen().hashCode()))
+				.concat(Integer.toHexString(searchablePreferenceScreenWithHost.searchablePreferenceScreen().searchablePreferenceScreen().hashCode()))
 				.replace(' ', '_');
 	}
 
-	private static Map<String, Attribute> getVertexAttribute(final PreferenceScreenWithHost preferenceScreenWithHost) {
+	private static Map<String, Attribute> getVertexAttribute(final SearchablePreferenceScreenWithHost searchablePreferenceScreenWithHost) {
 		return ImmutableMap
 				.<String, Attribute>builder()
 				.put(
 						"label",
-						DefaultAttribute.createAttribute(getLabel(preferenceScreenWithHost.preferenceScreen())))
+						DefaultAttribute.createAttribute(getLabel(searchablePreferenceScreenWithHost.searchablePreferenceScreen().searchablePreferenceScreen())))
 				.put("shape", DefaultAttribute.createAttribute("box"))
 				.build();
 	}
