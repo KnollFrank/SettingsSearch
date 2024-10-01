@@ -9,34 +9,27 @@ import androidx.preference.PreferenceScreen;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchablePreferenceTransformer {
 
     private final PreferenceManager preferenceManager;
-    private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceFragmentCompat host;
-    private final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider;
     private final IsPreferenceSearchable isPreferenceSearchable;
+    private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
 
     public SearchablePreferenceTransformer(final PreferenceManager preferenceManager,
-                                           final SearchableInfoProvider searchableInfoProvider,
                                            final PreferenceFragmentCompat host,
-                                           final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider,
-                                           final IsPreferenceSearchable isPreferenceSearchable) {
+                                           final IsPreferenceSearchable isPreferenceSearchable,
+                                           final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
         this.preferenceManager = preferenceManager;
-        this.searchableInfoProvider = searchableInfoProvider;
         this.host = host;
-        this.searchableInfoByPreferenceProvider = searchableInfoByPreferenceProvider;
         this.isPreferenceSearchable = isPreferenceSearchable;
+        this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
     }
 
     public SearchablePreferenceScreen transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
@@ -72,22 +65,9 @@ public class SearchablePreferenceTransformer {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         preference.getContext(),
-                        getSearchableInfo(preference));
+                        searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, host));
         copyAttributes(preference, searchablePreference);
         return searchablePreference;
-    }
-
-    // FK-TODO: refactor
-    private Optional<String> getSearchableInfo(final Preference preference) {
-        final Optional<String> searchableInfo = searchableInfoProvider.getSearchableInfo(preference);
-        final Optional<String> searchableInfoOfDialogOfPreference = searchableInfoByPreferenceProvider.getSearchableDialogInfoOfPreference(preference, host);
-        return searchableInfo.isPresent() || searchableInfoOfDialogOfPreference.isPresent() ?
-                Optional.of(join(searchableInfo, searchableInfoOfDialogOfPreference, "\n")) :
-                Optional.empty();
-    }
-
-    private static String join(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
-        return String.join(delimiter, Lists.getPresentElements(List.of(str1, str2)));
     }
 
     private static void copyAttributes(final Preference src, final Preference dst) {

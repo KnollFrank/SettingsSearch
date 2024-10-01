@@ -9,33 +9,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.common.BreadthFirstGraphVisitor;
-import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class PreferenceScreensProvider {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
-    private final SearchableInfoProvider searchableInfoProvider;
-    private final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider;
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
+    private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
 
     public PreferenceScreensProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                      final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                     final SearchableInfoProvider searchableInfoProvider,
-                                     final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider,
                                      final IsPreferenceSearchable isPreferenceSearchable,
-                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
+                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
+                                     final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
-        this.searchableInfoProvider = searchableInfoProvider;
-        this.searchableDialogInfoOfProvider = searchableDialogInfoOfProvider;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
+        this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
     }
 
     public ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
@@ -55,18 +51,18 @@ public class PreferenceScreensProvider {
     // FK-TODO: refactor to GraphTransformer
     private Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> transformPreferences2SearchablePreferences(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         final DefaultDirectedGraph<SearchablePreferenceScreenWithHost, PreferenceEdge> transformedGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
-        final Map<PreferenceScreenWithHost, SearchablePreferenceScreenWithHost> newNodeByOldNode = new HashMap<>();
         final BreadthFirstGraphVisitor<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraphVisitor =
                 new BreadthFirstGraphVisitor<>() {
+
+                    private final Map<PreferenceScreenWithHost, SearchablePreferenceScreenWithHost> newNodeByOldNode = new HashMap<>();
 
                     @Override
                     protected void visitRootNode(final PreferenceScreenWithHost rootNode) {
                         final SearchablePreferenceScreenWithHost searchablePreferenceScreenWithHost =
                                 PreferenceScreenWithHostFactory.createSearchablePreferenceScreenWithHost(
                                         rootNode.host(),
-                                        searchableInfoProvider,
-                                        searchableDialogInfoOfProvider,
-                                        isPreferenceSearchable);
+                                        isPreferenceSearchable,
+                                        searchableInfoAndDialogInfoProvider);
                         newNodeByOldNode.put(rootNode, searchablePreferenceScreenWithHost);
                         transformedGraph.addVertex(searchablePreferenceScreenWithHost);
                     }
@@ -76,9 +72,8 @@ public class PreferenceScreensProvider {
                         final SearchablePreferenceScreenWithHost searchableNode =
                                 PreferenceScreenWithHostFactory.createSearchablePreferenceScreenWithHost(
                                         node.host(),
-                                        searchableInfoProvider,
-                                        searchableDialogInfoOfProvider,
-                                        isPreferenceSearchable);
+                                        isPreferenceSearchable,
+                                        searchableInfoAndDialogInfoProvider);
                         newNodeByOldNode.put(node, searchableNode);
                         transformedGraph.addVertex(searchableNode);
                         transformedGraph.addEdge(

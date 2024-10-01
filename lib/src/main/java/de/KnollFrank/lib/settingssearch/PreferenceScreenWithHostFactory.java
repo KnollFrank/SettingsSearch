@@ -2,24 +2,21 @@ package de.KnollFrank.lib.settingssearch;
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
-import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class PreferenceScreenWithHostFactory {
 
     public static SearchablePreferenceScreenWithHost createSearchablePreferenceScreenWithHost(
             final PreferenceFragmentCompat preferenceFragment,
-            final SearchableInfoProvider searchableInfoProvider,
-            final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider,
-            final IsPreferenceSearchable isPreferenceSearchable) {
+            final IsPreferenceSearchable isPreferenceSearchable,
+            final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
         return new SearchablePreferenceScreenWithHost(
                 createSearchablePreferenceTransformer(
                         preferenceFragment,
-                        searchableInfoProvider,
-                        searchableDialogInfoOfProvider,
-                        isPreferenceSearchable)
+                        isPreferenceSearchable,
+                        searchableInfoAndDialogInfoProvider)
                         .transform2SearchablePreferenceScreen(preferenceFragment.getPreferenceScreen()),
                 preferenceFragment);
     }
@@ -32,14 +29,12 @@ public class PreferenceScreenWithHostFactory {
 
     private static SearchablePreferenceTransformer createSearchablePreferenceTransformer(
             final PreferenceFragmentCompat preferenceFragment,
-            final SearchableInfoProvider searchableInfoProvider,
-            final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider,
-            final IsPreferenceSearchable isPreferenceSearchable) {
+            final IsPreferenceSearchable isPreferenceSearchable,
+            final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
         return new SearchablePreferenceTransformer(
                 preferenceFragment.getPreferenceManager(),
-                searchableInfoProvider,
                 preferenceFragment,
-                searchableDialogInfoOfProvider,
-                isPreferenceSearchable);
+                isPreferenceSearchable,
+                searchableInfoAndDialogInfoProvider);
     }
 }

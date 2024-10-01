@@ -18,6 +18,7 @@ import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.SearchConfigurations;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -147,11 +148,10 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
                                 preferenceConnected2PreferenceFragmentProvider,
-                                searchableInfoProvider,
-                                searchableDialogInfoOfProvider,
                                 // FK-TODO: extreact class or function:
                                 (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference),
-                                preferenceScreenGraphAvailableListener),
+                                preferenceScreenGraphAvailableListener,
+                                new SearchableInfoAndDialogInfoProvider(searchableInfoProvider, searchableDialogInfoOfProvider)),
                         new PreferenceScreensMerger(getContext()),
                         searchableInfoAttribute,
                         true);

@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProvider;
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -479,19 +480,23 @@ public class PreferenceSearcherTest {
                                         fragmentFactory,
                                         fragmentInitializer)),
                         fragmentActivity);
+        final de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider searchableInfoProvider = new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider());
+        final SearchableDialogInfoOfProvider searchableDialogInfoOfProvider =
+                new SearchableDialogInfoOfProvider(
+                        fragmentInitializer,
+                        preferenceDialogAndSearchableInfoProvider);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         fragments,
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
                                 preferenceConnected2PreferenceFragmentProvider,
-                                new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
-                                new SearchableDialogInfoOfProvider(
-                                        fragmentInitializer,
-                                        preferenceDialogAndSearchableInfoProvider),
                                 (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference),
                                 preferenceScreenGraph -> {
-                                }),
+                                },
+                                new SearchableInfoAndDialogInfoProvider(
+                                        searchableInfoProvider,
+                                        searchableDialogInfoOfProvider)),
                         new PreferenceScreensMerger(fragmentActivity),
                         new SearchableInfoAttribute(),
                         false);

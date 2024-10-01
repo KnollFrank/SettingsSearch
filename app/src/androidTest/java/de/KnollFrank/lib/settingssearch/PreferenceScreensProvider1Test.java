@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -37,11 +38,12 @@ public class PreferenceScreensProvider1Test {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
                                 (preference, hostOfPreference) -> Optional.empty(),
-                                preference -> Optional.empty(),
-                                (preference, hostOfPreference) -> Optional.empty(),
                                 (preference, hostOfPreference) -> preference.isVisible(),
                                 preferenceScreenGraph -> {
-                                });
+                                },
+                                new SearchableInfoAndDialogInfoProvider(
+                                        preference -> Optional.empty(),
+                                        (preference, hostOfPreference) -> Optional.empty()));
                 final PreferenceFragmentCompat root =
                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                                 Fragment1ConnectedToFragment2AndFragment4.class.getName(),
@@ -75,11 +77,12 @@ public class PreferenceScreensProvider1Test {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
                                 (preference, hostOfPreference) -> Optional.empty(),
-                                preference -> Optional.empty(),
-                                (preference, hostOfPreference) -> Optional.empty(),
                                 (preference, hostOfPreference) -> preference.isVisible(),
                                 preferenceScreenGraph -> {
-                                });
+                                },
+                                new SearchableInfoAndDialogInfoProvider(
+                                        preference -> Optional.empty(),
+                                        (preference, hostOfPreference) -> Optional.empty()));
                 final PreferenceFragmentCompat root =
                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                                 Fragment1ConnectedToFragment2AndFragment4.class.getName(),
