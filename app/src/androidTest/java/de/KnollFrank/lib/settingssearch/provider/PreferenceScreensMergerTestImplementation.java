@@ -66,7 +66,8 @@ class PreferenceScreensMergerTestImplementation {
                         preferenceFragment.getName(),
                         Optional.empty(),
                         preference -> Optional.empty(),
-                        (preference, hostOfPreference) -> Optional.empty())
+                        (preference, hostOfPreference) -> Optional.empty(),
+                        (preference, hostOfPreference) -> preference.isVisible())
                 .get()
                 .preferenceScreen();
     }

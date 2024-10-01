@@ -108,8 +108,9 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         }),
-                (preference, host) -> !keyOfPreference.equals(preference.getKey()),
+                (preference, host) -> !(preference instanceof CheckBoxPreference && keyOfPreference.equals(preference.getKey())),
                 keyword,
+                // FK-FIXME: Achtung: in der folgenden Methode ist preference leider eine SearchablePreference und nicht mehr das Original.
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
@@ -487,9 +488,9 @@ public class PreferenceSearcherTest {
                                 new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
                                 new SearchableDialogInfoOfProvider(
                                         fragmentInitializer,
-                                        preferenceDialogAndSearchableInfoProvider)),
+                                        preferenceDialogAndSearchableInfoProvider),
+                                (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference)),
                         new PreferenceScreensMerger(fragmentActivity),
-                        isPreferenceSearchable,
                         new SearchableInfoAttribute(),
                         preferenceScreenGraph -> {
                         },

@@ -40,7 +40,8 @@ public class PreferenceScreensProvider2Test {
                         new PreferenceScreenWithHostProvider(fragments),
                         (preference, hostOfPreference) -> Optional.empty(),
                         preference -> Optional.empty(),
-                        (preference, hostOfPreference) -> Optional.empty());
+                        (preference, hostOfPreference) -> Optional.empty(),
+                        (preference, hostOfPreference) -> true);
         final PreferenceFragmentCompat root =
                 (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                         FragmentConnectedToNonPreferenceFragment.class.getName(),

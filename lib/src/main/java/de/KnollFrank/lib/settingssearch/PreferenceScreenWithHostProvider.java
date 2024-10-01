@@ -1,8 +1,10 @@
 package de.KnollFrank.lib.settingssearch;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
+import java.util.function.BiPredicate;
 
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
@@ -20,13 +22,15 @@ public class PreferenceScreenWithHostProvider {
             final String fragment,
             final Optional<PreferenceWithHost> src,
             final SearchableInfoProvider searchableInfoProvider,
-            final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider) {
+            final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider,
+            final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter) {
         return fragments.instantiateAndInitializeFragment(fragment, src) instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(
-                        PreferenceScreenWithHost.fromPreferenceFragment(
+                        PreferenceScreenWithHostFactory.createSearchablePreferenceScreenWithHost(
                                 preferenceFragment,
                                 searchableInfoProvider,
-                                searchableInfoByPreferenceProvider)) :
+                                searchableInfoByPreferenceProvider,
+                                preferenceFilter)) :
                 Optional.empty();
     }
 }

@@ -24,7 +24,6 @@ public class MergedPreferenceScreenProvider {
     private final Fragments fragments;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
-    private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final boolean cacheMergedPreferenceScreens;
@@ -34,14 +33,12 @@ public class MergedPreferenceScreenProvider {
     public MergedPreferenceScreenProvider(final Fragments fragments,
                                           final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
-                                          final IsPreferenceSearchable isPreferenceSearchable,
                                           final SearchableInfoAttribute searchableInfoAttribute,
                                           final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                           final boolean cacheMergedPreferenceScreens) {
         this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
-        this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
@@ -85,28 +82,8 @@ public class MergedPreferenceScreenProvider {
 
     private ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
         final ConnectedPreferenceScreens screens = preferenceScreensProvider.getConnectedPreferenceScreens(root);
-        removeInvisiblePreferences(screens.getConnectedPreferenceScreens());
-        removeNonSearchablePreferences(screens.getConnectedPreferenceScreens());
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(screens.preferenceScreenGraph);
         return screens;
-    }
-
-    private static void removeInvisiblePreferences(final Set<PreferenceScreenWithHost> screens) {
-        PreferencesRemover.removePreferences(screens, MergedPreferenceScreenProvider::isInvisible);
-    }
-
-    private static boolean isInvisible(final Preference preference,
-                                       final PreferenceFragmentCompat host) {
-        return !preference.isVisible();
-    }
-
-    private void removeNonSearchablePreferences(final Set<PreferenceScreenWithHost> screens) {
-        PreferencesRemover.removePreferences(screens, this::isNonSearchable);
-    }
-
-    private boolean isNonSearchable(final Preference preference,
-                                    final PreferenceFragmentCompat host) {
-        return !isPreferenceSearchable.isPreferenceOfHostSearchable(preference, host);
     }
 
     private PreferenceScreensMerger.PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {

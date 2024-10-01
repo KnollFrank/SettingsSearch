@@ -148,9 +148,9 @@ public class SearchPreferenceFragment extends Fragment {
                                 new PreferenceScreenWithHostProvider(fragments),
                                 preferenceConnected2PreferenceFragmentProvider,
                                 searchableInfoProvider,
-                                searchableDialogInfoOfProvider),
+                                searchableDialogInfoOfProvider,
+                                (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference)),
                         new PreferenceScreensMerger(getContext()),
-                        isPreferenceSearchable,
                         searchableInfoAttribute,
                         preferenceScreenGraphAvailableListener,
                         true);

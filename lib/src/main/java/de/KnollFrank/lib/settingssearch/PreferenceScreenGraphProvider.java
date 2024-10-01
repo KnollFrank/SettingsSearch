@@ -8,6 +8,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -24,15 +25,18 @@ class PreferenceScreenGraphProvider {
     private final SearchableInfoProvider searchableInfoProvider;
     private final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider;
     private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
+    private final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                          final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                          final SearchableInfoProvider searchableInfoProvider,
-                                         final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider) {
+                                         final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider,
+                                         final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.searchableInfoProvider = searchableInfoProvider;
         this.searchableInfoByPreferenceProvider = searchableDialogInfoOfProvider;
+        this.preferenceFilter = preferenceFilter;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
@@ -79,7 +83,8 @@ class PreferenceScreenGraphProvider {
                                                 fragmentConnectedToPreference,
                                                 Optional.of(new PreferenceWithHost(preference, host)),
                                                 searchableInfoProvider,
-                                                searchableInfoByPreferenceProvider));
+                                                searchableInfoByPreferenceProvider,
+                                                preferenceFilter));
     }
 
     private Optional<String> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {

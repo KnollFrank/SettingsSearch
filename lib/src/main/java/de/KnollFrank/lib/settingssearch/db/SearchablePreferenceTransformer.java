@@ -8,6 +8,8 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
@@ -21,15 +23,18 @@ public class SearchablePreferenceTransformer {
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceFragmentCompat host;
     private final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider;
+    private final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter;
 
     public SearchablePreferenceTransformer(final PreferenceManager preferenceManager,
                                            final SearchableInfoProvider searchableInfoProvider,
                                            final PreferenceFragmentCompat host,
-                                           final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider) {
+                                           final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider,
+                                           final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter) {
         this.preferenceManager = preferenceManager;
         this.searchableInfoProvider = searchableInfoProvider;
         this.host = host;
         this.searchableInfoByPreferenceProvider = searchableInfoByPreferenceProvider;
+        this.preferenceFilter = preferenceFilter;
     }
 
     public PreferenceScreen transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
@@ -41,13 +46,21 @@ public class SearchablePreferenceTransformer {
 
     // FK-TODO: rename method because it doesn't copy, it transforms?
     private void copyPreferences(final PreferenceGroup src, final PreferenceGroup dst) {
-        for (final Preference child : Preferences.getDirectChildren(src)) {
+        for (final Preference child : getFilteredDirectChildren(src)) {
             final SearchablePreference searchablePreference = createSearchablePreferenceWithAttributes(child);
             dst.addPreference(searchablePreference);
             if (child instanceof final PreferenceGroup childPreferenceGroup) {
                 copyPreferences(childPreferenceGroup, searchablePreference);
             }
         }
+    }
+
+    private List<Preference> getFilteredDirectChildren(final PreferenceGroup src) {
+        return Preferences
+                .getDirectChildren(src)
+                .stream()
+                .filter(preference -> preferenceFilter.test(preference, host))
+                .collect(Collectors.toList());
     }
 
     private SearchablePreference createSearchablePreferenceWithAttributes(final Preference preference) {
