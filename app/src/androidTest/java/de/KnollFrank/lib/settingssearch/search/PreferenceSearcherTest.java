@@ -490,7 +490,7 @@ public class PreferenceSearcherTest {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
                                 preferenceConnected2PreferenceFragmentProvider,
-                                (preference, hostOfPreference) -> preference.isVisible() && isPreferenceSearchable.isPreferenceOfHostSearchable(preference, hostOfPreference),
+                                new IsPreferenceVisibleAndSearchable(isPreferenceSearchable),
                                 preferenceScreenGraph -> {
                                 },
                                 new SearchableInfoAndDialogInfoProvider(
