@@ -88,7 +88,7 @@ public class PreferenceScreensProvider {
                                         newNodeByOldNode
                                                 .get(parentNode)
                                                 .searchablePreferenceScreen()
-                                                .newPreferenceByOldPreference()
+                                                .searchablePreferenceByPreference()
                                                 .get(preferenceScreenGraph.getEdge(parentNode, node).preference)));
                     }
                 };
