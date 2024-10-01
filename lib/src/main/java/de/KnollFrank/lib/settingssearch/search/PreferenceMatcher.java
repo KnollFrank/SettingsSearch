@@ -30,6 +30,15 @@ class PreferenceMatcher {
                 getSearchableInfoPreferenceMatch(haystack, needle, searchableInfoGetter));
     }
 
+    public static boolean matches(final String haystack, final String needle) {
+        final List<PreferenceMatch> preferenceMatches =
+                getPreferenceMatches(
+                        Optional.of(haystack),
+                        needle,
+                        indexRange -> null);
+        return !preferenceMatches.isEmpty();
+    }
+
     private static List<PreferenceMatch> getTitlePreferenceMatches(final Preference haystack,
                                                                    final String needle) {
         return getPreferenceMatches(
@@ -60,7 +69,7 @@ class PreferenceMatcher {
                 indexRange -> new PreferenceMatch(haystack, Type.SEARCHABLE_INFO, indexRange));
     }
 
-    static List<PreferenceMatch> getPreferenceMatches(
+    private static List<PreferenceMatch> getPreferenceMatches(
             final Optional<String> haystack,
             final String needle,
             final Function<IndexRange, PreferenceMatch> createPreferenceMatch) {

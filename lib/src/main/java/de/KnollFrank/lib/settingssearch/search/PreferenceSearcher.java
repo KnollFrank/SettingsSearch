@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import static de.KnollFrank.lib.settingssearch.search.Summaries4MatchingSearchableInfosAdapter.showSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo;
+import static de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +28,7 @@ class PreferenceSearcher {
 
     private void prepareSearch(final String needle) {
         mergedPreferenceScreen.resetPreferenceScreen();
-        showSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
+        setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 mergedPreferenceScreen.preferenceScreen,
                 searchableInfoAttribute,
                 needle);
