@@ -27,7 +27,9 @@ class PreferenceScreenGraphProvider {
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
     }
 
+    // FK-TODO: der Rückgabetyp darf kein allgemeiner Graph sein, sondern muß ein GERICHTETER Graph sein, da Preferences mit Verweisen auf PreferenceScreens eine Richtung haben.
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
+        // FK-FIXME: DefaultDirectedGraph könnte die falsche Klasse sein. Teste ein PreferenceScreen P1 mit zwei Preferences, die beide auf denselben PreferenceScreen P2 verweisen.
         preferenceScreenGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
         buildPreferenceScreenGraph(root);
         return preferenceScreenGraph;
