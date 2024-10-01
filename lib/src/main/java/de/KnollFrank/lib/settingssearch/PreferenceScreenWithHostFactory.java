@@ -7,6 +7,7 @@ import java.util.function.BiPredicate;
 
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class PreferenceScreenWithHostFactory {
@@ -15,13 +16,13 @@ public class PreferenceScreenWithHostFactory {
             final PreferenceFragmentCompat preferenceFragment,
             final SearchableInfoProvider searchableInfoProvider,
             final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider,
-            final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter) {
+            final IsPreferenceSearchable isPreferenceSearchable) {
         return new PreferenceScreenWithHost(
                 createSearchablePreferenceTransformer(
                         preferenceFragment,
                         searchableInfoProvider,
                         searchableDialogInfoOfProvider,
-                        preferenceFilter)
+                        isPreferenceSearchable)
                         .transform2SearchablePreferenceScreen(preferenceFragment.getPreferenceScreen()),
                 preferenceFragment);
     }
@@ -30,12 +31,12 @@ public class PreferenceScreenWithHostFactory {
             final PreferenceFragmentCompat preferenceFragment,
             final SearchableInfoProvider searchableInfoProvider,
             final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider,
-            final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter) {
+            final IsPreferenceSearchable isPreferenceSearchable) {
         return new SearchablePreferenceTransformer(
                 preferenceFragment.getPreferenceManager(),
                 searchableInfoProvider,
                 preferenceFragment,
                 searchableDialogInfoOfProvider,
-                preferenceFilter);
+                isPreferenceSearchable);
     }
 }

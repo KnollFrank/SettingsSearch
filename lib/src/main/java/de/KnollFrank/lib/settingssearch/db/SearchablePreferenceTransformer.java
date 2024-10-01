@@ -8,13 +8,13 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchablePreferenceTransformer {
@@ -23,18 +23,18 @@ public class SearchablePreferenceTransformer {
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceFragmentCompat host;
     private final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider;
-    private final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter;
+    private final IsPreferenceSearchable isPreferenceSearchable;
 
     public SearchablePreferenceTransformer(final PreferenceManager preferenceManager,
                                            final SearchableInfoProvider searchableInfoProvider,
                                            final PreferenceFragmentCompat host,
                                            final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider,
-                                           final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter) {
+                                           final IsPreferenceSearchable isPreferenceSearchable) {
         this.preferenceManager = preferenceManager;
         this.searchableInfoProvider = searchableInfoProvider;
         this.host = host;
         this.searchableInfoByPreferenceProvider = searchableInfoByPreferenceProvider;
-        this.preferenceFilter = preferenceFilter;
+        this.isPreferenceSearchable = isPreferenceSearchable;
     }
 
     public PreferenceScreen transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
@@ -59,7 +59,7 @@ public class SearchablePreferenceTransformer {
         return Preferences
                 .getDirectChildren(src)
                 .stream()
-                .filter(preference -> preferenceFilter.test(preference, host))
+                .filter(preference -> isPreferenceSearchable.isPreferenceOfHostSearchable(preference, host))
                 .collect(Collectors.toList());
     }
 

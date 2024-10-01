@@ -8,6 +8,7 @@ import java.util.function.BiPredicate;
 
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class PreferenceScreenWithHostProvider {
@@ -23,14 +24,14 @@ public class PreferenceScreenWithHostProvider {
             final Optional<PreferenceWithHost> src,
             final SearchableInfoProvider searchableInfoProvider,
             final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider,
-            final BiPredicate<Preference, PreferenceFragmentCompat> preferenceFilter) {
+            final IsPreferenceSearchable isPreferenceSearchable) {
         return fragments.instantiateAndInitializeFragment(fragment, src) instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(
                         PreferenceScreenWithHostFactory.createSearchablePreferenceScreenWithHost(
                                 preferenceFragment,
                                 searchableInfoProvider,
                                 searchableInfoByPreferenceProvider,
-                                preferenceFilter)) :
+                                isPreferenceSearchable)) :
                 Optional.empty();
     }
 }
