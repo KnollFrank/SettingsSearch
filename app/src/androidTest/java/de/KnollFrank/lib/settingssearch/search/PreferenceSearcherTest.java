@@ -111,7 +111,6 @@ public class PreferenceSearcherTest {
                         }),
                 (preference, host) -> !(preference instanceof CheckBoxPreference && keyOfPreference.equals(preference.getKey())),
                 keyword,
-                // FK-FIXME: Achtung: in der folgenden Methode ist preference leider eine SearchablePreference und nicht mehr das Original.
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
