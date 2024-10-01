@@ -69,7 +69,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                         new PreferenceDialogAndSearchableInfoProvider() {
 
                             @Override
-                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final PreferenceFragmentCompat hostOfPreference, final Preference preference) {
+                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
                                 return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                         Optional.of(
                                                 new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(

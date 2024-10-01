@@ -20,7 +20,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final FragmentManager fragmentManager;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
-    private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (hostOfPreference, preference) -> Optional.empty();
+    private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private IsPreferenceSearchable isPreferenceSearchable = (preference, host) -> true;
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };

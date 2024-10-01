@@ -105,7 +105,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchableInfoAttribute(),
                 preferencePath -> true,
                 new DefaultFragmentFactory(),
-                (hostOfPreference, preference) -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceScreenGraph -> {
                 },
                 preferenceFragmentCompat -> {

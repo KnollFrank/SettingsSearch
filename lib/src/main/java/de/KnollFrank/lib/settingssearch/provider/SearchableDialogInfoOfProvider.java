@@ -21,7 +21,7 @@ public class SearchableDialogInfoOfProvider implements ISearchableDialogInfoOfPr
     @Override
     public Optional<String> getSearchableDialogInfoOfPreference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
         return preferenceDialogAndSearchableInfoProvider
-                .getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(hostOfPreference, preference)
+                .getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(preference, hostOfPreference)
                 .map(this::getSearchableDialogInfoOfPreference);
     }
 
