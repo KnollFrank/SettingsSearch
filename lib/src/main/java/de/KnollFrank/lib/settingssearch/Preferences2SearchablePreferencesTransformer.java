@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch;
 
+import androidx.preference.Preference;
+
 import org.jgrapht.Graph;
 
 import de.KnollFrank.lib.settingssearch.common.GraphTransformer;
@@ -40,14 +42,15 @@ class Preferences2SearchablePreferencesTransformer {
 
             @Override
             public PreferenceEdge transformEdge(final PreferenceEdge edge, final SearchablePreferenceScreenWithHost transformedParentNode) {
-                return new PreferenceEdge(getPreference(edge, transformedParentNode));
+                return new PreferenceEdge(getSearchablePreference(edge.preference, transformedParentNode));
             }
 
-            private SearchablePreference getPreference(final PreferenceEdge edge, final SearchablePreferenceScreenWithHost transformedParentNode) {
+            private SearchablePreference getSearchablePreference(final Preference preference,
+                                                                 final SearchablePreferenceScreenWithHost transformedParentNode) {
                 return transformedParentNode
                         .searchablePreferenceScreen()
                         .searchablePreferenceByPreference()
-                        .get(edge.preference);
+                        .get(preference);
             }
         };
     }
