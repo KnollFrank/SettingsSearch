@@ -39,6 +39,7 @@ public class SearchablePreferenceTransformer {
         return searchablePreferenceScreen;
     }
 
+    // FK-TODO: rename method because it doesn't copy, it transforms?
     private void copyPreferences(final PreferenceGroup src, final PreferenceGroup dst) {
         for (final Preference child : Preferences.getDirectChildren(src)) {
             final SearchablePreference searchablePreference = createSearchablePreferenceWithAttributes(child);
@@ -58,6 +59,7 @@ public class SearchablePreferenceTransformer {
         return searchablePreference;
     }
 
+    // FK-TODO: refactor
     private Optional<String> getSearchableInfo(final Preference preference) {
         final Optional<String> searchableInfo = searchableInfoProvider.getSearchableInfo(preference);
         final Optional<String> searchableInfoOfDialogOfPreference = searchableInfoByPreferenceProvider.getSearchableDialogInfoOfPreference(preference, host);
@@ -79,5 +81,6 @@ public class SearchablePreferenceTransformer {
         dst.setWidgetLayoutResource(src.getWidgetLayoutResource());
         dst.setFragment(src.getFragment());
         dst.getExtras().putAll(src.getExtras());
+        dst.setVisible(src.isVisible());
     }
 }
