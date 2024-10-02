@@ -40,6 +40,8 @@ dependencies {
     implementation 'org.threeten:threetenbp:1.6.9'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core
     implementation 'org.jgrapht:jgrapht-core:1.5.2'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.11.0'
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
 }
 
