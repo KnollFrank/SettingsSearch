@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.ConnectedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenWithMapAndHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -77,14 +77,14 @@ public class MergedPreferenceScreenProvider {
                 searchableInfoAttribute);
     }
 
-    private PreferenceScreensMerger.PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final Set<SearchablePreferenceScreenWithMapAndHost> screens) {
+    private PreferenceScreensMerger.PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final Set<PreferenceScreenWithHost> screens) {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
     }
 
-    private static List<PreferenceScreen> getPreferenceScreens(final List<SearchablePreferenceScreenWithMapAndHost> screens) {
+    private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHost> screens) {
         return screens
                 .stream()
-                .map(searchablePreferenceScreenWithHost -> searchablePreferenceScreenWithHost.searchablePreferenceScreenWithMap().searchablePreferenceScreen())
+                .map(PreferenceScreenWithHost::preferenceScreen)
                 .collect(Collectors.toList());
     }
 }

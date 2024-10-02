@@ -8,7 +8,7 @@ import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 
 public class PreferenceScreenWithHostFactory {
 
-    public static SearchablePreferenceScreenWithMapAndHost createSearchablePreferenceScreenWithHost(
+    static SearchablePreferenceScreenWithMapAndHost createSearchablePreferenceScreenWithHost(
             final PreferenceFragmentCompat preferenceFragment,
             final IsPreferenceSearchable isPreferenceSearchable,
             final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
