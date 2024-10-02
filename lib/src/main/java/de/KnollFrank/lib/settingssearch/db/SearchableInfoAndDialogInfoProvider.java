@@ -22,14 +22,19 @@ public class SearchableInfoAndDialogInfoProvider {
     }
 
     public Optional<String> getSearchableInfo(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-        final Optional<String> searchableInfo = searchableInfoProvider.getSearchableInfo(preference);
-        final Optional<String> searchableInfoOfDialogOfPreference = searchableInfoByPreferenceProvider.getSearchableDialogInfoOfPreference(preference, hostOfPreference);
-        return searchableInfo.isPresent() || searchableInfoOfDialogOfPreference.isPresent() ?
-                Optional.of(join(searchableInfo, searchableInfoOfDialogOfPreference, "\n")) :
+        return join(
+                searchableInfoProvider.getSearchableInfo(preference),
+                searchableInfoByPreferenceProvider.getSearchableDialogInfoOfPreference(preference, hostOfPreference),
+                "\n");
+    }
+
+    private static Optional<String> join(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
+        return str1.isPresent() || str2.isPresent() ?
+                Optional.of(join2Str(str1, str2, delimiter)) :
                 Optional.empty();
     }
 
-    private static String join(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
+    private static String join2Str(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
         return String.join(delimiter, Lists.getPresentElements(List.of(str1, str2)));
     }
 }
