@@ -12,12 +12,14 @@ public class PreferenceScreenWithHostFactory {
             final PreferenceFragmentCompat preferenceFragment,
             final IsPreferenceSearchable isPreferenceSearchable,
             final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
-        return new SearchablePreferenceScreenWithHost(
-                createSearchablePreferenceTransformer(
+        final SearchablePreferenceTransformer transformer =
+                new SearchablePreferenceTransformer(
+                        preferenceFragment.getPreferenceManager(),
                         preferenceFragment,
                         isPreferenceSearchable,
-                        searchableInfoAndDialogInfoProvider)
-                        .transform2SearchablePreferenceScreen(preferenceFragment.getPreferenceScreen()),
+                        searchableInfoAndDialogInfoProvider);
+        return new SearchablePreferenceScreenWithHost(
+                transformer.transform2SearchablePreferenceScreen(preferenceFragment.getPreferenceScreen()),
                 preferenceFragment);
     }
 
@@ -25,16 +27,5 @@ public class PreferenceScreenWithHostFactory {
         return new PreferenceScreenWithHost(
                 preferenceFragment.getPreferenceScreen(),
                 preferenceFragment);
-    }
-
-    private static SearchablePreferenceTransformer createSearchablePreferenceTransformer(
-            final PreferenceFragmentCompat preferenceFragment,
-            final IsPreferenceSearchable isPreferenceSearchable,
-            final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
-        return new SearchablePreferenceTransformer(
-                preferenceFragment.getPreferenceManager(),
-                preferenceFragment,
-                isPreferenceSearchable,
-                searchableInfoAndDialogInfoProvider);
     }
 }
