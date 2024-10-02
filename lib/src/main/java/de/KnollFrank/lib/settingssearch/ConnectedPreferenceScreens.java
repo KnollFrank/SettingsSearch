@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 public record ConnectedPreferenceScreens(
-        Set<PreferenceScreenWithHost> connectedPreferenceScreens,
+        Set<PreferenceScreenWithHost> connectedSearchablePreferenceScreens,
         Map<Preference, PreferencePath> preferencePathByPreference) {
 
     public static ConnectedPreferenceScreens fromSearchablePreferenceScreenGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> searchablePreferenceScreenGraph) {
