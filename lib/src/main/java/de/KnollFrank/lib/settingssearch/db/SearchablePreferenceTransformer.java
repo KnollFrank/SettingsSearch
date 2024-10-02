@@ -32,12 +32,12 @@ public class SearchablePreferenceTransformer {
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
     }
 
-    public SearchablePreferenceScreen transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
+    public SearchablePreferenceScreenWithMap transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
         final PreferenceScreen searchablePreferenceScreen = preferenceManager.createPreferenceScreen(preferenceManager.getContext());
         copyAttributes(preferenceScreen, searchablePreferenceScreen);
         final ImmutableMap.Builder<Preference, SearchablePreference> searchablePreferenceByPreferenceBuilder = ImmutableMap.builder();
         copyPreferences(preferenceScreen, searchablePreferenceScreen, searchablePreferenceByPreferenceBuilder);
-        return new SearchablePreferenceScreen(searchablePreferenceScreen, searchablePreferenceByPreferenceBuilder.buildOrThrow());
+        return new SearchablePreferenceScreenWithMap(searchablePreferenceScreen, searchablePreferenceByPreferenceBuilder.buildOrThrow());
     }
 
     private void copyPreferences(final PreferenceGroup src,

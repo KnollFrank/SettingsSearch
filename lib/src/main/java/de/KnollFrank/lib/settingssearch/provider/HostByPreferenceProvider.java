@@ -8,28 +8,28 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenWithMapAndHost;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 
 class HostByPreferenceProvider {
 
     public static Map<Preference, PreferenceFragmentCompat> getHostByPreference(
-            final Collection<SearchablePreferenceScreenWithHost> searchablePreferenceScreenWithHostList) {
+            final Collection<SearchablePreferenceScreenWithMapAndHost> searchablePreferenceScreenWithMapAndHostList) {
         return Maps.merge(
-                searchablePreferenceScreenWithHostList
+                searchablePreferenceScreenWithMapAndHostList
                         .stream()
                         .map(HostByPreferenceProvider::getHostByPreference)
                         .collect(Collectors.toList()));
     }
 
-    private static Map<Preference, PreferenceFragmentCompat> getHostByPreference(final SearchablePreferenceScreenWithHost searchablePreferenceScreenWithHost) {
+    private static Map<Preference, PreferenceFragmentCompat> getHostByPreference(final SearchablePreferenceScreenWithMapAndHost searchablePreferenceScreenWithMapAndHost) {
         return Preferences
-                .getAllChildren(searchablePreferenceScreenWithHost.searchablePreferenceScreen().searchablePreferenceScreen())
+                .getAllChildren(searchablePreferenceScreenWithMapAndHost.searchablePreferenceScreenWithMap().searchablePreferenceScreen())
                 .stream()
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                preference -> searchablePreferenceScreenWithHost.host()));
+                                preference -> searchablePreferenceScreenWithMapAndHost.host()));
     }
 }

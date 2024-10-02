@@ -17,32 +17,32 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 class PreferencePathByPreferenceProvider {
 
     public static Map<Preference, PreferencePath> getPreferencePathByPreference(
-            final Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+            final Graph<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> preferenceScreenGraph) {
         return getPreferencePathByPreference(getPreferencePathByPreferenceScreen(preferenceScreenGraph));
     }
 
-    private static Map<SearchablePreferenceScreenWithHost, PreferencePath> getPreferencePathByPreferenceScreen(final Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        final Map<SearchablePreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen = new HashMap<>();
-        final BreadthFirstGraphVisitor<SearchablePreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraphVisitor =
+    private static Map<SearchablePreferenceScreenWithMapAndHost, PreferencePath> getPreferencePathByPreferenceScreen(final Graph<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> preferenceScreenGraph) {
+        final Map<SearchablePreferenceScreenWithMapAndHost, PreferencePath> preferencePathByPreferenceScreen = new HashMap<>();
+        final BreadthFirstGraphVisitor<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> preferenceScreenGraphVisitor =
                 new BreadthFirstGraphVisitor<>() {
 
                     @Override
-                    protected void visitRootNode(final SearchablePreferenceScreenWithHost preferenceScreen) {
+                    protected void visitRootNode(final SearchablePreferenceScreenWithMapAndHost preferenceScreen) {
                         preferencePathByPreferenceScreen.put(
                                 preferenceScreen,
                                 new PreferencePath(Collections.emptyList()));
                     }
 
                     @Override
-                    protected void visitInnerNode(final SearchablePreferenceScreenWithHost preferenceScreen,
-                                                  final SearchablePreferenceScreenWithHost parentPreferenceScreen) {
+                    protected void visitInnerNode(final SearchablePreferenceScreenWithMapAndHost preferenceScreen,
+                                                  final SearchablePreferenceScreenWithMapAndHost parentPreferenceScreen) {
                         preferencePathByPreferenceScreen.put(
                                 preferenceScreen,
                                 getPreferencePathOfPreferenceScreen(preferenceScreen, parentPreferenceScreen));
                     }
 
-                    private PreferencePath getPreferencePathOfPreferenceScreen(final SearchablePreferenceScreenWithHost preferenceScreen,
-                                                                               final SearchablePreferenceScreenWithHost parentPreferenceScreen) {
+                    private PreferencePath getPreferencePathOfPreferenceScreen(final SearchablePreferenceScreenWithMapAndHost preferenceScreen,
+                                                                               final SearchablePreferenceScreenWithMapAndHost parentPreferenceScreen) {
                         final PreferencePath parentPreferencePath = preferencePathByPreferenceScreen.get(parentPreferenceScreen);
                         final Preference preference =
                                 preferenceScreenGraph
@@ -56,12 +56,12 @@ class PreferencePathByPreferenceProvider {
     }
 
     private static Map<Preference, PreferencePath> getPreferencePathByPreference(
-            final Map<SearchablePreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen) {
+            final Map<SearchablePreferenceScreenWithMapAndHost, PreferencePath> preferencePathByPreferenceScreen) {
         final Builder<Preference, PreferencePath> preferencePathByPreferenceBuilder = ImmutableMap.builder();
         preferencePathByPreferenceScreen.forEach(
                 (preferenceScreen, preferencePath) ->
                         Preferences
-                                .getAllChildren(preferenceScreen.searchablePreferenceScreen().searchablePreferenceScreen())
+                                .getAllChildren(preferenceScreen.searchablePreferenceScreenWithMap().searchablePreferenceScreen())
                                 .forEach(
                                         preference ->
                                                 preferencePathByPreferenceBuilder.put(

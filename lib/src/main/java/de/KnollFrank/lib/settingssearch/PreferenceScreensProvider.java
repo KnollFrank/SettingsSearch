@@ -33,7 +33,7 @@ public class PreferenceScreensProvider {
         return new ConnectedPreferenceScreens(getPreferenceScreenGraph(root));
     }
 
-    private Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
+    private Graph<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
         final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph =
                 new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
                         .getPreferenceScreenGraph(

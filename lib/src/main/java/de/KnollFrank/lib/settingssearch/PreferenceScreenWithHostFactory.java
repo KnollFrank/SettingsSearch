@@ -8,7 +8,7 @@ import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 
 public class PreferenceScreenWithHostFactory {
 
-    public static SearchablePreferenceScreenWithHost createSearchablePreferenceScreenWithHost(
+    public static SearchablePreferenceScreenWithMapAndHost createSearchablePreferenceScreenWithHost(
             final PreferenceFragmentCompat preferenceFragment,
             final IsPreferenceSearchable isPreferenceSearchable,
             final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
@@ -18,7 +18,7 @@ public class PreferenceScreenWithHostFactory {
                         preferenceFragment,
                         isPreferenceSearchable,
                         searchableInfoAndDialogInfoProvider);
-        return new SearchablePreferenceScreenWithHost(
+        return new SearchablePreferenceScreenWithMapAndHost(
                 transformer.transform2SearchablePreferenceScreen(preferenceFragment.getPreferenceScreen()),
                 preferenceFragment);
     }

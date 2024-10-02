@@ -21,7 +21,7 @@ class Preferences2SearchablePreferencesTransformer {
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
     }
 
-    public Graph<SearchablePreferenceScreenWithHost, PreferenceEdge> transformPreferences2SearchablePreferences(
+    public Graph<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> transformPreferences2SearchablePreferences(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return GraphTransformer.transform(
                 preferenceScreenGraph,
@@ -29,11 +29,11 @@ class Preferences2SearchablePreferencesTransformer {
                 createGraphTransformer());
     }
 
-    private IGraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithHost, PreferenceEdge> createGraphTransformer() {
+    private IGraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> createGraphTransformer() {
         return new IGraphTransformer<>() {
 
             @Override
-            public SearchablePreferenceScreenWithHost transformNode(final PreferenceScreenWithHost node) {
+            public SearchablePreferenceScreenWithMapAndHost transformNode(final PreferenceScreenWithHost node) {
                 return PreferenceScreenWithHostFactory.createSearchablePreferenceScreenWithHost(
                         node.host(),
                         isPreferenceSearchable,
@@ -41,14 +41,14 @@ class Preferences2SearchablePreferencesTransformer {
             }
 
             @Override
-            public PreferenceEdge transformEdge(final PreferenceEdge edge, final SearchablePreferenceScreenWithHost transformedParentNode) {
+            public PreferenceEdge transformEdge(final PreferenceEdge edge, final SearchablePreferenceScreenWithMapAndHost transformedParentNode) {
                 return new PreferenceEdge(getSearchablePreference(edge.preference, transformedParentNode));
             }
 
             private SearchablePreference getSearchablePreference(final Preference preference,
-                                                                 final SearchablePreferenceScreenWithHost transformedParentNode) {
+                                                                 final SearchablePreferenceScreenWithMapAndHost transformedParentNode) {
                 return transformedParentNode
-                        .searchablePreferenceScreen()
+                        .searchablePreferenceScreenWithMap()
                         .searchablePreferenceByPreference()
                         .get(preference);
             }

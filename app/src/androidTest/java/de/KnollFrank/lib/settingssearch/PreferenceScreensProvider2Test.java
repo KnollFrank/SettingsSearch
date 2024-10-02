@@ -52,7 +52,7 @@ public class PreferenceScreensProvider2Test {
                         Optional.empty());
 
         // When
-        final Set<SearchablePreferenceScreenWithHost> preferenceScreens =
+        final Set<SearchablePreferenceScreenWithMapAndHost> preferenceScreens =
                 preferenceScreensProvider
                         .getConnectedPreferenceScreens(root)
                         .getConnectedPreferenceScreens();
