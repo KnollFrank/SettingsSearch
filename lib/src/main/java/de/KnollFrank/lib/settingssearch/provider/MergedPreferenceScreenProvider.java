@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.ConnectedPreferenceScreens;
+import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
@@ -62,7 +62,7 @@ public class MergedPreferenceScreenProvider {
         return getMergedPreferenceScreen(preferenceScreensProvider.getConnectedPreferenceScreens(root));
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(final ConnectedPreferenceScreens screens) {
+    private MergedPreferenceScreen getMergedPreferenceScreen(final ConnectedSearchablePreferenceScreens screens) {
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, PreferenceFragmentCompat> hostByPreference =

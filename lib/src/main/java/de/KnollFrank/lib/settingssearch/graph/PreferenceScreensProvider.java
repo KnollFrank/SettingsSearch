@@ -4,7 +4,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
 
-import de.KnollFrank.lib.settingssearch.ConnectedPreferenceScreens;
+import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostFactory;
@@ -34,8 +34,8 @@ public class PreferenceScreensProvider {
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
     }
 
-    public ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
-        return ConnectedPreferenceScreens.fromSearchablePreferenceScreenGraph(getSearchablePreferenceScreenGraph(root));
+    public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
+        return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(getSearchablePreferenceScreenGraph(root));
     }
 
     private Graph<PreferenceScreenWithHost, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {

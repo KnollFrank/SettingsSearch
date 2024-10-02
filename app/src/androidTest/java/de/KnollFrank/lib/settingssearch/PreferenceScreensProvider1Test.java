@@ -90,22 +90,22 @@ public class PreferenceScreensProvider1Test {
                                 Optional.empty());
 
                 // When
-                final ConnectedPreferenceScreens connectedPreferenceScreens =
+                final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens =
                         preferenceScreensProvider.getConnectedPreferenceScreens(root);
 
                 // Then
                 final Preference preferenceOfFragment2PointingToFragment3 =
                         getPreference(
-                                connectedPreferenceScreens,
+                                connectedSearchablePreferenceScreens,
                                 Fragment2ConnectedToFragment3.class,
                                 Fragment3.class);
                 final Preference preferenceOfFragment1PointingToFragment2 =
                         getPreference(
-                                connectedPreferenceScreens,
+                                connectedSearchablePreferenceScreens,
                                 Fragment1ConnectedToFragment2AndFragment4.class,
                                 Fragment2ConnectedToFragment3.class);
                 assertThat(
-                        connectedPreferenceScreens.preferencePathByPreference().get(preferenceOfFragment2PointingToFragment3),
+                        connectedSearchablePreferenceScreens.preferencePathByPreference().get(preferenceOfFragment2PointingToFragment3),
                         is(
                                 new PreferencePath(
                                         ImmutableList.of(
@@ -116,11 +116,11 @@ public class PreferenceScreensProvider1Test {
     }
 
     private static Preference getPreference(
-            final ConnectedPreferenceScreens connectedPreferenceScreens,
+            final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens,
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
             final Class<? extends PreferenceFragmentCompat> fragmentPointedTo) {
         return getPreference(
-                connectedPreferenceScreens.connectedSearchablePreferenceScreens(),
+                connectedSearchablePreferenceScreens.connectedSearchablePreferenceScreens(),
                 (_hostOfPreference, preference) ->
                         hostOfPreference.equals(_hostOfPreference.getClass()) &&
                                 fragmentPointedTo.getName().equals(preference.getFragment()));
