@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class ConnectedPreferenceScreens {
 
-    public final Graph<PreferenceScreenWithHost, PreferenceEdge> searchablePreferenceScreenGraph;
+    private final Graph<PreferenceScreenWithHost, PreferenceEdge> searchablePreferenceScreenGraph;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
 
     public ConnectedPreferenceScreens(final Graph<PreferenceScreenWithHost, PreferenceEdge> searchablePreferenceScreenGraph) {
