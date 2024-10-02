@@ -35,10 +35,10 @@ public class PreferenceScreensProvider {
     }
 
     public ConnectedPreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
-        return new ConnectedPreferenceScreens(getPreferenceScreenGraph(root));
+        return ConnectedPreferenceScreens.fromSearchablePreferenceScreenGraph(getSearchablePreferenceScreenGraph(root));
     }
 
-    private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
+    private Graph<PreferenceScreenWithHost, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {
         final var preferenceScreenGraph = createPreferenceScreenGraph(root);
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
         final var searchablePreferenceScreenGraph = transformPreferences2SearchablePreferences(preferenceScreenGraph);

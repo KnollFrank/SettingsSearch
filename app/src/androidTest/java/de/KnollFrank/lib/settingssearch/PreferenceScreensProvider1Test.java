@@ -54,7 +54,7 @@ public class PreferenceScreensProvider1Test {
                 final Set<PreferenceScreenWithHost> preferenceScreens =
                         preferenceScreensProvider
                                 .getConnectedPreferenceScreens(root)
-                                .getConnectedPreferenceScreens();
+                                .connectedPreferenceScreens();
 
                 // Then
                 assertThat(
@@ -105,7 +105,7 @@ public class PreferenceScreensProvider1Test {
                                 Fragment1ConnectedToFragment2AndFragment4.class,
                                 Fragment2ConnectedToFragment3.class);
                 assertThat(
-                        connectedPreferenceScreens.preferencePathByPreference.get(preferenceOfFragment2PointingToFragment3),
+                        connectedPreferenceScreens.preferencePathByPreference().get(preferenceOfFragment2PointingToFragment3),
                         is(
                                 new PreferencePath(
                                         ImmutableList.of(
@@ -120,7 +120,7 @@ public class PreferenceScreensProvider1Test {
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
             final Class<? extends PreferenceFragmentCompat> fragmentPointedTo) {
         return getPreference(
-                connectedPreferenceScreens.getConnectedPreferenceScreens(),
+                connectedPreferenceScreens.connectedPreferenceScreens(),
                 (_hostOfPreference, preference) ->
                         hostOfPreference.equals(_hostOfPreference.getClass()) &&
                                 fragmentPointedTo.getName().equals(preference.getFragment()));

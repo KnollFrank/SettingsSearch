@@ -7,17 +7,13 @@ import org.jgrapht.Graph;
 import java.util.Map;
 import java.util.Set;
 
-public class ConnectedPreferenceScreens {
+public record ConnectedPreferenceScreens(
+        Set<PreferenceScreenWithHost> connectedPreferenceScreens,
+        Map<Preference, PreferencePath> preferencePathByPreference) {
 
-    private final Graph<PreferenceScreenWithHost, PreferenceEdge> searchablePreferenceScreenGraph;
-    public final Map<Preference, PreferencePath> preferencePathByPreference;
-
-    public ConnectedPreferenceScreens(final Graph<PreferenceScreenWithHost, PreferenceEdge> searchablePreferenceScreenGraph) {
-        this.searchablePreferenceScreenGraph = searchablePreferenceScreenGraph;
-        this.preferencePathByPreference = PreferencePathByPreferenceProvider.getPreferencePathByPreference(searchablePreferenceScreenGraph);
-    }
-
-    public Set<PreferenceScreenWithHost> getConnectedPreferenceScreens() {
-        return searchablePreferenceScreenGraph.vertexSet();
+    public static ConnectedPreferenceScreens fromSearchablePreferenceScreenGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> searchablePreferenceScreenGraph) {
+        return new ConnectedPreferenceScreens(
+                searchablePreferenceScreenGraph.vertexSet(),
+                PreferencePathByPreferenceProvider.getPreferencePathByPreference(searchablePreferenceScreenGraph));
     }
 }

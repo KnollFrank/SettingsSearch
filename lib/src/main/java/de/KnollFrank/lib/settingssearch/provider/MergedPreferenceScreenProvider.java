@@ -66,14 +66,14 @@ public class MergedPreferenceScreenProvider {
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, PreferenceFragmentCompat> hostByPreference =
-                HostByPreferenceProvider.getHostByPreference(screens.getConnectedPreferenceScreens());
+                HostByPreferenceProvider.getHostByPreference(screens.connectedPreferenceScreens());
         // B:
-        final PreferenceScreensMerger.PreferenceScreenAndIsNonClickable preferenceScreenAndIsNonClickable = destructivelyMergeScreens(screens.getConnectedPreferenceScreens());
+        final PreferenceScreensMerger.PreferenceScreenAndIsNonClickable preferenceScreenAndIsNonClickable = destructivelyMergeScreens(screens.connectedPreferenceScreens());
         return new MergedPreferenceScreen(
                 preferenceScreenAndIsNonClickable.preferenceScreen(),
                 preferenceScreenAndIsNonClickable.isNonClickable(),
                 hostByPreference,
-                screens.preferencePathByPreference,
+                screens.preferencePathByPreference(),
                 searchableInfoAttribute);
     }
 
