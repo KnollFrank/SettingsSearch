@@ -50,7 +50,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        setPreferenceScreen(mergedPreferenceScreen.preferenceScreen);
+        setPreferenceScreen(mergedPreferenceScreen.searchablePreferenceScreen);
     }
 
     @NonNull
@@ -67,7 +67,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setMergedPreferenceScreen(final MergedPreferenceScreen mergedPreferenceScreen) {
-        preparePreferenceScreenForSearch(mergedPreferenceScreen.preferenceScreen);
+        preparePreferenceScreenForSearch(mergedPreferenceScreen.searchablePreferenceScreen);
         this.mergedPreferenceScreen = mergedPreferenceScreen;
     }
 

@@ -29,7 +29,7 @@ class PreferenceSearcher {
     private void prepareSearch(final String needle) {
         mergedPreferenceScreen.resetPreferenceScreen();
         setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
-                mergedPreferenceScreen.preferenceScreen,
+                mergedPreferenceScreen.searchablePreferenceScreen,
                 searchableInfoAttribute,
                 needle);
     }
@@ -37,7 +37,7 @@ class PreferenceSearcher {
     private List<PreferenceMatch> getPreferenceMatches(final String needle) {
         return Lists.concat(
                 Preferences
-                        .getAllPreferences(mergedPreferenceScreen.preferenceScreen)
+                        .getAllPreferences(mergedPreferenceScreen.searchablePreferenceScreen)
                         .stream()
                         .map(preference ->
                                 PreferenceMatcher.getPreferenceMatches(

@@ -15,22 +15,22 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreen {
 
-    public final PreferenceScreen preferenceScreen;
+    public final PreferenceScreen searchablePreferenceScreen;
     public final Set<PreferenceCategory> isNonClickable;
     private final Map<Preference, PreferenceFragmentCompat> hostByPreference;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferenceScreenResetter preferenceScreenResetter;
 
-    public MergedPreferenceScreen(final PreferenceScreen preferenceScreen,
+    public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
                                   final Set<PreferenceCategory> isNonClickable,
                                   final Map<Preference, PreferenceFragmentCompat> hostByPreference,
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute) {
-        this.preferenceScreen = preferenceScreen;
+        this.searchablePreferenceScreen = searchablePreferenceScreen;
         this.isNonClickable = isNonClickable;
         this.hostByPreference = hostByPreference;
         this.preferencePathByPreference = preferencePathByPreference;
-        this.preferenceScreenResetter = new PreferenceScreenResetter(preferenceScreen, searchableInfoAttribute);
+        this.preferenceScreenResetter = new PreferenceScreenResetter(searchablePreferenceScreen, searchableInfoAttribute);
     }
 
     public Optional<? extends PreferenceFragmentCompat> findHost(final Preference preference) {
