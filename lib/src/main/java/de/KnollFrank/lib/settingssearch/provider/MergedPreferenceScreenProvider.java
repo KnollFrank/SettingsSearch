@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.ConnectedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
-import de.KnollFrank.lib.settingssearch.PreferenceScreensProvider;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 

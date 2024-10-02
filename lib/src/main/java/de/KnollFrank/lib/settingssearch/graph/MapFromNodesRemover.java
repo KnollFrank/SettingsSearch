@@ -1,7 +1,9 @@
-package de.KnollFrank.lib.settingssearch;
+package de.KnollFrank.lib.settingssearch.graph;
 
 import org.jgrapht.Graph;
 
+import de.KnollFrank.lib.settingssearch.PreferenceEdge;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.IGraphTransformer;
 

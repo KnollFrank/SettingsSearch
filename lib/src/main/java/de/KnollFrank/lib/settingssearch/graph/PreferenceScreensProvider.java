@@ -1,9 +1,14 @@
-package de.KnollFrank.lib.settingssearch;
+package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
 
+import de.KnollFrank.lib.settingssearch.ConnectedPreferenceScreens;
+import de.KnollFrank.lib.settingssearch.PreferenceEdge;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostFactory;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -34,16 +39,23 @@ public class PreferenceScreensProvider {
     }
 
     private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceFragmentCompat root) {
-        final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph =
-                new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
-                        .getPreferenceScreenGraph(
-                                PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(
-                                        root));
+        final var preferenceScreenGraph = createPreferenceScreenGraph(root);
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
-        return MapFromNodesRemover.removeMapFromNodes(
-                new Preferences2SearchablePreferencesTransformer(
-                        isPreferenceSearchable,
-                        searchableInfoAndDialogInfoProvider)
-                        .transformPreferences2SearchablePreferences(preferenceScreenGraph));
+        final var searchablePreferenceScreenGraph = transformPreferences2SearchablePreferences(preferenceScreenGraph);
+        return MapFromNodesRemover.removeMapFromNodes(searchablePreferenceScreenGraph);
+    }
+
+    private Graph<PreferenceScreenWithHost, PreferenceEdge> createPreferenceScreenGraph(final PreferenceFragmentCompat root) {
+        return new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
+                .getPreferenceScreenGraph(
+                        PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(
+                                root));
+    }
+
+    private Graph<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> transformPreferences2SearchablePreferences(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+        return new Preferences2SearchablePreferencesTransformer(
+                isPreferenceSearchable,
+                searchableInfoAndDialogInfoProvider)
+                .transformPreferences2SearchablePreferences(preferenceScreenGraph);
     }
 }

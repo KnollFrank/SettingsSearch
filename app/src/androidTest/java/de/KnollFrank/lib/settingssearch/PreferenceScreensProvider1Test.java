@@ -24,6 +24,7 @@ import java.util.function.BiPredicate;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 public class PreferenceScreensProvider1Test {

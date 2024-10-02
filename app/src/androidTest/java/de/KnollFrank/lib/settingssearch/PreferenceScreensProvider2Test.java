@@ -22,6 +22,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 public class PreferenceScreensProvider2Test {

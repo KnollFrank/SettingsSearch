@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch;
+package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.PreferenceFragmentCompat;
 
