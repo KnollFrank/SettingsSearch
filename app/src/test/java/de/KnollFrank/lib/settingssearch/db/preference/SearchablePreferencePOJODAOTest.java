@@ -17,15 +17,15 @@ public class SearchablePreferencePOJODAOTest {
     @Test
     public void shouldPersistAndLoadSearchablePreferencePOJO() {
         // Given
-        final SearchablePreferencePOJO someSearchablePreferencePOJO = createSomeSearchablePreferencePOJO();
+        final SearchablePreferencePOJO searchablePreferencePOJO = createSomeSearchablePreferencePOJO();
         final OutputStream outputStream = new ByteArrayOutputStream();
 
         // When
-        SearchablePreferencePOJODAO.persist(someSearchablePreferencePOJO, outputStream);
-        final SearchablePreferencePOJO searchablePreferenceActual = SearchablePreferencePOJODAO.load(convert(outputStream));
+        SearchablePreferencePOJODAO.persist(searchablePreferencePOJO, outputStream);
+        final SearchablePreferencePOJO searchablePreferencePOJOActual = SearchablePreferencePOJODAO.load(convert(outputStream));
 
         // Then
-        assertThat(searchablePreferenceActual, is(someSearchablePreferencePOJO));
+        assertThat(searchablePreferencePOJOActual, is(searchablePreferencePOJO));
     }
 
     private static SearchablePreferencePOJO createSomeSearchablePreferencePOJO() {
