@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference;
 
-import java.io.Serializable;
 import java.util.List;
 
 public record SearchablePreferencePOJO(
@@ -13,5 +12,5 @@ public record SearchablePreferencePOJO(
         String fragment,
         boolean visible,
         String searchableInfo,
-        List<SearchablePreferencePOJO> children) implements Serializable {
+        List<SearchablePreferencePOJO> children) {
 }
