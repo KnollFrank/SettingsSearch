@@ -40,4 +40,12 @@ public class Lists {
         final T lastElement = ts.get(ts.size() - 1);
         return Optional.of(lastElement);
     }
+
+    public static <T> T head(final List<T> ts) {
+        return ts.get(0);
+    }
+
+    public static <T> List<T> tail(final List<T> ts) {
+        return ts.subList(1, ts.size());
+    }
 }
