@@ -21,15 +21,8 @@ public class POJOConverter {
                 // FK-FIXME: replace 0 with real value
                 0,
                 searchablePreference.getLayoutResource(),
-                // FK-TODO: DRY the following two arguments of SearchablePreferencePOJO
-                Optional
-                        .ofNullable(searchablePreference.getSummary())
-                        .map(CharSequence::toString)
-                        .orElse(null),
-                Optional
-                        .ofNullable(searchablePreference.getTitle())
-                        .map(CharSequence::toString)
-                        .orElse(null),
+                toString(searchablePreference.getSummary()),
+                toString(searchablePreference.getTitle()),
                 searchablePreference.getWidgetLayoutResource(),
                 searchablePreference.getFragment(),
                 searchablePreference.isVisible(),
@@ -42,6 +35,13 @@ public class POJOConverter {
                 .stream()
                 .map(POJOConverter::convert2POJO)
                 .collect(Collectors.toList());
+    }
+
+    private static String toString(final CharSequence charSequence) {
+        return Optional
+                .ofNullable(charSequence)
+                .map(CharSequence::toString)
+                .orElse(null);
     }
 
     private static List<SearchablePreference> getChildren(final PreferenceGroup preferenceGroup) {
