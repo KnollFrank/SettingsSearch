@@ -31,8 +31,8 @@ public class SearchablePreferencePOJODAOTest {
     public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO() {
         return new SearchablePreferencePOJO(
                 "some key",
-                androidx.preference.R.drawable.ic_arrow_down_24dp,
-                androidx.preference.R.layout.preference,
+                4711,
+                4712,
                 "some summary",
                 "some title",
                 4713,
@@ -42,11 +42,11 @@ public class SearchablePreferencePOJODAOTest {
                 List.of(
                         new SearchablePreferencePOJO(
                                 "some key 2",
-                                androidx.preference.R.drawable.ic_arrow_down_24dp,
-                                androidx.preference.R.layout.preference,
+                                4714,
+                                4715,
                                 "some summary 2",
                                 "some title 2",
-                                4714,
+                                4716,
                                 "some fragment 2",
                                 true,
                                 "some searchableInfo 2",
