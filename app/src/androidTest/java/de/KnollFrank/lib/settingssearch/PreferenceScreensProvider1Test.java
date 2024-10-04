@@ -51,7 +51,7 @@ public class PreferenceScreensProvider1Test {
                                 Optional.empty());
 
                 // When
-                final Set<PreferenceScreenWithHost> preferenceScreens =
+                final Set<PreferenceScreenWithHostClass> preferenceScreens =
                         preferenceScreensProvider
                                 .getConnectedPreferenceScreens(root)
                                 .connectedSearchablePreferenceScreens();
@@ -122,13 +122,13 @@ public class PreferenceScreensProvider1Test {
         return getPreference(
                 connectedSearchablePreferenceScreens.connectedSearchablePreferenceScreens(),
                 (_hostOfPreference, preference) ->
-                        hostOfPreference.equals(_hostOfPreference.getClass()) &&
+                        hostOfPreference.equals(_hostOfPreference) &&
                                 fragmentPointedTo.getName().equals(preference.getFragment()));
     }
 
     private static Preference getPreference(
-            final Set<PreferenceScreenWithHost> preferenceScreenWithHostSet,
-            final BiPredicate<PreferenceFragmentCompat, Preference> predicate) {
+            final Set<PreferenceScreenWithHostClass> preferenceScreenWithHostSet,
+            final BiPredicate<Class<? extends PreferenceFragmentCompat>, Preference> predicate) {
         return preferenceScreenWithHostSet
                 .stream()
                 .flatMap(

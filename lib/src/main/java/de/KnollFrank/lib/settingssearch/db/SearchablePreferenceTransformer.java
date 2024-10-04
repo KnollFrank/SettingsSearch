@@ -78,7 +78,7 @@ public class SearchablePreferenceTransformer {
         dst.setTitle(src.getTitle());
         dst.setWidgetLayoutResource(src.getWidgetLayoutResource());
         dst.setFragment(src.getFragment());
-        // FK-TODO: is this necessary? dst.getExtras().putAll(src.getExtras());
+        dst.getExtras().putAll(src.getExtras());
         dst.setVisible(src.isVisible());
     }
 }

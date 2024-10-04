@@ -26,12 +26,12 @@ class PreferenceScreensProviderTestHelper {
         fragment.setPreferenceScreen(screen);
     }
 
-    public static PreferenceScreenWithHost getPreferenceScreenByName(
-            final Set<PreferenceScreenWithHost> preferenceScreens,
+    public static PreferenceScreenWithHostClass getPreferenceScreenByName(
+            final Set<PreferenceScreenWithHostClass> preferenceScreens,
             final String name) {
         return preferenceScreens
                 .stream()
-                .filter(preferenceScreenWithHost -> name.equals(preferenceScreenWithHost.preferenceScreen().toString()))
+                .filter(preferenceScreenWithHostClass -> name.equals(preferenceScreenWithHostClass.preferenceScreen().toString()))
                 .findFirst()
                 .get();
     }

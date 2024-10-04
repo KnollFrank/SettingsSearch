@@ -17,32 +17,33 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 class PreferencePathByPreferenceProvider {
 
     public static Map<Preference, PreferencePath> getPreferencePathByPreference(
-            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+            // FK-TODO: PreferenceScreenWithHostClass ist zu grpß, es reicht, wenn der hier übergebene Graph als Nodetyp PreferenceScreen hat.
+            final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph) {
         return getPreferencePathByPreference(getPreferencePathByPreferenceScreen(preferenceScreenGraph));
     }
 
-    private static Map<PreferenceScreenWithHost, PreferencePath> getPreferencePathByPreferenceScreen(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        final Map<PreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen = new HashMap<>();
-        final BreadthFirstGraphVisitor<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraphVisitor =
+    private static Map<PreferenceScreenWithHostClass, PreferencePath> getPreferencePathByPreferenceScreen(final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph) {
+        final Map<PreferenceScreenWithHostClass, PreferencePath> preferencePathByPreferenceScreen = new HashMap<>();
+        final BreadthFirstGraphVisitor<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraphVisitor =
                 new BreadthFirstGraphVisitor<>() {
 
                     @Override
-                    protected void visitRootNode(final PreferenceScreenWithHost preferenceScreen) {
+                    protected void visitRootNode(final PreferenceScreenWithHostClass preferenceScreen) {
                         preferencePathByPreferenceScreen.put(
                                 preferenceScreen,
                                 new PreferencePath(Collections.emptyList()));
                     }
 
                     @Override
-                    protected void visitInnerNode(final PreferenceScreenWithHost preferenceScreen,
-                                                  final PreferenceScreenWithHost parentPreferenceScreen) {
+                    protected void visitInnerNode(final PreferenceScreenWithHostClass preferenceScreen,
+                                                  final PreferenceScreenWithHostClass parentPreferenceScreen) {
                         preferencePathByPreferenceScreen.put(
                                 preferenceScreen,
                                 getPreferencePathOfPreferenceScreen(preferenceScreen, parentPreferenceScreen));
                     }
 
-                    private PreferencePath getPreferencePathOfPreferenceScreen(final PreferenceScreenWithHost preferenceScreen,
-                                                                               final PreferenceScreenWithHost parentPreferenceScreen) {
+                    private PreferencePath getPreferencePathOfPreferenceScreen(final PreferenceScreenWithHostClass preferenceScreen,
+                                                                               final PreferenceScreenWithHostClass parentPreferenceScreen) {
                         final PreferencePath parentPreferencePath = preferencePathByPreferenceScreen.get(parentPreferenceScreen);
                         final Preference preference =
                                 preferenceScreenGraph
@@ -56,7 +57,7 @@ class PreferencePathByPreferenceProvider {
     }
 
     private static Map<Preference, PreferencePath> getPreferencePathByPreference(
-            final Map<PreferenceScreenWithHost, PreferencePath> preferencePathByPreferenceScreen) {
+            final Map<PreferenceScreenWithHostClass, PreferencePath> preferencePathByPreferenceScreen) {
         final Builder<Preference, PreferencePath> preferencePathByPreferenceBuilder = ImmutableMap.builder();
         preferencePathByPreferenceScreen.forEach(
                 (preferenceScreen, preferencePath) ->

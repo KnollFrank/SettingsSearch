@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import static de.KnollFrank.lib.settingssearch.graph.Host2HostClassTransformer.transformHost2HostClass;
+
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
@@ -7,6 +9,7 @@ import org.jgrapht.Graph;
 import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -35,14 +38,17 @@ public class PreferenceScreensProvider {
     }
 
     public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
-        return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(getSearchablePreferenceScreenGraph(root));
+        return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(
+                getSearchablePreferenceScreenGraph(root));
     }
 
-    private Graph<PreferenceScreenWithHost, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {
+    private Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {
         final var preferenceScreenGraph = createPreferenceScreenGraph(root);
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
-        final var searchablePreferenceScreenGraph = transformPreferences2SearchablePreferences(preferenceScreenGraph);
-        return MapFromNodesRemover.removeMapFromNodes(searchablePreferenceScreenGraph);
+        // FK-TODO: transformHost2HostClass() und removeMapFromNodes() in einem einzelnen Schritt durchführen
+        return transformHost2HostClass(
+                MapFromNodesRemover.removeMapFromNodes(
+                        transformPreferences2SearchablePreferences(preferenceScreenGraph)));
     }
 
     private Graph<PreferenceScreenWithHost, PreferenceEdge> createPreferenceScreenGraph(final PreferenceFragmentCompat root) {

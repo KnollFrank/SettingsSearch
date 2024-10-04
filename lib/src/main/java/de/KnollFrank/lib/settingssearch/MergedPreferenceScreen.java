@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
@@ -17,24 +17,27 @@ public class MergedPreferenceScreen {
 
     public final PreferenceScreen searchablePreferenceScreen;
     public final Set<PreferenceCategory> isNonClickable;
-    private final Map<Preference, PreferenceFragmentCompat> hostByPreference;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferenceScreenResetter preferenceScreenResetter;
+    private final PreferencePathNavigator preferencePathNavigator;
 
     public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
                                   final Set<PreferenceCategory> isNonClickable,
-                                  final Map<Preference, PreferenceFragmentCompat> hostByPreference,
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
-                                  final SearchableInfoAttribute searchableInfoAttribute) {
+                                  final SearchableInfoAttribute searchableInfoAttribute,
+                                  final PreferencePathNavigator preferencePathNavigator) {
         this.searchablePreferenceScreen = searchablePreferenceScreen;
         this.isNonClickable = isNonClickable;
-        this.hostByPreference = hostByPreference;
         this.preferencePathByPreference = preferencePathByPreference;
+        this.preferencePathNavigator = preferencePathNavigator;
         this.preferenceScreenResetter = new PreferenceScreenResetter(searchablePreferenceScreen, searchableInfoAttribute);
     }
 
+    // FK-TODO: ist das nicht immer ein Wert != Optional.empty()?
     public Optional<? extends PreferenceFragmentCompat> findHost(final Preference preference) {
-        return Maps.get(hostByPreference, preference);
+        return Optional.of(
+                preferencePathNavigator.navigatePreferencePath(
+                        preferencePathByPreference.get(preference)));
     }
 
     public void resetPreferenceScreen() {

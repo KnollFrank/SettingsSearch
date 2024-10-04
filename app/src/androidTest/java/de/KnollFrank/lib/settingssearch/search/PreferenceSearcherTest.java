@@ -472,12 +472,13 @@ public class PreferenceSearcherTest {
                 new DefaultFragmentInitializer(
                         fragmentActivity.getSupportFragmentManager(),
                         TestActivity.FRAGMENT_CONTAINER_VIEW);
+        final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
+                new FragmentFactoryAndInitializer(
+                        fragmentFactory,
+                        fragmentInitializer);
         final Fragments fragments =
                 new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(
-                                new FragmentFactoryAndInitializer(
-                                        fragmentFactory,
-                                        fragmentInitializer)),
+                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         fragmentActivity);
         final de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider searchableInfoProvider = new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider());
         final SearchableDialogInfoOfProvider searchableDialogInfoOfProvider =
@@ -498,7 +499,9 @@ public class PreferenceSearcherTest {
                                         searchableDialogInfoOfProvider)),
                         new PreferenceScreensMerger(fragmentActivity),
                         new SearchableInfoAttribute(),
-                        false);
+                        false,
+                        fragmentFactoryAndInitializer,
+                        fragmentActivity);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName());
     }
 

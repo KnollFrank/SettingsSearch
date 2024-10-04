@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.SearchView;
 
@@ -131,13 +132,15 @@ public class SearchPreferenceFragment extends Fragment {
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {
         final DefaultFragmentInitializer defaultFragmentInitializer = new DefaultFragmentInitializer(getChildFragmentManager(), R.id.dummyFragmentContainerView);
+        final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
+                new FragmentFactoryAndInitializer(
+                        fragmentFactory,
+                        defaultFragmentInitializer);
+        final Context context = requireActivity();
         final Fragments fragments =
                 new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(
-                                new FragmentFactoryAndInitializer(
-                                        fragmentFactory,
-                                        defaultFragmentInitializer)),
-                        requireActivity());
+                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
+                        context);
         final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider =
                 new SearchableDialogInfoOfProvider(
                         defaultFragmentInitializer,
@@ -153,7 +156,9 @@ public class SearchPreferenceFragment extends Fragment {
                                 new SearchableInfoAndDialogInfoProvider(searchableInfoProvider, searchableDialogInfoOfProvider)),
                         new PreferenceScreensMerger(getContext()),
                         searchableInfoAttribute,
-                        true);
+                        true,
+                        fragmentFactoryAndInitializer,
+                        context);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment().getName());
     }
 

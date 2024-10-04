@@ -35,7 +35,7 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
                 .fragmentManager
                 .beginTransaction()
                 .add(this.containerViewId, fragment)
-                .commitNow();
+                .commitNowAllowingStateLoss();
     }
 
     private void remove(final Fragment fragment) {
@@ -43,6 +43,6 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
                 .fragmentManager
                 .beginTransaction()
                 .remove(fragment)
-                .commitNow();
+                .commitNowAllowingStateLoss();
     }
 }

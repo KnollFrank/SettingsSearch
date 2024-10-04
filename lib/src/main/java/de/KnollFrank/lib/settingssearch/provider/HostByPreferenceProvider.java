@@ -8,14 +8,14 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 
 class HostByPreferenceProvider {
 
-    public static Map<Preference, PreferenceFragmentCompat> getHostByPreference(
-            final Collection<PreferenceScreenWithHost> preferenceScreenWithHostList) {
+    public static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
+            final Collection<PreferenceScreenWithHostClass> preferenceScreenWithHostList) {
         return Maps.merge(
                 preferenceScreenWithHostList
                         .stream()
@@ -23,7 +23,7 @@ class HostByPreferenceProvider {
                         .collect(Collectors.toList()));
     }
 
-    private static Map<Preference, PreferenceFragmentCompat> getHostByPreference(final PreferenceScreenWithHost preferenceScreenWithHost) {
+    private static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(final PreferenceScreenWithHostClass preferenceScreenWithHost) {
         return Preferences
                 .getAllChildren(preferenceScreenWithHost.preferenceScreen())
                 .stream()
