@@ -28,33 +28,41 @@ public class PreferencePathNavigator {
     }
 
     public PreferenceFragmentCompat navigatePreferencePath(final PreferencePath preferencePath) {
-        return navigatePreferences(
-                preferencePath.preferences(),
-                Optional.empty());
+        return navigatePreferences(preferencePath.preferences(), null, null);
     }
 
     private PreferenceFragmentCompat navigatePreferences(final List<Preference> preferences,
-                                                         final Optional<PreferenceWithHost> src) {
+                                                         final PreferenceWithHost src,
+                                                         final PreferenceFragmentCompat uninitializedSrc) {
         if (preferences.isEmpty()) {
-            return src.get().host();
+            return uninitializedSrc;
         }
         final Preference preference = Lists.head(preferences);
         return navigatePreferences(
                 Lists.tail(preferences),
-                Optional.of(
-                        new PreferenceWithHost(
-                                preference,
-                                instantiateAndInitializePreferenceFragment(
-                                        hostByPreference.get(preference),
-                                        src))));
+                new PreferenceWithHost(
+                        preference,
+                        instantiateAndInitializePreferenceFragment(
+                                hostByPreference.get(preference),
+                                src)),
+                instantiateFragment(hostByPreference.get(preference), src));
     }
 
     private PreferenceFragmentCompat instantiateAndInitializePreferenceFragment(
             final Class<? extends PreferenceFragmentCompat> preferenceFragment,
-            final Optional<PreferenceWithHost> src) {
+            final PreferenceWithHost src) {
         return (PreferenceFragmentCompat) fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
                 preferenceFragment.getName(),
-                src,
+                Optional.ofNullable(src),
+                context);
+    }
+
+    private PreferenceFragmentCompat instantiateFragment(
+            final Class<? extends PreferenceFragmentCompat> preferenceFragment,
+            final PreferenceWithHost src) {
+        return (PreferenceFragmentCompat) fragmentFactoryAndInitializer.instantiateFragment(
+                preferenceFragment.getName(),
+                Optional.ofNullable(src),
                 context);
     }
 }

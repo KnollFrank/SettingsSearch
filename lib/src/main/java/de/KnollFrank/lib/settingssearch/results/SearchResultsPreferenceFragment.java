@@ -84,10 +84,9 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
-        this
-                .mergedPreferenceScreen
-                .findHost(preference)
-                .ifPresent(host -> showPreferenceScreenAndHighlightPreference(host, preference));
+        showPreferenceScreenAndHighlightPreference(
+                mergedPreferenceScreen.getHost(preference),
+                preference);
     }
 
     private void showPreferenceScreenAndHighlightPreference(

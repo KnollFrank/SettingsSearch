@@ -6,7 +6,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
@@ -33,11 +32,8 @@ public class MergedPreferenceScreen {
         this.preferenceScreenResetter = new PreferenceScreenResetter(searchablePreferenceScreen, searchableInfoAttribute);
     }
 
-    // FK-TODO: ist das nicht immer ein Wert != Optional.empty()?
-    public Optional<? extends PreferenceFragmentCompat> findHost(final Preference preference) {
-        return Optional.of(
-                preferencePathNavigator.navigatePreferencePath(
-                        preferencePathByPreference.get(preference)));
+    public PreferenceFragmentCompat getHost(final Preference preference) {
+        return preferencePathNavigator.navigatePreferencePath(preferencePathByPreference.get(preference));
     }
 
     public void resetPreferenceScreen() {
