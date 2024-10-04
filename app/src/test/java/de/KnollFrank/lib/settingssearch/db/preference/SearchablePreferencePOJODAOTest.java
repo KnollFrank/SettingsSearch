@@ -17,18 +17,18 @@ public class SearchablePreferencePOJODAOTest {
     @Test
     public void shouldPersistAndLoadSearchablePreferencePOJO() {
         // Given
-        final SearchablePreferencePOJO searchablePreferencePOJO = createSomeSearchablePreferencePOJO();
+        final SearchablePreferencePOJO pojo = createSomeSearchablePreferencePOJO();
         final OutputStream outputStream = new ByteArrayOutputStream();
 
         // When
-        SearchablePreferencePOJODAO.persist(searchablePreferencePOJO, outputStream);
-        final SearchablePreferencePOJO searchablePreferencePOJOActual = SearchablePreferencePOJODAO.load(convert(outputStream));
+        SearchablePreferencePOJODAO.persist(pojo, outputStream);
+        final SearchablePreferencePOJO pojoActual = SearchablePreferencePOJODAO.load(convert(outputStream));
 
         // Then
-        assertThat(searchablePreferencePOJOActual, is(searchablePreferencePOJO));
+        assertThat(pojoActual, is(pojo));
     }
 
-    private static SearchablePreferencePOJO createSomeSearchablePreferencePOJO() {
+    public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO() {
         return new SearchablePreferencePOJO(
                 "some key",
                 androidx.preference.R.drawable.ic_arrow_down_24dp,
@@ -53,7 +53,7 @@ public class SearchablePreferencePOJODAOTest {
                                 List.of())));
     }
 
-    private static InputStream convert(final OutputStream outputStream) {
+    public static InputStream convert(final OutputStream outputStream) {
         return new ByteArrayInputStream(outputStream.toString().getBytes(StandardCharsets.UTF_8));
     }
 }

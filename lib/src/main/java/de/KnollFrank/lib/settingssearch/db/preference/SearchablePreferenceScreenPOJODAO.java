@@ -5,13 +5,13 @@ import com.google.gson.reflect.TypeToken;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class SearchablePreferencePOJODAO {
+public class SearchablePreferenceScreenPOJODAO {
 
-    public static void persist(final SearchablePreferencePOJO source, final OutputStream sink) {
+    public static void persist(final SearchablePreferenceScreenPOJO source, final OutputStream sink) {
         JsonDAO.persist(source, sink);
     }
 
-    public static SearchablePreferencePOJO load(final InputStream source) {
+    public static SearchablePreferenceScreenPOJO load(final InputStream source) {
         return JsonDAO.load(
                 source,
                 new TypeToken<>() {
