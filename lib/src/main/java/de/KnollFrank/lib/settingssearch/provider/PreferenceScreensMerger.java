@@ -38,15 +38,15 @@ public class PreferenceScreensMerger {
     private void destructivelyMergeSrcIntoDst(final PreferenceScreen src,
                                               final PreferenceScreen dst,
                                               final ImmutableSet.Builder<PreferenceCategory> isNonClickable) {
-        final PreferenceCategory screenCategory = createScreenCategory(src);
+        final PreferenceCategory screenCategory = createScreenCategory(src.toString());
         dst.addPreference(screenCategory);
         moveChildrenOfSrc2Dst(src, screenCategory);
         isNonClickable.add(screenCategory);
     }
 
-    private PreferenceCategory createScreenCategory(final PreferenceScreen screen) {
+    private PreferenceCategory createScreenCategory(final String title) {
         final PreferenceCategory screenCategory = new PreferenceCategory(context);
-        screenCategory.setTitle(screen.toString());
+        screenCategory.setTitle(title);
         return screenCategory;
     }
 
