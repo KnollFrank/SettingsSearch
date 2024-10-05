@@ -9,9 +9,9 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
 
-public record PreferencePath(List<Preference> preferences) {
+public record PreferencePath(List<? extends Preference> preferences) {
 
-    public Optional<Preference> getPreference() {
+    public Optional<? extends Preference> getPreference() {
         return Lists.getLastElement(preferences);
     }
 

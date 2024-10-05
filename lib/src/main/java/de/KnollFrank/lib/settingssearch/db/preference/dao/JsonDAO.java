@@ -28,7 +28,6 @@ class JsonDAO {
         return getGson().fromJson(json, type);
     }
 
-    // FK-TODO: make Gson instance static?
     private static Gson getGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(Class.class, new ClassTypeAdapter())

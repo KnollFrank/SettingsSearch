@@ -12,11 +12,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.ConnectedSearchablePr
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-public class ConnectedSearchablePreferenceScreensPOJOConverter {
+public class ConnectedSearchablePreferenceScreens2POJOConverter {
 
     public static ConnectedSearchablePreferenceScreensPOJO convert2POJO(final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens) {
         return new ConnectedSearchablePreferenceScreensPOJO(
-                PreferenceScreenWithHostClassPOJOConverter.convert2POJOs(connectedSearchablePreferenceScreens.connectedSearchablePreferenceScreens()),
+                PreferenceScreenWithHostClass2POJOConverter.convert2POJOs(connectedSearchablePreferenceScreens.connectedSearchablePreferenceScreens()),
                 convert2POJO(connectedSearchablePreferenceScreens.preferencePathByPreference()));
     }
 
@@ -26,7 +26,7 @@ public class ConnectedSearchablePreferenceScreensPOJOConverter {
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                preferencePreferencePathEntry -> SearchablePreferencePOJOConverter.convert2POJO((SearchablePreference) preferencePreferencePathEntry.getKey()),
-                                preferencePreferencePathEntry -> PreferencePathPOJOConverter.convert2POJO(preferencePreferencePathEntry.getValue())));
+                                preferencePreferencePathEntry -> SearchablePreference2POJOConverter.convert2POJO((SearchablePreference) preferencePreferencePathEntry.getKey()),
+                                preferencePreferencePathEntry -> PreferencePath2POJOConverter.convert2POJO(preferencePreferencePathEntry.getValue())));
     }
 }

@@ -31,7 +31,7 @@ public class PreferencePathNavigator {
         return navigatePreferences(preferencePath.preferences(), null, null);
     }
 
-    private PreferenceFragmentCompat navigatePreferences(final List<Preference> preferences,
+    private PreferenceFragmentCompat navigatePreferences(final List<? extends Preference> preferences,
                                                          final PreferenceWithHost src,
                                                          final PreferenceFragmentCompat uninitializedSrc) {
         if (preferences.isEmpty()) {

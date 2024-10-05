@@ -8,7 +8,7 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-class SearchablePreferencePOJOConverter {
+class SearchablePreference2POJOConverter {
 
     public static SearchablePreferencePOJO convert2POJO(final SearchablePreference searchablePreference) {
         return new SearchablePreferencePOJO(
@@ -21,14 +21,14 @@ class SearchablePreferencePOJOConverter {
                 searchablePreference.getWidgetLayoutResource(),
                 searchablePreference.getFragment(),
                 searchablePreference.isVisible(),
-                searchablePreference.getSearchableInfo().orElse(null),
+                SearchableInfoAttributeConverter.convert2POJO(searchablePreference.getSearchableInfo()),
                 convert2POJOs(SearchablePreferenceCaster.cast(Preferences.getDirectChildren(searchablePreference))));
     }
 
     public static List<SearchablePreferencePOJO> convert2POJOs(final List<SearchablePreference> searchablePreferences) {
         return searchablePreferences
                 .stream()
-                .map(SearchablePreferencePOJOConverter::convert2POJO)
+                .map(SearchablePreference2POJOConverter::convert2POJO)
                 .collect(Collectors.toList());
     }
 

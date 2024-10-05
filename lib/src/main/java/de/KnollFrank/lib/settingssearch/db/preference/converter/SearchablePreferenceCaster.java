@@ -13,7 +13,7 @@ class SearchablePreferenceCaster {
         return (SearchablePreference) preference;
     }
 
-    public static List<SearchablePreference> cast(final List<Preference> preferences) {
+    public static List<SearchablePreference> cast(final List<? extends Preference> preferences) {
         return preferences
                 .stream()
                 .map(SearchablePreferenceCaster::cast)
