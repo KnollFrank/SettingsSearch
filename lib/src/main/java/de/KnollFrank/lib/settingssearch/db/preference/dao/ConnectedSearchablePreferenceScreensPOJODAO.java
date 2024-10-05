@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.ConnectedSearchablePreferenceScreensPOJO;
 
-class ConnectedSearchablePreferenceScreensPOJODAO {
+public class ConnectedSearchablePreferenceScreensPOJODAO {
 
     public static void persist(final ConnectedSearchablePreferenceScreensPOJO source, final OutputStream sink) {
         JsonDAO.persist(source, sink);

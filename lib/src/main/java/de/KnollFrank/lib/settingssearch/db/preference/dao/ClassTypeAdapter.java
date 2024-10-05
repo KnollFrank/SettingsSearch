@@ -11,7 +11,7 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 // adapted from https://stackoverflow.com/a/44184399
-public class ClassTypeAdapter implements JsonSerializer<Class<?>>, JsonDeserializer<Class<?>> {
+class ClassTypeAdapter implements JsonSerializer<Class<?>>, JsonDeserializer<Class<?>> {
 
     @Override
     public JsonElement serialize(final Class<?> src, final Type typeOfSrc, final JsonSerializationContext context) {
