@@ -12,6 +12,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenPOJODAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
+
 public class SearchablePreferenceScreenPOJODAOTest {
 
     @Test

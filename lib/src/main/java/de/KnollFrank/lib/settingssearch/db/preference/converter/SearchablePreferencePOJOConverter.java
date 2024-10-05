@@ -1,19 +1,16 @@
-package de.KnollFrank.lib.settingssearch.db.preference;
+package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import androidx.preference.PreferenceGroup;
-import androidx.preference.PreferenceScreen;
+import androidx.preference.Preference;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-public class POJOConverter {
-
-    public static SearchablePreferenceScreenPOJO convert2POJO(final PreferenceScreen preferenceScreen) {
-        return new SearchablePreferenceScreenPOJO(convert2POJOs(getChildren(preferenceScreen)));
-    }
+public class SearchablePreferencePOJOConverter {
 
     public static SearchablePreferencePOJO convert2POJO(final SearchablePreference searchablePreference) {
         return new SearchablePreferencePOJO(
@@ -27,14 +24,7 @@ public class POJOConverter {
                 searchablePreference.getFragment(),
                 searchablePreference.isVisible(),
                 searchablePreference.getSearchableInfo().orElse(null),
-                convert2POJOs(getChildren(searchablePreference)));
-    }
-
-    private static List<SearchablePreferencePOJO> convert2POJOs(final List<SearchablePreference> searchablePreferences) {
-        return searchablePreferences
-                .stream()
-                .map(POJOConverter::convert2POJO)
-                .collect(Collectors.toList());
+                convert2POJOs(cast(Preferences.getDirectChildren(searchablePreference))));
     }
 
     private static String toString(final CharSequence charSequence) {
@@ -44,11 +34,21 @@ public class POJOConverter {
                 .orElse(null);
     }
 
-    private static List<SearchablePreference> getChildren(final PreferenceGroup preferenceGroup) {
-        return Preferences
-                .getDirectChildren(preferenceGroup)
+    static List<SearchablePreferencePOJO> convert2POJOs(final List<SearchablePreference> searchablePreferences) {
+        return searchablePreferences
                 .stream()
-                .map(SearchablePreference.class::cast)
+                .map(SearchablePreferencePOJOConverter::convert2POJO)
                 .collect(Collectors.toList());
+    }
+
+    static List<SearchablePreference> cast(final List<Preference> preferences) {
+        return preferences
+                .stream()
+                .map(SearchablePreferencePOJOConverter::cast)
+                .collect(Collectors.toList());
+    }
+
+    static SearchablePreference cast(final Preference preference) {
+        return (SearchablePreference) preference;
     }
 }

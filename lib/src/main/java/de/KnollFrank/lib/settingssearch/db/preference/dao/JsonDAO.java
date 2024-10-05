@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference;
+package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 
-class JsonDAO {
+public class JsonDAO {
 
     public static <T> void persist(final T source, final OutputStream sink) {
         persist(toJson(source), sink);
