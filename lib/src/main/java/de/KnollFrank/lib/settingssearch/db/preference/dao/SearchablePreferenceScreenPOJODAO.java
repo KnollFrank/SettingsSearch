@@ -7,7 +7,8 @@ import java.io.OutputStream;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
-public class SearchablePreferenceScreenPOJODAO {
+// FK-TODO: remove class?
+class SearchablePreferenceScreenPOJODAO {
 
     public static void persist(final SearchablePreferenceScreenPOJO source, final OutputStream sink) {
         JsonDAO.persist(source, sink);

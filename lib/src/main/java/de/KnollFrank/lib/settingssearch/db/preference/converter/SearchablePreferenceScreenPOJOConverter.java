@@ -5,11 +5,11 @@ import androidx.preference.PreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
-public class SearchablePreferenceScreenPOJOConverter {
+class SearchablePreferenceScreenPOJOConverter {
 
     public static SearchablePreferenceScreenPOJO convert2POJO(final PreferenceScreen preferenceScreen) {
         return new SearchablePreferenceScreenPOJO(
                 SearchablePreferencePOJOConverter.convert2POJOs(
-                        SearchablePreferencePOJOConverter.cast(Preferences.getDirectChildren(preferenceScreen))));
+                        SearchablePreferenceCaster.cast(Preferences.getDirectChildren(preferenceScreen))));
     }
 }

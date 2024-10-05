@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.InputStream;
@@ -9,7 +10,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 
-public class JsonDAO {
+class JsonDAO {
 
     public static <T> void persist(final T source, final OutputStream sink) {
         persist(toJson(source), sink);
@@ -27,8 +28,12 @@ public class JsonDAO {
         return getGson().fromJson(json, type);
     }
 
+    // FK-TODO: make Gson instance static?
     private static Gson getGson() {
-        return new Gson();
+        return new GsonBuilder()
+                .registerTypeAdapter(Class.class, new ClassTypeAdapter())
+                .enableComplexMapKeySerialization()
+                .create();
     }
 
     private static void persist(final String source, final OutputStream sink) {
