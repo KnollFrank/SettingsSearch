@@ -35,6 +35,10 @@ public class PreferenceScreensProvider1Test {
             scenario.onActivity(activity -> {
                 // Given
                 final Fragments fragments = FragmentsFactory.createFragments(activity);
+                final PreferenceFragmentCompat root =
+                        (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                Fragment1ConnectedToFragment2AndFragment4.class.getName(),
+                                Optional.empty());
                 final PreferenceScreensProvider preferenceScreensProvider =
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
@@ -44,11 +48,8 @@ public class PreferenceScreensProvider1Test {
                                 },
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
-                                        (preference, hostOfPreference) -> Optional.empty()));
-                final PreferenceFragmentCompat root =
-                        (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                                Fragment1ConnectedToFragment2AndFragment4.class.getName(),
-                                Optional.empty());
+                                        (preference, hostOfPreference) -> Optional.empty()),
+                                root.getPreferenceManager());
 
                 // When
                 final Set<PreferenceScreenWithHostClass> preferenceScreens =
@@ -74,6 +75,10 @@ public class PreferenceScreensProvider1Test {
             scenario.onActivity(activity -> {
                 // Given
                 final Fragments fragments = FragmentsFactory.createFragments(activity);
+                final PreferenceFragmentCompat root =
+                        (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                Fragment1ConnectedToFragment2AndFragment4.class.getName(),
+                                Optional.empty());
                 final PreferenceScreensProvider preferenceScreensProvider =
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments),
@@ -83,11 +88,8 @@ public class PreferenceScreensProvider1Test {
                                 },
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
-                                        (preference, hostOfPreference) -> Optional.empty()));
-                final PreferenceFragmentCompat root =
-                        (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                                Fragment1ConnectedToFragment2AndFragment4.class.getName(),
-                                Optional.empty());
+                                        (preference, hostOfPreference) -> Optional.empty()),
+                                root.getPreferenceManager());
 
                 // When
                 final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens =

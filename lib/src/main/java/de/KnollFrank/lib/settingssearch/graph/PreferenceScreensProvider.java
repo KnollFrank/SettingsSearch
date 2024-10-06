@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static de.KnollFrank.lib.settingssearch.graph.Host2HostClassTransformer.transformHost2HostClass;
 
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
 
@@ -24,22 +25,26 @@ public class PreferenceScreensProvider {
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
+    private final PreferenceManager preferenceManager;
 
     public PreferenceScreensProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                      final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                      final IsPreferenceSearchable isPreferenceSearchable,
                                      final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                                     final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
+                                     final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
+                                     final PreferenceManager preferenceManager) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
+        this.preferenceManager = preferenceManager;
     }
 
     public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
         return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(
-                getSearchablePreferenceScreenGraph(root));
+                getSearchablePreferenceScreenGraph(root),
+                preferenceManager);
     }
 
     private Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {

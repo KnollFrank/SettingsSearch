@@ -79,15 +79,15 @@ public class SearchPreferenceFragment extends Fragment {
         return searchPreferenceFragment;
     }
 
-    public SearchPreferenceFragment(final IsPreferenceSearchable isPreferenceSearchable,
-                                    final SearchableInfoProvider searchableInfoProvider,
-                                    final SearchableInfoAttribute searchableInfoAttribute,
-                                    final ShowPreferencePath showPreferencePath,
-                                    final FragmentFactory fragmentFactory,
-                                    final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                                    final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                                    final PrepareShow prepareShow,
-                                    final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
+    private SearchPreferenceFragment(final IsPreferenceSearchable isPreferenceSearchable,
+                                     final SearchableInfoProvider searchableInfoProvider,
+                                     final SearchableInfoAttribute searchableInfoAttribute,
+                                     final ShowPreferencePath showPreferencePath,
+                                     final FragmentFactory fragmentFactory,
+                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
+                                     final PrepareShow prepareShow,
+                                     final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         super(R.layout.searchpreference_fragment);
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -153,7 +153,8 @@ public class SearchPreferenceFragment extends Fragment {
                                 preferenceConnected2PreferenceFragmentProvider,
                                 new IsPreferenceVisibleAndSearchable(isPreferenceSearchable),
                                 preferenceScreenGraphAvailableListener,
-                                new SearchableInfoAndDialogInfoProvider(searchableInfoProvider, searchableDialogInfoOfProvider)),
+                                new SearchableInfoAndDialogInfoProvider(searchableInfoProvider, searchableDialogInfoOfProvider),
+                                PreferenceManagerProvider.getPreferenceManager(fragments, searchConfiguration.rootPreferenceFragment())),
                         new PreferenceScreensMerger(getContext()),
                         searchableInfoAttribute,
                         true,
