@@ -10,8 +10,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 class SearchablePreference2POJOConverter {
 
+    private static int uniqueId = 0;
+
     public static SearchablePreferencePOJO convert2POJO(final SearchablePreference searchablePreference) {
         return new SearchablePreferencePOJO(
+                uniqueId++,
                 searchablePreference.getKey(),
                 // FK-FIXME: replace 0 with real value
                 0,
