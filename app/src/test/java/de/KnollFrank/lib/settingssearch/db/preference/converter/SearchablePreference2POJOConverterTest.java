@@ -36,12 +36,7 @@ public class SearchablePreference2POJOConverterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final PreferenceFragmentCompat preferenceFragment =
-                        instantiateAndInitializeFragment(
-                                new FragmentWith2Connections(),
-                                activity);
-
-                final PreferenceScreen preferenceScreen = preferenceFragment.getPreferenceScreen();
+                final PreferenceScreen preferenceScreen = getPreferenceScreen(new FragmentWith2Connections(), activity);
                 final SearchablePreference searchablePreference = preferenceScreen.findPreference("someKey");
 
                 // When
@@ -78,10 +73,16 @@ public class SearchablePreference2POJOConverterTest {
         }
     }
 
-    private static PreferenceFragmentCompat instantiateAndInitializeFragment(
-            final PreferenceFragmentCompat preferenceFragment,
-            final FragmentActivity activity) {
-        return instantiateAndInitializeFragment(
+    private static PreferenceScreen getPreferenceScreen(final FragmentWith2Connections preferenceFragment,
+                                                        final FragmentActivity activity) {
+        return SearchablePreference2POJOConverterTest
+                .initializeFragment(preferenceFragment, activity)
+                .getPreferenceScreen();
+    }
+
+    private static PreferenceFragmentCompat initializeFragment(final PreferenceFragmentCompat preferenceFragment,
+                                                               final FragmentActivity activity) {
+        return initializeFragment(
                 preferenceFragment,
                 getFragments(preferenceFragment, activity));
     }
@@ -106,7 +107,8 @@ public class SearchablePreference2POJOConverterTest {
                         defaultFragmentFactory.instantiate(fragmentClassName, src, context);
     }
 
-    private static PreferenceFragmentCompat instantiateAndInitializeFragment(final PreferenceFragmentCompat preferenceFragment, final Fragments fragments) {
+    private static PreferenceFragmentCompat initializeFragment(final PreferenceFragmentCompat preferenceFragment,
+                                                               final Fragments fragments) {
         return (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                 preferenceFragment.getClass().getName(),
                 Optional.empty());
