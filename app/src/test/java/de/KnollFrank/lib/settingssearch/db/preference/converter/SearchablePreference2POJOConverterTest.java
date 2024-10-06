@@ -17,6 +17,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -36,7 +37,33 @@ public class SearchablePreference2POJOConverterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final PreferenceScreen preferenceScreen = getPreferenceScreen(new FragmentWith2Connections(), activity);
+                final BiConsumer<PreferenceScreen, Context> addPreferences2Screen =
+                        new BiConsumer<>() {
+
+                            @Override
+                            public void accept(final PreferenceScreen screen, final Context context) {
+                                final SearchablePreference searchablePreference = createSearchablePreference1(context);
+                                screen.addPreference(searchablePreference);
+                                searchablePreference.addPreference(createSearchablePreference2(context));
+                            }
+
+                            private static SearchablePreference createSearchablePreference1(final Context context) {
+                                final SearchablePreference searchablePreference = new SearchablePreference(context, Optional.of("some searchable info"));
+                                searchablePreference.setKey("someKey");
+                                searchablePreference.setLayoutResource(15);
+                                return searchablePreference;
+                            }
+
+                            private static SearchablePreference createSearchablePreference2(final Context context) {
+                                final SearchablePreference child = new SearchablePreference(context, Optional.of("some searchable info of child"));
+                                child.setLayoutResource(16);
+                                return child;
+                            }
+                        };
+                final PreferenceScreen preferenceScreen =
+                        getPreferenceScreen(
+                                new PreferenceFragmentTemplate(addPreferences2Screen),
+                                activity);
                 final SearchablePreference searchablePreference = preferenceScreen.findPreference("someKey");
 
                 // When
@@ -73,30 +100,20 @@ public class SearchablePreference2POJOConverterTest {
         }
     }
 
-    private static PreferenceScreen getPreferenceScreen(final FragmentWith2Connections preferenceFragment,
+    private static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,
                                                         final FragmentActivity activity) {
         return SearchablePreference2POJOConverterTest
-                .initializeFragment(preferenceFragment, activity)
+                .initializeFragment(
+                        preferenceFragment,
+                        new Fragments(
+                                new FragmentFactoryAndInitializerWithCache(
+                                        new FragmentFactoryAndInitializer(
+                                                createFragmentFactoryReturning(preferenceFragment),
+                                                new DefaultFragmentInitializer(
+                                                        activity.getSupportFragmentManager(),
+                                                        TestActivity.FRAGMENT_CONTAINER_VIEW))),
+                                activity))
                 .getPreferenceScreen();
-    }
-
-    private static PreferenceFragmentCompat initializeFragment(final PreferenceFragmentCompat preferenceFragment,
-                                                               final FragmentActivity activity) {
-        return initializeFragment(
-                preferenceFragment,
-                getFragments(preferenceFragment, activity));
-    }
-
-    private static Fragments getFragments(final PreferenceFragmentCompat preferenceFragment,
-                                          final FragmentActivity activity) {
-        return new Fragments(
-                new FragmentFactoryAndInitializerWithCache(
-                        new FragmentFactoryAndInitializer(
-                                createFragmentFactoryReturning(preferenceFragment),
-                                new DefaultFragmentInitializer(
-                                        activity.getSupportFragmentManager(),
-                                        TestActivity.FRAGMENT_CONTAINER_VIEW))),
-                activity);
     }
 
     private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat preferenceFragment) {
@@ -114,33 +131,20 @@ public class SearchablePreference2POJOConverterTest {
                 Optional.empty());
     }
 
-    public static class FragmentWith2Connections extends PreferenceFragmentCompat {
+    public static class PreferenceFragmentTemplate extends PreferenceFragmentCompat {
+
+        private final BiConsumer<PreferenceScreen, Context> addPreferences2Screen;
+
+        public PreferenceFragmentTemplate(final BiConsumer<PreferenceScreen, Context> addPreferences2Screen) {
+            this.addPreferences2Screen = addPreferences2Screen;
+        }
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
-            addPreferences2Screen(screen, context);
+            addPreferences2Screen.accept(screen, context);
             setPreferenceScreen(screen);
-        }
-
-        private void addPreferences2Screen(final PreferenceScreen screen, final Context context) {
-            final SearchablePreference searchablePreference = createSearchablePreference1(context);
-            screen.addPreference(searchablePreference);
-            searchablePreference.addPreference(createSearchablePreference2(context));
-        }
-
-        private static SearchablePreference createSearchablePreference1(final Context context) {
-            final SearchablePreference searchablePreference = new SearchablePreference(context, Optional.of("some searchable info"));
-            searchablePreference.setKey("someKey");
-            searchablePreference.setLayoutResource(15);
-            return searchablePreference;
-        }
-
-        private static SearchablePreference createSearchablePreference2(final Context context) {
-            final SearchablePreference child = new SearchablePreference(context, Optional.of("some searchable info of child"));
-            child.setLayoutResource(16);
-            return child;
         }
     }
 }
