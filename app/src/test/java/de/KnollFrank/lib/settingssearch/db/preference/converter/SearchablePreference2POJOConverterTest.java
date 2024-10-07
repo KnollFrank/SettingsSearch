@@ -73,38 +73,40 @@ public class SearchablePreference2POJOConverterTest {
                 // Then
                 assertThat(
                         searchablePreferencePOJO,
-                        is(new SearchablePreferencePOJO(
-                                "parentKey",
-                                0,
-                                15,
-                                null,
-                                null,
-                                0,
-                                null,
-                                true,
-                                "some searchable info",
-                                List.of(new SearchablePreferencePOJO(
-                                                null,
-                                                0,
-                                                16,
-                                                null,
-                                                null,
-                                                0,
-                                                null,
-                                                true,
-                                                "some searchable info of first child",
-                                                List.of()),
-                                        new SearchablePreferencePOJO(
-                                                null,
-                                                0,
-                                                16,
-                                                null,
-                                                null,
-                                                0,
-                                                null,
-                                                true,
-                                                "some searchable info of second child",
-                                                List.of())))));
+                        is(
+                                new SearchablePreferencePOJO(
+                                        "parentKey",
+                                        0,
+                                        15,
+                                        null,
+                                        null,
+                                        0,
+                                        null,
+                                        true,
+                                        "some searchable info",
+                                        List.of(
+                                                new SearchablePreferencePOJO(
+                                                        null,
+                                                        0,
+                                                        16,
+                                                        null,
+                                                        null,
+                                                        0,
+                                                        null,
+                                                        true,
+                                                        "some searchable info of first child",
+                                                        List.of()),
+                                                new SearchablePreferencePOJO(
+                                                        null,
+                                                        0,
+                                                        16,
+                                                        null,
+                                                        null,
+                                                        0,
+                                                        null,
+                                                        true,
+                                                        "some searchable info of second child",
+                                                        List.of())))));
             });
         }
     }
