@@ -65,14 +65,13 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                             }
                         };
                 final PreferenceFragmentTemplate preferenceFragment = new PreferenceFragmentTemplate(addPreferences2Screen);
-                final PreferenceScreen preferenceScreen = getPreferenceScreen(preferenceFragment, activity);
-                final PreferenceScreenWithHostClass preferenceScreenWithHostClass =
+                final PreferenceScreenWithHostClass entity =
                         new PreferenceScreenWithHostClass(
-                                preferenceScreen,
+                                getPreferenceScreen(preferenceFragment, activity),
                                 preferenceFragment.getClass());
 
                 // When
-                final PreferenceScreenWithHostClassPOJO pojo = PreferenceScreenWithHostClass2POJOConverter.convert2POJO(preferenceScreenWithHostClass);
+                final PreferenceScreenWithHostClassPOJO pojo = PreferenceScreenWithHostClass2POJOConverter.convert2POJO(entity);
 
                 // Then
                 assertThat(pojo, is(
