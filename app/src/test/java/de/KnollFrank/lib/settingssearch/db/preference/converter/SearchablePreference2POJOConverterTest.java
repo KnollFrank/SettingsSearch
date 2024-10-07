@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -42,20 +43,21 @@ public class SearchablePreference2POJOConverterTest {
 
                             @Override
                             public void accept(final PreferenceScreen screen, final Context context) {
-                                final SearchablePreference searchablePreference = createSearchablePreference1(context);
+                                final SearchablePreference searchablePreference = createParent(context);
                                 screen.addPreference(searchablePreference);
-                                searchablePreference.addPreference(createSearchablePreference2(context));
+                                searchablePreference.addPreference(createChild(context, Optional.of("some searchable info of first child")));
+                                searchablePreference.addPreference(createChild(context, Optional.of("some searchable info of second child")));
                             }
 
-                            private static SearchablePreference createSearchablePreference1(final Context context) {
+                            private static SearchablePreference createParent(final Context context) {
                                 final SearchablePreference searchablePreference = new SearchablePreference(context, Optional.of("some searchable info"));
-                                searchablePreference.setKey("someKey");
+                                searchablePreference.setKey("parentKey");
                                 searchablePreference.setLayoutResource(15);
                                 return searchablePreference;
                             }
 
-                            private static SearchablePreference createSearchablePreference2(final Context context) {
-                                final SearchablePreference child = new SearchablePreference(context, Optional.of("some searchable info of child"));
+                            private static SearchablePreference createChild(final Context context, final Optional<String> searchableInfo) {
+                                final SearchablePreference child = new SearchablePreference(context, searchableInfo);
                                 child.setLayoutResource(16);
                                 return child;
                             }
@@ -64,38 +66,50 @@ public class SearchablePreference2POJOConverterTest {
                         getPreferenceScreen(
                                 new PreferenceFragmentTemplate(addPreferences2Screen),
                                 activity);
-                final SearchablePreference searchablePreference = preferenceScreen.findPreference("someKey");
+                final SearchablePreference searchablePreference = preferenceScreen.findPreference("parentKey");
+                final List<SearchablePreferencePOJO> result = new ArrayList<>();
 
                 // When
-                final SearchablePreferencePOJO searchablePreferencePOJO = SearchablePreference2POJOConverter.convert2POJO(searchablePreference);
+                SearchablePreference2POJOConverter.convert2POJO(searchablePreference, result);
 
                 // Then
-                final SearchablePreferencePOJO result =
-                        new SearchablePreferencePOJO(
-                                0,
-                                "someKey",
-                                0,
-                                15,
-                                null,
-                                null,
-                                0,
-                                null,
-                                true,
-                                "some searchable info",
-                                List.of(
-                                        new SearchablePreferencePOJO(
-                                                1,
-                                                null,
-                                                0,
-                                                16,
-                                                null,
-                                                null,
-                                                0,
-                                                null,
-                                                true,
-                                                "some searchable info of child",
-                                                List.of())));
-                assertThat(searchablePreferencePOJO, is(result));
+
+                assertThat(
+                        result,
+                        is(List.of(
+                                new SearchablePreferencePOJO(
+                                        null,
+                                        0,
+                                        16,
+                                        null,
+                                        null,
+                                        0,
+                                        null,
+                                        true,
+                                        "some searchable info of first child",
+                                        List.of()),
+                                new SearchablePreferencePOJO(
+                                        null,
+                                        0,
+                                        16,
+                                        null,
+                                        null,
+                                        0,
+                                        null,
+                                        true,
+                                        "some searchable info of second child",
+                                        List.of()),
+                                new SearchablePreferencePOJO(
+                                        "parentKey",
+                                        0,
+                                        15,
+                                        null,
+                                        null,
+                                        0,
+                                        null,
+                                        true,
+                                        "some searchable info",
+                                        List.of(0, 1)))));
             });
         }
     }
