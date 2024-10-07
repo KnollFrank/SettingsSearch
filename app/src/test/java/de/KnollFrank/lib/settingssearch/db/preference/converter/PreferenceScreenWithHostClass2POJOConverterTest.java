@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -31,10 +33,10 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreen2POJOConverterTest {
+public class PreferenceScreenWithHostClass2POJOConverterTest {
 
     @Test
-    public void shouldConvertPreferenceScreen2POJO() {
+    public void shouldConvertPreferenceScreenWithHostClass2POJO() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -62,18 +64,19 @@ public class SearchablePreferenceScreen2POJOConverterTest {
                                 return child;
                             }
                         };
-                final PreferenceScreen preferenceScreen =
-                        getPreferenceScreen(
-                                new PreferenceFragmentTemplate(addPreferences2Screen),
-                                activity);
+                final PreferenceFragmentTemplate preferenceFragment = new PreferenceFragmentTemplate(addPreferences2Screen);
+                final PreferenceScreen preferenceScreen = getPreferenceScreen(preferenceFragment, activity);
+                final PreferenceScreenWithHostClass preferenceScreenWithHostClass =
+                        new PreferenceScreenWithHostClass(
+                                preferenceScreen,
+                                preferenceFragment.getClass());
 
                 // When
-                final SearchablePreferenceScreenPOJO preferenceScreenPOJO = SearchablePreferenceScreen2POJOConverter.convert2POJO(preferenceScreen);
+                final PreferenceScreenWithHostClassPOJO pojo = PreferenceScreenWithHostClass2POJOConverter.convert2POJO(preferenceScreenWithHostClass);
 
                 // Then
-                assertThat(
-                        preferenceScreenPOJO,
-                        is(
+                assertThat(pojo, is(
+                        new PreferenceScreenWithHostClassPOJO(
                                 new SearchablePreferenceScreenPOJO(
                                         List.of(
                                                 new SearchablePreferencePOJO(
@@ -108,14 +111,15 @@ public class SearchablePreferenceScreen2POJOConverterTest {
                                                                         null,
                                                                         true,
                                                                         "some searchable info of second child",
-                                                                        List.of())))))));
+                                                                        List.of()))))),
+                                preferenceFragment.getClass())));
             });
         }
     }
 
     private static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,
                                                         final FragmentActivity activity) {
-        return SearchablePreferenceScreen2POJOConverterTest
+        return PreferenceScreenWithHostClass2POJOConverterTest
                 .initializeFragment(
                         preferenceFragment,
                         new Fragments(
