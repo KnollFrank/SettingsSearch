@@ -21,6 +21,7 @@ import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -30,10 +31,10 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreference2POJOConverterTest {
+public class SearchablePreferenceScreen2POJOConverterTest {
 
     @Test
-    public void shouldConvert2POJO() {
+    public void shouldConvertPreferenceScreen2POJO() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -65,55 +66,56 @@ public class SearchablePreference2POJOConverterTest {
                         getPreferenceScreen(
                                 new PreferenceFragmentTemplate(addPreferences2Screen),
                                 activity);
-                final SearchablePreference searchablePreference = preferenceScreen.findPreference("parentKey");
 
                 // When
-                final SearchablePreferencePOJO searchablePreferencePOJO = SearchablePreference2POJOConverter.convert2POJO(searchablePreference);
+                final SearchablePreferenceScreenPOJO preferenceScreenPOJO = SearchablePreferenceScreen2POJOConverter.convert2POJO(preferenceScreen);
 
                 // Then
                 assertThat(
-                        searchablePreferencePOJO,
+                        preferenceScreenPOJO,
                         is(
-                                new SearchablePreferencePOJO(
-                                        "parentKey",
-                                        0,
-                                        15,
-                                        null,
-                                        null,
-                                        0,
-                                        null,
-                                        true,
-                                        "some searchable info",
+                                new SearchablePreferenceScreenPOJO(
                                         List.of(
                                                 new SearchablePreferencePOJO(
-                                                        null,
+                                                        "parentKey",
                                                         0,
-                                                        16,
-                                                        null,
-                                                        null,
-                                                        0,
-                                                        null,
-                                                        true,
-                                                        "some searchable info of first child",
-                                                        List.of()),
-                                                new SearchablePreferencePOJO(
-                                                        null,
-                                                        0,
-                                                        16,
+                                                        15,
                                                         null,
                                                         null,
                                                         0,
                                                         null,
                                                         true,
-                                                        "some searchable info of second child",
-                                                        List.of())))));
+                                                        "some searchable info",
+                                                        List.of(
+                                                                new SearchablePreferencePOJO(
+                                                                        null,
+                                                                        0,
+                                                                        16,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        true,
+                                                                        "some searchable info of first child",
+                                                                        List.of()),
+                                                                new SearchablePreferencePOJO(
+                                                                        null,
+                                                                        0,
+                                                                        16,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        true,
+                                                                        "some searchable info of second child",
+                                                                        List.of())))))));
             });
         }
     }
 
     private static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,
                                                         final FragmentActivity activity) {
-        return SearchablePreference2POJOConverterTest
+        return SearchablePreferenceScreen2POJOConverterTest
                 .initializeFragment(
                         preferenceFragment,
                         new Fragments(
