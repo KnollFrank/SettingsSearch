@@ -10,36 +10,26 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 class SearchablePreference2POJOConverter {
 
-    public static void convert2POJO(final SearchablePreference searchablePreference,
-                                    final List<SearchablePreferencePOJO> result) {
-        result.add(
-                new SearchablePreferencePOJO(
-                        searchablePreference.getKey(),
-                        // FK-FIXME: replace 0 with real value
-                        0,
-                        searchablePreference.getLayoutResource(),
-                        toString(searchablePreference.getSummary()),
-                        toString(searchablePreference.getTitle()),
-                        searchablePreference.getWidgetLayoutResource(),
-                        searchablePreference.getFragment(),
-                        searchablePreference.isVisible(),
-                        SearchableInfoAttributeConverter.convert2POJO(searchablePreference.getSearchableInfo()),
-                        SearchablePreferenceCaster
-                                .cast(Preferences.getDirectChildren(searchablePreference))
-                                .stream()
-                                .map(
-                                        child -> {
-                                            convert2POJO(child, result);
-                                            return result.size() - 1;
-                                        })
-                                .collect(Collectors.toList())));
+    public static SearchablePreferencePOJO convert2POJO(final SearchablePreference searchablePreference) {
+        return new SearchablePreferencePOJO(
+                searchablePreference.getKey(),
+                // FK-FIXME: replace 0 with real value
+                0,
+                searchablePreference.getLayoutResource(),
+                toString(searchablePreference.getSummary()),
+                toString(searchablePreference.getTitle()),
+                searchablePreference.getWidgetLayoutResource(),
+                searchablePreference.getFragment(),
+                searchablePreference.isVisible(),
+                SearchableInfoAttributeConverter.convert2POJO(searchablePreference.getSearchableInfo()),
+                convert2POJOs(SearchablePreferenceCaster.cast(Preferences.getDirectChildren(searchablePreference))));
     }
 
-    public static void convert2POJOs(final List<SearchablePreference> searchablePreferences,
-                                     final List<SearchablePreferencePOJO> result) {
-        for (final SearchablePreference searchablePreference : searchablePreferences) {
-            convert2POJO(searchablePreference, result);
-        }
+    public static List<SearchablePreferencePOJO> convert2POJOs(final List<SearchablePreference> searchablePreferences) {
+        return searchablePreferences
+                .stream()
+                .map(SearchablePreference2POJOConverter::convert2POJO)
+                .collect(Collectors.toList());
     }
 
     private static String toString(final CharSequence charSequence) {

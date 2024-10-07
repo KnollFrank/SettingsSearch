@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -67,49 +66,45 @@ public class SearchablePreference2POJOConverterTest {
                                 new PreferenceFragmentTemplate(addPreferences2Screen),
                                 activity);
                 final SearchablePreference searchablePreference = preferenceScreen.findPreference("parentKey");
-                final List<SearchablePreferencePOJO> result = new ArrayList<>();
 
                 // When
-                SearchablePreference2POJOConverter.convert2POJO(searchablePreference, result);
+                final SearchablePreferencePOJO searchablePreferencePOJO = SearchablePreference2POJOConverter.convert2POJO(searchablePreference);
 
                 // Then
-
                 assertThat(
-                        result,
-                        is(List.of(
-                                new SearchablePreferencePOJO(
-                                        null,
-                                        0,
-                                        16,
-                                        null,
-                                        null,
-                                        0,
-                                        null,
-                                        true,
-                                        "some searchable info of first child",
-                                        List.of()),
-                                new SearchablePreferencePOJO(
-                                        null,
-                                        0,
-                                        16,
-                                        null,
-                                        null,
-                                        0,
-                                        null,
-                                        true,
-                                        "some searchable info of second child",
-                                        List.of()),
-                                new SearchablePreferencePOJO(
-                                        "parentKey",
-                                        0,
-                                        15,
-                                        null,
-                                        null,
-                                        0,
-                                        null,
-                                        true,
-                                        "some searchable info",
-                                        List.of(0, 1)))));
+                        searchablePreferencePOJO,
+                        is(new SearchablePreferencePOJO(
+                                "parentKey",
+                                0,
+                                15,
+                                null,
+                                null,
+                                0,
+                                null,
+                                true,
+                                "some searchable info",
+                                List.of(new SearchablePreferencePOJO(
+                                                null,
+                                                0,
+                                                16,
+                                                null,
+                                                null,
+                                                0,
+                                                null,
+                                                true,
+                                                "some searchable info of first child",
+                                                List.of()),
+                                        new SearchablePreferencePOJO(
+                                                null,
+                                                0,
+                                                16,
+                                                null,
+                                                null,
+                                                0,
+                                                null,
+                                                true,
+                                                "some searchable info of second child",
+                                                List.of())))));
             });
         }
     }

@@ -32,7 +32,6 @@ class POJOTestFactory {
 
     private static SearchablePreferencePOJO createSomeSearchablePreferencePOJO() {
         return new SearchablePreferencePOJO(
-                0,
                 "some key",
                 4711,
                 4712,
@@ -44,7 +43,6 @@ class POJOTestFactory {
                 "some searchableInfo",
                 List.of(
                         new SearchablePreferencePOJO(
-                                1,
                                 "some key 2",
                                 4714,
                                 4715,

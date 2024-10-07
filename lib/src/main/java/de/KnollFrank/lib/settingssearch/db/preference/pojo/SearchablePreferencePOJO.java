@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import java.util.List;
 
 public record SearchablePreferencePOJO(
-        int uniqueId,
         String key,
         int iconResId,
         int layoutResId,
