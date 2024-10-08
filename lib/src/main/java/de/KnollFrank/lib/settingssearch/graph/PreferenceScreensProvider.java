@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
 import static de.KnollFrank.lib.settingssearch.graph.Host2HostClassTransformer.transformHost2HostClass;
+import static de.KnollFrank.lib.settingssearch.graph.MapFromNodesRemover.removeMapFromNodes;
 
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -43,6 +44,7 @@ public class PreferenceScreensProvider {
 
     public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
         return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(
+                // FK-TODO: diesen Graph testweise speichern und wieder laden
                 getSearchablePreferenceScreenGraph(root),
                 preferenceManager);
     }
@@ -52,7 +54,7 @@ public class PreferenceScreensProvider {
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
         // FK-TODO: transformHost2HostClass() und removeMapFromNodes() in einem einzelnen Schritt durchführen
         return transformHost2HostClass(
-                MapFromNodesRemover.removeMapFromNodes(
+                removeMapFromNodes(
                         transformPreferences2SearchablePreferences(preferenceScreenGraph)));
     }
 
