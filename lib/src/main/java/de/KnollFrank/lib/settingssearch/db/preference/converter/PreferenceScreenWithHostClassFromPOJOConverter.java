@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 
-class PreferenceScreenWithHostClassFromPOJOConverter {
+public class PreferenceScreenWithHostClassFromPOJOConverter {
 
     public static PreferenceScreenWithHostClass convertFromPOJO(final PreferenceScreenWithHostClassPOJO preferenceScreenWithHostClassPOJO,
                                                                 final PreferenceManager preferenceManager) {

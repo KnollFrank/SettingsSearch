@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 
-class PreferenceScreenGraphProvider {
+public class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;

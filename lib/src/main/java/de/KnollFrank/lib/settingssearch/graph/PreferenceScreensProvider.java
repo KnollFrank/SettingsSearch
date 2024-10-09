@@ -49,7 +49,7 @@ public class PreferenceScreensProvider {
                 preferenceManager);
     }
 
-    private Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {
+    public Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {
         final var preferenceScreenGraph = createPreferenceScreenGraph(root);
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
         // FK-TODO: transformHost2HostClass() und removeMapFromNodes() in einem einzelnen Schritt durchführen
