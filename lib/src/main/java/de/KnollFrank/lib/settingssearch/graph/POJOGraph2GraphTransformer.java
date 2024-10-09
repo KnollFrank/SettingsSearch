@@ -4,12 +4,19 @@ import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
 
+import java.util.List;
+import java.util.Optional;
+
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.IGraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClassFromPOJOConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceCaster;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
 public class POJOGraph2GraphTransformer {
@@ -34,7 +41,20 @@ public class POJOGraph2GraphTransformer {
 
             @Override
             public PreferenceEdge transformEdge(final SearchablePreferencePOJOEdge edge, final PreferenceScreenWithHostClass transformedParentNode) {
-                return null; // FK-FIXME: new SearchablePreferencePOJOEdge(edge.preference);
+                return new PreferenceEdge(
+                        getSearchablePreferenceHavingOrigin(
+                                SearchablePreferenceCaster.cast(Preferences.getAllChildren(transformedParentNode.preferenceScreen())),
+                                Optional.of(edge.preference)));
+            }
+
+            private static SearchablePreference getSearchablePreferenceHavingOrigin(
+                    final List<SearchablePreference> haystack,
+                    final Optional<SearchablePreferencePOJO> origin) {
+                return haystack
+                        .stream()
+                        .filter(searchablePreference -> searchablePreference.getOrigin().equals(origin))
+                        .findFirst()
+                        .get();
             }
         };
     }

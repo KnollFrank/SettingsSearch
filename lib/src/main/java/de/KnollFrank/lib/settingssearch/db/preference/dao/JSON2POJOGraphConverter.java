@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
 public class JSON2POJOGraphConverter {
@@ -24,17 +25,29 @@ public class JSON2POJOGraphConverter {
     private static JSONImporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getJSONImporter() {
         final JSONImporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> importer = new JSONImporter<>();
         importer.setVertexWithAttributesFactory(JSON2POJOGraphConverter::getVertexWithAttributes);
+        importer.setEdgeWithAttributesFactory(JSON2POJOGraphConverter::getEdgeWithAttributes);
         return importer;
     }
 
     private static PreferenceScreenWithHostClassPOJO getVertexWithAttributes(final String vertexIdentifier, final Map<String, Attribute> attrs) {
-        return convertFromJSON(
-                attrs
-                        .get("preferenceScreenWithHostClass")
-                        .getValue());
+        return json2PreferenceScreenWithHostClassPOJO(
+                attrs.get("preferenceScreenWithHostClass").getValue());
     }
 
-    private static PreferenceScreenWithHostClassPOJO convertFromJSON(final String json) {
+    private static SearchablePreferencePOJOEdge getEdgeWithAttributes(final Map<String, Attribute> attrs) {
+        return new SearchablePreferencePOJOEdge(
+                json2SearchablePreferencePOJO(
+                        attrs.get("searchablePreference").getValue()));
+    }
+
+    private static PreferenceScreenWithHostClassPOJO json2PreferenceScreenWithHostClassPOJO(final String json) {
+        return JsonDAO.load(
+                new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
+                new TypeToken<>() {
+                });
+    }
+
+    private static SearchablePreferencePOJO json2SearchablePreferencePOJO(final String json) {
         return JsonDAO.load(
                 new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
                 new TypeToken<>() {

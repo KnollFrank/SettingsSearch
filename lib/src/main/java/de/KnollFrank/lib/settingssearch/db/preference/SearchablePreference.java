@@ -9,22 +9,33 @@ import androidx.preference.PreferenceCategory;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+
 public class SearchablePreference extends PreferenceCategory {
 
     private final Optional<String> searchableInfo;
+    private final Optional<SearchablePreferencePOJO> origin;
 
     public SearchablePreference(@NonNull final Context context,
                                 @Nullable final AttributeSet attrs,
-                                final Optional<String> searchableInfo) {
+                                final Optional<String> searchableInfo,
+                                final Optional<SearchablePreferencePOJO> origin) {
         super(context, attrs);
         this.searchableInfo = searchableInfo;
+        this.origin = origin;
     }
 
-    public SearchablePreference(@NonNull final Context context, final Optional<String> searchableInfo) {
-        this(context, null, searchableInfo);
+    public SearchablePreference(@NonNull final Context context,
+                                final Optional<String> searchableInfo,
+                                final Optional<SearchablePreferencePOJO> origin) {
+        this(context, null, searchableInfo, origin);
     }
 
     public Optional<String> getSearchableInfo() {
         return searchableInfo;
+    }
+
+    public Optional<SearchablePreferencePOJO> getOrigin() {
+        return origin;
     }
 }

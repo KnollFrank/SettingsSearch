@@ -52,14 +52,22 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                             }
 
                             private static SearchablePreference createParent(final Context context) {
-                                final SearchablePreference searchablePreference = new SearchablePreference(context, Optional.of("some searchable info"));
+                                final SearchablePreference searchablePreference =
+                                        new SearchablePreference(
+                                                context,
+                                                Optional.of("some searchable info"),
+                                                Optional.empty());
                                 searchablePreference.setKey("parentKey");
                                 searchablePreference.setLayoutResource(15);
                                 return searchablePreference;
                             }
 
                             private static SearchablePreference createChild(final Context context, final Optional<String> searchableInfo) {
-                                final SearchablePreference child = new SearchablePreference(context, searchableInfo);
+                                final SearchablePreference child =
+                                        new SearchablePreference(
+                                                context,
+                                                searchableInfo,
+                                                Optional.empty());
                                 child.setLayoutResource(16);
                                 return child;
                             }

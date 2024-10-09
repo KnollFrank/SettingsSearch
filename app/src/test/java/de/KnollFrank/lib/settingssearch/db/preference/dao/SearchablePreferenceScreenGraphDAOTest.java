@@ -34,7 +34,6 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -77,9 +76,8 @@ public class SearchablePreferenceScreenGraphDAOTest {
                 // Then
                 assertThat(preferenceScreenGraphActual.vertexSet().size(), is(preferenceScreenGraph.vertexSet().size()));
                 assertThat(preferenceScreenGraphActual.edgeSet().size(), is(preferenceScreenGraph.edgeSet().size()));
-                final PreferenceScreenWithHostClass preferenceScreenWithHostClass = Iterables.getOnlyElement(preferenceScreenGraphActual.vertexSet());
-                assertThat(preferenceScreenWithHostClass.host().getName(), is(preferenceFragment.getClass().getName()));
-                assertThat(Preferences.getAllChildren(preferenceScreenWithHostClass.preferenceScreen()).size(), is(1));
+                final PreferenceEdge edge = Iterables.getOnlyElement(preferenceScreenGraphActual.edgeSet());
+                assertThat(edge.preference.getTitle(), is("preference connected to TestPreferenceFragment"));
             });
         }
     }
@@ -100,14 +98,22 @@ public class SearchablePreferenceScreenGraphDAOTest {
             }
 
             private static SearchablePreference createParent(final Context context) {
-                final SearchablePreference searchablePreference = new SearchablePreference(context, Optional.of("some searchable info"));
+                final SearchablePreference searchablePreference =
+                        new SearchablePreference(
+                                context,
+                                Optional.of("some searchable info"),
+                                Optional.empty());
                 searchablePreference.setKey("parentKey");
                 searchablePreference.setLayoutResource(15);
                 return searchablePreference;
             }
 
             private static SearchablePreference createChild(final Context context, final Optional<String> searchableInfo) {
-                final SearchablePreference child = new SearchablePreference(context, searchableInfo);
+                final SearchablePreference child =
+                        new SearchablePreference(
+                                context,
+                                searchableInfo,
+                                Optional.empty());
                 child.setLayoutResource(16);
                 return child;
             }

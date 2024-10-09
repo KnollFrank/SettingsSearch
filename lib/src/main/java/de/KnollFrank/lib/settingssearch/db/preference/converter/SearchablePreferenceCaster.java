@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 
-class SearchablePreferenceCaster {
+public class SearchablePreferenceCaster {
 
     public static SearchablePreference cast(final Preference preference) {
         return (SearchablePreference) preference;
