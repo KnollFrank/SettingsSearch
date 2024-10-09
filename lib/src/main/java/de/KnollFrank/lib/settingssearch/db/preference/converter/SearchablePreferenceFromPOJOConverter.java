@@ -18,8 +18,14 @@ class SearchablePreferenceFromPOJOConverter {
                         context,
                         SearchableInfoAttributeConverter.convertFromPOJO(searchablePreferencePOJO.searchableInfo()),
                         Optional.of(searchablePreferencePOJO));
-        // FK-FIXME: neben title auch alle anderen Attribute setzen.
+        searchablePreference.setKey(searchablePreferencePOJO.key());
+        // FK-TODO: handle correctly: searchablePreference.setIcon(searchablePreferencePOJO.iconResId());
+        searchablePreference.setLayoutResource(searchablePreferencePOJO.layoutResId());
+        searchablePreference.setSummary(searchablePreferencePOJO.summary());
         searchablePreference.setTitle(searchablePreferencePOJO.title());
+        searchablePreference.setWidgetLayoutResource(searchablePreferencePOJO.widgetLayoutResId());
+        searchablePreference.setFragment(searchablePreferencePOJO.fragment());
+        searchablePreference.setVisible(searchablePreferencePOJO.visible());
         return searchablePreference;
     }
 

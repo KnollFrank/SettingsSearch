@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithH
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
-class POJOTestFactory {
+public class POJOTestFactory {
 
     public static ConnectedSearchablePreferenceScreensPOJO createSomeConnectedSearchablePreferenceScreensPOJO() {
         return new ConnectedSearchablePreferenceScreensPOJO(
@@ -31,7 +31,7 @@ class POJOTestFactory {
         return new PreferencePathPOJO(List.of(createSomeSearchablePreferencePOJO()));
     }
 
-    private static SearchablePreferencePOJO createSomeSearchablePreferencePOJO() {
+    public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO() {
         return new SearchablePreferencePOJO(
                 "some key",
                 4711,
