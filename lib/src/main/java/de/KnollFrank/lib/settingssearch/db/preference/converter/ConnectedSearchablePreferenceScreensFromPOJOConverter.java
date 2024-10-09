@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.ConnectedSearchablePr
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
+// FK-TODO: remove class?
 public class ConnectedSearchablePreferenceScreensFromPOJOConverter {
 
     public static ConnectedSearchablePreferenceScreens convertFromPOJO(final ConnectedSearchablePreferenceScreensPOJO connectedSearchablePreferenceScreensPOJO,
