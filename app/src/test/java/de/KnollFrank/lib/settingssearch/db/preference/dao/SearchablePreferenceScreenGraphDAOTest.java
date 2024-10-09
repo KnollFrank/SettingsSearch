@@ -7,7 +7,10 @@ import static de.KnollFrank.lib.settingssearch.db.preference.converter.Preferenc
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 
 import android.content.Context;
+import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
@@ -61,7 +64,6 @@ public class SearchablePreferenceScreenGraphDAOTest {
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
                                 preferenceManager);
-                // FK-TODO: brauchen einen mit initializedPreferenceFragment verbundenes PreferenceFragment, damit der Graph zwei statt nur einen Knoten hat.
                 final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph = preferenceScreensProvider.getSearchablePreferenceScreenGraph(initializedPreferenceFragment);
                 final var outputStream = new ByteArrayOutputStream();
 
@@ -87,10 +89,14 @@ public class SearchablePreferenceScreenGraphDAOTest {
 
             @Override
             public void accept(final PreferenceScreen screen, final Context context) {
-                final SearchablePreference searchablePreference = createParent(context);
-                screen.addPreference(searchablePreference);
-                searchablePreference.addPreference(createChild(context, Optional.of("some searchable info of first child")));
-                searchablePreference.addPreference(createChild(context, Optional.of("some searchable info of second child")));
+                {
+                    final SearchablePreference searchablePreference = createParent(context);
+                    screen.addPreference(searchablePreference);
+                    searchablePreference.addPreference(createChild(context, Optional.of("some searchable info of first child")));
+                    searchablePreference.addPreference(createChild(context, Optional.of("some searchable info of second child")));
+                }
+
+                screen.addPreference(createConnectionToFragment(TestPreferenceFragment.class, context));
             }
 
             private static SearchablePreference createParent(final Context context) {
@@ -105,10 +111,28 @@ public class SearchablePreferenceScreenGraphDAOTest {
                 child.setLayoutResource(16);
                 return child;
             }
+
+            private static Preference createConnectionToFragment(final Class<? extends Fragment> fragment,
+                                                                 final Context context) {
+                final Preference preference = new Preference(context);
+                preference.setFragment(fragment.getName());
+                preference.setTitle("preference connected to " + fragment.getSimpleName());
+                return preference;
+            }
         };
     }
 
     private static InputStream convert(final OutputStream outputStream) {
         return new ByteArrayInputStream(outputStream.toString().getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static class TestPreferenceFragment extends PreferenceFragmentCompat {
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            final Context context = getPreferenceManager().getContext();
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            setPreferenceScreen(screen);
+        }
     }
 }

@@ -10,23 +10,25 @@ import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePrefe
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
-import com.google.common.collect.Iterables;
-
 import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -53,19 +55,84 @@ public class Graph2POJOGraphTransformerTest {
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
                                 initializedPreferenceFragment.getPreferenceManager());
-                // FK-TODO: brauchen einen mit initializedPreferenceFragment verbundenes PreferenceFragment, damit der Graph zwei statt nur einen Knoten hat.
                 final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph = preferenceScreensProvider.getSearchablePreferenceScreenGraph(initializedPreferenceFragment);
 
                 // When
                 final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph = Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);
 
                 // Then
-                assertThat(
-                        Iterables.getOnlyElement(pojoGraph.vertexSet()),
-                        is(
-                                PreferenceScreenWithHostClass2POJOConverter.convert2POJO(
-                                        Iterables.getOnlyElement(entityGraph.vertexSet()))));
+                assertThat(pojoGraph, is(createPojoGraph(preferenceFragment.getClass())));
             });
         }
+    }
+
+    private static Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+        final SearchablePreferencePOJO preferenceConnectingSrc2Dst =
+                new SearchablePreferencePOJO(
+                        null,
+                        0,
+                        2131427444,
+                        null,
+                        "preference connected to TestPreferenceFragment",
+                        0,
+                        SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName(),
+                        true,
+                        null,
+                        List.of());
+        return DefaultDirectedGraph
+                .<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>createBuilder(SearchablePreferencePOJOEdge.class)
+                .addEdge(
+                        createSrc(preferenceConnectingSrc2Dst, host),
+                        createDst(),
+                        new SearchablePreferencePOJOEdge(preferenceConnectingSrc2Dst))
+                .build();
+    }
+
+    private static PreferenceScreenWithHostClassPOJO createSrc(final SearchablePreferencePOJO preferenceConnectingSrc2Dst,
+                                                               final Class<? extends PreferenceFragmentCompat> host) {
+        return new PreferenceScreenWithHostClassPOJO(
+                new SearchablePreferenceScreenPOJO(
+                        List.of(
+                                new SearchablePreferencePOJO(
+                                        "parentKey",
+                                        0,
+                                        15,
+                                        null,
+                                        null,
+                                        0,
+                                        null,
+                                        true,
+                                        null,
+                                        List.of(
+                                                new SearchablePreferencePOJO(
+                                                        null,
+                                                        0,
+                                                        16,
+                                                        null,
+                                                        null,
+                                                        0,
+                                                        null,
+                                                        true,
+                                                        null,
+                                                        List.of()),
+                                                new SearchablePreferencePOJO(
+                                                        null,
+                                                        0,
+                                                        16,
+                                                        null,
+                                                        null,
+                                                        0,
+                                                        null,
+                                                        true,
+                                                        null,
+                                                        List.of()))),
+                                preferenceConnectingSrc2Dst)),
+                host);
+    }
+
+    private static PreferenceScreenWithHostClassPOJO createDst() {
+        return new PreferenceScreenWithHostClassPOJO(
+                new SearchablePreferenceScreenPOJO(List.of()),
+                SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class);
     }
 }
