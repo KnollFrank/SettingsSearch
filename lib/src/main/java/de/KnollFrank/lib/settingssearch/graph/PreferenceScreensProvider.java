@@ -8,6 +8,12 @@ import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+
 import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
@@ -15,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
@@ -44,9 +51,21 @@ public class PreferenceScreensProvider {
 
     public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
         return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(
-                // FK-TODO: diesen Graph testweise speichern und wieder laden
-                getSearchablePreferenceScreenGraph(root),
+                persistAndReload(getSearchablePreferenceScreenGraph(root)),
                 preferenceManager);
+    }
+
+    // FK-TODO: remove this test
+    private Graph<PreferenceScreenWithHostClass, PreferenceEdge> persistAndReload(final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph) {
+        final var outputStream = new ByteArrayOutputStream();
+        SearchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraph, outputStream);
+        return SearchablePreferenceScreenGraphDAO.load(
+                convert(outputStream),
+                preferenceManager);
+    }
+
+    private static InputStream convert(final OutputStream outputStream) {
+        return new ByteArrayInputStream(outputStream.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     public Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {

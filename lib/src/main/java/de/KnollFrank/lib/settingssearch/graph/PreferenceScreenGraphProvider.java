@@ -73,8 +73,7 @@ public class PreferenceScreenGraphProvider {
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenOfFragment(
                                                 fragmentConnectedToPreference,
-                                                Optional.of(new PreferenceWithHost(preference, host))
-                                        ));
+                                                Optional.of(new PreferenceWithHost(preference, host))));
     }
 
     private Optional<String> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {

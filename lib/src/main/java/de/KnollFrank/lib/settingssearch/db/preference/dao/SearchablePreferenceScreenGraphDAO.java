@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.graph.POJOGraph2GraphTransformer;
 
-class SearchablePreferenceScreenGraphDAO {
+public class SearchablePreferenceScreenGraphDAO {
 
     public static void persist(final Graph<PreferenceScreenWithHostClass, PreferenceEdge> source, final OutputStream sink) {
         final var pojoGraph = Graph2POJOGraphTransformer.transformGraph2POJOGraph(source);
