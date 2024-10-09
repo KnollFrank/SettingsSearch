@@ -51,8 +51,7 @@ public class PreferenceScreensProvider {
 
     public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
         return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(
-                persistAndReload(getSearchablePreferenceScreenGraph(root)),
-                preferenceManager);
+                persistAndReload(getSearchablePreferenceScreenGraph(root)));
     }
 
     // FK-TODO: remove this test
