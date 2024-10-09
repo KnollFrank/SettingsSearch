@@ -1,8 +1,14 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import androidx.preference.Preference;
+
+import com.google.common.collect.ImmutableList;
+
 import org.jgrapht.Graph;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
@@ -34,18 +40,33 @@ public class Graph2POJOGraphTransformer {
             @Override
             public SearchablePreferencePOJOEdge transformEdge(final PreferenceEdge edge, final PreferenceScreenWithHostClassPOJO transformedParentNode) {
                 return new SearchablePreferencePOJOEdge(
-                        new SearchablePreferencePOJO(
-                                "some key 2",
-                                4714,
-                                4715,
-                                "some summary 2",
-                                "some title 2",
-                                4716,
-                                "some fragment 2",
-                                true,
-                                "some searchableInfo 2",
-                                List.of()));
-                // FK-FIXME: new SearchablePreferencePOJOEdge(edge.preference);
+                        getSearchablePreferencePOJOHavingOrigin(
+                                getAllPreferences(transformedParentNode.preferenceScreen().children()),
+                                Optional.of(edge.preference)));
+            }
+
+            private static SearchablePreferencePOJO getSearchablePreferencePOJOHavingOrigin(
+                    final List<SearchablePreferencePOJO> haystack,
+                    final Optional<Preference> origin) {
+                return haystack
+                        .stream()
+                        .filter(searchablePreferencePOJO -> searchablePreferencePOJO.origin().equals(origin))
+                        .findFirst()
+                        .get();
+            }
+
+            private static List<SearchablePreferencePOJO> getAllPreferences(final SearchablePreferencePOJO searchablePreference) {
+                return ImmutableList.<SearchablePreferencePOJO>builder()
+                        .add(searchablePreference)
+                        .addAll(getAllPreferences(searchablePreference.children()))
+                        .build();
+            }
+
+            private static List<SearchablePreferencePOJO> getAllPreferences(final List<SearchablePreferencePOJO> searchablePreferencePOJOs) {
+                return searchablePreferencePOJOs
+                        .stream()
+                        .flatMap(searchablePreferencePOJO -> getAllPreferences(searchablePreferencePOJO).stream())
+                        .collect(Collectors.toList());
             }
         };
     }

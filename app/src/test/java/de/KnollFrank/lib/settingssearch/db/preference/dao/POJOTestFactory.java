@@ -4,6 +4,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.ConnectedSearchablePreferenceScreensPOJO;
@@ -52,7 +53,9 @@ class POJOTestFactory {
                                 "some fragment 2",
                                 true,
                                 "some searchableInfo 2",
-                                List.of())));
+                                List.of(),
+                                Optional.empty())),
+                Optional.empty());
     }
 
     private static SearchablePreferenceScreenPOJO createSomeSearchablePreferenceScreenPOJO() {

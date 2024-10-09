@@ -99,7 +99,8 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         null,
                                                                         true,
                                                                         "some searchable info of first child",
-                                                                        List.of()),
+                                                                        List.of(),
+                                                                        Optional.empty()),
                                                                 new SearchablePreferencePOJO(
                                                                         null,
                                                                         0,
@@ -110,7 +111,9 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         null,
                                                                         true,
                                                                         "some searchable info of second child",
-                                                                        List.of()))))),
+                                                                        List.of(),
+                                                                        Optional.empty())),
+                                                        Optional.empty()))),
                                 preferenceFragment.getClass())));
             });
         }

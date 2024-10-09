@@ -32,6 +32,7 @@ class JsonDAO {
     private static Gson getGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(Class.class, new ClassTypeAdapter())
+                .setExclusionStrategies(new AnnotationExclusionStrategy())
                 .enableComplexMapKeySerialization()
                 .create();
     }
