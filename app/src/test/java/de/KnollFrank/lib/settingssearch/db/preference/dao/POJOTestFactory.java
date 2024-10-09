@@ -59,6 +59,9 @@ public class POJOTestFactory {
     }
 
     private static SearchablePreferenceScreenPOJO createSomeSearchablePreferenceScreenPOJO() {
-        return new SearchablePreferenceScreenPOJO(List.of(createSomeSearchablePreferencePOJO()));
+        return new SearchablePreferenceScreenPOJO(
+                "some screen title",
+                "some screen summary",
+                List.of(createSomeSearchablePreferencePOJO()));
     }
 }

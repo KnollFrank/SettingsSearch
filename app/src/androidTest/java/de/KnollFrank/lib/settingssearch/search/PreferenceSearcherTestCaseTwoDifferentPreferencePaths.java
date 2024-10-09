@@ -46,6 +46,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 preference.setKey("key1");
                 screen.addPreference(preference);
             }
+            // FK-FIXME: in PreferenceScreensProvider.persistAndReload() müsste es zwei Nodes für PreferenceFragmentWithSinglePreference geben, es gibt aber leider nur eine Node.
             {
                 final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, context);
                 preference.setTitle("second preference connected to " + PreferenceFragmentWithSinglePreference.class.getSimpleName());

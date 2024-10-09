@@ -497,7 +497,7 @@ public class PreferenceSearcherTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         searchableInfoProvider,
                                         searchableDialogInfoOfProvider),
-                                preferenceFragment.getPreferenceManager()),
+                                PreferenceManagerProvider.getPreferenceManager(fragments, preferenceFragment.getClass())),
                         new PreferenceScreensMerger(fragmentActivity),
                         new SearchableInfoAttribute(),
                         false,

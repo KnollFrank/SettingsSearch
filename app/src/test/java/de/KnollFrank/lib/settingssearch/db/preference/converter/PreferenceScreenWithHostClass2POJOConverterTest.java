@@ -85,6 +85,8 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                 assertThat(pojo, is(
                         new PreferenceScreenWithHostClassPOJO(
                                 new SearchablePreferenceScreenPOJO(
+                                        null,
+                                        null,
                                         List.of(
                                                 new SearchablePreferencePOJO(
                                                         "parentKey",

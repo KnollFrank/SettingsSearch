@@ -93,6 +93,8 @@ public class Graph2POJOGraphTransformerTest {
                                                                final Class<? extends PreferenceFragmentCompat> host) {
         return new PreferenceScreenWithHostClassPOJO(
                 new SearchablePreferenceScreenPOJO(
+                        "screen title",
+                        "screen summary",
                         List.of(
                                 new SearchablePreferencePOJO(
                                         "parentKey",
@@ -136,7 +138,7 @@ public class Graph2POJOGraphTransformerTest {
 
     private static PreferenceScreenWithHostClassPOJO createDst() {
         return new PreferenceScreenWithHostClassPOJO(
-                new SearchablePreferenceScreenPOJO(List.of()),
+                new SearchablePreferenceScreenPOJO("", "", List.of()),
                 SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class);
     }
 }

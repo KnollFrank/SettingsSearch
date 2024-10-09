@@ -4,7 +4,7 @@ import androidx.preference.Preference;
 
 import java.util.Optional;
 
-class PreferenceSummary {
+public class PreferenceSummary {
 
     public static void setSummary(final Preference preference, final CharSequence summary) {
         preference.setSummary(null);
