@@ -22,6 +22,7 @@ class SearchablePreference2POJOConverter {
                 searchablePreference.getFragment(),
                 searchablePreference.isVisible(),
                 SearchableInfoAttributeConverter.convert2POJO(searchablePreference.getSearchableInfo()),
+                searchablePreference.getExtras(),
                 convert2POJOs(SearchablePreferenceCaster.cast(Preferences.getDirectChildren(searchablePreference))),
                 Optional.of(searchablePreference));
     }

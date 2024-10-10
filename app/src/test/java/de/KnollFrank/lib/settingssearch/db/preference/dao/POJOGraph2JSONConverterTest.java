@@ -3,6 +3,8 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import android.os.Bundle;
+
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
@@ -69,6 +71,7 @@ public class POJOGraph2JSONConverterTest {
                 SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName(),
                 true,
                 null,
+                new Bundle(),
                 List.of(),
                 Optional.empty());
     }

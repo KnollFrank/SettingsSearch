@@ -26,6 +26,7 @@ class SearchablePreferenceFromPOJOConverter {
         searchablePreference.setWidgetLayoutResource(searchablePreferencePOJO.widgetLayoutResId());
         searchablePreference.setFragment(searchablePreferencePOJO.fragment());
         searchablePreference.setVisible(searchablePreferencePOJO.visible());
+        searchablePreference.getExtras().putAll(searchablePreferencePOJO.extras());
         return searchablePreference;
     }
 

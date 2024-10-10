@@ -7,6 +7,8 @@ import static de.KnollFrank.lib.settingssearch.db.preference.converter.Preferenc
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest.getAddPreferences2Screen;
 
+import android.os.Bundle;
+
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
@@ -78,6 +80,7 @@ public class Graph2POJOGraphTransformerTest {
                         SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName(),
                         true,
                         null,
+                        new Bundle(),
                         List.of(),
                         Optional.empty());
         return DefaultDirectedGraph
@@ -107,6 +110,7 @@ public class Graph2POJOGraphTransformerTest {
                                         null,
                                         true,
                                         null,
+                                        new Bundle(),
                                         List.of(
                                                 new SearchablePreferencePOJO(
                                                         null,
@@ -118,6 +122,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         null,
                                                         true,
                                                         null,
+                                                        new Bundle(),
                                                         List.of(),
                                                         Optional.empty()),
                                                 new SearchablePreferencePOJO(
@@ -130,6 +135,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         null,
                                                         true,
                                                         null,
+                                                        new Bundle(),
                                                         List.of(),
                                                         Optional.empty())),
                                         Optional.empty()),

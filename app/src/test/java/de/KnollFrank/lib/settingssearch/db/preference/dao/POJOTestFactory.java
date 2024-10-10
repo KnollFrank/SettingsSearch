@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
+import android.os.Bundle;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +9,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 public class POJOTestFactory {
 
-    public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO() {
+    public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO(final Bundle extras) {
         return new SearchablePreferencePOJO(
                 "some key",
                 4711,
@@ -18,6 +20,7 @@ public class POJOTestFactory {
                 "some fragment",
                 true,
                 "some searchableInfo",
+                extras,
                 List.of(
                         new SearchablePreferencePOJO(
                                 "some key 2",
@@ -29,6 +32,7 @@ public class POJOTestFactory {
                                 "some fragment 2",
                                 true,
                                 "some searchableInfo 2",
+                                new Bundle(),
                                 List.of(),
                                 Optional.empty())),
                 Optional.empty());

@@ -100,6 +100,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                         null,
                                                         true,
                                                         "some searchable info",
+                                                        new Bundle(),
                                                         List.of(
                                                                 new SearchablePreferencePOJO(
                                                                         null,
@@ -111,6 +112,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         null,
                                                                         true,
                                                                         "some searchable info of first child",
+                                                                        new Bundle(),
                                                                         List.of(),
                                                                         Optional.empty()),
                                                                 new SearchablePreferencePOJO(
@@ -123,6 +125,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         null,
                                                                         true,
                                                                         "some searchable info of second child",
+                                                                        new Bundle(),
                                                                         List.of(),
                                                                         Optional.empty())),
                                                         Optional.empty()))),

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import android.os.Bundle;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,6 +19,7 @@ public record SearchablePreferencePOJO(
         String fragment,
         boolean visible,
         String searchableInfo,
+        Bundle extras,
         List<SearchablePreferencePOJO> children,
         @Exclude Optional<SearchablePreference> origin) {
 
