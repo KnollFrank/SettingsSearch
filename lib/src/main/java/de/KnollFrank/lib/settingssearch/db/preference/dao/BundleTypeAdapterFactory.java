@@ -69,16 +69,16 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
                 for (Pair<String, Object> entry : values) {
                     String key = entry.first;
                     Object value = entry.second;
-                    if (value instanceof String) {
-                        bundle.putString(key, (String) value);
-                    } else if (value instanceof Integer) {
-                        bundle.putInt(key, ((Integer) value).intValue());
-                    } else if (value instanceof Long) {
-                        bundle.putLong(key, ((Long) value).longValue());
-                    } else if (value instanceof Double) {
-                        bundle.putDouble(key, ((Double) value).doubleValue());
-                    } else if (value instanceof Parcelable) {
-                        bundle.putParcelable(key, (Parcelable) value);
+                    if (value instanceof String _value) {
+                        bundle.putString(key, _value);
+                    } else if (value instanceof Integer _value) {
+                        bundle.putInt(key, _value);
+                    } else if (value instanceof Long _value) {
+                        bundle.putLong(key, _value);
+                    } else if (value instanceof Double _value) {
+                        bundle.putDouble(key, _value);
+                    } else if (value instanceof Parcelable _value) {
+                        bundle.putParcelable(key, _value);
                     } else if (value instanceof List) {
                         List<Pair<String, Object>> objectValues = (List<Pair<String, Object>>) value;
                         Bundle subBundle = toBundle(objectValues);
@@ -91,19 +91,18 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
             }
 
             private List<Pair<String, Object>> readObject(JsonReader in) throws IOException {
-                List<Pair<String, Object>> object = new ArrayList<Pair<String, Object>>();
+                List<Pair<String, Object>> object = new ArrayList<>();
                 in.beginObject();
                 while (in.peek() != JsonToken.END_OBJECT) {
                     switch (in.peek()) {
-                        case NAME:
+                        case NAME -> {
                             String name = in.nextName();
                             Object value = readValue(in);
-                            object.add(new Pair<String, Object>(name, value));
-                            break;
-                        case END_OBJECT:
-                            break;
-                        default:
-                            throw new IOException("expecting object: " + in.getPath());
+                            object.add(new Pair<>(name, value));
+                        }
+                        case END_OBJECT -> {
+                        }
+                        default -> throw new IOException("expecting object: " + in.getPath());
                     }
                 }
                 in.endObject();
@@ -111,23 +110,18 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
             }
 
             private Object readValue(JsonReader in) throws IOException {
-                switch (in.peek()) {
-                    case BEGIN_ARRAY:
-                        return readArray(in);
-                    case BEGIN_OBJECT:
-                        return readObject(in);
-                    case BOOLEAN:
-                        return in.nextBoolean();
-                    case NULL:
+                return switch (in.peek()) {
+                    case BEGIN_ARRAY -> readArray(in);
+                    case BEGIN_OBJECT -> readObject(in);
+                    case BOOLEAN -> in.nextBoolean();
+                    case NULL -> {
                         in.nextNull();
-                        return null;
-                    case NUMBER:
-                        return readNumber(in);
-                    case STRING:
-                        return in.nextString();
-                    default:
-                        throw new IOException("expecting value: " + in.getPath());
-                }
+                        yield null;
+                    }
+                    case NUMBER -> readNumber(in);
+                    case STRING -> in.nextString();
+                    default -> throw new IOException("expecting value: " + in.getPath());
+                };
             }
 
             private Object readNumber(JsonReader in) throws IOException {
