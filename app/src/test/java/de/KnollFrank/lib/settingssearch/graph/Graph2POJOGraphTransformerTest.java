@@ -92,6 +92,7 @@ public class Graph2POJOGraphTransformerTest {
     private static PreferenceScreenWithHostClassPOJO createSrc(final SearchablePreferencePOJO preferenceConnectingSrc2Dst,
                                                                final Class<? extends PreferenceFragmentCompat> host) {
         return new PreferenceScreenWithHostClassPOJO(
+                1,
                 new SearchablePreferenceScreenPOJO(
                         "screen title",
                         "screen summary",
@@ -138,6 +139,7 @@ public class Graph2POJOGraphTransformerTest {
 
     private static PreferenceScreenWithHostClassPOJO createDst() {
         return new PreferenceScreenWithHostClassPOJO(
+                2,
                 new SearchablePreferenceScreenPOJO(null, null, List.of()),
                 SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class);
     }

@@ -32,9 +32,11 @@ public class Graph2POJOGraphTransformer {
     private static IGraphTransformer<PreferenceScreenWithHostClass, PreferenceEdge, PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> createGraphTransformer() {
         return new IGraphTransformer<>() {
 
+            private int id = 1;
+
             @Override
             public PreferenceScreenWithHostClassPOJO transformNode(final PreferenceScreenWithHostClass node) {
-                return PreferenceScreenWithHostClass2POJOConverter.convert2POJO(node);
+                return PreferenceScreenWithHostClass2POJOConverter.convert2POJO(node, id++);
             }
 
             @Override

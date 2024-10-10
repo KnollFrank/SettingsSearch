@@ -59,11 +59,11 @@ public class PreferenceScreensProvider {
         final var outputStream = new ByteArrayOutputStream();
         SearchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraph, outputStream);
         return SearchablePreferenceScreenGraphDAO.load(
-                convert(outputStream),
+                outputStream2InputStream(outputStream),
                 preferenceManager);
     }
 
-    private static InputStream convert(final OutputStream outputStream) {
+    private static InputStream outputStream2InputStream(final OutputStream outputStream) {
         return new ByteArrayInputStream(outputStream.toString().getBytes(StandardCharsets.UTF_8));
     }
 

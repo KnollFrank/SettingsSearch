@@ -77,16 +77,18 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                         new PreferenceScreenWithHostClass(
                                 getPreferenceScreen(preferenceFragment, activity),
                                 preferenceFragment.getClass());
+                final int id = 4711;
 
                 // When
-                final PreferenceScreenWithHostClassPOJO pojo = PreferenceScreenWithHostClass2POJOConverter.convert2POJO(entity);
+                final PreferenceScreenWithHostClassPOJO pojo = PreferenceScreenWithHostClass2POJOConverter.convert2POJO(entity, id);
 
                 // Then
                 assertThat(pojo, is(
                         new PreferenceScreenWithHostClassPOJO(
+                                id,
                                 new SearchablePreferenceScreenPOJO(
-                                        null,
-                                        null,
+                                        "screen title",
+                                        "screen summary",
                                         List.of(
                                                 new SearchablePreferencePOJO(
                                                         "parentKey",
