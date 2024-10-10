@@ -178,6 +178,8 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            screen.setTitle("screen title");
+            screen.setSummary("screen summary");
             addPreferences2Screen.accept(screen, context);
             setPreferenceScreen(screen);
         }

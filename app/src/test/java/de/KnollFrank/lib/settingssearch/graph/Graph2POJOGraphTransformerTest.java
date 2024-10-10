@@ -138,7 +138,7 @@ public class Graph2POJOGraphTransformerTest {
 
     private static PreferenceScreenWithHostClassPOJO createDst() {
         return new PreferenceScreenWithHostClassPOJO(
-                new SearchablePreferenceScreenPOJO("", "", List.of()),
+                new SearchablePreferenceScreenPOJO(null, null, List.of()),
                 SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class);
     }
 }

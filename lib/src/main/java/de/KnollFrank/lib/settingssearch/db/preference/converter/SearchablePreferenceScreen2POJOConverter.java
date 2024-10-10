@@ -20,6 +20,8 @@ class SearchablePreferenceScreen2POJOConverter {
     }
 
     private static String toStringOrNull(final Optional<CharSequence> preferenceScreen) {
-        return preferenceScreen.map(CharSequence::toString).orElse(null);
+        return preferenceScreen
+                .map(CharSequence::toString)
+                .orElse(null);
     }
 }
