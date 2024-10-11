@@ -17,14 +17,15 @@ public class PreferenceScreenWithHostProvider {
         this.preferenceScreenProvider = preferenceScreenProvider;
     }
 
-    public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment,
-                                                                            final Optional<PreferenceWithHost> src) {
+    public Optional<PreferenceScreenWithHost> getPreferenceScreenWithHostOfFragment(
+            final String fragment,
+            final Optional<PreferenceWithHost> src) {
         return fragments.instantiateAndInitializeFragment(fragment, src) instanceof final PreferenceFragmentCompat preferenceFragment ?
-                Optional.of(getPreferenceScreen(preferenceFragment)) :
+                Optional.of(getPreferenceScreenWithHost(preferenceFragment)) :
                 Optional.empty();
     }
 
-    private PreferenceScreenWithHost getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
+    private PreferenceScreenWithHost getPreferenceScreenWithHost(final PreferenceFragmentCompat preferenceFragment) {
         return new PreferenceScreenWithHost(
                 preferenceScreenProvider.getPreferenceScreen(preferenceFragment),
                 preferenceFragment);

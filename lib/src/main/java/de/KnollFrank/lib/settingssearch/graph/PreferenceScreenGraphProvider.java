@@ -35,7 +35,7 @@ public class PreferenceScreenGraphProvider {
         preferenceScreenGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
         buildPreferenceScreenGraph(
                 preferenceScreenWithHostProvider
-                        .getPreferenceScreenOfFragment(
+                        .getPreferenceScreenWithHostOfFragment(
                                 rootPreferenceFragmentClassName,
                                 Optional.empty())
                         .get());
@@ -76,7 +76,7 @@ public class PreferenceScreenGraphProvider {
                 .flatMap(
                         fragmentConnectedToPreference ->
                                 preferenceScreenWithHostProvider
-                                        .getPreferenceScreenOfFragment(
+                                        .getPreferenceScreenWithHostOfFragment(
                                                 fragmentConnectedToPreference,
                                                 Optional.of(new PreferenceWithHost(preference, host))));
     }

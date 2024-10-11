@@ -63,7 +63,7 @@ class PreferenceScreensMergerTestImplementation {
     private static PreferenceScreen getPreferenceScreen(final Class<? extends PreferenceFragmentCompat> preferenceFragment,
                                                         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
         return preferenceScreenWithHostProvider
-                .getPreferenceScreenOfFragment(
+                .getPreferenceScreenWithHostOfFragment(
                         preferenceFragment.getName(),
                         Optional.empty())
                 .get()
