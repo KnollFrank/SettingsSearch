@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch;
 
-import static de.KnollFrank.lib.settingssearch.common.Preferences.getDirectChildren;
-
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -9,6 +7,7 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.function.Predicate;
 
+import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 
 public class SearchablePreferenceScreenProvider implements PreferenceScreenProvider {
@@ -37,7 +36,7 @@ public class SearchablePreferenceScreenProvider implements PreferenceScreenProvi
 
     private static void removePreferencesFromPreferenceGroup(final PreferenceGroup preferenceGroup,
                                                              final Predicate<Preference> shallRemovePreference) {
-        for (final Preference child : getDirectChildren(preferenceGroup)) {
+        for (final Preference child : Preferences.getDirectChildren(preferenceGroup)) {
             if (shallRemovePreference.test(child)) {
                 preferenceGroup.removePreference(child);
             } else {
