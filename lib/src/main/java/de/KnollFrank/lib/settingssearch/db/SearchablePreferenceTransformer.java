@@ -20,6 +20,7 @@ public class SearchablePreferenceTransformer {
 
     private final PreferenceManager preferenceManager;
     private final PreferenceFragmentCompat host;
+    // FK-TODO: remove instance variable isPreferenceSearchable
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
 
