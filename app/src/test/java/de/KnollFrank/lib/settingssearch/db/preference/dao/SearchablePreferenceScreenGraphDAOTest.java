@@ -2,7 +2,8 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.PreferenceFragmentTemplate;
+
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 
