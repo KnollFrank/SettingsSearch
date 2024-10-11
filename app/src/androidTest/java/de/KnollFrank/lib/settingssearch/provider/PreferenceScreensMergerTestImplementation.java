@@ -40,7 +40,8 @@ class PreferenceScreensMergerTestImplementation {
         final PreferenceScreensMerger preferenceScreensMerger = new PreferenceScreensMerger(fragmentActivity);
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
                 new PreferenceScreenWithHostProvider(
-                        FragmentsFactory.createFragments(fragmentActivity));
+                        FragmentsFactory.createFragments(fragmentActivity),
+                        PreferenceFragmentCompat::getPreferenceScreen);
         final List<PreferenceScreen> screens =
                 screens2Merge
                         .stream()

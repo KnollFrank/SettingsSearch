@@ -31,9 +31,14 @@ public class PreferenceScreenGraphProvider {
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
     }
 
-    public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
+    public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final String rootPreferenceFragmentClassName) {
         preferenceScreenGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
-        buildPreferenceScreenGraph(root);
+        buildPreferenceScreenGraph(
+                preferenceScreenWithHostProvider
+                        .getPreferenceScreenOfFragment(
+                                rootPreferenceFragmentClassName,
+                                Optional.empty())
+                        .get());
         return preferenceScreenGraph;
     }
 

@@ -18,7 +18,6 @@ import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
@@ -49,9 +48,9 @@ public class PreferenceScreensProvider {
         this.preferenceManager = preferenceManager;
     }
 
-    public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final PreferenceFragmentCompat root) {
+    public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final String rootPreferenceFragmentClassName) {
         return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(
-                persistAndReload(getSearchablePreferenceScreenGraph(root)));
+                persistAndReload(getSearchablePreferenceScreenGraph(rootPreferenceFragmentClassName)));
     }
 
     // FK-TODO: remove this test
@@ -67,20 +66,15 @@ public class PreferenceScreensProvider {
         return new ByteArrayInputStream(outputStream.toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    public Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceFragmentCompat root) {
-        final var preferenceScreenGraph = createPreferenceScreenGraph(root);
+    public Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph(final String rootPreferenceFragmentClassName) {
+        final var preferenceScreenGraph =
+                new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
+                        .getPreferenceScreenGraph(rootPreferenceFragmentClassName);
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
         // FK-TODO: transformHost2HostClass() und removeMapFromNodes() in einem einzelnen Schritt durchführen
         return transformHost2HostClass(
                 removeMapFromNodes(
                         transformPreferences2SearchablePreferences(preferenceScreenGraph)));
-    }
-
-    private Graph<PreferenceScreenWithHost, PreferenceEdge> createPreferenceScreenGraph(final PreferenceFragmentCompat root) {
-        return new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
-                .getPreferenceScreenGraph(
-                        PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(
-                                root));
     }
 
     private Graph<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> transformPreferences2SearchablePreferences(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableList;
@@ -37,13 +38,10 @@ public class PreferenceScreensProvider2Test {
     private static void shouldIgnoreNonPreferenceFragments(final FragmentActivity activity) {
         // Given
         final Fragments fragments = FragmentsFactory.createFragments(activity);
-        final PreferenceFragmentCompat root =
-                (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                        FragmentConnectedToNonPreferenceFragment.class.getName(),
-                        Optional.empty());
+        final String rootPreferenceFragmentClassName = FragmentConnectedToNonPreferenceFragment.class.getName();
         final PreferenceScreensProvider preferenceScreensProvider =
                 new PreferenceScreensProvider(
-                        new PreferenceScreenWithHostProvider(fragments),
+                        new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                         (preference, hostOfPreference) -> Optional.empty(),
                         (preference, hostOfPreference) -> true,
                         preferenceScreenGraph -> {
@@ -51,18 +49,27 @@ public class PreferenceScreensProvider2Test {
                         new SearchableInfoAndDialogInfoProvider(
                                 preference -> Optional.empty(),
                                 (preference, hostOfPreference) -> Optional.empty()),
-                        root.getPreferenceManager());
+                        getPreferenceManager(rootPreferenceFragmentClassName, fragments));
 
         // When
         final Set<PreferenceScreenWithHostClass> preferenceScreens =
                 preferenceScreensProvider
-                        .getConnectedPreferenceScreens(root)
+                        .getConnectedPreferenceScreens(rootPreferenceFragmentClassName)
                         .connectedSearchablePreferenceScreens();
 
         // Then
         assertThat(
                 preferenceScreens,
                 is(ImmutableSet.of(getPreferenceScreenByName(preferenceScreens, "first screen"))));
+    }
+
+    public static PreferenceManager getPreferenceManager(final String rootPreferenceFragmentClassName,
+                                                         final Fragments fragments) {
+        return ((PreferenceFragmentCompat) fragments
+                .instantiateAndInitializeFragment(
+                        rootPreferenceFragmentClassName,
+                        Optional.empty()))
+                .getPreferenceManager();
     }
 
     public static class FragmentConnectedToNonPreferenceFragment extends PreferenceFragmentCompat {

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,17 +61,10 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen computeMergedPreferenceScreen(final String rootPreferenceFragment) {
-        return getMergedPreferenceScreen(
-                (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                        rootPreferenceFragment,
-                        Optional.empty()));
+        return computeMergedPreferenceScreen(preferenceScreensProvider.getConnectedPreferenceScreens(rootPreferenceFragment));
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(final PreferenceFragmentCompat root) {
-        return getMergedPreferenceScreen(preferenceScreensProvider.getConnectedPreferenceScreens(root));
-    }
-
-    private MergedPreferenceScreen getMergedPreferenceScreen(final ConnectedSearchablePreferenceScreens screens) {
+    private MergedPreferenceScreen computeMergedPreferenceScreen(final ConnectedSearchablePreferenceScreens screens) {
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =

@@ -50,11 +50,10 @@ public class SearchablePreferenceScreenGraphDAOTest {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
                 final Fragments fragments = getFragments(preferenceFragment, activity);
-                final PreferenceFragmentCompat initializedPreferenceFragment = initializeFragment(preferenceFragment, fragments);
-                final PreferenceManager preferenceManager = initializedPreferenceFragment.getPreferenceManager();
+                final PreferenceManager preferenceManager = initializeFragment(preferenceFragment, fragments).getPreferenceManager();
                 final PreferenceScreensProvider preferenceScreensProvider =
                         new PreferenceScreensProvider(
-                                new PreferenceScreenWithHostProvider(fragments),
+                                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                                 (preference, hostOfPreference) -> Optional.empty(),
                                 (preference, hostOfPreference) -> preference.isVisible(),
                                 _preferenceScreenGraph -> {
@@ -63,7 +62,9 @@ public class SearchablePreferenceScreenGraphDAOTest {
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
                                 preferenceManager);
-                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph = preferenceScreensProvider.getSearchablePreferenceScreenGraph(initializedPreferenceFragment);
+                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph =
+                        preferenceScreensProvider.getSearchablePreferenceScreenGraph(
+                                preferenceFragment.getClass().getName());
                 final var outputStream = new ByteArrayOutputStream();
 
                 // When

@@ -45,10 +45,9 @@ public class Graph2POJOGraphTransformerTest {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceScreenWithHostClass2POJOConverterTest.PreferenceFragmentTemplate(getAddPreferences2Screen());
                 final Fragments fragments = getFragments(preferenceFragment, activity);
-                final PreferenceFragmentCompat initializedPreferenceFragment = initializeFragment(preferenceFragment, fragments);
                 final PreferenceScreensProvider preferenceScreensProvider =
                         new PreferenceScreensProvider(
-                                new PreferenceScreenWithHostProvider(fragments),
+                                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                                 (preference, hostOfPreference) -> Optional.empty(),
                                 (preference, hostOfPreference) -> preference.isVisible(),
                                 _preferenceScreenGraph -> {
@@ -56,8 +55,8 @@ public class Graph2POJOGraphTransformerTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
-                                initializedPreferenceFragment.getPreferenceManager());
-                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph = preferenceScreensProvider.getSearchablePreferenceScreenGraph(initializedPreferenceFragment);
+                                initializeFragment(preferenceFragment, fragments).getPreferenceManager());
+                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph = preferenceScreensProvider.getSearchablePreferenceScreenGraph(preferenceFragment.getClass().getName());
 
                 // When
                 final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph = Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);

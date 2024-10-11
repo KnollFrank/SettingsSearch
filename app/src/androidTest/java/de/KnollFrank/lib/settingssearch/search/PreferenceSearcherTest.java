@@ -489,7 +489,7 @@ public class PreferenceSearcherTest {
                 new MergedPreferenceScreenProvider(
                         fragments,
                         new PreferenceScreensProvider(
-                                new PreferenceScreenWithHostProvider(fragments),
+                                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                                 preferenceConnected2PreferenceFragmentProvider,
                                 new IsPreferenceVisibleAndSearchable(isPreferenceSearchable),
                                 preferenceScreenGraph -> {

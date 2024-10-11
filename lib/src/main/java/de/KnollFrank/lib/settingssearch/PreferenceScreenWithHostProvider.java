@@ -9,15 +9,24 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 public class PreferenceScreenWithHostProvider {
 
     private final Fragments fragments;
+    private final PreferenceScreenProvider preferenceScreenProvider;
 
-    public PreferenceScreenWithHostProvider(final Fragments fragments) {
+    public PreferenceScreenWithHostProvider(final Fragments fragments,
+                                            final PreferenceScreenProvider preferenceScreenProvider) {
         this.fragments = fragments;
+        this.preferenceScreenProvider = preferenceScreenProvider;
     }
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenOfFragment(final String fragment,
                                                                             final Optional<PreferenceWithHost> src) {
         return fragments.instantiateAndInitializeFragment(fragment, src) instanceof final PreferenceFragmentCompat preferenceFragment ?
-                Optional.of(PreferenceScreenWithHostFactory.createPreferenceScreenWithHost(preferenceFragment)) :
+                Optional.of(getPreferenceScreen(preferenceFragment)) :
                 Optional.empty();
+    }
+
+    private PreferenceScreenWithHost getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
+        return new PreferenceScreenWithHost(
+                preferenceScreenProvider.getPreferenceScreen(preferenceFragment),
+                preferenceFragment);
     }
 }
