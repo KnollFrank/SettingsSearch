@@ -41,7 +41,6 @@ public class PreferenceScreensProvider1Test {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                                 (preference, hostOfPreference) -> Optional.empty(),
-                                (preference, hostOfPreference) -> preference.isVisible(),
                                 preferenceScreenGraph -> {
                                 },
                                 new SearchableInfoAndDialogInfoProvider(
@@ -78,7 +77,6 @@ public class PreferenceScreensProvider1Test {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                                 (preference, hostOfPreference) -> Optional.empty(),
-                                (preference, hostOfPreference) -> preference.isVisible(),
                                 preferenceScreenGraph -> {
                                 },
                                 new SearchableInfoAndDialogInfoProvider(

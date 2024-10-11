@@ -11,16 +11,12 @@ import de.KnollFrank.lib.settingssearch.common.IGraphTransformer;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 
 class Preferences2SearchablePreferencesTransformer {
 
-    private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
 
-    public Preferences2SearchablePreferencesTransformer(final IsPreferenceSearchable isPreferenceSearchable,
-                                                        final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
-        this.isPreferenceSearchable = isPreferenceSearchable;
+    public Preferences2SearchablePreferencesTransformer(final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
     }
 
@@ -41,7 +37,6 @@ class Preferences2SearchablePreferencesTransformer {
                         new SearchablePreferenceTransformer(
                                 preferenceScreenWithHost.host().getPreferenceManager(),
                                 preferenceScreenWithHost.host(),
-                                isPreferenceSearchable,
                                 searchableInfoAndDialogInfoProvider);
                 return new SearchablePreferenceScreenWithMapAndHost(
                         transformer.transform2SearchablePreferenceScreen(preferenceScreenWithHost.host().getPreferenceScreen()),

@@ -8,13 +8,13 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.SearchConfigurations;
@@ -152,9 +152,10 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(
                                         fragments,
-                                        PreferenceFragmentCompat::getPreferenceScreen),
+                                        new SearchablePreferenceScreenProvider(
+                                                new IsPreferenceVisibleAndSearchable(
+                                                        isPreferenceSearchable))),
                                 preferenceConnected2PreferenceFragmentProvider,
-                                new IsPreferenceVisibleAndSearchable(isPreferenceSearchable),
                                 preferenceScreenGraphAvailableListener,
                                 new SearchableInfoAndDialogInfoProvider(searchableInfoProvider, searchableDialogInfoOfProvider),
                                 PreferenceManagerProvider.getPreferenceManager(fragments, searchConfiguration.rootPreferenceFragment())),

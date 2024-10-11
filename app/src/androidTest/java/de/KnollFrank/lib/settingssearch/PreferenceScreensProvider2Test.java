@@ -43,7 +43,6 @@ public class PreferenceScreensProvider2Test {
                 new PreferenceScreensProvider(
                         new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                         (preference, hostOfPreference) -> Optional.empty(),
-                        (preference, hostOfPreference) -> true,
                         preferenceScreenGraph -> {
                         },
                         new SearchableInfoAndDialogInfoProvider(

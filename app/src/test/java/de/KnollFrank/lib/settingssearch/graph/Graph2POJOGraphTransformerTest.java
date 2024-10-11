@@ -49,7 +49,6 @@ public class Graph2POJOGraphTransformerTest {
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                                 (preference, hostOfPreference) -> Optional.empty(),
-                                (preference, hostOfPreference) -> preference.isVisible(),
                                 _preferenceScreenGraph -> {
                                 },
                                 new SearchableInfoAndDialogInfoProvider(

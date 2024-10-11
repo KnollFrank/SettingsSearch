@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -480,7 +481,6 @@ public class PreferenceSearcherTest {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         fragmentActivity);
-        final de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider searchableInfoProvider = new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider());
         final SearchableDialogInfoOfProvider searchableDialogInfoOfProvider =
                 new SearchableDialogInfoOfProvider(
                         fragmentInitializer,
@@ -489,13 +489,16 @@ public class PreferenceSearcherTest {
                 new MergedPreferenceScreenProvider(
                         fragments,
                         new PreferenceScreensProvider(
-                                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
+                                new PreferenceScreenWithHostProvider(
+                                        fragments,
+                                        new SearchablePreferenceScreenProvider(
+                                                new IsPreferenceVisibleAndSearchable(
+                                                        isPreferenceSearchable))),
                                 preferenceConnected2PreferenceFragmentProvider,
-                                new IsPreferenceVisibleAndSearchable(isPreferenceSearchable),
                                 preferenceScreenGraph -> {
                                 },
                                 new SearchableInfoAndDialogInfoProvider(
-                                        searchableInfoProvider,
+                                        new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
                                         searchableDialogInfoOfProvider),
                                 PreferenceManagerProvider.getPreferenceManager(fragments, preferenceFragment.getClass())),
                         new PreferenceScreensMerger(fragmentActivity),
