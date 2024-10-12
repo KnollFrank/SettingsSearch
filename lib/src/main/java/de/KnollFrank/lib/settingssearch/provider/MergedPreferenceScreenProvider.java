@@ -19,12 +19,10 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreenProvider {
 
-    private final Fragments fragments;
     private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
     private final SearchableInfoAttribute searchableInfoAttribute;
@@ -34,14 +32,12 @@ public class MergedPreferenceScreenProvider {
 
     private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
 
-    public MergedPreferenceScreenProvider(final Fragments fragments,
-                                          final PreferenceScreensProvider preferenceScreensProvider,
+    public MergedPreferenceScreenProvider(final PreferenceScreensProvider preferenceScreensProvider,
                                           final PreferenceScreensMerger preferenceScreensMerger,
                                           final SearchableInfoAttribute searchableInfoAttribute,
                                           final boolean cacheMergedPreferenceScreens,
                                           final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                           final Context context) {
-        this.fragments = fragments;
         this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
         this.searchableInfoAttribute = searchableInfoAttribute;

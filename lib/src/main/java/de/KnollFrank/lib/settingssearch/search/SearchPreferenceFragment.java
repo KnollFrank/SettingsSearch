@@ -148,7 +148,6 @@ public class SearchPreferenceFragment extends Fragment {
                         preferenceDialogAndSearchableInfoProvider);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
-                        fragments,
                         new PreferenceScreensProvider(
                                 new PreferenceScreenWithHostProvider(
                                         fragments,
