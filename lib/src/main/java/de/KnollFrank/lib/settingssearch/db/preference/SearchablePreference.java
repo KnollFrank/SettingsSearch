@@ -38,4 +38,12 @@ public class SearchablePreference extends PreferenceCategory {
     public Optional<SearchablePreferencePOJO> getOrigin() {
         return origin;
     }
+
+    @Override
+    public String toString() {
+        return "SearchablePreference{" +
+                "searchableInfo=" + searchableInfo +
+                ", origin=" + origin +
+                "} " + super.toString();
+    }
 }
