@@ -52,7 +52,7 @@ public class PreferenceScreensMerger {
 
     private static void moveChildrenOfSrc2Dst(final PreferenceGroup src, final PreferenceGroup dst) {
         Preferences
-                .getDirectChildren(src)
+                .getImmediateChildren(src)
                 .forEach(child -> movePreference2PreferenceGroup(child, dst));
     }
 

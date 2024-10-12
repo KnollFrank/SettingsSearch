@@ -21,7 +21,7 @@ public class Preferences {
 
     public static List<Preference> getAllChildren(final PreferenceGroup preferenceGroup) {
         final ImmutableList.Builder<Preference> childrenBuilder = ImmutableList.builder();
-        for (final Preference child : getDirectChildren(preferenceGroup)) {
+        for (final Preference child : getImmediateChildren(preferenceGroup)) {
             childrenBuilder.add(child);
             if (child instanceof final PreferenceGroup childPreferenceGroup) {
                 childrenBuilder.addAll(getAllChildren(childPreferenceGroup));
@@ -30,11 +30,11 @@ public class Preferences {
         return childrenBuilder.build();
     }
 
-    public static List<Preference> getDirectChildren(final PreferenceGroup preferenceGroup) {
-        return ImmutableList.copyOf(getDirectChildrenIterator(preferenceGroup));
+    public static List<Preference> getImmediateChildren(final PreferenceGroup preferenceGroup) {
+        return ImmutableList.copyOf(getImmediateChildrenIterator(preferenceGroup));
     }
 
-    private static Iterator<Preference> getDirectChildrenIterator(final PreferenceGroup preferenceGroup) {
+    private static Iterator<Preference> getImmediateChildrenIterator(final PreferenceGroup preferenceGroup) {
         return new Iterator<>() {
 
             private int i = 0;

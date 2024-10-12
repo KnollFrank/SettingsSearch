@@ -5,14 +5,17 @@ import static org.hamcrest.Matchers.is;
 
 import android.os.Bundle;
 
+import androidx.preference.Preference;
 import androidx.test.core.app.ActivityScenario;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.List;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -30,7 +33,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
                 final String value = "someValue";
                 final SearchablePreferencePOJO pojo =
                         POJOTestFactory.createSomeSearchablePreferencePOJO(
-                                createSomeBundle(key, value));
+                                createBundle(key, value));
 
                 // When
                 final SearchablePreference searchablePreference = SearchablePreferenceFromPOJOConverter.convertFromPOJO(pojo, activity);
@@ -46,11 +49,12 @@ public class SearchablePreferenceFromPOJOConverterTest {
                 assertThat(searchablePreference.isVisible(), is(pojo.visible()));
                 assertThat(searchablePreference.getSearchableInfo(), is(Optional.ofNullable(pojo.searchableInfo())));
                 assertThat(searchablePreference.getExtras().get(key), is(value));
+                final List<Preference> allChildren = Preferences.getAllChildren(searchablePreference);
             });
         }
     }
 
-    private static Bundle createSomeBundle(final String key, final String value) {
+    private static Bundle createBundle(final String key, final String value) {
         final Bundle bundle = new Bundle();
         bundle.putString(key, value);
         return bundle;

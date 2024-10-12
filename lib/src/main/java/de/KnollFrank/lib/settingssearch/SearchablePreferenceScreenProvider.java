@@ -36,7 +36,7 @@ public class SearchablePreferenceScreenProvider implements PreferenceScreenProvi
 
     private static void removePreferencesFromPreferenceGroup(final PreferenceGroup preferenceGroup,
                                                              final Predicate<Preference> shallRemovePreference) {
-        for (final Preference child : Preferences.getDirectChildren(preferenceGroup)) {
+        for (final Preference child : Preferences.getImmediateChildren(preferenceGroup)) {
             if (shallRemovePreference.test(child)) {
                 preferenceGroup.removePreference(child);
             } else {

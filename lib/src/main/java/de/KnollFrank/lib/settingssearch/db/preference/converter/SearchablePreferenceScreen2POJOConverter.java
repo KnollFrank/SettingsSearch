@@ -16,7 +16,7 @@ class SearchablePreferenceScreen2POJOConverter {
                 toStringOrNull(PreferenceTitle.getOptionalTitle(preferenceScreen)),
                 toStringOrNull(PreferenceSummary.getOptionalSummary(preferenceScreen)),
                 SearchablePreference2POJOConverter.convert2POJOs(
-                        SearchablePreferenceCaster.cast(Preferences.getDirectChildren(preferenceScreen))));
+                        SearchablePreferenceCaster.cast(Preferences.getImmediateChildren(preferenceScreen))));
     }
 
     private static String toStringOrNull(final Optional<CharSequence> preferenceScreen) {

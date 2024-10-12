@@ -27,6 +27,7 @@ class SearchablePreferenceFromPOJOConverter {
         searchablePreference.setFragment(searchablePreferencePOJO.fragment());
         searchablePreference.setVisible(searchablePreferencePOJO.visible());
         searchablePreference.getExtras().putAll(searchablePreferencePOJO.extras());
+        // FK-FIXME: die Kinder (Children) und Kindeskinder von searchablePreferencePOJO müssen ebenso konvertiert werden und in searchablePreference mit addPreference() dazugefügt werden.
         return searchablePreference;
     }
 

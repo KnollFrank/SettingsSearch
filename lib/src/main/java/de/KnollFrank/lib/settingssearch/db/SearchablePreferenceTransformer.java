@@ -38,7 +38,7 @@ public class SearchablePreferenceTransformer {
     private void copyPreferences(final PreferenceGroup src,
                                  final PreferenceGroup dst,
                                  final ImmutableMap.Builder<Preference, SearchablePreference> searchablePreferenceByPreferenceBuilder) {
-        for (final Preference child : Preferences.getDirectChildren(src)) {
+        for (final Preference child : Preferences.getImmediateChildren(src)) {
             final SearchablePreference searchablePreference = createSearchablePreferenceWithAttributes(child);
             searchablePreferenceByPreferenceBuilder.put(child, searchablePreference);
             dst.addPreference(searchablePreference);
