@@ -5,17 +5,16 @@ import static org.hamcrest.Matchers.is;
 
 import android.os.Bundle;
 
-import androidx.preference.Preference;
 import androidx.test.core.app.ActivityScenario;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -39,19 +38,51 @@ public class SearchablePreferenceFromPOJOConverterTest {
                 final SearchablePreference searchablePreference = SearchablePreferenceFromPOJOConverter.convertFromPOJO(pojo, activity);
 
                 // Then
-                assertThat(searchablePreference.getKey(), is(pojo.key()));
-                // FK-TODO: handle correctly: assertThat(actual.getIcon(), is(expected.iconResId()));
-                assertThat(searchablePreference.getLayoutResource(), is(pojo.layoutResId()));
-                assertThat(searchablePreference.getSummary(), is(pojo.summary()));
-                assertThat(searchablePreference.getTitle(), is(pojo.title()));
-                assertThat(searchablePreference.getWidgetLayoutResource(), is(pojo.widgetLayoutResId()));
-                assertThat(searchablePreference.getFragment(), is(pojo.fragment()));
-                assertThat(searchablePreference.isVisible(), is(pojo.visible()));
-                assertThat(searchablePreference.getSearchableInfo(), is(Optional.ofNullable(pojo.searchableInfo())));
-                assertThat(searchablePreference.getExtras().get(key), is(value));
-                final List<Preference> allChildren = Preferences.getAllChildren(searchablePreference);
+                assertEquals(searchablePreference, pojo);
             });
         }
+    }
+
+    private static void assertEquals(final SearchablePreference actual, final SearchablePreferencePOJO expected) {
+        assertThat(actual.getKey(), is(expected.key()));
+        // FK-TODO: handle correctly: assertThat(actual.getIcon(), is(expected.iconResId()));
+        assertThat(actual.getLayoutResource(), is(expected.layoutResId()));
+        assertThat(actual.getSummary(), is(expected.summary()));
+        assertThat(actual.getTitle(), is(expected.title()));
+        assertThat(actual.getWidgetLayoutResource(), is(expected.widgetLayoutResId()));
+        assertThat(actual.getFragment(), is(expected.fragment()));
+        assertThat(actual.isVisible(), is(expected.visible()));
+        assertThat(actual.getSearchableInfo(), is(Optional.ofNullable(expected.searchableInfo())));
+        assertThat(equalBundles(actual.getExtras(), expected.extras()), is(true));
+    }
+
+    // adapted from https://stackoverflow.com/a/13238729
+    private static boolean equalBundles(final Bundle one, final Bundle two) {
+        if (one.size() != two.size())
+            return false;
+
+        Set<String> setOne = new HashSet<>(one.keySet());
+        setOne.addAll(two.keySet());
+        Object valueOne;
+        Object valueTwo;
+
+        for (String key : setOne) {
+            if (!one.containsKey(key) || !two.containsKey(key))
+                return false;
+
+            valueOne = one.get(key);
+            valueTwo = two.get(key);
+            if (valueOne instanceof Bundle && valueTwo instanceof Bundle &&
+                    !equalBundles((Bundle) valueOne, (Bundle) valueTwo)) {
+                return false;
+            } else if (valueOne == null) {
+                if (valueTwo != null)
+                    return false;
+            } else if (!valueOne.equals(valueTwo))
+                return false;
+        }
+
+        return true;
     }
 
     private static Bundle createBundle(final String key, final String value) {
