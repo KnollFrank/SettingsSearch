@@ -12,9 +12,10 @@ class SearchablePreferenceScreenFromPOJOConverter {
         final PreferenceScreen preferenceScreen = preferenceManager.createPreferenceScreen(preferenceManager.getContext());
         preferenceScreen.setTitle(searchablePreferenceScreenPOJO.title());
         preferenceScreen.setSummary(searchablePreferenceScreenPOJO.summary());
-        SearchablePreferenceFromPOJOConverter
-                .convertFromPOJOs(searchablePreferenceScreenPOJO.children(), preferenceManager.getContext())
-                .forEach(preferenceScreen::addPreference);
+        SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
+                searchablePreferenceScreenPOJO.children(),
+                preferenceScreen,
+                preferenceManager.getContext());
         return preferenceScreen;
     }
 }
