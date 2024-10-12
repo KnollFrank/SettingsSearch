@@ -42,7 +42,8 @@ public class SearchablePreference extends PreferenceCategory {
     @Override
     public String toString() {
         return "SearchablePreference{" +
-                "searchableInfo=" + searchableInfo +
+                "key=" + getKey() +
+                ", searchableInfo=" + searchableInfo +
                 ", origin=" + origin +
                 "} " + super.toString();
     }
