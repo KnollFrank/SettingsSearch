@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -30,10 +31,12 @@ public class SearchPreferenceFragments {
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
+    private final SearchablePreferenceScreenGraphDAOProvider.Mode mode;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
-                                                           final FragmentManager fragmentManager) {
-        return new SearchPreferenceFragmentsBuilder(searchConfiguration, fragmentManager);
+                                                           final FragmentManager fragmentManager,
+                                                           final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
+        return new SearchPreferenceFragmentsBuilder(searchConfiguration, fragmentManager, mode);
     }
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
@@ -45,7 +48,8 @@ public class SearchPreferenceFragments {
                                         final ShowPreferencePath showPreferencePath,
                                         final PrepareShow prepareShow,
                                         final FragmentManager fragmentManager,
-                                        final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
+                                        final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                                        final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -56,6 +60,7 @@ public class SearchPreferenceFragments {
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
+        this.mode = mode;
     }
 
     public void showSearchPreferenceFragment() {
@@ -76,7 +81,8 @@ public class SearchPreferenceFragments {
                         preferenceDialogAndSearchableInfoProvider,
                         preferenceScreenGraphAvailableListener,
                         prepareShow,
-                        preferenceConnected2PreferenceFragmentProvider),
+                        preferenceConnected2PreferenceFragmentProvider,
+                        mode),
                 onFragmentShown,
                 true,
                 searchConfiguration.fragmentContainerViewId(),

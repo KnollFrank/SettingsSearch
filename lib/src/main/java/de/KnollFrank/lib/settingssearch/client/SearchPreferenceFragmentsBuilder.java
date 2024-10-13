@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -28,11 +29,14 @@ public class SearchPreferenceFragmentsBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
+    private final SearchablePreferenceScreenGraphDAOProvider.Mode mode;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
-                                               final FragmentManager fragmentManager) {
+                                               final FragmentManager fragmentManager,
+                                               final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
+        this.mode = mode;
     }
 
     public SearchPreferenceFragmentsBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
@@ -86,6 +90,7 @@ public class SearchPreferenceFragmentsBuilder {
                 showPreferencePath,
                 prepareShow,
                 fragmentManager,
-                preferenceConnected2PreferenceFragmentProvider);
+                preferenceConnected2PreferenceFragmentProvider,
+                mode);
     }
 }

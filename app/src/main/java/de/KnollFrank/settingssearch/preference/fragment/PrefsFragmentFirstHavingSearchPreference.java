@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -63,7 +64,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         return SearchPreferenceFragments
                 .builder(
                         new SearchConfiguration(getId(), Optional.empty(), getClass()),
-                        getParentFragmentManager())
+                        getParentFragmentManager(),
+                        SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceDialogAndSearchableInfoProvider(
                         new PreferenceDialogAndSearchableInfoProvider() {

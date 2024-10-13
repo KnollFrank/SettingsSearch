@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreenProvider {
@@ -46,18 +47,18 @@ public class MergedPreferenceScreenProvider {
         this.context = context;
     }
 
-    public MergedPreferenceScreen getMergedPreferenceScreen(final String rootPreferenceFragment) {
+    public MergedPreferenceScreen getMergedPreferenceScreen(final String rootPreferenceFragment, final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
         if (!cacheMergedPreferenceScreens) {
-            return computeMergedPreferenceScreen(rootPreferenceFragment);
+            return computeMergedPreferenceScreen(rootPreferenceFragment, mode);
         }
         if (!mergedPreferenceScreenByFragment.containsKey(rootPreferenceFragment)) {
-            mergedPreferenceScreenByFragment.put(rootPreferenceFragment, computeMergedPreferenceScreen(rootPreferenceFragment));
+            mergedPreferenceScreenByFragment.put(rootPreferenceFragment, computeMergedPreferenceScreen(rootPreferenceFragment, mode));
         }
         return mergedPreferenceScreenByFragment.get(rootPreferenceFragment);
     }
 
-    private MergedPreferenceScreen computeMergedPreferenceScreen(final String rootPreferenceFragment) {
-        return computeMergedPreferenceScreen(preferenceScreensProvider.getConnectedPreferenceScreens(rootPreferenceFragment));
+    private MergedPreferenceScreen computeMergedPreferenceScreen(final String rootPreferenceFragment, final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
+        return computeMergedPreferenceScreen(preferenceScreensProvider.getConnectedPreferenceScreens(rootPreferenceFragment, mode));
     }
 
     private MergedPreferenceScreen computeMergedPreferenceScreen(final ConnectedSearchablePreferenceScreens screens) {

@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
+
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 
@@ -38,7 +39,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -52,18 +53,17 @@ public class SearchablePreferenceScreenGraphDAOTest {
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
                 final Fragments fragments = getFragments(preferenceFragment, activity);
                 final PreferenceManager preferenceManager = initializeFragment(preferenceFragment, fragments).getPreferenceManager();
-                final PreferenceScreensProvider preferenceScreensProvider =
-                        new PreferenceScreensProvider(
+                final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
+                        new SearchablePreferenceScreenGraphProvider(
                                 new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
                                 (preference, hostOfPreference) -> Optional.empty(),
                                 _preferenceScreenGraph -> {
                                 },
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
-                                        (preference, hostOfPreference) -> Optional.empty()),
-                                preferenceManager);
+                                        (preference, hostOfPreference) -> Optional.empty()));
                 final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph =
-                        preferenceScreensProvider.getSearchablePreferenceScreenGraph(
+                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
                                 preferenceFragment.getClass().getName());
                 final var outputStream = new ByteArrayOutputStream();
 

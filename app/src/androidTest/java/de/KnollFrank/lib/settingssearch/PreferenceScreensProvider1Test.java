@@ -26,6 +26,7 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 public class PreferenceScreensProvider1Test {
@@ -51,7 +52,7 @@ public class PreferenceScreensProvider1Test {
                 // When
                 final Set<PreferenceScreenWithHostClass> preferenceScreens =
                         preferenceScreensProvider
-                                .getConnectedPreferenceScreens(rootPreferenceFragmentClassName)
+                                .getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH)
                                 .connectedSearchablePreferenceScreens();
 
                 // Then
@@ -86,7 +87,7 @@ public class PreferenceScreensProvider1Test {
 
                 // When
                 final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens =
-                        preferenceScreensProvider.getConnectedPreferenceScreens(rootPreferenceFragmentClassName);
+                        preferenceScreensProvider.getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH);
 
                 // Then
                 final Preference preferenceOfFragment2PointingToFragment3 =
