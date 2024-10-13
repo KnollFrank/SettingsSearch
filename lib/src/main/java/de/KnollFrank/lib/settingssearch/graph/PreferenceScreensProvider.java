@@ -52,6 +52,7 @@ public class PreferenceScreensProvider {
     private Graph<PreferenceScreenWithHostClass, PreferenceEdge> persistAndReload(final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph) {
         final var outputStream = new ByteArrayOutputStream();
         SearchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraph, outputStream);
+        // FK-TODO: Speichern im assets- oder res-Ordner und Laden trennen.
         return SearchablePreferenceScreenGraphDAO.load(
                 outputStream2InputStream(outputStream),
                 preferenceManager);
