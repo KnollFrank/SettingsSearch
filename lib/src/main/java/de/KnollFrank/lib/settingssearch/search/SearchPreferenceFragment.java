@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RawRes;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import java.util.Optional;
@@ -14,10 +16,9 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.SearchConfigurations;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -27,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
 import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
@@ -55,6 +57,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final PrepareShow prepareShow;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final SearchablePreferenceScreenGraphDAOProvider.Mode mode;
+    private final @RawRes int searchablePreferenceScreenGraph;
 
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
@@ -67,7 +70,8 @@ public class SearchPreferenceFragment extends Fragment {
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final PrepareShow prepareShow,
             final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-            final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
+            final SearchablePreferenceScreenGraphDAOProvider.Mode mode,
+            final @RawRes int searchablePreferenceScreenGraph) {
         final SearchPreferenceFragment searchPreferenceFragment =
                 new SearchPreferenceFragment(
                         isPreferenceSearchable,
@@ -79,7 +83,8 @@ public class SearchPreferenceFragment extends Fragment {
                         preferenceScreenGraphAvailableListener,
                         prepareShow,
                         preferenceConnected2PreferenceFragmentProvider,
-                        mode);
+                        mode,
+                        searchablePreferenceScreenGraph);
         searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
         return searchPreferenceFragment;
     }
@@ -93,7 +98,8 @@ public class SearchPreferenceFragment extends Fragment {
                                      final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                      final PrepareShow prepareShow,
                                      final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                     final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
+                                     final SearchablePreferenceScreenGraphDAOProvider.Mode mode,
+                                     final @RawRes int searchablePreferenceScreenGraph) {
         super(R.layout.searchpreference_fragment);
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -105,6 +111,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.prepareShow = prepareShow;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.mode = mode;
+        this.searchablePreferenceScreenGraph = searchablePreferenceScreenGraph;
     }
 
     public SearchPreferenceFragment() {
@@ -120,7 +127,8 @@ public class SearchPreferenceFragment extends Fragment {
                 preferenceFragmentCompat -> {
                 },
                 (preference, hostOfPreference) -> Optional.empty(),
-                SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH);
+                SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH,
+                ResourcesCompat.ID_NULL);
     }
 
     @Override
@@ -170,7 +178,7 @@ public class SearchPreferenceFragment extends Fragment {
                         true,
                         fragmentFactoryAndInitializer,
                         context);
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment().getName(), mode);
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchConfiguration.rootPreferenceFragment().getName(), mode, searchablePreferenceScreenGraph);
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,

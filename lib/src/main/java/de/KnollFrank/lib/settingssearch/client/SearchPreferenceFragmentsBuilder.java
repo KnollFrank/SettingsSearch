@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import androidx.annotation.RawRes;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Optional;
@@ -30,13 +31,16 @@ public class SearchPreferenceFragmentsBuilder {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
     private final SearchablePreferenceScreenGraphDAOProvider.Mode mode;
+    private final @RawRes int searchablePreferenceScreenGraph;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
-                                               final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
+                                               final SearchablePreferenceScreenGraphDAOProvider.Mode mode,
+                                               final @RawRes int searchablePreferenceScreenGraph) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.mode = mode;
+        this.searchablePreferenceScreenGraph = searchablePreferenceScreenGraph;
     }
 
     public SearchPreferenceFragmentsBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
@@ -91,6 +95,7 @@ public class SearchPreferenceFragmentsBuilder {
                 prepareShow,
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
-                mode);
+                mode,
+                searchablePreferenceScreenGraph);
     }
 }

@@ -65,7 +65,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                 .builder(
                         new SearchConfiguration(getId(), Optional.empty(), getClass()),
                         getParentFragmentManager(),
-                        SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH)
+                        SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH,
+                        R.raw.searchable_preference_screen_graph)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceDialogAndSearchableInfoProvider(
                         new PreferenceDialogAndSearchableInfoProvider() {

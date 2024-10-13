@@ -80,7 +80,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 .builder(
                         createSearchConfiguration(PrefsFragmentFirst.class),
                         getSupportFragmentManager(),
-                        SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH)
+                        SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH,
+                        R.raw.searchable_preference_screen_graph)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceConnected2PreferenceFragmentProvider(
                         new PreferenceConnected2PreferenceFragmentProvider() {

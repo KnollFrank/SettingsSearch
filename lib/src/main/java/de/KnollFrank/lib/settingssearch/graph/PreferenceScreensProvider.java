@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import androidx.annotation.RawRes;
 import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
@@ -31,9 +32,11 @@ public class PreferenceScreensProvider {
         this.searchablePreferenceScreenGraphDAOProvider = new SearchablePreferenceScreenGraphDAOProvider(searchablePreferenceScreenGraphProvider, preferenceManager);
     }
 
-    public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final String rootPreferenceFragmentClassName, final SearchablePreferenceScreenGraphDAOProvider.Mode mode) {
-        final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph =
-                searchablePreferenceScreenGraphDAOProvider.getSearchablePreferenceScreenGraph(rootPreferenceFragmentClassName, mode);
-        return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(searchablePreferenceScreenGraph);
+    public ConnectedSearchablePreferenceScreens getConnectedPreferenceScreens(final String rootPreferenceFragmentClassName,
+                                                                              final SearchablePreferenceScreenGraphDAOProvider.Mode mode,
+                                                                              final @RawRes int searchablePreferenceScreenGraph) {
+        final Graph<PreferenceScreenWithHostClass, PreferenceEdge> _searchablePreferenceScreenGraph =
+                searchablePreferenceScreenGraphDAOProvider.getSearchablePreferenceScreenGraph(rootPreferenceFragmentClassName, mode, searchablePreferenceScreenGraph);
+        return ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(_searchablePreferenceScreenGraph);
     }
 }
