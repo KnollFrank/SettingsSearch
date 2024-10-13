@@ -34,26 +34,45 @@ public class SearchablePreferenceScreenGraphDAOProvider {
 
     // FK-TODO: mode nicht als Methodenparameter übergenben, sondern im Konstruktor übergeben.
     public Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph(final String rootPreferenceFragmentClassName, final Mode mode) {
+        final String fileName = "searchablePreferenceScreenGraph.json";
         return switch (mode) {
-            case COMPUTE_AND_PERSIST_GRAPH -> {
-                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph = searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(rootPreferenceFragmentClassName);
-                final FileOutputStream fileOutputStream;
-                try {
-                    fileOutputStream = preferenceManager.getContext().openFileOutput("someFile.json", Context.MODE_PRIVATE);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-                SearchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraph, fileOutputStream);
-                // then copy /data/data/de.KnollFrank.settingssearch/files/someFile.json from device to /home/frankknoll/AndroidStudioProjects/SettingsSearch/app/src/main/assets
-                yield searchablePreferenceScreenGraph;
-            }
-            case LOAD_GRAPH -> {
-                final InputStream fileInputStream =
-                        AssetsUtils.open(
-                                preferenceManager.getContext().getAssets(),
-                                new File("someFile.json"));
-                yield SearchablePreferenceScreenGraphDAO.load(fileInputStream, preferenceManager);
-            }
+            case COMPUTE_AND_PERSIST_GRAPH ->
+                    computeAndPersistGraph(rootPreferenceFragmentClassName, fileName);
+            case LOAD_GRAPH -> loadGraph(fileName);
         };
     }
+
+    private Graph<PreferenceScreenWithHostClass, PreferenceEdge> computeAndPersistGraph(final String rootPreferenceFragmentClassName, final String fileName) {
+        final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph = searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(rootPreferenceFragmentClassName);
+        persist(searchablePreferenceScreenGraph, fileName);
+        return searchablePreferenceScreenGraph;
+    }
+
+    private void persist(final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph, final String fileName) {
+        SearchablePreferenceScreenGraphDAO.persist(
+                searchablePreferenceScreenGraph,
+                getFileOutputStream(fileName));
+        // then copy /data/data/de.KnollFrank.settingssearch/files/searchablePreferenceScreenGraph.json from device to /home/frankknoll/AndroidStudioProjects/SettingsSearch/app/src/main/assets
+    }
+
+    private FileOutputStream getFileOutputStream(final String fileName) {
+        try {
+            return preferenceManager.getContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+        } catch (final FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Graph<PreferenceScreenWithHostClass, PreferenceEdge> loadGraph(final String fileName) {
+        return SearchablePreferenceScreenGraphDAO.load(
+                getInputStream(fileName),
+                preferenceManager);
+    }
+
+    private InputStream getInputStream(final String fileName) {
+        return AssetsUtils.open(
+                preferenceManager.getContext().getAssets(),
+                new File(fileName));
+    }
+
 }
