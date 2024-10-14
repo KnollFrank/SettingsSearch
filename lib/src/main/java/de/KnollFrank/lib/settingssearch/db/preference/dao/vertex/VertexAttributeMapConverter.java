@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao.vertex;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.AttributeMapConverter.attribute2AttributeMap;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.AttributeMapConverter.attributeMap2Attribute;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.VertexAttributeConverter.attribute2Vertex;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.VertexAttributeConverter.vertex2Attribute;
 
@@ -13,11 +11,13 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithH
 
 public class VertexAttributeMapConverter {
 
+    private static final AttributeMapConverter attributeMapConverter = new AttributeMapConverter("preferenceScreenWithHostClass");
+
     public static Map<String, Attribute> vertex2AttributeMap(final PreferenceScreenWithHostClassPOJO vertex) {
-        return attribute2AttributeMap(vertex2Attribute(vertex));
+        return attributeMapConverter.attribute2AttributeMap(vertex2Attribute(vertex));
     }
 
     public static PreferenceScreenWithHostClassPOJO attributeMap2Vertex(final Map<String, Attribute> attributeMap) {
-        return attribute2Vertex(attributeMap2Attribute(attributeMap));
+        return attribute2Vertex(attributeMapConverter.attributeMap2Attribute(attributeMap));
     }
 }

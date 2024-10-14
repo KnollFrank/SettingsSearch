@@ -12,20 +12,22 @@ import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.common.IOUtils;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.JsonDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.AttributeMapConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
 public class EdgeAttributeMapConverter {
 
+    private static final AttributeMapConverter attributeMapConverter = new AttributeMapConverter("searchablePreference");
+
     public static SearchablePreferencePOJOEdge attributeMap2Edge(final Map<String, Attribute> attributeMap) {
         return new SearchablePreferencePOJOEdge(
                 json2SearchablePreferencePOJO(
-                        attributeMap.get("searchablePreference").getValue()));
+                        attributeMapConverter.attributeMap2Attribute(attributeMap).getValue()));
     }
 
     public static Map<String, Attribute> edge2AttributeMap(final SearchablePreferencePOJOEdge edge) {
-        return Map.of(
-                "searchablePreference",
+        return attributeMapConverter.attribute2AttributeMap(
                 DefaultAttribute.createAttribute(convert2JSON(edge.preference)));
     }
 
