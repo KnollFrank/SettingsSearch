@@ -7,6 +7,7 @@ import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelp
 
 import android.os.Bundle;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -54,7 +55,7 @@ public class PreferenceScreensProvider2Test {
         // When
         final Set<PreferenceScreenWithHostClass> preferenceScreens =
                 preferenceScreensProvider
-                        .getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH)
+                        .getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH, ResourcesCompat.ID_NULL)
                         .connectedSearchablePreferenceScreens();
 
         // Then

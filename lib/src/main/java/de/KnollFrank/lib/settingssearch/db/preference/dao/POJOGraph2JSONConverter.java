@@ -12,6 +12,7 @@ import java.io.Writer;
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.common.IOUtils;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.VertexAttributeMapConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -27,7 +28,7 @@ class POJOGraph2JSONConverter {
     private static JSONExporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getJSONExporter() {
         final JSONExporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> exporter = new JSONExporter<>();
         exporter.setVertexIdProvider(new IntegerIdProvider<>(1));
-        exporter.setVertexAttributeProvider(VertexAttribute::vertex2Attributes);
+        exporter.setVertexAttributeProvider(VertexAttributeMapConverter::vertex2AttributeMap);
         exporter.setEdgeAttributeProvider(POJOGraph2JSONConverter::getEdgeAttribute);
         return exporter;
     }

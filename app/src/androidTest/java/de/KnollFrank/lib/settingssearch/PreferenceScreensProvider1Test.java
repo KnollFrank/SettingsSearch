@@ -9,6 +9,7 @@ import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelp
 
 import android.os.Bundle;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
@@ -52,7 +53,7 @@ public class PreferenceScreensProvider1Test {
                 // When
                 final Set<PreferenceScreenWithHostClass> preferenceScreens =
                         preferenceScreensProvider
-                                .getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH)
+                                .getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH, ResourcesCompat.ID_NULL)
                                 .connectedSearchablePreferenceScreens();
 
                 // Then
@@ -87,7 +88,7 @@ public class PreferenceScreensProvider1Test {
 
                 // When
                 final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens =
-                        preferenceScreensProvider.getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH);
+                        preferenceScreensProvider.getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH, ResourcesCompat.ID_NULL);
 
                 // Then
                 final Preference preferenceOfFragment2PointingToFragment3 =

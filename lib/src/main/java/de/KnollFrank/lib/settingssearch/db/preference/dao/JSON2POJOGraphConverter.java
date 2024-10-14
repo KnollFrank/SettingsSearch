@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.VertexAttributeMapConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -24,7 +25,7 @@ class JSON2POJOGraphConverter {
 
     private static JSONImporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getJSONImporter() {
         final JSONImporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> importer = new JSONImporter<>();
-        importer.setVertexWithAttributesFactory((vertexIdentifier, attrs) -> VertexAttribute.attributes2Vertex(attrs));
+        importer.setVertexWithAttributesFactory((vertexIdentifier, attrs) -> VertexAttributeMapConverter.attributeMap2Vertex(attrs));
         importer.setEdgeWithAttributesFactory(JSON2POJOGraphConverter::getEdgeWithAttributes);
         return importer;
     }

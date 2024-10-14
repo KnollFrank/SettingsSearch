@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.not;
 
 import android.content.Context;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
@@ -29,7 +30,6 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -37,6 +37,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
@@ -506,7 +507,7 @@ public class PreferenceSearcherTest {
                         false,
                         fragmentFactoryAndInitializer,
                         fragmentActivity);
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName(), SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH);
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName(), SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH, ResourcesCompat.ID_NULL);
     }
 
     static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {

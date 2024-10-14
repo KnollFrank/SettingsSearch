@@ -11,7 +11,7 @@ import java.io.Reader;
 
 import de.KnollFrank.lib.settingssearch.common.IOUtils;
 
-class JsonDAO {
+public class JsonDAO {
 
     public static <T> void persist(final T source, final OutputStream sink) {
         IOUtils.persist(toJson(source), sink);
