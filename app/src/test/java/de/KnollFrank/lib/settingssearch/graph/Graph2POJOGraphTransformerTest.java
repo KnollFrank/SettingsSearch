@@ -33,7 +33,6 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 @RunWith(RobolectricTestRunner.class)
 public class Graph2POJOGraphTransformerTest {
 
-    // FK-TODO: DRY with SearchablePreferenceScreenGraphDAOTest
     @Test
     public void shouldTransformGraph2POJOGraph() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
