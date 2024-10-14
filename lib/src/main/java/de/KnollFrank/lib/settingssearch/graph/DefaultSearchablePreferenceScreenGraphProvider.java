@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
 import static de.KnollFrank.lib.settingssearch.graph.Host2HostClassTransformer.transformHost2HostClass;
-import static de.KnollFrank.lib.settingssearch.graph.MapFromNodesRemover.removeMapFromNodes;
 
 import org.jgrapht.Graph;
 
@@ -39,14 +38,12 @@ public class DefaultSearchablePreferenceScreenGraphProvider implements Searchabl
                 new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
                         .getPreferenceScreenGraph(rootPreferenceFragmentClassName);
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
-        // FK-TODO: transformHost2HostClass() und removeMapFromNodes() in einem einzelnen Schritt durchführen
         return transformHost2HostClass(
-                removeMapFromNodes(
-                        transformPreferences2SearchablePreferences(
-                                preferenceScreenGraph)));
+                transformPreferences2SearchablePreferences(
+                        preferenceScreenGraph));
     }
 
-    private Graph<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> transformPreferences2SearchablePreferences(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+    private Graph<PreferenceScreenWithHost, PreferenceEdge> transformPreferences2SearchablePreferences(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return new Preferences2SearchablePreferencesTransformer(searchableInfoAndDialogInfoProvider)
                 .transformPreferences2SearchablePreferences(preferenceScreenGraph);
     }
