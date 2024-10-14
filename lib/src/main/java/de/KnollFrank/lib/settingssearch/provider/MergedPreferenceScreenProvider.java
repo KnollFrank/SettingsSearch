@@ -2,13 +2,11 @@ package de.KnollFrank.lib.settingssearch.provider;
 
 import android.content.Context;
 
-import androidx.annotation.RawRes;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,27 +18,24 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreenProvider {
 
-    private final PreferenceScreensProvider preferenceScreensProvider;
     private final PreferenceScreensMerger preferenceScreensMerger;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final boolean cacheMergedPreferenceScreens;
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final Context context;
 
-    private static final Map<String, MergedPreferenceScreen> mergedPreferenceScreenByFragment = new HashMap<>();
+    private static MergedPreferenceScreen mergedPreferenceScreen;
 
-    public MergedPreferenceScreenProvider(final PreferenceScreensProvider preferenceScreensProvider,
-                                          final PreferenceScreensMerger preferenceScreensMerger,
+    public MergedPreferenceScreenProvider(final PreferenceScreensMerger preferenceScreensMerger,
                                           final SearchableInfoAttribute searchableInfoAttribute,
                                           final boolean cacheMergedPreferenceScreens,
                                           final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                           final Context context) {
-        this.preferenceScreensProvider = preferenceScreensProvider;
         this.preferenceScreensMerger = preferenceScreensMerger;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
@@ -48,22 +43,18 @@ public class MergedPreferenceScreenProvider {
         this.context = context;
     }
 
-    public MergedPreferenceScreen getMergedPreferenceScreen(final String rootPreferenceFragment,
-                                                            final SearchablePreferenceScreenGraphDAOProvider.Mode mode,
-                                                            final @RawRes int searchablePreferenceScreenGraph) {
+    public MergedPreferenceScreen getMergedPreferenceScreen(final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider) {
         if (!cacheMergedPreferenceScreens) {
-            return computeMergedPreferenceScreen(rootPreferenceFragment, mode, searchablePreferenceScreenGraph);
+            return computeMergedPreferenceScreen(searchablePreferenceScreenGraphProvider);
         }
-        if (!mergedPreferenceScreenByFragment.containsKey(rootPreferenceFragment)) {
-            mergedPreferenceScreenByFragment.put(rootPreferenceFragment, computeMergedPreferenceScreen(rootPreferenceFragment, mode, searchablePreferenceScreenGraph));
+        if (mergedPreferenceScreen == null) {
+            mergedPreferenceScreen = computeMergedPreferenceScreen(searchablePreferenceScreenGraphProvider);
         }
-        return mergedPreferenceScreenByFragment.get(rootPreferenceFragment);
+        return mergedPreferenceScreen;
     }
 
-    private MergedPreferenceScreen computeMergedPreferenceScreen(final String rootPreferenceFragment,
-                                                                 final SearchablePreferenceScreenGraphDAOProvider.Mode mode,
-                                                                 final @RawRes int searchablePreferenceScreenGraph) {
-        return computeMergedPreferenceScreen(preferenceScreensProvider.getConnectedPreferenceScreens(rootPreferenceFragment, mode, searchablePreferenceScreenGraph));
+    private MergedPreferenceScreen computeMergedPreferenceScreen(final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider) {
+        return computeMergedPreferenceScreen(PreferenceScreensProvider.getConnectedPreferenceScreens(searchablePreferenceScreenGraphProvider));
     }
 
     private MergedPreferenceScreen computeMergedPreferenceScreen(final ConnectedSearchablePreferenceScreens screens) {

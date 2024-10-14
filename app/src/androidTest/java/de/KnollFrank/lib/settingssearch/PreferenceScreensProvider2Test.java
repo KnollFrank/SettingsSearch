@@ -2,13 +2,12 @@ package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.PreferenceScreensProvider1Test.createPreferenceScreensProvider;
+import static de.KnollFrank.lib.settingssearch.PreferenceScreensProvider1Test.createSearchablePreferenceScreenGraphProvider;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
 
 import android.os.Bundle;
 
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -25,7 +24,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 public class PreferenceScreensProvider2Test {
@@ -40,15 +39,15 @@ public class PreferenceScreensProvider2Test {
     private static void shouldIgnoreNonPreferenceFragments(final FragmentActivity activity) {
         // Given
         final String rootPreferenceFragmentClassName = FragmentConnectedToNonPreferenceFragment.class.getName();
-        final PreferenceScreensProvider preferenceScreensProvider =
-                createPreferenceScreensProvider(
-                        activity,
-                        rootPreferenceFragmentClassName);
+        final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
+                createSearchablePreferenceScreenGraphProvider(
+                        rootPreferenceFragmentClassName,
+                        activity);
 
         // When
         final Set<PreferenceScreenWithHostClass> preferenceScreens =
-                preferenceScreensProvider
-                        .getConnectedPreferenceScreens(rootPreferenceFragmentClassName, SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH, ResourcesCompat.ID_NULL)
+                PreferenceScreensProvider
+                        .getConnectedPreferenceScreens(searchablePreferenceScreenGraphProvider)
                         .connectedSearchablePreferenceScreens();
 
         // Then
@@ -57,6 +56,7 @@ public class PreferenceScreensProvider2Test {
                 is(ImmutableSet.of(getPreferenceScreenByName(preferenceScreens, "first screen"))));
     }
 
+    // FK-TODO: remove
     public static PreferenceManager getPreferenceManager(final String rootPreferenceFragmentClassName,
                                                          final Fragments fragments) {
         return ((PreferenceFragmentCompat) fragments

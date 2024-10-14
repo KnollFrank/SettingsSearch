@@ -2,8 +2,8 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest.createSomePreferenceScreenGraph;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest.getAddPreferences2Screen;
 
 import android.os.Bundle;
@@ -22,15 +22,12 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -43,17 +40,10 @@ public class Graph2POJOGraphTransformerTest {
             scenario.onActivity(activity -> {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
-                final Fragments fragments = getFragments(preferenceFragment, activity);
-                final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
-                        new SearchablePreferenceScreenGraphProvider(
-                                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
-                                (preference, hostOfPreference) -> Optional.empty(),
-                                _preferenceScreenGraph -> {
-                                },
-                                new SearchableInfoAndDialogInfoProvider(
-                                        preference -> Optional.empty(),
-                                        (preference, hostOfPreference) -> Optional.empty()));
-                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph = searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(preferenceFragment.getClass().getName());
+                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph =
+                        createSomePreferenceScreenGraph(
+                                preferenceFragment,
+                                getFragments(preferenceFragment, activity));
 
                 // When
                 final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph = Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);

@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import androidx.preference.PreferenceManager;
 
-import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
-
 import org.jgrapht.Graph;
 
 import java.io.InputStream;
@@ -11,6 +9,7 @@ import java.io.OutputStream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.POJOGraph2GraphTransformer;
 
 public class SearchablePreferenceScreenGraphDAO {
@@ -20,7 +19,8 @@ public class SearchablePreferenceScreenGraphDAO {
         POJOGraphDAO.persist(pojoGraph, sink);
     }
 
-    public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> load(final InputStream source, final PreferenceManager preferenceManager) {
+    public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> load(final InputStream source,
+                                                                            final PreferenceManager preferenceManager) {
         final var pojoGraph = POJOGraphDAO.load(source);
         return POJOGraph2GraphTransformer.transformPOJOGraph2Graph(pojoGraph, preferenceManager);
     }

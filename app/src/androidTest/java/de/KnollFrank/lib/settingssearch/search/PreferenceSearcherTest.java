@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.not;
 
 import android.content.Context;
 
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
@@ -37,8 +36,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
+import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
@@ -484,31 +482,30 @@ public class PreferenceSearcherTest {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         fragmentActivity);
+        final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
+                new DefaultSearchablePreferenceScreenGraphProvider(
+                        preferenceFragment.getClass().getName(),
+                        new PreferenceScreenWithHostProvider(
+                                fragments,
+                                new SearchablePreferenceScreenProvider(
+                                        new IsPreferenceVisibleAndSearchable(
+                                                isPreferenceSearchable))),
+                        preferenceConnected2PreferenceFragmentProvider,
+                        preferenceScreenGraph -> {
+                        },
+                        new SearchableInfoAndDialogInfoProvider(
+                                new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
+                                new SearchableDialogInfoOfProvider(
+                                        fragmentInitializer,
+                                        preferenceDialogAndSearchableInfoProvider)));
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
-                        new PreferenceScreensProvider(
-                                new SearchablePreferenceScreenGraphDAOProvider(
-                                        new SearchablePreferenceScreenGraphProvider(
-                                                new PreferenceScreenWithHostProvider(
-                                                        fragments,
-                                                        new SearchablePreferenceScreenProvider(
-                                                                new IsPreferenceVisibleAndSearchable(
-                                                                        isPreferenceSearchable))),
-                                                preferenceConnected2PreferenceFragmentProvider,
-                                                preferenceScreenGraph -> {
-                                                },
-                                                new SearchableInfoAndDialogInfoProvider(
-                                                        new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
-                                                        new SearchableDialogInfoOfProvider(
-                                                                fragmentInitializer,
-                                                                preferenceDialogAndSearchableInfoProvider))),
-                                        PreferenceManagerProvider.getPreferenceManager(fragments, preferenceFragment.getClass()))),
                         new PreferenceScreensMerger(fragmentActivity),
                         new SearchableInfoAttribute(),
                         false,
                         fragmentFactoryAndInitializer,
                         fragmentActivity);
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(preferenceFragment.getClass().getName(), SearchablePreferenceScreenGraphDAOProvider.Mode.COMPUTE_AND_PERSIST_GRAPH, ResourcesCompat.ID_NULL);
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchablePreferenceScreenGraphProvider);
     }
 
     static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
