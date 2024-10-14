@@ -10,6 +10,7 @@ import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelp
 import android.os.Bundle;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
@@ -28,6 +29,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 public class PreferenceScreensProvider1Test {
@@ -37,18 +39,11 @@ public class PreferenceScreensProvider1Test {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final Fragments fragments = FragmentsFactory.createFragments(activity);
                 final String rootPreferenceFragmentClassName = Fragment1ConnectedToFragment2AndFragment4.class.getName();
                 final PreferenceScreensProvider preferenceScreensProvider =
-                        new PreferenceScreensProvider(
-                                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
-                                (preference, hostOfPreference) -> Optional.empty(),
-                                preferenceScreenGraph -> {
-                                },
-                                new SearchableInfoAndDialogInfoProvider(
-                                        preference -> Optional.empty(),
-                                        (preference, hostOfPreference) -> Optional.empty()),
-                                getPreferenceManager(rootPreferenceFragmentClassName, fragments));
+                        createPreferenceScreensProvider(
+                                activity,
+                                rootPreferenceFragmentClassName);
 
                 // When
                 final Set<PreferenceScreenWithHostClass> preferenceScreens =
@@ -73,18 +68,11 @@ public class PreferenceScreensProvider1Test {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final Fragments fragments = FragmentsFactory.createFragments(activity);
                 final String rootPreferenceFragmentClassName = Fragment1ConnectedToFragment2AndFragment4.class.getName();
                 final PreferenceScreensProvider preferenceScreensProvider =
-                        new PreferenceScreensProvider(
-                                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
-                                (preference, hostOfPreference) -> Optional.empty(),
-                                preferenceScreenGraph -> {
-                                },
-                                new SearchableInfoAndDialogInfoProvider(
-                                        preference -> Optional.empty(),
-                                        (preference, hostOfPreference) -> Optional.empty()),
-                                getPreferenceManager(rootPreferenceFragmentClassName, fragments));
+                        createPreferenceScreensProvider(
+                                activity,
+                                rootPreferenceFragmentClassName);
 
                 // When
                 final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens =
@@ -110,6 +98,23 @@ public class PreferenceScreensProvider1Test {
                                                 preferenceOfFragment2PointingToFragment3))));
             });
         }
+    }
+
+    public static PreferenceScreensProvider createPreferenceScreensProvider(
+            final FragmentActivity activity,
+            final String rootPreferenceFragmentClassName) {
+        final Fragments fragments = FragmentsFactory.createFragments(activity);
+        return new PreferenceScreensProvider(
+                new SearchablePreferenceScreenGraphDAOProvider(
+                        new SearchablePreferenceScreenGraphProvider(
+                                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
+                                (preference, hostOfPreference) -> Optional.empty(),
+                                preferenceScreenGraph -> {
+                                },
+                                new SearchableInfoAndDialogInfoProvider(
+                                        preference -> Optional.empty(),
+                                        (preference, hostOfPreference) -> Optional.empty())),
+                        getPreferenceManager(rootPreferenceFragmentClassName, fragments)));
     }
 
     private static Preference getPreference(

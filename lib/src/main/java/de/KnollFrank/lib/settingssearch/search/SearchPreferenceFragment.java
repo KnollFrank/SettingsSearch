@@ -30,7 +30,7 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
-import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -157,22 +157,24 @@ public class SearchPreferenceFragment extends Fragment {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         context);
-        final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider =
-                new SearchableDialogInfoOfProvider(
-                        defaultFragmentInitializer,
-                        preferenceDialogAndSearchableInfoProvider);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         new PreferenceScreensProvider(
-                                new PreferenceScreenWithHostProvider(
-                                        fragments,
-                                        new SearchablePreferenceScreenProvider(
-                                                new IsPreferenceVisibleAndSearchable(
-                                                        isPreferenceSearchable))),
-                                preferenceConnected2PreferenceFragmentProvider,
-                                preferenceScreenGraphAvailableListener,
-                                new SearchableInfoAndDialogInfoProvider(searchableInfoProvider, searchableDialogInfoOfProvider),
-                                PreferenceManagerProvider.getPreferenceManager(fragments, searchConfiguration.rootPreferenceFragment())),
+                                new SearchablePreferenceScreenGraphDAOProvider(
+                                        new SearchablePreferenceScreenGraphProvider(
+                                                new PreferenceScreenWithHostProvider(
+                                                        fragments,
+                                                        new SearchablePreferenceScreenProvider(
+                                                                new IsPreferenceVisibleAndSearchable(
+                                                                        isPreferenceSearchable))),
+                                                preferenceConnected2PreferenceFragmentProvider,
+                                                preferenceScreenGraphAvailableListener,
+                                                new SearchableInfoAndDialogInfoProvider(
+                                                        searchableInfoProvider,
+                                                        new SearchableDialogInfoOfProvider(
+                                                                defaultFragmentInitializer,
+                                                                preferenceDialogAndSearchableInfoProvider))),
+                                        PreferenceManagerProvider.getPreferenceManager(fragments, searchConfiguration.rootPreferenceFragment()))),
                         new PreferenceScreensMerger(getContext()),
                         searchableInfoAttribute,
                         true,

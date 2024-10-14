@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.PreferenceScreensProvider1Test.createPreferenceScreensProvider;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
 
@@ -22,7 +23,6 @@ import org.junit.Test;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphDAOProvider;
@@ -39,18 +39,11 @@ public class PreferenceScreensProvider2Test {
 
     private static void shouldIgnoreNonPreferenceFragments(final FragmentActivity activity) {
         // Given
-        final Fragments fragments = FragmentsFactory.createFragments(activity);
         final String rootPreferenceFragmentClassName = FragmentConnectedToNonPreferenceFragment.class.getName();
         final PreferenceScreensProvider preferenceScreensProvider =
-                new PreferenceScreensProvider(
-                        new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
-                        (preference, hostOfPreference) -> Optional.empty(),
-                        preferenceScreenGraph -> {
-                        },
-                        new SearchableInfoAndDialogInfoProvider(
-                                preference -> Optional.empty(),
-                                (preference, hostOfPreference) -> Optional.empty()),
-                        getPreferenceManager(rootPreferenceFragmentClassName, fragments));
+                createPreferenceScreensProvider(
+                        activity,
+                        rootPreferenceFragmentClassName);
 
         // When
         final Set<PreferenceScreenWithHostClass> preferenceScreens =
