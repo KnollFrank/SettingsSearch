@@ -1,20 +1,15 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import org.jgrapht.Graph;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.DefaultAttribute;
 import org.jgrapht.nio.IntegerIdProvider;
 import org.jgrapht.nio.json.JSONExporter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.common.IOUtils;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.edge.EdgeAttributeMapConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.VertexAttributeMapConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
 class POJOGraph2JSONConverter {
@@ -29,21 +24,8 @@ class POJOGraph2JSONConverter {
         final JSONExporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> exporter = new JSONExporter<>();
         exporter.setVertexIdProvider(new IntegerIdProvider<>(1));
         exporter.setVertexAttributeProvider(VertexAttributeMapConverter::vertex2AttributeMap);
-        exporter.setEdgeAttributeProvider(POJOGraph2JSONConverter::getEdgeAttribute);
+        exporter.setEdgeAttributeProvider(EdgeAttributeMapConverter::edge2AttributeMap);
         return exporter;
-    }
-
-    private static Map<String, Attribute> getEdgeAttribute(final SearchablePreferencePOJOEdge searchablePreferencePOJOEdge) {
-        return Map.of(
-                // FK-TODO: DRY with JSON2POJOGraphConverter
-                "searchablePreference",
-                DefaultAttribute.createAttribute(convert2JSON(searchablePreferencePOJOEdge.preference)));
-    }
-
-    private static String convert2JSON(final SearchablePreferencePOJO preference) {
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonDAO.persist(preference, outputStream);
-        return IOUtils.toString(outputStream);
     }
 
     private static void closeSilently(final Writer writer) {

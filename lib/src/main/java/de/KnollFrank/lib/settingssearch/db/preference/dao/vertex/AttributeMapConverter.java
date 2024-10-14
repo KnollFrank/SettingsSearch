@@ -8,11 +8,11 @@ class AttributeMapConverter {
 
     private static final String PREFERENCE_SCREEN_WITH_HOST_CLASS = "preferenceScreenWithHostClass";
 
-    public static Map<String, Attribute> attribute2Map(final Attribute attribute) {
+    public static Map<String, Attribute> attribute2AttributeMap(final Attribute attribute) {
         return Map.of(PREFERENCE_SCREEN_WITH_HOST_CLASS, attribute);
     }
 
-    public static Attribute map2Attribute(final Map<String, Attribute> map) {
-        return map.get(PREFERENCE_SCREEN_WITH_HOST_CLASS);
+    public static Attribute attributeMap2Attribute(final Map<String, Attribute> attributeMap) {
+        return attributeMap.get(PREFERENCE_SCREEN_WITH_HOST_CLASS);
     }
 }
