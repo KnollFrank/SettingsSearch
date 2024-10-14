@@ -27,16 +27,9 @@ class POJOGraph2JSONConverter {
     private static JSONExporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getJSONExporter() {
         final JSONExporter<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> exporter = new JSONExporter<>();
         exporter.setVertexIdProvider(new IntegerIdProvider<>(1));
-        exporter.setVertexAttributeProvider(POJOGraph2JSONConverter::getVertexAttribute);
+        exporter.setVertexAttributeProvider(VertexAttribute::vertex2Attributes);
         exporter.setEdgeAttributeProvider(POJOGraph2JSONConverter::getEdgeAttribute);
         return exporter;
-    }
-
-    private static Map<String, Attribute> getVertexAttribute(final PreferenceScreenWithHostClassPOJO preferenceScreenWithHostClass) {
-        return Map.of(
-                // FK-TODO: DRY with JSON2POJOGraphConverter
-                "preferenceScreenWithHostClass",
-                DefaultAttribute.createAttribute(convert2JSON(preferenceScreenWithHostClass)));
     }
 
     private static Map<String, Attribute> getEdgeAttribute(final SearchablePreferencePOJOEdge searchablePreferencePOJOEdge) {
@@ -44,12 +37,6 @@ class POJOGraph2JSONConverter {
                 // FK-TODO: DRY with JSON2POJOGraphConverter
                 "searchablePreference",
                 DefaultAttribute.createAttribute(convert2JSON(searchablePreferencePOJOEdge.preference)));
-    }
-
-    private static String convert2JSON(final PreferenceScreenWithHostClassPOJO preferenceScreenWithHostClass) {
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        JsonDAO.persist(preferenceScreenWithHostClass, outputStream);
-        return IOUtils.toString(outputStream);
     }
 
     private static String convert2JSON(final SearchablePreferencePOJO preference) {
