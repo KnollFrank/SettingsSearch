@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.common;
+package de.KnollFrank.lib.settingssearch.common.graph;
 
 public interface IGraphTransformer<V1, E1, V2, E2> {
 

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.common;
+package de.KnollFrank.lib.settingssearch.common.graph;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;

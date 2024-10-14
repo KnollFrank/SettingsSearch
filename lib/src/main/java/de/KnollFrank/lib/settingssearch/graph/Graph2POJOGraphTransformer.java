@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
-import de.KnollFrank.lib.settingssearch.common.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.IGraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.IGraphTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;

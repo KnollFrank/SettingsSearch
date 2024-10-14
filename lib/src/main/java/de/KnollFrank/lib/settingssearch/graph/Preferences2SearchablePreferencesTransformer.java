@@ -6,8 +6,8 @@ import org.jgrapht.Graph;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
-import de.KnollFrank.lib.settingssearch.common.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.IGraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.IGraphTransformer;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;

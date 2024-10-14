@@ -9,9 +9,9 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
-import de.KnollFrank.lib.settingssearch.common.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.IGraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.IGraphTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClassFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceCaster;

@@ -12,8 +12,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.common.BreadthFirstGraphVisitor;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.graph.BreadthFirstGraphVisitor;
 
 class PreferencePathByPreferenceProvider {
 
