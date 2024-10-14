@@ -7,7 +7,7 @@ import org.jgrapht.Graph;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.graph.IGraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
@@ -22,14 +22,14 @@ class Preferences2SearchablePreferencesTransformer {
 
     public Graph<SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> transformPreferences2SearchablePreferences(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        return GraphTransformer.transform(
+        return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 PreferenceEdge.class,
                 createGraphTransformer());
     }
 
-    private IGraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> createGraphTransformer() {
-        return new IGraphTransformer<>() {
+    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMapAndHost, PreferenceEdge> createGraphTransformer() {
+        return new GraphTransformer<>() {
 
             @Override
             public SearchablePreferenceScreenWithMapAndHost transformNode(final PreferenceScreenWithHost preferenceScreenWithHost) {

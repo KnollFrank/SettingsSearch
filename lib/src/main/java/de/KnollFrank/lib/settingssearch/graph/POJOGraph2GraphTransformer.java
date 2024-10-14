@@ -11,7 +11,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.graph.IGraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClassFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceCaster;
@@ -24,15 +24,15 @@ public class POJOGraph2GraphTransformer {
     public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> transformPOJOGraph2Graph(
             final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph,
             final PreferenceManager preferenceManager) {
-        return GraphTransformer.transform(
+        return GraphTransformerAlgorithm.transform(
                 pojoGraph,
                 PreferenceEdge.class,
                 createGraphTransformer(preferenceManager));
     }
 
-    private static IGraphTransformer<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge, PreferenceScreenWithHostClass, PreferenceEdge> createGraphTransformer(
+    private static GraphTransformer<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge, PreferenceScreenWithHostClass, PreferenceEdge> createGraphTransformer(
             final PreferenceManager preferenceManager) {
-        return new IGraphTransformer<>() {
+        return new GraphTransformer<>() {
 
             @Override
             public PreferenceScreenWithHostClass transformNode(final PreferenceScreenWithHostClassPOJO node) {

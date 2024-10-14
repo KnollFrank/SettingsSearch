@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.graph.IGraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -23,14 +23,14 @@ public class Graph2POJOGraphTransformer {
 
     public static Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph) {
-        return GraphTransformer.transform(
+        return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 SearchablePreferencePOJOEdge.class,
                 createGraphTransformer());
     }
 
-    private static IGraphTransformer<PreferenceScreenWithHostClass, PreferenceEdge, PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> createGraphTransformer() {
-        return new IGraphTransformer<>() {
+    private static GraphTransformer<PreferenceScreenWithHostClass, PreferenceEdge, PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> createGraphTransformer() {
+        return new GraphTransformer<>() {
 
             private int id = 1;
 

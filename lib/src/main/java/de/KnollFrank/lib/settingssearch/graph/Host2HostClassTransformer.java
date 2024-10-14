@@ -6,20 +6,20 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.graph.IGraphTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 
 class Host2HostClassTransformer {
 
     public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> transformHost2HostClass(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        return GraphTransformer.transform(
+        return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 PreferenceEdge.class,
                 createGraphTransformer());
     }
 
-    private static IGraphTransformer<PreferenceScreenWithHost, PreferenceEdge, PreferenceScreenWithHostClass, PreferenceEdge> createGraphTransformer() {
-        return new IGraphTransformer<>() {
+    private static GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, PreferenceScreenWithHostClass, PreferenceEdge> createGraphTransformer() {
+        return new GraphTransformer<>() {
 
             @Override
             public PreferenceScreenWithHostClass transformNode(final PreferenceScreenWithHost node) {

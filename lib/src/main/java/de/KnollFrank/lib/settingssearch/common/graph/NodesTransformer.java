@@ -11,15 +11,15 @@ public class NodesTransformer {
     public static <V, W> Graph<W, PreferenceEdge> transformNodes(
             final Graph<V, PreferenceEdge> graph,
             final Function<V, W> transformNode) {
-        return GraphTransformer.transform(
+        return GraphTransformerAlgorithm.transform(
                 graph,
                 PreferenceEdge.class,
                 transformNodes(transformNode));
     }
 
-    private static <V, W> IGraphTransformer<V, PreferenceEdge, W, PreferenceEdge> transformNodes(
+    private static <V, W> GraphTransformer<V, PreferenceEdge, W, PreferenceEdge> transformNodes(
             final Function<V, W> transformNode) {
-        return new IGraphTransformer<>() {
+        return new GraphTransformer<>() {
 
             @Override
             public W transformNode(final V v) {
