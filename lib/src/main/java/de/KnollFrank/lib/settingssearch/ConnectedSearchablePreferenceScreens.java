@@ -7,6 +7,8 @@ import org.jgrapht.Graph;
 import java.util.Map;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.graph.HostClassFromNodesRemover;
+
 public record ConnectedSearchablePreferenceScreens(
         Set<PreferenceScreenWithHostClass> connectedSearchablePreferenceScreens,
         // FK-TODO: SearchablePreference statt Preference als Key der folgenden Map?
@@ -15,6 +17,8 @@ public record ConnectedSearchablePreferenceScreens(
     public static ConnectedSearchablePreferenceScreens fromSearchablePreferenceScreenGraph(final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph) {
         return new ConnectedSearchablePreferenceScreens(
                 searchablePreferenceScreenGraph.vertexSet(),
-                PreferencePathByPreferenceProvider.getPreferencePathByPreference(searchablePreferenceScreenGraph));
+                PreferencePathByPreferenceProvider.getPreferencePathByPreference(
+                        HostClassFromNodesRemover.removeHostClassFromNodes(
+                                searchablePreferenceScreenGraph)));
     }
 }
