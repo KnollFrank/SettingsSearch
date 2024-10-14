@@ -12,11 +12,9 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.settingssearch.R;
+import de.KnollFrank.settingssearch.SearchPreferenceFragmentsBuilderConfigurer;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
-import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 
 public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragmentCompat implements OnPreferenceClickListener {
 
@@ -60,25 +58,14 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
     }
 
     private SearchPreferenceFragments createSearchPreferenceFragments() {
-        return SearchPreferenceFragments
-                .builder(
-                        new SearchConfiguration(getId(), Optional.empty(), getClass()),
-                        getParentFragmentManager()
-                )
-                .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
-                .withPreferenceDialogAndSearchableInfoProvider(
-                        new PreferenceDialogAndSearchableInfoProvider() {
-
-                            @Override
-                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-                                return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
-                                        Optional.of(
-                                                new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(
-                                                        new CustomDialogFragment(),
-                                                        CustomDialogFragment::getSearchableInfo)) :
-                                        Optional.empty();
-                            }
-                        })
+        return SearchPreferenceFragmentsBuilderConfigurer
+                .configure(
+                        SearchPreferenceFragments.builder(
+                                new SearchConfiguration(
+                                        getId(),
+                                        Optional.empty(),
+                                        getClass()),
+                                getParentFragmentManager()))
                 .build();
     }
 
