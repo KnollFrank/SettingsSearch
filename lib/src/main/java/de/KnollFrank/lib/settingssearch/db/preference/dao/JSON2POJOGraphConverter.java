@@ -6,8 +6,8 @@ import org.jgrapht.nio.json.JSONImporter;
 
 import java.io.Reader;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.edge.EdgeAttributeMapConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.vertex.VertexAttributeMapConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.converter.EdgeAttributeMapConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.converter.VertexAttributeMapConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 

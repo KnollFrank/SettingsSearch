@@ -1,10 +1,10 @@
-package de.KnollFrank.lib.settingssearch.db.preference.dao.vertex;
+package de.KnollFrank.lib.settingssearch.db.preference.dao.converter;
 
 import org.jgrapht.nio.Attribute;
 
 import java.util.Map;
 
-public class AttributeMapConverter {
+class AttributeMapConverter {
 
     private final String key;
 
