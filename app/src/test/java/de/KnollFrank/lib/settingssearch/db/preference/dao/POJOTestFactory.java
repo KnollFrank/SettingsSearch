@@ -13,7 +13,6 @@ public class POJOTestFactory {
         return new SearchablePreferencePOJO(
                 "some key",
                 null,
-                4711,
                 4712,
                 "some summary",
                 "some title",
@@ -26,7 +25,6 @@ public class POJOTestFactory {
                         new SearchablePreferencePOJO(
                                 "some key 2",
                                 null,
-                                4714,
                                 4715,
                                 "some summary 2",
                                 "some title 2",

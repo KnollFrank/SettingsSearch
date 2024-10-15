@@ -64,7 +64,6 @@ public class POJOGraph2JSONConverterTest {
         return new SearchablePreferencePOJO(
                 "someKey",
                 null,
-                0,
                 2131427444,
                 null,
                 "preference connected to TestPreferenceFragment",

@@ -12,8 +12,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 public record SearchablePreferencePOJO(
         String key,
         String icon,
-        // FK-TODO: remove iconResId
-        int iconResId,
         int layoutResId,
         String summary,
         String title,
@@ -30,11 +28,11 @@ public record SearchablePreferencePOJO(
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final SearchablePreferencePOJO that = (SearchablePreferencePOJO) o;
-        return iconResId == that.iconResId && layoutResId == that.layoutResId && visible == that.visible && widgetLayoutResId == that.widgetLayoutResId && Objects.equals(key, that.key) && Objects.equals(title, that.title) && Objects.equals(summary, that.summary) && Objects.equals(fragment, that.fragment) && Objects.equals(searchableInfo, that.searchableInfo) && Objects.equals(children, that.children);
+        return layoutResId == that.layoutResId && visible == that.visible && widgetLayoutResId == that.widgetLayoutResId && Objects.equals(key, that.key) && Objects.equals(icon, that.icon) && Objects.equals(title, that.title) && Objects.equals(summary, that.summary) && Objects.equals(fragment, that.fragment) && Objects.equals(searchableInfo, that.searchableInfo) && Objects.equals(children, that.children);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, iconResId, layoutResId, summary, title, widgetLayoutResId, fragment, visible, searchableInfo, children);
+        return Objects.hash(key, icon, layoutResId, summary, title, widgetLayoutResId, fragment, visible, searchableInfo, children);
     }
 }

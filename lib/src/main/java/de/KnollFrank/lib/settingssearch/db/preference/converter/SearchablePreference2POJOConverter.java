@@ -16,8 +16,6 @@ class SearchablePreference2POJOConverter {
         return new SearchablePreferencePOJO(
                 searchablePreference.getKey(),
                 drawable2String(searchablePreference.getIcon()),
-                // FK-FIXME: replace 0 with real value
-                0,
                 searchablePreference.getLayoutResource(),
                 toString(searchablePreference.getSummary()),
                 toString(searchablePreference.getTitle()),

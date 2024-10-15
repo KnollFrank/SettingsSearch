@@ -58,7 +58,6 @@ public class Graph2POJOGraphTransformerTest {
                 new SearchablePreferencePOJO(
                         null,
                         null,
-                        0,
                         2131427444,
                         null,
                         "preference connected to TestPreferenceFragment",
@@ -89,7 +88,6 @@ public class Graph2POJOGraphTransformerTest {
                                 new SearchablePreferencePOJO(
                                         "parentKey",
                                         null,
-                                        0,
                                         15,
                                         null,
                                         null,
@@ -102,7 +100,6 @@ public class Graph2POJOGraphTransformerTest {
                                                 new SearchablePreferencePOJO(
                                                         null,
                                                         null,
-                                                        0,
                                                         16,
                                                         null,
                                                         null,
@@ -116,7 +113,6 @@ public class Graph2POJOGraphTransformerTest {
                                                 new SearchablePreferencePOJO(
                                                         null,
                                                         null,
-                                                        0,
                                                         16,
                                                         null,
                                                         null,
