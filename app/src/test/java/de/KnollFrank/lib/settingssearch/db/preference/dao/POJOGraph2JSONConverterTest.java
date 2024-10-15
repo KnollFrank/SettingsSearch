@@ -63,6 +63,7 @@ public class POJOGraph2JSONConverterTest {
     private static SearchablePreferencePOJO getSearchablePreferencePOJO() {
         return new SearchablePreferencePOJO(
                 "someKey",
+                null,
                 0,
                 2131427444,
                 null,

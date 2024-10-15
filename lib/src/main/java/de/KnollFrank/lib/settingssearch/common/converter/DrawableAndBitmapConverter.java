@@ -1,5 +1,6 @@
-package de.KnollFrank.lib.settingssearch.common;
+package de.KnollFrank.lib.settingssearch.common.converter;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,7 +9,7 @@ import android.util.Size;
 
 import java.util.Optional;
 
-public class UIUtils {
+public class DrawableAndBitmapConverter {
 
     // adapted from https://stackoverflow.com/a/10600736
     public static Bitmap drawable2Bitmap(final Drawable drawable) {
@@ -24,6 +25,10 @@ public class UIUtils {
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
         return bitmap;
+    }
+
+    public static Drawable bitmap2Drawable(final Bitmap bitmap, final Resources resources) {
+        return new BitmapDrawable(resources, bitmap);
     }
 
     private static Optional<Size> getIntrinsicSize(final Drawable drawable) {

@@ -12,6 +12,7 @@ public class POJOTestFactory {
     public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO(final Bundle extras) {
         return new SearchablePreferencePOJO(
                 "some key",
+                null,
                 4711,
                 4712,
                 "some summary",
@@ -24,6 +25,7 @@ public class POJOTestFactory {
                 List.of(
                         new SearchablePreferencePOJO(
                                 "some key 2",
+                                null,
                                 4714,
                                 4715,
                                 "some summary 2",

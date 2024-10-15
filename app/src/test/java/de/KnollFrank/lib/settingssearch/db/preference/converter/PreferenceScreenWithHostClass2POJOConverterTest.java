@@ -92,6 +92,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                         List.of(
                                                 new SearchablePreferencePOJO(
                                                         "parentKey",
+                                                        null,
                                                         0,
                                                         15,
                                                         null,
@@ -103,6 +104,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                         new Bundle(),
                                                         List.of(
                                                                 new SearchablePreferencePOJO(
+                                                                        null,
                                                                         null,
                                                                         0,
                                                                         16,
@@ -116,6 +118,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         List.of(),
                                                                         Optional.empty()),
                                                                 new SearchablePreferencePOJO(
+                                                                        null,
                                                                         null,
                                                                         0,
                                                                         16,

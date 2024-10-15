@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.drawable2String;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +15,7 @@ class SearchablePreference2POJOConverter {
     public static SearchablePreferencePOJO convert2POJO(final SearchablePreference searchablePreference) {
         return new SearchablePreferencePOJO(
                 searchablePreference.getKey(),
+                drawable2String(searchablePreference.getIcon()),
                 // FK-FIXME: replace 0 with real value
                 0,
                 searchablePreference.getLayoutResource(),

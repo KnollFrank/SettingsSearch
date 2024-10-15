@@ -11,6 +11,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
 public record SearchablePreferencePOJO(
         String key,
+        String icon,
         int iconResId,
         int layoutResId,
         String summary,

@@ -57,6 +57,7 @@ public class Graph2POJOGraphTransformerTest {
         final SearchablePreferencePOJO preferenceConnectingSrc2Dst =
                 new SearchablePreferencePOJO(
                         null,
+                        null,
                         0,
                         2131427444,
                         null,
@@ -87,6 +88,7 @@ public class Graph2POJOGraphTransformerTest {
                         List.of(
                                 new SearchablePreferencePOJO(
                                         "parentKey",
+                                        null,
                                         0,
                                         15,
                                         null,
@@ -98,6 +100,7 @@ public class Graph2POJOGraphTransformerTest {
                                         new Bundle(),
                                         List.of(
                                                 new SearchablePreferencePOJO(
+                                                        null,
                                                         null,
                                                         0,
                                                         16,
@@ -111,6 +114,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         List.of(),
                                                         Optional.empty()),
                                                 new SearchablePreferencePOJO(
+                                                        null,
                                                         null,
                                                         0,
                                                         16,

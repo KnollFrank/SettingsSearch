@@ -1,6 +1,9 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.string2Drawable;
+
 import android.content.Context;
+import android.content.res.Resources;
 
 import androidx.preference.PreferenceGroup;
 
@@ -20,7 +23,7 @@ class SearchablePreferenceFromPOJOConverter {
                         context,
                         SearchableInfoAttributeConverter.convertFromPOJO(searchablePreferencePOJO.searchableInfo()),
                         Optional.of(searchablePreferencePOJO));
-        copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference);
+        copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference, context.getResources());
         parent.addPreference(searchablePreference);
         addConvertedPOJOs2Parent(searchablePreferencePOJO.children(), searchablePreference, context);
     }
@@ -33,9 +36,11 @@ class SearchablePreferenceFromPOJOConverter {
         }
     }
 
-    private static void copyAttributesFromSrc2Dst(final SearchablePreferencePOJO src, final SearchablePreference dst) {
+    private static void copyAttributesFromSrc2Dst(final SearchablePreferencePOJO src,
+                                                  final SearchablePreference dst,
+                                                  final Resources resources) {
         dst.setKey(src.key());
-        // FK-TODO: handle correctly: searchablePreference.setIcon(searchablePreferencePOJO.iconResId());
+        dst.setIcon(string2Drawable(src.icon(), resources));
         dst.setLayoutResource(src.layoutResId());
         dst.setSummary(src.summary());
         dst.setTitle(src.title());
