@@ -2,15 +2,12 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.common.UIUtils.drawable2Bitmap;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getPreferenceScreen;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Size;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -107,28 +104,6 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
     }
 
     private static boolean equals(final Drawable drawable1, final Drawable drawable2) {
-        return drawableToBitmap(drawable1).sameAs(drawableToBitmap(drawable2));
-    }
-
-    // adapted from https://stackoverflow.com/a/10600736
-    public static Bitmap drawableToBitmap(final Drawable drawable) {
-        if (drawable instanceof final BitmapDrawable bitmapDrawable) {
-            if (bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-
-        final Size size = getIntrinsicSize(drawable).orElse(new Size(1, 1));
-        final Bitmap bitmap = Bitmap.createBitmap(size.getWidth(), size.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
-
-    private static Optional<Size> getIntrinsicSize(final Drawable drawable) {
-        return drawable.getIntrinsicWidth() > 0 && drawable.getIntrinsicHeight() > 0 ?
-                Optional.of(new Size(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight())) :
-                Optional.empty();
+        return drawable2Bitmap(drawable1).sameAs(drawable2Bitmap(drawable2));
     }
 }
