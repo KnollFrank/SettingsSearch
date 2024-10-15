@@ -134,8 +134,8 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
         }
     }
 
-    private static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,
-                                                        final FragmentActivity activity) {
+    public static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,
+                                                       final FragmentActivity activity) {
         return initializeFragment(preferenceFragment, activity).getPreferenceScreen();
     }
 

@@ -58,7 +58,7 @@ public class SearchablePreferenceTransformer {
         return searchablePreference;
     }
 
-    private static void copyAttributes(final Preference src, final Preference dst) {
+    public static void copyAttributes(final Preference src, final Preference dst) {
         dst.setKey(src.getKey());
         dst.setIcon(src.getIcon());
         dst.setLayoutResource(src.getLayoutResource());
