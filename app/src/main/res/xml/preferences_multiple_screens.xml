@@ -8,7 +8,8 @@
         android:persistent="false"
         android:summary="some summary to second fragment"
         android:title="some title to second fragment"
-        app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond" />
+        app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+        app:icon="@drawable/smiley" />
 
     <Preference
         android:key="non_standard_link_to_second_fragment"
