@@ -1,5 +1,8 @@
 package de.KnollFrank.settingssearch;
 
+import static de.KnollFrank.settingssearch.SearchablePreferenceScreenGraphProviderWrapper.GraphDAOMode;
+import static de.KnollFrank.settingssearch.SearchablePreferenceScreenGraphProviderWrapper.wrapSearchablePreferenceScreenGraphProvider;
+
 import android.util.Log;
 
 import androidx.preference.Preference;
@@ -12,8 +15,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragmentsBuilder;
-import de.KnollFrank.lib.settingssearch.graph.ComputeAndPersist;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphLoader;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -26,7 +27,8 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
 public class SearchPreferenceFragmentsBuilderConfigurer {
 
-    public static SearchPreferenceFragmentsBuilder configure(final SearchPreferenceFragmentsBuilder builder) {
+    public static SearchPreferenceFragmentsBuilder configure(final SearchPreferenceFragmentsBuilder builder,
+                                                             final GraphDAOMode graphDAOMode) {
         return builder
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceConnected2PreferenceFragmentProvider(
@@ -61,15 +63,10 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                             }
                         })
                 .withWrapSearchablePreferenceScreenGraphProvider(
-                        (searchablePreferenceScreenGraphProvider, preferenceManager) -> {
-                            final boolean persist = false;
-                            return persist ?
-                                    new ComputeAndPersist(
-                                            searchablePreferenceScreenGraphProvider,
-                                            preferenceManager.getContext()) :
-                                    new SearchablePreferenceScreenGraphLoader(
-                                            R.raw.searchable_preference_screen_graph,
-                                            preferenceManager);
-                        });
+                        (searchablePreferenceScreenGraphProvider, preferenceManager) ->
+                                wrapSearchablePreferenceScreenGraphProvider(
+                                        searchablePreferenceScreenGraphProvider,
+                                        preferenceManager,
+                                        graphDAOMode));
     }
 }

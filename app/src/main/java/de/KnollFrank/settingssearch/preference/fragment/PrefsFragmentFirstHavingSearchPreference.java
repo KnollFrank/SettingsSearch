@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
+import static de.KnollFrank.settingssearch.SearchablePreferenceScreenGraphProviderWrapper.GraphDAOMode;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -65,7 +67,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                                         getId(),
                                         Optional.empty(),
                                         getClass()),
-                                getParentFragmentManager()))
+                                getParentFragmentManager()),
+                        GraphDAOMode.PERSIST_GRAPH)
                 .build();
     }
 

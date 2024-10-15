@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch;
 
+import static de.KnollFrank.settingssearch.SearchablePreferenceScreenGraphProviderWrapper.GraphDAOMode;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,7 +67,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 .configure(
                         SearchPreferenceFragments.builder(
                                 createSearchConfiguration(PrefsFragmentFirst.class),
-                                getSupportFragmentManager()))
+                                getSupportFragmentManager()),
+                        GraphDAOMode.LOAD_GRAPH)
                 .build();
     }
 
