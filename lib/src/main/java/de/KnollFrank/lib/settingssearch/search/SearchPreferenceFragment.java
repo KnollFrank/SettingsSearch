@@ -95,7 +95,7 @@ public class SearchPreferenceFragment extends Fragment {
                                      final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                      final PrepareShow prepareShow,
                                      final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                     BiFunction<SearchablePreferenceScreenGraphProvider, PreferenceManager, SearchablePreferenceScreenGraphProvider> wrapSearchablePreferenceScreenGraphProvider) {
+                                     final BiFunction<SearchablePreferenceScreenGraphProvider, PreferenceManager, SearchablePreferenceScreenGraphProvider> wrapSearchablePreferenceScreenGraphProvider) {
         super(R.layout.searchpreference_fragment);
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
