@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 public record SearchablePreferencePOJO(
         String key,
         String icon,
+        // FK-TODO: remove iconResId
         int iconResId,
         int layoutResId,
         String summary,

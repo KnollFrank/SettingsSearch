@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.common.converter;
 
+import static org.apache.commons.codec.binary.Base64.decodeBase64;
+import static org.apache.commons.codec.binary.Base64.encodeBase64;
 import static de.KnollFrank.lib.settingssearch.common.converter.BitmapAndBytesConverter.bitmap2Bytes;
 import static de.KnollFrank.lib.settingssearch.common.converter.BitmapAndBytesConverter.bytes2Bitmap;
 import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndBitmapConverter.bitmap2Drawable;
@@ -16,13 +18,13 @@ public class DrawableAndStringConverter {
         if (drawable == null) {
             return null;
         }
-        return bytes2String(bitmap2Bytes(drawable2Bitmap(drawable)));
+        return bytes2String(encodeBase64(bitmap2Bytes(drawable2Bitmap(drawable))));
     }
 
     public static Drawable string2Drawable(final String string, final Resources resources) {
         if (string == null) {
             return null;
         }
-        return bitmap2Drawable(bytes2Bitmap(string2Bytes(string)), resources);
+        return bitmap2Drawable(bytes2Bitmap(decodeBase64(string2Bytes(string))), resources);
     }
 }
