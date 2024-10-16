@@ -25,7 +25,6 @@ import java.util.function.BiPredicate;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -44,8 +43,8 @@ public class PreferenceScreensProvider1Test {
 
                 // When
                 final Set<PreferenceScreenWithHostClass> preferenceScreens =
-                        PreferenceScreensProvider
-                                .getConnectedPreferenceScreens(searchablePreferenceScreenGraphProvider)
+                        ConnectedSearchablePreferenceScreens
+                                .fromSearchablePreferenceScreenGraph(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph())
                                 .connectedSearchablePreferenceScreens();
 
                 // Then
@@ -73,7 +72,7 @@ public class PreferenceScreensProvider1Test {
 
                 // When
                 final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens =
-                        PreferenceScreensProvider.getConnectedPreferenceScreens(searchablePreferenceScreenGraphProvider);
+                        ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph());
 
                 // Then
                 final Preference preferenceOfFragment2PointingToFragment3 =

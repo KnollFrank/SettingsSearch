@@ -20,7 +20,6 @@ import org.junit.Test;
 
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreensProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -43,8 +42,8 @@ public class PreferenceScreensProvider2Test {
 
         // When
         final Set<PreferenceScreenWithHostClass> preferenceScreens =
-                PreferenceScreensProvider
-                        .getConnectedPreferenceScreens(searchablePreferenceScreenGraphProvider)
+                ConnectedSearchablePreferenceScreens
+                        .fromSearchablePreferenceScreenGraph(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph())
                         .connectedSearchablePreferenceScreens();
 
         // Then
