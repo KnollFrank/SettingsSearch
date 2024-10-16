@@ -18,30 +18,30 @@ public class PreferenceScreensMerger {
 
     private final Context context;
 
-    public record PreferenceScreenAndIsNonClickable(PreferenceScreen preferenceScreen,
-                                                    Set<PreferenceCategory> isNonClickable) {
+    public record PreferenceScreenAndNonClickablePreferences(PreferenceScreen preferenceScreen,
+                                                             Set<PreferenceCategory> nonClickablePreferences) {
     }
 
     public PreferenceScreensMerger(final Context context) {
         this.context = context;
     }
 
-    public PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final List<PreferenceScreen> screens) {
+    public PreferenceScreenAndNonClickablePreferences destructivelyMergeScreens(final List<PreferenceScreen> screens) {
         final PreferenceScreen mergedScreens = screens.get(0).getPreferenceManager().createPreferenceScreen(context);
-        final ImmutableSet.Builder<PreferenceCategory> isNonClickable = ImmutableSet.builder();
+        final ImmutableSet.Builder<PreferenceCategory> nonClickablePreferences = ImmutableSet.builder();
         for (final PreferenceScreen screen : screens) {
-            destructivelyMergeSrcIntoDst(screen, mergedScreens, isNonClickable);
+            destructivelyMergeSrcIntoDst(screen, mergedScreens, nonClickablePreferences);
         }
-        return new PreferenceScreenAndIsNonClickable(mergedScreens, isNonClickable.build());
+        return new PreferenceScreenAndNonClickablePreferences(mergedScreens, nonClickablePreferences.build());
     }
 
     private void destructivelyMergeSrcIntoDst(final PreferenceScreen src,
                                               final PreferenceScreen dst,
-                                              final ImmutableSet.Builder<PreferenceCategory> isNonClickable) {
+                                              final ImmutableSet.Builder<PreferenceCategory> nonClickablePreferences) {
         final PreferenceCategory screenCategory = createScreenCategory(src.toString());
         dst.addPreference(screenCategory);
         moveChildrenOfSrc2Dst(src, screenCategory);
-        isNonClickable.add(screenCategory);
+        nonClickablePreferences.add(screenCategory);
     }
 
     private PreferenceCategory createScreenCategory(final String title) {

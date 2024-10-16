@@ -62,16 +62,16 @@ public class MergedPreferenceScreenProvider {
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens.connectedSearchablePreferenceScreens());
         // B:
-        final PreferenceScreensMerger.PreferenceScreenAndIsNonClickable preferenceScreenAndIsNonClickable = destructivelyMergeScreens(screens.connectedSearchablePreferenceScreens());
+        final PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences = destructivelyMergeScreens(screens.connectedSearchablePreferenceScreens());
         return new MergedPreferenceScreen(
-                preferenceScreenAndIsNonClickable.preferenceScreen(),
-                preferenceScreenAndIsNonClickable.isNonClickable(),
+                preferenceScreenAndNonClickablePreferences.preferenceScreen(),
+                preferenceScreenAndNonClickablePreferences.nonClickablePreferences(),
                 screens.preferencePathByPreference(),
                 searchableInfoAttribute,
                 new PreferencePathNavigator(hostByPreference, fragmentFactoryAndInitializer, context));
     }
 
-    private PreferenceScreensMerger.PreferenceScreenAndIsNonClickable destructivelyMergeScreens(final Set<PreferenceScreenWithHostClass> screens) {
+    private PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences destructivelyMergeScreens(final Set<PreferenceScreenWithHostClass> screens) {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
     }
 

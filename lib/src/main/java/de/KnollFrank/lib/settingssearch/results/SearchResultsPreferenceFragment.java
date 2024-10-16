@@ -62,7 +62,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 searchableInfoGetter,
                 mergedPreferenceScreen.preferencePathByPreference,
                 showPreferencePath,
-                mergedPreferenceScreen.isNonClickable,
+                mergedPreferenceScreen.nonClickablePreferences,
                 this::showPreferenceScreenAndHighlightPreference);
     }
 

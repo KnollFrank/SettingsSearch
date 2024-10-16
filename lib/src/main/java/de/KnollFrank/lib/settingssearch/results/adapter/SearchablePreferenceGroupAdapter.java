@@ -35,20 +35,20 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     private final SearchableInfoGetter searchableInfoGetter;
     private final Map<Preference, PreferencePath> preferencePathByPreference;
     private final ShowPreferencePath showPreferencePath;
-    private final Set<PreferenceCategory> isNonClickable;
+    private final Set<PreferenceCategory> nonClickablePreferences;
     private final Consumer<Preference> onPreferenceClickListener;
 
     public SearchablePreferenceGroupAdapter(final PreferenceGroup preferenceGroup,
                                             final SearchableInfoGetter searchableInfoGetter,
                                             final Map<Preference, PreferencePath> preferencePathByPreference,
                                             final ShowPreferencePath showPreferencePath,
-                                            final Set<PreferenceCategory> isNonClickable,
+                                            final Set<PreferenceCategory> nonClickablePreferences,
                                             final Consumer<Preference> onPreferenceClickListener) {
         super(preferenceGroup);
         this.searchableInfoGetter = searchableInfoGetter;
         this.preferencePathByPreference = preferencePathByPreference;
         this.showPreferencePath = showPreferencePath;
-        this.isNonClickable = isNonClickable;
+        this.nonClickablePreferences = nonClickablePreferences;
         this.onPreferenceClickListener = onPreferenceClickListener;
     }
 
@@ -97,7 +97,7 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     }
 
     private Optional<View.OnClickListener> getOnClickListener(final Preference preference) {
-        return isNonClickable.contains(preference) ?
+        return nonClickablePreferences.contains(preference) ?
                 Optional.empty() :
                 Optional.of(v -> onPreferenceClickListener.accept(preference));
     }
