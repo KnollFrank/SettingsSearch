@@ -18,12 +18,7 @@ class SearchablePreferenceFromPOJOConverter {
     public static void addConvertedPOJO2Parent(final SearchablePreferencePOJO searchablePreferencePOJO,
                                                final PreferenceGroup parent,
                                                final Context context) {
-        final SearchablePreference searchablePreference =
-                new SearchablePreference(
-                        context,
-                        SearchableInfoAttributeConverter.convertFromPOJO(searchablePreferencePOJO.searchableInfo()),
-                        Optional.of(searchablePreferencePOJO));
-        copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference, context.getResources());
+        final SearchablePreference searchablePreference = createPlainSearchablePreference(searchablePreferencePOJO, context);
         parent.addPreference(searchablePreference);
         addConvertedPOJOs2Parent(searchablePreferencePOJO.children(), searchablePreference, context);
     }
@@ -34,6 +29,16 @@ class SearchablePreferenceFromPOJOConverter {
         for (final SearchablePreferencePOJO searchablePreferencePOJO : searchablePreferencePOJOs) {
             addConvertedPOJO2Parent(searchablePreferencePOJO, parent, context);
         }
+    }
+
+    private static SearchablePreference createPlainSearchablePreference(final SearchablePreferencePOJO searchablePreferencePOJO, final Context context) {
+        final SearchablePreference searchablePreference =
+                new SearchablePreference(
+                        context,
+                        SearchableInfoAttributeConverter.convertFromPOJO(searchablePreferencePOJO.searchableInfo()),
+                        Optional.of(searchablePreferencePOJO));
+        copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference, context.getResources());
+        return searchablePreference;
     }
 
     private static void copyAttributesFromSrc2Dst(final SearchablePreferencePOJO src,
