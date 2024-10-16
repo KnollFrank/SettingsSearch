@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.provider;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 
 @FunctionalInterface
-public interface ShowPreferencePath {
+public interface ShowPreferencePathPredicate {
 
-    boolean show(PreferencePath preferencePath);
+    boolean shallShowPreferencePath(PreferencePath preferencePath);
 }

@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
-import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
+import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -29,7 +29,7 @@ public class SearchPreferenceFragments {
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
-    private final ShowPreferencePath showPreferencePath;
+    private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
@@ -46,7 +46,7 @@ public class SearchPreferenceFragments {
                                         final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                         final IsPreferenceSearchable isPreferenceSearchable,
                                         final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                                        final ShowPreferencePath showPreferencePath,
+                                        final ShowPreferencePathPredicate showPreferencePathPredicate,
                                         final PrepareShow prepareShow,
                                         final FragmentManager fragmentManager,
                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
@@ -57,7 +57,7 @@ public class SearchPreferenceFragments {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
-        this.showPreferencePath = showPreferencePath;
+        this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
@@ -77,7 +77,7 @@ public class SearchPreferenceFragments {
                         isPreferenceSearchable,
                         searchableInfoProvider,
                         new SearchableInfoAttribute(),
-                        showPreferencePath,
+                        showPreferencePathPredicate,
                         fragmentFactory,
                         preferenceDialogAndSearchableInfoProvider,
                         preferenceScreenGraphAvailableListener,

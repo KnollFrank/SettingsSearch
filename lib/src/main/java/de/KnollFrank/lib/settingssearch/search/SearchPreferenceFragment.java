@@ -39,7 +39,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
-import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
+import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -49,7 +49,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoProvider searchableInfoProvider;
     private final SearchableInfoAttribute searchableInfoAttribute;
-    private final ShowPreferencePath showPreferencePath;
+    private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final FragmentFactory fragmentFactory;
     private SearchConfiguration searchConfiguration;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
@@ -63,7 +63,7 @@ public class SearchPreferenceFragment extends Fragment {
             final IsPreferenceSearchable isPreferenceSearchable,
             final SearchableInfoProvider searchableInfoProvider,
             final SearchableInfoAttribute searchableInfoAttribute,
-            final ShowPreferencePath showPreferencePath,
+            final ShowPreferencePathPredicate showPreferencePathPredicate,
             final FragmentFactory fragmentFactory,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
@@ -75,7 +75,7 @@ public class SearchPreferenceFragment extends Fragment {
                         isPreferenceSearchable,
                         searchableInfoProvider,
                         searchableInfoAttribute,
-                        showPreferencePath,
+                        showPreferencePathPredicate,
                         fragmentFactory,
                         preferenceDialogAndSearchableInfoProvider,
                         preferenceScreenGraphAvailableListener,
@@ -89,7 +89,7 @@ public class SearchPreferenceFragment extends Fragment {
     private SearchPreferenceFragment(final IsPreferenceSearchable isPreferenceSearchable,
                                      final SearchableInfoProvider searchableInfoProvider,
                                      final SearchableInfoAttribute searchableInfoAttribute,
-                                     final ShowPreferencePath showPreferencePath,
+                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
                                      final FragmentFactory fragmentFactory,
                                      final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                      final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
@@ -100,7 +100,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
         this.searchableInfoAttribute = searchableInfoAttribute;
-        this.showPreferencePath = showPreferencePath;
+        this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.fragmentFactory = fragmentFactory;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
@@ -196,7 +196,7 @@ public class SearchPreferenceFragment extends Fragment {
                 SearchResultsPreferenceFragment.newInstance(
                         searchConfiguration.fragmentContainerViewId(),
                         searchableInfoAttribute,
-                        showPreferencePath,
+                        showPreferencePathPredicate,
                         mergedPreferenceScreen,
                         prepareShow),
                 onFragmentStarted,

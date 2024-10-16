@@ -14,7 +14,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
-import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
+import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragmentsBuilder {
@@ -27,7 +27,7 @@ public class SearchPreferenceFragmentsBuilder {
     private IsPreferenceSearchable isPreferenceSearchable = (preference, host) -> true;
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
-    private ShowPreferencePath showPreferencePath = preferencePath -> preferencePath.getPreference().isPresent();
+    private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -66,8 +66,8 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withShowPreferencePath(final ShowPreferencePath showPreferencePath) {
-        this.showPreferencePath = showPreferencePath;
+    public SearchPreferenceFragmentsBuilder withShowPreferencePathPredicate(final ShowPreferencePathPredicate showPreferencePathPredicate) {
+        this.showPreferencePathPredicate = showPreferencePathPredicate;
         return this;
     }
 
@@ -94,7 +94,7 @@ public class SearchPreferenceFragmentsBuilder {
                 preferenceDialogAndSearchableInfoProvider,
                 isPreferenceSearchable,
                 preferenceScreenGraphAvailableListener,
-                showPreferencePath,
+                showPreferencePathPredicate,
                 prepareShow,
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,

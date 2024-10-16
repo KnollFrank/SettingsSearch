@@ -17,7 +17,7 @@ import org.threeten.bp.Duration;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
-import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePath;
+import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.SearchablePreferenceGroupAdapter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoGetter;
 
@@ -25,19 +25,19 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private MergedPreferenceScreen mergedPreferenceScreen;
     private @IdRes int fragmentContainerViewId;
-    private ShowPreferencePath showPreferencePath;
+    private ShowPreferencePathPredicate showPreferencePathPredicate;
     private SearchableInfoGetter searchableInfoGetter;
     private PrepareShow prepareShow;
 
     public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId,
                                                               final SearchableInfoGetter searchableInfoGetter,
-                                                              final ShowPreferencePath showPreferencePath,
+                                                              final ShowPreferencePathPredicate showPreferencePathPredicate,
                                                               final MergedPreferenceScreen mergedPreferenceScreen,
                                                               final PrepareShow prepareShow) {
         final SearchResultsPreferenceFragment fragment = Factory.newInstance(fragmentContainerViewId);
         fragment.setMergedPreferenceScreen(mergedPreferenceScreen);
         fragment.setSearchableInfoGetter(searchableInfoGetter);
-        fragment.setShowPreferencePathPredicate(showPreferencePath);
+        fragment.setShowPreferencePathPredicate(showPreferencePathPredicate);
         fragment.setPrepareShow(prepareShow);
         return fragment;
     }
@@ -61,7 +61,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 preferenceScreen,
                 searchableInfoGetter,
                 mergedPreferenceScreen.preferencePathByPreference,
-                showPreferencePath,
+                showPreferencePathPredicate,
                 mergedPreferenceScreen.nonClickablePreferences,
                 this::showPreferenceScreenAndHighlightPreference);
     }
@@ -75,8 +75,8 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         this.searchableInfoGetter = searchableInfoGetter;
     }
 
-    private void setShowPreferencePathPredicate(final ShowPreferencePath showPreferencePath) {
-        this.showPreferencePath = showPreferencePath;
+    private void setShowPreferencePathPredicate(final ShowPreferencePathPredicate showPreferencePathPredicate) {
+        this.showPreferencePathPredicate = showPreferencePathPredicate;
     }
 
     private void setPrepareShow(final PrepareShow prepareShow) {
