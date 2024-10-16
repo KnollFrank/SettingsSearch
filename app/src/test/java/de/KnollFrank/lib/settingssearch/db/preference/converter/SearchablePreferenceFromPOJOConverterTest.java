@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
+import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.drawable2String;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 
@@ -42,7 +42,8 @@ public class SearchablePreferenceFromPOJOConverterTest {
                 final String value = "someValue";
                 final SearchablePreferencePOJO pojo =
                         POJOTestFactory.createSomeSearchablePreferencePOJO(
-                                createBundle(key, value));
+                                createBundle(key, value),
+                                activity.getResources());
 
                 // When
                 SearchablePreferenceFromPOJOConverter.addConvertedPOJO2Parent(
@@ -51,7 +52,9 @@ public class SearchablePreferenceFromPOJOConverterTest {
                         preferenceFragment.getPreferenceManager().getContext());
 
                 // Then
-                assertEquals((SearchablePreference) preferenceScreen.getPreference(0), pojo);
+                assertEquals(
+                        (SearchablePreference) preferenceScreen.getPreference(0),
+                        pojo);
             });
         }
     }
@@ -73,7 +76,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
 
     private static void assertEquals(final SearchablePreference actual, final SearchablePreferencePOJO expected) {
         assertThat(actual.getKey(), is(expected.key()));
-        // FK-TODO: handle correctly: assertThat(actual.getIcon(), is(expected.iconResId()));
+        assertThat(drawable2String(actual.getIcon()), is(expected.icon()));
         assertThat(actual.getLayoutResource(), is(expected.layoutResId()));
         assertThat(actual.getSummary(), is(expected.summary()));
         assertThat(actual.getTitle(), is(expected.title()));
