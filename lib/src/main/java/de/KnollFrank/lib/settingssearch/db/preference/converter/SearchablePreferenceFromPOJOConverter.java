@@ -31,7 +31,8 @@ class SearchablePreferenceFromPOJOConverter {
         }
     }
 
-    private static SearchablePreference createPlainSearchablePreference(final SearchablePreferencePOJO searchablePreferencePOJO, final Context context) {
+    private static SearchablePreference createPlainSearchablePreference(final SearchablePreferencePOJO searchablePreferencePOJO,
+                                                                        final Context context) {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         context,
