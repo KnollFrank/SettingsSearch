@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Lists;
-import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 class PreferenceSearcher {
@@ -29,15 +28,15 @@ class PreferenceSearcher {
     private void prepareSearch(final String needle) {
         mergedPreferenceScreen.resetPreferenceScreen();
         setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
-                mergedPreferenceScreen.searchablePreferenceScreen,
+                mergedPreferenceScreen.getSearchablePreferenceScreenForDisplay(),
                 searchableInfoAttribute,
                 needle);
     }
 
     private List<PreferenceMatch> getPreferenceMatches(final String needle) {
         return Lists.concat(
-                Preferences
-                        .getAllPreferences(mergedPreferenceScreen.searchablePreferenceScreen)
+                mergedPreferenceScreen
+                        .getAllPreferencesForSearch()
                         .stream()
                         .map(preference ->
                                 PreferenceMatcher.getPreferenceMatches(

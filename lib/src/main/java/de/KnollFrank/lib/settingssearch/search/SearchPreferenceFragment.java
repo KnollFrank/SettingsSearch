@@ -215,7 +215,7 @@ public class SearchPreferenceFragment extends Fragment {
                                 mergedPreferenceScreen,
                                 searchableInfoAttribute),
                         searchableInfoAttribute,
-                        mergedPreferenceScreen.searchablePreferenceScreen,
+                        mergedPreferenceScreen.getSearchablePreferenceScreenForDisplay(),
                         requireContext()));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
