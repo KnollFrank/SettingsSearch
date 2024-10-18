@@ -123,7 +123,6 @@ public final class SearchablePreferencePOJO {
                 ", searchableInfo='" + searchableInfo + '\'' +
                 ", extras=" + extras +
                 ", children=" + children +
-                // ", origin=" + origin +
                 '}';
     }
 }
