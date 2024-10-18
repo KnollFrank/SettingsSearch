@@ -106,8 +106,7 @@ public class SearchablePreferenceScreenGraphDAOTest {
                 final SearchablePreference searchablePreference =
                         new SearchablePreference(
                                 context,
-                                Optional.of("some searchable info"),
-                                Optional.empty());
+                                Optional.of("some searchable info"));
                 searchablePreference.setKey("parentKey");
                 searchablePreference.setLayoutResource(15);
                 return searchablePreference;
@@ -117,8 +116,7 @@ public class SearchablePreferenceScreenGraphDAOTest {
                 final SearchablePreference child =
                         new SearchablePreference(
                                 context,
-                                searchableInfo,
-                                Optional.empty());
+                                searchableInfo);
                 child.setLayoutResource(16);
                 return child;
             }

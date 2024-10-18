@@ -55,8 +55,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                 final SearchablePreference searchablePreference =
                                         new SearchablePreference(
                                                 context,
-                                                Optional.of("some searchable info"),
-                                                Optional.empty());
+                                                Optional.of("some searchable info"));
                                 searchablePreference.setKey("parentKey");
                                 searchablePreference.setLayoutResource(15);
                                 return searchablePreference;
@@ -66,8 +65,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                 final SearchablePreference child =
                                         new SearchablePreference(
                                                 context,
-                                                searchableInfo,
-                                                Optional.empty());
+                                                searchableInfo);
                                 child.setLayoutResource(16);
                                 return child;
                             }

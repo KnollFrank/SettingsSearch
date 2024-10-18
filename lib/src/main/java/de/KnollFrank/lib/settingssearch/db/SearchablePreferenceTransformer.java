@@ -8,8 +8,6 @@ import androidx.preference.PreferenceScreen;
 
 import com.google.common.collect.ImmutableMap;
 
-import java.util.Optional;
-
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 
@@ -52,8 +50,7 @@ public class SearchablePreferenceTransformer {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         preference.getContext(),
-                        searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, host),
-                        Optional.empty());
+                        searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, host));
         copyAttributes(preference, searchablePreference);
         return searchablePreference;
     }

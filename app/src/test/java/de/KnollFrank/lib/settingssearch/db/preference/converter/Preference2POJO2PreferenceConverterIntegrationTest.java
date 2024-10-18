@@ -88,7 +88,6 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         preference.getContext(),
-                        Optional.empty(),
                         Optional.empty());
         SearchablePreferenceTransformer.copyAttributes(preference, searchablePreference);
         return searchablePreference;

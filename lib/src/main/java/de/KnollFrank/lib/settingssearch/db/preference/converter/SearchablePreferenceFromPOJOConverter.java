@@ -11,7 +11,6 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
@@ -46,8 +45,7 @@ class SearchablePreferenceFromPOJOConverter {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         context,
-                        SearchableInfoAttributeConverter.convertFromPOJO(searchablePreferencePOJO.searchableInfo()),
-                        Optional.of(searchablePreferencePOJO));
+                        SearchableInfoAttributeConverter.convertFromPOJO(searchablePreferencePOJO.searchableInfo()));
         copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference, context.getResources());
         return searchablePreference;
     }
