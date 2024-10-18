@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.convert2POJO;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassPOJOWithMap;
+import static de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences;
 
 import android.content.Context;
 
@@ -9,6 +10,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import com.codepoetics.protonpack.StreamUtils;
+import com.google.common.collect.BiMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,12 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
@@ -67,41 +74,70 @@ public class MergedPreferenceScreenProvider {
         // A:
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens.connectedSearchablePreferenceScreens());
-        final SearchablePreferenceScreenPOJO mergedSearchablePreferenceScreenPOJO = merge(screens.connectedSearchablePreferenceScreens());
+        final SearchablePreferenceScreenPOJOWithMap mergedSearchablePreferenceScreenPOJO = merge(screens.connectedSearchablePreferenceScreens());
         // aus diesem mergedSearchablePreferenceScreenPOJO den PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences der nächsten Programmzeile berechnen
         // und ein Mapping zwischen den einzelnen SearchablePreferencePOJOs von mergedSearchablePreferenceScreenPOJO und den SearchablePreferences von preferenceScreenAndNonClickablePreferences zur Verfügung stellen.
         // B:
-        final PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences = destructivelyMergeScreens(screens.connectedSearchablePreferenceScreens());
+        final PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences = destructivelyMergeScreens(screens.connectedSearchablePreferenceScreens());
         return new MergedPreferenceScreen(
                 preferenceScreenAndNonClickablePreferences.preferenceScreen(),
-                mergedSearchablePreferenceScreenPOJO,
+                mergedSearchablePreferenceScreenPOJO.searchablePreferenceScreen(),
                 preferenceScreenAndNonClickablePreferences.nonClickablePreferences(),
                 screens.preferencePathByPreference(),
                 searchableInfoAttribute,
                 new PreferencePathNavigator(hostByPreference, fragmentFactoryAndInitializer, context));
     }
 
-    private PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences destructivelyMergeScreens(final Set<PreferenceScreenWithHostClass> screens) {
+    private PreferenceScreenAndNonClickablePreferences destructivelyMergeScreens(final Set<PreferenceScreenWithHostClass> screens) {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
     }
 
-    private static SearchablePreferenceScreenPOJO merge(final Set<PreferenceScreenWithHostClass> screens) {
+    private record SearchablePreferenceScreenPOJOWithMap(
+            SearchablePreferenceScreenPOJO searchablePreferenceScreen,
+            BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
+    }
+
+    private static SearchablePreferenceScreenPOJOWithMap merge(final Set<PreferenceScreenWithHostClass> screens) {
+        final List<PreferenceScreenWithHostClassPOJOWithMap> entityWithMapList = getEntityWithMapList(screens);
+        return new SearchablePreferenceScreenPOJOWithMap(
+                new SearchablePreferenceScreenPOJO(
+                        "title of merged screen",
+                        "summary of merged screen",
+                        getChildren(entityWithMapList)),
+                getPojoEntityMap(entityWithMapList));
+    }
+
+    private static List<PreferenceScreenWithHostClassPOJOWithMap> getEntityWithMapList(final Set<PreferenceScreenWithHostClass> screens) {
         final IdGenerator idGenerator = new IdGenerator();
-        return new SearchablePreferenceScreenPOJO(
-                "title of merged screen",
-                "summary of merged screen",
-                StreamUtils
-                        .zipWithIndex(screens.stream())
-                        .map(preferenceScreenWithHostClassIndexed ->
-                                convert2POJO(
+        return StreamUtils
+                .zipWithIndex(screens.stream())
+                .map(
+                        preferenceScreenWithHostClassIndexed ->
+                                PreferenceScreenWithHostClass2POJOConverter.convert2POJO(
                                         preferenceScreenWithHostClassIndexed.getValue(),
                                         Math.toIntExact(preferenceScreenWithHostClassIndexed.getIndex()),
                                         idGenerator))
-                        .flatMap(preferenceScreenWithHostClassPOJO ->
-                                preferenceScreenWithHostClassPOJO
-                                        .preferenceScreen()
-                                        .children()
-                                        .stream())
+                .collect(Collectors.toList());
+    }
+
+    private static List<SearchablePreferencePOJO> getChildren(final List<PreferenceScreenWithHostClassPOJOWithMap> entityWithMapList) {
+        return Lists.concat(
+                entityWithMapList
+                        .stream()
+                        .map(
+                                preferenceScreenWithHostClassPOJOWithMap ->
+                                        preferenceScreenWithHostClassPOJOWithMap
+                                                .preferenceScreenWithHostClass()
+                                                .preferenceScreen()
+                                                .children())
+                        .collect(Collectors.toList()));
+    }
+
+    private static BiMap<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap(final List<PreferenceScreenWithHostClassPOJOWithMap> entityWithMapList) {
+        return Maps.mergeBiMaps(
+                entityWithMapList
+                        .stream()
+                        .map(PreferenceScreenWithHostClassPOJOWithMap::pojoEntityMap)
                         .collect(Collectors.toList()));
     }
 

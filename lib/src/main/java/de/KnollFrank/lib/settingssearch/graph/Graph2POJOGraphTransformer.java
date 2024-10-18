@@ -38,10 +38,12 @@ public class Graph2POJOGraphTransformer {
 
             @Override
             public PreferenceScreenWithHostClassPOJO transformNode(final PreferenceScreenWithHostClass node) {
-                return PreferenceScreenWithHostClass2POJOConverter.convert2POJO(
-                        node,
-                        idGenerator4PreferenceScreen.nextId(),
-                        idGenerator4SearchablePreference);
+                return PreferenceScreenWithHostClass2POJOConverter
+                        .convert2POJO(
+                                node,
+                                idGenerator4PreferenceScreen.nextId(),
+                                idGenerator4SearchablePreference)
+                        .preferenceScreenWithHostClass();
             }
 
             @Override

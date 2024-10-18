@@ -7,26 +7,38 @@ import android.content.res.Resources;
 
 import androidx.preference.PreferenceGroup;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableBiMap;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
 class SearchablePreferenceFromPOJOConverter {
 
-    public static void addConvertedPOJO2Parent(final SearchablePreferencePOJO searchablePreferencePOJO,
-                                               final PreferenceGroup parent) {
+    public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJO2Parent(
+            final SearchablePreferencePOJO searchablePreferencePOJO,
+            final PreferenceGroup parent) {
         final SearchablePreference searchablePreference = createPlainSearchablePreference(searchablePreferencePOJO, parent.getContext());
         parent.addPreference(searchablePreference);
-        addConvertedPOJOs2Parent(searchablePreferencePOJO.children(), searchablePreference);
+        return ImmutableBiMap
+                .<SearchablePreferencePOJO, SearchablePreference>builder()
+                .put(searchablePreferencePOJO, searchablePreference)
+                .putAll(addConvertedPOJOs2Parent(searchablePreferencePOJO.children(), searchablePreference))
+                .build();
     }
 
-    public static void addConvertedPOJOs2Parent(final List<SearchablePreferencePOJO> searchablePreferencePOJOs,
-                                                final PreferenceGroup parent) {
-        for (final SearchablePreferencePOJO searchablePreferencePOJO : searchablePreferencePOJOs) {
-            addConvertedPOJO2Parent(searchablePreferencePOJO, parent);
-        }
+    public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJOs2Parent(final List<SearchablePreferencePOJO> searchablePreferencePOJOs,
+                                                                                                 final PreferenceGroup parent) {
+        return Maps.mergeBiMaps(
+                searchablePreferencePOJOs
+                        .stream()
+                        .map(searchablePreferencePOJO -> addConvertedPOJO2Parent(searchablePreferencePOJO, parent))
+                        .collect(Collectors.toList()));
     }
 
     private static SearchablePreference createPlainSearchablePreference(final SearchablePreferencePOJO searchablePreferencePOJO,

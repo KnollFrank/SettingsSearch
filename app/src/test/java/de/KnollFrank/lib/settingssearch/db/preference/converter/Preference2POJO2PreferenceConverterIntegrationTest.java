@@ -77,9 +77,11 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
     }
 
     private static SearchablePreferencePOJO convertPreference2POJO(final Preference preference) {
-        return SearchablePreference2POJOConverter.convert2POJO(
-                asSearchablePreference(preference),
-                new IdGenerator());
+        return SearchablePreference2POJOConverter
+                .convert2POJO(
+                        asSearchablePreference(preference),
+                        new IdGenerator())
+                .searchablePreferencePOJO();
     }
 
     private static SearchablePreference asSearchablePreference(final Preference preference) {

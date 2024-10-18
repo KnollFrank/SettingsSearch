@@ -81,7 +81,10 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                 final IdGenerator idGenerator = new IdGenerator();
 
                 // When
-                final PreferenceScreenWithHostClassPOJO pojo = PreferenceScreenWithHostClass2POJOConverter.convert2POJO(entity, id, idGenerator);
+                final PreferenceScreenWithHostClassPOJO pojo =
+                        PreferenceScreenWithHostClass2POJOConverter
+                                .convert2POJO(entity, id, idGenerator)
+                                .preferenceScreenWithHostClass();
 
                 // Then
                 assertThat(pojo, is(

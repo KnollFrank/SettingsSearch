@@ -36,7 +36,9 @@ public class POJOGraph2GraphTransformer {
 
             @Override
             public PreferenceScreenWithHostClass transformNode(final PreferenceScreenWithHostClassPOJO node) {
-                return PreferenceScreenWithHostClassFromPOJOConverter.convertFromPOJO(node, preferenceManager);
+                return PreferenceScreenWithHostClassFromPOJOConverter
+                        .convertFromPOJO(node, preferenceManager)
+                        .preferenceScreenWithHostClass();
             }
 
             @Override
