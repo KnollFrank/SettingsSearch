@@ -14,8 +14,7 @@ class SearchablePreferenceScreenFromPOJOConverter {
         preferenceScreen.setSummary(searchablePreferenceScreenPOJO.summary());
         SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
                 searchablePreferenceScreenPOJO.children(),
-                preferenceScreen,
-                preferenceManager.getContext());
+                preferenceScreen);
         return preferenceScreen;
     }
 }

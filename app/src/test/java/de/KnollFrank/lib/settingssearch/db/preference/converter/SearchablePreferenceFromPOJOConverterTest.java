@@ -46,10 +46,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
                                 activity.getResources());
 
                 // When
-                SearchablePreferenceFromPOJOConverter.addConvertedPOJO2Parent(
-                        pojo,
-                        preferenceScreen,
-                        preferenceFragment.getPreferenceManager().getContext());
+                SearchablePreferenceFromPOJOConverter.addConvertedPOJO2Parent(pojo, preferenceScreen);
 
                 // Then
                 assertEquals(

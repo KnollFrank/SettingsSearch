@@ -16,18 +16,16 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 class SearchablePreferenceFromPOJOConverter {
 
     public static void addConvertedPOJO2Parent(final SearchablePreferencePOJO searchablePreferencePOJO,
-                                               final PreferenceGroup parent,
-                                               final Context context) {
-        final SearchablePreference searchablePreference = createPlainSearchablePreference(searchablePreferencePOJO, context);
+                                               final PreferenceGroup parent) {
+        final SearchablePreference searchablePreference = createPlainSearchablePreference(searchablePreferencePOJO, parent.getContext());
         parent.addPreference(searchablePreference);
-        addConvertedPOJOs2Parent(searchablePreferencePOJO.children(), searchablePreference, context);
+        addConvertedPOJOs2Parent(searchablePreferencePOJO.children(), searchablePreference);
     }
 
     public static void addConvertedPOJOs2Parent(final List<SearchablePreferencePOJO> searchablePreferencePOJOs,
-                                                final PreferenceGroup parent,
-                                                final Context context) {
+                                                final PreferenceGroup parent) {
         for (final SearchablePreferencePOJO searchablePreferencePOJO : searchablePreferencePOJOs) {
-            addConvertedPOJO2Parent(searchablePreferencePOJO, parent, context);
+            addConvertedPOJO2Parent(searchablePreferencePOJO, parent);
         }
     }
 
