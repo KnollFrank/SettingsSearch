@@ -12,8 +12,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 class SearchablePreference2POJOConverter {
 
-    public static SearchablePreferencePOJO convert2POJO(final SearchablePreference searchablePreference) {
+    public static SearchablePreferencePOJO convert2POJO(final SearchablePreference searchablePreference,
+                                                        final IdGenerator idGenerator) {
         return new SearchablePreferencePOJO(
+                idGenerator.nextId(),
                 searchablePreference.getKey(),
                 drawable2String(searchablePreference.getIcon()),
                 searchablePreference.getLayoutResource(),
@@ -24,14 +26,17 @@ class SearchablePreference2POJOConverter {
                 searchablePreference.isVisible(),
                 SearchableInfoAttributeConverter.convert2POJO(searchablePreference.getSearchableInfo()),
                 searchablePreference.getExtras(),
-                convert2POJOs(SearchablePreferenceCaster.cast(Preferences.getImmediateChildren(searchablePreference))),
+                convert2POJOs(
+                        SearchablePreferenceCaster.cast(Preferences.getImmediateChildren(searchablePreference)),
+                        idGenerator),
                 Optional.of(searchablePreference));
     }
 
-    public static List<SearchablePreferencePOJO> convert2POJOs(final List<SearchablePreference> searchablePreferences) {
+    public static List<SearchablePreferencePOJO> convert2POJOs(final List<SearchablePreference> searchablePreferences,
+                                                               final IdGenerator idGenerator) {
         return searchablePreferences
                 .stream()
-                .map(SearchablePreference2POJOConverter::convert2POJO)
+                .map(searchablePreference -> convert2POJO(searchablePreference, idGenerator))
                 .collect(Collectors.toList());
     }
 

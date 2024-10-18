@@ -78,9 +78,10 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                 getPreferenceScreen(preferenceFragment, activity),
                                 preferenceFragment.getClass());
                 final int id = 4711;
+                final IdGenerator idGenerator = new IdGenerator();
 
                 // When
-                final PreferenceScreenWithHostClassPOJO pojo = PreferenceScreenWithHostClass2POJOConverter.convert2POJO(entity, id);
+                final PreferenceScreenWithHostClassPOJO pojo = PreferenceScreenWithHostClass2POJOConverter.convert2POJO(entity, id, idGenerator);
 
                 // Then
                 assertThat(pojo, is(
@@ -91,6 +92,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                         "screen summary",
                                         List.of(
                                                 new SearchablePreferencePOJO(
+                                                        1,
                                                         "parentKey",
                                                         null,
                                                         15,
@@ -103,6 +105,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                         new Bundle(),
                                                         List.of(
                                                                 new SearchablePreferencePOJO(
+                                                                        2,
                                                                         null,
                                                                         null,
                                                                         16,
@@ -116,6 +119,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         List.of(),
                                                                         Optional.empty()),
                                                                 new SearchablePreferencePOJO(
+                                                                        3,
                                                                         null,
                                                                         null,
                                                                         16,

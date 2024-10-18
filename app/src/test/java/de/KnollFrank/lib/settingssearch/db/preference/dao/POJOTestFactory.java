@@ -16,6 +16,7 @@ public class POJOTestFactory {
     public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO(final Bundle extras,
                                                                               final Resources resources) {
         return new SearchablePreferencePOJO(
+                1,
                 "some key",
                 drawable2String(resources.getDrawable(R.drawable.smiley, null)),
                 4712,
@@ -28,6 +29,7 @@ public class POJOTestFactory {
                 extras,
                 List.of(
                         new SearchablePreferencePOJO(
+                                2,
                                 "some key 2",
                                 null,
                                 4715,

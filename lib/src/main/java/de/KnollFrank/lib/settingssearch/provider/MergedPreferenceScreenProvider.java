@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
@@ -85,6 +86,7 @@ public class MergedPreferenceScreenProvider {
     }
 
     private static SearchablePreferenceScreenPOJO merge(final Set<PreferenceScreenWithHostClass> screens) {
+        final IdGenerator idGenerator = new IdGenerator();
         return new SearchablePreferenceScreenPOJO(
                 "title of merged screen",
                 "summary of merged screen",
@@ -93,7 +95,8 @@ public class MergedPreferenceScreenProvider {
                         .map(preferenceScreenWithHostClassIndexed ->
                                 convert2POJO(
                                         preferenceScreenWithHostClassIndexed.getValue(),
-                                        Math.toIntExact(preferenceScreenWithHostClassIndexed.getIndex())))
+                                        Math.toIntExact(preferenceScreenWithHostClassIndexed.getIndex()),
+                                        idGenerator))
                         .flatMap(preferenceScreenWithHostClassPOJO ->
                                 preferenceScreenWithHostClassPOJO
                                         .preferenceScreen()

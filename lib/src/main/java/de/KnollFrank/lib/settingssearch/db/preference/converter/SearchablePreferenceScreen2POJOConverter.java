@@ -11,12 +11,14 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceTitle;
 
 class SearchablePreferenceScreen2POJOConverter {
 
-    public static SearchablePreferenceScreenPOJO convert2POJO(final PreferenceScreen preferenceScreen) {
+    public static SearchablePreferenceScreenPOJO convert2POJO(final PreferenceScreen preferenceScreen,
+                                                              final IdGenerator idGenerator) {
         return new SearchablePreferenceScreenPOJO(
                 toStringOrNull(PreferenceTitle.getOptionalTitle(preferenceScreen)),
                 toStringOrNull(PreferenceSummary.getOptionalSummary(preferenceScreen)),
                 SearchablePreference2POJOConverter.convert2POJOs(
-                        SearchablePreferenceCaster.cast(Preferences.getImmediateChildren(preferenceScreen))));
+                        SearchablePreferenceCaster.cast(Preferences.getImmediateChildren(preferenceScreen)),
+                        idGenerator));
     }
 
     private static String toStringOrNull(final Optional<CharSequence> preferenceScreen) {

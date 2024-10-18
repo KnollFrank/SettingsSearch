@@ -11,6 +11,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
 public final class SearchablePreferencePOJO {
 
+    private final int id;
     private final String key;
     private final String icon;
     private final int layoutResId;
@@ -25,7 +26,9 @@ public final class SearchablePreferencePOJO {
     @Exclude
     private Optional<SearchablePreference> origin;
 
+    // FK-TODO: remove origin and handle as an external Map<SearchablePreferencePOJO, SearchablePreference>
     public SearchablePreferencePOJO(
+            final int id,
             final String key,
             final String icon,
             final int layoutResId,
@@ -38,6 +41,7 @@ public final class SearchablePreferencePOJO {
             final Bundle extras,
             final List<SearchablePreferencePOJO> children,
             final Optional<SearchablePreference> origin) {
+        this.id = id;
         this.key = key;
         this.icon = icon;
         this.layoutResId = layoutResId;
@@ -50,6 +54,10 @@ public final class SearchablePreferencePOJO {
         this.extras = extras;
         this.children = children;
         this.origin = origin;
+    }
+
+    public int id() {
+        return id;
     }
 
     public String key() {
@@ -109,28 +117,30 @@ public final class SearchablePreferencePOJO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final SearchablePreferencePOJO that = (SearchablePreferencePOJO) o;
-        return layoutResId == that.layoutResId && visible == that.visible && widgetLayoutResId == that.widgetLayoutResId && Objects.equals(key, that.key) && Objects.equals(icon, that.icon) && Objects.equals(title, that.title) && Objects.equals(summary, that.summary) && Objects.equals(fragment, that.fragment) && Objects.equals(searchableInfo, that.searchableInfo) && Objects.equals(children, that.children);
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key, icon, layoutResId, summary, title, widgetLayoutResId, fragment, visible, searchableInfo, children);
+        return Objects.hashCode(id);
     }
 
     @Override
     public String toString() {
-        return "SearchablePreferencePOJO[" +
-                "key=" + key + ", " +
-                "icon=" + icon + ", " +
-                "layoutResId=" + layoutResId + ", " +
-                "summary=" + summary + ", " +
-                "title=" + title + ", " +
-                "widgetLayoutResId=" + widgetLayoutResId + ", " +
-                "fragment=" + fragment + ", " +
-                "visible=" + visible + ", " +
-                "searchableInfo=" + searchableInfo + ", " +
-                "extras=" + extras + ", " +
-                "children=" + children + ", " +
-                "origin=" + origin + ']';
+        return "SearchablePreferencePOJO{" +
+                "id=" + id +
+                ", key='" + key + '\'' +
+                ", icon='" + icon + '\'' +
+                ", layoutResId=" + layoutResId +
+                ", summary='" + summary + '\'' +
+                ", title='" + title + '\'' +
+                ", widgetLayoutResId=" + widgetLayoutResId +
+                ", fragment='" + fragment + '\'' +
+                ", visible=" + visible +
+                ", searchableInfo='" + searchableInfo + '\'' +
+                ", extras=" + extras +
+                ", children=" + children +
+                // ", origin=" + origin +
+                '}';
     }
 }

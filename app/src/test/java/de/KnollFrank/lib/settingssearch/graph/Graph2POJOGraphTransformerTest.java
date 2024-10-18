@@ -56,6 +56,7 @@ public class Graph2POJOGraphTransformerTest {
     private static Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreferencePOJO preferenceConnectingSrc2Dst =
                 new SearchablePreferencePOJO(
+                        4,
                         null,
                         null,
                         2131427444,
@@ -86,6 +87,7 @@ public class Graph2POJOGraphTransformerTest {
                         "screen summary",
                         List.of(
                                 new SearchablePreferencePOJO(
+                                        1,
                                         "parentKey",
                                         null,
                                         15,
@@ -98,6 +100,7 @@ public class Graph2POJOGraphTransformerTest {
                                         new Bundle(),
                                         List.of(
                                                 new SearchablePreferencePOJO(
+                                                        2,
                                                         null,
                                                         null,
                                                         16,
@@ -111,6 +114,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         List.of(),
                                                         Optional.empty()),
                                                 new SearchablePreferencePOJO(
+                                                        3,
                                                         null,
                                                         null,
                                                         16,
