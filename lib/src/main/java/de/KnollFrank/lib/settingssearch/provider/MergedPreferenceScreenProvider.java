@@ -1,10 +1,14 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.convert2POJO;
+
 import android.content.Context;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+
+import com.codepoetics.protonpack.StreamUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +19,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -61,10 +66,14 @@ public class MergedPreferenceScreenProvider {
         // A:
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens.connectedSearchablePreferenceScreens());
+        final SearchablePreferenceScreenPOJO mergedSearchablePreferenceScreenPOJO = merge(screens.connectedSearchablePreferenceScreens());
+        // aus diesem mergedSearchablePreferenceScreenPOJO den PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences der nächsten Programmzeile berechnen
+        // und ein Mapping zwischen den einzelnen SearchablePreferencePOJOs von mergedSearchablePreferenceScreenPOJO und den SearchablePreferences von preferenceScreenAndNonClickablePreferences zur Verfügung stellen.
         // B:
         final PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences = destructivelyMergeScreens(screens.connectedSearchablePreferenceScreens());
         return new MergedPreferenceScreen(
                 preferenceScreenAndNonClickablePreferences.preferenceScreen(),
+                mergedSearchablePreferenceScreenPOJO,
                 preferenceScreenAndNonClickablePreferences.nonClickablePreferences(),
                 screens.preferencePathByPreference(),
                 searchableInfoAttribute,
@@ -73,6 +82,24 @@ public class MergedPreferenceScreenProvider {
 
     private PreferenceScreensMerger.PreferenceScreenAndNonClickablePreferences destructivelyMergeScreens(final Set<PreferenceScreenWithHostClass> screens) {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
+    }
+
+    private static SearchablePreferenceScreenPOJO merge(final Set<PreferenceScreenWithHostClass> screens) {
+        return new SearchablePreferenceScreenPOJO(
+                "title of merged screen",
+                "summary of merged screen",
+                StreamUtils
+                        .zipWithIndex(screens.stream())
+                        .map(preferenceScreenWithHostClassIndexed ->
+                                convert2POJO(
+                                        preferenceScreenWithHostClassIndexed.getValue(),
+                                        Math.toIntExact(preferenceScreenWithHostClassIndexed.getIndex())))
+                        .flatMap(preferenceScreenWithHostClassPOJO ->
+                                preferenceScreenWithHostClassPOJO
+                                        .preferenceScreen()
+                                        .children()
+                                        .stream())
+                        .collect(Collectors.toList()));
     }
 
     private static List<PreferenceScreen> getPreferenceScreens(final List<PreferenceScreenWithHostClass> screens) {

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -17,17 +18,20 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 public class MergedPreferenceScreen {
 
     private final PreferenceScreen searchablePreferenceScreen;
+    private final SearchablePreferenceScreenPOJO mergedSearchablePreferenceScreenPOJO;
     public final Set<PreferenceCategory> nonClickablePreferences;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferenceScreenResetter preferenceScreenResetter;
     private final PreferencePathNavigator preferencePathNavigator;
 
     public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
+                                  final SearchablePreferenceScreenPOJO mergedSearchablePreferenceScreenPOJO,
                                   final Set<PreferenceCategory> nonClickablePreferences,
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute,
                                   final PreferencePathNavigator preferencePathNavigator) {
         this.searchablePreferenceScreen = searchablePreferenceScreen;
+        this.mergedSearchablePreferenceScreenPOJO = mergedSearchablePreferenceScreenPOJO;
         this.nonClickablePreferences = nonClickablePreferences;
         this.preferencePathByPreference = preferencePathByPreference;
         this.preferencePathNavigator = preferencePathNavigator;

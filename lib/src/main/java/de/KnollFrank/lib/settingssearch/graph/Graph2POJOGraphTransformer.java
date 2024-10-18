@@ -52,7 +52,7 @@ public class Graph2POJOGraphTransformer {
                     final Optional<Preference> origin) {
                 return haystack
                         .stream()
-                        .filter(searchablePreferencePOJO -> searchablePreferencePOJO.origin().equals(origin))
+                        .filter(searchablePreferencePOJO -> searchablePreferencePOJO.getOrigin().equals(origin))
                         .findFirst()
                         .get();
             }
