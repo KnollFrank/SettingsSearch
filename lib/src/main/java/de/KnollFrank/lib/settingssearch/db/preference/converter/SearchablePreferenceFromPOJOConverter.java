@@ -48,7 +48,6 @@ class SearchablePreferenceFromPOJOConverter {
                         context,
                         SearchableInfoAttributeConverter.convertFromPOJO(searchablePreferencePOJO.searchableInfo()),
                         Optional.of(searchablePreferencePOJO));
-        searchablePreferencePOJO.setOrigin(Optional.of(searchablePreference));
         copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference, context.getResources());
         return searchablePreference;
     }

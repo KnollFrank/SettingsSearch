@@ -19,7 +19,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
-import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -73,8 +72,7 @@ public class POJOGraph2JSONConverterTest {
                 true,
                 null,
                 new Bundle(),
-                List.of(),
-                Optional.empty());
+                List.of());
     }
 
     private static PreferenceScreenWithHostClassPOJO createNode(final int id) {

@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
-import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
@@ -67,8 +66,7 @@ public class Graph2POJOGraphTransformerTest {
                         true,
                         null,
                         new Bundle(),
-                        List.of(),
-                        Optional.empty());
+                        List.of());
         return DefaultDirectedGraph
                 .<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>createBuilder(SearchablePreferencePOJOEdge.class)
                 .addEdge(
@@ -111,8 +109,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         true,
                                                         null,
                                                         new Bundle(),
-                                                        List.of(),
-                                                        Optional.empty()),
+                                                        List.of()),
                                                 new SearchablePreferencePOJO(
                                                         3,
                                                         null,
@@ -125,9 +122,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         true,
                                                         null,
                                                         new Bundle(),
-                                                        List.of(),
-                                                        Optional.empty())),
-                                        Optional.empty()),
+                                                        List.of()))),
                                 preferenceConnectingSrc2Dst)),
                 host);
     }

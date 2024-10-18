@@ -4,10 +4,6 @@ import android.os.Bundle;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-
-import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
 public final class SearchablePreferencePOJO {
 
@@ -23,10 +19,7 @@ public final class SearchablePreferencePOJO {
     private final String searchableInfo;
     private final Bundle extras;
     private final List<SearchablePreferencePOJO> children;
-    @Exclude
-    private Optional<SearchablePreference> origin;
 
-    // FK-TODO: remove origin and handle as an external Map<SearchablePreferencePOJO, SearchablePreference>
     public SearchablePreferencePOJO(
             final int id,
             final String key,
@@ -39,8 +32,7 @@ public final class SearchablePreferencePOJO {
             final boolean visible,
             final String searchableInfo,
             final Bundle extras,
-            final List<SearchablePreferencePOJO> children,
-            final Optional<SearchablePreference> origin) {
+            final List<SearchablePreferencePOJO> children) {
         this.id = id;
         this.key = key;
         this.icon = icon;
@@ -53,7 +45,6 @@ public final class SearchablePreferencePOJO {
         this.searchableInfo = searchableInfo;
         this.extras = extras;
         this.children = children;
-        this.origin = origin;
     }
 
     public int id() {
@@ -102,14 +93,6 @@ public final class SearchablePreferencePOJO {
 
     public List<SearchablePreferencePOJO> children() {
         return children;
-    }
-
-    public Optional<SearchablePreference> getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(final Optional<SearchablePreference> origin) {
-        this.origin = origin;
     }
 
     @Override

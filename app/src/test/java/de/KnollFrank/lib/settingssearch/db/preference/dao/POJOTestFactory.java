@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import java.util.List;
-import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.settingssearch.R;
@@ -40,8 +39,6 @@ public class POJOTestFactory {
                                 true,
                                 "some searchableInfo 2",
                                 new Bundle(),
-                                List.of(),
-                                Optional.empty())),
-                Optional.empty());
+                                List.of())));
     }
 }

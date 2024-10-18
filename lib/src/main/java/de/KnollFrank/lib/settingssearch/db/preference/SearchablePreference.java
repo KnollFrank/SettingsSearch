@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 public class SearchablePreference extends PreferenceCategory {
 
     private final Optional<String> searchableInfo;
+    // FK-TODO: remove origin, use BiMap instead
     private final Optional<SearchablePreferencePOJO> origin;
 
     public SearchablePreference(@NonNull final Context context,

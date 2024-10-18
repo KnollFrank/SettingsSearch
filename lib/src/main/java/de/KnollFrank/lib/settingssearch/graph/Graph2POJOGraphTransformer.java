@@ -2,20 +2,19 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.Preference;
 
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import org.jgrapht.Graph;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassPOJOWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -35,47 +34,27 @@ public class Graph2POJOGraphTransformer {
 
             private final IdGenerator idGenerator4PreferenceScreen = new IdGenerator();
             private final IdGenerator idGenerator4SearchablePreference = new IdGenerator();
+            private final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap = HashBiMap.create();
 
             @Override
             public PreferenceScreenWithHostClassPOJO transformNode(final PreferenceScreenWithHostClass node) {
-                return PreferenceScreenWithHostClass2POJOConverter
-                        .convert2POJO(
-                                node,
-                                idGenerator4PreferenceScreen.nextId(),
-                                idGenerator4SearchablePreference)
-                        .preferenceScreenWithHostClass();
+                final PreferenceScreenWithHostClassPOJOWithMap preferenceScreenWithHostClassPOJOWithMap =
+                        PreferenceScreenWithHostClass2POJOConverter
+                                .convert2POJO(
+                                        node,
+                                        idGenerator4PreferenceScreen.nextId(),
+                                        idGenerator4SearchablePreference);
+                pojoEntityMap.putAll(preferenceScreenWithHostClassPOJOWithMap.pojoEntityMap());
+                return preferenceScreenWithHostClassPOJOWithMap.preferenceScreenWithHostClass();
             }
 
             @Override
             public SearchablePreferencePOJOEdge transformEdge(final PreferenceEdge edge, final PreferenceScreenWithHostClassPOJO transformedParentNode) {
-                return new SearchablePreferencePOJOEdge(
-                        getSearchablePreferencePOJOHavingOrigin(
-                                getAllPreferences(transformedParentNode.preferenceScreen().children()),
-                                Optional.of(edge.preference)));
+                return new SearchablePreferencePOJOEdge(getSearchablePreferencePOJO(edge.preference));
             }
 
-            private static SearchablePreferencePOJO getSearchablePreferencePOJOHavingOrigin(
-                    final List<SearchablePreferencePOJO> haystack,
-                    final Optional<Preference> origin) {
-                return haystack
-                        .stream()
-                        .filter(searchablePreferencePOJO -> searchablePreferencePOJO.getOrigin().equals(origin))
-                        .findFirst()
-                        .get();
-            }
-
-            private static List<SearchablePreferencePOJO> getAllPreferences(final SearchablePreferencePOJO searchablePreference) {
-                return ImmutableList.<SearchablePreferencePOJO>builder()
-                        .add(searchablePreference)
-                        .addAll(getAllPreferences(searchablePreference.children()))
-                        .build();
-            }
-
-            private static List<SearchablePreferencePOJO> getAllPreferences(final List<SearchablePreferencePOJO> searchablePreferencePOJOs) {
-                return searchablePreferencePOJOs
-                        .stream()
-                        .flatMap(searchablePreferencePOJO -> getAllPreferences(searchablePreferencePOJO).stream())
-                        .collect(Collectors.toList());
+            private SearchablePreferencePOJO getSearchablePreferencePOJO(final Preference preference) {
+                return pojoEntityMap.inverse().get(preference);
             }
         };
     }

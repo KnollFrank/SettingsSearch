@@ -45,8 +45,7 @@ class SearchablePreference2POJOConverter {
                         searchablePreference.isVisible(),
                         SearchableInfoAttributeConverter.convert2POJO(searchablePreference.getSearchableInfo()),
                         searchablePreference.getExtras(),
-                        searchablePreferencePOJOsWithMap.searchablePreferencePOJOs(),
-                        Optional.of(searchablePreference));
+                        searchablePreferencePOJOsWithMap.searchablePreferencePOJOs());
         return new SearchablePreferencePOJOWithMap(
                 searchablePreferencePOJO,
                 ImmutableBiMap
