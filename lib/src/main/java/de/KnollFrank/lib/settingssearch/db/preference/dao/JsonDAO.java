@@ -33,7 +33,6 @@ public class JsonDAO {
         return new GsonBuilder()
                 .registerTypeAdapter(Class.class, new ClassTypeAdapter())
                 .registerTypeAdapterFactory(new BundleTypeAdapterFactory())
-                .setExclusionStrategies(new AnnotationExclusionStrategy())
                 .enableComplexMapKeySerialization()
                 .create();
     }
