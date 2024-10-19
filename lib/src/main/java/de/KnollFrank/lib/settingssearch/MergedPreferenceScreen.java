@@ -41,7 +41,7 @@ public class MergedPreferenceScreen {
         this.preferenceScreenResetter = new PreferenceScreenResetter(searchablePreferenceScreen, searchableInfoAttribute);
     }
 
-    public BiMap<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap() {
+    public Map<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap() {
         return pojoEntityMap;
     }
 

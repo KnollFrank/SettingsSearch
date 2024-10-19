@@ -8,8 +8,6 @@ import android.util.Pair;
 
 import androidx.preference.Preference;
 
-import com.google.common.collect.BiMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -23,11 +21,11 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 class PreferenceMatchesHighlighter {
 
     private final Supplier<List<Object>> markupsFactory;
-    private final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
+    private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
     private final SearchableInfoAttribute searchableInfoAttribute;
 
     public PreferenceMatchesHighlighter(final Supplier<List<Object>> markupsFactory,
-                                        final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
+                                        final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
                                         final SearchableInfoAttribute searchableInfoAttribute) {
         this.markupsFactory = markupsFactory;
         this.pojoEntityMap = pojoEntityMap;
