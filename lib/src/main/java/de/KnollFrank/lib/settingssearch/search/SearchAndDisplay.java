@@ -5,23 +5,30 @@ import android.content.Context;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
+import com.google.common.collect.BiMap;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;
+    private final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final PreferenceScreen preferenceScreen;
     private final Context context;
 
     public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
+                            final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
                             final SearchableInfoAttribute searchableInfoAttribute,
                             final PreferenceScreen preferenceScreen,
                             final Context context) {
         this.preferenceSearcher = preferenceSearcher;
+        this.pojoEntityMap = pojoEntityMap;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.preferenceScreen = preferenceScreen;
         this.context = context;
@@ -43,14 +50,15 @@ class SearchAndDisplay {
         final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                 new PreferenceMatchesHighlighter(
                         () -> MarkupFactory.createMarkups(context),
+                        pojoEntityMap,
                         searchableInfoAttribute);
         preferenceMatchesHighlighter.highlight(preferenceMatches);
     }
 
-    private static List<Preference> getPreferences(final List<PreferenceMatch> preferenceMatches) {
+    private List<Preference> getPreferences(final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
-                .map(PreferenceMatch::preference)
+                .map(preferenceMatch -> pojoEntityMap.get(preferenceMatch.preference()))
                 .collect(Collectors.toList());
     }
 }

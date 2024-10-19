@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
 import android.text.Spannable;
@@ -10,26 +8,34 @@ import android.util.Pair;
 
 import androidx.preference.Preference;
 
+import com.google.common.collect.BiMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 class PreferenceMatchesHighlighter {
 
     private final Supplier<List<Object>> markupsFactory;
+    private final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
     private final SearchableInfoAttribute searchableInfoAttribute;
 
     public PreferenceMatchesHighlighter(final Supplier<List<Object>> markupsFactory,
+                                        final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
                                         final SearchableInfoAttribute searchableInfoAttribute) {
         this.markupsFactory = markupsFactory;
+        this.pojoEntityMap = pojoEntityMap;
         this.searchableInfoAttribute = searchableInfoAttribute;
     }
 
     public void highlight(final List<PreferenceMatch> preferenceMatches) {
-        PreferenceMatchesHighlighter
+        this
                 .getIndexRangesByPreferenceAndType(preferenceMatches)
                 .forEach(
                         (preferenceAndType, indexRanges) ->
@@ -39,17 +45,18 @@ class PreferenceMatchesHighlighter {
                                         indexRanges));
     }
 
-    private static Map<Pair<Preference, Type>, List<IndexRange>> getIndexRangesByPreferenceAndType(
+    // FK-TODO: use guava's Table instead of java's Map?
+    private Map<Pair<Preference, Type>, List<IndexRange>> getIndexRangesByPreferenceAndType(
             final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .collect(
-                        groupingBy(
+                        Collectors.groupingBy(
                                 preferenceMatch ->
                                         Pair.create(
-                                                preferenceMatch.preference(),
+                                                pojoEntityMap.get(preferenceMatch.preference()),
                                                 preferenceMatch.type()),
-                                mapping(
+                                Collectors.mapping(
                                         PreferenceMatch::indexRange,
                                         toList())));
     }
@@ -74,6 +81,7 @@ class PreferenceMatchesHighlighter {
         PreferenceTitle.setTitle(
                 preference,
                 highlight(
+                        // FK-TODO: use PreferenceTitle.getOptionalTitle()
                         preference.getTitle().toString(),
                         indexRanges));
     }
@@ -82,6 +90,7 @@ class PreferenceMatchesHighlighter {
         PreferenceSummary.setSummary(
                 preference,
                 highlight(
+                        // FK-TODO: use PreferenceSummary.getOptionalSummary()
                         preference.getSummary().toString(),
                         indexRanges));
     }

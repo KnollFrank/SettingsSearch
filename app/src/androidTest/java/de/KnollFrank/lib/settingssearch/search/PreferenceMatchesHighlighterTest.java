@@ -2,10 +2,10 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreference2POJOConverter.SearchablePreferencePOJOWithMap;
 
 import android.text.Spannable;
 
-import androidx.preference.Preference;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableList;
@@ -13,12 +13,17 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreference2POJOConverter;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
+// FK-TODO: make unit test
 public class PreferenceMatchesHighlighterTest {
 
     @Test
@@ -26,18 +31,29 @@ public class PreferenceMatchesHighlighterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(context -> {
                 // Given
-                final Preference preference = new Preference(context);
+                final SearchablePreference preference = new SearchablePreference(context, Optional.empty());
                 preference.setKey("feedback");
                 preference.setTitle("title, title");
+                final SearchablePreferencePOJOWithMap searchablePreferencePOJOWithMap =
+                        SearchablePreference2POJOConverter.convert2POJO(
+                                preference,
+                                new IdGenerator());
 
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
                 final List<PreferenceMatch> preferenceMatches =
                         ImmutableList.of(
-                                new PreferenceMatch(preference, Type.TITLE, new IndexRange(0, 5)),
-                                new PreferenceMatch(preference, Type.TITLE, new IndexRange(7, 12)));
+                                new PreferenceMatch(
+                                        searchablePreferencePOJOWithMap.searchablePreferencePOJO(),
+                                        Type.TITLE,
+                                        new IndexRange(0, 5)),
+                                new PreferenceMatch(
+                                        searchablePreferencePOJOWithMap.searchablePreferencePOJO(),
+                                        Type.TITLE,
+                                        new IndexRange(7, 12)));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(
                                 markupsFactory,
+                                searchablePreferencePOJOWithMap.pojoEntityMap(),
                                 new SearchableInfoAttribute());
 
                 // When
@@ -57,18 +73,29 @@ public class PreferenceMatchesHighlighterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(context -> {
                 // Given
-                final Preference preference = new Preference(context);
+                final SearchablePreference preference = new SearchablePreference(context, Optional.empty());
                 preference.setKey("feedback");
                 preference.setSummary("summary, summary");
+                final SearchablePreferencePOJOWithMap searchablePreferencePOJOWithMap =
+                        SearchablePreference2POJOConverter.convert2POJO(
+                                preference,
+                                new IdGenerator());
 
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
                 final List<PreferenceMatch> preferenceMatches =
                         ImmutableList.of(
-                                new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(0, 7)),
-                                new PreferenceMatch(preference, Type.SUMMARY, new IndexRange(9, 16)));
+                                new PreferenceMatch(
+                                        searchablePreferencePOJOWithMap.searchablePreferencePOJO(),
+                                        Type.SUMMARY,
+                                        new IndexRange(0, 7)),
+                                new PreferenceMatch(
+                                        searchablePreferencePOJOWithMap.searchablePreferencePOJO(),
+                                        Type.SUMMARY,
+                                        new IndexRange(9, 16)));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(
                                 markupsFactory,
+                                searchablePreferencePOJOWithMap.pojoEntityMap(),
                                 new SearchableInfoAttribute());
 
                 // When
@@ -88,19 +115,31 @@ public class PreferenceMatchesHighlighterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(context -> {
                 // Given
-                final Preference preference = new Preference(context);
+                final String _searchableInfo = "info, info";
+                final SearchablePreference preference = new SearchablePreference(context, Optional.of(_searchableInfo));
                 preference.setKey("feedback");
                 final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
-                searchableInfoAttribute.setSearchableInfo(preference, "info, info");
+                searchableInfoAttribute.setSearchableInfo(preference, _searchableInfo);
+                final SearchablePreferencePOJOWithMap searchablePreferencePOJOWithMap =
+                        SearchablePreference2POJOConverter.convert2POJO(
+                                preference,
+                                new IdGenerator());
 
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
                 final List<PreferenceMatch> preferenceMatches =
                         ImmutableList.of(
-                                new PreferenceMatch(preference, Type.SEARCHABLE_INFO, new IndexRange(0, 4)),
-                                new PreferenceMatch(preference, Type.SEARCHABLE_INFO, new IndexRange(6, 10)));
+                                new PreferenceMatch(
+                                        searchablePreferencePOJOWithMap.searchablePreferencePOJO(),
+                                        Type.SEARCHABLE_INFO,
+                                        new IndexRange(0, 4)),
+                                new PreferenceMatch(
+                                        searchablePreferencePOJOWithMap.searchablePreferencePOJO(),
+                                        Type.SEARCHABLE_INFO,
+                                        new IndexRange(6, 10)));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(
                                 markupsFactory,
+                                searchablePreferencePOJOWithMap.pojoEntityMap(),
                                 searchableInfoAttribute);
 
                 // When

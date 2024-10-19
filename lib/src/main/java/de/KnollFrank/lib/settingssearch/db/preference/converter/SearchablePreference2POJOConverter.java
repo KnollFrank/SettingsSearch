@@ -14,7 +14,7 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-class SearchablePreference2POJOConverter {
+public class SearchablePreference2POJOConverter {
 
     public record SearchablePreferencePOJOWithMap(SearchablePreferencePOJO searchablePreferencePOJO,
                                                   BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {

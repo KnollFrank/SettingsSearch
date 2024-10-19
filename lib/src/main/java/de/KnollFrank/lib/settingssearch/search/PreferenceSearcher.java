@@ -38,11 +38,7 @@ class PreferenceSearcher {
                 mergedPreferenceScreen
                         .getAllPreferencesForSearch()
                         .stream()
-                        .map(preference ->
-                                PreferenceMatcher.getPreferenceMatches(
-                                        preference,
-                                        needle,
-                                        searchableInfoAttribute))
+                        .map(searchablePreference -> PreferenceMatcher.getPreferenceMatches(searchablePreference, needle))
                         .collect(Collectors.toList()));
     }
 }

@@ -41,4 +41,22 @@ public class POJOTestFactory {
                                 new Bundle(),
                                 List.of())));
     }
+
+    public static SearchablePreferencePOJO createSearchablePreferencePOJO(final String title,
+                                                                          final String summary,
+                                                                          final String searchableInfo) {
+        return new SearchablePreferencePOJO(
+                1,
+                "some key",
+                null,
+                4712,
+                summary,
+                title,
+                4713,
+                "some fragment",
+                true,
+                searchableInfo,
+                new Bundle(),
+                List.of());
+    }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public record SearchablePreferencePOJO(
         int id,
@@ -18,6 +19,18 @@ public record SearchablePreferencePOJO(
         String searchableInfo,
         Bundle extras,
         List<SearchablePreferencePOJO> children) {
+
+    public Optional<String> optionalTitle() {
+        return Optional.ofNullable(title);
+    }
+
+    public Optional<String> optionalSummary() {
+        return Optional.ofNullable(summary);
+    }
+
+    public Optional<String> optionalSearchableInfo() {
+        return Optional.ofNullable(searchableInfo);
+    }
 
     @Override
     public boolean equals(final Object o) {
