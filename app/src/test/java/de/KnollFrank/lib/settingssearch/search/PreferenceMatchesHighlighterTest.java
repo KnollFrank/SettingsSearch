@@ -11,6 +11,8 @@ import androidx.test.core.app.ActivityScenario;
 import com.google.common.collect.ImmutableList;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +25,7 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
-// FK-TODO: make unit test
+@RunWith(RobolectricTestRunner.class)
 public class PreferenceMatchesHighlighterTest {
 
     @Test
