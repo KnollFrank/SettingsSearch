@@ -75,7 +75,8 @@ public class MergedPreferenceScreenProvider {
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens.connectedSearchablePreferenceScreens());
         final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
-                merge(screens.connectedSearchablePreferenceScreens())
+                MergedPreferenceScreenProvider
+                        .merge(screens.connectedSearchablePreferenceScreens())
                         .pojoEntityMap();
         // B:
         final PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences = destructivelyMergeScreens(screens.connectedSearchablePreferenceScreens());
