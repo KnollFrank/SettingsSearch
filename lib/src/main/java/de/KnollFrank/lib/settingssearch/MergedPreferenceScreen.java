@@ -5,8 +5,6 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import com.google.common.collect.BiMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,14 +19,14 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 public class MergedPreferenceScreen {
 
     private final PreferenceScreen searchablePreferenceScreen;
-    private final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
+    private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
     public final Set<PreferenceCategory> nonClickablePreferences;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferenceScreenResetter preferenceScreenResetter;
     private final PreferencePathNavigator preferencePathNavigator;
 
     public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
-                                  final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
+                                  final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
                                   final Set<PreferenceCategory> nonClickablePreferences,
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute,
