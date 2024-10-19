@@ -81,8 +81,10 @@ class PreferenceMatchesHighlighter {
         PreferenceTitle.setTitle(
                 preference,
                 highlight(
-                        // FK-TODO: use PreferenceTitle.getOptionalTitle()
-                        preference.getTitle().toString(),
+                        PreferenceTitle
+                                .getOptionalTitle(preference)
+                                .map(CharSequence::toString)
+                                .orElse(""),
                         indexRanges));
     }
 
@@ -90,8 +92,10 @@ class PreferenceMatchesHighlighter {
         PreferenceSummary.setSummary(
                 preference,
                 highlight(
-                        // FK-TODO: use PreferenceSummary.getOptionalSummary()
-                        preference.getSummary().toString(),
+                        PreferenceSummary
+                                .getOptionalSummary(preference)
+                                .map(CharSequence::toString)
+                                .orElse(""),
                         indexRanges));
     }
 
