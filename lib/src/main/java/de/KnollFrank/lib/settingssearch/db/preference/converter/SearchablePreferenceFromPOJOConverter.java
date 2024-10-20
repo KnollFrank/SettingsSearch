@@ -31,8 +31,9 @@ public class SearchablePreferenceFromPOJOConverter {
                 .build();
     }
 
-    public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJOs2Parent(final List<SearchablePreferencePOJO> searchablePreferencePOJOs,
-                                                                                                 final PreferenceGroup parent) {
+    public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJOs2Parent(
+            final List<SearchablePreferencePOJO> searchablePreferencePOJOs,
+            final PreferenceGroup parent) {
         return Maps.mergeBiMaps(
                 searchablePreferencePOJOs
                         .stream()
