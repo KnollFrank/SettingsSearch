@@ -19,6 +19,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -65,8 +66,8 @@ public class POJOGraph2JSONConverterTest {
                 "someKey",
                 null,
                 2131427444,
-                null,
-                "preference connected to TestPreferenceFragment",
+                Optional.empty(),
+                Optional.of("preference connected to TestPreferenceFragment"),
                 0,
                 SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName(),
                 true,

@@ -31,8 +31,8 @@ public final class SearchablePreferencePOJO {
             final String key,
             final String icon,
             final int layoutResId,
-            final String summary,
-            final String title,
+            final Optional<String> summary,
+            final Optional<String> title,
             final int widgetLayoutResId,
             final String fragment,
             final boolean visible,
@@ -42,8 +42,8 @@ public final class SearchablePreferencePOJO {
         this.key = key;
         this.icon = icon;
         this.layoutResId = layoutResId;
-        this.summary = summary;
-        this.title = title;
+        this.summary = summary.orElse(null);
+        this.title = title.orElse(null);
         this.widgetLayoutResId = widgetLayoutResId;
         this.fragment = fragment;
         this.visible = visible;
@@ -56,8 +56,8 @@ public final class SearchablePreferencePOJO {
             final String key,
             final String icon,
             final int layoutResId,
-            final String summary,
-            final String title,
+            final Optional<String> summary,
+            final Optional<String> title,
             final int widgetLayoutResId,
             final String fragment,
             final boolean visible,
@@ -116,15 +116,11 @@ public final class SearchablePreferencePOJO {
         return layoutResId;
     }
 
-    public String summary() {
-        return summary;
-    }
-
-    // FK-TODO: for each nullable field (e.g. title, summary, ...) replace it's getter (e.g. title()) with it's optional version (see method optionalTitle())
-    public Optional<String> optionalSummary() {
+    public Optional<String> summary() {
         return Optional.ofNullable(summary);
     }
 
+    // FK-TODO: for each nullable field (e.g. title, summary, ...) replace it's getter (e.g. title()) with it's optional version (see method optionalTitle())
     public Optional<String> title() {
         return Optional.ofNullable(title);
     }
@@ -180,7 +176,6 @@ public final class SearchablePreferencePOJO {
                 "visible=" + visible + ", " +
                 "searchableInfo=" + searchableInfo + ", " +
                 "extras=" + extras + ", " +
-                "parent=" + parent + ", " +
                 "children=" + children + ']';
     }
 }

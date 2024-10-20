@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -26,8 +27,8 @@ public class PreferenceMatcherTest {
                 // Given
                 final SearchablePreferencePOJO searchablePreferencePOJO =
                         POJOTestFactory.createSearchablePreferencePOJO(
-                                "Title, title part",
-                                "title in summary",
+                                Optional.of("Title, title part"),
+                                Optional.of("title in summary"),
                                 "searchable info also has a title");
 
                 // When

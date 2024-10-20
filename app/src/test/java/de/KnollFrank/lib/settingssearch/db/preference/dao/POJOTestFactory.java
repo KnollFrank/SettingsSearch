@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import java.util.List;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
@@ -20,8 +21,8 @@ public class POJOTestFactory {
                 "some key",
                 drawable2String(resources.getDrawable(R.drawable.smiley, null)),
                 4712,
-                "some summary",
-                "some title",
+                Optional.of("some summary"),
+                Optional.of("some title"),
                 4713,
                 "some fragment",
                 true,
@@ -33,8 +34,8 @@ public class POJOTestFactory {
                                 "some key 2",
                                 null,
                                 4715,
-                                "some summary 2",
-                                "some title 2",
+                                Optional.of("some summary 2"),
+                                Optional.of("some title 2"),
                                 4716,
                                 "some fragment 2",
                                 true,
@@ -43,8 +44,8 @@ public class POJOTestFactory {
                                 List.of())));
     }
 
-    public static SearchablePreferencePOJO createSearchablePreferencePOJO(final String title,
-                                                                          final String summary,
+    public static SearchablePreferencePOJO createSearchablePreferencePOJO(final Optional<String> title,
+                                                                          final Optional<String> summary,
                                                                           final String searchableInfo) {
         return SearchablePreferencePOJO.of(
                 1,

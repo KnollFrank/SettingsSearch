@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
@@ -40,8 +41,8 @@ public class SearchResultsPreferenceScreenTest {
                         List.of(
                                 new PreferenceMatch(
                                         POJOTestFactory.createSearchablePreferencePOJO(
-                                                title,
-                                                "some summary",
+                                                Optional.of(title),
+                                                Optional.of("some summary"),
                                                 "searchable info also has a title"),
                                         PreferenceMatch.Type.TITLE,
                                         new IndexRange(0, 5))));
@@ -80,8 +81,8 @@ public class SearchResultsPreferenceScreenTest {
 
     private static PreferenceMatch createSomePreferenceMatch() {
         return createSomePreferenceMatch(POJOTestFactory.createSearchablePreferencePOJO(
-                "Title, title part",
-                "some summary",
+                Optional.of("Title, title part"),
+                Optional.of("some summary"),
                 "searchable info also has a title"));
     }
 

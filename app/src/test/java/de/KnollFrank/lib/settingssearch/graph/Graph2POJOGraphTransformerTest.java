@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
@@ -59,8 +60,8 @@ public class Graph2POJOGraphTransformerTest {
                         null,
                         null,
                         2131427444,
-                        null,
-                        "preference connected to TestPreferenceFragment",
+                        Optional.empty(),
+                        Optional.of("preference connected to TestPreferenceFragment"),
                         0,
                         SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName(),
                         true,
@@ -89,8 +90,8 @@ public class Graph2POJOGraphTransformerTest {
                                         "parentKey",
                                         null,
                                         15,
-                                        null,
-                                        null,
+                                        Optional.empty(),
+                                        Optional.empty(),
                                         0,
                                         null,
                                         true,
@@ -102,8 +103,8 @@ public class Graph2POJOGraphTransformerTest {
                                                         null,
                                                         null,
                                                         16,
-                                                        null,
-                                                        null,
+                                                        Optional.empty(),
+                                                        Optional.empty(),
                                                         0,
                                                         null,
                                                         true,
@@ -115,8 +116,8 @@ public class Graph2POJOGraphTransformerTest {
                                                         null,
                                                         null,
                                                         16,
-                                                        null,
-                                                        null,
+                                                        Optional.empty(),
+                                                        Optional.empty(),
                                                         0,
                                                         null,
                                                         true,

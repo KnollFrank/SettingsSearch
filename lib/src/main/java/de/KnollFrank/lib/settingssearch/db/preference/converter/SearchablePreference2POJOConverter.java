@@ -82,10 +82,9 @@ public class SearchablePreference2POJOConverter {
                         .collect(Collectors.toList()));
     }
 
-    private static String toString(final CharSequence charSequence) {
+    private static Optional<String> toString(final CharSequence charSequence) {
         return Optional
                 .ofNullable(charSequence)
-                .map(CharSequence::toString)
-                .orElse(null);
+                .map(CharSequence::toString);
     }
 }

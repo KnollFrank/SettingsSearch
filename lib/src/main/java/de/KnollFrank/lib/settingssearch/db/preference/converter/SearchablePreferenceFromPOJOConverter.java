@@ -57,8 +57,8 @@ public class SearchablePreferenceFromPOJOConverter {
         dst.setKey(src.key());
         dst.setIcon(string2Drawable(src.icon(), resources));
         dst.setLayoutResource(src.layoutResId());
-        dst.setSummary(src.summary());
-        dst.setTitle(src.title().orElse(null));
+        dst.setSummary(src.summary().orElse(""));
+        dst.setTitle(src.title().orElse(""));
         dst.setWidgetLayoutResource(src.widgetLayoutResId());
         dst.setFragment(src.fragment());
         dst.setVisible(src.visible());
