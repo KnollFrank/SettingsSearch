@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+// FK-TODO: add parent SearchablePreferencePOJO
 public record SearchablePreferencePOJO(
         int id,
         String key,
