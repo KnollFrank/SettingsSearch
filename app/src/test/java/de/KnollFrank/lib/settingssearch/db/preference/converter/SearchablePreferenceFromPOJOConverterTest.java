@@ -56,7 +56,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
         }
     }
 
-    private static PreferenceFragmentCompat createSomePreferenceFragment(final TestActivity activity) {
+    public static PreferenceFragmentCompat createSomePreferenceFragment(final TestActivity activity) {
         final PreferenceFragmentCompat preferenceFragment = new SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment();
         return initializeFragment(
                 preferenceFragment,

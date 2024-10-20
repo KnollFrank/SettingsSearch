@@ -95,6 +95,7 @@ public class MergedPreferenceScreenProvider {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
     }
 
+    // FK-TODO: DRY with SearchablePreferenceScreen2POJOConverter.SearchablePreferenceScreenPOJOWithMap
     private record SearchablePreferenceScreenPOJOWithMap(
             SearchablePreferenceScreenPOJO searchablePreferenceScreen,
             BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {

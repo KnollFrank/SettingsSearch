@@ -1,4 +1,4 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-record IndexRange(int startIndexInclusive, int endIndexExclusive) {
+public record IndexRange(int startIndexInclusive, int endIndexExclusive) {
 }
