@@ -26,6 +26,7 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenPOJOWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -93,12 +94,6 @@ public class MergedPreferenceScreenProvider {
 
     private PreferenceScreenAndNonClickablePreferences destructivelyMergeScreens(final Set<PreferenceScreenWithHostClass> screens) {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
-    }
-
-    // FK-TODO: DRY with SearchablePreferenceScreen2POJOConverter.SearchablePreferenceScreenPOJOWithMap
-    private record SearchablePreferenceScreenPOJOWithMap(
-            SearchablePreferenceScreenPOJO searchablePreferenceScreen,
-            BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
     }
 
     private static SearchablePreferenceScreenPOJOWithMap merge(final Set<PreferenceScreenWithHostClass> screens) {

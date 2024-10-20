@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreen2POJOConverter.SearchablePreferenceScreenPOJOWithMap;
-
 import com.google.common.collect.BiMap;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
