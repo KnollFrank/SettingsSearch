@@ -120,16 +120,12 @@ public final class SearchablePreferencePOJO {
         return summary;
     }
 
+    // FK-TODO: for each nullable field (e.g. title, summary, ...) replace it's getter (e.g. title()) with it's optional version (see method optionalTitle())
     public Optional<String> optionalSummary() {
         return Optional.ofNullable(summary);
     }
 
-    public String title() {
-        return title;
-    }
-
-    // FK-TODO: for each nullable field (e.g. title, summary, ...) replace it's getter (e.g. title()) with it's optional version (see method optionalTitle())
-    public Optional<String> optionalTitle() {
+    public Optional<String> title() {
         return Optional.ofNullable(title);
     }
 
