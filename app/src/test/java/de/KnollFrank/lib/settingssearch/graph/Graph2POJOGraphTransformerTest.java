@@ -54,7 +54,7 @@ public class Graph2POJOGraphTransformerTest {
 
     private static Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreferencePOJO preferenceConnectingSrc2Dst =
-                new SearchablePreferencePOJO(
+                SearchablePreferencePOJO.of(
                         4,
                         null,
                         null,
@@ -84,7 +84,7 @@ public class Graph2POJOGraphTransformerTest {
                         "screen title",
                         "screen summary",
                         List.of(
-                                new SearchablePreferencePOJO(
+                                SearchablePreferencePOJO.of(
                                         1,
                                         "parentKey",
                                         null,
@@ -97,7 +97,7 @@ public class Graph2POJOGraphTransformerTest {
                                         null,
                                         new Bundle(),
                                         List.of(
-                                                new SearchablePreferencePOJO(
+                                                SearchablePreferencePOJO.of(
                                                         2,
                                                         null,
                                                         null,
@@ -110,7 +110,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         null,
                                                         new Bundle(),
                                                         List.of()),
-                                                new SearchablePreferencePOJO(
+                                                SearchablePreferencePOJO.of(
                                                         3,
                                                         null,
                                                         null,

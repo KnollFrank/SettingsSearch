@@ -92,7 +92,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                         "screen title",
                                         "screen summary",
                                         List.of(
-                                                new SearchablePreferencePOJO(
+                                                SearchablePreferencePOJO.of(
                                                         1,
                                                         "parentKey",
                                                         null,
@@ -105,7 +105,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                         "some searchable info",
                                                         new Bundle(),
                                                         List.of(
-                                                                new SearchablePreferencePOJO(
+                                                                SearchablePreferencePOJO.of(
                                                                         2,
                                                                         null,
                                                                         null,
@@ -118,7 +118,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         "some searchable info of first child",
                                                                         new Bundle(),
                                                                         List.of()),
-                                                                new SearchablePreferencePOJO(
+                                                                SearchablePreferencePOJO.of(
                                                                         3,
                                                                         null,
                                                                         null,

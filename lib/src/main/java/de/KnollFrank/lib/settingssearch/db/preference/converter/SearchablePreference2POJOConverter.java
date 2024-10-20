@@ -33,7 +33,7 @@ public class SearchablePreference2POJOConverter {
                         SearchablePreferenceCaster.cast(Preferences.getImmediateChildren(searchablePreference)),
                         idGenerator);
         final SearchablePreferencePOJO searchablePreferencePOJO =
-                new SearchablePreferencePOJO(
+                SearchablePreferencePOJO.of(
                         id,
                         searchablePreference.getKey(),
                         drawable2String(searchablePreference.getIcon()),
