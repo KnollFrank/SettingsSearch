@@ -66,7 +66,9 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen computeMergedPreferenceScreen(final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider) {
-        return computeMergedPreferenceScreen(ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()));
+        return computeMergedPreferenceScreen(
+                ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(
+                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()));
     }
 
     private MergedPreferenceScreen computeMergedPreferenceScreen(final ConnectedSearchablePreferenceScreens screens) {
