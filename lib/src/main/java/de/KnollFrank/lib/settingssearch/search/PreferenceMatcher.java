@@ -23,8 +23,8 @@ class PreferenceMatcher {
         }
         return Lists.concat(
                 getTitlePreferenceMatches(haystack, needle),
-                getSummaryPreferenceMatch(haystack, needle),
-                getSearchableInfoPreferenceMatch(haystack, needle));
+                getSummaryPreferenceMatches(haystack, needle),
+                getSearchableInfoPreferenceMatches(haystack, needle));
     }
 
     public static boolean matches(final String haystack, final String needle) {
@@ -36,24 +36,27 @@ class PreferenceMatcher {
         return !preferenceMatches.isEmpty();
     }
 
-    private static List<PreferenceMatch> getTitlePreferenceMatches(final SearchablePreferencePOJO haystack,
-                                                                   final String needle) {
+    private static List<PreferenceMatch> getTitlePreferenceMatches(
+            final SearchablePreferencePOJO haystack,
+            final String needle) {
         return getPreferenceMatches(
                 haystack.optionalTitle(),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.TITLE, indexRange));
     }
 
-    private static List<PreferenceMatch> getSummaryPreferenceMatch(final SearchablePreferencePOJO haystack,
-                                                                   final String needle) {
+    private static List<PreferenceMatch> getSummaryPreferenceMatches(
+            final SearchablePreferencePOJO haystack,
+            final String needle) {
         return getPreferenceMatches(
                 haystack.optionalSummary(),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.SUMMARY, indexRange));
     }
 
-    private static List<PreferenceMatch> getSearchableInfoPreferenceMatch(final SearchablePreferencePOJO haystack,
-                                                                          final String needle) {
+    private static List<PreferenceMatch> getSearchableInfoPreferenceMatches(
+            final SearchablePreferencePOJO haystack,
+            final String needle) {
         return getPreferenceMatches(
                 haystack.optionalSearchableInfo(),
                 needle,
