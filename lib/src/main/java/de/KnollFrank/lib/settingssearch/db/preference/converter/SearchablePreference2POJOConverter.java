@@ -35,7 +35,7 @@ public class SearchablePreference2POJOConverter {
         final SearchablePreferencePOJO searchablePreferencePOJO =
                 SearchablePreferencePOJO.of(
                         id,
-                        searchablePreference.getKey(),
+                        Optional.ofNullable(searchablePreference.getKey()),
                         drawable2String(searchablePreference.getIcon()),
                         searchablePreference.getLayoutResource(),
                         toString(searchablePreference.getSummary()),

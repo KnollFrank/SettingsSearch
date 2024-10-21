@@ -72,7 +72,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
     }
 
     private static void assertEquals(final SearchablePreference actual, final SearchablePreferencePOJO expected) {
-        assertThat(actual.getKey(), is(expected.key()));
+        assertThat(Optional.ofNullable(actual.getKey()), is(expected.key()));
         assertThat(drawable2String(actual.getIcon()), is(expected.icon()));
         assertThat(actual.getLayoutResource(), is(expected.layoutResId()));
         assertThat(Optional.ofNullable(actual.getSummary()), is(expected.summary()));

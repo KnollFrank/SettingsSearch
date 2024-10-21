@@ -63,7 +63,7 @@ public class POJOGraph2JSONConverterTest {
     private static SearchablePreferencePOJO getSearchablePreferencePOJO() {
         return SearchablePreferencePOJO.of(
                 1,
-                "someKey",
+                Optional.of("someKey"),
                 null,
                 2131427444,
                 Optional.empty(),

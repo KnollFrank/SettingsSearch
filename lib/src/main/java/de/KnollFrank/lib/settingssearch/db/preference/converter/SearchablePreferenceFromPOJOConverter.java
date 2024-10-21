@@ -54,7 +54,7 @@ public class SearchablePreferenceFromPOJOConverter {
     private static void copyAttributesFromSrc2Dst(final SearchablePreferencePOJO src,
                                                   final SearchablePreference dst,
                                                   final Resources resources) {
-        dst.setKey(src.key());
+        dst.setKey(src.key().orElse(null));
         dst.setIcon(string2Drawable(src.icon(), resources));
         dst.setLayoutResource(src.layoutResId());
         dst.setSummary(src.summary().orElse(null));

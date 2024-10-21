@@ -20,7 +20,6 @@ import androidx.test.core.app.ActivityScenario;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -514,7 +513,8 @@ public class PreferenceSearcherTest {
                 .stream()
                 .map(PreferenceMatch::preference)
                 .map(SearchablePreferencePOJO::key)
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 
