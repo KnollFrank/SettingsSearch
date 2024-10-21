@@ -4,13 +4,9 @@ import static de.KnollFrank.lib.settingssearch.db.preference.converter.Preferenc
 
 import androidx.preference.PreferenceManager;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-
 import org.jgrapht.Graph;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
@@ -21,7 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 public class POJOGraph2GraphTransformer {
 
-    public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> transformPOJOGraph2Graph(
+    public static Graph<PreferenceScreenWithHostClassWithMap, PreferenceEdge> transformPOJOGraph2Graph(
             final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph,
             final PreferenceManager preferenceManager) {
         return GraphTransformerAlgorithm.transform(
@@ -30,24 +26,27 @@ public class POJOGraph2GraphTransformer {
                 createGraphTransformer(preferenceManager));
     }
 
-    private static GraphTransformer<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge, PreferenceScreenWithHostClass, PreferenceEdge> createGraphTransformer(
+    private static GraphTransformer<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge, PreferenceScreenWithHostClassWithMap, PreferenceEdge> createGraphTransformer(
             final PreferenceManager preferenceManager) {
         return new GraphTransformer<>() {
 
-            private final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap = HashBiMap.create();
-
             @Override
-            public PreferenceScreenWithHostClass transformNode(final PreferenceScreenWithHostClassPOJO node) {
-                final PreferenceScreenWithHostClassWithMap preferenceScreenWithHostClassWithMap =
-                        PreferenceScreenWithHostClassFromPOJOConverter
-                                .convertFromPOJO(node, preferenceManager);
-                pojoEntityMap.putAll(preferenceScreenWithHostClassWithMap.pojoEntityMap());
-                return preferenceScreenWithHostClassWithMap.preferenceScreenWithHostClass();
+            public PreferenceScreenWithHostClassWithMap transformNode(final PreferenceScreenWithHostClassPOJO node) {
+                return PreferenceScreenWithHostClassFromPOJOConverter.convertFromPOJO(node, preferenceManager);
             }
 
             @Override
-            public PreferenceEdge transformEdge(final SearchablePreferencePOJOEdge edge, final PreferenceScreenWithHostClass transformedParentNode) {
-                return new PreferenceEdge(pojoEntityMap.get(edge.preference));
+            public PreferenceEdge transformEdge(final SearchablePreferencePOJOEdge edge, final PreferenceScreenWithHostClassWithMap transformedParentNode) {
+                return new PreferenceEdge(
+                        getTransformedPreference(
+                                edge.preference,
+                                transformedParentNode));
+            }
+
+            private static SearchablePreference getTransformedPreference(
+                    final SearchablePreferencePOJO preference,
+                    final PreferenceScreenWithHostClassWithMap transformedParentNode) {
+                return transformedParentNode.pojoEntityMap().get(preference);
             }
         };
     }

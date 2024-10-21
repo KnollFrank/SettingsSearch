@@ -14,7 +14,9 @@ public class HostClassFromNodesRemover {
             final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph) {
         return NodesTransformer.transformNodes(
                 preferenceScreenGraph,
-                HostClassFromNodesRemover::removeHostClassFromNode);
+                HostClassFromNodesRemover::removeHostClassFromNode,
+                PreferenceEdge.class,
+                preferenceEdge -> new PreferenceEdge(preferenceEdge.preference));
     }
 
     private static PreferenceScreen removeHostClassFromNode(final PreferenceScreenWithHostClass preferenceScreenWithHost) {

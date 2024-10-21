@@ -15,6 +15,8 @@ class Host2HostClassTransformer {
                 preferenceScreenGraph,
                 preferenceScreenWithHost -> new PreferenceScreenWithHostClass(
                         preferenceScreenWithHost.preferenceScreen(),
-                        preferenceScreenWithHost.host().getClass()));
+                        preferenceScreenWithHost.host().getClass()),
+                PreferenceEdge.class,
+                preferenceEdge -> new PreferenceEdge(preferenceEdge.preference));
     }
 }

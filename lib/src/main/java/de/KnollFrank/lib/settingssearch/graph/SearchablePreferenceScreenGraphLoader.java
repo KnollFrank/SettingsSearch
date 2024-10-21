@@ -22,8 +22,10 @@ public class SearchablePreferenceScreenGraphLoader implements SearchablePreferen
 
     @Override
     public Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph() {
-        return SearchablePreferenceScreenGraphDAO.load(
-                preferenceManager.getContext().getResources().openRawResource(searchablePreferenceScreenGraph),
-                preferenceManager);
+        final var searchablePreferenceScreenGraph =
+                SearchablePreferenceScreenGraphDAO.load(
+                        preferenceManager.getContext().getResources().openRawResource(this.searchablePreferenceScreenGraph),
+                        preferenceManager);
+        return MapFromEntityNodesRemover.removeMapFromEntityNodes(searchablePreferenceScreenGraph);
     }
 }

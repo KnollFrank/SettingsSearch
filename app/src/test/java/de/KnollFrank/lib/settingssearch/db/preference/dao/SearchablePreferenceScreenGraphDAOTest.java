@@ -36,6 +36,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClassFromPOJOConverter.PreferenceScreenWithHostClassWithMap;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -57,7 +58,7 @@ public class SearchablePreferenceScreenGraphDAOTest {
 
                 // When
                 SearchablePreferenceScreenGraphDAO.persist(preferenceScreenGraph, outputStream);
-                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraphActual =
+                final Graph<PreferenceScreenWithHostClassWithMap, PreferenceEdge> preferenceScreenGraphActual =
                         SearchablePreferenceScreenGraphDAO.load(
                                 convert(outputStream),
                                 preferenceManager);

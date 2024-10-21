@@ -4,21 +4,22 @@ import org.jgrapht.Graph;
 
 import java.util.function.Function;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
-
 public class NodesTransformer {
 
-    public static <V, W> Graph<W, PreferenceEdge> transformNodes(
-            final Graph<V, PreferenceEdge> graph,
-            final Function<V, W> transformNode) {
+    public static <V, W, E> Graph<W, E> transformNodes(
+            final Graph<V, E> graph,
+            final Function<V, W> transformNode,
+            final Class<? extends E> edgeClass,
+            final Function<E, E> cloneEdge) {
         return GraphTransformerAlgorithm.transform(
                 graph,
-                PreferenceEdge.class,
-                transformNodes(transformNode));
+                edgeClass,
+                transformNodes(transformNode, cloneEdge));
     }
 
-    private static <V, W> GraphTransformer<V, PreferenceEdge, W, PreferenceEdge> transformNodes(
-            final Function<V, W> transformNode) {
+    private static <V, W, E> GraphTransformer<V, E, W, E> transformNodes(
+            final Function<V, W> transformNode,
+            final Function<E, E> cloneEdge) {
         return new GraphTransformer<>() {
 
             @Override
@@ -27,8 +28,8 @@ public class NodesTransformer {
             }
 
             @Override
-            public PreferenceEdge transformEdge(final PreferenceEdge edge, final W w) {
-                return new PreferenceEdge(edge.preference);
+            public E transformEdge(final E edge, final W w) {
+                return cloneEdge.apply(edge);
             }
         };
     }
