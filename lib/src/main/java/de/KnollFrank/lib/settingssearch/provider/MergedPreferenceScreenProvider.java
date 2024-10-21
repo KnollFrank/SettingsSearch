@@ -5,7 +5,6 @@ import static de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger.
 
 import android.content.Context;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
@@ -91,16 +90,19 @@ public class MergedPreferenceScreenProvider {
                 preferenceScreenAndNonClickablePreferences.nonClickablePreferences(),
                 screens.preferencePathByPreference(),
                 searchableInfoAttribute,
-                new PreferencePathNavigator(getHostByPreference(pojoGraph, pojoEntityMap), fragmentFactoryAndInitializer, context));
+                new PreferencePathNavigator(
+                        getHostByPreference(pojoGraph),
+                        fragmentFactoryAndInitializer,
+                        pojoEntityMap,
+                        context));
     }
 
-    private static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
-            final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph, final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
+    private static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
+            final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph) {
         return HostByPreferenceProvider.getHostByPreference(
                 MapFromPojoNodesRemover
                         .removeMapFromPojoNodes(pojoGraph)
-                        .vertexSet(),
-                pojoEntityMap);
+                        .vertexSet());
     }
 
     private PreferenceScreenAndNonClickablePreferences destructivelyMergeScreens(final Set<PreferenceScreenWithHostClass> screens) {

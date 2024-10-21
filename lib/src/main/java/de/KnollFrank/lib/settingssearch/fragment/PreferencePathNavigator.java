@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.collect.BiMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,18 +14,23 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
 public class PreferencePathNavigator {
 
-    private final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
+    private final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference;
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
+    private final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
     private final Context context;
 
-    public PreferencePathNavigator(final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference,
+    public PreferencePathNavigator(final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference,
                                    final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
+                                   final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
                                    final Context context) {
         this.hostByPreference = hostByPreference;
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
+        this.pojoEntityMap = pojoEntityMap;
         this.context = context;
     }
 
@@ -42,10 +49,16 @@ public class PreferencePathNavigator {
                 Lists.tail(preferences),
                 new PreferenceWithHost(
                         preference,
-                        instantiateAndInitializePreferenceFragment(
-                                hostByPreference.get(preference),
-                                src)),
-                instantiateFragment(hostByPreference.get(preference), src));
+                        instantiateAndInitializePreferenceFragment(getHost(preference), src)),
+                instantiateFragment(getHost(preference), src));
+    }
+
+    private Class<? extends PreferenceFragmentCompat> getHost(final Preference preference) {
+        return hostByPreference.get(getPojo(preference));
+    }
+
+    private SearchablePreferencePOJO getPojo(final Preference preference) {
+        return pojoEntityMap.inverse().get(preference);
     }
 
     private PreferenceFragmentCompat instantiateAndInitializePreferenceFragment(
