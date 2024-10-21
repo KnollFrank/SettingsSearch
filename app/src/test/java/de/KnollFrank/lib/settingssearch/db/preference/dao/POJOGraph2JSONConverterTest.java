@@ -71,7 +71,7 @@ public class POJOGraph2JSONConverterTest {
                 0,
                 Optional.of(SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName()),
                 true,
-                null,
+                Optional.empty(),
                 new Bundle(),
                 List.of());
     }

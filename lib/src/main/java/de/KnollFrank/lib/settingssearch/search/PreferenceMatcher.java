@@ -58,7 +58,7 @@ class PreferenceMatcher {
             final SearchablePreferencePOJO haystack,
             final String needle) {
         return getPreferenceMatches(
-                haystack.optionalSearchableInfo(),
+                haystack.searchableInfo(),
                 needle,
                 indexRange -> new PreferenceMatch(haystack, Type.SEARCHABLE_INFO, indexRange));
     }

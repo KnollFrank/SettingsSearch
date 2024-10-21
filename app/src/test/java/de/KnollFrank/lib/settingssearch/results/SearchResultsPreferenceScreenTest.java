@@ -43,7 +43,7 @@ public class SearchResultsPreferenceScreenTest {
                                         POJOTestFactory.createSearchablePreferencePOJO(
                                                 Optional.of(title),
                                                 Optional.of("some summary"),
-                                                "searchable info also has a title"),
+                                                Optional.of("searchable info also has a title")),
                                         PreferenceMatch.Type.TITLE,
                                         new IndexRange(0, 5))));
 
@@ -83,7 +83,7 @@ public class SearchResultsPreferenceScreenTest {
         return createSomePreferenceMatch(POJOTestFactory.createSearchablePreferencePOJO(
                 Optional.of("Title, title part"),
                 Optional.of("some summary"),
-                "searchable info also has a title"));
+                Optional.of("searchable info also has a title")));
     }
 
     private static PreferenceMatch createSomePreferenceMatch(final SearchablePreferencePOJO searchablePreferencePOJO) {

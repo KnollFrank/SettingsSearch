@@ -29,7 +29,7 @@ public class PreferenceMatcherTest {
                         POJOTestFactory.createSearchablePreferencePOJO(
                                 Optional.of("Title, title part"),
                                 Optional.of("title in summary"),
-                                "searchable info also has a title");
+                                Optional.of("searchable info also has a title"));
 
                 // When
                 final List<PreferenceMatch> preferenceMatches =

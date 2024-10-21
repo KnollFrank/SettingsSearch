@@ -65,7 +65,7 @@ public class Graph2POJOGraphTransformerTest {
                         0,
                         Optional.of(SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName()),
                         true,
-                        null,
+                        Optional.empty(),
                         new Bundle(),
                         List.of());
         return DefaultDirectedGraph
@@ -95,7 +95,7 @@ public class Graph2POJOGraphTransformerTest {
                                         0,
                                         Optional.empty(),
                                         true,
-                                        null,
+                                        Optional.empty(),
                                         new Bundle(),
                                         List.of(
                                                 SearchablePreferencePOJO.of(
@@ -108,7 +108,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         0,
                                                         Optional.empty(),
                                                         true,
-                                                        null,
+                                                        Optional.empty(),
                                                         new Bundle(),
                                                         List.of()),
                                                 SearchablePreferencePOJO.of(
@@ -121,7 +121,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         0,
                                                         Optional.empty(),
                                                         true,
-                                                        null,
+                                                        Optional.empty(),
                                                         new Bundle(),
                                                         List.of()))),
                                 preferenceConnectingSrc2Dst)),

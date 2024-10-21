@@ -46,7 +46,7 @@ public class SearchablePreferenceFromPOJOConverter {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         context,
-                        SearchableInfoAttributeConverter.convertFromPOJO(searchablePreferencePOJO.searchableInfo()));
+                        searchablePreferencePOJO.searchableInfo());
         copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference, context.getResources());
         return searchablePreference;
     }

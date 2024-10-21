@@ -102,7 +102,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                         0,
                                                         Optional.empty(),
                                                         true,
-                                                        "some searchable info",
+                                                        Optional.of("some searchable info"),
                                                         new Bundle(),
                                                         List.of(
                                                                 SearchablePreferencePOJO.of(
@@ -115,7 +115,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         0,
                                                                         Optional.empty(),
                                                                         true,
-                                                                        "some searchable info of first child",
+                                                                        Optional.of("some searchable info of first child"),
                                                                         new Bundle(),
                                                                         List.of()),
                                                                 SearchablePreferencePOJO.of(
@@ -128,7 +128,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         0,
                                                                         Optional.empty(),
                                                                         true,
-                                                                        "some searchable info of second child",
+                                                                        Optional.of("some searchable info of second child"),
                                                                         new Bundle(),
                                                                         List.of()))))),
                                 preferenceFragment.getClass())));

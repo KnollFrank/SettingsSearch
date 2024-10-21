@@ -26,7 +26,7 @@ public class POJOTestFactory {
                 4713,
                 Optional.of("some fragment"),
                 true,
-                "some searchableInfo",
+                Optional.of("some searchableInfo"),
                 extras,
                 List.of(
                         SearchablePreferencePOJO.of(
@@ -39,14 +39,14 @@ public class POJOTestFactory {
                                 4716,
                                 Optional.of("some fragment 2"),
                                 true,
-                                "some searchableInfo 2",
+                                Optional.of("some searchableInfo 2"),
                                 new Bundle(),
                                 List.of())));
     }
 
     public static SearchablePreferencePOJO createSearchablePreferencePOJO(final Optional<String> title,
                                                                           final Optional<String> summary,
-                                                                          final String searchableInfo) {
+                                                                          final Optional<String> searchableInfo) {
         return SearchablePreferencePOJO.of(
                 1,
                 Optional.of("some key"),
