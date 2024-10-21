@@ -12,6 +12,8 @@ import androidx.preference.PreferenceScreen;
 import com.codepoetics.protonpack.StreamUtils;
 import com.google.common.collect.BiMap;
 
+import org.jgrapht.Graph;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.ConnectedSearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.PreferenceEdge;
+import de.KnollFrank.lib.settingssearch.PreferencePathByPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Maps;
@@ -28,9 +32,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenPOJOWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
+import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
+import de.KnollFrank.lib.settingssearch.graph.HostClassFromNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
@@ -67,25 +74,23 @@ public class MergedPreferenceScreenProvider {
     }
 
     private MergedPreferenceScreen computeMergedPreferenceScreen(final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider) {
-        return computeMergedPreferenceScreen(
-                ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(
-                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()));
-    }
-
-    private MergedPreferenceScreen computeMergedPreferenceScreen(final ConnectedSearchablePreferenceScreens screens) {
+        final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph = searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
+        final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph = Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);
+        final ConnectedSearchablePreferenceScreens screens =
+                new ConnectedSearchablePreferenceScreens(
+                        entityGraph.vertexSet(),
+                        PreferencePathByPreferenceProvider.getPreferencePathByPreference(
+                                HostClassFromNodesRemover.removeHostClassFromNodes(
+                                        entityGraph)));
         // MUST compute A (which just reads screens) before B (which modifies screens)
         // A:
         final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
                 HostByPreferenceProvider.getHostByPreference(screens.connectedSearchablePreferenceScreens());
-        final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
-                MergedPreferenceScreenProvider
-                        .merge(screens.connectedSearchablePreferenceScreens())
-                        .pojoEntityMap();
         // B:
         final PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences = destructivelyMergeScreens(screens.connectedSearchablePreferenceScreens());
         return new MergedPreferenceScreen(
                 preferenceScreenAndNonClickablePreferences.preferenceScreen(),
-                pojoEntityMap,
+                getPojoEntityMap(pojoGraph),
                 preferenceScreenAndNonClickablePreferences.nonClickablePreferences(),
                 screens.preferencePathByPreference(),
                 searchableInfoAttribute,
@@ -135,6 +140,16 @@ public class MergedPreferenceScreenProvider {
     private static BiMap<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap(final List<PreferenceScreenWithHostClassPOJOWithMap> entityWithMapList) {
         return Maps.mergeBiMaps(
                 entityWithMapList
+                        .stream()
+                        .map(PreferenceScreenWithHostClassPOJOWithMap::pojoEntityMap)
+                        .collect(Collectors.toList()));
+    }
+
+    private static BiMap<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap(
+            final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph) {
+        return Maps.mergeBiMaps(
+                pojoGraph
+                        .vertexSet()
                         .stream()
                         .map(PreferenceScreenWithHostClassPOJOWithMap::pojoEntityMap)
                         .collect(Collectors.toList()));

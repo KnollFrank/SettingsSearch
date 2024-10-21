@@ -15,7 +15,7 @@ import java.util.Map;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.graph.BreadthFirstGraphVisitor;
 
-class PreferencePathByPreferenceProvider {
+public class PreferencePathByPreferenceProvider {
 
     public static Map<Preference, PreferencePath> getPreferencePathByPreference(
             final Graph<PreferenceScreen, PreferenceEdge> preferenceScreenGraph) {
