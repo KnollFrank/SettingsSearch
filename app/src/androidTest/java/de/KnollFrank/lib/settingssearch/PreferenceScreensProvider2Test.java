@@ -42,9 +42,9 @@ public class PreferenceScreensProvider2Test {
 
         // When
         final Set<PreferenceScreenWithHostClass> preferenceScreens =
-                ConnectedSearchablePreferenceScreens
-                        .fromSearchablePreferenceScreenGraph(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph())
-                        .connectedSearchablePreferenceScreens();
+                searchablePreferenceScreenGraphProvider
+                        .getSearchablePreferenceScreenGraph()
+                        .vertexSet();
 
         // Then
         assertThat(

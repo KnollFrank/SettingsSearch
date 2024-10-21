@@ -13,18 +13,29 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
+import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.MoreCollectors;
 
+import org.jgrapht.Graph;
 import org.junit.Test;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassPOJOWithMap;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
+import de.KnollFrank.lib.settingssearch.graph.HostClassAndMapFromNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -43,9 +54,9 @@ public class PreferenceScreensProvider1Test {
 
                 // When
                 final Set<PreferenceScreenWithHostClass> preferenceScreens =
-                        ConnectedSearchablePreferenceScreens
-                                .fromSearchablePreferenceScreenGraph(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph())
-                                .connectedSearchablePreferenceScreens();
+                        searchablePreferenceScreenGraphProvider
+                                .getSearchablePreferenceScreenGraph()
+                                .vertexSet();
 
                 // Then
                 assertThat(
@@ -71,22 +82,28 @@ public class PreferenceScreensProvider1Test {
                                 activity);
 
                 // When
-                final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens =
-                        ConnectedSearchablePreferenceScreens.fromSearchablePreferenceScreenGraph(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph());
+                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph =
+                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
+                final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph =
+                        Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);
+                final Map<Preference, PreferencePath> preferencePathByPreference =
+                        PreferencePathByPreferenceProvider.getPreferencePathByPreference(
+                                HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph),
+                                getPojoEntityMap(pojoGraph));
 
                 // Then
                 final Preference preferenceOfFragment2PointingToFragment3 =
                         getPreference(
-                                connectedSearchablePreferenceScreens,
                                 Fragment2ConnectedToFragment3.class,
-                                Fragment3.class);
+                                Fragment3.class,
+                                entityGraph.vertexSet());
                 final Preference preferenceOfFragment1PointingToFragment2 =
                         getPreference(
-                                connectedSearchablePreferenceScreens,
                                 Fragment1ConnectedToFragment2AndFragment4.class,
-                                Fragment2ConnectedToFragment3.class);
+                                Fragment2ConnectedToFragment3.class,
+                                entityGraph.vertexSet());
                 assertThat(
-                        connectedSearchablePreferenceScreens.preferencePathByPreference().get(preferenceOfFragment2PointingToFragment3),
+                        preferencePathByPreference.get(preferenceOfFragment2PointingToFragment3),
                         is(
                                 new PreferencePath(
                                         ImmutableList.of(
@@ -113,11 +130,11 @@ public class PreferenceScreensProvider1Test {
     }
 
     private static Preference getPreference(
-            final ConnectedSearchablePreferenceScreens connectedSearchablePreferenceScreens,
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
-            final Class<? extends PreferenceFragmentCompat> fragmentPointedTo) {
+            final Class<? extends PreferenceFragmentCompat> fragmentPointedTo,
+            final Set<PreferenceScreenWithHostClass> preferenceScreenWithHostSet) {
         return getPreference(
-                connectedSearchablePreferenceScreens.connectedSearchablePreferenceScreens(),
+                preferenceScreenWithHostSet,
                 (_hostOfPreference, preference) ->
                         hostOfPreference.equals(_hostOfPreference) &&
                                 fragmentPointedTo.getName().equals(preference.getFragment()));
@@ -135,6 +152,16 @@ public class PreferenceScreensProvider1Test {
                                         .stream()
                                         .filter(preference -> predicate.test(preferenceScreenWithHost.host(), preference)))
                 .collect(MoreCollectors.onlyElement());
+    }
+
+    private static BiMap<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap(
+            final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph) {
+        return Maps.mergeBiMaps(
+                pojoGraph
+                        .vertexSet()
+                        .stream()
+                        .map(PreferenceScreenWithHostClassPOJOWithMap::pojoEntityMap)
+                        .collect(Collectors.toList()));
     }
 
     public static class Fragment1ConnectedToFragment2AndFragment4 extends PreferenceFragmentCompat {

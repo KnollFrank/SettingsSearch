@@ -37,7 +37,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
-import de.KnollFrank.lib.settingssearch.graph.HostClassFromNodesRemover;
+import de.KnollFrank.lib.settingssearch.graph.HostClassAndMapFromNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -81,10 +81,11 @@ public class MergedPreferenceScreenProvider {
                 Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);
         final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
                 getPojoEntityMap(pojoGraph);
+        // FK-TODO: replace return type with POJO types
         final Map<Preference, PreferencePath> preferencePathByPreference =
                 PreferencePathByPreferenceProvider.getPreferencePathByPreference(
-                        HostClassFromNodesRemover.removeHostClassFromNodes(
-                                entityGraph));
+                        HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph),
+                        pojoEntityMap);
         final PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences =
                 destructivelyMergeScreens(entityGraph.vertexSet());
         return new MergedPreferenceScreen(
@@ -112,6 +113,7 @@ public class MergedPreferenceScreenProvider {
         return preferenceScreensMerger.destructivelyMergeScreens(getPreferenceScreens(new ArrayList<>(screens)));
     }
 
+    // FK-TODO: remove?
     private static SearchablePreferenceScreenPOJOWithMap merge(final Set<PreferenceScreenWithHostClass> screens) {
         final List<PreferenceScreenWithHostClassPOJOWithMap> entityWithMapList = getEntityWithMapList(screens);
         return new SearchablePreferenceScreenPOJOWithMap(
