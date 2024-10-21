@@ -58,7 +58,7 @@ public class Graph2POJOGraphTransformerTest {
                 SearchablePreferencePOJO.of(
                         4,
                         Optional.empty(),
-                        null,
+                        Optional.empty(),
                         2131427444,
                         Optional.empty(),
                         Optional.of("preference connected to TestPreferenceFragment"),
@@ -88,7 +88,7 @@ public class Graph2POJOGraphTransformerTest {
                                 SearchablePreferencePOJO.of(
                                         1,
                                         Optional.of("parentKey"),
-                                        null,
+                                        Optional.empty(),
                                         15,
                                         Optional.empty(),
                                         Optional.empty(),
@@ -101,7 +101,7 @@ public class Graph2POJOGraphTransformerTest {
                                                 SearchablePreferencePOJO.of(
                                                         2,
                                                         Optional.empty(),
-                                                        null,
+                                                        Optional.empty(),
                                                         16,
                                                         Optional.empty(),
                                                         Optional.empty(),
@@ -114,7 +114,7 @@ public class Graph2POJOGraphTransformerTest {
                                                 SearchablePreferencePOJO.of(
                                                         3,
                                                         Optional.empty(),
-                                                        null,
+                                                        Optional.empty(),
                                                         16,
                                                         Optional.empty(),
                                                         Optional.empty(),

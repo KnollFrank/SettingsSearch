@@ -19,7 +19,7 @@ public class POJOTestFactory {
         return SearchablePreferencePOJO.of(
                 1,
                 Optional.of("some key"),
-                drawable2String(resources.getDrawable(R.drawable.smiley, null)),
+                drawable2String(Optional.of(resources.getDrawable(R.drawable.smiley, null))),
                 4712,
                 Optional.of("some summary"),
                 Optional.of("some title"),
@@ -32,7 +32,7 @@ public class POJOTestFactory {
                         SearchablePreferencePOJO.of(
                                 2,
                                 Optional.of("some key 2"),
-                                null,
+                                Optional.empty(),
                                 4715,
                                 Optional.of("some summary 2"),
                                 Optional.of("some title 2"),
@@ -50,7 +50,7 @@ public class POJOTestFactory {
         return SearchablePreferencePOJO.of(
                 1,
                 Optional.of("some key"),
-                null,
+                Optional.empty(),
                 4712,
                 summary,
                 title,

@@ -12,19 +12,23 @@ import static de.KnollFrank.lib.settingssearch.common.converter.StringAndBytesCo
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
+import java.util.Optional;
+
 public class DrawableAndStringConverter {
 
-    public static String drawable2String(final Drawable drawable) {
-        if (drawable == null) {
-            return null;
-        }
+    public static Optional<String> drawable2String(final Optional<Drawable> drawable) {
+        return drawable.map(DrawableAndStringConverter::drawable2String);
+    }
+
+    public static Optional<Drawable> string2Drawable(final Optional<String> string, final Resources resources) {
+        return string.map(s -> string2Drawable(s, resources));
+    }
+
+    private static String drawable2String(final Drawable drawable) {
         return bytes2String(encodeBase64(bitmap2Bytes(drawable2Bitmap(drawable))));
     }
 
-    public static Drawable string2Drawable(final String string, final Resources resources) {
-        if (string == null) {
-            return null;
-        }
+    private static Drawable string2Drawable(final String string, final Resources resources) {
         return bitmap2Drawable(bytes2Bitmap(decodeBase64(string2Bytes(string))), resources);
     }
 }

@@ -64,7 +64,7 @@ public class POJOGraph2JSONConverterTest {
         return SearchablePreferencePOJO.of(
                 1,
                 Optional.of("someKey"),
-                null,
+                Optional.empty(),
                 2131427444,
                 Optional.empty(),
                 Optional.of("preference connected to TestPreferenceFragment"),

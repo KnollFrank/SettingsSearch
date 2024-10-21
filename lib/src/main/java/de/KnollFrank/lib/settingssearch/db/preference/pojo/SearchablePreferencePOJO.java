@@ -29,7 +29,7 @@ public final class SearchablePreferencePOJO {
     private SearchablePreferencePOJO(
             final int id,
             final Optional<String> key,
-            final String icon,
+            final Optional<String> icon,
             final int layoutResId,
             final Optional<String> summary,
             final Optional<String> title,
@@ -40,7 +40,7 @@ public final class SearchablePreferencePOJO {
             final Bundle extras) {
         this.id = id;
         this.key = key.orElse(null);
-        this.icon = icon;
+        this.icon = icon.orElse(null);
         this.layoutResId = layoutResId;
         this.summary = summary.orElse(null);
         this.title = title.orElse(null);
@@ -54,7 +54,7 @@ public final class SearchablePreferencePOJO {
     public static SearchablePreferencePOJO of(
             final int id,
             final Optional<String> key,
-            final String icon,
+            final Optional<String> icon,
             final int layoutResId,
             final Optional<String> summary,
             final Optional<String> title,
@@ -108,8 +108,8 @@ public final class SearchablePreferencePOJO {
         return Optional.ofNullable(key);
     }
 
-    public String icon() {
-        return icon;
+    public Optional<String> icon() {
+        return Optional.ofNullable(icon);
     }
 
     public int layoutResId() {
