@@ -25,7 +25,7 @@ class HostByPreferenceProvider {
 
     private static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(final PreferenceScreenWithHostClass preferenceScreenWithHost) {
         return Preferences
-                .getAllChildren(preferenceScreenWithHost.preferenceScreen())
+                .getChildrenRecursively(preferenceScreenWithHost.preferenceScreen())
                 .stream()
                 .collect(
                         Collectors.toMap(

@@ -11,20 +11,20 @@ import java.util.List;
 
 public class Preferences {
 
-    public static List<Preference> getAllPreferences(final PreferenceScreen preferenceScreen) {
+    public static List<Preference> getPreferencesRecursively(final PreferenceScreen preferenceScreen) {
         return ImmutableList
                 .<Preference>builder()
                 .add(preferenceScreen)
-                .addAll(getAllChildren(preferenceScreen))
+                .addAll(getChildrenRecursively(preferenceScreen))
                 .build();
     }
 
-    public static List<Preference> getAllChildren(final PreferenceGroup preferenceGroup) {
+    public static List<Preference> getChildrenRecursively(final PreferenceGroup preferenceGroup) {
         final ImmutableList.Builder<Preference> childrenBuilder = ImmutableList.builder();
         for (final Preference child : getImmediateChildren(preferenceGroup)) {
             childrenBuilder.add(child);
             if (child instanceof final PreferenceGroup childPreferenceGroup) {
-                childrenBuilder.addAll(getAllChildren(childPreferenceGroup));
+                childrenBuilder.addAll(getChildrenRecursively(childPreferenceGroup));
             }
         }
         return childrenBuilder.build();

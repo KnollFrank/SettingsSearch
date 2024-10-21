@@ -50,7 +50,7 @@ public class SearchResultsPreferenceScreenTest {
                 // Then
                 assertThat(
                         Preferences
-                                .getAllChildren(preferenceScreen)
+                                .getChildrenRecursively(preferenceScreen)
                                 .stream()
                                 .anyMatch(preference -> title.equals(preference.getTitle().toString())),
                         is(true));
@@ -74,7 +74,7 @@ public class SearchResultsPreferenceScreenTest {
                         List.of(createSomePreferenceMatch()));
 
                 // Then
-                assertThat(Preferences.getAllChildren(prefilledPreferenceScreen), hasSize(1));
+                assertThat(Preferences.getChildrenRecursively(prefilledPreferenceScreen), hasSize(1));
             });
         }
     }

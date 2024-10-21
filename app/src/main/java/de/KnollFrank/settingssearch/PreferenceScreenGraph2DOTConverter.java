@@ -61,7 +61,7 @@ class PreferenceScreenGraph2DOTConverter {
 
     private static String getPreferences(final PreferenceScreen preferenceScreen) {
         return Preferences
-                .getAllChildren(preferenceScreen)
+                .getChildrenRecursively(preferenceScreen)
                 .stream()
                 .map(Preference::toString)
                 .collect(Collectors.joining("\\l")) + "\\l";

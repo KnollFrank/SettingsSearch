@@ -23,7 +23,7 @@ class MatchingSearchableInfosSetter {
 
     private static Stream<SearchablePreference> getSearchablePreferences(final PreferenceScreen preferenceScreen) {
         return Preferences
-                .getAllPreferences(preferenceScreen)
+                .getPreferencesRecursively(preferenceScreen)
                 .stream()
                 .filter(SearchablePreference.class::isInstance)
                 .map(SearchablePreference.class::cast);

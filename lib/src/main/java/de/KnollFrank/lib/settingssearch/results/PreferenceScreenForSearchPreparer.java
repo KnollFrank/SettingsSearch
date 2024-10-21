@@ -9,7 +9,7 @@ class PreferenceScreenForSearchPreparer {
 
     public static void preparePreferenceScreenForSearch(final PreferenceScreen preferenceScreen) {
         Preferences
-                .getAllPreferences(preferenceScreen)
+                .getPreferencesRecursively(preferenceScreen)
                 .forEach(PreferenceScreenForSearchPreparer::preparePreferenceForSearch);
     }
 

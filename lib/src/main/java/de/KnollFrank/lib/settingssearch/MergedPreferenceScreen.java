@@ -44,7 +44,7 @@ public class MergedPreferenceScreen {
     }
 
     public List<SearchablePreferencePOJO> getAllPreferencesForSearch() {
-        return SearchablePreferences.getAllPreferences(pojoEntityMap.keySet());
+        return SearchablePreferences.getPreferencesRecursively(pojoEntityMap.keySet());
     }
 
     public PreferenceScreen getSearchablePreferenceScreenForDisplay() {

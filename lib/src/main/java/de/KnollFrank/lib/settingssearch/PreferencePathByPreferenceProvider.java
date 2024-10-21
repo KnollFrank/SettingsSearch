@@ -62,7 +62,7 @@ class PreferencePathByPreferenceProvider {
         preferencePathByPreferenceScreen.forEach(
                 (preferenceScreen, preferencePath) ->
                         Preferences
-                                .getAllChildren(preferenceScreen)
+                                .getChildrenRecursively(preferenceScreen)
                                 .forEach(
                                         preference ->
                                                 preferencePathByPreferenceBuilder.put(

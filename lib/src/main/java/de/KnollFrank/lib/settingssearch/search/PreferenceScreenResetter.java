@@ -26,7 +26,7 @@ public class PreferenceScreenResetter {
 
     public void reset() {
         Preferences
-                .getAllPreferences(preferenceScreen)
+                .getPreferencesRecursively(preferenceScreen)
                 .forEach(this::reset);
     }
 

@@ -131,7 +131,7 @@ public class PreferenceScreensProvider1Test {
                 .flatMap(
                         preferenceScreenWithHost ->
                                 Preferences
-                                        .getAllChildren(preferenceScreenWithHost.preferenceScreen())
+                                        .getChildrenRecursively(preferenceScreenWithHost.preferenceScreen())
                                         .stream()
                                         .filter(preference -> predicate.test(preferenceScreenWithHost.host(), preference)))
                 .collect(MoreCollectors.onlyElement());

@@ -77,7 +77,7 @@ class PreferenceScreensMergerTestImplementation {
 
     private static List<String> getAllPreferences(final PreferenceScreen preferenceScreen) {
         return Preferences
-                .getAllPreferences(preferenceScreen)
+                .getPreferencesRecursively(preferenceScreen)
                 .stream()
                 .map(Preference::toString)
                 .toList();

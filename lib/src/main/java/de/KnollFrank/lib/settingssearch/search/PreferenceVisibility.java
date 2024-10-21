@@ -17,7 +17,7 @@ class PreferenceVisibility {
 
     private static void makeWholePreferenceScreenInvisible(final PreferenceScreen preferenceScreen) {
         Preferences
-                .getAllPreferences(preferenceScreen)
+                .getPreferencesRecursively(preferenceScreen)
                 .forEach(preference -> preference.setVisible(false));
     }
 
