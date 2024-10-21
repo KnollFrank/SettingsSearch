@@ -34,7 +34,7 @@ public final class SearchablePreferencePOJO {
             final Optional<String> summary,
             final Optional<String> title,
             final int widgetLayoutResId,
-            final String fragment,
+            final Optional<String> fragment,
             final boolean visible,
             final String searchableInfo,
             final Bundle extras) {
@@ -45,7 +45,7 @@ public final class SearchablePreferencePOJO {
         this.summary = summary.orElse(null);
         this.title = title.orElse(null);
         this.widgetLayoutResId = widgetLayoutResId;
-        this.fragment = fragment;
+        this.fragment = fragment.orElse(null);
         this.visible = visible;
         this.searchableInfo = searchableInfo;
         this.extras = extras;
@@ -59,7 +59,7 @@ public final class SearchablePreferencePOJO {
             final Optional<String> summary,
             final Optional<String> title,
             final int widgetLayoutResId,
-            final String fragment,
+            final Optional<String> fragment,
             final boolean visible,
             final String searchableInfo,
             final Bundle extras,
@@ -129,8 +129,8 @@ public final class SearchablePreferencePOJO {
         return widgetLayoutResId;
     }
 
-    public String fragment() {
-        return fragment;
+    public Optional<String> fragment() {
+        return Optional.ofNullable(fragment);
     }
 
     public boolean visible() {

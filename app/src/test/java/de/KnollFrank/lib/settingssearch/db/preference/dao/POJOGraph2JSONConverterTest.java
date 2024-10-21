@@ -69,7 +69,7 @@ public class POJOGraph2JSONConverterTest {
                 Optional.empty(),
                 Optional.of("preference connected to TestPreferenceFragment"),
                 0,
-                SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName(),
+                Optional.of(SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment.class.getName()),
                 true,
                 null,
                 new Bundle(),

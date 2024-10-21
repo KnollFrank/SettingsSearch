@@ -41,7 +41,7 @@ public class SearchablePreference2POJOConverter {
                         toString(searchablePreference.getSummary()),
                         toString(searchablePreference.getTitle()),
                         searchablePreference.getWidgetLayoutResource(),
-                        searchablePreference.getFragment(),
+                        Optional.ofNullable(searchablePreference.getFragment()),
                         searchablePreference.isVisible(),
                         SearchableInfoAttributeConverter.convert2POJO(searchablePreference.getSearchableInfo()),
                         searchablePreference.getExtras(),

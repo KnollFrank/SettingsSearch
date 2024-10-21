@@ -78,7 +78,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
         assertThat(Optional.ofNullable(actual.getSummary()), is(expected.summary()));
         assertThat(Optional.ofNullable(actual.getTitle()), is(expected.title()));
         assertThat(actual.getWidgetLayoutResource(), is(expected.widgetLayoutResId()));
-        assertThat(actual.getFragment(), is(expected.fragment()));
+        assertThat(Optional.ofNullable(actual.getFragment()), is(expected.fragment()));
         assertThat(actual.isVisible(), is(expected.visible()));
         assertThat(actual.getSearchableInfo(), is(Optional.ofNullable(expected.searchableInfo())));
         assertThat(equalBundles(actual.getExtras(), expected.extras()), is(true));
