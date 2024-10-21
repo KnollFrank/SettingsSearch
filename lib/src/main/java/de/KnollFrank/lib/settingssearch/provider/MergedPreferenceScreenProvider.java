@@ -84,15 +84,6 @@ public class MergedPreferenceScreenProvider {
                         PreferencePathByPreferenceProvider.getPreferencePathByPreference(
                                 HostClassFromNodesRemover.removeHostClassFromNodes(
                                         entityGraph)));
-        // MUST compute A (which just reads screens) before B (which modifies screens)
-        // A:
-        final Map<Preference, Class<? extends PreferenceFragmentCompat>> hostByPreference =
-                HostByPreferenceProvider.getHostByPreference(
-                        MapFromPojoNodesRemover
-                                .removeMapFromPojoNodes(pojoGraph)
-                                .vertexSet(),
-                        pojoEntityMap);
-        // B:
         final PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences = destructivelyMergeScreens(screens.connectedSearchablePreferenceScreens());
         return new MergedPreferenceScreen(
                 preferenceScreenAndNonClickablePreferences.preferenceScreen(),
@@ -100,7 +91,16 @@ public class MergedPreferenceScreenProvider {
                 preferenceScreenAndNonClickablePreferences.nonClickablePreferences(),
                 screens.preferencePathByPreference(),
                 searchableInfoAttribute,
-                new PreferencePathNavigator(hostByPreference, fragmentFactoryAndInitializer, context));
+                new PreferencePathNavigator(getHostByPreference(pojoGraph, pojoEntityMap), fragmentFactoryAndInitializer, context));
+    }
+
+    private static Map<Preference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
+            final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph, final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
+        return HostByPreferenceProvider.getHostByPreference(
+                MapFromPojoNodesRemover
+                        .removeMapFromPojoNodes(pojoGraph)
+                        .vertexSet(),
+                pojoEntityMap);
     }
 
     private PreferenceScreenAndNonClickablePreferences destructivelyMergeScreens(final Set<PreferenceScreenWithHostClass> screens) {
