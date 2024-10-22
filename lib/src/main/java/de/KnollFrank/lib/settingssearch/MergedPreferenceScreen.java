@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
@@ -44,7 +44,7 @@ public class MergedPreferenceScreen {
     }
 
     public List<SearchablePreferencePOJO> getAllPreferencesForSearch() {
-        return SearchablePreferences.getPreferencesRecursively(pojoEntityMap.keySet());
+        return PreferencePOJOs.getPreferencesRecursively(pojoEntityMap.keySet());
     }
 
     public PreferenceScreen getSearchablePreferenceScreenForDisplay() {

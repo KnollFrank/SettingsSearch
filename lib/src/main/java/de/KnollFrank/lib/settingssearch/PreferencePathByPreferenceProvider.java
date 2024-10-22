@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.common.graph.BreadthFirstGraphVisitor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -62,7 +62,7 @@ public class PreferencePathByPreferenceProvider {
         final Builder<SearchablePreferencePOJO, PreferencePath> preferencePathByPreferenceBuilder = ImmutableMap.builder();
         preferencePathByPreferenceScreen.forEach(
                 (preferenceScreen, preferencePath) ->
-                        SearchablePreferences
+                        PreferencePOJOs
                                 .getPreferencesRecursively(preferenceScreen.children())
                                 .forEach(
                                         searchablePreference ->

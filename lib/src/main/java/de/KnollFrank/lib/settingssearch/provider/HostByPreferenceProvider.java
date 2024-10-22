@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
@@ -19,13 +19,13 @@ class HostByPreferenceProvider {
         return Maps.merge(
                 preferenceScreens
                         .stream()
-                        .map(preferenceScreen -> getHostByPreference(preferenceScreen))
+                        .map(HostByPreferenceProvider::getHostByPreference)
                         .collect(Collectors.toList()));
     }
 
     private static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
             final PreferenceScreenWithHostClassPOJO preferenceScreen) {
-        return SearchablePreferences
+        return PreferencePOJOs
                 .getPreferencesRecursively(preferenceScreen.preferenceScreen().children())
                 .stream()
                 .collect(
