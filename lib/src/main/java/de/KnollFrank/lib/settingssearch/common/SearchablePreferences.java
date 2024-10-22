@@ -10,19 +10,19 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 public class SearchablePreferences {
 
+    public static List<SearchablePreferencePOJO> getPreferencesRecursively(final SearchablePreferencePOJO preference) {
+        return ImmutableList
+                .<SearchablePreferencePOJO>builder()
+                .add(preference)
+                .addAll(getPreferencesRecursively(preference.children()))
+                .build();
+    }
+
     public static List<SearchablePreferencePOJO> getPreferencesRecursively(final Collection<SearchablePreferencePOJO> preferences) {
         return Lists.concat(
                 preferences
                         .stream()
                         .map(SearchablePreferences::getPreferencesRecursively)
                         .collect(Collectors.toList()));
-    }
-
-    private static List<SearchablePreferencePOJO> getPreferencesRecursively(final SearchablePreferencePOJO preference) {
-        return ImmutableList
-                .<SearchablePreferencePOJO>builder()
-                .add(preference)
-                .addAll(getPreferencesRecursively(preference.children()))
-                .build();
     }
 }
