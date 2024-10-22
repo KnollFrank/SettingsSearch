@@ -9,7 +9,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
-class SearchablePreferenceScreenFromPOJOConverter {
+public class SearchablePreferenceScreenFromPOJOConverter {
 
     public record PreferenceScreenWithMap(PreferenceScreen preferenceScreen,
                                           BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {

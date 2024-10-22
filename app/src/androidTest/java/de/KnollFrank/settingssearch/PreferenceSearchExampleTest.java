@@ -51,7 +51,7 @@ public class PreferenceSearchExampleTest {
     public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("dst preference"), closeSoftKeyboard());
-        onView(searchResultsView()).perform(actionOnItemAtPosition(1, click()));
+        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
         final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: summary of src preference";
         onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
     }
@@ -61,7 +61,7 @@ public class PreferenceSearchExampleTest {
         onView(searchButton()).perform(click());
         final String titleOfPreferenceHavingNoKey = "This is a preference having no key";
         onView(searchView()).perform(replaceText(titleOfPreferenceHavingNoKey), closeSoftKeyboard());
-        onView(searchResultsView()).perform(actionOnItemAtPosition(1, click()));
+        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
         onView(titleOfPreference(titleOfPreferenceHavingNoKey)).check(matches(isDisplayed()));
     }
 

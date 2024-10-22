@@ -16,6 +16,7 @@ import java.util.List;
 
 import de.KnollFrank.settingssearch.R;
 
+// FK-TODO: remove?
 @RunWith(Parameterized.class)
 public class PreferenceScreensMergerTest {
 

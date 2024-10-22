@@ -14,6 +14,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 
+// FK-TODO: remove?
 public class PreferenceScreensMerger {
 
     private final Context context;
