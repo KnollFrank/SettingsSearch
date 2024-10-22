@@ -89,10 +89,9 @@ public class PreferenceScreensProvider1Test {
                         Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);
                 final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
                         getPojoEntityMap(pojoGraph);
-                final Map<Preference, PreferencePath> preferencePathByPreference =
+                final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference =
                         PreferencePathByPreferenceProvider.getPreferencePathByPreference(
-                                HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph),
-                                pojoEntityMap);
+                                HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph));
 
                 // Then
                 final Preference preferenceOfFragment2PointingToFragment3 =
@@ -106,17 +105,22 @@ public class PreferenceScreensProvider1Test {
                                 Fragment2ConnectedToFragment3.class,
                                 entityGraph.vertexSet());
                 assertThat(
-                        preferencePathByPreference.get(preferenceOfFragment2PointingToFragment3),
+                        preferencePathByPreference.get(entity2Pojo(pojoEntityMap, preferenceOfFragment2PointingToFragment3)),
                         is(
                                 new PreferencePath(
                                         Stream
                                                 .of(
                                                         preferenceOfFragment1PointingToFragment2,
                                                         preferenceOfFragment2PointingToFragment3)
-                                                .map(preference -> pojoEntityMap.inverse().get(preference))
+                                                .map(preference -> entity2Pojo(pojoEntityMap, preference))
                                                 .collect(Collectors.toList()))));
             });
         }
+    }
+
+    private static SearchablePreferencePOJO entity2Pojo(final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
+                                                        final Preference entity) {
+        return pojoEntityMap.inverse().get(entity);
     }
 
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(

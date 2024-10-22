@@ -17,6 +17,7 @@ import org.jgrapht.Graph;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -81,23 +82,34 @@ public class MergedPreferenceScreenProvider {
                 Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);
         final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
                 getPojoEntityMap(pojoGraph);
-        final Map<Preference, PreferencePath> preferencePathByPreference =
+        final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference =
                 PreferencePathByPreferenceProvider.getPreferencePathByPreference(
-                        HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph),
-                        pojoEntityMap);
+                        HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph));
         final PreferenceScreenAndNonClickablePreferences preferenceScreenAndNonClickablePreferences =
                 destructivelyMergeScreens(entityGraph.vertexSet());
         return new MergedPreferenceScreen(
                 preferenceScreenAndNonClickablePreferences.preferenceScreen(),
                 pojoEntityMap,
                 preferenceScreenAndNonClickablePreferences.nonClickablePreferences(),
-                preferencePathByPreference,
+                convertPojoKeys2EntityKeys(preferencePathByPreference, pojoEntityMap),
                 searchableInfoAttribute,
                 new PreferencePathNavigator(
                         getHostByPreference(pojoGraph),
                         fragmentFactoryAndInitializer,
                         pojoEntityMap,
                         context));
+    }
+
+    private Map<Preference, PreferencePath> convertPojoKeys2EntityKeys(
+            final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
+            final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
+        return preferencePathByPreference
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                entry -> pojoEntityMap.get(entry.getKey()),
+                                Entry::getValue));
     }
 
     private static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
