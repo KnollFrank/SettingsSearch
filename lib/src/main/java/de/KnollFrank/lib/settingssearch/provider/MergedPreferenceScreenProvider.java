@@ -41,8 +41,6 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreenProvider {
 
-    // FK-TODO: remove preferenceScreensMerger
-    private final PreferenceScreensMerger preferenceScreensMerger;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final boolean cacheMergedPreferenceScreens;
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
@@ -50,12 +48,10 @@ public class MergedPreferenceScreenProvider {
 
     private static MergedPreferenceScreen mergedPreferenceScreen;
 
-    public MergedPreferenceScreenProvider(final PreferenceScreensMerger preferenceScreensMerger,
-                                          final SearchableInfoAttribute searchableInfoAttribute,
+    public MergedPreferenceScreenProvider(final SearchableInfoAttribute searchableInfoAttribute,
                                           final boolean cacheMergedPreferenceScreens,
                                           final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                           final Context context) {
-        this.preferenceScreensMerger = preferenceScreensMerger;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
@@ -80,6 +76,7 @@ public class MergedPreferenceScreenProvider {
                 getPreferenceManager(entityGraph));
     }
 
+    // FK-TODO: refactor
     private MergedPreferenceScreen getMergedPreferenceScreen(
             final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph,
             final PreferenceManager preferenceManager) {

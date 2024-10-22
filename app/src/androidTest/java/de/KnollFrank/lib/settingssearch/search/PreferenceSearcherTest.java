@@ -42,7 +42,6 @@ import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -500,7 +499,6 @@ public class PreferenceSearcherTest {
                                         preferenceDialogAndSearchableInfoProvider)));
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
-                        new PreferenceScreensMerger(fragmentActivity),
                         new SearchableInfoAttribute(),
                         false,
                         fragmentFactoryAndInitializer,

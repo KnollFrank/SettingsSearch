@@ -36,7 +36,6 @@ import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreensMerger;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -152,7 +151,6 @@ public class SearchPreferenceFragment extends Fragment {
         final Context context = requireActivity();
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
-                        new PreferenceScreensMerger(getContext()),
                         searchableInfoAttribute,
                         true,
                         fragmentFactoryAndInitializer,
