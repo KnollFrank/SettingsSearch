@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceViewHolder;
 
 import java.text.MessageFormat;
@@ -52,7 +51,10 @@ class PreferencePathView {
         return preferencePath
                 .preferences()
                 .stream()
-                .map(Preference::getTitle)
+                .map(searchablePreferencePOJO ->
+                        searchablePreferencePOJO
+                                .title()
+                                .orElse("?"))
                 .collect(Collectors.joining(" > "));
     }
 }

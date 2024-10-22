@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.fragment;
 
 import android.content.Context;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.BiMap;
@@ -38,27 +37,20 @@ public class PreferencePathNavigator {
         return navigatePreferences(preferencePath.preferences(), null, null);
     }
 
-    private PreferenceFragmentCompat navigatePreferences(final List<? extends Preference> preferences,
+    private PreferenceFragmentCompat navigatePreferences(final List<SearchablePreferencePOJO> preferences,
                                                          final PreferenceWithHost src,
                                                          final PreferenceFragmentCompat uninitializedSrc) {
         if (preferences.isEmpty()) {
             return uninitializedSrc;
         }
-        final Preference preference = Lists.head(preferences);
+        final SearchablePreferencePOJO preference = Lists.head(preferences);
+        final var host = hostByPreference.get(preference);
         return navigatePreferences(
                 Lists.tail(preferences),
                 new PreferenceWithHost(
-                        preference,
-                        instantiateAndInitializePreferenceFragment(getHost(preference), src)),
-                instantiateFragment(getHost(preference), src));
-    }
-
-    private Class<? extends PreferenceFragmentCompat> getHost(final Preference preference) {
-        return hostByPreference.get(getPojo(preference));
-    }
-
-    private SearchablePreferencePOJO getPojo(final Preference preference) {
-        return pojoEntityMap.inverse().get(preference);
+                        pojoEntityMap.get(preference),
+                        instantiateAndInitializePreferenceFragment(host, src)),
+                instantiateFragment(host, src));
     }
 
     private PreferenceFragmentCompat instantiateAndInitializePreferenceFragment(

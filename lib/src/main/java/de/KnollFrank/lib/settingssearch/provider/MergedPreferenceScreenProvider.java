@@ -81,7 +81,6 @@ public class MergedPreferenceScreenProvider {
                 Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);
         final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
                 getPojoEntityMap(pojoGraph);
-        // FK-TODO: replace return type with POJO types
         final Map<Preference, PreferencePath> preferencePathByPreference =
                 PreferencePathByPreferenceProvider.getPreferencePathByPreference(
                         HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph),

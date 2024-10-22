@@ -25,13 +25,12 @@ public class PreferencePathByPreferenceProvider {
             final Graph<SearchablePreferenceScreenPOJO, SearchablePreferencePOJOEdge> pojoGraph,
             final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
         return getPreferencePathByPreference(
-                getPreferencePathByPreferenceScreen(pojoGraph, pojoEntityMap),
+                getPreferencePathByPreferenceScreen(pojoGraph),
                 pojoEntityMap);
     }
 
     private static Map<SearchablePreferenceScreenPOJO, PreferencePath> getPreferencePathByPreferenceScreen(
-            final Graph<SearchablePreferenceScreenPOJO, SearchablePreferencePOJOEdge> preferenceScreenGraph,
-            final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
+            final Graph<SearchablePreferenceScreenPOJO, SearchablePreferencePOJOEdge> preferenceScreenGraph) {
         final Map<SearchablePreferenceScreenPOJO, PreferencePath> preferencePathByPreferenceScreen = new HashMap<>();
         final BreadthFirstGraphVisitor<SearchablePreferenceScreenPOJO, SearchablePreferencePOJOEdge> preferenceScreenGraphVisitor =
                 new BreadthFirstGraphVisitor<>() {
@@ -58,7 +57,7 @@ public class PreferencePathByPreferenceProvider {
                                 preferenceScreenGraph
                                         .getEdge(parentPreferenceScreen, preferenceScreen)
                                         .preference;
-                        return parentPreferencePath.add(pojoEntityMap.get(preference));
+                        return parentPreferencePath.add(preference);
                     }
                 };
         preferenceScreenGraphVisitor.visit(preferenceScreenGraph);
@@ -74,11 +73,10 @@ public class PreferencePathByPreferenceProvider {
                         SearchablePreferences
                                 .getPreferencesRecursively(preferenceScreen.children())
                                 .stream()
-                                .map(pojoEntityMap::get)
                                 .forEach(
                                         searchablePreference ->
                                                 preferencePathByPreferenceBuilder.put(
-                                                        searchablePreference,
+                                                        pojoEntityMap.get(searchablePreference),
                                                         preferencePath.add(searchablePreference))));
         return preferencePathByPreferenceBuilder.build();
     }

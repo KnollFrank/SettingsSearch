@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
@@ -86,10 +87,12 @@ public class PreferenceScreensProvider1Test {
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
                 final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph =
                         Graph2POJOGraphTransformer.transformGraph2POJOGraph(entityGraph);
+                final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
+                        getPojoEntityMap(pojoGraph);
                 final Map<Preference, PreferencePath> preferencePathByPreference =
                         PreferencePathByPreferenceProvider.getPreferencePathByPreference(
                                 HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph),
-                                getPojoEntityMap(pojoGraph));
+                                pojoEntityMap);
 
                 // Then
                 final Preference preferenceOfFragment2PointingToFragment3 =
@@ -106,9 +109,12 @@ public class PreferenceScreensProvider1Test {
                         preferencePathByPreference.get(preferenceOfFragment2PointingToFragment3),
                         is(
                                 new PreferencePath(
-                                        ImmutableList.of(
-                                                preferenceOfFragment1PointingToFragment2,
-                                                preferenceOfFragment2PointingToFragment3))));
+                                        Stream
+                                                .of(
+                                                        preferenceOfFragment1PointingToFragment2,
+                                                        preferenceOfFragment2PointingToFragment3)
+                                                .map(preference -> pojoEntityMap.inverse().get(preference))
+                                                .collect(Collectors.toList()))));
             });
         }
     }

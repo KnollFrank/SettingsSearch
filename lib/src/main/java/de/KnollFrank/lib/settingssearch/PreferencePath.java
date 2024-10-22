@@ -1,24 +1,23 @@
 package de.KnollFrank.lib.settingssearch;
 
-import androidx.preference.Preference;
-
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-public record PreferencePath(List<? extends Preference> preferences) {
+public record PreferencePath(List<SearchablePreferencePOJO> preferences) {
 
-    public Optional<? extends Preference> getPreference() {
+    public Optional<SearchablePreferencePOJO> getPreference() {
         return Lists.getLastElement(preferences);
     }
 
-    public PreferencePath add(final Preference preference) {
+    public PreferencePath add(final SearchablePreferencePOJO preference) {
         return new PreferencePath(
                 ImmutableList
-                        .<Preference>builder()
+                        .<SearchablePreferencePOJO>builder()
                         .addAll(preferences)
                         .add(preference)
                         .build());
