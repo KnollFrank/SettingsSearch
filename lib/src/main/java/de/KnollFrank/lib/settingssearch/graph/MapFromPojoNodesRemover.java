@@ -18,7 +18,7 @@ public class MapFromPojoNodesRemover {
                 edge -> new SearchablePreferencePOJOEdge(edge.preference));
     }
 
-    private static PreferenceScreenWithHostClassPOJO removeMapFromPojoNode(final PreferenceScreenWithHostClassPOJOWithMap preferenceScreenWithHostClassPOJOWithMap) {
+    public static PreferenceScreenWithHostClassPOJO removeMapFromPojoNode(final PreferenceScreenWithHostClassPOJOWithMap preferenceScreenWithHostClassPOJOWithMap) {
         return preferenceScreenWithHostClassPOJOWithMap.preferenceScreenWithHostClass();
     }
 }

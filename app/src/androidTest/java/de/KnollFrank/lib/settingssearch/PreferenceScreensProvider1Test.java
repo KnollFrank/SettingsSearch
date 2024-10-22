@@ -90,7 +90,7 @@ public class PreferenceScreensProvider1Test {
                 final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
                         getPojoEntityMap(pojoGraph);
                 final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference =
-                        PreferencePathByPreferenceProvider.getPreferencePathByPreference(
+                        PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
                                 HostClassAndMapFromNodesRemover.removeHostClassAndMapFromNodes(pojoGraph));
 
                 // Then

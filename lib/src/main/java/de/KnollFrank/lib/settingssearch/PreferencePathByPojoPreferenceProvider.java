@@ -15,9 +15,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
-public class PreferencePathByPreferenceProvider {
+public class PreferencePathByPojoPreferenceProvider {
 
-    public static Map<SearchablePreferencePOJO, PreferencePath> getPreferencePathByPreference(
+    public static Map<SearchablePreferencePOJO, PreferencePath> getPreferencePathByPojoPreference(
             final Graph<SearchablePreferenceScreenPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
         return getPreferencePathByPreference(getPreferencePathByPreferenceScreen(pojoGraph));
     }
