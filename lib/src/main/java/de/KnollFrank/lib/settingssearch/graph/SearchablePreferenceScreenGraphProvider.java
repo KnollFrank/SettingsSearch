@@ -8,5 +8,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 @FunctionalInterface
 public interface SearchablePreferenceScreenGraphProvider {
 
+    // FK-TODO: replace entityGraph with pojoGraph
     Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph();
 }
