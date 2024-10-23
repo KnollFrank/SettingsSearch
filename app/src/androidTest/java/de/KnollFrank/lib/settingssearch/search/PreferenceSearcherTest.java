@@ -37,6 +37,8 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
+import de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
@@ -502,8 +504,15 @@ public class PreferenceSearcherTest {
                         new SearchableInfoAttribute(),
                         false,
                         fragmentFactoryAndInitializer,
-                        fragmentActivity);
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(searchablePreferenceScreenGraphProvider);
+                        fragmentActivity,
+                        PreferenceManagerProvider.getPreferenceManager(
+                                fragments,
+                                preferenceFragment.getClass()));
+
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(
+                MapFromPojoNodesRemover.removeMapFromPojoNodes(
+                        Graph2POJOGraphTransformer.transformGraph2POJOGraph(
+                                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph())));
     }
 
     static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {

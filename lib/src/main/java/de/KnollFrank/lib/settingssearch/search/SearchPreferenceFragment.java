@@ -30,6 +30,8 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
+import de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
@@ -149,24 +151,35 @@ public class SearchPreferenceFragment extends Fragment {
                         fragmentFactory,
                         defaultFragmentInitializer);
         final Context context = requireActivity();
+        final Fragments fragments =
+                new Fragments(
+                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
+                        context);
+        final PreferenceManager preferenceManager =
+                PreferenceManagerProvider.getPreferenceManager(
+                        fragments,
+                        searchConfiguration.rootPreferenceFragment());
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         searchableInfoAttribute,
                         true,
                         fragmentFactoryAndInitializer,
-                        context);
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(
-                createWrappedSearchablePreferenceScreenGraphProvider(
-                        fragmentFactoryAndInitializer,
                         context,
-                        defaultFragmentInitializer));
+                        preferenceManager);
+        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(
+                MapFromPojoNodesRemover.removeMapFromPojoNodes(
+                        Graph2POJOGraphTransformer.transformGraph2POJOGraph(
+                                createWrappedSearchablePreferenceScreenGraphProvider(
+                                        defaultFragmentInitializer,
+                                        fragments,
+                                        preferenceManager)
+                                        .getSearchablePreferenceScreenGraph())));
     }
 
-    private SearchablePreferenceScreenGraphProvider createWrappedSearchablePreferenceScreenGraphProvider(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer, final Context context, final DefaultFragmentInitializer defaultFragmentInitializer) {
-        final Fragments fragments =
-                new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        context);
+    private SearchablePreferenceScreenGraphProvider createWrappedSearchablePreferenceScreenGraphProvider(
+            final DefaultFragmentInitializer defaultFragmentInitializer,
+            final Fragments fragments,
+            final PreferenceManager preferenceManager) {
         final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment = searchConfiguration.rootPreferenceFragment();
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 new DefaultSearchablePreferenceScreenGraphProvider(
@@ -185,7 +198,7 @@ public class SearchPreferenceFragment extends Fragment {
                                         preferenceDialogAndSearchableInfoProvider)));
         return wrapSearchablePreferenceScreenGraphProvider.apply(
                 searchablePreferenceScreenGraphProvider,
-                PreferenceManagerProvider.getPreferenceManager(fragments, rootPreferenceFragment));
+                preferenceManager);
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,

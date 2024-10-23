@@ -6,30 +6,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassPOJOWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
-class PreferenceScreenWithMapFactory {
+class PreferenceScreensMerger {
 
-    public static PreferenceScreenWithMap getPreferenceScreenWithMap(
-            final List<PreferenceScreenWithHostClassPOJOWithMap> preferenceScreens,
+    public static PreferenceScreenWithMap mergePreferenceScreens(
+            final List<PreferenceScreenWithHostClassPOJO> preferenceScreens,
             final PreferenceManager preferenceManager) {
         return SearchablePreferenceScreenFromPOJOConverter.convertFromPOJO(
-                concat(withoutHostAndMap(preferenceScreens)),
+                concat(withoutHost(preferenceScreens)),
                 preferenceManager);
     }
 
-    private static List<SearchablePreferenceScreenPOJO> withoutHostAndMap(
-            final List<PreferenceScreenWithHostClassPOJOWithMap> preferenceScreens) {
+    private static List<SearchablePreferenceScreenPOJO> withoutHost(
+            final List<PreferenceScreenWithHostClassPOJO> preferenceScreens) {
         return preferenceScreens
                 .stream()
-                .map(preferenceScreenWithHostClassPOJOWithMap ->
-                        preferenceScreenWithHostClassPOJOWithMap
-                                .preferenceScreenWithHostClass()
-                                .preferenceScreen())
+                .map(PreferenceScreenWithHostClassPOJO::preferenceScreen)
                 .collect(Collectors.toList());
     }
 
