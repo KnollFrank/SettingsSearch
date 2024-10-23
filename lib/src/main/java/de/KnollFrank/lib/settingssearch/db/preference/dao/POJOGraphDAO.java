@@ -9,7 +9,7 @@ import de.KnollFrank.lib.settingssearch.common.IOUtils;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
-class POJOGraphDAO {
+public class POJOGraphDAO {
 
     public static void persist(final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph,
                                final OutputStream sink) {

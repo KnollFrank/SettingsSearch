@@ -7,13 +7,14 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
-public class HostClassAndMapFromNodesRemover {
+// FK-TODO: remove
+public class HostClassAndMapFromPojoNodesRemover {
 
     public static Graph<SearchablePreferenceScreenPOJO, SearchablePreferencePOJOEdge> removeHostClassAndMapFromNodes(
             final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph) {
         return NodesTransformer.transformNodes(
                 pojoGraph,
-                HostClassAndMapFromNodesRemover::removeHostClassAndMapFromNode,
+                HostClassAndMapFromPojoNodesRemover::removeHostClassAndMapFromNode,
                 SearchablePreferencePOJOEdge.class,
                 edge -> new SearchablePreferencePOJOEdge(edge.preference));
     }

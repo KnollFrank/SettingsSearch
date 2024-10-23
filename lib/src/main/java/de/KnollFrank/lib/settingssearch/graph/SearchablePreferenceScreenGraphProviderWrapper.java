@@ -1,10 +1,10 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import androidx.preference.PreferenceManager;
+import android.content.Context;
 
 @FunctionalInterface
 public interface SearchablePreferenceScreenGraphProviderWrapper {
 
     SearchablePreferenceScreenGraphProvider wrap(SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
-                                                 PreferenceManager preferenceManager);
+                                                 Context context);
 }

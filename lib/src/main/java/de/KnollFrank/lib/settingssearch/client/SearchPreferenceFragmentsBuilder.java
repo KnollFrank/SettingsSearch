@@ -30,7 +30,7 @@ public class SearchPreferenceFragmentsBuilder {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
     private SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper =
-            (searchablePreferenceScreenGraphProvider, preferenceManager) ->
+            (searchablePreferenceScreenGraphProvider, context) ->
                     searchablePreferenceScreenGraphProvider;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,

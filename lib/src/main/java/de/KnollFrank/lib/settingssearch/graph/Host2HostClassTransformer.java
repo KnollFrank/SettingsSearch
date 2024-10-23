@@ -7,7 +7,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.common.graph.NodesTransformer;
 
-class Host2HostClassTransformer {
+public class Host2HostClassTransformer {
 
     public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> transformHost2HostClass(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {

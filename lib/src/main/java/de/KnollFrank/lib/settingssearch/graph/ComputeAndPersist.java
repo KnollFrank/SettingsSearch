@@ -7,9 +7,9 @@ import org.jgrapht.Graph;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
 public class ComputeAndPersist implements SearchablePreferenceScreenGraphProvider {
 
@@ -22,18 +22,11 @@ public class ComputeAndPersist implements SearchablePreferenceScreenGraphProvide
     }
 
     @Override
-    public Graph<PreferenceScreenWithHostClass, PreferenceEdge> getSearchablePreferenceScreenGraph() {
-        final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph =
-                delegate.getSearchablePreferenceScreenGraph();
-        persist(searchablePreferenceScreenGraph);
-        return searchablePreferenceScreenGraph;
-    }
-
-    private void persist(final Graph<PreferenceScreenWithHostClass, PreferenceEdge> searchablePreferenceScreenGraph) {
-        SearchablePreferenceScreenGraphDAO.persist(
-                searchablePreferenceScreenGraph,
-                getFileOutputStream());
+    public Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph() {
+        final var searchablePreferenceScreenGraph = delegate.getSearchablePreferenceScreenGraph();
+        POJOGraphDAO.persist(searchablePreferenceScreenGraph, getFileOutputStream());
         // then copy /data/data/de.KnollFrank.settingssearch/files/searchablePreferenceScreenGraph.json from device to /home/frankknoll/AndroidStudioProjects/SettingsSearch/app/src/main/res/raw-<country code>
+        return searchablePreferenceScreenGraph;
     }
 
     private FileOutputStream getFileOutputStream() {

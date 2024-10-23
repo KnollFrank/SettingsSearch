@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.SearchView;
 
@@ -28,8 +29,6 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
-import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
-import de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
@@ -122,7 +121,7 @@ public class SearchPreferenceFragment extends Fragment {
                 preferenceFragmentCompat -> {
                 },
                 (preference, hostOfPreference) -> Optional.empty(),
-                (searchablePreferenceScreenGraphProvider, preferenceManager) -> searchablePreferenceScreenGraphProvider);
+                (searchablePreferenceScreenGraphProvider, context) -> searchablePreferenceScreenGraphProvider);
     }
 
     @Override
@@ -164,19 +163,17 @@ public class SearchPreferenceFragment extends Fragment {
                         fragmentFactoryAndInitializer,
                         preferenceManager);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(
-                MapFromPojoNodesRemover.removeMapFromPojoNodes(
-                        Graph2POJOGraphTransformer.transformGraph2POJOGraph(
-                                createWrappedSearchablePreferenceScreenGraphProvider(
-                                        defaultFragmentInitializer,
-                                        fragments,
-                                        preferenceManager)
-                                        .getSearchablePreferenceScreenGraph())));
+                createWrappedSearchablePreferenceScreenGraphProvider(
+                        defaultFragmentInitializer,
+                        fragments,
+                        preferenceManager.getContext())
+                        .getSearchablePreferenceScreenGraph());
     }
 
     private SearchablePreferenceScreenGraphProvider createWrappedSearchablePreferenceScreenGraphProvider(
             final DefaultFragmentInitializer defaultFragmentInitializer,
             final Fragments fragments,
-            final PreferenceManager preferenceManager) {
+            final Context context) {
         final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment = searchConfiguration.rootPreferenceFragment();
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 new DefaultSearchablePreferenceScreenGraphProvider(
@@ -195,7 +192,7 @@ public class SearchPreferenceFragment extends Fragment {
                                         preferenceDialogAndSearchableInfoProvider)));
         return searchablePreferenceScreenGraphProviderWrapper.wrap(
                 searchablePreferenceScreenGraphProvider,
-                preferenceManager);
+                context);
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,

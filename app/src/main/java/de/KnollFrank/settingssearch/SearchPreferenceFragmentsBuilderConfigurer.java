@@ -3,11 +3,11 @@ package de.KnollFrank.settingssearch;
 import static de.KnollFrank.settingssearch.SearchablePreferenceScreenGraphProviderWrapper.GraphDAOMode;
 import static de.KnollFrank.settingssearch.SearchablePreferenceScreenGraphProviderWrapper.wrapSearchablePreferenceScreenGraphProvider;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
 
@@ -69,11 +69,11 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
 
                             @Override
                             public SearchablePreferenceScreenGraphProvider wrap(final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
-                                                                                final PreferenceManager preferenceManager) {
+                                                                                final Context context) {
                                 return wrapSearchablePreferenceScreenGraphProvider(
                                         searchablePreferenceScreenGraphProvider,
-                                        preferenceManager,
-                                        graphDAOMode);
+                                        graphDAOMode,
+                                        context);
                             }
                         });
     }

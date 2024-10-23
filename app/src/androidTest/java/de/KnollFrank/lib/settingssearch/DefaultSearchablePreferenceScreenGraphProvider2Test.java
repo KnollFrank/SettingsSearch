@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.PreferenceScreensProvider1Test.createSearchablePreferenceScreenGraphProvider;
+import static de.KnollFrank.lib.settingssearch.DefaultSearchablePreferenceScreenGraphProvider1Test.createSearchablePreferenceScreenGraphProvider;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
 
@@ -20,15 +20,16 @@ import org.junit.Test;
 
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
-public class PreferenceScreensProvider2Test {
+public class DefaultSearchablePreferenceScreenGraphProvider2Test {
 
     @Test
     public void shouldIgnoreNonPreferenceFragments() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(PreferenceScreensProvider2Test::shouldIgnoreNonPreferenceFragments);
+            scenario.onActivity(DefaultSearchablePreferenceScreenGraphProvider2Test::shouldIgnoreNonPreferenceFragments);
         }
     }
 
@@ -41,7 +42,7 @@ public class PreferenceScreensProvider2Test {
                         activity);
 
         // When
-        final Set<PreferenceScreenWithHostClass> preferenceScreens =
+        final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens =
                 searchablePreferenceScreenGraphProvider
                         .getSearchablePreferenceScreenGraph()
                         .vertexSet();

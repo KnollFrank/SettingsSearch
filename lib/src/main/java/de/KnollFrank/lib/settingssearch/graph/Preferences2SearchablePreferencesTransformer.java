@@ -17,7 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 
-class Preferences2SearchablePreferencesTransformer {
+public class Preferences2SearchablePreferencesTransformer {
 
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
 

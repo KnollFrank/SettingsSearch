@@ -1,6 +1,6 @@
 package de.KnollFrank.settingssearch;
 
-import androidx.preference.PreferenceManager;
+import android.content.Context;
 
 import de.KnollFrank.lib.settingssearch.graph.ComputeAndPersist;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphLoader;
@@ -14,15 +14,15 @@ public class SearchablePreferenceScreenGraphProviderWrapper {
 
     public static SearchablePreferenceScreenGraphProvider wrapSearchablePreferenceScreenGraphProvider(
             final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
-            final PreferenceManager preferenceManager,
-            final GraphDAOMode graphDAOMode) {
+            final GraphDAOMode graphDAOMode,
+            final Context context) {
         return switch (graphDAOMode) {
             case PERSIST_GRAPH -> new ComputeAndPersist(
                     searchablePreferenceScreenGraphProvider,
-                    preferenceManager.getContext());
+                    context);
             case LOAD_GRAPH -> new SearchablePreferenceScreenGraphLoader(
                     R.raw.searchable_preference_screen_graph,
-                    preferenceManager);
+                    context);
         };
     }
 }
