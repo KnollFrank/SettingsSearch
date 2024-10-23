@@ -3,13 +3,10 @@ package de.KnollFrank.lib.settingssearch.client;
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.PreferenceManager;
 
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -17,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
+import de.KnollFrank.lib.settingssearch.search.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -33,7 +31,7 @@ public class SearchPreferenceFragments {
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
-    private final BiFunction<SearchablePreferenceScreenGraphProvider, PreferenceManager, SearchablePreferenceScreenGraphProvider> wrapSearchablePreferenceScreenGraphProvider;
+    private final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager) {
@@ -50,7 +48,7 @@ public class SearchPreferenceFragments {
                                         final PrepareShow prepareShow,
                                         final FragmentManager fragmentManager,
                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                        final BiFunction<SearchablePreferenceScreenGraphProvider, PreferenceManager, SearchablePreferenceScreenGraphProvider> wrapSearchablePreferenceScreenGraphProvider) {
+                                        final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -61,7 +59,7 @@ public class SearchPreferenceFragments {
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
-        this.wrapSearchablePreferenceScreenGraphProvider = wrapSearchablePreferenceScreenGraphProvider;
+        this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
     }
 
     public void showSearchPreferenceFragment() {
@@ -83,7 +81,7 @@ public class SearchPreferenceFragments {
                         preferenceScreenGraphAvailableListener,
                         prepareShow,
                         preferenceConnected2PreferenceFragmentProvider,
-                        wrapSearchablePreferenceScreenGraphProvider),
+                        searchablePreferenceScreenGraphProviderWrapper),
                 onFragmentShown,
                 true,
                 searchConfiguration.fragmentContainerViewId(),

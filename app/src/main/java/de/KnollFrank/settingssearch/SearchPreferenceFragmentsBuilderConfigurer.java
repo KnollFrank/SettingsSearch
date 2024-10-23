@@ -62,7 +62,7 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                                 Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
                             }
                         })
-                .withWrapSearchablePreferenceScreenGraphProvider(
+                .withSearchablePreferenceScreenGraphProviderWrapper(
                         (searchablePreferenceScreenGraphProvider, preferenceManager) ->
                                 wrapSearchablePreferenceScreenGraphProvider(
                                         searchablePreferenceScreenGraphProvider,

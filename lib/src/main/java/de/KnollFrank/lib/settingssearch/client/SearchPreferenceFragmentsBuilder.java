@@ -1,20 +1,18 @@
 package de.KnollFrank.lib.settingssearch.client;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.PreferenceManager;
 
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.search.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragmentsBuilder {
@@ -31,7 +29,7 @@ public class SearchPreferenceFragmentsBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
-    private BiFunction<SearchablePreferenceScreenGraphProvider, PreferenceManager, SearchablePreferenceScreenGraphProvider> wrapSearchablePreferenceScreenGraphProvider =
+    private SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper =
             (searchablePreferenceScreenGraphProvider, preferenceManager) ->
                     searchablePreferenceScreenGraphProvider;
 
@@ -81,8 +79,8 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withWrapSearchablePreferenceScreenGraphProvider(final BiFunction<SearchablePreferenceScreenGraphProvider, PreferenceManager, SearchablePreferenceScreenGraphProvider> wrapSearchablePreferenceScreenGraphProvider) {
-        this.wrapSearchablePreferenceScreenGraphProvider = wrapSearchablePreferenceScreenGraphProvider;
+    public SearchPreferenceFragmentsBuilder withSearchablePreferenceScreenGraphProviderWrapper(final SearchablePreferenceScreenGraphProviderWrapper wrapSearchablePreferenceScreenGraphProvider) {
+        this.searchablePreferenceScreenGraphProviderWrapper = wrapSearchablePreferenceScreenGraphProvider;
         return this;
     }
 
@@ -98,6 +96,6 @@ public class SearchPreferenceFragmentsBuilder {
                 prepareShow,
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
-                wrapSearchablePreferenceScreenGraphProvider);
+                searchablePreferenceScreenGraphProviderWrapper);
     }
 }
