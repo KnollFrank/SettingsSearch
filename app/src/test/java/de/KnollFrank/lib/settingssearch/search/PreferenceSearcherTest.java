@@ -18,6 +18,8 @@ import androidx.preference.SwitchPreference;
 import androidx.test.core.app.ActivityScenario;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +54,7 @@ import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
+@RunWith(RobolectricTestRunner.class)
 public class PreferenceSearcherTest {
 
     @Test
