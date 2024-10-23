@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragmentsBuilder;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -63,10 +65,16 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                             }
                         })
                 .withSearchablePreferenceScreenGraphProviderWrapper(
-                        (searchablePreferenceScreenGraphProvider, preferenceManager) ->
-                                wrapSearchablePreferenceScreenGraphProvider(
+                        new de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper() {
+
+                            @Override
+                            public SearchablePreferenceScreenGraphProvider wrap(final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
+                                                                                final PreferenceManager preferenceManager) {
+                                return wrapSearchablePreferenceScreenGraphProvider(
                                         searchablePreferenceScreenGraphProvider,
                                         preferenceManager,
-                                        graphDAOMode));
+                                        graphDAOMode);
+                            }
+                        });
     }
 }
