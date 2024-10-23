@@ -504,7 +504,6 @@ public class PreferenceSearcherTest {
                         new SearchableInfoAttribute(),
                         false,
                         fragmentFactoryAndInitializer,
-                        fragmentActivity,
                         PreferenceManagerProvider.getPreferenceManager(
                                 fragments,
                                 preferenceFragment.getClass()));

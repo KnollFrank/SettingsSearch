@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.widget.SearchView;
 
@@ -150,11 +149,10 @@ public class SearchPreferenceFragment extends Fragment {
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
                         defaultFragmentInitializer);
-        final Context context = requireActivity();
         final Fragments fragments =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        context);
+                        requireActivity());
         final PreferenceManager preferenceManager =
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
@@ -164,7 +162,6 @@ public class SearchPreferenceFragment extends Fragment {
                         searchableInfoAttribute,
                         true,
                         fragmentFactoryAndInitializer,
-                        context,
                         preferenceManager);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(
                 MapFromPojoNodesRemover.removeMapFromPojoNodes(
