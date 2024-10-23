@@ -1,10 +1,7 @@
 package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
-import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
 
 import android.os.Bundle;
 
@@ -15,8 +12,12 @@ import androidx.test.core.app.ActivityScenario;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.MoreCollectors;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.jgrapht.Graph;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
-// FK-TODO: make a unit test
+@RunWith(RobolectricTestRunner.class)
 public class DefaultSearchablePreferenceScreenGraphProvider1Test {
 
     @Test
@@ -55,13 +56,13 @@ public class DefaultSearchablePreferenceScreenGraphProvider1Test {
                                 .vertexSet();
 
                 // Then
-                assertThat(
+                MatcherAssert.assertThat(
                         preferenceScreens,
-                        hasItems(
-                                getPreferenceScreenByName(preferenceScreens, "first screen"),
-                                getPreferenceScreenByName(preferenceScreens, "second screen"),
-                                getPreferenceScreenByName(preferenceScreens, "third screen"),
-                                getPreferenceScreenByName(preferenceScreens, "fourth screen")));
+                        Matchers.hasItems(
+                                PreferenceScreensProviderTestHelper.getPreferenceScreenByName(preferenceScreens, "first screen"),
+                                PreferenceScreensProviderTestHelper.getPreferenceScreenByName(preferenceScreens, "second screen"),
+                                PreferenceScreensProviderTestHelper.getPreferenceScreenByName(preferenceScreens, "third screen"),
+                                PreferenceScreensProviderTestHelper.getPreferenceScreenByName(preferenceScreens, "fourth screen")));
             });
         }
     }
@@ -151,7 +152,7 @@ public class DefaultSearchablePreferenceScreenGraphProvider1Test {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            configureConnectedPreferencesOfFragment(
+            PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment(
                     this,
                     "first screen",
                     ImmutableList.of(
@@ -164,7 +165,7 @@ public class DefaultSearchablePreferenceScreenGraphProvider1Test {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            configureConnectedPreferencesOfFragment(
+            PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment(
                     this,
                     "second screen",
                     ImmutableList.of(Fragment3.class));
@@ -175,7 +176,7 @@ public class DefaultSearchablePreferenceScreenGraphProvider1Test {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            configureConnectedPreferencesOfFragment(
+            PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment(
                     this,
                     "third screen",
                     ImmutableList.of(Fragment4.class));
@@ -186,7 +187,7 @@ public class DefaultSearchablePreferenceScreenGraphProvider1Test {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            configureConnectedPreferencesOfFragment(
+            PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment(
                     this,
                     "fourth screen",
                     ImmutableList.of());
