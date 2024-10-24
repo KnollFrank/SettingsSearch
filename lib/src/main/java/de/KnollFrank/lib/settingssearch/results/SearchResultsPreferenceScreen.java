@@ -39,11 +39,8 @@ public class SearchResultsPreferenceScreen {
                 preferenceScreen);
     }
 
-    public void resetPreferenceScreen() {
+    public void prepareSearch(final String needle) {
         preferenceScreenResetter.reset();
-    }
-
-    public void setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(final String needle) {
         MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 preferenceScreen,
                 searchableInfoAttribute,
