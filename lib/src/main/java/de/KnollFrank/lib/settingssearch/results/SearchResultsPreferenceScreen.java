@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.results;
 
+import android.content.Context;
+
 import androidx.preference.PreferenceScreen;
 
 import java.util.List;
@@ -12,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
+import de.KnollFrank.lib.settingssearch.search.SearchResultsDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class SearchResultsPreferenceScreen {
@@ -52,14 +55,18 @@ public class SearchResultsPreferenceScreen {
                 needle);
     }
 
+    public SearchResultsDisplayer createSearchResultsDisplayer(final Context context) {
+        return new SearchResultsDisplayer(
+                pojoEntityMap,
+                searchableInfoAttribute,
+                preferenceScreen,
+                context);
+    }
+
     private static List<SearchablePreferencePOJO> getPreferences(final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
                 .collect(Collectors.toList());
-    }
-
-    public Map<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap() {
-        return pojoEntityMap;
     }
 }

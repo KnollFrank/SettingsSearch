@@ -212,16 +212,13 @@ public class SearchPreferenceFragment extends Fragment {
 
     private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {
         final SearchView searchView = requireView().findViewById(R.id.searchView);
+        final Context context = requireContext();
         SearchViewConfigurer.configureSearchView(
                 searchView,
                 searchConfiguration.queryHint(),
                 new SearchAndDisplay(
                         new PreferenceSearcher(mergedPreferenceScreen),
-                        new SearchResultsDisplayer(
-                                mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPojoEntityMap(),
-                                searchableInfoAttribute,
-                                mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPreferenceScreen(),
-                                requireContext())));
+                        mergedPreferenceScreen.getSearchResultsPreferenceScreen().createSearchResultsDisplayer(context)));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
     }

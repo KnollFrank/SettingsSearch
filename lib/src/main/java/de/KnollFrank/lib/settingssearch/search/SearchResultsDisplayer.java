@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
-class SearchResultsDisplayer {
+public class SearchResultsDisplayer {
 
     private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
     private final SearchableInfoAttribute searchableInfoAttribute;
