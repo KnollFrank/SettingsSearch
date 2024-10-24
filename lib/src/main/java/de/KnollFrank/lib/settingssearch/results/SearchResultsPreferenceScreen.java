@@ -32,15 +32,15 @@ public class SearchResultsPreferenceScreen {
         this.pojoEntityMap = pojoEntityMap;
     }
 
+    public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
+        preferenceFragment.setPreferenceScreen(preferenceScreen);
+    }
+
     public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
         preferenceScreen.removeAll();
         SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
                 getPreferences(preferenceMatches),
                 preferenceScreen);
-    }
-
-    public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
-        preferenceFragment.setPreferenceScreen(preferenceScreen);
     }
 
     public void preparePreferenceScreenForSearch() {
