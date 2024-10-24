@@ -37,11 +37,8 @@ public class MergedPreferenceScreen {
         this.searchResultsPreferenceScreen =
                 new SearchResultsPreferenceScreen(
                         searchablePreferenceScreen,
-                        searchableInfoAttribute);
-    }
-
-    public Map<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap() {
-        return pojoEntityMap;
+                        searchableInfoAttribute,
+                        pojoEntityMap);
     }
 
     public List<SearchablePreferencePOJO> getAllPreferencesForSearch() {

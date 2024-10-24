@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
@@ -37,7 +38,8 @@ public class SearchResultsPreferenceScreenTest {
                 final SearchResultsPreferenceScreen searchResultsPreferenceScreen =
                         new SearchResultsPreferenceScreen(
                                 preferenceScreen,
-                                new SearchableInfoAttribute());
+                                new SearchableInfoAttribute(),
+                                Map.of());
 
                 // When
                 searchResultsPreferenceScreen.displayPreferenceMatchesOnPreferenceScreen(
@@ -72,7 +74,8 @@ public class SearchResultsPreferenceScreenTest {
                 final SearchResultsPreferenceScreen searchResultsPreferenceScreen =
                         new SearchResultsPreferenceScreen(
                                 prefilledPreferenceScreen,
-                                new SearchableInfoAttribute());
+                                new SearchableInfoAttribute(),
+                                Map.of());
 
                 // When
                 searchResultsPreferenceScreen.displayPreferenceMatchesOnPreferenceScreen(

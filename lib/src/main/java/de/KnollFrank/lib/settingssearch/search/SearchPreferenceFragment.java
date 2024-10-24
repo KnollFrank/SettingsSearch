@@ -218,7 +218,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchAndDisplay(
                         new PreferenceSearcher(mergedPreferenceScreen),
                         new SearchResultsDisplayer(
-                                mergedPreferenceScreen.getPojoEntityMap(),
+                                mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPojoEntityMap(),
                                 searchableInfoAttribute,
                                 mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPreferenceScreen(),
                                 requireContext())));
