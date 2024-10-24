@@ -39,12 +39,12 @@ public class SearchResultsPreferenceScreen {
                 preferenceScreen);
     }
 
-    public void preparePreferenceScreenForSearch() {
-        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(preferenceScreen);
-    }
-
     public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
         preferenceFragment.setPreferenceScreen(preferenceScreen);
+    }
+
+    public void preparePreferenceScreenForSearch() {
+        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(preferenceScreen);
     }
 
     public void prepareSearch(final String needle) {
