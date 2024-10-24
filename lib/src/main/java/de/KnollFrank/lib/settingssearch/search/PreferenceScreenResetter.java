@@ -24,7 +24,7 @@ public class PreferenceScreenResetter {
         this.searchableInfoAttribute = searchableInfoAttribute;
     }
 
-    public void reset() {
+    public void resetPreferenceScreen() {
         Preferences
                 .getPreferencesRecursively(preferenceScreen)
                 .forEach(this::reset);

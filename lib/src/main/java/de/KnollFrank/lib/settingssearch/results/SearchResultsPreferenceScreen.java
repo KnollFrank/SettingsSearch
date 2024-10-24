@@ -23,7 +23,6 @@ public class SearchResultsPreferenceScreen {
     private final PreferenceScreen preferenceScreen;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
-    private final PreferenceScreenResetter preferenceScreenResetter;
 
     public SearchResultsPreferenceScreen(final PreferenceScreen preferenceScreen,
                                          final SearchableInfoAttribute searchableInfoAttribute,
@@ -31,10 +30,13 @@ public class SearchResultsPreferenceScreen {
         this.preferenceScreen = preferenceScreen;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.pojoEntityMap = pojoEntityMap;
-        this.preferenceScreenResetter =
-                new PreferenceScreenResetter(
-                        preferenceScreen,
-                        searchableInfoAttribute);
+    }
+
+    public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
+        preferenceScreen.removeAll();
+        SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
+                getPreferences(preferenceMatches),
+                preferenceScreen);
     }
 
     public void preparePreferenceScreenForSearch() {
@@ -45,15 +47,8 @@ public class SearchResultsPreferenceScreen {
         preferenceFragment.setPreferenceScreen(preferenceScreen);
     }
 
-    public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
-        preferenceScreen.removeAll();
-        SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
-                getPreferences(preferenceMatches),
-                preferenceScreen);
-    }
-
     public void prepareSearch(final String needle) {
-        preferenceScreenResetter.reset();
+        new PreferenceScreenResetter(preferenceScreen, searchableInfoAttribute).resetPreferenceScreen();
         MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 preferenceScreen,
                 searchableInfoAttribute,
