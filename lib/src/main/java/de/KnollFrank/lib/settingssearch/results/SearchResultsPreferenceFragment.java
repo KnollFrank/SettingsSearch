@@ -50,7 +50,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        setPreferenceScreen(mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPreferenceScreen());
+        mergedPreferenceScreen.getSearchResultsPreferenceScreen().setPreferenceScreen(this);
     }
 
     @NonNull

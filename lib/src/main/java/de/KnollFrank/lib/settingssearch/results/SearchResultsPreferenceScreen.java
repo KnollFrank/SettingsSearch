@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import android.content.Context;
 
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import java.util.List;
@@ -38,6 +39,10 @@ public class SearchResultsPreferenceScreen {
 
     public PreferenceScreen getPreferenceScreen() {
         return preferenceScreen;
+    }
+
+    public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
+        preferenceFragment.setPreferenceScreen(preferenceScreen);
     }
 
     public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
