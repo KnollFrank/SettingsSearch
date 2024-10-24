@@ -1,7 +1,7 @@
 # SettingsSearch
 
 If you have a mess in your app's settings and don't know how to organize them in a more
-user-friendly way, then SettingsSearch could be your last resort, which is is a library for Android
+user-friendly way, then SettingsSearch could be your last resort, which is a library for Android
 apps that allows to search Preferences.
 
 https://github.com/user-attachments/assets/ef45f7a5-e267-4455-967e-9657e90063c1
