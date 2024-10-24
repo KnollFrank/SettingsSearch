@@ -2,12 +2,10 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -16,10 +14,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;
-    private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
-    private final SearchableInfoAttribute searchableInfoAttribute;
-    private final PreferenceScreen preferenceScreen;
-    private final Context context;
+    private final SearchResultsDisplayer searchResultsDisplayer;
 
     public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
                             final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
@@ -27,37 +22,16 @@ class SearchAndDisplay {
                             final PreferenceScreen preferenceScreen,
                             final Context context) {
         this.preferenceSearcher = preferenceSearcher;
-        this.pojoEntityMap = pojoEntityMap;
-        this.searchableInfoAttribute = searchableInfoAttribute;
-        this.preferenceScreen = preferenceScreen;
-        this.context = context;
+        this.searchResultsDisplayer =
+                new SearchResultsDisplayer(
+                        pojoEntityMap,
+                        searchableInfoAttribute,
+                        preferenceScreen,
+                        context);
     }
 
     public void searchForQueryAndDisplayResults(final String query) {
         final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
-        display(preferenceMatches);
-    }
-
-    private void display(final List<PreferenceMatch> preferenceMatches) {
-        highlight(preferenceMatches);
-        PreferenceVisibility.makePreferencesOfPreferenceScreenVisible(
-                getPreferences(preferenceMatches),
-                preferenceScreen);
-    }
-
-    private void highlight(final List<PreferenceMatch> preferenceMatches) {
-        final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
-                new PreferenceMatchesHighlighter(
-                        () -> MarkupFactory.createMarkups(context),
-                        pojoEntityMap,
-                        searchableInfoAttribute);
-        preferenceMatchesHighlighter.highlight(preferenceMatches);
-    }
-
-    private List<Preference> getPreferences(final List<PreferenceMatch> preferenceMatches) {
-        return preferenceMatches
-                .stream()
-                .map(preferenceMatch -> pojoEntityMap.get(preferenceMatch.preference()))
-                .collect(Collectors.toList());
+        searchResultsDisplayer.displaySearchResults(preferenceMatches);
     }
 }
