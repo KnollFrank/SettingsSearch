@@ -1,23 +1,17 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import static de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Lists;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 class PreferenceSearcher {
 
     private final MergedPreferenceScreen mergedPreferenceScreen;
-    private final SearchableInfoAttribute searchableInfoAttribute;
 
-    public PreferenceSearcher(final MergedPreferenceScreen mergedPreferenceScreen,
-                              final SearchableInfoAttribute searchableInfoAttribute) {
+    public PreferenceSearcher(final MergedPreferenceScreen mergedPreferenceScreen) {
         this.mergedPreferenceScreen = mergedPreferenceScreen;
-        this.searchableInfoAttribute = searchableInfoAttribute;
     }
 
     public List<PreferenceMatch> searchFor(final String needle) {
@@ -27,10 +21,7 @@ class PreferenceSearcher {
 
     private void prepareSearch(final String needle) {
         mergedPreferenceScreen.getSearchResultsPreferenceScreen().resetPreferenceScreen();
-        setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
-                mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPreferenceScreen(),
-                searchableInfoAttribute,
-                needle);
+        mergedPreferenceScreen.getSearchResultsPreferenceScreen().setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(needle);
     }
 
     private List<PreferenceMatch> getPreferenceMatches(final String needle) {

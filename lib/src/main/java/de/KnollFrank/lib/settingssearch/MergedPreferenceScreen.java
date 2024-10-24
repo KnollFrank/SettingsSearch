@@ -14,7 +14,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreen {
@@ -38,7 +37,7 @@ public class MergedPreferenceScreen {
         this.searchResultsPreferenceScreen =
                 new SearchResultsPreferenceScreen(
                         searchablePreferenceScreen,
-                        new PreferenceScreenResetter(searchablePreferenceScreen, searchableInfoAttribute));
+                        searchableInfoAttribute);
     }
 
     public Map<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap() {

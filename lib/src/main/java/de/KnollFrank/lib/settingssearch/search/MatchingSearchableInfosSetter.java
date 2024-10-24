@@ -10,7 +10,7 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoSetter;
 
-class MatchingSearchableInfosSetter {
+public class MatchingSearchableInfosSetter {
 
     public static void setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
             final PreferenceScreen preferenceScreen,
