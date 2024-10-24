@@ -13,17 +13,17 @@ import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreen {
 
-    private final PreferenceScreen searchablePreferenceScreen;
     private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
     public final Set<PreferenceCategory> nonClickablePreferences;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
-    private final PreferenceScreenResetter preferenceScreenResetter;
     private final PreferencePathNavigator preferencePathNavigator;
+    private final SearchResultsPreferenceScreen searchResultsPreferenceScreen;
 
     public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
                                   final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
@@ -31,12 +31,14 @@ public class MergedPreferenceScreen {
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute,
                                   final PreferencePathNavigator preferencePathNavigator) {
-        this.searchablePreferenceScreen = searchablePreferenceScreen;
         this.pojoEntityMap = pojoEntityMap;
         this.nonClickablePreferences = nonClickablePreferences;
         this.preferencePathByPreference = preferencePathByPreference;
         this.preferencePathNavigator = preferencePathNavigator;
-        this.preferenceScreenResetter = new PreferenceScreenResetter(searchablePreferenceScreen, searchableInfoAttribute);
+        this.searchResultsPreferenceScreen =
+                new SearchResultsPreferenceScreen(
+                        searchablePreferenceScreen,
+                        new PreferenceScreenResetter(searchablePreferenceScreen, searchableInfoAttribute));
     }
 
     public Map<SearchablePreferencePOJO, SearchablePreference> getPojoEntityMap() {
@@ -47,15 +49,11 @@ public class MergedPreferenceScreen {
         return PreferencePOJOs.getPreferencesRecursively(pojoEntityMap.keySet());
     }
 
-    public PreferenceScreen getSearchablePreferenceScreenForDisplay() {
-        return searchablePreferenceScreen;
+    public SearchResultsPreferenceScreen getSearchResultsPreferenceScreen() {
+        return searchResultsPreferenceScreen;
     }
 
     public PreferenceFragmentCompat getHost(final Preference preference) {
         return preferencePathNavigator.navigatePreferencePath(preferencePathByPreference.get(preference));
-    }
-
-    public void resetPreferenceScreen() {
-        preferenceScreenResetter.reset();
     }
 }

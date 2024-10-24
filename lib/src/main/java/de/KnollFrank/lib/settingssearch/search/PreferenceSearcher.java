@@ -26,9 +26,9 @@ class PreferenceSearcher {
     }
 
     private void prepareSearch(final String needle) {
-        mergedPreferenceScreen.resetPreferenceScreen();
+        mergedPreferenceScreen.getSearchResultsPreferenceScreen().resetPreferenceScreen();
         setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
-                mergedPreferenceScreen.getSearchablePreferenceScreenForDisplay(),
+                mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPreferenceScreen(),
                 searchableInfoAttribute,
                 needle);
     }

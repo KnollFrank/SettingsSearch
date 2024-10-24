@@ -221,7 +221,7 @@ public class SearchPreferenceFragment extends Fragment {
                                 searchableInfoAttribute),
                         mergedPreferenceScreen.getPojoEntityMap(),
                         searchableInfoAttribute,
-                        mergedPreferenceScreen.getSearchablePreferenceScreenForDisplay(),
+                        mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPreferenceScreen(),
                         requireContext()));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);

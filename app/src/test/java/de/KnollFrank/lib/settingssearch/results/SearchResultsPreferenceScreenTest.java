@@ -21,6 +21,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
+import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
+import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -34,7 +36,11 @@ public class SearchResultsPreferenceScreenTest {
                 final String title = "Title, title part";
                 final PreferenceScreen preferenceScreen = createSomePreferenceFragment(activity).getPreferenceScreen();
                 final SearchResultsPreferenceScreen searchResultsPreferenceScreen =
-                        new SearchResultsPreferenceScreen(preferenceScreen);
+                        new SearchResultsPreferenceScreen(
+                                preferenceScreen,
+                                new PreferenceScreenResetter(
+                                        preferenceScreen,
+                                        new SearchableInfoAttribute()));
 
                 // When
                 searchResultsPreferenceScreen.displayPreferenceMatchesOnPreferenceScreen(
@@ -67,7 +73,11 @@ public class SearchResultsPreferenceScreenTest {
                 prefilledPreferenceScreen.addPreference(new Preference(activity));
 
                 final SearchResultsPreferenceScreen searchResultsPreferenceScreen =
-                        new SearchResultsPreferenceScreen(prefilledPreferenceScreen);
+                        new SearchResultsPreferenceScreen(
+                                prefilledPreferenceScreen,
+                                new PreferenceScreenResetter(
+                                        prefilledPreferenceScreen,
+                                        new SearchableInfoAttribute()));
 
                 // When
                 searchResultsPreferenceScreen.displayPreferenceMatchesOnPreferenceScreen(
