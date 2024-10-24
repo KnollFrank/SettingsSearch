@@ -37,8 +37,8 @@ public class SearchResultsPreferenceScreen {
                         searchableInfoAttribute);
     }
 
-    public PreferenceScreen getPreferenceScreen() {
-        return preferenceScreen;
+    public void preparePreferenceScreenForSearch() {
+        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(preferenceScreen);
     }
 
     public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {

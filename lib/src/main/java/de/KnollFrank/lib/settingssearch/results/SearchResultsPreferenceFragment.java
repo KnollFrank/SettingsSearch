@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.results;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
-import static de.KnollFrank.lib.settingssearch.results.PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch;
 
 import android.os.Bundle;
 
@@ -67,7 +66,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setMergedPreferenceScreen(final MergedPreferenceScreen mergedPreferenceScreen) {
-        preparePreferenceScreenForSearch(mergedPreferenceScreen.getSearchResultsPreferenceScreen().getPreferenceScreen());
+        mergedPreferenceScreen.getSearchResultsPreferenceScreen().preparePreferenceScreenForSearch();
         this.mergedPreferenceScreen = mergedPreferenceScreen;
     }
 
