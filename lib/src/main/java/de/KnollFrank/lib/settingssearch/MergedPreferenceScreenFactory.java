@@ -3,11 +3,11 @@ package de.KnollFrank.lib.settingssearch;
 import android.content.Context;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
 
-import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -39,7 +39,7 @@ public class MergedPreferenceScreenFactory {
     private final SearchableInfoProvider searchableInfoProvider;
     private final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
     private final FragmentFactory fragmentFactory;
-    private final SearchConfiguration searchConfiguration;
+    private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
@@ -51,7 +51,7 @@ public class MergedPreferenceScreenFactory {
             final IsPreferenceSearchable isPreferenceSearchable,
             final SearchableInfoProvider searchableInfoProvider,
             final FragmentFactory fragmentFactory,
-            final SearchConfiguration searchConfiguration,
+            final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
@@ -61,7 +61,7 @@ public class MergedPreferenceScreenFactory {
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
         this.fragmentFactory = fragmentFactory;
-        this.searchConfiguration = searchConfiguration;
+        this.rootPreferenceFragment = rootPreferenceFragment;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
@@ -84,7 +84,7 @@ public class MergedPreferenceScreenFactory {
         final PreferenceManager preferenceManager =
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
-                        searchConfiguration.rootPreferenceFragment());
+                        rootPreferenceFragment);
         final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
                 new MergedPreferenceScreenProvider(
                         searchableInfoAttribute,
@@ -115,7 +115,7 @@ public class MergedPreferenceScreenFactory {
             final PreferenceDialogs preferenceDialogs,
             final Fragments fragments) {
         return new DefaultSearchablePreferenceScreenGraphProvider(
-                searchConfiguration.rootPreferenceFragment().getName(),
+                rootPreferenceFragment.getName(),
                 new PreferenceScreenWithHostProvider(
                         fragments,
                         new SearchablePreferenceScreenProvider(

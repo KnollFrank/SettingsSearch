@@ -79,7 +79,7 @@ public class SearchPreferenceFragment extends Fragment {
                         isPreferenceSearchable,
                         searchableInfoProvider,
                         fragmentFactory,
-                        searchConfiguration,
+                        searchConfiguration.rootPreferenceFragment(),
                         preferenceDialogAndSearchableInfoProvider,
                         preferenceScreenGraphAvailableListener,
                         preferenceConnected2PreferenceFragmentProvider,
