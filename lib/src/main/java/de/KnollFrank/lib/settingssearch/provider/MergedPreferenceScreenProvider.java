@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
@@ -65,7 +66,8 @@ public class MergedPreferenceScreenProvider {
                 searchableInfoAttribute,
                 getPreferencePathNavigator(
                         new ArrayList<>(pojoGraph.vertexSet()),
-                        preferenceScreenWithMap.pojoEntityMap()));
+                        preferenceScreenWithMap.pojoEntityMap()),
+                PreferencePOJOs.getPreferencesRecursively(preferenceScreenWithMap.pojoEntityMap().keySet()));
     }
 
     private PreferencePathNavigator getPreferencePathNavigator(

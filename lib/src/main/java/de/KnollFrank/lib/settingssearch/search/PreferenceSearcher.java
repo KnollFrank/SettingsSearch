@@ -22,7 +22,7 @@ class PreferenceSearcher {
     private List<PreferenceMatch> getPreferenceMatches(final String needle) {
         return Lists.concat(
                 mergedPreferenceScreen
-                        .getAllPreferencesForSearch()
+                        .allPreferencesForSearch
                         .stream()
                         .map(searchablePreference -> PreferenceMatcher.getPreferenceMatches(searchablePreference, needle))
                         .collect(Collectors.toList()));
