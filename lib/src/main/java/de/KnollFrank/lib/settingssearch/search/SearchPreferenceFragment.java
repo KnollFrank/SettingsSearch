@@ -48,7 +48,7 @@ public class SearchPreferenceFragment extends Fragment {
 
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoProvider searchableInfoProvider;
-    private final SearchableInfoAttribute searchableInfoAttribute;
+    private final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final FragmentFactory fragmentFactory;
     private final SearchConfiguration searchConfiguration;
@@ -61,7 +61,6 @@ public class SearchPreferenceFragment extends Fragment {
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final IsPreferenceSearchable isPreferenceSearchable,
                                     final SearchableInfoProvider searchableInfoProvider,
-                                    final SearchableInfoAttribute searchableInfoAttribute,
                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
                                     final FragmentFactory fragmentFactory,
                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
@@ -73,7 +72,6 @@ public class SearchPreferenceFragment extends Fragment {
         this.searchConfiguration = searchConfiguration;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
-        this.searchableInfoAttribute = searchableInfoAttribute;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.fragmentFactory = fragmentFactory;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;

@@ -14,7 +14,6 @@ import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragments {
@@ -66,7 +65,6 @@ public class SearchPreferenceFragments {
                         searchConfiguration,
                         isPreferenceSearchable,
                         searchableInfoProvider,
-                        new SearchableInfoAttribute(),
                         showPreferencePathPredicate,
                         fragmentFactory,
                         preferenceDialogAndSearchableInfoProvider,
