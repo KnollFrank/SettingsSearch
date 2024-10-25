@@ -8,8 +8,9 @@ import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+
+import org.jgrapht.Graph;
 
 import java.util.function.Consumer;
 
@@ -20,10 +21,13 @@ import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -79,10 +83,6 @@ public class SearchPreferenceFragment extends Fragment {
         this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
     }
 
-    public SearchPreferenceFragment() {
-        throw new IllegalStateException("This invocation is legal but not fair.");
-    }
-
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,36 +121,42 @@ public class SearchPreferenceFragment extends Fragment {
                         fragmentFactoryAndInitializer,
                         preferenceManager);
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(
-                createWrappedSearchablePreferenceScreenGraphProvider(
+                getSearchablePreferenceScreenGraph(
                         defaultFragmentInitializer,
                         fragments,
-                        preferenceManager.getContext())
-                        .getSearchablePreferenceScreenGraph());
+                        preferenceManager.getContext()));
     }
 
-    private SearchablePreferenceScreenGraphProvider createWrappedSearchablePreferenceScreenGraphProvider(
-            final DefaultFragmentInitializer defaultFragmentInitializer,
+    private Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph(
+            final PreferenceDialogs preferenceDialogs,
             final Fragments fragments,
             final Context context) {
-        final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment = searchConfiguration.rootPreferenceFragment();
-        final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
-                new DefaultSearchablePreferenceScreenGraphProvider(
-                        rootPreferenceFragment.getName(),
-                        new PreferenceScreenWithHostProvider(
-                                fragments,
-                                new SearchablePreferenceScreenProvider(
-                                        new IsPreferenceVisibleAndSearchable(
-                                                isPreferenceSearchable))),
-                        preferenceConnected2PreferenceFragmentProvider,
-                        preferenceScreenGraphAvailableListener,
-                        new SearchableInfoAndDialogInfoProvider(
-                                searchableInfoProvider,
-                                new SearchableDialogInfoOfProvider(
-                                        defaultFragmentInitializer,
-                                        preferenceDialogAndSearchableInfoProvider)));
-        return searchablePreferenceScreenGraphProviderWrapper.wrap(
-                searchablePreferenceScreenGraphProvider,
-                context);
+        return searchablePreferenceScreenGraphProviderWrapper
+                .wrap(
+                        getSearchablePreferenceScreenGraphProvider(
+                                preferenceDialogs,
+                                fragments),
+                        context)
+                .getSearchablePreferenceScreenGraph();
+    }
+
+    private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider(
+            final PreferenceDialogs preferenceDialogs,
+            final Fragments fragments) {
+        return new DefaultSearchablePreferenceScreenGraphProvider(
+                searchConfiguration.rootPreferenceFragment().getName(),
+                new PreferenceScreenWithHostProvider(
+                        fragments,
+                        new SearchablePreferenceScreenProvider(
+                                new IsPreferenceVisibleAndSearchable(
+                                        isPreferenceSearchable))),
+                preferenceConnected2PreferenceFragmentProvider,
+                preferenceScreenGraphAvailableListener,
+                new SearchableInfoAndDialogInfoProvider(
+                        searchableInfoProvider,
+                        new SearchableDialogInfoOfProvider(
+                                preferenceDialogs,
+                                preferenceDialogAndSearchableInfoProvider)));
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
