@@ -9,6 +9,7 @@ import org.jgrapht.Graph;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
@@ -67,7 +68,14 @@ public class MergedPreferenceScreenProvider {
                 getPreferencePathNavigator(
                         new ArrayList<>(pojoGraph.vertexSet()),
                         preferenceScreenWithMap.pojoEntityMap()),
-                PreferencePOJOs.getPreferencesRecursively(preferenceScreenWithMap.pojoEntityMap().keySet()));
+                PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())));
+    }
+
+    private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {
+        return preferenceScreens
+                .stream()
+                .flatMap(preferenceScreenWithHostClassPOJO -> preferenceScreenWithHostClassPOJO.preferenceScreen().children().stream())
+                .collect(Collectors.toSet());
     }
 
     private PreferencePathNavigator getPreferencePathNavigator(
