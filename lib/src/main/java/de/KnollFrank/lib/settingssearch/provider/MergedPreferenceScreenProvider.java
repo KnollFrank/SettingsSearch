@@ -60,7 +60,6 @@ public class MergedPreferenceScreenProvider {
         return new MergedPreferenceScreen(
                 preferenceScreenWithMap.preferenceScreen(),
                 preferenceScreenWithMap.pojoEntityMap(),
-                Set.of(),
                 PreferencePathByPreference.getPreferencePathByPreference(
                         pojoGraph,
                         preferenceScreenWithMap.pojoEntityMap()),

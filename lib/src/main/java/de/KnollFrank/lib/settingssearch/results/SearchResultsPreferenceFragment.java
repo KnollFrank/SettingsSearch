@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
 
+import java.util.Set;
+
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -62,7 +64,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 searchableInfoGetter,
                 mergedPreferenceScreen.preferencePathByPreference,
                 showPreferencePathPredicate,
-                mergedPreferenceScreen.nonClickablePreferences,
+                Set.of(),
                 this::showPreferenceScreenAndHighlightPreference);
     }
 
