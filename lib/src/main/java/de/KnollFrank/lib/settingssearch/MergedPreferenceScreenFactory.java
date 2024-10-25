@@ -69,18 +69,9 @@ public class MergedPreferenceScreenFactory {
     }
 
     public MergedPreferenceScreen createMergedPreferenceScreen() {
-        final DefaultFragmentInitializer defaultFragmentInitializer =
-                new DefaultFragmentInitializer(
-                        fragmentManager,
-                        R.id.dummyFragmentContainerView);
-        final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
-                new FragmentFactoryAndInitializer(
-                        fragmentFactory,
-                        defaultFragmentInitializer);
-        final Fragments fragments =
-                new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        context);
+        final var defaultFragmentInitializer = getDefaultFragmentInitializer();
+        final var fragmentFactoryAndInitializer = getFragmentFactoryAndInitializer(defaultFragmentInitializer);
+        final var fragments = getFragments(fragmentFactoryAndInitializer);
         return this
                 .getMergedPreferenceScreenProvider(
                         fragmentFactoryAndInitializer,
@@ -94,14 +85,30 @@ public class MergedPreferenceScreenFactory {
                                 context));
     }
 
+    private DefaultFragmentInitializer getDefaultFragmentInitializer() {
+        return new DefaultFragmentInitializer(
+                fragmentManager,
+                R.id.dummyFragmentContainerView);
+    }
+
+    private FragmentFactoryAndInitializer getFragmentFactoryAndInitializer(final DefaultFragmentInitializer defaultFragmentInitializer) {
+        return new FragmentFactoryAndInitializer(
+                fragmentFactory,
+                defaultFragmentInitializer);
+    }
+
+    private Fragments getFragments(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
+        return new Fragments(
+                new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
+                context);
+    }
+
     private MergedPreferenceScreenProvider getMergedPreferenceScreenProvider(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer, final PreferenceManager preferenceManager) {
-        final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
-                new MergedPreferenceScreenProvider(
-                        searchableInfoAttribute,
-                        true,
-                        fragmentFactoryAndInitializer,
-                        preferenceManager);
-        return mergedPreferenceScreenProvider;
+        return new MergedPreferenceScreenProvider(
+                searchableInfoAttribute,
+                true,
+                fragmentFactoryAndInitializer,
+                preferenceManager);
     }
 
     private Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph(
