@@ -88,10 +88,11 @@ public class SearchResultsPreferenceScreenTest {
     }
 
     private static PreferenceMatch createSomePreferenceMatch() {
-        return createSomePreferenceMatch(POJOTestFactory.createSearchablePreferencePOJO(
-                Optional.of("Title, title part"),
-                Optional.of("some summary"),
-                Optional.of("searchable info also has a title")));
+        return createSomePreferenceMatch(
+                POJOTestFactory.createSearchablePreferencePOJO(
+                        Optional.of("Title, title part"),
+                        Optional.of("some summary"),
+                        Optional.of("searchable info also has a title")));
     }
 
     private static PreferenceMatch createSomePreferenceMatch(final SearchablePreferencePOJO searchablePreferencePOJO) {
