@@ -5,7 +5,6 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ public class MergedPreferenceScreen {
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferencePathNavigator preferencePathNavigator;
     public final SearchResultsPreferenceScreen searchResultsPreferenceScreen;
-    public final List<SearchablePreferencePOJO> allPreferencesForSearch;
+    public final Set<SearchablePreferencePOJO> allPreferencesForSearch;
 
     public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
                                   final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
@@ -29,7 +28,7 @@ public class MergedPreferenceScreen {
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final SearchableInfoAttribute searchableInfoAttribute,
                                   final PreferencePathNavigator preferencePathNavigator,
-                                  final List<SearchablePreferencePOJO> allPreferencesForSearch) {
+                                  final Set<SearchablePreferencePOJO> allPreferencesForSearch) {
         this.nonClickablePreferences = nonClickablePreferences;
         this.preferencePathByPreference = preferencePathByPreference;
         this.preferencePathNavigator = preferencePathNavigator;
