@@ -80,21 +80,18 @@ public class MergedPreferenceScreenFactory {
         final Fragments fragments =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        // FK-TODO: context == preferenceManager.getContext()?
                         context);
-        final PreferenceManager preferenceManager =
-                PreferenceManagerProvider.getPreferenceManager(
-                        fragments,
-                        rootPreferenceFragment);
         return this
                 .getMergedPreferenceScreenProvider(
                         fragmentFactoryAndInitializer,
-                        preferenceManager)
+                        PreferenceManagerProvider.getPreferenceManager(
+                                fragments,
+                                rootPreferenceFragment))
                 .getMergedPreferenceScreen(
                         getSearchablePreferenceScreenGraph(
                                 defaultFragmentInitializer,
                                 fragments,
-                                preferenceManager.getContext()));
+                                context));
     }
 
     private MergedPreferenceScreenProvider getMergedPreferenceScreenProvider(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer, final PreferenceManager preferenceManager) {
