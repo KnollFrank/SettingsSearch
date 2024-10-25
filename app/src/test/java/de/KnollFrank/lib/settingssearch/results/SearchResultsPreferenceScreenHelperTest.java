@@ -26,7 +26,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchResultsPreferenceScreenTest {
+public class SearchResultsPreferenceScreenHelperTest {
 
     @Test
     public void shouldDisplaySearchResultsOnPreferenceScreen() {
@@ -35,14 +35,14 @@ public class SearchResultsPreferenceScreenTest {
                 // Given
                 final String title = "Title, title part";
                 final PreferenceScreen preferenceScreen = createSomePreferenceFragment(activity).getPreferenceScreen();
-                final SearchResultsPreferenceScreen searchResultsPreferenceScreen =
-                        new SearchResultsPreferenceScreen(
+                final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
+                        new SearchResultsPreferenceScreenHelper(
                                 preferenceScreen,
                                 new SearchableInfoAttribute(),
                                 Map.of());
 
                 // When
-                searchResultsPreferenceScreen.displayPreferenceMatchesOnPreferenceScreen(
+                searchResultsPreferenceScreenHelper.displayPreferenceMatchesOnPreferenceScreen(
                         List.of(
                                 new PreferenceMatch(
                                         POJOTestFactory.createSearchablePreferencePOJO(
@@ -71,14 +71,14 @@ public class SearchResultsPreferenceScreenTest {
                 final PreferenceScreen prefilledPreferenceScreen = createSomePreferenceFragment(activity).getPreferenceScreen();
                 prefilledPreferenceScreen.addPreference(new Preference(activity));
 
-                final SearchResultsPreferenceScreen searchResultsPreferenceScreen =
-                        new SearchResultsPreferenceScreen(
+                final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
+                        new SearchResultsPreferenceScreenHelper(
                                 prefilledPreferenceScreen,
                                 new SearchableInfoAttribute(),
                                 Map.of());
 
                 // When
-                searchResultsPreferenceScreen.displayPreferenceMatchesOnPreferenceScreen(
+                searchResultsPreferenceScreenHelper.displayPreferenceMatchesOnPreferenceScreen(
                         List.of(createSomePreferenceMatch()));
 
                 // Then

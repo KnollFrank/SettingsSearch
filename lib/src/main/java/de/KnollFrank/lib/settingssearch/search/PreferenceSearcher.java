@@ -15,7 +15,7 @@ class PreferenceSearcher {
     }
 
     public List<PreferenceMatch> searchFor(final String needle) {
-        mergedPreferenceScreen.searchResultsPreferenceScreen.prepareSearch(needle);
+        mergedPreferenceScreen.searchResultsPreferenceScreenHelper.prepareSearch(needle);
         return getPreferenceMatches(needle);
     }
 

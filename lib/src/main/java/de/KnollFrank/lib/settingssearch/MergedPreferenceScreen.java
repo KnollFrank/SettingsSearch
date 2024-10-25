@@ -10,14 +10,14 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
-import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelper;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreen {
 
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferencePathNavigator preferencePathNavigator;
-    public final SearchResultsPreferenceScreen searchResultsPreferenceScreen;
+    public final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper;
     public final Set<SearchablePreferencePOJO> allPreferencesForSearch;
 
     public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
@@ -29,8 +29,8 @@ public class MergedPreferenceScreen {
         this.preferencePathByPreference = preferencePathByPreference;
         this.preferencePathNavigator = preferencePathNavigator;
         this.allPreferencesForSearch = allPreferencesForSearch;
-        this.searchResultsPreferenceScreen =
-                new SearchResultsPreferenceScreen(
+        this.searchResultsPreferenceScreenHelper =
+                new SearchResultsPreferenceScreenHelper(
                         searchablePreferenceScreen,
                         searchableInfoAttribute,
                         pojoEntityMap);

@@ -18,15 +18,15 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
 import de.KnollFrank.lib.settingssearch.search.SearchResultsDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
-public class SearchResultsPreferenceScreen {
+public class SearchResultsPreferenceScreenHelper {
 
     private final PreferenceScreen preferenceScreen;
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
 
-    public SearchResultsPreferenceScreen(final PreferenceScreen preferenceScreen,
-                                         final SearchableInfoAttribute searchableInfoAttribute,
-                                         final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
+    public SearchResultsPreferenceScreenHelper(final PreferenceScreen preferenceScreen,
+                                               final SearchableInfoAttribute searchableInfoAttribute,
+                                               final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
         this.preferenceScreen = preferenceScreen;
         this.searchableInfoAttribute = searchableInfoAttribute;
         this.pojoEntityMap = pojoEntityMap;
