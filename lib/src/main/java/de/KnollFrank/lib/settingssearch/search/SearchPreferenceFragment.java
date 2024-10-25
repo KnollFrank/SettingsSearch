@@ -57,6 +57,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper;
 
+    // FK-TODO: extract class SearchPreferenceFragmentFactory and factory method.
     public static SearchPreferenceFragment newInstance(
             final SearchConfiguration searchConfiguration,
             final IsPreferenceSearchable isPreferenceSearchable,
