@@ -3,10 +3,8 @@ package de.KnollFrank.lib.settingssearch.search;
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.widget.SearchView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
@@ -79,11 +77,6 @@ public class SearchPreferenceFragment extends Fragment {
         this.prepareShow = prepareShow;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
-    }
-
-    @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
