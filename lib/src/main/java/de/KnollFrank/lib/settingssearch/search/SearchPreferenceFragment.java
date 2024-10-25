@@ -11,18 +11,15 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.R;
-import de.KnollFrank.lib.settingssearch.SearchConfigurations;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -50,53 +47,26 @@ public class SearchPreferenceFragment extends Fragment {
     private final SearchableInfoAttribute searchableInfoAttribute;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final FragmentFactory fragmentFactory;
-    private SearchConfiguration searchConfiguration;
+    private final SearchConfiguration searchConfiguration;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final PrepareShow prepareShow;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper;
 
-    // FK-TODO: extract class SearchPreferenceFragmentFactory and factory method.
-    public static SearchPreferenceFragment newInstance(
-            final SearchConfiguration searchConfiguration,
-            final IsPreferenceSearchable isPreferenceSearchable,
-            final SearchableInfoProvider searchableInfoProvider,
-            final SearchableInfoAttribute searchableInfoAttribute,
-            final ShowPreferencePathPredicate showPreferencePathPredicate,
-            final FragmentFactory fragmentFactory,
-            final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-            final PrepareShow prepareShow,
-            final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-            final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper) {
-        final SearchPreferenceFragment searchPreferenceFragment =
-                new SearchPreferenceFragment(
-                        isPreferenceSearchable,
-                        searchableInfoProvider,
-                        searchableInfoAttribute,
-                        showPreferencePathPredicate,
-                        fragmentFactory,
-                        preferenceDialogAndSearchableInfoProvider,
-                        preferenceScreenGraphAvailableListener,
-                        prepareShow,
-                        preferenceConnected2PreferenceFragmentProvider,
-                        searchablePreferenceScreenGraphProviderWrapper);
-        searchPreferenceFragment.setArguments(SearchConfigurations.toBundle(searchConfiguration));
-        return searchPreferenceFragment;
-    }
-
-    private SearchPreferenceFragment(final IsPreferenceSearchable isPreferenceSearchable,
-                                     final SearchableInfoProvider searchableInfoProvider,
-                                     final SearchableInfoAttribute searchableInfoAttribute,
-                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                     final FragmentFactory fragmentFactory,
-                                     final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                                     final PrepareShow prepareShow,
-                                     final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                     final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper) {
+    public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
+                                    final IsPreferenceSearchable isPreferenceSearchable,
+                                    final SearchableInfoProvider searchableInfoProvider,
+                                    final SearchableInfoAttribute searchableInfoAttribute,
+                                    final ShowPreferencePathPredicate showPreferencePathPredicate,
+                                    final FragmentFactory fragmentFactory,
+                                    final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+                                    final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
+                                    final PrepareShow prepareShow,
+                                    final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                                    final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper) {
         super(R.layout.searchpreference_fragment);
+        this.searchConfiguration = searchConfiguration;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
         this.searchableInfoAttribute = searchableInfoAttribute;
@@ -110,25 +80,12 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     public SearchPreferenceFragment() {
-        this(
-                (preference, host) -> true,
-                preference -> Optional.empty(),
-                new SearchableInfoAttribute(),
-                preferencePath -> true,
-                new DefaultFragmentFactory(),
-                (preference, hostOfPreference) -> Optional.empty(),
-                preferenceScreenGraph -> {
-                },
-                preferenceFragmentCompat -> {
-                },
-                (preference, hostOfPreference) -> Optional.empty(),
-                (searchablePreferenceScreenGraphProvider, context) -> searchablePreferenceScreenGraphProvider);
+        throw new IllegalStateException("This invocation is legal but not fair.");
     }
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        searchConfiguration = SearchConfigurations.fromBundle(requireArguments());
     }
 
     @Override

@@ -62,7 +62,7 @@ public class SearchPreferenceFragments {
 
     public void showSearchPreferenceFragment() {
         showFragment(
-                SearchPreferenceFragment.newInstance(
+                new SearchPreferenceFragment(
                         searchConfiguration,
                         isPreferenceSearchable,
                         searchableInfoProvider,
