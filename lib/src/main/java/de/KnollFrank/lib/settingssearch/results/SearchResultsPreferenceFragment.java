@@ -25,29 +25,23 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoGetter;
 
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
-    private MergedPreferenceScreen mergedPreferenceScreen;
-    private @IdRes int fragmentContainerViewId;
-    private ShowPreferencePathPredicate showPreferencePathPredicate;
-    private SearchableInfoGetter searchableInfoGetter;
-    private PrepareShow prepareShow;
+    private final MergedPreferenceScreen mergedPreferenceScreen;
+    private final @IdRes int fragmentContainerViewId;
+    private final ShowPreferencePathPredicate showPreferencePathPredicate;
+    private final SearchableInfoGetter searchableInfoGetter;
+    private final PrepareShow prepareShow;
 
-    public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId,
-                                                              final SearchableInfoGetter searchableInfoGetter,
-                                                              final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                                              final MergedPreferenceScreen mergedPreferenceScreen,
-                                                              final PrepareShow prepareShow) {
-        final SearchResultsPreferenceFragment fragment = Factory.newInstance(fragmentContainerViewId);
-        fragment.setMergedPreferenceScreen(mergedPreferenceScreen);
-        fragment.setSearchableInfoGetter(searchableInfoGetter);
-        fragment.setShowPreferencePathPredicate(showPreferencePathPredicate);
-        fragment.setPrepareShow(prepareShow);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable final Bundle savedInstanceState) {
-        new Factory().setInstanceVariables();
-        super.onCreate(savedInstanceState);
+    public SearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
+                                           final @IdRes int fragmentContainerViewId,
+                                           final ShowPreferencePathPredicate showPreferencePathPredicate,
+                                           final SearchableInfoGetter searchableInfoGetter,
+                                           final PrepareShow prepareShow) {
+        this.mergedPreferenceScreen = mergedPreferenceScreen;
+        mergedPreferenceScreen.searchResultsPreferenceScreen.preparePreferenceScreenForSearch();
+        this.fragmentContainerViewId = fragmentContainerViewId;
+        this.showPreferencePathPredicate = showPreferencePathPredicate;
+        this.searchableInfoGetter = searchableInfoGetter;
+        this.prepareShow = prepareShow;
     }
 
     @Override
@@ -66,23 +60,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 showPreferencePathPredicate,
                 Set.of(),
                 this::showPreferenceScreenAndHighlightPreference);
-    }
-
-    private void setMergedPreferenceScreen(final MergedPreferenceScreen mergedPreferenceScreen) {
-        mergedPreferenceScreen.searchResultsPreferenceScreen.preparePreferenceScreenForSearch();
-        this.mergedPreferenceScreen = mergedPreferenceScreen;
-    }
-
-    private void setSearchableInfoGetter(final SearchableInfoGetter searchableInfoGetter) {
-        this.searchableInfoGetter = searchableInfoGetter;
-    }
-
-    private void setShowPreferencePathPredicate(final ShowPreferencePathPredicate showPreferencePathPredicate) {
-        this.showPreferencePathPredicate = showPreferencePathPredicate;
-    }
-
-    private void setPrepareShow(final PrepareShow prepareShow) {
-        this.prepareShow = prepareShow;
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
@@ -114,26 +91,5 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                 keyOfPreference2Highlight,
                 preferenceFragment,
                 Duration.ofSeconds(1));
-    }
-
-    private class Factory {
-
-        private static final String FRAGMENT_CONTAINER_VIEW_ID = "fragmentContainerViewId";
-
-        public static SearchResultsPreferenceFragment newInstance(final @IdRes int fragmentContainerViewId) {
-            final SearchResultsPreferenceFragment fragment = new SearchResultsPreferenceFragment();
-            fragment.setArguments(createArguments(fragmentContainerViewId));
-            return fragment;
-        }
-
-        public void setInstanceVariables() {
-            fragmentContainerViewId = requireArguments().getInt(FRAGMENT_CONTAINER_VIEW_ID);
-        }
-
-        private static Bundle createArguments(final @IdRes int fragmentContainerViewId) {
-            final Bundle bundle = new Bundle();
-            bundle.putInt(FRAGMENT_CONTAINER_VIEW_ID, fragmentContainerViewId);
-            return bundle;
-        }
     }
 }
