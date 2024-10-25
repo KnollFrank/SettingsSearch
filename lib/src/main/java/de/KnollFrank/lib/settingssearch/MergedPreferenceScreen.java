@@ -20,7 +20,7 @@ public class MergedPreferenceScreen {
     public final Set<PreferenceCategory> nonClickablePreferences;
     public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferencePathNavigator preferencePathNavigator;
-    private final SearchResultsPreferenceScreen searchResultsPreferenceScreen;
+    public final SearchResultsPreferenceScreen searchResultsPreferenceScreen;
     public final List<SearchablePreferencePOJO> allPreferencesForSearch;
 
     public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
@@ -39,10 +39,6 @@ public class MergedPreferenceScreen {
                         searchablePreferenceScreen,
                         searchableInfoAttribute,
                         pojoEntityMap);
-    }
-
-    public SearchResultsPreferenceScreen getSearchResultsPreferenceScreen() {
-        return searchResultsPreferenceScreen;
     }
 
     public PreferenceFragmentCompat getHost(final Preference preference) {

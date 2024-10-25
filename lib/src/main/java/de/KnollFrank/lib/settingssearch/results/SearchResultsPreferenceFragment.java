@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
@@ -49,12 +50,12 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        mergedPreferenceScreen.getSearchResultsPreferenceScreen().setPreferenceScreen(this);
+        mergedPreferenceScreen.searchResultsPreferenceScreen.setPreferenceScreen(this);
     }
 
     @NonNull
     @Override
-    protected Adapter onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
+    protected Adapter<PreferenceViewHolder> onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
         // FK-TODO: die Preferences des preferenceScreen sollen ihren aktuellen Zustand widerspiegeln (z.B. soll der Haken einer CheckBoxPreference gemäß den darunterliegenden Daten gesetzt oder nicht gesetzt sein.)
         return new SearchablePreferenceGroupAdapter(
                 preferenceScreen,
@@ -66,7 +67,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void setMergedPreferenceScreen(final MergedPreferenceScreen mergedPreferenceScreen) {
-        mergedPreferenceScreen.getSearchResultsPreferenceScreen().preparePreferenceScreenForSearch();
+        mergedPreferenceScreen.searchResultsPreferenceScreen.preparePreferenceScreenForSearch();
         this.mergedPreferenceScreen = mergedPreferenceScreen;
     }
 
