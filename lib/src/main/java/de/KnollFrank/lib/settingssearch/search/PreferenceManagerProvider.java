@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
-class PreferenceManagerProvider {
+public class PreferenceManagerProvider {
 
     public static PreferenceManager getPreferenceManager(final Fragments fragments,
                                                          Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {

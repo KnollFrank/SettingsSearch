@@ -5,7 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 
-class IsPreferenceVisibleAndSearchable implements IsPreferenceSearchable {
+public class IsPreferenceVisibleAndSearchable implements IsPreferenceSearchable {
 
     private final IsPreferenceSearchable delegate;
 
