@@ -2,12 +2,11 @@ package de.KnollFrank.lib.settingssearch;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
 
 import java.util.Map;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelper;
@@ -18,8 +17,7 @@ public class MergedPreferenceScreen {
     public final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper;
     public final Set<SearchablePreferencePOJO> allPreferencesForSearch;
 
-    public MergedPreferenceScreen(final PreferenceScreen searchablePreferenceScreen,
-                                  final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
+    public MergedPreferenceScreen(final PreferenceScreenWithMap preferenceScreenWithMap,
                                   final Map<Preference, PreferencePath> preferencePathByPreference,
                                   final PreferencePathNavigator preferencePathNavigator,
                                   final Set<SearchablePreferencePOJO> allPreferencesForSearch) {
@@ -27,8 +25,7 @@ public class MergedPreferenceScreen {
         this.allPreferencesForSearch = allPreferencesForSearch;
         this.searchResultsPreferenceScreenHelper =
                 new SearchResultsPreferenceScreenHelper(
-                        searchablePreferenceScreen,
-                        pojoEntityMap,
+                        preferenceScreenWithMap,
                         preferencePathByPreference);
     }
 

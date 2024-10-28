@@ -9,6 +9,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
+import com.google.common.collect.HashBiMap;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -18,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
@@ -36,8 +39,7 @@ public class SearchResultsPreferenceScreenHelperTest {
                 final PreferenceScreen preferenceScreen = createSomePreferenceFragment(activity).getPreferenceScreen();
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         new SearchResultsPreferenceScreenHelper(
-                                preferenceScreen,
-                                Map.of(),
+                                new PreferenceScreenWithMap(preferenceScreen, HashBiMap.create()),
                                 Map.of());
 
                 // When
@@ -72,8 +74,7 @@ public class SearchResultsPreferenceScreenHelperTest {
 
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         new SearchResultsPreferenceScreenHelper(
-                                prefilledPreferenceScreen,
-                                Map.of(),
+                                new PreferenceScreenWithMap(prefilledPreferenceScreen, HashBiMap.create()),
                                 Map.of());
 
                 // When

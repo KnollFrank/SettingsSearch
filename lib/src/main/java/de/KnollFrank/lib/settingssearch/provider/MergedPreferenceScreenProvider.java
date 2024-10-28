@@ -54,8 +54,7 @@ public class MergedPreferenceScreenProvider {
                         new ArrayList<>(pojoGraph.vertexSet()),
                         preferenceManager);
         return new MergedPreferenceScreen(
-                preferenceScreenWithMap.preferenceScreen(),
-                preferenceScreenWithMap.pojoEntityMap(),
+                preferenceScreenWithMap,
                 PreferencePathByPreference.getPreferencePathByPreference(
                         pojoGraph,
                         preferenceScreenWithMap.pojoEntityMap()),
