@@ -3,9 +3,13 @@ package de.KnollFrank.lib.settingssearch;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.collect.BiMap;
+
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
@@ -18,15 +22,15 @@ public class MergedPreferenceScreen {
     public final Set<SearchablePreferencePOJO> allPreferencesForSearch;
 
     public MergedPreferenceScreen(final PreferenceScreenWithMap preferenceScreenWithMap,
-                                  final Map<Preference, PreferencePath> preferencePathByPreference,
-                                  final PreferencePathNavigator preferencePathNavigator,
+                                  final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
+                                  final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
                                   final Set<SearchablePreferencePOJO> allPreferencesForSearch) {
-        this.preferencePathNavigator = preferencePathNavigator;
+        this.preferencePathNavigator = preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap());
         this.allPreferencesForSearch = allPreferencesForSearch;
         this.searchResultsPreferenceScreenHelper =
                 new SearchResultsPreferenceScreenHelper(
                         preferenceScreenWithMap,
-                        preferencePathByPreference);
+                        preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()));
     }
 
     public PreferenceFragmentCompat getHost(final Preference preference) {
