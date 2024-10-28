@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelper;
 
 public class MergedPreferenceScreenProvider {
 
@@ -49,19 +50,20 @@ public class MergedPreferenceScreenProvider {
     private MergedPreferenceScreen computeMergedPreferenceScreen(
             final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
         return new MergedPreferenceScreen(
-                () ->
+                PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())),
+                new SearchResultsPreferenceScreenHelper(
+                        () ->
                         PreferenceScreensMerger.mergePreferenceScreens(
                                 new ArrayList<>(pojoGraph.vertexSet()),
                                 preferenceManager),
-                pojoEntityMap ->
-                        PreferencePathByPreference.getPreferencePathByPreference(
-                                pojoGraph,
-                                pojoEntityMap),
-                pojoEntityMap ->
+                        pojoEntityMap ->
                         getPreferencePathNavigator(
                                 new ArrayList<>(pojoGraph.vertexSet()),
                                 pojoEntityMap),
-                PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())));
+                        pojoEntityMap ->
+                                PreferencePathByPreference.getPreferencePathByPreference(
+                                        pojoGraph,
+                                        pojoEntityMap)));
     }
 
     private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {

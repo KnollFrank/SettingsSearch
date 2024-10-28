@@ -34,7 +34,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
                                            final PrepareShow prepareShow) {
         this.mergedPreferenceScreen = mergedPreferenceScreen;
-        mergedPreferenceScreen.searchResultsPreferenceScreenHelper.preparePreferenceScreenForSearch();
+        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().preparePreferenceScreenForSearch();
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -42,7 +42,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        mergedPreferenceScreen.searchResultsPreferenceScreenHelper.setPreferenceScreen(this);
+        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().setPreferenceScreen(this);
     }
 
     @NonNull
@@ -51,8 +51,8 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         // FK-TODO: die Preferences des preferenceScreen sollen ihren aktuellen Zustand widerspiegeln (z.B. soll der Haken einer CheckBoxPreference gemäß den darunterliegenden Daten gesetzt oder nicht gesetzt sein.)
         return new SearchablePreferenceGroupAdapter(
                 preferenceScreen,
-                mergedPreferenceScreen.searchResultsPreferenceScreenHelper.getSearchableInfoAttribute(),
-                mergedPreferenceScreen.searchResultsPreferenceScreenHelper.getPreferencePathByPreference(),
+                mergedPreferenceScreen.searchResultsPreferenceScreenHelper().getSearchableInfoAttribute(),
+                mergedPreferenceScreen.searchResultsPreferenceScreenHelper().getPreferencePathByPreference(),
                 showPreferencePathPredicate,
                 Set.of(),
                 this::showPreferenceScreenAndHighlightPreference);
@@ -60,7 +60,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
         showPreferenceScreenAndHighlightPreference(
-                mergedPreferenceScreen.searchResultsPreferenceScreenHelper.getHost(preference),
+                mergedPreferenceScreen.searchResultsPreferenceScreenHelper().getHost(preference),
                 preference);
     }
 

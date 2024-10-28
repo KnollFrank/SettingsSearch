@@ -15,14 +15,14 @@ class PreferenceSearcher {
     }
 
     public List<PreferenceMatch> searchFor(final String needle) {
-        mergedPreferenceScreen.searchResultsPreferenceScreenHelper.prepareSearch(needle);
+        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().prepareSearch(needle);
         return getPreferenceMatches(needle);
     }
 
     private List<PreferenceMatch> getPreferenceMatches(final String needle) {
         return Lists.concat(
                 mergedPreferenceScreen
-                        .allPreferencesForSearch
+                        .allPreferencesForSearch()
                         .stream()
                         .map(searchablePreference -> PreferenceMatcher.getPreferenceMatches(searchablePreference, needle))
                         .collect(Collectors.toList()));
