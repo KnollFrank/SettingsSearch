@@ -33,9 +33,9 @@ public class SearchResultsPreferenceScreenHelper {
 
     public SearchResultsPreferenceScreenHelper(final PreferenceScreenWithMap preferenceScreenWithMap,
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
-                                               final Map<Preference, PreferencePath> preferencePathByPreference) {
+                                               final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         this.preferenceScreenWithMap = preferenceScreenWithMap;
-        this.preferencePathByPreference = preferencePathByPreference;
+        this.preferencePathByPreference = preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap());
         this.preferencePathNavigator = preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap());
     }
 

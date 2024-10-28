@@ -28,6 +28,6 @@ public class MergedPreferenceScreen {
                 new SearchResultsPreferenceScreenHelper(
                         preferenceScreenWithMap,
                         preferencePathNavigatorFactory,
-                        preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()));
+                        preferencePathByPreferenceFactory);
     }
 }
