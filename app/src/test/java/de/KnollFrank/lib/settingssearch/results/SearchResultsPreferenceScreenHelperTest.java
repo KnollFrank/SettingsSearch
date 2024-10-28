@@ -38,7 +38,7 @@ public class SearchResultsPreferenceScreenHelperTest {
                 final PreferenceScreen preferenceScreen = createSomePreferenceFragment(activity).getPreferenceScreen();
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         new SearchResultsPreferenceScreenHelper(
-                                new PreferenceScreenWithMap(preferenceScreen, HashBiMap.create()),
+                                () -> new PreferenceScreenWithMap(preferenceScreen, HashBiMap.create()),
                                 pojoEntityMap -> null,
                                 pojoEntityMap -> null);
 
@@ -74,7 +74,7 @@ public class SearchResultsPreferenceScreenHelperTest {
 
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         new SearchResultsPreferenceScreenHelper(
-                                new PreferenceScreenWithMap(prefilledPreferenceScreen, HashBiMap.create()),
+                                () -> new PreferenceScreenWithMap(prefilledPreferenceScreen, HashBiMap.create()),
                                 pojoEntityMap -> null,
                                 pojoEntityMap -> null);
 

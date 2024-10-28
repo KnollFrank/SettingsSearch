@@ -10,6 +10,7 @@ import com.google.common.collect.BiMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -31,10 +32,10 @@ public class SearchResultsPreferenceScreenHelper {
     private final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferencePathNavigator preferencePathNavigator;
 
-    public SearchResultsPreferenceScreenHelper(final PreferenceScreenWithMap preferenceScreenWithMap,
+    public SearchResultsPreferenceScreenHelper(final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
-        this.preferenceScreenWithMap = preferenceScreenWithMap;
+        this.preferenceScreenWithMap = preferenceScreenWithMapFactory.get();
         this.preferencePathByPreference = preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap());
         this.preferencePathNavigator = preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap());
     }
