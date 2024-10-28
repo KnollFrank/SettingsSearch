@@ -76,4 +76,8 @@ public class SearchResultsPreferenceScreenHelper {
                 .map(PreferenceMatch::preference)
                 .collect(Collectors.toList());
     }
+
+    public SearchableInfoAttribute getSearchableInfoAttribute() {
+        return searchableInfoAttribute;
+    }
 }

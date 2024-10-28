@@ -22,14 +22,12 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragment extends Fragment {
 
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoProvider searchableInfoProvider;
-    private final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final FragmentFactory fragmentFactory;
     private final SearchConfiguration searchConfiguration;
@@ -94,7 +92,6 @@ public class SearchPreferenceFragment extends Fragment {
                         mergedPreferenceScreen,
                         searchConfiguration.fragmentContainerViewId(),
                         showPreferencePathPredicate,
-                        searchableInfoAttribute,
                         prepareShow),
                 onFragmentStarted,
                 false,

@@ -21,26 +21,22 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.SearchablePreferenceGroupAdapter;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoGetter;
 
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private final MergedPreferenceScreen mergedPreferenceScreen;
     private final @IdRes int fragmentContainerViewId;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
-    private final SearchableInfoGetter searchableInfoGetter;
     private final PrepareShow prepareShow;
 
     public SearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
                                            final @IdRes int fragmentContainerViewId,
                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                           final SearchableInfoGetter searchableInfoGetter,
                                            final PrepareShow prepareShow) {
         this.mergedPreferenceScreen = mergedPreferenceScreen;
         mergedPreferenceScreen.searchResultsPreferenceScreenHelper.preparePreferenceScreenForSearch();
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
-        this.searchableInfoGetter = searchableInfoGetter;
         this.prepareShow = prepareShow;
     }
 
@@ -55,7 +51,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         // FK-TODO: die Preferences des preferenceScreen sollen ihren aktuellen Zustand widerspiegeln (z.B. soll der Haken einer CheckBoxPreference gemäß den darunterliegenden Daten gesetzt oder nicht gesetzt sein.)
         return new SearchablePreferenceGroupAdapter(
                 preferenceScreen,
-                searchableInfoGetter,
+                mergedPreferenceScreen.searchResultsPreferenceScreenHelper.getSearchableInfoAttribute(),
                 mergedPreferenceScreen.searchResultsPreferenceScreenHelper.getPreferencePathByPreference(),
                 showPreferencePathPredicate,
                 Set.of(),
