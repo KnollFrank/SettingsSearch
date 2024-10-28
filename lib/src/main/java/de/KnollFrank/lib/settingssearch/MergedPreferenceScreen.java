@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.BiMap;
 
@@ -17,7 +16,6 @@ import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHel
 
 public class MergedPreferenceScreen {
 
-    private final PreferencePathNavigator preferencePathNavigator;
     public final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper;
     public final Set<SearchablePreferencePOJO> allPreferencesForSearch;
 
@@ -25,15 +23,11 @@ public class MergedPreferenceScreen {
                                   final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
                                   final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
                                   final Set<SearchablePreferencePOJO> allPreferencesForSearch) {
-        this.preferencePathNavigator = preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap());
         this.allPreferencesForSearch = allPreferencesForSearch;
         this.searchResultsPreferenceScreenHelper =
                 new SearchResultsPreferenceScreenHelper(
                         preferenceScreenWithMap,
+                        preferencePathNavigatorFactory,
                         preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()));
-    }
-
-    public PreferenceFragmentCompat getHost(final Preference preference) {
-        return preferencePathNavigator.navigatePreferencePath(searchResultsPreferenceScreenHelper.getPreferencePathByPreference().get(preference));
     }
 }

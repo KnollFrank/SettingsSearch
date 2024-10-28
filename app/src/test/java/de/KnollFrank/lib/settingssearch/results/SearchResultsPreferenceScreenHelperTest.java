@@ -40,6 +40,7 @@ public class SearchResultsPreferenceScreenHelperTest {
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         new SearchResultsPreferenceScreenHelper(
                                 new PreferenceScreenWithMap(preferenceScreen, HashBiMap.create()),
+                                pojoEntityMap -> null,
                                 Map.of());
 
                 // When
@@ -75,6 +76,7 @@ public class SearchResultsPreferenceScreenHelperTest {
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         new SearchResultsPreferenceScreenHelper(
                                 new PreferenceScreenWithMap(prefilledPreferenceScreen, HashBiMap.create()),
+                                pojoEntityMap -> null,
                                 Map.of());
 
                 // When

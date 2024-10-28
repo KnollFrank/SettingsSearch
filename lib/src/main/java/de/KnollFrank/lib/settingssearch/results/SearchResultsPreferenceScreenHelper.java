@@ -5,14 +5,19 @@ import android.content.Context;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.collect.BiMap;
+
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
@@ -24,11 +29,14 @@ public class SearchResultsPreferenceScreenHelper {
     private final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
     private final PreferenceScreenWithMap preferenceScreenWithMap;
     private final Map<Preference, PreferencePath> preferencePathByPreference;
+    private final PreferencePathNavigator preferencePathNavigator;
 
     public SearchResultsPreferenceScreenHelper(final PreferenceScreenWithMap preferenceScreenWithMap,
+                                               final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
                                                final Map<Preference, PreferencePath> preferencePathByPreference) {
         this.preferenceScreenWithMap = preferenceScreenWithMap;
         this.preferencePathByPreference = preferencePathByPreference;
+        this.preferencePathNavigator = preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap());
     }
 
     public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
@@ -75,5 +83,9 @@ public class SearchResultsPreferenceScreenHelper {
 
     public SearchableInfoAttribute getSearchableInfoAttribute() {
         return searchableInfoAttribute;
+    }
+
+    public PreferenceFragmentCompat getHost(final Preference preference) {
+        return preferencePathNavigator.navigatePreferencePath(preferencePathByPreference.get(preference));
     }
 }

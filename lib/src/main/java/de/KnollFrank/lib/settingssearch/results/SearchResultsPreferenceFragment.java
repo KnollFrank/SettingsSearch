@@ -60,7 +60,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
         showPreferenceScreenAndHighlightPreference(
-                mergedPreferenceScreen.getHost(preference),
+                mergedPreferenceScreen.searchResultsPreferenceScreenHelper.getHost(preference),
                 preference);
     }
 
