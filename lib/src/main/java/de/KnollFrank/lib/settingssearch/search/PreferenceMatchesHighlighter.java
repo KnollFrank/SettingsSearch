@@ -43,7 +43,6 @@ class PreferenceMatchesHighlighter {
                                         indexRanges));
     }
 
-    // FK-TODO: use guava's Table instead of java's Map?
     private Map<Pair<Preference, Type>, List<IndexRange>> getIndexRangesByPreferenceAndType(
             final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
