@@ -23,16 +23,14 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 public class SearchResultsPreferenceScreenHelper {
 
     private final PreferenceScreen preferenceScreen;
-    private final SearchableInfoAttribute searchableInfoAttribute;
+    private final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
     private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
     private final Map<Preference, PreferencePath> preferencePathByPreference;
 
     public SearchResultsPreferenceScreenHelper(final PreferenceScreen preferenceScreen,
-                                               final SearchableInfoAttribute searchableInfoAttribute,
                                                final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
                                                final Map<Preference, PreferencePath> preferencePathByPreference) {
         this.preferenceScreen = preferenceScreen;
-        this.searchableInfoAttribute = searchableInfoAttribute;
         this.pojoEntityMap = pojoEntityMap;
         this.preferencePathByPreference = preferencePathByPreference;
     }

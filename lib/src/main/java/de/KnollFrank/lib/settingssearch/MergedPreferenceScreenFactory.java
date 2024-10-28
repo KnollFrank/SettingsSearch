@@ -28,7 +28,6 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.IsPreferenceVisibleAndSearchable;
 import de.KnollFrank.lib.settingssearch.search.PreferenceManagerProvider;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class MergedPreferenceScreenFactory {
@@ -37,7 +36,6 @@ public class MergedPreferenceScreenFactory {
     private final Context context;
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoProvider searchableInfoProvider;
-    private final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
     private final FragmentFactory fragmentFactory;
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
@@ -105,7 +103,6 @@ public class MergedPreferenceScreenFactory {
 
     private MergedPreferenceScreenProvider getMergedPreferenceScreenProvider(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer, final PreferenceManager preferenceManager) {
         return new MergedPreferenceScreenProvider(
-                searchableInfoAttribute,
                 true,
                 fragmentFactoryAndInitializer,
                 preferenceManager);

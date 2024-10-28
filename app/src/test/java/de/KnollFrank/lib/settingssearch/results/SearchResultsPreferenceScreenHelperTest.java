@@ -22,7 +22,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -38,7 +37,6 @@ public class SearchResultsPreferenceScreenHelperTest {
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         new SearchResultsPreferenceScreenHelper(
                                 preferenceScreen,
-                                new SearchableInfoAttribute(),
                                 Map.of(),
                                 Map.of());
 
@@ -75,7 +73,6 @@ public class SearchResultsPreferenceScreenHelperTest {
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         new SearchResultsPreferenceScreenHelper(
                                 prefilledPreferenceScreen,
-                                new SearchableInfoAttribute(),
                                 Map.of(),
                                 Map.of());
 

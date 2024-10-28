@@ -20,22 +20,18 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreenProvider {
 
-    private final SearchableInfoAttribute searchableInfoAttribute;
     private final boolean cacheMergedPreferenceScreens;
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final PreferenceManager preferenceManager;
 
     private static MergedPreferenceScreen mergedPreferenceScreen;
 
-    public MergedPreferenceScreenProvider(final SearchableInfoAttribute searchableInfoAttribute,
-                                          final boolean cacheMergedPreferenceScreens,
+    public MergedPreferenceScreenProvider(final boolean cacheMergedPreferenceScreens,
                                           final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                           final PreferenceManager preferenceManager) {
-        this.searchableInfoAttribute = searchableInfoAttribute;
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.preferenceManager = preferenceManager;
@@ -63,7 +59,6 @@ public class MergedPreferenceScreenProvider {
                 PreferencePathByPreference.getPreferencePathByPreference(
                         pojoGraph,
                         preferenceScreenWithMap.pojoEntityMap()),
-                searchableInfoAttribute,
                 getPreferencePathNavigator(
                         new ArrayList<>(pojoGraph.vertexSet()),
                         preferenceScreenWithMap.pojoEntityMap()),
