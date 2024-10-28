@@ -39,6 +39,7 @@ public class SearchResultsPreferenceScreenHelperTest {
                         new SearchResultsPreferenceScreenHelper(
                                 preferenceScreen,
                                 new SearchableInfoAttribute(),
+                                Map.of(),
                                 Map.of());
 
                 // When
@@ -75,6 +76,7 @@ public class SearchResultsPreferenceScreenHelperTest {
                         new SearchResultsPreferenceScreenHelper(
                                 prefilledPreferenceScreen,
                                 new SearchableInfoAttribute(),
+                                Map.of(),
                                 Map.of());
 
                 // When

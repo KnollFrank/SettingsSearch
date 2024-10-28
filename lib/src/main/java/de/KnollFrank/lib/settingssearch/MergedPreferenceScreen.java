@@ -15,7 +15,6 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class MergedPreferenceScreen {
 
-    public final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferencePathNavigator preferencePathNavigator;
     public final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper;
     public final Set<SearchablePreferencePOJO> allPreferencesForSearch;
@@ -26,17 +25,17 @@ public class MergedPreferenceScreen {
                                   final SearchableInfoAttribute searchableInfoAttribute,
                                   final PreferencePathNavigator preferencePathNavigator,
                                   final Set<SearchablePreferencePOJO> allPreferencesForSearch) {
-        this.preferencePathByPreference = preferencePathByPreference;
         this.preferencePathNavigator = preferencePathNavigator;
         this.allPreferencesForSearch = allPreferencesForSearch;
         this.searchResultsPreferenceScreenHelper =
                 new SearchResultsPreferenceScreenHelper(
                         searchablePreferenceScreen,
                         searchableInfoAttribute,
-                        pojoEntityMap);
+                        pojoEntityMap,
+                        preferencePathByPreference);
     }
 
     public PreferenceFragmentCompat getHost(final Preference preference) {
-        return preferencePathNavigator.navigatePreferencePath(preferencePathByPreference.get(preference));
+        return preferencePathNavigator.navigatePreferencePath(searchResultsPreferenceScreenHelper.getPreferencePathByPreference().get(preference));
     }
 }
