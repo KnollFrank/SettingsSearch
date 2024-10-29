@@ -23,20 +23,20 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
-import de.KnollFrank.lib.settingssearch.search.PreferenceScreenResetter;
 import de.KnollFrank.lib.settingssearch.search.SearchResultsDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class SearchResultsPreferenceScreenHelper {
 
-    private final Info info;
+    private Info info;
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final Context context;
     private final PreferencePathNavigator preferencePathNavigator;
+    private final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory;
 
-    public record Info(SearchableInfoAttribute searchableInfoAttribute,
-                       PreferenceScreenWithMap preferenceScreenWithMap,
-                       Map<Preference, PreferencePath> preferencePathByPreference) {
+    public record Info(PreferenceScreenWithMap preferenceScreenWithMap,
+                       Map<Preference, PreferencePath> preferencePathByPreference,
+                       SearchableInfoAttribute searchableInfoAttribute) {
     }
 
     public SearchResultsPreferenceScreenHelper(final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
@@ -44,7 +44,8 @@ public class SearchResultsPreferenceScreenHelper {
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
                                                final Context context) {
         this.preferencePathNavigator = preferencePathNavigator;
-        this.info = createInfo(preferenceScreenWithMapFactory, preferencePathByPreferenceFactory);
+        this.preferencePathByPreferenceFactory = preferencePathByPreferenceFactory;
+        this.info = createInfo(preferenceScreenWithMapFactory);
         this.context = context;
     }
 
@@ -56,12 +57,24 @@ public class SearchResultsPreferenceScreenHelper {
     // 2:
     public void displaySearchResults(final List<PreferenceMatch> preferenceMatches,
                                      final String query) {
+        info.preferenceScreenWithMap().preferenceScreen().removeAll();
+        final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
+                SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
+                        getPreferences(preferenceMatches),
+                        info.preferenceScreenWithMap().preferenceScreen());
         PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(info.preferenceScreenWithMap().preferenceScreen());
-        new PreferenceScreenResetter(info.preferenceScreenWithMap().preferenceScreen(), info.searchableInfoAttribute()).resetPreferenceScreen();
+        final SearchableInfoAttribute searchableInfoSetter = new SearchableInfoAttribute();
         MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 info.preferenceScreenWithMap().preferenceScreen(),
-                info.searchableInfoAttribute(),
+                searchableInfoSetter,
                 query);
+        this.info =
+                new Info(
+                        new PreferenceScreenWithMap(
+                                info.preferenceScreenWithMap().preferenceScreen(),
+                                pojoEntityMap),
+                        preferencePathByPreferenceFactory.apply(pojoEntityMap),
+                        searchableInfoSetter);
         createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
         propertyChangeSupport.firePropertyChange("info", null, info);
     }
@@ -101,14 +114,12 @@ public class SearchResultsPreferenceScreenHelper {
                 context);
     }
 
-    private static Info createInfo(
-            final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
-            final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
+    private Info createInfo(final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory) {
         final PreferenceScreenWithMap preferenceScreenWithMap = preferenceScreenWithMapFactory.get();
         return new Info(
-                new SearchableInfoAttribute(),
                 preferenceScreenWithMap,
-                preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()));
+                preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()),
+                new SearchableInfoAttribute());
     }
 
     private static List<SearchablePreferencePOJO> getPreferences(final List<PreferenceMatch> preferenceMatches) {
