@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
-import android.content.Context;
-
 import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
@@ -18,25 +16,22 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
-import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelper;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelperFactory;
 
 public class MergedPreferenceScreenProvider {
 
     private final boolean cacheMergedPreferenceScreens;
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final PreferenceManager preferenceManager;
-    private final Context context;
 
     private static MergedPreferenceScreen mergedPreferenceScreen;
 
     public MergedPreferenceScreenProvider(final boolean cacheMergedPreferenceScreens,
                                           final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
-                                          final PreferenceManager preferenceManager,
-                                          final Context context) {
+                                          final PreferenceManager preferenceManager) {
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.preferenceManager = preferenceManager;
-        this.context = context;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
@@ -53,14 +48,13 @@ public class MergedPreferenceScreenProvider {
             final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
         return new MergedPreferenceScreen(
                 PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())),
-                new SearchResultsPreferenceScreenHelper(
+                SearchResultsPreferenceScreenHelperFactory.createSearchResultsPreferenceScreenHelper(
                         preferenceManager,
                         getPreferencePathNavigator(new ArrayList<>(pojoGraph.vertexSet())),
                         pojoEntityMap ->
                                 PreferencePathByPreference.getPreferencePathByPreference(
                                         pojoGraph,
-                                        pojoEntityMap),
-                        context));
+                                        pojoEntityMap)));
     }
 
     private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {

@@ -105,8 +105,7 @@ public class MergedPreferenceScreenFactory {
         return new MergedPreferenceScreenProvider(
                 true,
                 fragmentFactoryAndInitializer,
-                preferenceManager,
-                context);
+                preferenceManager);
     }
 
     private Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph(

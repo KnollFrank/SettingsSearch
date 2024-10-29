@@ -15,7 +15,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
-import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelper.Info;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
@@ -31,14 +30,13 @@ public class SearchResultsPreferenceScreenHelperTest {
                 // Given
                 final String title = "Title, title part";
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
-                        new SearchResultsPreferenceScreenHelper(
+                        SearchResultsPreferenceScreenHelperFactory.createSearchResultsPreferenceScreenHelper(
                                 createSomePreferenceFragment(activity).getPreferenceManager(),
                                 null,
-                                pojoEntityMap -> null,
-                                activity);
+                                pojoEntityMap -> null);
 
                 // When
-                final Info info =
+                final SearchResultsDescription searchResultsDescription =
                         searchResultsPreferenceScreenHelper.displaySearchResults(
                                 List.of(
                                         new PreferenceMatch(
@@ -53,7 +51,7 @@ public class SearchResultsPreferenceScreenHelperTest {
                 // Then
                 assertThat(
                         Preferences
-                                .getChildrenRecursively(info.preferenceScreenWithMap().preferenceScreen())
+                                .getChildrenRecursively(searchResultsDescription.preferenceScreenWithMap().preferenceScreen())
                                 .stream()
                                 .anyMatch(preference -> title.equals(preference.getTitle().toString())),
                         is(true));

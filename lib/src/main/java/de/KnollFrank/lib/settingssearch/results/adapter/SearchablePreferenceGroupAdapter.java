@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelper.Info;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsDescription;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoGetter;
 
 public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter implements PropertyChangeListener {
@@ -108,9 +108,9 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter imp
 
     @Override
     public void propertyChange(final PropertyChangeEvent evt) {
-        final Info info = (Info) evt.getNewValue();
-        this.searchableInfoGetter = info.searchableInfoAttribute();
-        this.preferencePathByPreference = info.preferencePathByPreference();
+        final SearchResultsDescription searchResultsDescription = (SearchResultsDescription) evt.getNewValue();
+        this.searchableInfoGetter = searchResultsDescription.searchableInfoAttribute();
+        this.preferencePathByPreference = searchResultsDescription.preferencePathByPreference();
         Log.i(this.getClass().getName(), "new Info");
     }
 }
