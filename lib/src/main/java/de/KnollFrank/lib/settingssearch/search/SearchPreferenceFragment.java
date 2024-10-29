@@ -90,6 +90,7 @@ public class SearchPreferenceFragment extends Fragment {
         showFragment(
                 new SearchResultsPreferenceFragment(
                         mergedPreferenceScreen.searchResultsPreferenceScreenHelper(),
+                        mergedPreferenceScreen.preferencePathNavigator(),
                         searchConfiguration.fragmentContainerViewId(),
                         showPreferencePathPredicate,
                         prepareShow),

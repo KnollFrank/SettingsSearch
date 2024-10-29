@@ -32,7 +32,6 @@ public class SearchResultsPreferenceScreenHelperTest {
                 final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
                         SearchResultsPreferenceScreenHelperFactory.createSearchResultsPreferenceScreenHelper(
                                 createSomePreferenceFragment(activity).getPreferenceManager(),
-                                null,
                                 pojoEntityMap -> null);
 
                 // When

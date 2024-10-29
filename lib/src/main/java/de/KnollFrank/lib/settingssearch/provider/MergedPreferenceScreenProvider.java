@@ -50,11 +50,11 @@ public class MergedPreferenceScreenProvider {
                 PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())),
                 SearchResultsPreferenceScreenHelperFactory.createSearchResultsPreferenceScreenHelper(
                         preferenceManager,
-                        getPreferencePathNavigator(new ArrayList<>(pojoGraph.vertexSet())),
                         pojoEntityMap ->
                                 PreferencePathByPreference.getPreferencePathByPreference(
                                         pojoGraph,
-                                        pojoEntityMap)));
+                                        pojoEntityMap)),
+                getPreferencePathNavigator(new ArrayList<>(pojoGraph.vertexSet())));
     }
 
     private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {

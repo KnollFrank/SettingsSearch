@@ -23,31 +23,28 @@ import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.search.MarkupFactory;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
-// FK-TODO: refactor
+// FK-TODO: rename to SearchResultsDisplayer
 public class SearchResultsPreferenceScreenHelper {
 
     private SearchResultsDescription searchResultsDescription;
     private final Context context;
-    private final PreferencePathNavigator preferencePathNavigator;
     private final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory;
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    protected SearchResultsPreferenceScreenHelper(final PreferencePathNavigator preferencePathNavigator,
-                                                  final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
+    protected SearchResultsPreferenceScreenHelper(final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
                                                   final Context context,
                                                   final SearchResultsDescription searchResultsDescription) {
-        this.preferencePathNavigator = preferencePathNavigator;
         this.preferencePathByPreferenceFactory = preferencePathByPreferenceFactory;
         this.context = context;
         this.searchResultsDescription = searchResultsDescription;
     }
 
+    // FK-TODO: inline
     public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
         preferenceFragment.setPreferenceScreen(searchResultsDescription.preferenceScreenWithMap().preferenceScreen());
     }
@@ -57,10 +54,6 @@ public class SearchResultsPreferenceScreenHelper {
         searchResultsDescription = getSearchResultsDescription(preferenceMatches, query);
         propertyChangeSupport.firePropertyChange("SearchResultsDescription", oldSearchResultsDescription, searchResultsDescription);
         return searchResultsDescription;
-    }
-
-    public PreferenceFragmentCompat getHost(final Preference preference) {
-        return preferencePathNavigator.navigatePreferencePath(searchResultsDescription.preferencePathByPreference().get(preference));
     }
 
     public SearchResultsDescription getSearchResultsDescription() {

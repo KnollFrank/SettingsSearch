@@ -13,17 +13,14 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class SearchResultsPreferenceScreenHelperFactory {
 
     public static SearchResultsPreferenceScreenHelper createSearchResultsPreferenceScreenHelper(
             final PreferenceManager preferenceManager,
-            final PreferencePathNavigator preferencePathNavigator,
             final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         return new SearchResultsPreferenceScreenHelper(
-                preferencePathNavigator,
                 preferencePathByPreferenceFactory,
                 preferenceManager.getContext(),
                 createInitialInfo(preferenceManager, preferencePathByPreferenceFactory));

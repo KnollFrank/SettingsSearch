@@ -17,6 +17,7 @@ import org.threeten.bp.Duration;
 
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.SearchablePreferenceGroupAdapter;
@@ -24,15 +25,18 @@ import de.KnollFrank.lib.settingssearch.results.adapter.SearchablePreferenceGrou
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper;
+    private final PreferencePathNavigator preferencePathNavigator;
     private final @IdRes int fragmentContainerViewId;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
 
     public SearchResultsPreferenceFragment(final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper,
+                                           final PreferencePathNavigator preferencePathNavigator,
                                            final @IdRes int fragmentContainerViewId,
                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
                                            final PrepareShow prepareShow) {
         this.searchResultsPreferenceScreenHelper = searchResultsPreferenceScreenHelper;
+        this.preferencePathNavigator = preferencePathNavigator;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -61,7 +65,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
         showPreferenceScreenAndHighlightPreference(
-                searchResultsPreferenceScreenHelper.getHost(preference),
+                preferencePathNavigator.navigatePreferencePath(searchResultsPreferenceScreenHelper.getSearchResultsDescription().preferencePathByPreference().get(preference)),
                 preference);
     }
 
