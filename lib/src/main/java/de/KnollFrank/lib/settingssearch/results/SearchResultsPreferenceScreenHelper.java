@@ -40,10 +40,10 @@ public class SearchResultsPreferenceScreenHelper {
     }
 
     public SearchResultsPreferenceScreenHelper(final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
-                                               final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
+                                               final PreferencePathNavigator preferencePathNavigator,
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
                                                final Context context) {
-        this.info = createInfo(preferenceScreenWithMapFactory, preferencePathNavigatorFactory, preferencePathByPreferenceFactory);
+        this.info = createInfo(preferenceScreenWithMapFactory, preferencePathNavigator, preferencePathByPreferenceFactory);
         this.context = context;
     }
 
@@ -116,13 +116,13 @@ public class SearchResultsPreferenceScreenHelper {
 
     private static Info createInfo(
             final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
-            final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
+            final PreferencePathNavigator preferencePathNavigator,
             final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         final PreferenceScreenWithMap preferenceScreenWithMap = preferenceScreenWithMapFactory.get();
         return new Info(
                 new SearchableInfoAttribute(),
                 preferenceScreenWithMap,
                 preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()),
-                preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap()));
+                preferencePathNavigator);
     }
 }

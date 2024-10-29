@@ -58,8 +58,7 @@ public class MergedPreferenceScreenProvider {
                                 PreferenceScreensMerger.mergePreferenceScreens(
                                         new ArrayList<>(pojoGraph.vertexSet()),
                                         preferenceManager),
-                        // FK-TODO: remove Function<> use just it's value
-                        pojoEntityMap -> getPreferencePathNavigator(new ArrayList<>(pojoGraph.vertexSet())),
+                        getPreferencePathNavigator(new ArrayList<>(pojoGraph.vertexSet())),
                         pojoEntityMap ->
                                 PreferencePathByPreference.getPreferencePathByPreference(
                                         pojoGraph,
