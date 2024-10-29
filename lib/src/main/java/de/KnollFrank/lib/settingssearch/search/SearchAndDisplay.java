@@ -17,6 +17,6 @@ class SearchAndDisplay {
 
     public void searchForQueryAndDisplayResults(final String query) {
         final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
-        searchResultsPreferenceScreenHelper.displaySearchResults(preferenceMatches);
+        searchResultsPreferenceScreenHelper.displaySearchResults(preferenceMatches, query);
     }
 }

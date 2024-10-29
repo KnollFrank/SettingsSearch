@@ -444,7 +444,7 @@ public class PreferenceSearcherTest {
                                 preferenceConnected2PreferenceFragmentProvider,
                                 preferenceDialogAndSearchableInfoProvider);
                 final PreferenceSearcher preferenceSearcher =
-                        new PreferenceSearcher(mergedPreferenceScreen);
+                        new PreferenceSearcher(mergedPreferenceScreen.allPreferencesForSearch());
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);

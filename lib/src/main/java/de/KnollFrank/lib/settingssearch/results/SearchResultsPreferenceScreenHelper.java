@@ -59,18 +59,19 @@ public class SearchResultsPreferenceScreenHelper {
     }
 
     // 3:
-    public void prepareSearch(final String needle) {
+    public void displaySearchResults(final List<PreferenceMatch> preferenceMatches,
+                                     final String query) {
+        prepareSearch(query);
+        createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
+        propertyChangeSupport.firePropertyChange("info", null, info);
+    }
+
+    private void prepareSearch(final String needle) {
         new PreferenceScreenResetter(info.preferenceScreenWithMap().preferenceScreen(), info.searchableInfoAttribute()).resetPreferenceScreen();
         MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 info.preferenceScreenWithMap().preferenceScreen(),
                 info.searchableInfoAttribute(),
                 needle);
-    }
-
-    // 4:
-    public void displaySearchResults(final List<PreferenceMatch> preferenceMatches) {
-        createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
-        propertyChangeSupport.firePropertyChange("info", null, info);
     }
 
     public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {

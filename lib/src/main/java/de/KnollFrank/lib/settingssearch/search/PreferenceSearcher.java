@@ -1,28 +1,23 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
 class PreferenceSearcher {
 
-    private final MergedPreferenceScreen mergedPreferenceScreen;
+    private final Set<SearchablePreferencePOJO> preferences;
 
-    public PreferenceSearcher(final MergedPreferenceScreen mergedPreferenceScreen) {
-        this.mergedPreferenceScreen = mergedPreferenceScreen;
+    public PreferenceSearcher(final Set<SearchablePreferencePOJO> preferences) {
+        this.preferences = preferences;
     }
 
     public List<PreferenceMatch> searchFor(final String needle) {
-        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().prepareSearch(needle);
-        return getPreferenceMatches(needle);
-    }
-
-    private List<PreferenceMatch> getPreferenceMatches(final String needle) {
         return Lists.concat(
-                mergedPreferenceScreen
-                        .allPreferencesForSearch()
+                preferences
                         .stream()
                         .map(searchablePreference -> PreferenceMatcher.getPreferenceMatches(searchablePreference, needle))
                         .collect(Collectors.toList()));
