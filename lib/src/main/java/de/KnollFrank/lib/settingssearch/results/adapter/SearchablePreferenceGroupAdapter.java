@@ -9,6 +9,7 @@ import static de.KnollFrank.lib.settingssearch.results.adapter.SearchableInfoVie
 import static de.KnollFrank.lib.settingssearch.results.adapter.ViewsAdder.addViews;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +20,8 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceViewHolder;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,12 +31,13 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelper.Info;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoGetter;
 
-public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
+public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter implements PropertyChangeListener {
 
-    private final SearchableInfoGetter searchableInfoGetter;
-    private final Map<Preference, PreferencePath> preferencePathByPreference;
+    private SearchableInfoGetter searchableInfoGetter;
+    private Map<Preference, PreferencePath> preferencePathByPreference;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final Set<PreferenceCategory> nonClickablePreferences;
     private final Consumer<Preference> onPreferenceClickListener;
@@ -100,5 +104,13 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
         return nonClickablePreferences.contains(preference) ?
                 Optional.empty() :
                 Optional.of(v -> onPreferenceClickListener.accept(preference));
+    }
+
+    @Override
+    public void propertyChange(final PropertyChangeEvent evt) {
+        final Info info = (Info) evt.getNewValue();
+        this.searchableInfoGetter = info.searchableInfoAttribute();
+        this.preferencePathByPreference = info.preferencePathByPreference();
+        Log.i(this.getClass().getName(), "new Info");
     }
 }

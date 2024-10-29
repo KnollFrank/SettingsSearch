@@ -7,6 +7,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.BiMap;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -27,51 +29,62 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class SearchResultsPreferenceScreenHelper {
 
-    private final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
-    private final PreferenceScreenWithMap preferenceScreenWithMap;
-    private final Map<Preference, PreferencePath> preferencePathByPreference;
-    private final PreferencePathNavigator preferencePathNavigator;
+    private final Info info;
+    private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final Context context;
+
+    public record Info(SearchableInfoAttribute searchableInfoAttribute,
+                       PreferenceScreenWithMap preferenceScreenWithMap,
+                       Map<Preference, PreferencePath> preferencePathByPreference,
+                       PreferencePathNavigator preferencePathNavigator) {
+    }
 
     public SearchResultsPreferenceScreenHelper(final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
                                                final Context context) {
-        this.preferenceScreenWithMap = preferenceScreenWithMapFactory.get();
-        this.preferencePathByPreference = preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap());
-        this.preferencePathNavigator = preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap());
+        this.info = createInfo(preferenceScreenWithMapFactory, preferencePathNavigatorFactory, preferencePathByPreferenceFactory);
         this.context = context;
     }
 
     public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
-        preferenceFragment.setPreferenceScreen(preferenceScreenWithMap.preferenceScreen());
+        preferenceFragment.setPreferenceScreen(info.preferenceScreenWithMap().preferenceScreen());
     }
 
     public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
-        preferenceScreenWithMap.preferenceScreen().removeAll();
+        info.preferenceScreenWithMap().preferenceScreen().removeAll();
         SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
                 getPreferences(preferenceMatches),
-                preferenceScreenWithMap.preferenceScreen());
+                info.preferenceScreenWithMap().preferenceScreen());
     }
 
     public void preparePreferenceScreenForSearch() {
-        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(preferenceScreenWithMap.preferenceScreen());
+        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(info.preferenceScreenWithMap().preferenceScreen());
     }
 
     public void prepareSearch(final String needle) {
-        new PreferenceScreenResetter(preferenceScreenWithMap.preferenceScreen(), searchableInfoAttribute).resetPreferenceScreen();
+        new PreferenceScreenResetter(info.preferenceScreenWithMap().preferenceScreen(), info.searchableInfoAttribute()).resetPreferenceScreen();
         MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
-                preferenceScreenWithMap.preferenceScreen(),
-                searchableInfoAttribute,
+                info.preferenceScreenWithMap().preferenceScreen(),
+                info.searchableInfoAttribute(),
                 needle);
     }
 
     public void displaySearchResults(final List<PreferenceMatch> preferenceMatches) {
         createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
+        propertyChangeSupport.firePropertyChange("info", null, info);
     }
 
     public Map<Preference, PreferencePath> getPreferencePathByPreference() {
-        return preferencePathByPreference;
+        return info.preferencePathByPreference();
+    }
+
+    public void addPropertyChangeListener(final PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(final PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
     private static List<SearchablePreferencePOJO> getPreferences(final List<PreferenceMatch> preferenceMatches) {
@@ -82,18 +95,30 @@ public class SearchResultsPreferenceScreenHelper {
     }
 
     public SearchableInfoAttribute getSearchableInfoAttribute() {
-        return searchableInfoAttribute;
+        return info.searchableInfoAttribute();
     }
 
     public PreferenceFragmentCompat getHost(final Preference preference) {
-        return preferencePathNavigator.navigatePreferencePath(preferencePathByPreference.get(preference));
+        return info.preferencePathNavigator().navigatePreferencePath(info.preferencePathByPreference().get(preference));
     }
 
     private SearchResultsDisplayer createSearchResultsDisplayer() {
         return new SearchResultsDisplayer(
-                preferenceScreenWithMap.pojoEntityMap(),
-                searchableInfoAttribute,
-                preferenceScreenWithMap.preferenceScreen(),
+                info.preferenceScreenWithMap().pojoEntityMap(),
+                info.searchableInfoAttribute(),
+                info.preferenceScreenWithMap().preferenceScreen(),
                 context);
+    }
+
+    private static Info createInfo(
+            final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
+            final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
+            final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
+        final PreferenceScreenWithMap preferenceScreenWithMap = preferenceScreenWithMapFactory.get();
+        return new Info(
+                new SearchableInfoAttribute(),
+                preferenceScreenWithMap,
+                preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()),
+                preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap()));
     }
 }
