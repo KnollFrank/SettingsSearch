@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.preference.PreferenceManager;
 
+import com.google.common.collect.HashBiMap;
+
 import org.jgrapht.Graph;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -55,9 +58,9 @@ public class MergedPreferenceScreenProvider {
                 PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())),
                 new SearchResultsPreferenceScreenHelper(
                         () ->
-                                PreferenceScreensMerger.mergePreferenceScreens(
-                                        new ArrayList<>(pojoGraph.vertexSet()),
-                                        preferenceManager),
+                                new PreferenceScreenWithMap(
+                                        preferenceManager.createPreferenceScreen(preferenceManager.getContext()),
+                                        HashBiMap.create()),
                         getPreferencePathNavigator(new ArrayList<>(pojoGraph.vertexSet())),
                         pojoEntityMap ->
                                 PreferencePathByPreference.getPreferencePathByPreference(
