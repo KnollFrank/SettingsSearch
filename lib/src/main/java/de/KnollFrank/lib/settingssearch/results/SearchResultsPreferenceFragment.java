@@ -42,7 +42,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
         mergedPreferenceScreen.searchResultsPreferenceScreenHelper().setPreferenceScreen(this);
-        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().preparePreferenceScreenForSearch();
     }
 
     @NonNull

@@ -54,24 +54,16 @@ public class SearchResultsPreferenceScreenHelper {
     }
 
     // 2:
-    public void preparePreferenceScreenForSearch() {
-        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(info.preferenceScreenWithMap().preferenceScreen());
-    }
-
-    // 3:
     public void displaySearchResults(final List<PreferenceMatch> preferenceMatches,
                                      final String query) {
-        prepareSearch(query);
-        createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
-        propertyChangeSupport.firePropertyChange("info", null, info);
-    }
-
-    private void prepareSearch(final String needle) {
+        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(info.preferenceScreenWithMap().preferenceScreen());
         new PreferenceScreenResetter(info.preferenceScreenWithMap().preferenceScreen(), info.searchableInfoAttribute()).resetPreferenceScreen();
         MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 info.preferenceScreenWithMap().preferenceScreen(),
                 info.searchableInfoAttribute(),
-                needle);
+                query);
+        createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
+        propertyChangeSupport.firePropertyChange("info", null, info);
     }
 
     public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
@@ -91,13 +83,6 @@ public class SearchResultsPreferenceScreenHelper {
 
     public void removePropertyChangeListener(final PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    private static List<SearchablePreferencePOJO> getPreferences(final List<PreferenceMatch> preferenceMatches) {
-        return preferenceMatches
-                .stream()
-                .map(PreferenceMatch::preference)
-                .collect(Collectors.toList());
     }
 
     public SearchableInfoAttribute getSearchableInfoAttribute() {
@@ -124,5 +109,12 @@ public class SearchResultsPreferenceScreenHelper {
                 new SearchableInfoAttribute(),
                 preferenceScreenWithMap,
                 preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()));
+    }
+
+    private static List<SearchablePreferencePOJO> getPreferences(final List<PreferenceMatch> preferenceMatches) {
+        return preferenceMatches
+                .stream()
+                .map(PreferenceMatch::preference)
+                .collect(Collectors.toList());
     }
 }
