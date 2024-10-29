@@ -60,8 +60,6 @@ public class SearchResultsPreferenceScreenHelper {
     public Info displaySearchResults(final List<PreferenceMatch> preferenceMatches, final String query) {
         final Info oldInfo = info;
         info = getInfo(preferenceMatches, query);
-        // FK-TODO: move into getInfo()
-        highlight(preferenceMatches, info);
         propertyChangeSupport.firePropertyChange("info", oldInfo, info);
         return info;
     }
@@ -104,22 +102,21 @@ public class SearchResultsPreferenceScreenHelper {
 
     private Info getInfo(final List<PreferenceMatch> preferenceMatches,
                          final String query) {
+        final PreferenceScreen preferenceScreen = info.preferenceScreenWithMap().preferenceScreen();
         final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
         final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
-                getPreferenceScreenWithMap(
-                        info.preferenceScreenWithMap().preferenceScreen(),
+                addPreferenceMatches2PreferenceScreen(
+                        preferenceScreen,
                         preferenceMatches,
                         query,
                         searchableInfoAttribute);
         return new Info(
-                new PreferenceScreenWithMap(
-                        info.preferenceScreenWithMap().preferenceScreen(),
-                        pojoEntityMap),
+                new PreferenceScreenWithMap(preferenceScreen, pojoEntityMap),
                 preferencePathByPreferenceFactory.apply(pojoEntityMap),
                 searchableInfoAttribute);
     }
 
-    private static BiMap<SearchablePreferencePOJO, SearchablePreference> getPreferenceScreenWithMap(
+    private BiMap<SearchablePreferencePOJO, SearchablePreference> addPreferenceMatches2PreferenceScreen(
             final PreferenceScreen preferenceScreen,
             final List<PreferenceMatch> preferenceMatches,
             final String query,
@@ -134,6 +131,14 @@ public class SearchResultsPreferenceScreenHelper {
                 preferenceScreen,
                 searchableInfoAttribute,
                 query);
+        {
+            final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
+                    new PreferenceMatchesHighlighter(
+                            () -> MarkupFactory.createMarkups(context),
+                            pojoEntityMap,
+                            searchableInfoAttribute);
+            preferenceMatchesHighlighter.highlight(preferenceMatches);
+        }
         return pojoEntityMap;
     }
 
@@ -143,14 +148,5 @@ public class SearchResultsPreferenceScreenHelper {
                 .map(PreferenceMatch::preference)
                 .distinct()
                 .collect(Collectors.toList());
-    }
-
-    private void highlight(final List<PreferenceMatch> preferenceMatches, final Info info) {
-        final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
-                new PreferenceMatchesHighlighter(
-                        () -> MarkupFactory.createMarkups(context),
-                        info.preferenceScreenWithMap().pojoEntityMap(),
-                        info.searchableInfoAttribute());
-        preferenceMatchesHighlighter.highlight(preferenceMatches);
     }
 }
