@@ -89,7 +89,7 @@ public class SearchPreferenceFragment extends Fragment {
                                                      final Consumer<SearchResultsPreferenceFragment> onFragmentStarted) {
         showFragment(
                 new SearchResultsPreferenceFragment(
-                        mergedPreferenceScreen.searchResultsPreferenceScreenHelper(),
+                        mergedPreferenceScreen.searchResultsDisplayer(),
                         mergedPreferenceScreen.preferencePathNavigator(),
                         searchConfiguration.fragmentContainerViewId(),
                         showPreferencePathPredicate,
@@ -107,7 +107,7 @@ public class SearchPreferenceFragment extends Fragment {
                 searchConfiguration.queryHint(),
                 new SearchAndDisplay(
                         new PreferenceSearcher(mergedPreferenceScreen.allPreferencesForSearch()),
-                        mergedPreferenceScreen.searchResultsPreferenceScreenHelper()));
+                        mergedPreferenceScreen.searchResultsDisplayer()));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
     }

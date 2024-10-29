@@ -17,10 +17,10 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class SearchResultsPreferenceScreenHelperFactory {
 
-    public static SearchResultsPreferenceScreenHelper createSearchResultsPreferenceScreenHelper(
+    public static SearchResultsDisplayer createSearchResultsPreferenceScreenHelper(
             final PreferenceManager preferenceManager,
             final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
-        return new SearchResultsPreferenceScreenHelper(
+        return new SearchResultsDisplayer(
                 preferencePathByPreferenceFactory,
                 preferenceManager.getContext(),
                 createInitialInfo(preferenceManager, preferencePathByPreferenceFactory));

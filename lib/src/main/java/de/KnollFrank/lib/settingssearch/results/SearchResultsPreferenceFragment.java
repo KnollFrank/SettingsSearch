@@ -24,18 +24,18 @@ import de.KnollFrank.lib.settingssearch.results.adapter.SearchablePreferenceGrou
 
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
-    private final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper;
+    private final SearchResultsDisplayer searchResultsDisplayer;
     private final PreferencePathNavigator preferencePathNavigator;
     private final @IdRes int fragmentContainerViewId;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
 
-    public SearchResultsPreferenceFragment(final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper,
+    public SearchResultsPreferenceFragment(final SearchResultsDisplayer searchResultsDisplayer,
                                            final PreferencePathNavigator preferencePathNavigator,
                                            final @IdRes int fragmentContainerViewId,
                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
                                            final PrepareShow prepareShow) {
-        this.searchResultsPreferenceScreenHelper = searchResultsPreferenceScreenHelper;
+        this.searchResultsDisplayer = searchResultsDisplayer;
         this.preferencePathNavigator = preferencePathNavigator;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
@@ -44,7 +44,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        searchResultsPreferenceScreenHelper.setPreferenceScreen(this);
+        searchResultsDisplayer.setPreferenceScreen(this);
     }
 
     @NonNull
@@ -54,18 +54,18 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         final SearchablePreferenceGroupAdapter searchablePreferenceGroupAdapter =
                 new SearchablePreferenceGroupAdapter(
                         preferenceScreen,
-                        searchResultsPreferenceScreenHelper.getSearchResultsDescription().searchableInfoAttribute(),
-                        searchResultsPreferenceScreenHelper.getSearchResultsDescription().preferencePathByPreference(),
+                        searchResultsDisplayer.getSearchResultsDescription().searchableInfoAttribute(),
+                        searchResultsDisplayer.getSearchResultsDescription().preferencePathByPreference(),
                         showPreferencePathPredicate,
                         Set.of(),
                         this::showPreferenceScreenAndHighlightPreference);
-        searchResultsPreferenceScreenHelper.addPropertyChangeListener(searchablePreferenceGroupAdapter);
+        searchResultsDisplayer.addPropertyChangeListener(searchablePreferenceGroupAdapter);
         return searchablePreferenceGroupAdapter;
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
         showPreferenceScreenAndHighlightPreference(
-                preferencePathNavigator.navigatePreferencePath(searchResultsPreferenceScreenHelper.getSearchResultsDescription().preferencePathByPreference().get(preference)),
+                preferencePathNavigator.navigatePreferencePath(searchResultsDisplayer.getSearchResultsDescription().preferencePathByPreference().get(preference)),
                 preference);
     }
 

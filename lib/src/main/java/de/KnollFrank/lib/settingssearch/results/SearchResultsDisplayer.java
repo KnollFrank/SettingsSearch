@@ -29,16 +29,16 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 // FK-TODO: rename to SearchResultsDisplayer
-public class SearchResultsPreferenceScreenHelper {
+public class SearchResultsDisplayer {
 
     private SearchResultsDescription searchResultsDescription;
     private final Context context;
     private final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory;
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    protected SearchResultsPreferenceScreenHelper(final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
-                                                  final Context context,
-                                                  final SearchResultsDescription searchResultsDescription) {
+    protected SearchResultsDisplayer(final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
+                                     final Context context,
+                                     final SearchResultsDescription searchResultsDescription) {
         this.preferencePathByPreferenceFactory = preferencePathByPreferenceFactory;
         this.context = context;
         this.searchResultsDescription = searchResultsDescription;

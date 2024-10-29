@@ -21,7 +21,7 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchResultsPreferenceScreenHelperTest {
+public class SearchResultsDisplayerTest {
 
     @Test
     public void shouldDisplaySearchResultsOnPreferenceScreen() {
@@ -29,14 +29,14 @@ public class SearchResultsPreferenceScreenHelperTest {
             scenario.onActivity(activity -> {
                 // Given
                 final String title = "Title, title part";
-                final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper =
+                final SearchResultsDisplayer searchResultsDisplayer =
                         SearchResultsPreferenceScreenHelperFactory.createSearchResultsPreferenceScreenHelper(
                                 createSomePreferenceFragment(activity).getPreferenceManager(),
                                 pojoEntityMap -> null);
 
                 // When
                 final SearchResultsDescription searchResultsDescription =
-                        searchResultsPreferenceScreenHelper.displaySearchResults(
+                        searchResultsDisplayer.displaySearchResults(
                                 List.of(
                                         new PreferenceMatch(
                                                 POJOTestFactory.createSearchablePreferencePOJO(
