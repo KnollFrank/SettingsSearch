@@ -31,13 +31,16 @@ public class SearchResultsPreferenceScreenHelper {
     private final PreferenceScreenWithMap preferenceScreenWithMap;
     private final Map<Preference, PreferencePath> preferencePathByPreference;
     private final PreferencePathNavigator preferencePathNavigator;
+    private final Context context;
 
     public SearchResultsPreferenceScreenHelper(final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, PreferencePathNavigator> preferencePathNavigatorFactory,
-                                               final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
+                                               final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
+                                               final Context context) {
         this.preferenceScreenWithMap = preferenceScreenWithMapFactory.get();
         this.preferencePathByPreference = preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap());
         this.preferencePathNavigator = preferencePathNavigatorFactory.apply(preferenceScreenWithMap.pojoEntityMap());
+        this.context = context;
     }
 
     public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
@@ -63,7 +66,7 @@ public class SearchResultsPreferenceScreenHelper {
                 needle);
     }
 
-    public SearchResultsDisplayer createSearchResultsDisplayer(final Context context) {
+    public SearchResultsDisplayer createSearchResultsDisplayer() {
         return new SearchResultsDisplayer(
                 preferenceScreenWithMap.pojoEntityMap(),
                 searchableInfoAttribute,

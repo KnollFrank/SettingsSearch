@@ -504,7 +504,8 @@ public class PreferenceSearcherTest {
                         fragmentFactoryAndInitializer,
                         PreferenceManagerProvider.getPreferenceManager(
                                 fragments,
-                                preferenceFragment.getClass()));
+                                preferenceFragment.getClass()),
+                        fragmentActivity);
 
         return mergedPreferenceScreenProvider.getMergedPreferenceScreen(
                 searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph());

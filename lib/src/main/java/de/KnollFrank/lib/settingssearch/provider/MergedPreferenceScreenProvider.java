@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
+import android.content.Context;
+
 import androidx.preference.PreferenceManager;
 
 import com.google.common.collect.BiMap;
@@ -26,15 +28,18 @@ public class MergedPreferenceScreenProvider {
     private final boolean cacheMergedPreferenceScreens;
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final PreferenceManager preferenceManager;
+    private final Context context;
 
     private static MergedPreferenceScreen mergedPreferenceScreen;
 
     public MergedPreferenceScreenProvider(final boolean cacheMergedPreferenceScreens,
                                           final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
-                                          final PreferenceManager preferenceManager) {
+                                          final PreferenceManager preferenceManager,
+                                          final Context context) {
         this.cacheMergedPreferenceScreens = cacheMergedPreferenceScreens;
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.preferenceManager = preferenceManager;
+        this.context = context;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
@@ -63,7 +68,8 @@ public class MergedPreferenceScreenProvider {
                         pojoEntityMap ->
                                 PreferencePathByPreference.getPreferencePathByPreference(
                                         pojoGraph,
-                                        pojoEntityMap)));
+                                        pojoEntityMap),
+                        context));
     }
 
     private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {
