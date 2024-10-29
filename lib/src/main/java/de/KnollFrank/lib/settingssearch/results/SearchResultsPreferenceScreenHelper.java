@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 
 import com.google.common.collect.BiMap;
 
@@ -49,34 +50,56 @@ public class SearchResultsPreferenceScreenHelper {
         this.context = context;
     }
 
-    // 1:
     public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
         preferenceFragment.setPreferenceScreen(info.preferenceScreenWithMap().preferenceScreen());
     }
 
-    // 2:
     public void displaySearchResults(final List<PreferenceMatch> preferenceMatches,
                                      final String query) {
-        info.preferenceScreenWithMap().preferenceScreen().removeAll();
+        final Info oldInfo = info;
+        final Info newInfo =
+                getInfo(
+                        info.preferenceScreenWithMap().preferenceScreen(),
+                        preferenceMatches,
+                        query);
+        // FK-TODO: inline method displaySearchResults()
+        createSearchResultsDisplayer(newInfo).displaySearchResults(preferenceMatches);
+        propertyChangeSupport.firePropertyChange("info", oldInfo, newInfo);
+        info = newInfo;
+    }
+
+    private Info getInfo(final PreferenceScreen preferenceScreen,
+                         final List<PreferenceMatch> preferenceMatches,
+                         final String query) {
+        final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
+        final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
+                getPreferenceScreenWithMap(
+                        preferenceScreen,
+                        preferenceMatches,
+                        query,
+                        searchableInfoAttribute);
+        return new Info(
+                new PreferenceScreenWithMap(preferenceScreen, pojoEntityMap),
+                preferencePathByPreferenceFactory.apply(pojoEntityMap),
+                searchableInfoAttribute);
+    }
+
+    private static BiMap<SearchablePreferencePOJO, SearchablePreference> getPreferenceScreenWithMap(
+            final PreferenceScreen preferenceScreen,
+            final List<PreferenceMatch> preferenceMatches,
+            final String query,
+            final SearchableInfoAttribute searchableInfoAttribute) {
+        preferenceScreen.removeAll();
         final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
                 SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
                         getPreferences(preferenceMatches),
-                        info.preferenceScreenWithMap().preferenceScreen());
-        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(info.preferenceScreenWithMap().preferenceScreen());
-        final SearchableInfoAttribute searchableInfoSetter = new SearchableInfoAttribute();
+                        preferenceScreen);
+        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(preferenceScreen);
         MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
-                info.preferenceScreenWithMap().preferenceScreen(),
-                searchableInfoSetter,
+                preferenceScreen,
+                searchableInfoAttribute,
                 query);
-        this.info =
-                new Info(
-                        new PreferenceScreenWithMap(
-                                info.preferenceScreenWithMap().preferenceScreen(),
-                                pojoEntityMap),
-                        preferencePathByPreferenceFactory.apply(pojoEntityMap),
-                        searchableInfoSetter);
-        createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
-        propertyChangeSupport.firePropertyChange("info", null, info);
+        return pojoEntityMap;
     }
 
     public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
@@ -106,11 +129,10 @@ public class SearchResultsPreferenceScreenHelper {
         return preferencePathNavigator.navigatePreferencePath(info.preferencePathByPreference().get(preference));
     }
 
-    private SearchResultsDisplayer createSearchResultsDisplayer() {
+    private SearchResultsDisplayer createSearchResultsDisplayer(final Info info) {
         return new SearchResultsDisplayer(
                 info.preferenceScreenWithMap().pojoEntityMap(),
                 info.searchableInfoAttribute(),
-                info.preferenceScreenWithMap().preferenceScreen(),
                 context);
     }
 
@@ -126,6 +148,7 @@ public class SearchResultsPreferenceScreenHelper {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
+                .distinct()
                 .collect(Collectors.toList());
     }
 }
