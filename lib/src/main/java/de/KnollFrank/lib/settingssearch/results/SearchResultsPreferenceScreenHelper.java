@@ -66,12 +66,8 @@ public class SearchResultsPreferenceScreenHelper {
                 needle);
     }
 
-    public SearchResultsDisplayer createSearchResultsDisplayer() {
-        return new SearchResultsDisplayer(
-                preferenceScreenWithMap.pojoEntityMap(),
-                searchableInfoAttribute,
-                preferenceScreenWithMap.preferenceScreen(),
-                context);
+    public void displaySearchResults(final List<PreferenceMatch> preferenceMatches) {
+        createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
     }
 
     public Map<Preference, PreferencePath> getPreferencePathByPreference() {
@@ -91,5 +87,13 @@ public class SearchResultsPreferenceScreenHelper {
 
     public PreferenceFragmentCompat getHost(final Preference preference) {
         return preferencePathNavigator.navigatePreferencePath(preferencePathByPreference.get(preference));
+    }
+
+    private SearchResultsDisplayer createSearchResultsDisplayer() {
+        return new SearchResultsDisplayer(
+                preferenceScreenWithMap.pojoEntityMap(),
+                searchableInfoAttribute,
+                preferenceScreenWithMap.preferenceScreen(),
+                context);
     }
 }

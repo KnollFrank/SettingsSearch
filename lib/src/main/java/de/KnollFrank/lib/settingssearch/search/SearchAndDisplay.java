@@ -2,19 +2,21 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import java.util.List;
 
+import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceScreenHelper;
+
 class SearchAndDisplay {
 
     private final PreferenceSearcher preferenceSearcher;
-    private final SearchResultsDisplayer searchResultsDisplayer;
+    private final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper;
 
     public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
-                            final SearchResultsDisplayer searchResultsDisplayer) {
+                            final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper) {
         this.preferenceSearcher = preferenceSearcher;
-        this.searchResultsDisplayer = searchResultsDisplayer;
+        this.searchResultsPreferenceScreenHelper = searchResultsPreferenceScreenHelper;
     }
 
     public void searchForQueryAndDisplayResults(final String query) {
         final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
-        searchResultsDisplayer.displaySearchResults(preferenceMatches);
+        searchResultsPreferenceScreenHelper.displaySearchResults(preferenceMatches);
     }
 }
