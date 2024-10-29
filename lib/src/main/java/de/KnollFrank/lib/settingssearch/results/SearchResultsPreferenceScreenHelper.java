@@ -64,8 +64,12 @@ public class SearchResultsPreferenceScreenHelper {
         return info;
     }
 
-    public Map<Preference, PreferencePath> getPreferencePathByPreference() {
-        return info.preferencePathByPreference();
+    public PreferenceFragmentCompat getHost(final Preference preference) {
+        return preferencePathNavigator.navigatePreferencePath(info.preferencePathByPreference().get(preference));
+    }
+
+    public Info getInfo() {
+        return info;
     }
 
     public void addPropertyChangeListener(final PropertyChangeListener listener) {
@@ -74,14 +78,6 @@ public class SearchResultsPreferenceScreenHelper {
 
     public void removePropertyChangeListener(final PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    public SearchableInfoAttribute getSearchableInfoAttribute() {
-        return info.searchableInfoAttribute();
-    }
-
-    public PreferenceFragmentCompat getHost(final Preference preference) {
-        return preferencePathNavigator.navigatePreferencePath(info.preferencePathByPreference().get(preference));
     }
 
     private static Info createInitialInfo(
