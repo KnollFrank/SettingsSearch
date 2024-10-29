@@ -17,23 +17,22 @@ import org.threeten.bp.Duration;
 
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.SearchablePreferenceGroupAdapter;
 
 public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
-    private final MergedPreferenceScreen mergedPreferenceScreen;
+    private final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper;
     private final @IdRes int fragmentContainerViewId;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
 
-    public SearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
+    public SearchResultsPreferenceFragment(final SearchResultsPreferenceScreenHelper searchResultsPreferenceScreenHelper,
                                            final @IdRes int fragmentContainerViewId,
                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
                                            final PrepareShow prepareShow) {
-        this.mergedPreferenceScreen = mergedPreferenceScreen;
+        this.searchResultsPreferenceScreenHelper = searchResultsPreferenceScreenHelper;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -41,7 +40,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().setPreferenceScreen(this);
+        searchResultsPreferenceScreenHelper.setPreferenceScreen(this);
     }
 
     @NonNull
@@ -51,18 +50,18 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         final SearchablePreferenceGroupAdapter searchablePreferenceGroupAdapter =
                 new SearchablePreferenceGroupAdapter(
                         preferenceScreen,
-                        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().getSearchResultsDescription().searchableInfoAttribute(),
-                        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().getSearchResultsDescription().preferencePathByPreference(),
+                        searchResultsPreferenceScreenHelper.getSearchResultsDescription().searchableInfoAttribute(),
+                        searchResultsPreferenceScreenHelper.getSearchResultsDescription().preferencePathByPreference(),
                         showPreferencePathPredicate,
                         Set.of(),
                         this::showPreferenceScreenAndHighlightPreference);
-        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().addPropertyChangeListener(searchablePreferenceGroupAdapter);
+        searchResultsPreferenceScreenHelper.addPropertyChangeListener(searchablePreferenceGroupAdapter);
         return searchablePreferenceGroupAdapter;
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
         showPreferenceScreenAndHighlightPreference(
-                mergedPreferenceScreen.searchResultsPreferenceScreenHelper().getHost(preference),
+                searchResultsPreferenceScreenHelper.getHost(preference),
                 preference);
     }
 

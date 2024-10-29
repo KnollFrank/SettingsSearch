@@ -89,7 +89,7 @@ public class SearchPreferenceFragment extends Fragment {
                                                      final Consumer<SearchResultsPreferenceFragment> onFragmentStarted) {
         showFragment(
                 new SearchResultsPreferenceFragment(
-                        mergedPreferenceScreen,
+                        mergedPreferenceScreen.searchResultsPreferenceScreenHelper(),
                         searchConfiguration.fragmentContainerViewId(),
                         showPreferencePathPredicate,
                         prepareShow),
