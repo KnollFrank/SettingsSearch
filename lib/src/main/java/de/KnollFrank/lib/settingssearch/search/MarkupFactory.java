@@ -13,7 +13,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.R;
 
-class MarkupFactory {
+public class MarkupFactory {
 
     public static List<Object> createMarkups(final Context context) {
         final ImmutableList.Builder<Object> markupsBuilder = ImmutableList.builder();

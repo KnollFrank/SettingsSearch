@@ -23,9 +23,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePrefer
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
+import de.KnollFrank.lib.settingssearch.search.MarkupFactory;
 import de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
-import de.KnollFrank.lib.settingssearch.search.SearchResultsDisplayer;
+import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 // FK-TODO: refactor
@@ -59,8 +60,8 @@ public class SearchResultsPreferenceScreenHelper {
     public Info displaySearchResults(final List<PreferenceMatch> preferenceMatches, final String query) {
         final Info oldInfo = info;
         info = getInfo(preferenceMatches, query);
-        // FK-TODO: inline method displaySearchResults()
-        createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
+        // FK-TODO: move into getInfo()
+        highlight(preferenceMatches, info);
         propertyChangeSupport.firePropertyChange("info", oldInfo, info);
         return info;
     }
@@ -99,13 +100,6 @@ public class SearchResultsPreferenceScreenHelper {
         return new PreferenceScreenWithMap(
                 preferenceManager.createPreferenceScreen(preferenceManager.getContext()),
                 HashBiMap.create());
-    }
-
-    private SearchResultsDisplayer createSearchResultsDisplayer() {
-        return new SearchResultsDisplayer(
-                info.preferenceScreenWithMap().pojoEntityMap(),
-                info.searchableInfoAttribute(),
-                context);
     }
 
     private Info getInfo(final List<PreferenceMatch> preferenceMatches,
@@ -149,5 +143,14 @@ public class SearchResultsPreferenceScreenHelper {
                 .map(PreferenceMatch::preference)
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    private void highlight(final List<PreferenceMatch> preferenceMatches, final Info info) {
+        final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
+                new PreferenceMatchesHighlighter(
+                        () -> MarkupFactory.createMarkups(context),
+                        info.preferenceScreenWithMap().pojoEntityMap(),
+                        info.searchableInfoAttribute());
+        preferenceMatchesHighlighter.highlight(preferenceMatches);
     }
 }

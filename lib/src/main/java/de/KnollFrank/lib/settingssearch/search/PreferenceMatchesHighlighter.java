@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
-class PreferenceMatchesHighlighter {
+public class PreferenceMatchesHighlighter {
 
     private final Supplier<List<Object>> markupsFactory;
     private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
