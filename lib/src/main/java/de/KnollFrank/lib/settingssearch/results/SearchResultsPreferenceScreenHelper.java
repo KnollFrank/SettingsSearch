@@ -32,18 +32,19 @@ public class SearchResultsPreferenceScreenHelper {
     private final Info info;
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
     private final Context context;
+    private final PreferencePathNavigator preferencePathNavigator;
 
     public record Info(SearchableInfoAttribute searchableInfoAttribute,
                        PreferenceScreenWithMap preferenceScreenWithMap,
-                       Map<Preference, PreferencePath> preferencePathByPreference,
-                       PreferencePathNavigator preferencePathNavigator) {
+                       Map<Preference, PreferencePath> preferencePathByPreference) {
     }
 
     public SearchResultsPreferenceScreenHelper(final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
                                                final PreferencePathNavigator preferencePathNavigator,
                                                final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
                                                final Context context) {
-        this.info = createInfo(preferenceScreenWithMapFactory, preferencePathNavigator, preferencePathByPreferenceFactory);
+        this.preferencePathNavigator = preferencePathNavigator;
+        this.info = createInfo(preferenceScreenWithMapFactory, preferencePathByPreferenceFactory);
         this.context = context;
     }
 
@@ -103,7 +104,7 @@ public class SearchResultsPreferenceScreenHelper {
     }
 
     public PreferenceFragmentCompat getHost(final Preference preference) {
-        return info.preferencePathNavigator().navigatePreferencePath(info.preferencePathByPreference().get(preference));
+        return preferencePathNavigator.navigatePreferencePath(info.preferencePathByPreference().get(preference));
     }
 
     private SearchResultsDisplayer createSearchResultsDisplayer() {
@@ -116,13 +117,11 @@ public class SearchResultsPreferenceScreenHelper {
 
     private static Info createInfo(
             final Supplier<PreferenceScreenWithMap> preferenceScreenWithMapFactory,
-            final PreferencePathNavigator preferencePathNavigator,
             final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         final PreferenceScreenWithMap preferenceScreenWithMap = preferenceScreenWithMapFactory.get();
         return new Info(
                 new SearchableInfoAttribute(),
                 preferenceScreenWithMap,
-                preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()),
-                preferencePathNavigator);
+                preferencePathByPreferenceFactory.apply(preferenceScreenWithMap.pojoEntityMap()));
     }
 }
