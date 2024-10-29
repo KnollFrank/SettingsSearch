@@ -1,5 +1,8 @@
 package de.KnollFrank.lib.settingssearch.results;
 
+import static de.KnollFrank.lib.settingssearch.results.PreferencesDisabler.disablePreferences;
+import static de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo;
+
 import android.content.Context;
 
 import androidx.preference.Preference;
@@ -22,7 +25,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePrefer
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.search.MarkupFactory;
-import de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -100,8 +102,8 @@ public class SearchResultsPreferenceScreenHelper {
                 SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
                         getPreferences(preferenceMatches),
                         preferenceScreen);
-        PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(preferenceScreen);
-        MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
+        disablePreferences(preferenceScreen);
+        setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 preferenceScreen,
                 searchableInfoAttribute,
                 query);
