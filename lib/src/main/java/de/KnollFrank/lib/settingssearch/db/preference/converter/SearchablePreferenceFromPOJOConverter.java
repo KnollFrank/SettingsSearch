@@ -41,8 +41,8 @@ public class SearchablePreferenceFromPOJOConverter {
                         .collect(Collectors.toList()));
     }
 
-    private static SearchablePreference createPlainSearchablePreference(final SearchablePreferencePOJO searchablePreferencePOJO,
-                                                                        final Context context) {
+    public static SearchablePreference createPlainSearchablePreference(final SearchablePreferencePOJO searchablePreferencePOJO,
+                                                                       final Context context) {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         context,
