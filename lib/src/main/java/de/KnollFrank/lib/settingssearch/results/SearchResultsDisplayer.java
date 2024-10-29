@@ -28,7 +28,6 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
-// FK-TODO: rename to SearchResultsDisplayer
 public class SearchResultsDisplayer {
 
     private SearchResultsDescription searchResultsDescription;
