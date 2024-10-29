@@ -35,6 +35,7 @@ class PreferencePathByPreference {
         return preferencePathByPreference
                 .entrySet()
                 .stream()
+                .filter(entry -> pojoEntityMap.containsKey(entry.getKey()))
                 .collect(
                         Collectors.toMap(
                                 entry -> pojoEntityMap.get(entry.getKey()),
