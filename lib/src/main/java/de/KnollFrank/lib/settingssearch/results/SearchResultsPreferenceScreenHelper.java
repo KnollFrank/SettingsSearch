@@ -47,21 +47,17 @@ public class SearchResultsPreferenceScreenHelper {
         this.context = context;
     }
 
+    // 1:
     public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
         preferenceFragment.setPreferenceScreen(info.preferenceScreenWithMap().preferenceScreen());
     }
 
-    public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
-        info.preferenceScreenWithMap().preferenceScreen().removeAll();
-        SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
-                getPreferences(preferenceMatches),
-                info.preferenceScreenWithMap().preferenceScreen());
-    }
-
+    // 2:
     public void preparePreferenceScreenForSearch() {
         PreferenceScreenForSearchPreparer.preparePreferenceScreenForSearch(info.preferenceScreenWithMap().preferenceScreen());
     }
 
+    // 3:
     public void prepareSearch(final String needle) {
         new PreferenceScreenResetter(info.preferenceScreenWithMap().preferenceScreen(), info.searchableInfoAttribute()).resetPreferenceScreen();
         MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
@@ -70,9 +66,17 @@ public class SearchResultsPreferenceScreenHelper {
                 needle);
     }
 
+    // 4:
     public void displaySearchResults(final List<PreferenceMatch> preferenceMatches) {
         createSearchResultsDisplayer().displaySearchResults(preferenceMatches);
         propertyChangeSupport.firePropertyChange("info", null, info);
+    }
+
+    public void displayPreferenceMatchesOnPreferenceScreen(final List<PreferenceMatch> preferenceMatches) {
+        info.preferenceScreenWithMap().preferenceScreen().removeAll();
+        SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
+                getPreferences(preferenceMatches),
+                info.preferenceScreenWithMap().preferenceScreen());
     }
 
     public Map<Preference, PreferencePath> getPreferencePathByPreference() {

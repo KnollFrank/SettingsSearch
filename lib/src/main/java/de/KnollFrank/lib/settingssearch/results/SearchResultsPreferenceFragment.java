@@ -34,7 +34,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
                                            final PrepareShow prepareShow) {
         this.mergedPreferenceScreen = mergedPreferenceScreen;
-        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().preparePreferenceScreenForSearch();
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -43,6 +42,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
         mergedPreferenceScreen.searchResultsPreferenceScreenHelper().setPreferenceScreen(this);
+        mergedPreferenceScreen.searchResultsPreferenceScreenHelper().preparePreferenceScreenForSearch();
     }
 
     @NonNull
