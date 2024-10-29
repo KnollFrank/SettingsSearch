@@ -53,13 +53,13 @@ public class MergedPreferenceScreenProvider {
                 PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())),
                 new SearchResultsPreferenceScreenHelper(
                         () ->
-                        PreferenceScreensMerger.mergePreferenceScreens(
-                                new ArrayList<>(pojoGraph.vertexSet()),
-                                preferenceManager),
+                                PreferenceScreensMerger.mergePreferenceScreens(
+                                        new ArrayList<>(pojoGraph.vertexSet()),
+                                        preferenceManager),
                         pojoEntityMap ->
-                        getPreferencePathNavigator(
-                                new ArrayList<>(pojoGraph.vertexSet()),
-                                pojoEntityMap),
+                                getPreferencePathNavigator(
+                                        new ArrayList<>(pojoGraph.vertexSet()),
+                                        pojoEntityMap),
                         pojoEntityMap ->
                                 PreferencePathByPreference.getPreferencePathByPreference(
                                         pojoGraph,
