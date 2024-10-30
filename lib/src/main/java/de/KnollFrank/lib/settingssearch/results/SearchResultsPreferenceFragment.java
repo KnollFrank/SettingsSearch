@@ -3,6 +3,8 @@ package de.KnollFrank.lib.settingssearch.results;
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.PreferenceViewHolder;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
@@ -45,6 +48,15 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
         setPreferenceScreen(searchResultsDisplayer.getSearchResultsDescription().preferenceScreenWithMap().preferenceScreen());
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView onCreateRecyclerView(@NonNull final LayoutInflater inflater, @NonNull final ViewGroup parent, @Nullable final Bundle savedInstanceState) {
+        final RecyclerView recyclerView = super.onCreateRecyclerView(inflater, parent, savedInstanceState);
+        recyclerView.setItemAnimator(null);
+        recyclerView.setLayoutAnimation(null);
+        return recyclerView;
     }
 
     @NonNull
