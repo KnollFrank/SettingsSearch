@@ -76,6 +76,14 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter imp
                 getOnClickListener(preference));
     }
 
+    @Override
+    public void propertyChange(final PropertyChangeEvent evt) {
+        final SearchResultsDescription searchResultsDescription = (SearchResultsDescription) evt.getNewValue();
+        this.searchableInfoGetter = searchResultsDescription.searchableInfoAttribute();
+        this.preferencePathByPreference = searchResultsDescription.preferencePathByPreference();
+        Log.i(this.getClass().getName(), "new Info");
+    }
+
     private static PreferenceViewHolder addSearchableInfoViewAndPreferencePathViewIfAbsent(
             final PreferenceViewHolder holder,
             final Context context) {
@@ -104,13 +112,5 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter imp
         return nonClickablePreferences.contains(preference) ?
                 Optional.empty() :
                 Optional.of(v -> onPreferenceClickListener.accept(preference));
-    }
-
-    @Override
-    public void propertyChange(final PropertyChangeEvent evt) {
-        final SearchResultsDescription searchResultsDescription = (SearchResultsDescription) evt.getNewValue();
-        this.searchableInfoGetter = searchResultsDescription.searchableInfoAttribute();
-        this.preferencePathByPreference = searchResultsDescription.preferencePathByPreference();
-        Log.i(this.getClass().getName(), "new Info");
     }
 }
