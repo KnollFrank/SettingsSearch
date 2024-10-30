@@ -24,11 +24,11 @@ public class SearchResultsPreferenceScreenHelperFactory {
         return new SearchResultsDisplayer(
                 preferencePathByPreferenceFactory,
                 () -> MarkupFactory.createMarkups(preferenceManager.getContext()),
-                createInitialInfo(preferenceManager, preferencePathByPreferenceFactory));
+                createInitialSearchResultsDescription(preferenceManager, preferencePathByPreferenceFactory));
     }
 
-    private static SearchResultsDescription createInitialInfo(final PreferenceManager preferenceManager,
-                                                              final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
+    private static SearchResultsDescription createInitialSearchResultsDescription(final PreferenceManager preferenceManager,
+                                                                                  final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         final PreferenceScreenWithMap preferenceScreenWithMap = createEmptyPreferenceScreenWithMap(preferenceManager);
         return new SearchResultsDescription(
                 preferenceScreenWithMap,
