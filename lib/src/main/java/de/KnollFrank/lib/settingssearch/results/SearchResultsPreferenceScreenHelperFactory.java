@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.search.MarkupFactory;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class SearchResultsPreferenceScreenHelperFactory {
@@ -22,7 +23,7 @@ public class SearchResultsPreferenceScreenHelperFactory {
             final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         return new SearchResultsDisplayer(
                 preferencePathByPreferenceFactory,
-                preferenceManager.getContext(),
+                () -> MarkupFactory.createMarkups(preferenceManager.getContext()),
                 createInitialInfo(preferenceManager, preferencePathByPreferenceFactory));
     }
 

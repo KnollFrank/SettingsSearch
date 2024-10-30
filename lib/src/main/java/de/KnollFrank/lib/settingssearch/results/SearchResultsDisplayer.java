@@ -3,8 +3,6 @@ package de.KnollFrank.lib.settingssearch.results;
 import static de.KnollFrank.lib.settingssearch.results.PreferencesDisabler.disablePreferences;
 import static de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSetter.setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo;
 
-import android.content.Context;
-
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
@@ -15,6 +13,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -22,7 +21,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.search.MarkupFactory;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -30,15 +28,15 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 public class SearchResultsDisplayer {
 
     private SearchResultsDescription searchResultsDescription;
-    private final Context context;
+    private final Supplier<List<Object>> markupsFactory;
     private final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory;
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
     protected SearchResultsDisplayer(final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
-                                     final Context context,
+                                     final Supplier<List<Object>> markupsFactory,
                                      final SearchResultsDescription searchResultsDescription) {
         this.preferencePathByPreferenceFactory = preferencePathByPreferenceFactory;
-        this.context = context;
+        this.markupsFactory = markupsFactory;
         this.searchResultsDescription = searchResultsDescription;
     }
 
@@ -96,7 +94,7 @@ public class SearchResultsDisplayer {
         {
             final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                     new PreferenceMatchesHighlighter(
-                            () -> MarkupFactory.createMarkups(context),
+                            markupsFactory,
                             pojoEntityMap,
                             searchableInfoAttribute);
             preferenceMatchesHighlighter.highlight(preferenceMatches);
