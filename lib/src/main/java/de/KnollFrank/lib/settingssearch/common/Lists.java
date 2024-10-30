@@ -15,10 +15,6 @@ public class Lists {
                 .collect(Collectors.toList());
     }
 
-    public static <T> List<T> concat(final List<T>... lists) {
-        return concat(Arrays.asList(lists));
-    }
-
     public static <T> List<T> asList(final Optional<T[]> elements) {
         return elements
                 .map(Arrays::asList)
