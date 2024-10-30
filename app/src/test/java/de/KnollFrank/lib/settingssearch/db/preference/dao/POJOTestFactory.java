@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.settingssearch.R;
 
 public class POJOTestFactory {
@@ -62,11 +61,4 @@ public class POJOTestFactory {
                 List.of());
     }
 
-    public static SearchablePreferenceScreenPOJO createSomeSearchablePreferenceScreenPOJO(
-            final SearchablePreferencePOJO searchablePreferencePOJO) {
-        return new SearchablePreferenceScreenPOJO(
-                "title of search results",
-                "summary of search results",
-                List.of(searchablePreferencePOJO));
-    }
 }
