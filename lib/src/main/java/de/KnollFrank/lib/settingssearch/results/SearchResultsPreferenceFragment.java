@@ -44,7 +44,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        searchResultsDisplayer.setPreferenceScreen(this);
+        setPreferenceScreen(searchResultsDisplayer.getSearchResultsDescription().preferenceScreenWithMap().preferenceScreen());
     }
 
     @NonNull

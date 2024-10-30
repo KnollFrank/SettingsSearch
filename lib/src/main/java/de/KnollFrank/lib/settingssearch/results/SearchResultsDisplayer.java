@@ -6,7 +6,6 @@ import static de.KnollFrank.lib.settingssearch.search.MatchingSearchableInfosSet
 import android.content.Context;
 
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import com.google.common.collect.BiMap;
@@ -43,14 +42,9 @@ public class SearchResultsDisplayer {
         this.searchResultsDescription = searchResultsDescription;
     }
 
-    // FK-TODO: inline
-    public void setPreferenceScreen(final PreferenceFragmentCompat preferenceFragment) {
-        preferenceFragment.setPreferenceScreen(searchResultsDescription.preferenceScreenWithMap().preferenceScreen());
-    }
-
     public SearchResultsDescription displaySearchResults(final List<PreferenceMatch> preferenceMatches, final String query) {
         final SearchResultsDescription oldSearchResultsDescription = searchResultsDescription;
-        searchResultsDescription = getSearchResultsDescription(preferenceMatches, query);
+        searchResultsDescription = addPreferenceMatches2PreferenceScreen(preferenceMatches, query);
         propertyChangeSupport.firePropertyChange("SearchResultsDescription", oldSearchResultsDescription, searchResultsDescription);
         return searchResultsDescription;
     }
@@ -67,7 +61,7 @@ public class SearchResultsDisplayer {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    private SearchResultsDescription getSearchResultsDescription(
+    private SearchResultsDescription addPreferenceMatches2PreferenceScreen(
             final List<PreferenceMatch> preferenceMatches,
             final String query) {
         final PreferenceScreen preferenceScreen = searchResultsDescription.preferenceScreenWithMap().preferenceScreen();
