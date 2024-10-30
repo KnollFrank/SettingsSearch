@@ -56,7 +56,6 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 @RunWith(RobolectricTestRunner.class)
 public class PreferenceSearcherTest {
 
-    // FK-FIXME: schreibe einen Test für den folgenden Fehler: suche nach "in a custom", dann wird im suchergebnis "in a custom" angezeigt und gehighlightet. Suche dann nach "fourth" und wiederum nach "in a custom". Dann erscheinen zwar im Suchergebnis die richtigen Preferences, sie haben aber keinen Text "in a custom", der dann natürlich auch nicht gehighlightet werden kann.
     @Test
     public void shouldSearchAndFindTitle() {
         final String keyword = "fourth";
