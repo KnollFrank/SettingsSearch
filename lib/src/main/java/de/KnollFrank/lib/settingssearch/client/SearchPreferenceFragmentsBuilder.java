@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import android.content.Context;
+
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Optional;
@@ -19,6 +21,7 @@ public class SearchPreferenceFragmentsBuilder {
 
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
+    private final Context applicationContext;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -34,9 +37,11 @@ public class SearchPreferenceFragmentsBuilder {
                     searchablePreferenceScreenGraphProvider;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
-                                               final FragmentManager fragmentManager) {
+                                               final FragmentManager fragmentManager,
+                                               final Context applicationContext) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
+        this.applicationContext = applicationContext;
     }
 
     public SearchPreferenceFragmentsBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
@@ -96,6 +101,7 @@ public class SearchPreferenceFragmentsBuilder {
                 prepareShow,
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
-                searchablePreferenceScreenGraphProviderWrapper);
+                searchablePreferenceScreenGraphProviderWrapper,
+                applicationContext);
     }
 }

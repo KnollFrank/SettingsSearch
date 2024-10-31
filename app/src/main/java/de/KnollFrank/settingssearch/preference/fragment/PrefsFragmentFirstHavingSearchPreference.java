@@ -67,7 +67,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                                         getId(),
                                         Optional.empty(),
                                         getClass()),
-                                getParentFragmentManager()),
+                                getParentFragmentManager(),
+                                requireActivity().getApplicationContext()),
                         GraphDAOMode.PERSIST_GRAPH)
                 .build();
     }

@@ -2,17 +2,26 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.SearchView;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
+import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
+import de.KnollFrank.lib.settingssearch.db.preference.AppDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
@@ -46,7 +55,8 @@ public class SearchPreferenceFragment extends Fragment {
                                     final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                     final PrepareShow prepareShow,
                                     final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                    final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper) {
+                                    final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper,
+                                    final Context applicationContext) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.isPreferenceSearchable = isPreferenceSearchable;
@@ -58,6 +68,24 @@ public class SearchPreferenceFragment extends Fragment {
         this.prepareShow = prepareShow;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
+        final AppDatabase db = AppDatabase.getInstance(applicationContext);
+        final SearchablePreferencePOJODAO searchablePreferencePOJODAO = db.searchablePreferencePOJODAO();
+        searchablePreferencePOJODAO.insertAll(
+                SearchablePreferencePOJO.of(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        16,
+                        Optional.empty(),
+                        Optional.empty(),
+                        0,
+                        Optional.empty(),
+                        true,
+                        Optional.of("some searchable info of first child"),
+                        new Bundle(),
+                        List.of()));
+        final List<SearchablePreferencePOJO> searchablePreferencePOJOs = searchablePreferencePOJODAO.getAll();
+        Log.i(SearchPreferenceFragments.class.getName(), "searchablePreferencePOJOs: " + searchablePreferencePOJOs);
     }
 
     @Override
