@@ -16,9 +16,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.search.MarkupFactory;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
-public class SearchResultsPreferenceScreenHelperFactory {
+public class SearchResultsDisplayerFactory {
 
-    public static SearchResultsDisplayer createSearchResultsPreferenceScreenHelper(
+    public static SearchResultsDisplayer createSearchResultsDisplayer(
             final PreferenceManager preferenceManager,
             final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         return new SearchResultsDisplayer(
