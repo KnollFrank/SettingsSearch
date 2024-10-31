@@ -25,12 +25,8 @@ class SearchViewConfigurer {
 
             @Override
             public boolean onQueryTextChange(final String newText) {
-                filterPreferenceItemsBy(newText);
+                searchAndDisplay.searchForQueryAndDisplayResults(newText);
                 return true;
-            }
-
-            private void filterPreferenceItemsBy(final String query) {
-                searchAndDisplay.searchForQueryAndDisplayResults(query);
             }
         };
     }
