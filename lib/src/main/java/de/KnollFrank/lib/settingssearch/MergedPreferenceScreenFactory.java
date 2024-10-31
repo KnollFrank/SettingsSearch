@@ -101,7 +101,9 @@ public class MergedPreferenceScreenFactory {
                 context);
     }
 
-    private MergedPreferenceScreenProvider getMergedPreferenceScreenProvider(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer, final PreferenceManager preferenceManager) {
+    private MergedPreferenceScreenProvider getMergedPreferenceScreenProvider(
+            final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
+            final PreferenceManager preferenceManager) {
         return new MergedPreferenceScreenProvider(
                 true,
                 fragmentFactoryAndInitializer,
