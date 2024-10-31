@@ -30,6 +30,7 @@ import de.KnollFrank.lib.settingssearch.search.IsPreferenceVisibleAndSearchable;
 import de.KnollFrank.lib.settingssearch.search.PreferenceManagerProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
+// FK-TODO: inline MergedPreferenceScreenProvider into MergedPreferenceScreenFactory?
 public class MergedPreferenceScreenFactory {
 
     private final FragmentManager fragmentManager;
