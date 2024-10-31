@@ -14,7 +14,7 @@ public record PreferencePath(List<SearchablePreferencePOJO> preferences) {
         return Lists.getLastElement(preferences);
     }
 
-    public PreferencePath add(final SearchablePreferencePOJO preference) {
+    public PreferencePath append(final SearchablePreferencePOJO preference) {
         return new PreferencePath(
                 ImmutableList
                         .<SearchablePreferencePOJO>builder()

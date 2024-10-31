@@ -30,7 +30,7 @@ public class SearchResultsDisplayerTest {
                 // Given
                 final String title = "Title, title part";
                 final SearchResultsDisplayer searchResultsDisplayer =
-                        SearchResultsPreferenceScreenHelperFactory.createSearchResultsPreferenceScreenHelper(
+                        SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                                 createSomePreferenceFragment(activity).getPreferenceManager(),
                                 pojoEntityMap -> null);
 

@@ -50,7 +50,7 @@ public class PreferencePathByPojoPreferenceProvider {
                                 preferenceScreenGraph
                                         .getEdge(parentPreferenceScreen, preferenceScreen)
                                         .preference;
-                        return parentPreferencePath.add(preference);
+                        return parentPreferencePath.append(preference);
                     }
                 };
         preferenceScreenGraphVisitor.visit(preferenceScreenGraph);
@@ -68,7 +68,7 @@ public class PreferencePathByPojoPreferenceProvider {
                                         searchablePreference ->
                                                 preferencePathByPreferenceBuilder.put(
                                                         searchablePreference,
-                                                        preferencePath.add(searchablePreference))));
+                                                        preferencePath.append(searchablePreference))));
         return preferencePathByPreferenceBuilder.build();
     }
 }
