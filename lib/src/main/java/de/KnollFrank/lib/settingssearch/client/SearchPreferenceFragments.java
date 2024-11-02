@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory.MergedPreferenceScreenDataMode;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -32,11 +33,17 @@ public class SearchPreferenceFragments {
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper;
     private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
+    private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
-                                                           final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput) {
-        return new SearchPreferenceFragmentsBuilder(searchConfiguration, fragmentManager, mergedPreferenceScreenDataInput);
+                                                           final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
+                                                           final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
+        return new SearchPreferenceFragmentsBuilder(
+                searchConfiguration,
+                fragmentManager,
+                mergedPreferenceScreenDataInput,
+                mergedPreferenceScreenDataMode);
     }
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
@@ -50,7 +57,8 @@ public class SearchPreferenceFragments {
                                         final FragmentManager fragmentManager,
                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                         final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper,
-                                        final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput) {
+                                        final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
+                                        final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -63,6 +71,7 @@ public class SearchPreferenceFragments {
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
         this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
+        this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
     }
 
     public void showSearchPreferenceFragment() {
@@ -80,7 +89,8 @@ public class SearchPreferenceFragments {
                                 preferenceScreenGraphAvailableListener,
                                 searchableInfoProvider,
                                 preferenceDialogAndSearchableInfoProvider,
-                                mergedPreferenceScreenDataInput)),
+                                mergedPreferenceScreenDataInput,
+                                mergedPreferenceScreenDataMode)),
                 searchPreferenceFragment -> {
                 },
                 true,

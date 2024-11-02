@@ -17,6 +17,7 @@ public class SearchablePreferenceScreenGraphProviderWrapper {
             final GraphDAOMode graphDAOMode,
             final Context context) {
         return switch (graphDAOMode) {
+            // FK-TODO: remove GraphDAOMode, just Compute the pojoGraph
             case PERSIST_GRAPH -> new ComputeAndPersist(
                     searchablePreferenceScreenGraphProvider,
                     context);
