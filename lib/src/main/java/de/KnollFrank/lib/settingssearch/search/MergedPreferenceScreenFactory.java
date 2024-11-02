@@ -76,7 +76,7 @@ class MergedPreferenceScreenFactory {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         fragment.requireContext());
-        return de.KnollFrank.lib.settingssearch.MergedPreferenceScreenFactory.getMergedPreferenceScreen(
+        return MergedPreferenceScreen.of(
                 getMergedPreferenceScreenData(() -> getSearchablePreferenceScreenGraph(fragments, preferenceDialogs)),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
