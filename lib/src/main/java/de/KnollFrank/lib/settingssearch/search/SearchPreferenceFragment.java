@@ -28,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
@@ -107,25 +108,31 @@ public class SearchPreferenceFragment extends Fragment {
 
     private Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph(
             final Fragments fragments,
-            final DefaultFragmentInitializer preferenceDialogs) {
+            final PreferenceDialogs preferenceDialogs) {
         return searchablePreferenceScreenGraphProviderWrapper
                 .wrap(
-                        new DefaultSearchablePreferenceScreenGraphProvider(
-                                searchConfiguration.rootPreferenceFragment().getName(),
-                                new PreferenceScreenWithHostProvider(
-                                        fragments,
-                                        new SearchablePreferenceScreenProvider(
-                                                new IsPreferenceVisibleAndSearchable(
-                                                        isPreferenceSearchable))),
-                                preferenceConnected2PreferenceFragmentProvider,
-                                preferenceScreenGraphAvailableListener,
-                                new SearchableInfoAndDialogInfoProvider(
-                                        searchableInfoProvider,
-                                        new SearchableDialogInfoOfProvider(
-                                                preferenceDialogs,
-                                                preferenceDialogAndSearchableInfoProvider))),
+                        getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs),
                         requireContext())
                 .getSearchablePreferenceScreenGraph();
+    }
+
+    private DefaultSearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider(
+            final Fragments fragments,
+            final PreferenceDialogs preferenceDialogs) {
+        return new DefaultSearchablePreferenceScreenGraphProvider(
+                searchConfiguration.rootPreferenceFragment().getName(),
+                new PreferenceScreenWithHostProvider(
+                        fragments,
+                        new SearchablePreferenceScreenProvider(
+                                new IsPreferenceVisibleAndSearchable(
+                                        isPreferenceSearchable))),
+                preferenceConnected2PreferenceFragmentProvider,
+                preferenceScreenGraphAvailableListener,
+                new SearchableInfoAndDialogInfoProvider(
+                        searchableInfoProvider,
+                        new SearchableDialogInfoOfProvider(
+                                preferenceDialogs,
+                                preferenceDialogAndSearchableInfoProvider)));
     }
 
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier) {
