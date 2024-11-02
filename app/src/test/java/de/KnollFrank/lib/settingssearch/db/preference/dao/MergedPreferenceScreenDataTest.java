@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverterTest.equalBundles;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest.outputStream2InputStream;
 
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableMap;
@@ -16,6 +17,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -49,22 +51,25 @@ public class MergedPreferenceScreenDataTest {
                                         .put(1, List.of(1))
                                         .put(2, List.of(1, 2))
                                         .build(),
-                                null);
+                                Map.of(1, PreferenceFragmentCompat.class));
                 final var outputStream1 = new ByteArrayOutputStream();
                 final var outputStream2 = new ByteArrayOutputStream();
+                final var outputStream3 = new ByteArrayOutputStream();
 
                 // When
-                MergedPreferenceScreenDataDAO.persist(data, outputStream1, outputStream2);
+                MergedPreferenceScreenDataDAO.persist(data, outputStream1, outputStream2, outputStream3);
                 final MergedPreferenceScreenData dataActual =
                         MergedPreferenceScreenDataDAO.load(
                                 outputStream2InputStream(outputStream1),
-                                outputStream2InputStream(outputStream2));
+                                outputStream2InputStream(outputStream2),
+                                outputStream2InputStream(outputStream3));
 
                 // Then
                 assertEquals(
                         new ArrayList<>(dataActual.allPreferencesForSearch()),
                         new ArrayList<>(data.allPreferencesForSearch()));
                 assertThat(dataActual.preferencePathByPreferenceId(), is(data.preferencePathByPreferenceId()));
+                assertThat(dataActual.hostByPreferenceId(), is(data.hostByPreferenceId()));
             });
         }
     }
