@@ -27,7 +27,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -92,10 +92,10 @@ public class MergedPreferenceScreenFactory {
                 fragmentFactoryAndInitializer);
     }
 
-    private DefaultSearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider(
+    private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider(
             final Fragments fragments,
             final PreferenceDialogs preferenceDialogs) {
-        return new DefaultSearchablePreferenceScreenGraphProvider(
+        return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragment.getName(),
                 new PreferenceScreenWithHostProvider(
                         fragments,

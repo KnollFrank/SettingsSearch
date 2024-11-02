@@ -39,7 +39,6 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -482,7 +481,7 @@ public class PreferenceSearcherTest {
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         fragmentActivity);
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
-                new DefaultSearchablePreferenceScreenGraphProvider(
+                new SearchablePreferenceScreenGraphProvider(
                         preferenceFragment.getClass().getName(),
                         new PreferenceScreenWithHostProvider(
                                 fragments,

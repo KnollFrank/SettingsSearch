@@ -2,9 +2,9 @@ package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.DefaultSearchablePreferenceScreenGraphProvider1Test.createSearchablePreferenceScreenGraphProvider;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
+import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.createSearchablePreferenceScreenGraphProvider;
 
 import android.os.Bundle;
 
@@ -27,12 +27,12 @@ import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphPro
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class DefaultSearchablePreferenceScreenGraphProvider2Test {
+public class SearchablePreferenceScreenGraphProvider2Test {
 
     @Test
     public void shouldIgnoreNonPreferenceFragments() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(DefaultSearchablePreferenceScreenGraphProvider2Test::shouldIgnoreNonPreferenceFragments);
+            scenario.onActivity(SearchablePreferenceScreenGraphProvider2Test::shouldIgnoreNonPreferenceFragments);
         }
     }
 

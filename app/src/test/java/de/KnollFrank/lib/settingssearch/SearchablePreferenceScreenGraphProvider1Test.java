@@ -30,13 +30,12 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
-import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class DefaultSearchablePreferenceScreenGraphProvider1Test {
+public class SearchablePreferenceScreenGraphProvider1Test {
 
     @Test
     public void shouldGetSearchablePreferenceScreenGraph() {
@@ -111,7 +110,7 @@ public class DefaultSearchablePreferenceScreenGraphProvider1Test {
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
             final String rootPreferenceFragmentClassName,
             final FragmentActivity activity) {
-        return new DefaultSearchablePreferenceScreenGraphProvider(
+        return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragmentClassName,
                 new PreferenceScreenWithHostProvider(
                         FragmentsFactory.createFragments(activity),
