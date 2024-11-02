@@ -13,12 +13,14 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragmentsBuilder {
 
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
+    private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -34,9 +36,11 @@ public class SearchPreferenceFragmentsBuilder {
                     searchablePreferenceScreenGraphProvider;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
-                                               final FragmentManager fragmentManager) {
+                                               final FragmentManager fragmentManager,
+                                               final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
+        this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
     }
 
     public SearchPreferenceFragmentsBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
@@ -96,6 +100,7 @@ public class SearchPreferenceFragmentsBuilder {
                 prepareShow,
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
-                searchablePreferenceScreenGraphProviderWrapper);
+                searchablePreferenceScreenGraphProviderWrapper,
+                mergedPreferenceScreenDataInput);
     }
 }

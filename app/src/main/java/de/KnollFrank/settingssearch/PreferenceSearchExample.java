@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class PreferenceSearchExample extends AppCompatActivity {
@@ -63,7 +64,11 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 .configure(
                         SearchPreferenceFragments.builder(
                                 createSearchConfiguration(PrefsFragmentFirst.class),
-                                getSupportFragmentManager()),
+                                getSupportFragmentManager(),
+                                new MergedPreferenceScreenDataInput(
+                                        R.raw.all_preferences_for_search,
+                                        R.raw.preference_path_by_preference,
+                                        R.raw.host_by_preference)),
                         GraphDAOMode.LOAD_GRAPH)
                 .build();
     }

@@ -10,28 +10,28 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScree
 public class MergedPreferenceScreenDataDAO {
 
     public static void persist(final MergedPreferenceScreenData mergedPreferenceScreenData,
-                               final OutputStream sink1,
-                               final OutputStream sink2,
-                               final OutputStream sink3) {
-        JsonDAO.persist(mergedPreferenceScreenData.allPreferencesForSearch(), sink1);
-        JsonDAO.persist(mergedPreferenceScreenData.preferencePathByPreference(), sink2);
-        JsonDAO.persist(mergedPreferenceScreenData.hostByPreference(), sink3);
+                               final OutputStream allPreferencesForSearch,
+                               final OutputStream preferencePathByPreference,
+                               final OutputStream hostByPreference) {
+        JsonDAO.persist(mergedPreferenceScreenData.allPreferencesForSearch(), allPreferencesForSearch);
+        JsonDAO.persist(mergedPreferenceScreenData.preferencePathByPreference(), preferencePathByPreference);
+        JsonDAO.persist(mergedPreferenceScreenData.hostByPreference(), hostByPreference);
     }
 
-    public static MergedPreferenceScreenData load(final InputStream source1,
-                                                  final InputStream source2,
-                                                  final InputStream source3) {
+    public static MergedPreferenceScreenData load(final InputStream allPreferencesForSearch,
+                                                  final InputStream preferencePathByPreference,
+                                                  final InputStream hostByPreference) {
         return new MergedPreferenceScreenData(
                 JsonDAO.load(
-                        source1,
+                        allPreferencesForSearch,
                         new TypeToken<>() {
                         }),
                 JsonDAO.load(
-                        source2,
+                        preferencePathByPreference,
                         new TypeToken<>() {
                         }),
                 JsonDAO.load(
-                        source3,
+                        hostByPreference,
                         new TypeToken<>() {
                         }));
     }

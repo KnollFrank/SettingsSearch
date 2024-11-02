@@ -1,0 +1,614 @@
+[
+  [
+    {
+      "children": [],
+      "extras": {},
+      "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
+      "icon": "iVBORw0KGgoAAAANSUhEUgAAAEIAAABCCAYAAADjVADoAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAPqSURBVHic7Zs/VttAEIc/5aWMDoAPgPuYPj4APoChh9QkaQP0kBrowX3gAPYBfAD7APYB5H5TzBrziFbaHa1km6fvPVWyZnZ/3r+zs9DS0tLSUkrSvEuTAofAAdB593IBLIE5JFmTpWpACNMBvgE9+6SeH2bA1D4TSBb1lE+oSQiTAsf26UYyOgNGiCjRW0tkIUwKDO3j+8+HkiGCjGIKElEI0wcuqU+A9yyAP5CMYxiLIIRJgRuk/2+DMXBdtXVUFMJ0gTuaawUuFsAvSGZaA5/0vs0AeGT7IoBMw3e2TCqULcIMkPFgF7mG5Dn0I4UQOy3CmmAxAoUwXaQ77DoZ8D1kzAgQwqTAX3ZjTPBhAZz6ziYhg+UN+yMCyADq3YU9hTB9trdOqELflr0Uj66xd13iPV5dxKdF1LlvaIIOUodCSoR43UTtO0NbFydlLaKPrjU8IM3xCDgHJgobayZiIzkSmzwobKRIXZyUjBHmkfB4wjkk0xxbZ8BZoK0HSHIqbnrAfaCtGSSnrpcFLcJ0CBfhJV8EsBVaBtha5osA1sdLYNm6tk65FHWNfqAjkLBalfd12VrTd70oEkKzbihbxYXEDGLaWuOsU5EQX2M6Utgs+63mj3LadAhhUnSzxbG7H5o+YWNO170qNB3xFUzqmkZdLeJQ4cQ64s6O6m8wQ3Rb90v77VtbPapFxXLr5pg+o8QcMmBOvD3KFKlE1VVubqzis+PHBxWdgRQ45kYtlq3culWIWX4sWiEsrRAWlxAhS+F9I7duLiFqPXneMrl1cwkxr7Eg2ya3bo7pM8nArIAvgU4myPF9E3SRvIsQVq6QnWsdAbKACXWUubfOsTFXio+cO9aiWUOzzT0uC4nFQb3XUAkxVjiC8ChUkz7GrhcFQiQLdIPm0B4N1oTpomsN86I8rLIF1UjhEOB3PV3EpGJbRWFdyoQYAyuF0y5wofiujAt0yWkrSrp6iRBJBjwpHAMMwERMHzCXYlPFU4yTrhH6JfcAzE21bmJSsaEWYYlHF/cQIsmAW2UhQCLHj/9HrXwwPflWFVFfc+uTGhCSH3FP9eDIFHimMGnUpMhCbhDB3wSSHz4/DE0UeSZ82e1iyiacB5swXKxI1BI48U0U+aipQyvk6NF73xMYmElmwHXYN1vhNjTnsk0vtFTIvN05MVZISwgWAeKkIN8TbwDVsgR+bikFGazjAboteywmyOxQKSAU+5rCFc21jiXSFcYxjNV1ceWE+gRZIfufXb248hazzlkaoj9Qfs8cqbxqMCyjqcttfTaX23xbyorN5bbxnl5uK+L1umOH/w9kl8i5Q+PXHVtaWlpaPPgHHSbvuZ2l/WsAAAAASUVORK5CYII\u003d",
+      "id": 1,
+      "key": "link_to_second_fragment",
+      "layoutResId": 2131427444,
+      "summary": "some summary to second fragment",
+      "title": "some title to second fragment",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 2,
+      "key": "non_standard_link_to_second_fragment",
+      "layoutResId": 2131427444,
+      "summary": "some summary to second fragment",
+      "title": "non standard link to second fragment",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFourth",
+      "id": 3,
+      "key": "link_to_fourth_fragment",
+      "layoutResId": 2131427444,
+      "summary": "some summary to fourth fragment",
+      "title": "some title to fourth fragment",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "fragment": "de.KnollFrank.settingssearch.preference.fragment.NonPreferenceFragment",
+      "id": 4,
+      "key": "link_to_nonPreference_fragment",
+      "layoutResId": 2131427444,
+      "summary": "some summary to nonPreference fragment",
+      "title": "some title to nonPreference fragment",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 5,
+      "key": "checkbox",
+      "layoutResId": 2131427444,
+      "summary": "This is a DisabledAppearanceCheckboxPreference",
+      "title": "Checkbox",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 6,
+      "layoutResId": 2131427437,
+      "title": "This is a preference having no key",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [
+        {
+          "children": [],
+          "extras": {},
+          "id": 8,
+          "key": "checkbox2",
+          "layoutResId": 2131427444,
+          "summary": "This is a checkbox preference inside a category",
+          "title": "Checkbox in category",
+          "visible": true,
+          "widgetLayoutResId": 2131427446
+        }
+      ],
+      "extras": {},
+      "id": 7,
+      "key": "key of PreferenceCategory",
+      "layoutResId": 2131427437,
+      "title": "This is a preference category",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 8,
+      "key": "checkbox2",
+      "layoutResId": 2131427444,
+      "summary": "This is a checkbox preference inside a category",
+      "title": "Checkbox in category",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [
+        {
+          "children": [],
+          "extras": {},
+          "id": 10,
+          "key": "checkbox3",
+          "layoutResId": 2131427444,
+          "summary": "This is a checkbox preference inside a PreferenceScreen",
+          "title": "Checkbox in screen",
+          "visible": true,
+          "widgetLayoutResId": 2131427446
+        }
+      ],
+      "extras": {},
+      "id": 9,
+      "key": "screen",
+      "layoutResId": 2131427444,
+      "summary": "This is a PreferenceScreen",
+      "title": "Screen",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 10,
+      "key": "checkbox3",
+      "layoutResId": 2131427444,
+      "summary": "This is a checkbox preference inside a PreferenceScreen",
+      "title": "Checkbox in screen",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 11,
+      "key": "string",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox demonstrates @string resources",
+      "title": "Search Preference",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 12,
+      "key": "edittext",
+      "layoutResId": 2131427444,
+      "summary": "This is an edit text preference",
+      "title": "Edit text",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 13,
+      "key": "switch",
+      "layoutResId": 2131427444,
+      "searchableInfo": "switch is off, switch is on",
+      "summary": "This allows to use a switch",
+      "title": "Switch preference",
+      "visible": true,
+      "widgetLayoutResId": 2131427449
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 14,
+      "key": "list",
+      "layoutResId": 2131427444,
+      "searchableInfo": "this is the dialog title, Home, Work, Other, Custom",
+      "summary": "This allows to select from a list",
+      "title": "List preference",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 15,
+      "key": "keyOfReversedListPreference",
+      "layoutResId": 2131427444,
+      "searchableInfo": "MIA, eviL swodniW, oohaY, epykS, QQ, klaT elgooG, QCI, rebbaJ",
+      "summary": "summary of ReversedListPreference",
+      "title": "title of ReversedListPreference",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 16,
+      "key": "keyOfSomeCustomDialogPreference",
+      "layoutResId": 2131427444,
+      "searchableInfo": "some text in a custom dialog",
+      "summary": "summary of custom DialogPreference",
+      "title": "some custom DialogPreference",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 17,
+      "key": "keyOfSomeCustomDialogPreference2",
+      "layoutResId": 2131427444,
+      "searchableInfo": "some text in a custom dialog",
+      "summary": "summary of custom DialogPreference2",
+      "title": "some custom DialogPreference2",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 18,
+      "key": "keyOfPreferenceWithOnPreferenceClickListener",
+      "layoutResId": 2131427444,
+      "searchableInfo": "some text in a custom dialog",
+      "summary": "some summary for PreferenceWithOnPreferenceClickListener",
+      "title": "some title for PreferenceWithOnPreferenceClickListener",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 19,
+      "key": "keyOfImProtocols",
+      "layoutResId": 2131427440,
+      "searchableInfo": "AIM, Windows Live, Yahoo, Skype, QQ, Google Talk, ICQ, Jabber",
+      "summary": "im Protocols summary",
+      "title": "im Protocols title",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 20,
+      "key": "multilist",
+      "layoutResId": 2131427444,
+      "searchableInfo": "dialog title of a multi select list preference, Home, Mobile, Work, Work Fax, Home Fax, Pager, Other, Custom",
+      "summary": "This allows to select multiple entries from a list",
+      "title": "Multi select list preference",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 21,
+      "key": "checkbox4",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is just there to fill the screen",
+      "title": "Checkbox 4",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 22,
+      "key": "checkbox5",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is just there to fill the screen",
+      "title": "Checkbox 5",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 23,
+      "key": "checkbox6",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is just there to fill the screen",
+      "title": "Checkbox 6",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 24,
+      "key": "fardown",
+      "layoutResId": 2131427444,
+      "summary": "A preference that is very far down on the screen, so it has to be scrolled to",
+      "title": "Far down",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {
+        "summaryOfSrcPreference": "summary of src preference"
+      },
+      "fragment": "de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference",
+      "id": 25,
+      "key": "keyOfSrcPreference",
+      "layoutResId": 2131427444,
+      "summary": "summary of src preference",
+      "title": "preference from src to dst",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird",
+      "id": 26,
+      "key": "link_to_third_fragment",
+      "layoutResId": 2131427444,
+      "summary": "some summary to third fragment",
+      "title": "some title to third fragment",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 27,
+      "key": "keyOfPreferenceWithCustomLayout",
+      "layoutResId": 2131427357,
+      "summary": "summary of preference with custom layout",
+      "title": "title of preference with custom layout",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 28,
+      "key": "secondfile",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is a preference coming from a second file",
+      "title": "Checkbox",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 29,
+      "key": "searchsummary",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is a preference coming from a second file",
+      "title": "Checkbox",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 30,
+      "key": "searchkeyword",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox has additional keywords",
+      "title": "Checkbox",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 31,
+      "key": "ignoredcheckbox",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox should not be displayed",
+      "title": "Ignored",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 32,
+      "key": "keyOfPreferenceOfConnectedFragment",
+      "layoutResId": 2131427444,
+      "summary": "copied summary: summary of src preference",
+      "title": "dst preference",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird",
+      "id": 33,
+      "key": "link_to_third_fragment",
+      "layoutResId": 2131427444,
+      "summary": "some summary to third fragment",
+      "title": "some title to third fragment",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 34,
+      "key": "keyOfPreferenceWithCustomLayout",
+      "layoutResId": 2131427357,
+      "summary": "summary of preference with custom layout",
+      "title": "title of preference with custom layout",
+      "visible": true,
+      "widgetLayoutResId": 0
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 35,
+      "key": "secondfile",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is a preference coming from a second file",
+      "title": "Checkbox",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 36,
+      "key": "searchsummary",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is a preference coming from a second file",
+      "title": "Checkbox",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 37,
+      "key": "searchkeyword",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox has additional keywords",
+      "title": "Checkbox",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 38,
+      "key": "ignoredcheckbox",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox should not be displayed",
+      "title": "Ignored",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 39,
+      "key": "fourthfile",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is a preference coming from a fourth file",
+      "title": "Checkbox fourth file",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFourth"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 40,
+      "key": "thirdfile",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is a preference coming from a third file",
+      "title": "Checkbox third file",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird"
+  ],
+  [
+    {
+      "children": [],
+      "extras": {},
+      "id": 41,
+      "key": "thirdfile",
+      "layoutResId": 2131427444,
+      "summary": "This checkbox is a preference coming from a third file",
+      "title": "Checkbox third file",
+      "visible": true,
+      "widgetLayoutResId": 2131427446
+    },
+    "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird"
+  ]
+]
