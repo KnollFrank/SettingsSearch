@@ -13,6 +13,8 @@ import de.KnollFrank.lib.settingssearch.common.IOUtils;
 
 public class JsonDAO {
 
+    private static Gson INSTANCE;
+
     public static <T> void persist(final T source, final OutputStream sink) {
         IOUtils.persist(toJson(source), sink);
     }
@@ -30,11 +32,15 @@ public class JsonDAO {
     }
 
     private static Gson getGson() {
-        return new GsonBuilder()
-                .registerTypeAdapter(Class.class, new ClassTypeAdapter())
-                .registerTypeAdapterFactory(new BundleTypeAdapterFactory())
-                .setExclusionStrategies(new AnnotationExclusionStrategy())
-                .enableComplexMapKeySerialization()
-                .create();
+        if (INSTANCE == null) {
+            INSTANCE =
+                    new GsonBuilder()
+                            .registerTypeAdapter(Class.class, new ClassTypeAdapter())
+                            .registerTypeAdapterFactory(new BundleTypeAdapterFactory())
+                            .setExclusionStrategies(new AnnotationExclusionStrategy())
+                            .enableComplexMapKeySerialization()
+                            .create();
+        }
+        return INSTANCE;
     }
 }
