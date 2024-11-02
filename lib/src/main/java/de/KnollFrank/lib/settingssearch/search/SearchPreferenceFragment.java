@@ -7,6 +7,8 @@ import android.widget.SearchView;
 
 import androidx.fragment.app.Fragment;
 
+import org.jgrapht.Graph;
+
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
@@ -20,6 +22,8 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -126,13 +130,26 @@ public class SearchPreferenceFragment extends Fragment {
         if (persist) {
             final MergedPreferenceScreenData mergedPreferenceScreenData =
                     MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
-                            MergedPreferenceScreenFactory.getSearchablePreferenceScreenGraph(
-                                    searchablePreferenceScreenGraphProviderWrapper, searchablePreferenceScreenGraphProvider, context));
+                            getSearchablePreferenceScreenGraph(
+                                    searchablePreferenceScreenGraphProviderWrapper,
+                                    searchablePreferenceScreenGraphProvider,
+                                    context));
             // MergedPreferenceScreenDataDAO.persist(mergedPreferenceScreenData, null, null, null);
             return mergedPreferenceScreenData;
         } else {
             return MergedPreferenceScreenDataDAO.load(null, null, null);
         }
+    }
+
+    private static Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph(
+            final SearchablePreferenceScreenGraphProviderWrapper wrapper,
+            final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
+            final Context context) {
+        return wrapper
+                .wrap(
+                        searchablePreferenceScreenGraphProvider,
+                        context)
+                .getSearchablePreferenceScreenGraph();
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,

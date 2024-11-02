@@ -1,18 +1,10 @@
 package de.KnollFrank.lib.settingssearch;
 
-import android.content.Context;
-
 import androidx.preference.PreferenceManager;
 
-import org.jgrapht.Graph;
-
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.provider.PreferencePathByPreference;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
 
@@ -34,16 +26,5 @@ public class MergedPreferenceScreenFactory {
                         mergedPreferenceScreenData.hostByPreference(),
                         fragmentFactoryAndInitializer,
                         preferenceManager.getContext()));
-    }
-
-    public static Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph(
-            final SearchablePreferenceScreenGraphProviderWrapper wrapper,
-            final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
-            final Context context) {
-        return wrapper
-                .wrap(
-                        searchablePreferenceScreenGraphProvider,
-                        context)
-                .getSearchablePreferenceScreenGraph();
     }
 }
