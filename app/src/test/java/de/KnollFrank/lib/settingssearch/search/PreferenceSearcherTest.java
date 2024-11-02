@@ -32,6 +32,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -502,7 +503,7 @@ public class PreferenceSearcherTest {
                         fragments,
                         preferenceFragment.getClass()),
                 fragmentFactoryAndInitializer,
-                MergedPreferenceScreenFactory.getMergedPreferenceScreenData(
+                MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()));
     }
 

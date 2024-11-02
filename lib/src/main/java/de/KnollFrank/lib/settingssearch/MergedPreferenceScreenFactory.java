@@ -8,15 +8,9 @@ import androidx.preference.PreferenceManager;
 
 import org.jgrapht.Graph;
 
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -25,10 +19,8 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
-import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
-import de.KnollFrank.lib.settingssearch.provider.HostByPreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -117,22 +109,6 @@ public class MergedPreferenceScreenFactory {
                         mergedPreferenceScreenData.hostByPreference(),
                         fragmentFactoryAndInitializer,
                         preferenceManager.getContext()));
-    }
-
-    public static MergedPreferenceScreenData getMergedPreferenceScreenData(
-            final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
-        return new MergedPreferenceScreenData(
-                PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())),
-                PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
-                        HostClassFromPojoNodesRemover.removeHostClassFromNodes(pojoGraph)),
-                HostByPreferenceProvider.getHostByPreference(new ArrayList<>(pojoGraph.vertexSet())));
-    }
-
-    private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {
-        return preferenceScreens
-                .stream()
-                .flatMap(preferenceScreenWithHostClassPOJO -> preferenceScreenWithHostClassPOJO.preferenceScreen().children().stream())
-                .collect(Collectors.toSet());
     }
 
     public Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph() {

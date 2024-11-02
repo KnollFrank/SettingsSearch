@@ -15,6 +15,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
@@ -92,7 +93,7 @@ public class SearchPreferenceFragment extends Fragment {
         final boolean persist = true;
         if (persist) {
             final MergedPreferenceScreenData mergedPreferenceScreenData =
-                    MergedPreferenceScreenFactory.getMergedPreferenceScreenData(
+                    MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                             mergedPreferenceScreenFactory.getSearchablePreferenceScreenGraph());
             // MergedPreferenceScreenDataDAO.persist(mergedPreferenceScreenData, null, null, null);
             return mergedPreferenceScreenData;
