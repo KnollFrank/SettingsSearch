@@ -14,7 +14,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 public class PreferencePathByPreference {
 
-    // remove class and inline methods getPreferencePathByPreference() and convertPojoKeys2EntityKeys()
+    // FK-TODO: remove class and inline methods getPreferencePathByPreference() and convertPojoKeys2EntityKeys()
     public static Map<Preference, PreferencePath> getPreferencePathByPreference(
             final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
             final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference) {
