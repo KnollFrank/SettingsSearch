@@ -25,17 +25,10 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragment extends Fragment {
 
-    private final IsPreferenceSearchable isPreferenceSearchable;
-    private final SearchableInfoProvider searchableInfoProvider;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
-    private final FragmentFactory fragmentFactory;
     private final SearchConfiguration searchConfiguration;
-    private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
-    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final PrepareShow prepareShow;
-    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
-    private final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper;
-
+    private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final IsPreferenceSearchable isPreferenceSearchable,
@@ -49,21 +42,9 @@ public class SearchPreferenceFragment extends Fragment {
                                     final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
-        this.isPreferenceSearchable = isPreferenceSearchable;
-        this.searchableInfoProvider = searchableInfoProvider;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
-        this.fragmentFactory = fragmentFactory;
-        this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
-        this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.prepareShow = prepareShow;
-        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
-        this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        final MergedPreferenceScreen mergedPreferenceScreen =
+        this.mergedPreferenceScreenFactory =
                 new MergedPreferenceScreenFactory(
                         this,
                         searchConfiguration.rootPreferenceFragment(),
@@ -73,8 +54,13 @@ public class SearchPreferenceFragment extends Fragment {
                         preferenceConnected2PreferenceFragmentProvider,
                         preferenceScreenGraphAvailableListener,
                         searchableInfoProvider,
-                        preferenceDialogAndSearchableInfoProvider)
-                        .getMergedPreferenceScreen();
+                        preferenceDialogAndSearchableInfoProvider);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        final MergedPreferenceScreen mergedPreferenceScreen = mergedPreferenceScreenFactory.getMergedPreferenceScreen();
         showSearchResultsPreferenceFragment(
                 mergedPreferenceScreen,
                 searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen));
