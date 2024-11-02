@@ -98,8 +98,7 @@ public class SearchPreferenceFragment extends Fragment {
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         requireActivity());
         return MergedPreferenceScreenFactory.getMergedPreferenceScreen(
-                getMergedPreferenceScreenData(
-                        () -> getSearchablePreferenceScreenGraph(fragments, preferenceDialogs)),
+                getMergedPreferenceScreenData(() -> getSearchablePreferenceScreenGraph(fragments, preferenceDialogs)),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         searchConfiguration.rootPreferenceFragment()),
