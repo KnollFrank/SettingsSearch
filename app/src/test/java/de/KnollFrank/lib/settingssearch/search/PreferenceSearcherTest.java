@@ -498,11 +498,12 @@ public class PreferenceSearcherTest {
                                         fragmentInitializer,
                                         preferenceDialogAndSearchableInfoProvider)));
         return MergedPreferenceScreenFactory.getMergedPreferenceScreen(
-                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         preferenceFragment.getClass()),
-                fragmentFactoryAndInitializer);
+                fragmentFactoryAndInitializer,
+                MergedPreferenceScreenFactory.getMergedPreferenceScreenData(
+                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()));
     }
 
     static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {

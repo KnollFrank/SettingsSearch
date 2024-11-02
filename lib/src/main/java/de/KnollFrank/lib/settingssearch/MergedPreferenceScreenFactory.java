@@ -102,16 +102,6 @@ public class MergedPreferenceScreenFactory {
     }
 
     public static MergedPreferenceScreen getMergedPreferenceScreen(
-            final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph,
-            final PreferenceManager preferenceManager,
-            final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
-        return getMergedPreferenceScreen(
-                preferenceManager,
-                fragmentFactoryAndInitializer,
-                getMergedPreferenceScreenData(pojoGraph));
-    }
-
-    public static MergedPreferenceScreen getMergedPreferenceScreen(
             final PreferenceManager preferenceManager,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final MergedPreferenceScreenData mergedPreferenceScreenData) {
