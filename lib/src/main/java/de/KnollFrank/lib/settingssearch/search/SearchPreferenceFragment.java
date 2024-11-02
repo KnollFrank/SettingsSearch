@@ -96,7 +96,7 @@ public class SearchPreferenceFragment extends Fragment {
         final Fragments fragments =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        requireActivity());
+                        requireContext());
         return MergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getMergedPreferenceScreenData(() -> getSearchablePreferenceScreenGraph(fragments, preferenceDialogs)),
                 PreferenceManagerProvider.getPreferenceManager(
@@ -124,7 +124,7 @@ public class SearchPreferenceFragment extends Fragment {
                                         new SearchableDialogInfoOfProvider(
                                                 preferenceDialogs,
                                                 preferenceDialogAndSearchableInfoProvider))),
-                        requireActivity())
+                        requireContext())
                 .getSearchablePreferenceScreenGraph();
     }
 
