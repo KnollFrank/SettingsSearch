@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-class HostByPreferenceProvider {
+public class HostByPreferenceProvider {
 
     public static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
             final Collection<PreferenceScreenWithHostClassPOJO> preferenceScreens) {

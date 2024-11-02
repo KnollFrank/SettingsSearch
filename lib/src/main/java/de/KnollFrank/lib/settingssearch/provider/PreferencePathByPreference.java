@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 
-class PreferencePathByPreference {
+public class PreferencePathByPreference {
 
     public static Map<Preference, PreferencePath> getPreferencePathByPreference(
             final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph,

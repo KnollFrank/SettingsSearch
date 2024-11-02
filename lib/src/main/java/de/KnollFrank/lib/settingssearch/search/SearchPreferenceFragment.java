@@ -84,7 +84,7 @@ public class SearchPreferenceFragment extends Fragment {
                             preferenceScreenGraphAvailableListener,
                             preferenceConnected2PreferenceFragmentProvider,
                             searchablePreferenceScreenGraphProviderWrapper);
-            final MergedPreferenceScreen mergedPreferenceScreen = mergedPreferenceScreenFactory.createMergedPreferenceScreen();
+            final MergedPreferenceScreen mergedPreferenceScreen = mergedPreferenceScreenFactory.getMergedPreferenceScreen();
             // MergedPreferenceScreenDataDAO.persist(mergedPreferenceScreen, null);
             return mergedPreferenceScreen;
         } else {

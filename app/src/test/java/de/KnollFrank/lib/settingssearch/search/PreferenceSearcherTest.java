@@ -28,6 +28,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -41,7 +42,6 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
-import de.KnollFrank.lib.settingssearch.provider.MergedPreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
@@ -497,16 +497,12 @@ public class PreferenceSearcherTest {
                                 new SearchableDialogInfoOfProvider(
                                         fragmentInitializer,
                                         preferenceDialogAndSearchableInfoProvider)));
-        final MergedPreferenceScreenProvider mergedPreferenceScreenProvider =
-                new MergedPreferenceScreenProvider(
-                        false,
-                        fragmentFactoryAndInitializer,
-                        PreferenceManagerProvider.getPreferenceManager(
-                                fragments,
-                                preferenceFragment.getClass()));
-
-        return mergedPreferenceScreenProvider.getMergedPreferenceScreen(
-                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph());
+        return MergedPreferenceScreenFactory.getMergedPreferenceScreen(
+                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(),
+                PreferenceManagerProvider.getPreferenceManager(
+                        fragments,
+                        preferenceFragment.getClass()),
+                fragmentFactoryAndInitializer);
     }
 
     static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
