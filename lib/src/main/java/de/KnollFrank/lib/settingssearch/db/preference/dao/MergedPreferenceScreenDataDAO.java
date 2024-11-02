@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreenData;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 
 public class MergedPreferenceScreenDataDAO {
 
@@ -14,8 +14,8 @@ public class MergedPreferenceScreenDataDAO {
                                final OutputStream sink2,
                                final OutputStream sink3) {
         JsonDAO.persist(mergedPreferenceScreenData.allPreferencesForSearch(), sink1);
-        JsonDAO.persist(mergedPreferenceScreenData.preferencePathByPreferenceId(), sink2);
-        JsonDAO.persist(mergedPreferenceScreenData.hostByPreferenceId(), sink3);
+        JsonDAO.persist(mergedPreferenceScreenData.preferencePathByPreference(), sink2);
+        JsonDAO.persist(mergedPreferenceScreenData.hostByPreference(), sink3);
     }
 
     public static MergedPreferenceScreenData load(final InputStream source1,

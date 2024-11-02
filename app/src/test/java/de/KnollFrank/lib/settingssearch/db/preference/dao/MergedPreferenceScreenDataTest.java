@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverterTest.equalBundles;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createSearchablePreferencePOJO;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest.outputStream2InputStream;
 
 import androidx.preference.PreferenceFragmentCompat;
@@ -21,7 +22,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreenData;
+import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -33,25 +35,27 @@ public class MergedPreferenceScreenDataTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
+                final SearchablePreferencePOJO searchablePreferencePOJO1 =
+                        createSearchablePreferencePOJO(
+                                1,
+                                Optional.of("some title 1"),
+                                Optional.of("some summary 1"),
+                                Optional.of("searchable info also has a title 1"));
+                final SearchablePreferencePOJO searchablePreferencePOJO2 =
+                        createSearchablePreferencePOJO(
+                                2,
+                                Optional.of("some title 2"),
+                                Optional.of("some summary 2"),
+                                Optional.of("searchable info also has a title 2"));
                 final MergedPreferenceScreenData data =
                         new MergedPreferenceScreenData(
-                                Set.of(
-                                        POJOTestFactory.createSearchablePreferencePOJO(
-                                                1,
-                                                Optional.of("some title 1"),
-                                                Optional.of("some summary 1"),
-                                                Optional.of("searchable info also has a title 1")),
-                                        POJOTestFactory.createSearchablePreferencePOJO(
-                                                2,
-                                                Optional.of("some title 2"),
-                                                Optional.of("some summary 2"),
-                                                Optional.of("searchable info also has a title 2"))),
+                                Set.of(searchablePreferencePOJO1, searchablePreferencePOJO2),
                                 ImmutableMap
-                                        .<Integer, List<Integer>>builder()
-                                        .put(1, List.of(1))
-                                        .put(2, List.of(1, 2))
+                                        .<SearchablePreferencePOJO, PreferencePath>builder()
+                                        .put(searchablePreferencePOJO1, new PreferencePath(List.of(searchablePreferencePOJO1)))
+                                        .put(searchablePreferencePOJO2, new PreferencePath(List.of(searchablePreferencePOJO1, searchablePreferencePOJO2)))
                                         .build(),
-                                Map.of(1, PreferenceFragmentCompat.class));
+                                Map.of(searchablePreferencePOJO1, PreferenceFragmentCompat.class));
                 final var outputStream1 = new ByteArrayOutputStream();
                 final var outputStream2 = new ByteArrayOutputStream();
                 final var outputStream3 = new ByteArrayOutputStream();
@@ -68,8 +72,8 @@ public class MergedPreferenceScreenDataTest {
                 assertEquals(
                         new ArrayList<>(dataActual.allPreferencesForSearch()),
                         new ArrayList<>(data.allPreferencesForSearch()));
-                assertThat(dataActual.preferencePathByPreferenceId(), is(data.preferencePathByPreferenceId()));
-                assertThat(dataActual.hostByPreferenceId(), is(data.hostByPreferenceId()));
+                assertThat(dataActual.preferencePathByPreference(), is(data.preferencePathByPreference()));
+                assertThat(dataActual.hostByPreference(), is(data.hostByPreference()));
             });
         }
     }
