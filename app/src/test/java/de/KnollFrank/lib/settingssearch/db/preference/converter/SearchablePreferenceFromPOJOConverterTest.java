@@ -95,7 +95,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
     }
 
     // adapted from https://stackoverflow.com/a/13238729
-    private static boolean equalBundles(final Bundle one, final Bundle two) {
+    public static boolean equalBundles(final Bundle one, final Bundle two) {
         if (one.size() != two.size())
             return false;
 

@@ -62,7 +62,7 @@ public class SearchablePreferenceScreenGraphDAOTest {
                 SearchablePreferenceScreenGraphDAO.persist(preferenceScreenGraph, outputStream);
                 final Graph<PreferenceScreenWithHostClassWithMap, PreferenceEdge> preferenceScreenGraphActual =
                         SearchablePreferenceScreenGraphDAO.load(
-                                convert(outputStream),
+                                outputStream2InputStream(outputStream),
                                 preferenceManager);
 
                 // Then
@@ -144,7 +144,7 @@ public class SearchablePreferenceScreenGraphDAOTest {
         };
     }
 
-    private static InputStream convert(final OutputStream outputStream) {
+    public static InputStream outputStream2InputStream(final OutputStream outputStream) {
         return new ByteArrayInputStream(outputStream.toString().getBytes(StandardCharsets.UTF_8));
     }
 
