@@ -33,9 +33,15 @@ public class MergedPreferenceScreenDAOTest {
                         new MergedPreferenceScreen(
                                 Set.of(
                                         POJOTestFactory.createSearchablePreferencePOJO(
-                                                Optional.of("some title"),
-                                                Optional.of("some summary"),
-                                                Optional.of("searchable info also has a title"))),
+                                                1,
+                                                Optional.of("some title 1"),
+                                                Optional.of("some summary 1"),
+                                                Optional.of("searchable info also has a title 1")),
+                                        POJOTestFactory.createSearchablePreferencePOJO(
+                                                2,
+                                                Optional.of("some title 2"),
+                                                Optional.of("some summary 2"),
+                                                Optional.of("searchable info also has a title 2"))),
                                 null,
                                 null);
                 final var outputStream = new ByteArrayOutputStream();
