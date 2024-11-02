@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.content.Context;
 import android.widget.SearchView;
 
 import androidx.fragment.app.Fragment;
@@ -10,19 +11,29 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreenFactory;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.R;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
+import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
+import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -73,28 +84,50 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {
-        final MergedPreferenceScreenFactory mergedPreferenceScreenFactory =
-                new MergedPreferenceScreenFactory(
+        final DefaultFragmentInitializer preferenceDialogs =
+                new DefaultFragmentInitializer(
                         getChildFragmentManager(),
-                        requireActivity(),
-                        isPreferenceSearchable,
-                        searchableInfoProvider,
-                        fragmentFactory,
-                        searchConfiguration.rootPreferenceFragment(),
-                        preferenceDialogAndSearchableInfoProvider,
-                        preferenceScreenGraphAvailableListener,
-                        preferenceConnected2PreferenceFragmentProvider,
-                        searchablePreferenceScreenGraphProviderWrapper);
-        return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
-                getMergedPreferenceScreenData(mergedPreferenceScreenFactory));
+                        R.id.dummyFragmentContainerView);
+        final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
+                new FragmentFactoryAndInitializer(fragmentFactory, preferenceDialogs);
+        final Fragments fragments =
+                new Fragments(
+                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
+                        requireActivity());
+        return MergedPreferenceScreenFactory.getMergedPreferenceScreen(
+                getMergedPreferenceScreenData(
+                        searchablePreferenceScreenGraphProviderWrapper,
+                        new DefaultSearchablePreferenceScreenGraphProvider(
+                                searchConfiguration.rootPreferenceFragment().getName(),
+                                new PreferenceScreenWithHostProvider(
+                                        fragments,
+                                        new SearchablePreferenceScreenProvider(
+                                                new IsPreferenceVisibleAndSearchable(
+                                                        isPreferenceSearchable))),
+                                preferenceConnected2PreferenceFragmentProvider,
+                                preferenceScreenGraphAvailableListener,
+                                new SearchableInfoAndDialogInfoProvider(
+                                        searchableInfoProvider,
+                                        new SearchableDialogInfoOfProvider(
+                                                preferenceDialogs,
+                                                preferenceDialogAndSearchableInfoProvider))),
+                        requireActivity()),
+                PreferenceManagerProvider.getPreferenceManager(
+                        fragments,
+                        searchConfiguration.rootPreferenceFragment()),
+                fragmentFactoryAndInitializer);
     }
 
-    private static MergedPreferenceScreenData getMergedPreferenceScreenData(final MergedPreferenceScreenFactory mergedPreferenceScreenFactory) {
+    private static MergedPreferenceScreenData getMergedPreferenceScreenData(
+            final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper,
+            final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
+            final Context context) {
         final boolean persist = true;
         if (persist) {
             final MergedPreferenceScreenData mergedPreferenceScreenData =
                     MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
-                            mergedPreferenceScreenFactory.getSearchablePreferenceScreenGraph());
+                            MergedPreferenceScreenFactory.getSearchablePreferenceScreenGraph(
+                                    searchablePreferenceScreenGraphProviderWrapper, searchablePreferenceScreenGraphProvider, context));
             // MergedPreferenceScreenDataDAO.persist(mergedPreferenceScreenData, null, null, null);
             return mergedPreferenceScreenData;
         } else {
