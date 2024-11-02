@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -33,9 +32,6 @@ public class SearchPreferenceFragmentsBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
-    private SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper =
-            (searchablePreferenceScreenGraphProvider, context) ->
-                    searchablePreferenceScreenGraphProvider;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -87,11 +83,6 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withSearchablePreferenceScreenGraphProviderWrapper(final SearchablePreferenceScreenGraphProviderWrapper wrapSearchablePreferenceScreenGraphProvider) {
-        this.searchablePreferenceScreenGraphProviderWrapper = wrapSearchablePreferenceScreenGraphProvider;
-        return this;
-    }
-
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
                 searchConfiguration,
@@ -104,7 +95,6 @@ public class SearchPreferenceFragmentsBuilder {
                 prepareShow,
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
-                searchablePreferenceScreenGraphProviderWrapper,
                 mergedPreferenceScreenDataInput,
                 mergedPreferenceScreenDataMode);
     }

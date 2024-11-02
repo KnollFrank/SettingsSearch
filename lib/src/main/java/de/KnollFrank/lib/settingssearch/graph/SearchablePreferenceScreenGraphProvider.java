@@ -5,6 +5,7 @@ import org.jgrapht.Graph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
+// FK-TODO: remove
 @FunctionalInterface
 public interface SearchablePreferenceScreenGraphProvider {
 

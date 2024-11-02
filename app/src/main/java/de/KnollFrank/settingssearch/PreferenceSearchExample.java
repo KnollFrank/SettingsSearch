@@ -1,7 +1,5 @@
 package de.KnollFrank.settingssearch;
 
-import static de.KnollFrank.settingssearch.SearchablePreferenceScreenGraphProviderWrapper.GraphDAOMode;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,8 +68,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                         R.raw.preferences,
                                         R.raw.preference_path_by_preference,
                                         R.raw.host_by_preference),
-                                MergedPreferenceScreenDataMode.PERSIST),
-                        GraphDAOMode.LOAD_GRAPH)
+                                MergedPreferenceScreenDataMode.LOAD))
                 .build();
     }
 

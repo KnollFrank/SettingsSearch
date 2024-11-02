@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 
+// FK-TODO: rename to SearchablePreferenceScreenGraphProvider
 public class DefaultSearchablePreferenceScreenGraphProvider implements SearchablePreferenceScreenGraphProvider {
 
     private final String rootPreferenceFragmentClassName;
