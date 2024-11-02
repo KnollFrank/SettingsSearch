@@ -43,17 +43,10 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 public class MergedPreferenceScreenFactory {
 
     private final Context context;
-    private final IsPreferenceSearchable isPreferenceSearchable;
-    private final SearchableInfoProvider searchableInfoProvider;
-    private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
-    private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
-    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
-    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper;
-    private final DefaultFragmentInitializer defaultFragmentInitializer;
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
-    private final Fragments fragments;
     private final PreferenceManager preferenceManager;
+    private final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider;
 
     public MergedPreferenceScreenFactory(
             final FragmentManager fragmentManager,
@@ -67,14 +60,8 @@ public class MergedPreferenceScreenFactory {
             final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
             final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper) {
         this.context = context;
-        this.isPreferenceSearchable = isPreferenceSearchable;
-        this.searchableInfoProvider = searchableInfoProvider;
-        this.rootPreferenceFragment = rootPreferenceFragment;
-        this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
-        this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
-        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
-        this.defaultFragmentInitializer =
+        final DefaultFragmentInitializer defaultFragmentInitializer =
                 new DefaultFragmentInitializer(
                         fragmentManager,
                         R.id.dummyFragmentContainerView);
@@ -82,14 +69,29 @@ public class MergedPreferenceScreenFactory {
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
                         defaultFragmentInitializer);
-        this.fragments =
+        final Fragments fragments =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        this.context);
+                        context);
         this.preferenceManager =
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment);
+        this.searchablePreferenceScreenGraphProvider =
+                new DefaultSearchablePreferenceScreenGraphProvider(
+                        rootPreferenceFragment.getName(),
+                        new PreferenceScreenWithHostProvider(
+                                fragments,
+                                new SearchablePreferenceScreenProvider(
+                                        new IsPreferenceVisibleAndSearchable(
+                                                isPreferenceSearchable))),
+                        preferenceConnected2PreferenceFragmentProvider,
+                        preferenceScreenGraphAvailableListener,
+                        new SearchableInfoAndDialogInfoProvider(
+                                searchableInfoProvider,
+                                new SearchableDialogInfoOfProvider(
+                                        defaultFragmentInitializer,
+                                        preferenceDialogAndSearchableInfoProvider)));
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final MergedPreferenceScreenData mergedPreferenceScreenData) {
@@ -146,25 +148,8 @@ public class MergedPreferenceScreenFactory {
     public Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph() {
         return searchablePreferenceScreenGraphProviderWrapper
                 .wrap(
-                        getSearchablePreferenceScreenGraphProvider(),
+                        searchablePreferenceScreenGraphProvider,
                         context)
                 .getSearchablePreferenceScreenGraph();
-    }
-
-    private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
-        return new DefaultSearchablePreferenceScreenGraphProvider(
-                rootPreferenceFragment.getName(),
-                new PreferenceScreenWithHostProvider(
-                        fragments,
-                        new SearchablePreferenceScreenProvider(
-                                new IsPreferenceVisibleAndSearchable(
-                                        isPreferenceSearchable))),
-                preferenceConnected2PreferenceFragmentProvider,
-                preferenceScreenGraphAvailableListener,
-                new SearchableInfoAndDialogInfoProvider(
-                        searchableInfoProvider,
-                        new SearchableDialogInfoOfProvider(
-                                defaultFragmentInitializer,
-                                preferenceDialogAndSearchableInfoProvider)));
     }
 }
