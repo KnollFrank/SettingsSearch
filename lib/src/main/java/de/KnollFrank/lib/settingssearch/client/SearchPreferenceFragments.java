@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -63,15 +64,17 @@ public class SearchPreferenceFragments {
         showFragment(
                 new SearchPreferenceFragment(
                         searchConfiguration,
-                        isPreferenceSearchable,
-                        searchableInfoProvider,
                         showPreferencePathPredicate,
-                        fragmentFactory,
-                        preferenceDialogAndSearchableInfoProvider,
-                        preferenceScreenGraphAvailableListener,
                         prepareShow,
-                        preferenceConnected2PreferenceFragmentProvider,
-                        searchablePreferenceScreenGraphProviderWrapper),
+                        new MergedPreferenceScreenFactory(
+                                searchConfiguration.rootPreferenceFragment(),
+                                fragmentFactory,
+                                searchablePreferenceScreenGraphProviderWrapper,
+                                isPreferenceSearchable,
+                                preferenceConnected2PreferenceFragmentProvider,
+                                preferenceScreenGraphAvailableListener,
+                                searchableInfoProvider,
+                                preferenceDialogAndSearchableInfoProvider)),
                 searchPreferenceFragment -> {
                 },
                 true,

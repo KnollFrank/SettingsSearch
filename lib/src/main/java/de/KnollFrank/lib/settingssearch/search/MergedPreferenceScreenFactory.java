@@ -1,6 +1,8 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import androidx.fragment.app.Fragment;
+import android.content.Context;
+
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
@@ -32,9 +34,8 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
-class MergedPreferenceScreenFactory {
+public class MergedPreferenceScreenFactory {
 
-    private final Fragment fragment;
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final FragmentFactory fragmentFactory;
     private final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper;
@@ -45,7 +46,6 @@ class MergedPreferenceScreenFactory {
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
 
     public MergedPreferenceScreenFactory(
-            final Fragment fragment,
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
             final FragmentFactory fragmentFactory,
             final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper,
@@ -54,7 +54,6 @@ class MergedPreferenceScreenFactory {
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
-        this.fragment = fragment;
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
@@ -65,19 +64,20 @@ class MergedPreferenceScreenFactory {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
     }
 
-    public MergedPreferenceScreen getMergedPreferenceScreen() {
+    public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
+                                                            final Context context) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
-                        fragment.getChildFragmentManager(),
+                        childFragmentManager,
                         R.id.dummyFragmentContainerView);
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(fragmentFactory, preferenceDialogs);
         final Fragments fragments =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        fragment.requireContext());
+                        context);
         return MergedPreferenceScreen.of(
-                getMergedPreferenceScreenData(() -> getSearchablePreferenceScreenGraph(fragments, preferenceDialogs)),
+                getMergedPreferenceScreenData(() -> getSearchablePreferenceScreenGraph(fragments, preferenceDialogs, context)),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment),
@@ -86,11 +86,12 @@ class MergedPreferenceScreenFactory {
 
     private Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph(
             final Fragments fragments,
-            final PreferenceDialogs preferenceDialogs) {
+            final PreferenceDialogs preferenceDialogs,
+            final Context context) {
         return searchablePreferenceScreenGraphProviderWrapper
                 .wrap(
                         getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs),
-                        fragment.requireContext())
+                        context)
                 .getSearchablePreferenceScreenGraph();
     }
 
