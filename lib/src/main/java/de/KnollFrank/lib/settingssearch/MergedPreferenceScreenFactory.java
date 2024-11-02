@@ -9,12 +9,12 @@ import androidx.preference.PreferenceManager;
 import org.jgrapht.Graph;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -22,10 +22,10 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.DefaultSearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderWrapper;
 import de.KnollFrank.lib.settingssearch.provider.HostByPreferenceProvider;
@@ -42,16 +42,18 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class MergedPreferenceScreenFactory {
 
-    private final FragmentManager fragmentManager;
     private final Context context;
     private final IsPreferenceSearchable isPreferenceSearchable;
     private final SearchableInfoProvider searchableInfoProvider;
-    private final FragmentFactory fragmentFactory;
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper;
+    private final DefaultFragmentInitializer defaultFragmentInitializer;
+    private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
+    private final Fragments fragments;
+    private final PreferenceManager preferenceManager;
 
     public MergedPreferenceScreenFactory(
             final FragmentManager fragmentManager,
@@ -64,51 +66,74 @@ public class MergedPreferenceScreenFactory {
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
             final SearchablePreferenceScreenGraphProviderWrapper searchablePreferenceScreenGraphProviderWrapper) {
-        this.fragmentManager = fragmentManager;
         this.context = context;
         this.isPreferenceSearchable = isPreferenceSearchable;
         this.searchableInfoProvider = searchableInfoProvider;
-        this.fragmentFactory = fragmentFactory;
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.searchablePreferenceScreenGraphProviderWrapper = searchablePreferenceScreenGraphProviderWrapper;
-    }
-
-    public MergedPreferenceScreen getMergedPreferenceScreen() {
-        final var defaultFragmentInitializer = getDefaultFragmentInitializer();
-        final var fragmentFactoryAndInitializer = getFragmentFactoryAndInitializer(defaultFragmentInitializer);
-        final var fragments = getFragments(fragmentFactoryAndInitializer);
-        final PreferenceManager preferenceManager =
+        this.defaultFragmentInitializer =
+                new DefaultFragmentInitializer(
+                        fragmentManager,
+                        R.id.dummyFragmentContainerView);
+        this.fragmentFactoryAndInitializer =
+                new FragmentFactoryAndInitializer(
+                        fragmentFactory,
+                        defaultFragmentInitializer);
+        this.fragments =
+                new Fragments(
+                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
+                        this.context);
+        this.preferenceManager =
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment);
+    }
+
+    public MergedPreferenceScreen getMergedPreferenceScreen(final MergedPreferenceScreenData mergedPreferenceScreenData) {
         return getMergedPreferenceScreen(
-                getSearchablePreferenceScreenGraph(
-                        defaultFragmentInitializer,
-                        fragments,
-                        context),
                 preferenceManager,
-                fragmentFactoryAndInitializer);
+                fragmentFactoryAndInitializer,
+                mergedPreferenceScreenData);
     }
 
     public static MergedPreferenceScreen getMergedPreferenceScreen(
             final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph,
             final PreferenceManager preferenceManager,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
+        return getMergedPreferenceScreen(
+                preferenceManager,
+                fragmentFactoryAndInitializer,
+                getMergedPreferenceScreenData(pojoGraph));
+    }
+
+    public static MergedPreferenceScreen getMergedPreferenceScreen(
+            final PreferenceManager preferenceManager,
+            final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
+            final MergedPreferenceScreenData mergedPreferenceScreenData) {
         return new MergedPreferenceScreen(
-                PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())),
+                mergedPreferenceScreenData.allPreferencesForSearch(),
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                         preferenceManager,
                         pojoEntityMap ->
                                 PreferencePathByPreference.getPreferencePathByPreference(
-                                        pojoGraph,
-                                        pojoEntityMap)),
-                getPreferencePathNavigator(
-                        new ArrayList<>(pojoGraph.vertexSet()),
-                        preferenceManager,
-                        fragmentFactoryAndInitializer));
+                                        pojoEntityMap,
+                                        mergedPreferenceScreenData.preferencePathByPreference())),
+                new PreferencePathNavigator(
+                        mergedPreferenceScreenData.hostByPreference(),
+                        fragmentFactoryAndInitializer,
+                        preferenceManager.getContext()));
+    }
+
+    public static MergedPreferenceScreenData getMergedPreferenceScreenData(
+            final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
+        return new MergedPreferenceScreenData(
+                PreferencePOJOs.getPreferencesRecursively(getPreferences(pojoGraph.vertexSet())),
+                PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
+                        HostClassFromPojoNodesRemover.removeHostClassFromNodes(pojoGraph)),
+                HostByPreferenceProvider.getHostByPreference(new ArrayList<>(pojoGraph.vertexSet())));
     }
 
     private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {
@@ -118,50 +143,15 @@ public class MergedPreferenceScreenFactory {
                 .collect(Collectors.toSet());
     }
 
-    private static PreferencePathNavigator getPreferencePathNavigator(
-            final List<PreferenceScreenWithHostClassPOJO> screens,
-            final PreferenceManager preferenceManager,
-            final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
-        return new PreferencePathNavigator(
-                HostByPreferenceProvider.getHostByPreference(screens),
-                fragmentFactoryAndInitializer,
-                preferenceManager.getContext());
-    }
-
-    private DefaultFragmentInitializer getDefaultFragmentInitializer() {
-        return new DefaultFragmentInitializer(
-                fragmentManager,
-                R.id.dummyFragmentContainerView);
-    }
-
-    private FragmentFactoryAndInitializer getFragmentFactoryAndInitializer(final DefaultFragmentInitializer defaultFragmentInitializer) {
-        return new FragmentFactoryAndInitializer(
-                fragmentFactory,
-                defaultFragmentInitializer);
-    }
-
-    private Fragments getFragments(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
-        return new Fragments(
-                new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                context);
-    }
-
-    private Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph(
-            final PreferenceDialogs preferenceDialogs,
-            final Fragments fragments,
-            final Context context) {
+    public Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph() {
         return searchablePreferenceScreenGraphProviderWrapper
                 .wrap(
-                        getSearchablePreferenceScreenGraphProvider(
-                                preferenceDialogs,
-                                fragments),
+                        getSearchablePreferenceScreenGraphProvider(),
                         context)
                 .getSearchablePreferenceScreenGraph();
     }
 
-    private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider(
-            final PreferenceDialogs preferenceDialogs,
-            final Fragments fragments) {
+    private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
         return new DefaultSearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragment.getName(),
                 new PreferenceScreenWithHostProvider(
@@ -174,7 +164,7 @@ public class MergedPreferenceScreenFactory {
                 new SearchableInfoAndDialogInfoProvider(
                         searchableInfoProvider,
                         new SearchableDialogInfoOfProvider(
-                                preferenceDialogs,
+                                defaultFragmentInitializer,
                                 preferenceDialogAndSearchableInfoProvider)));
     }
 }
