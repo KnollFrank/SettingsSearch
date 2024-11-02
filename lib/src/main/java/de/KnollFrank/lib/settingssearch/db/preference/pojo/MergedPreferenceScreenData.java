@@ -8,8 +8,7 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 
 public record MergedPreferenceScreenData(
-        // FK-TODO: rename allPreferencesForSearch to preferences
-        Set<SearchablePreferencePOJO> allPreferencesForSearch,
+        Set<SearchablePreferencePOJO> preferences,
         Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
         Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
 }

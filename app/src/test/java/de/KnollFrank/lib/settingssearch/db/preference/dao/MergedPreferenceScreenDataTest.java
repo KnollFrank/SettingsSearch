@@ -70,8 +70,8 @@ public class MergedPreferenceScreenDataTest {
 
                 // Then
                 assertEquals(
-                        new ArrayList<>(dataActual.allPreferencesForSearch()),
-                        new ArrayList<>(data.allPreferencesForSearch()));
+                        new ArrayList<>(dataActual.preferences()),
+                        new ArrayList<>(data.preferences()));
                 assertThat(dataActual.preferencePathByPreference(), is(data.preferencePathByPreference()));
                 assertThat(dataActual.hostByPreference(), is(data.hostByPreference()));
             });

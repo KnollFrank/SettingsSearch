@@ -443,7 +443,7 @@ public class PreferenceSearcherTest {
                                 preferenceConnected2PreferenceFragmentProvider,
                                 preferenceDialogAndSearchableInfoProvider);
                 final PreferenceSearcher preferenceSearcher =
-                        new PreferenceSearcher(mergedPreferenceScreen.allPreferencesForSearch());
+                        new PreferenceSearcher(mergedPreferenceScreen.preferences());
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);

@@ -143,13 +143,13 @@ public class MergedPreferenceScreenFactory {
                                 searchablePreferenceScreenGraphSupplier.get());
                 MergedPreferenceScreenDataDAO.persist(
                         mergedPreferenceScreenData,
-                        getFileOutputStream("all_preferences_for_search.json", context),
+                        getFileOutputStream("preferences.json", context),
                         getFileOutputStream("preference_path_by_preference.json", context),
                         getFileOutputStream("host_by_preference.json", context));
                 yield mergedPreferenceScreenData;
             }
             case LOAD -> MergedPreferenceScreenDataDAO.load(
-                    context.getResources().openRawResource(mergedPreferenceScreenDataInput.allPreferencesForSearch()),
+                    context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferences()),
                     context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferencePathByPreference()),
                     context.getResources().openRawResource(mergedPreferenceScreenDataInput.hostByPreference()));
         };

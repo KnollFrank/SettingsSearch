@@ -13,8 +13,10 @@ public class MergedPreferenceScreenDataDAO {
                                final OutputStream allPreferencesForSearch,
                                final OutputStream preferencePathByPreference,
                                final OutputStream hostByPreference) {
-        JsonDAO.persist(mergedPreferenceScreenData.allPreferencesForSearch(), allPreferencesForSearch);
+        JsonDAO.persist(mergedPreferenceScreenData.preferences(), allPreferencesForSearch);
+        // FK-TODO: just persist the id's of the preferences and PreferencePaths
         JsonDAO.persist(mergedPreferenceScreenData.preferencePathByPreference(), preferencePathByPreference);
+        // FK-TODO: just persist the id's of the preferences
         JsonDAO.persist(mergedPreferenceScreenData.hostByPreference(), hostByPreference);
     }
 

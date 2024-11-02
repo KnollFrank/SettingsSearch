@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
 
 public record MergedPreferenceScreen(
-        Set<SearchablePreferencePOJO> allPreferencesForSearch,
+        Set<SearchablePreferencePOJO> preferences,
         SearchResultsDisplayer searchResultsDisplayer,
         PreferencePathNavigator preferencePathNavigator) {
 
@@ -22,7 +22,7 @@ public record MergedPreferenceScreen(
             final PreferenceManager preferenceManager,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
         return new MergedPreferenceScreen(
-                mergedPreferenceScreenData.allPreferencesForSearch(),
+                mergedPreferenceScreenData.preferences(),
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                         preferenceManager,
                         pojoEntityMap ->
