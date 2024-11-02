@@ -22,16 +22,6 @@ public class MergedPreferenceScreenFactory {
             final MergedPreferenceScreenData mergedPreferenceScreenData,
             final PreferenceManager preferenceManager,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
-        return getMergedPreferenceScreen(
-                preferenceManager,
-                fragmentFactoryAndInitializer,
-                mergedPreferenceScreenData);
-    }
-
-    public static MergedPreferenceScreen getMergedPreferenceScreen(
-            final PreferenceManager preferenceManager,
-            final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
-            final MergedPreferenceScreenData mergedPreferenceScreenData) {
         return new MergedPreferenceScreen(
                 mergedPreferenceScreenData.allPreferencesForSearch(),
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
