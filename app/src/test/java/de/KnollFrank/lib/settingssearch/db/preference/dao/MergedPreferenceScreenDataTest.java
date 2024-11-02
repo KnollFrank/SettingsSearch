@@ -7,6 +7,8 @@ import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePrefe
 
 import androidx.test.core.app.ActivityScenario;
 
+import com.google.common.collect.ImmutableMap;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -17,20 +19,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class MergedPreferenceScreenDAOTest {
+public class MergedPreferenceScreenDataTest {
 
     @Test
-    public void shouldPersistAndLoadMergedPreferenceScreen() {
+    public void shouldPersistAndLoadMergedPreferenceScreenData() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final MergedPreferenceScreen mergedPreferenceScreen =
-                        new MergedPreferenceScreen(
+                final MergedPreferenceScreenData data =
+                        new MergedPreferenceScreenData(
                                 Set.of(
                                         POJOTestFactory.createSearchablePreferencePOJO(
                                                 1,
@@ -42,20 +44,27 @@ public class MergedPreferenceScreenDAOTest {
                                                 Optional.of("some title 2"),
                                                 Optional.of("some summary 2"),
                                                 Optional.of("searchable info also has a title 2"))),
-                                null,
+                                ImmutableMap
+                                        .<Integer, List<Integer>>builder()
+                                        .put(1, List.of(1))
+                                        .put(2, List.of(1, 2))
+                                        .build(),
                                 null);
-                final var outputStream = new ByteArrayOutputStream();
+                final var outputStream1 = new ByteArrayOutputStream();
+                final var outputStream2 = new ByteArrayOutputStream();
 
                 // When
-                MergedPreferenceScreenDAO.persist(mergedPreferenceScreen, outputStream);
-                final MergedPreferenceScreen mergedPreferenceScreenActual =
-                        MergedPreferenceScreenDAO.load(
-                                outputStream2InputStream(outputStream));
+                MergedPreferenceScreenDataDAO.persist(data, outputStream1, outputStream2);
+                final MergedPreferenceScreenData dataActual =
+                        MergedPreferenceScreenDataDAO.load(
+                                outputStream2InputStream(outputStream1),
+                                outputStream2InputStream(outputStream2));
 
                 // Then
                 assertEquals(
-                        new ArrayList<>(mergedPreferenceScreenActual.allPreferencesForSearch()),
-                        new ArrayList<>(mergedPreferenceScreen.allPreferencesForSearch()));
+                        new ArrayList<>(dataActual.allPreferencesForSearch()),
+                        new ArrayList<>(data.allPreferencesForSearch()));
+                assertThat(dataActual.preferencePathByPreferenceId(), is(data.preferencePathByPreferenceId()));
             });
         }
     }
