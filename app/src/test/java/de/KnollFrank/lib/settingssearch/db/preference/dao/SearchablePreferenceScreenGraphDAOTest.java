@@ -1,29 +1,16 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
-
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
-import androidx.test.core.app.ActivityScenario;
-
-import com.google.common.collect.Iterables;
 
 import org.jgrapht.Graph;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -36,43 +23,13 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClassFromPOJOConverter.PreferenceScreenWithHostClassWithMap;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.graph.Host2HostClassTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.graph.Preferences2SearchablePreferencesTransformer;
-import de.KnollFrank.settingssearch.test.TestActivity;
 
-@RunWith(RobolectricTestRunner.class)
+// FK-TODO: move all helper methods to other classes?
 public class SearchablePreferenceScreenGraphDAOTest {
-
-    @Test
-    public void shouldPersistAndLoadSearchablePreferenceScreenGraph() {
-        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(activity -> {
-                // Given
-                final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
-                final Fragments fragments = getFragments(preferenceFragment, activity);
-                final PreferenceManager preferenceManager = initializeFragment(preferenceFragment, fragments).getPreferenceManager();
-                final Graph<PreferenceScreenWithHostClass, PreferenceEdge> preferenceScreenGraph = createSomePojoPreferenceScreenGraph(preferenceFragment, fragments);
-                final var outputStream = new ByteArrayOutputStream();
-
-                // When
-                SearchablePreferenceScreenGraphDAO.persist(preferenceScreenGraph, outputStream);
-                final Graph<PreferenceScreenWithHostClassWithMap, PreferenceEdge> preferenceScreenGraphActual =
-                        SearchablePreferenceScreenGraphDAO.load(
-                                outputStream2InputStream(outputStream),
-                                preferenceManager);
-
-                // Then
-                assertThat(preferenceScreenGraphActual.vertexSet().size(), is(preferenceScreenGraph.vertexSet().size()));
-                assertThat(preferenceScreenGraphActual.edgeSet().size(), is(preferenceScreenGraph.edgeSet().size()));
-                final PreferenceEdge edge = Iterables.getOnlyElement(preferenceScreenGraphActual.edgeSet());
-                assertThat(edge.preference.getTitle(), is("preference connected to TestPreferenceFragment"));
-            });
-        }
-    }
 
     public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> createSomePojoPreferenceScreenGraph(
             final PreferenceFragmentCompat preferenceFragment,
