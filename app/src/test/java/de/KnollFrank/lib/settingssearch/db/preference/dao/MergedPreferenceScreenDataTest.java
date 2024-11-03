@@ -56,17 +56,21 @@ public class MergedPreferenceScreenDataTest {
                                         .put(searchablePreferencePOJO2, new PreferencePath(List.of(searchablePreferencePOJO1, searchablePreferencePOJO2)))
                                         .build(),
                                 Map.of(searchablePreferencePOJO1, PreferenceFragmentCompat.class));
-                final var outputStream1 = new ByteArrayOutputStream();
-                final var outputStream2 = new ByteArrayOutputStream();
-                final var outputStream3 = new ByteArrayOutputStream();
+                final var preferences = new ByteArrayOutputStream();
+                final var preferencePathByPreference = new ByteArrayOutputStream();
+                final var hostByPreference = new ByteArrayOutputStream();
 
                 // When
-                MergedPreferenceScreenDataDAO.persist(data, outputStream1, outputStream2, outputStream3);
+                MergedPreferenceScreenDataDAO.persist(
+                        data,
+                        preferences,
+                        preferencePathByPreference,
+                        hostByPreference);
                 final MergedPreferenceScreenData dataActual =
                         MergedPreferenceScreenDataDAO.load(
-                                outputStream2InputStream(outputStream1),
-                                outputStream2InputStream(outputStream2),
-                                outputStream2InputStream(outputStream3));
+                                outputStream2InputStream(preferences),
+                                outputStream2InputStream(preferencePathByPreference),
+                                outputStream2InputStream(hostByPreference));
 
                 // Then
                 assertEquals(
