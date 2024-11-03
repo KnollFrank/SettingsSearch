@@ -68,7 +68,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                         R.raw.preferences,
                                         R.raw.preference_path_by_preference,
                                         R.raw.host_by_preference),
-                                MergedPreferenceScreenDataMode.LOAD))
+                                MergedPreferenceScreenDataMode.PERSIST))
                 .build();
     }
 

@@ -11,6 +11,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.converter.VertexAttrib
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
+// FK-TODO: remove?
 class JSON2POJOGraphConverter {
 
     public static Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> json2PojoGraph(final Reader reader) {
