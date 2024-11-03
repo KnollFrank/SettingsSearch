@@ -37,14 +37,22 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // FK-TODO: cache instance of MergedPreferenceScreen
-        final MergedPreferenceScreen mergedPreferenceScreen =
-                mergedPreferenceScreenFactory.getMergedPreferenceScreen(
-                        getChildFragmentManager(),
-                        requireContext());
+        final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen();
         showSearchResultsPreferenceFragment(
                 mergedPreferenceScreen,
                 searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen));
+    }
+
+    private static MergedPreferenceScreen mergedPreferenceScreen;
+
+    private MergedPreferenceScreen getMergedPreferenceScreen() {
+        if (mergedPreferenceScreen == null) {
+            mergedPreferenceScreen =
+                    mergedPreferenceScreenFactory.getMergedPreferenceScreen(
+                            getChildFragmentManager(),
+                            requireContext());
+        }
+        return mergedPreferenceScreen;
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
