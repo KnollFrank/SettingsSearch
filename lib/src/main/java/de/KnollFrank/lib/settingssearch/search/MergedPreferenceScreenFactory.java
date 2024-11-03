@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
@@ -85,7 +86,7 @@ public class MergedPreferenceScreenFactory {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         context);
-        return MergedPreferenceScreen.of(
+        return MergedPreferenceScreens.createMergedPreferenceScreen(
                 getMergedPreferenceScreenData(
                         () -> getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs).getSearchablePreferenceScreenGraph(),
                         mergedPreferenceScreenDataInput,

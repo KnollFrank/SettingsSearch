@@ -28,6 +28,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -496,7 +497,7 @@ public class PreferenceSearcherTest {
                                 new SearchableDialogInfoOfProvider(
                                         fragmentInitializer,
                                         preferenceDialogAndSearchableInfoProvider)));
-        return MergedPreferenceScreen.of(
+        return MergedPreferenceScreens.createMergedPreferenceScreen(
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),
                 PreferenceManagerProvider.getPreferenceManager(
