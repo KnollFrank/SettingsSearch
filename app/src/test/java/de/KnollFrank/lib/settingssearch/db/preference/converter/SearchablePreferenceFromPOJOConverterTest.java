@@ -24,7 +24,7 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -57,7 +57,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
     }
 
     public static PreferenceFragmentCompat createSomePreferenceFragment(final TestActivity activity) {
-        final PreferenceFragmentCompat preferenceFragment = new SearchablePreferenceScreenGraphDAOTest.TestPreferenceFragment();
+        final PreferenceFragmentCompat preferenceFragment = new TestPreferenceFragment();
         return initializeFragment(
                 preferenceFragment,
                 getFragments(

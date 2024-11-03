@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverterTest.equalBundles;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createSearchablePreferencePOJO;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAOTest.outputStream2InputStream;
 
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
@@ -15,7 +14,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +83,10 @@ public class MergedPreferenceScreenDataTest {
                 assertThat(dataActual.hostByPreference(), is(data.hostByPreference()));
             });
         }
+    }
+
+    private static InputStream outputStream2InputStream(final OutputStream outputStream) {
+        return new ByteArrayInputStream(outputStream.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private static void assertEquals(final SearchablePreferencePOJO actual, final SearchablePreferencePOJO expected) {
