@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
-import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory.MergedPreferenceScreenDataMode;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsBuilderConfigurer;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;

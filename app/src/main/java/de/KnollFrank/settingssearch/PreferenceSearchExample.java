@@ -15,7 +15,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
-import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory.MergedPreferenceScreenDataMode;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class PreferenceSearchExample extends AppCompatActivity {

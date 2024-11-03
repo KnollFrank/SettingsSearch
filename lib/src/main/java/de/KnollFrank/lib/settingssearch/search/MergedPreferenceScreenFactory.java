@@ -118,10 +118,6 @@ public class MergedPreferenceScreenFactory {
                                 preferenceDialogAndSearchableInfoProvider)));
     }
 
-    public enum MergedPreferenceScreenDataMode {
-        PERSIST, LOAD
-    }
-
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
@@ -129,23 +125,31 @@ public class MergedPreferenceScreenFactory {
             final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
             final Resources resources) {
         return switch (mergedPreferenceScreenDataMode) {
-            case PERSIST -> {
-                // FK-TODO: extract classes
-                final MergedPreferenceScreenData mergedPreferenceScreenData =
-                        MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
-                                searchablePreferenceScreenGraphSupplier.get());
-                MergedPreferenceScreenDataDAO.persist(
-                        mergedPreferenceScreenData,
-                        getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.preferences(), resources), context),
-                        getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.preferencePathByPreference(), resources), context),
-                        getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.hostByPreference(), resources), context));
-                yield mergedPreferenceScreenData;
-            }
-            case LOAD -> MergedPreferenceScreenDataDAO.load(
-                    context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferences()),
-                    context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferencePathByPreference()),
-                    context.getResources().openRawResource(mergedPreferenceScreenDataInput.hostByPreference()));
+            case PERSIST -> computeAndPersistMergedPreferenceScreenData(
+                    searchablePreferenceScreenGraphSupplier,
+                    mergedPreferenceScreenDataInput,
+                    context,
+                    resources);
+            case LOAD -> loadMergedPreferenceScreenData(
+                    mergedPreferenceScreenDataInput,
+                    context);
         };
+    }
+
+    private static MergedPreferenceScreenData computeAndPersistMergedPreferenceScreenData(
+            final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
+            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
+            final Context context,
+            final Resources resources) {
+        final MergedPreferenceScreenData mergedPreferenceScreenData =
+                MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
+                        searchablePreferenceScreenGraphSupplier.get());
+        MergedPreferenceScreenDataDAO.persist(
+                mergedPreferenceScreenData,
+                getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.preferences(), resources), context),
+                getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.preferencePathByPreference(), resources), context),
+                getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.hostByPreference(), resources), context));
+        return mergedPreferenceScreenData;
     }
 
     private static String getFileName(final @RawRes int id, final Resources resources) {
@@ -158,5 +162,12 @@ public class MergedPreferenceScreenFactory {
         } catch (final FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static MergedPreferenceScreenData loadMergedPreferenceScreenData(final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput, final Context context) {
+        return MergedPreferenceScreenDataDAO.load(
+                context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferences()),
+                context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferencePathByPreference()),
+                context.getResources().openRawResource(mergedPreferenceScreenDataInput.hostByPreference()));
     }
 }
