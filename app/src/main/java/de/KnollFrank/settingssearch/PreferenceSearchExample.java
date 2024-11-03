@@ -64,6 +64,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         SearchPreferenceFragments.builder(
                                 createSearchConfiguration(PrefsFragmentFirst.class),
                                 getSupportFragmentManager(),
+                                getResources(),
                                 new MergedPreferenceScreenDataInput(
                                         R.raw.preferences,
                                         R.raw.preference_path_by_preference,

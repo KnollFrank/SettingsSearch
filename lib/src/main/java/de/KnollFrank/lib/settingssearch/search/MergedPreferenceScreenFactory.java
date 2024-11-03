@@ -1,7 +1,9 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
+import android.content.res.Resources;
 
+import androidx.annotation.RawRes;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -46,6 +48,7 @@ public class MergedPreferenceScreenFactory {
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
+    private final Resources resources;
 
     public MergedPreferenceScreenFactory(
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -56,7 +59,8 @@ public class MergedPreferenceScreenFactory {
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
-            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
+            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
+            final Resources resources) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.isPreferenceSearchable = isPreferenceSearchable;
@@ -66,6 +70,7 @@ public class MergedPreferenceScreenFactory {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
         this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
+        this.resources = resources;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
@@ -85,7 +90,8 @@ public class MergedPreferenceScreenFactory {
                         () -> getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs).getSearchablePreferenceScreenGraph(),
                         mergedPreferenceScreenDataInput,
                         context,
-                        mergedPreferenceScreenDataMode),
+                        mergedPreferenceScreenDataMode,
+                        resources),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment),
@@ -119,7 +125,8 @@ public class MergedPreferenceScreenFactory {
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final Context context,
-            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
+            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
+            final Resources resources) {
         return switch (mergedPreferenceScreenDataMode) {
             case PERSIST -> {
                 // FK-TODO: extract classes
@@ -128,9 +135,9 @@ public class MergedPreferenceScreenFactory {
                                 searchablePreferenceScreenGraphSupplier.get());
                 MergedPreferenceScreenDataDAO.persist(
                         mergedPreferenceScreenData,
-                        getFileOutputStream("preferences.json", context),
-                        getFileOutputStream("preference_path_by_preference.json", context),
-                        getFileOutputStream("host_by_preference.json", context));
+                        getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.preferences(), resources), context),
+                        getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.preferencePathByPreference(), resources), context),
+                        getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.hostByPreference(), resources), context));
                 yield mergedPreferenceScreenData;
             }
             case LOAD -> MergedPreferenceScreenDataDAO.load(
@@ -138,6 +145,10 @@ public class MergedPreferenceScreenFactory {
                     context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferencePathByPreference()),
                     context.getResources().openRawResource(mergedPreferenceScreenDataInput.hostByPreference()));
         };
+    }
+
+    private static String getFileName(final @RawRes int id, final Resources resources) {
+        return resources.getResourceEntryName(id) + ".json";
     }
 
     private static FileOutputStream getFileOutputStream(final String fileName, final Context context) {

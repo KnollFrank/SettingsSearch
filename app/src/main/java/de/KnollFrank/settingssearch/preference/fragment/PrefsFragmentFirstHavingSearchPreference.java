@@ -68,6 +68,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                                         Optional.empty(),
                                         getClass()),
                                 getParentFragmentManager(),
+                                getResources(),
                                 new MergedPreferenceScreenDataInput(
                                         R.raw.preferences,
                                         R.raw.preference_path_by_preference,

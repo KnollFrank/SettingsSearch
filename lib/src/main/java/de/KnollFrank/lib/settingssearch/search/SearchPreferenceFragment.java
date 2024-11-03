@@ -37,6 +37,7 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // FK-TODO: cache instance of MergedPreferenceScreen
         final MergedPreferenceScreen mergedPreferenceScreen =
                 mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                         getChildFragmentManager(),
