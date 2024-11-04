@@ -3,7 +3,7 @@
     "children": [],
     "extras": {},
     "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
-    "icon": "iVBORw0KGgoAAAANSUhEUgAAAD8AAAA/CAYAAABXXxDfAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAASISURBVGiB7dtbqFVFHMfxz9R58EGyzExJ0woj0koSfTDtRhCVmaBkgV0fBIsIuqAPYaFYoCJJpkVJQlFBWVARFEIvaRRqYkVlZFRGZKc0iiyDpoflefGstfea2Rc1zxfOy8z8L781+8yatea/GGCAAQY4TgjdCRMH4wKchlMxDEMxBPvxy6G/XvyMnYQDnc6qg+LjSFyF6bg4w8FHeB/vEnrbmVkfHRAfr8M8jGuj08+wgfBeG322U3ychPtxbvt89mM7VhJ2tcNZG8TH0xWir2zdV23exGrC/lactCg+XoJlGNyanyx68QDh01wHLYiPd+HOfPu28RhhY45hpvj4CGbk2XaEJwnPpRpliI9LcU26XcdZR1ifYnBCmv+4yNEpHBYQb04xSBAfZ2NOYkLd5r5Dt9xa1PzZx3F4KTOhbrMPNxL2NRtYd+aXtJZPVzkF99YZWEN8vEF7t6rdYAZxQrNBTcTHHixoU0Ld5p5mA5rN/GzF4+exyCTihY0GNBM/LyPoGszCNNyKjzN8wDbccsjPLDyV4aNh/g1W+zgRzyYGW0TYVOJrHSYn+NlMKFm04kwsTszpcsIfZR2NZv7qxCBbyoWjePhJYWl5c3gDOxJ9VT5tNhI/PTHI1uqusAd7avrZ3eTNzQcJOcHUqo4K8XE0RiQGObFJ/79t8hNr+umj8t+tauYvSgwAU6q74kicWdPPGOLwBv2VM1nBEGJp7CrxZycGgMnEqnUidZF6qLw5zsTERF8wtqyxSnzp4BosI95GHEUcRBxPXC9tpYepxLXE8w75GUWcL/0i9jGmrLHiVhefRu2no2OAlwkrD2+smvkuHWZ0jaFljVXiU1fUo52TyhqrxHf8qKjLHCxrrBL/ZwcTORKU6qkS39JhwFHIr2WNVeK/62AiR4Jvyxp7KgZ/kxHge+zNsEtlOEYn2nxd1lglfqdiL57yansXYWFiUhnEFdLEH1Sc8vajQlw4gM8Ts7qMeHKiTSJxaBEniZ2Ef8o6Gs3s5sQgPbg90SaV+ZIPWqp1NHL0dmIQuKnYh3eCOFbxTjHJCG9VdTYQH/bgi8RgPXg00aYGcRCWS992b210eNHsJ/RCYjA4n5j79FXFEnmP2c836mwm/h38mBF0ZnsuQOwhLpdX9fElYUujAU3Eh4jVGYEpLsDj+XeAOBxr5Ze7rGo2oMbKGTZJf2PaxzS8Qrw2zSzOLuyyStgoyte2NRtU95R2LF7NTKSP3diI7YSvSmKMV4idgzNaiPMb5tap3UtYPeP1eDg/p378oCgqGqY1sYdzN+HDOgMTbx3xQczNSKhbrCK8WHdw4m4prJC3+ekG61KEk1+NtRgz82w7whrChlSj/0Md3jLC6zmGx3IF5k9YeIQqMPuIIxS1t1e07qs2r+EJwu+tOGln1fUUxUU4p30++7FFUXBc+mYmlU7U28/AHSqOiDLZgWfq3r/r0skvLc7CpYo3Lw1rY0r4W3Hev0WxVW1aU5dDt76xGYIJit3cMMV3NkMVJyn7FTu9XsV3NnvxCeGv7uQ2wAADDHAc8B/P0+YFPcmo9AAAAABJRU5ErkJggg\u003d\u003d",
+    "icon": "iVBORw0KGgoAAAANSUhEUgAAAEIAAABCCAYAAADjVADoAAAAAXNSR0IArs4c6QAAAARzQklUCAgICHwIZIgAAAPqSURBVHic7Zs/VttAEIc/5aWMDoAPgPuYPj4APoChh9QkaQP0kBrowX3gAPYBfAD7APYB5H5TzBrziFbaHa1km6fvPVWyZnZ/3r+zs9DS0tLSUkrSvEuTAofAAdB593IBLIE5JFmTpWpACNMBvgE9+6SeH2bA1D4TSBb1lE+oSQiTAsf26UYyOgNGiCjRW0tkIUwKDO3j+8+HkiGCjGIKElEI0wcuqU+A9yyAP5CMYxiLIIRJgRuk/2+DMXBdtXVUFMJ0gTuaawUuFsAvSGZaA5/0vs0AeGT7IoBMw3e2TCqULcIMkPFgF7mG5Dn0I4UQOy3CmmAxAoUwXaQ77DoZ8D1kzAgQwqTAX3ZjTPBhAZz6ziYhg+UN+yMCyADq3YU9hTB9trdOqELflr0Uj66xd13iPV5dxKdF1LlvaIIOUodCSoR43UTtO0NbFydlLaKPrjU8IM3xCDgHJgobayZiIzkSmzwobKRIXZyUjBHmkfB4wjkk0xxbZ8BZoK0HSHIqbnrAfaCtGSSnrpcFLcJ0CBfhJV8EsBVaBtha5osA1sdLYNm6tk65FHWNfqAjkLBalfd12VrTd70oEkKzbihbxYXEDGLaWuOsU5EQX2M6Utgs+63mj3LadAhhUnSzxbG7H5o+YWNO170qNB3xFUzqmkZdLeJQ4cQ64s6O6m8wQ3Rb90v77VtbPapFxXLr5pg+o8QcMmBOvD3KFKlE1VVubqzis+PHBxWdgRQ45kYtlq3culWIWX4sWiEsrRAWlxAhS+F9I7duLiFqPXneMrl1cwkxr7Eg2ya3bo7pM8nArIAvgU4myPF9E3SRvIsQVq6QnWsdAbKACXWUubfOsTFXio+cO9aiWUOzzT0uC4nFQb3XUAkxVjiC8ChUkz7GrhcFQiQLdIPm0B4N1oTpomsN86I8rLIF1UjhEOB3PV3EpGJbRWFdyoQYAyuF0y5wofiujAt0yWkrSrp6iRBJBjwpHAMMwERMHzCXYlPFU4yTrhH6JfcAzE21bmJSsaEWYYlHF/cQIsmAW2UhQCLHj/9HrXwwPflWFVFfc+uTGhCSH3FP9eDIFHimMGnUpMhCbhDB3wSSHz4/DE0UeSZ82e1iyiacB5swXKxI1BI48U0U+aipQyvk6NF73xMYmElmwHXYN1vhNjTnsk0vtFTIvN05MVZISwgWAeKkIN8TbwDVsgR+bikFGazjAboteywmyOxQKSAU+5rCFc21jiXSFcYxjNV1ceWE+gRZIfufXb248hazzlkaoj9Qfs8cqbxqMCyjqcttfTaX23xbyorN5bbxnl5uK+L1umOH/w9kl8i5Q+PXHVtaWlpaPPgHHSbvuZ2l/WsAAAAASUVORK5CYII\u003d",
     "id": 1,
     "key": "link_to_second_fragment",
     "layoutResId": 2131427444,
@@ -59,20 +59,11 @@
     "widgetLayoutResId": 2131427446
   },
   {
-    "children": [],
-    "extras": {},
-    "id": 6,
-    "layoutResId": 2131427437,
-    "title": "This is a preference having no key",
-    "visible": true,
-    "widgetLayoutResId": 0
-  },
-  {
     "children": [
       {
         "children": [],
         "extras": {},
-        "id": 8,
+        "id": 7,
         "key": "checkbox2",
         "layoutResId": 2131427444,
         "summary": "This is a checkbox preference inside a category",
@@ -82,7 +73,7 @@
       }
     ],
     "extras": {},
-    "id": 7,
+    "id": 6,
     "key": "key of PreferenceCategory",
     "layoutResId": 2131427437,
     "title": "This is a preference category",
@@ -92,7 +83,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 8,
+    "id": 7,
     "key": "checkbox2",
     "layoutResId": 2131427444,
     "summary": "This is a checkbox preference inside a category",
@@ -105,7 +96,7 @@
       {
         "children": [],
         "extras": {},
-        "id": 10,
+        "id": 9,
         "key": "checkbox3",
         "layoutResId": 2131427444,
         "summary": "This is a checkbox preference inside a PreferenceScreen",
@@ -115,7 +106,7 @@
       }
     ],
     "extras": {},
-    "id": 9,
+    "id": 8,
     "key": "screen",
     "layoutResId": 2131427444,
     "summary": "This is a PreferenceScreen",
@@ -126,7 +117,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 10,
+    "id": 9,
     "key": "checkbox3",
     "layoutResId": 2131427444,
     "summary": "This is a checkbox preference inside a PreferenceScreen",
@@ -137,7 +128,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 11,
+    "id": 10,
     "key": "string",
     "layoutResId": 2131427444,
     "summary": "This checkbox demonstrates @string resources",
@@ -148,7 +139,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 12,
+    "id": 11,
     "key": "edittext",
     "layoutResId": 2131427444,
     "summary": "This is an edit text preference",
@@ -159,7 +150,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 13,
+    "id": 12,
     "key": "switch",
     "layoutResId": 2131427444,
     "searchableInfo": "switch is off, switch is on",
@@ -171,7 +162,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 14,
+    "id": 13,
     "key": "list",
     "layoutResId": 2131427444,
     "searchableInfo": "this is the dialog title, Home, Work, Other, Custom",
@@ -183,7 +174,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 15,
+    "id": 14,
     "key": "keyOfReversedListPreference",
     "layoutResId": 2131427444,
     "searchableInfo": "MIA, eviL swodniW, oohaY, epykS, QQ, klaT elgooG, QCI, rebbaJ",
@@ -195,7 +186,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 16,
+    "id": 15,
     "key": "keyOfSomeCustomDialogPreference",
     "layoutResId": 2131427444,
     "searchableInfo": "some text in a custom dialog",
@@ -207,7 +198,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 17,
+    "id": 16,
     "key": "keyOfSomeCustomDialogPreference2",
     "layoutResId": 2131427444,
     "searchableInfo": "some text in a custom dialog",
@@ -219,7 +210,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 18,
+    "id": 17,
     "key": "keyOfPreferenceWithOnPreferenceClickListener",
     "layoutResId": 2131427444,
     "searchableInfo": "some text in a custom dialog",
@@ -231,7 +222,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 19,
+    "id": 18,
     "key": "keyOfImProtocols",
     "layoutResId": 2131427440,
     "searchableInfo": "AIM, Windows Live, Yahoo, Skype, QQ, Google Talk, ICQ, Jabber",
@@ -243,7 +234,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 20,
+    "id": 19,
     "key": "multilist",
     "layoutResId": 2131427444,
     "searchableInfo": "dialog title of a multi select list preference, Home, Mobile, Work, Work Fax, Home Fax, Pager, Other, Custom",
@@ -255,7 +246,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 21,
+    "id": 20,
     "key": "checkbox4",
     "layoutResId": 2131427444,
     "summary": "This checkbox is just there to fill the screen",
@@ -266,7 +257,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 22,
+    "id": 21,
     "key": "checkbox5",
     "layoutResId": 2131427444,
     "summary": "This checkbox is just there to fill the screen",
@@ -277,7 +268,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 23,
+    "id": 22,
     "key": "checkbox6",
     "layoutResId": 2131427444,
     "summary": "This checkbox is just there to fill the screen",
@@ -288,7 +279,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 24,
+    "id": 23,
     "key": "fardown",
     "layoutResId": 2131427444,
     "summary": "A preference that is very far down on the screen, so it has to be scrolled to",
@@ -302,7 +293,7 @@
       "summaryOfSrcPreference": "summary of src preference"
     },
     "fragment": "de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference",
-    "id": 25,
+    "id": 24,
     "key": "keyOfSrcPreference",
     "layoutResId": 2131427444,
     "summary": "summary of src preference",
@@ -313,7 +304,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 26,
+    "id": 25,
     "key": "fourthfile",
     "layoutResId": 2131427444,
     "summary": "This checkbox is a preference coming from a fourth file",
@@ -324,7 +315,141 @@
   {
     "children": [],
     "extras": {},
+    "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird",
+    "id": 26,
+    "key": "link_to_third_fragment",
+    "layoutResId": 2131427444,
+    "summary": "some summary to third fragment",
+    "title": "some title to third fragment",
+    "visible": true,
+    "widgetLayoutResId": 0
+  },
+  {
+    "children": [],
+    "extras": {},
     "id": 27,
+    "key": "keyOfPreferenceWithCustomLayout",
+    "layoutResId": 2131427357,
+    "summary": "summary of preference with custom layout",
+    "title": "title of preference with custom layout",
+    "visible": true,
+    "widgetLayoutResId": 0
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 28,
+    "key": "secondfile",
+    "layoutResId": 2131427444,
+    "summary": "This checkbox is a preference coming from a second file",
+    "title": "Checkbox",
+    "visible": true,
+    "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 29,
+    "key": "searchsummary",
+    "layoutResId": 2131427444,
+    "summary": "This checkbox is a preference coming from a second file",
+    "title": "Checkbox",
+    "visible": true,
+    "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 30,
+    "key": "searchkeyword",
+    "layoutResId": 2131427444,
+    "summary": "This checkbox has additional keywords",
+    "title": "Checkbox",
+    "visible": true,
+    "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 31,
+    "key": "ignoredcheckbox",
+    "layoutResId": 2131427444,
+    "summary": "This checkbox should not be displayed",
+    "title": "Ignored",
+    "visible": true,
+    "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird",
+    "id": 32,
+    "key": "link_to_third_fragment",
+    "layoutResId": 2131427444,
+    "summary": "some summary to third fragment",
+    "title": "some title to third fragment",
+    "visible": true,
+    "widgetLayoutResId": 0
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 33,
+    "key": "keyOfPreferenceWithCustomLayout",
+    "layoutResId": 2131427357,
+    "summary": "summary of preference with custom layout",
+    "title": "title of preference with custom layout",
+    "visible": true,
+    "widgetLayoutResId": 0
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 34,
+    "key": "secondfile",
+    "layoutResId": 2131427444,
+    "summary": "This checkbox is a preference coming from a second file",
+    "title": "Checkbox",
+    "visible": true,
+    "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 35,
+    "key": "searchsummary",
+    "layoutResId": 2131427444,
+    "summary": "This checkbox is a preference coming from a second file",
+    "title": "Checkbox",
+    "visible": true,
+    "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 36,
+    "key": "searchkeyword",
+    "layoutResId": 2131427444,
+    "summary": "This checkbox has additional keywords",
+    "title": "Checkbox",
+    "visible": true,
+    "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 37,
+    "key": "ignoredcheckbox",
+    "layoutResId": 2131427444,
+    "summary": "This checkbox should not be displayed",
+    "title": "Ignored",
+    "visible": true,
+    "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 38,
     "key": "keyOfPreferenceOfConnectedFragment",
     "layoutResId": 2131427444,
     "summary": "copied summary: summary of src preference",
@@ -335,141 +460,7 @@
   {
     "children": [],
     "extras": {},
-    "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird",
-    "id": 28,
-    "key": "link_to_third_fragment",
-    "layoutResId": 2131427444,
-    "summary": "some summary to third fragment",
-    "title": "some title to third fragment",
-    "visible": true,
-    "widgetLayoutResId": 0
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 29,
-    "key": "keyOfPreferenceWithCustomLayout",
-    "layoutResId": 2131427357,
-    "summary": "summary of preference with custom layout",
-    "title": "title of preference with custom layout",
-    "visible": true,
-    "widgetLayoutResId": 0
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 30,
-    "key": "secondfile",
-    "layoutResId": 2131427444,
-    "summary": "This checkbox is a preference coming from a second file",
-    "title": "Checkbox",
-    "visible": true,
-    "widgetLayoutResId": 2131427446
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 31,
-    "key": "searchsummary",
-    "layoutResId": 2131427444,
-    "summary": "This checkbox is a preference coming from a second file",
-    "title": "Checkbox",
-    "visible": true,
-    "widgetLayoutResId": 2131427446
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 32,
-    "key": "searchkeyword",
-    "layoutResId": 2131427444,
-    "summary": "This checkbox has additional keywords",
-    "title": "Checkbox",
-    "visible": true,
-    "widgetLayoutResId": 2131427446
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 33,
-    "key": "ignoredcheckbox",
-    "layoutResId": 2131427444,
-    "summary": "This checkbox should not be displayed",
-    "title": "Ignored",
-    "visible": true,
-    "widgetLayoutResId": 2131427446
-  },
-  {
-    "children": [],
-    "extras": {},
-    "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird",
-    "id": 34,
-    "key": "link_to_third_fragment",
-    "layoutResId": 2131427444,
-    "summary": "some summary to third fragment",
-    "title": "some title to third fragment",
-    "visible": true,
-    "widgetLayoutResId": 0
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 35,
-    "key": "keyOfPreferenceWithCustomLayout",
-    "layoutResId": 2131427357,
-    "summary": "summary of preference with custom layout",
-    "title": "title of preference with custom layout",
-    "visible": true,
-    "widgetLayoutResId": 0
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 36,
-    "key": "secondfile",
-    "layoutResId": 2131427444,
-    "summary": "This checkbox is a preference coming from a second file",
-    "title": "Checkbox",
-    "visible": true,
-    "widgetLayoutResId": 2131427446
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 37,
-    "key": "searchsummary",
-    "layoutResId": 2131427444,
-    "summary": "This checkbox is a preference coming from a second file",
-    "title": "Checkbox",
-    "visible": true,
-    "widgetLayoutResId": 2131427446
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 38,
-    "key": "searchkeyword",
-    "layoutResId": 2131427444,
-    "summary": "This checkbox has additional keywords",
-    "title": "Checkbox",
-    "visible": true,
-    "widgetLayoutResId": 2131427446
-  },
-  {
-    "children": [],
-    "extras": {},
     "id": 39,
-    "key": "ignoredcheckbox",
-    "layoutResId": 2131427444,
-    "summary": "This checkbox should not be displayed",
-    "title": "Ignored",
-    "visible": true,
-    "widgetLayoutResId": 2131427446
-  },
-  {
-    "children": [],
-    "extras": {},
-    "id": 40,
     "key": "thirdfile",
     "layoutResId": 2131427444,
     "summary": "This checkbox is a preference coming from a third file",
@@ -480,7 +471,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 41,
+    "id": 40,
     "key": "thirdfile",
     "layoutResId": 2131427444,
     "summary": "This checkbox is a preference coming from a third file",
