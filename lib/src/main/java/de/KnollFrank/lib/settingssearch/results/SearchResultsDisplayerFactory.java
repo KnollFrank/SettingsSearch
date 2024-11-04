@@ -11,7 +11,6 @@ import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.MarkupFactory;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
