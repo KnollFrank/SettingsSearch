@@ -151,7 +151,7 @@ public class PreferenceMatchesHighlighterTest {
                 final Spannable searchableInfo =
                         (Spannable) searchableInfoAttribute
                                 .getSearchableInfo(preference)
-                                .get();
+                                .orElseThrow();
                 final int markupsSize = markupsFactory.get().size();
                 assertThat(searchableInfo.getSpans(0, 4, Object.class), arrayWithSize(markupsSize));
                 assertThat(searchableInfo.getSpans(6, 10, Object.class), arrayWithSize(markupsSize));

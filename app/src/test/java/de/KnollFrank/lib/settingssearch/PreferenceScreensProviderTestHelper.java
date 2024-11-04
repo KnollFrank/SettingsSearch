@@ -35,7 +35,7 @@ class PreferenceScreensProviderTestHelper {
                 .stream()
                 .filter(preferenceScreenWithHostClass -> name.equals(preferenceScreenWithHostClass.preferenceScreen().title()))
                 .findFirst()
-                .get();
+                .orElseThrow();
     }
 
     private static Preference createConnectionToFragment(final Class<? extends Fragment> fragment,
@@ -43,6 +43,7 @@ class PreferenceScreensProviderTestHelper {
         final Preference preference = new Preference(context);
         preference.setFragment(fragment.getName());
         preference.setTitle("preference connected to " + fragment.getSimpleName());
+        preference.setKey("key of preference connected to " + fragment.getSimpleName());
         return preference;
     }
 }
