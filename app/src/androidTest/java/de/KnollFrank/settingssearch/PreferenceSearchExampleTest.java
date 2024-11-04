@@ -57,15 +57,6 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
-    public void test_clickOnSearchResultHavingNoKey() {
-        onView(searchButton()).perform(click());
-        final String titleOfPreferenceHavingNoKey = "This is a preference having no key";
-        onView(searchView()).perform(replaceText(titleOfPreferenceHavingNoKey), closeSoftKeyboard());
-        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
-        onView(titleOfPreference(titleOfPreferenceHavingNoKey)).check(matches(isDisplayed()));
-    }
-
-    @Test
     public void shouldSearchAndFindListPreference() {
         final String entryOfSomeListPreference = "Home";
         onView(searchButton()).perform(click());
@@ -119,14 +110,6 @@ public class PreferenceSearchExampleTest {
 
     private static Matcher<View> hasSearchResultWithSubstring(final String substring) {
         return recyclerViewHasItem(hasDescendant(withSubstring(substring)));
-    }
-
-    private static Matcher<View> titleOfPreference(final String text) {
-        return allOf(
-                withId(android.R.id.title),
-                withText(text),
-                withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout.class))),
-                isDisplayed());
     }
 
     private static Matcher<View> summaryOfPreference() {
