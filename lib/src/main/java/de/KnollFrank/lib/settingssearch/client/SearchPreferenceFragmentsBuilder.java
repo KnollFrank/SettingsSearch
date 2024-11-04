@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
-// FK-TODO aus OsmAnd: schalte über eine Benutzerdefinierte Bedingung ganze Gruppen von Preferences für die Suche an oder aus, z.B. Development aus OsmAnd.
+// FK-TODO aus OsmAnd: schalte über eine benutzerdefinierte Bedingung ganze Gruppen von Preferences für die Suche an oder aus, z.B. Development aus OsmAnd.
 public class SearchPreferenceFragmentsBuilder {
 
     private final SearchConfiguration searchConfiguration;
