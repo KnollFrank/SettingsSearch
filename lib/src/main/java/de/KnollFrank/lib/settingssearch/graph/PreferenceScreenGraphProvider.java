@@ -38,7 +38,7 @@ public class PreferenceScreenGraphProvider {
                         .getPreferenceScreenWithHostOfFragment(
                                 rootPreferenceFragmentClassName,
                                 Optional.empty())
-                        .get());
+                        .orElseThrow());
         return preferenceScreenGraph;
     }
 
