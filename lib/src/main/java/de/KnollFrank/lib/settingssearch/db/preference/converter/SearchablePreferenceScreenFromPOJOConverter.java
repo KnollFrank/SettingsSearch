@@ -18,7 +18,7 @@ public class SearchablePreferenceScreenFromPOJOConverter {
     // FK-TODO: remove
     public static PreferenceScreenWithMap convertFromPOJO(final SearchablePreferenceScreenPOJO searchablePreferenceScreenPOJO,
                                                           final PreferenceManager preferenceManager,
-                                                          final IdGenerator preferenceKeyGenerator) {
+                                                          final StringGenerator preferenceKeyGenerator) {
         final PreferenceScreen preferenceScreen = preferenceManager.createPreferenceScreen(preferenceManager.getContext());
         preferenceScreen.setTitle(searchablePreferenceScreenPOJO.title());
         preferenceScreen.setSummary(searchablePreferenceScreenPOJO.summary());

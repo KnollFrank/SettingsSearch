@@ -22,12 +22,11 @@ public class SearchablePreferenceFromPOJOConverter {
     public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJO2Parent(
             final SearchablePreferencePOJO searchablePreferencePOJO,
             final PreferenceGroup parent,
-            // FK-TODO: introduce StringGenerator instead of IdGenerator
-            final IdGenerator preferenceKeyGenerator) {
+            final StringGenerator preferenceKeyGenerator) {
         final SearchablePreference searchablePreference =
                 createPlainSearchablePreferenceHavingKey(
                         searchablePreferencePOJO,
-                        String.valueOf(preferenceKeyGenerator.nextId()),
+                        preferenceKeyGenerator.nextString(),
                         parent.getContext());
         parent.addPreference(searchablePreference);
         return ImmutableBiMap
@@ -40,7 +39,7 @@ public class SearchablePreferenceFromPOJOConverter {
     public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJOs2Parent(
             final List<SearchablePreferencePOJO> searchablePreferencePOJOs,
             final PreferenceGroup parent,
-            final IdGenerator preferenceKeyGenerator) {
+            final StringGenerator preferenceKeyGenerator) {
         return Maps.mergeBiMaps(
                 searchablePreferencePOJOs
                         .stream()

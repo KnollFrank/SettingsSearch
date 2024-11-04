@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.StringGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
@@ -87,7 +87,7 @@ public class SearchResultsDisplayer {
                 SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
                         getPreferences(preferenceMatches),
                         preferenceScreen,
-                        new IdGenerator());
+                        new StringGenerator());
         disablePreferences(preferenceScreen);
         setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 preferenceScreen,
