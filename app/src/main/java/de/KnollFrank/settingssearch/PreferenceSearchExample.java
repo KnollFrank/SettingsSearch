@@ -17,8 +17,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
-// FK-FIXME: diesen Fehler aus OsmAnd reproduzieren und beheben: "Found duplicated key: "default_speed". This can cause unintended behaviour, please use unique keys for every preference."
-// FK-FIXME: suche in OsmAnd nach "via ferrata" und klicke das Suchergebnis an => java.lang.NullPointerException
+
 public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;

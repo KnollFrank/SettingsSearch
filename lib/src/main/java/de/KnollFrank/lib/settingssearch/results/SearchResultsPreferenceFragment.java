@@ -78,11 +78,22 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
-        // FK-TODO: refactor
-        final SearchablePreferencePOJO searchablePreferencePOJO = searchResultsDisplayer.getSearchResultsDescription().preferenceScreenWithMap().pojoEntityMap().inverse().get(preference);
         showPreferenceScreenAndHighlightPreference(
                 preferencePathNavigator.navigatePreferencePath(searchResultsDisplayer.getSearchResultsDescription().preferencePathByPreference().get(preference)),
-                searchablePreferencePOJO.key());
+                getOriginalKey(preference));
+    }
+
+    private Optional<String> getOriginalKey(final Preference preference) {
+        return getSearchablePreferencePOJO(preference).key();
+    }
+
+    private SearchablePreferencePOJO getSearchablePreferencePOJO(final Preference preference) {
+        return searchResultsDisplayer
+                .getSearchResultsDescription()
+                .preferenceScreenWithMap()
+                .pojoEntityMap()
+                .inverse()
+                .get(preference);
     }
 
     private void showPreferenceScreenAndHighlightPreference(
