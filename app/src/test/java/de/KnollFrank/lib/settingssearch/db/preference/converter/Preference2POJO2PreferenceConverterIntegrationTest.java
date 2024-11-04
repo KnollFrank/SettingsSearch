@@ -96,7 +96,7 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
     private static Preference convertPOJO2Preference(final SearchablePreferencePOJO pojo,
                                                      final PreferenceScreen preferenceScreen) {
         final PreferenceCategory parent = createPreferenceCategory(preferenceScreen);
-        SearchablePreferenceFromPOJOConverter.addConvertedPOJO2Parent(pojo, parent);
+        SearchablePreferenceFromPOJOConverter.addConvertedPOJO2Parent(pojo, parent, new IdGenerator());
         return parent.getPreference(0);
     }
 

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenFromPOJOConverter.PreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -85,7 +86,8 @@ public class SearchResultsDisplayer {
         final BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap =
                 SearchablePreferenceFromPOJOConverter.addConvertedPOJOs2Parent(
                         getPreferences(preferenceMatches),
-                        preferenceScreen);
+                        preferenceScreen,
+                        new IdGenerator());
         disablePreferences(preferenceScreen);
         setSearchableInfosOfPreferencesIfQueryMatchesSearchableInfo(
                 preferenceScreen,

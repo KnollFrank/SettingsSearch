@@ -21,23 +21,30 @@ public class SearchablePreferenceFromPOJOConverter {
 
     public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJO2Parent(
             final SearchablePreferencePOJO searchablePreferencePOJO,
-            final PreferenceGroup parent) {
-        final SearchablePreference searchablePreference = createPlainSearchablePreference(searchablePreferencePOJO, parent.getContext());
+            final PreferenceGroup parent,
+            // FK-TODO: introduce StringGenerator instead of IdGenerator
+            final IdGenerator preferenceKeyGenerator) {
+        final SearchablePreference searchablePreference =
+                createPlainSearchablePreferenceHavingKey(
+                        searchablePreferencePOJO,
+                        String.valueOf(preferenceKeyGenerator.nextId()),
+                        parent.getContext());
         parent.addPreference(searchablePreference);
         return ImmutableBiMap
                 .<SearchablePreferencePOJO, SearchablePreference>builder()
                 .put(searchablePreferencePOJO, searchablePreference)
-                .putAll(addConvertedPOJOs2Parent(searchablePreferencePOJO.children(), searchablePreference))
+                .putAll(addConvertedPOJOs2Parent(searchablePreferencePOJO.children(), searchablePreference, preferenceKeyGenerator))
                 .build();
     }
 
     public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJOs2Parent(
             final List<SearchablePreferencePOJO> searchablePreferencePOJOs,
-            final PreferenceGroup parent) {
+            final PreferenceGroup parent,
+            final IdGenerator preferenceKeyGenerator) {
         return Maps.mergeBiMaps(
                 searchablePreferencePOJOs
                         .stream()
-                        .map(searchablePreferencePOJO -> addConvertedPOJO2Parent(searchablePreferencePOJO, parent))
+                        .map(searchablePreferencePOJO -> addConvertedPOJO2Parent(searchablePreferencePOJO, parent, preferenceKeyGenerator))
                         .collect(Collectors.toList()));
     }
 
@@ -47,17 +54,25 @@ public class SearchablePreferenceFromPOJOConverter {
                 new SearchablePreference(
                         context,
                         searchablePreferencePOJO.searchableInfo());
-        copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference, context.getResources());
+        copyAttributesFromSrc2Dst(
+                searchablePreferencePOJO,
+                searchablePreference,
+                context.getResources());
         return searchablePreference;
     }
 
-    private static int id = 1;
+    private static SearchablePreference createPlainSearchablePreferenceHavingKey(final SearchablePreferencePOJO searchablePreferencePOJO,
+                                                                                 final String key,
+                                                                                 final Context context) {
+        final SearchablePreference plainSearchablePreference = createPlainSearchablePreference(searchablePreferencePOJO, context);
+        plainSearchablePreference.setKey(key);
+        return plainSearchablePreference;
+    }
 
     private static void copyAttributesFromSrc2Dst(final SearchablePreferencePOJO src,
                                                   final SearchablePreference dst,
                                                   final Resources resources) {
-        // FK-TODO: use IdGenerator
-        dst.setKey(src.key().orElse("") + id++);
+        dst.setKey(src.key().orElse(null));
         dst.setIcon(string2Drawable(src.icon(), resources).orElse(null));
         dst.setLayoutResource(src.layoutResId());
         dst.setSummary(src.summary().orElse(null));
