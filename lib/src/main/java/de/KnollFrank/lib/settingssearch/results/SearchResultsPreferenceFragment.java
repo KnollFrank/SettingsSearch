@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
 
+import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -76,22 +78,25 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
+        // FK-TODO: refactor
+        final SearchablePreferencePOJO searchablePreferencePOJO = searchResultsDisplayer.getSearchResultsDescription().preferenceScreenWithMap().pojoEntityMap().inverse().get(preference);
         showPreferenceScreenAndHighlightPreference(
                 preferencePathNavigator.navigatePreferencePath(searchResultsDisplayer.getSearchResultsDescription().preferencePathByPreference().get(preference)),
-                preference);
+                searchablePreferencePOJO.key());
     }
 
     private void showPreferenceScreenAndHighlightPreference(
             final PreferenceFragmentCompat fragmentOfPreferenceScreen,
-            final Preference preference2Highlight) {
+            final Optional<String> keyOfPreference2Highlight) {
         prepareShow.prepareShow(fragmentOfPreferenceScreen);
         showFragment(
                 fragmentOfPreferenceScreen,
-                _fragmentOfPreferenceScreen -> {
-                    if (preference2Highlight.hasKey()) {
-                        highlightPreference(_fragmentOfPreferenceScreen, preference2Highlight.getKey());
-                    }
-                },
+                _fragmentOfPreferenceScreen ->
+                        keyOfPreference2Highlight.ifPresent(
+                                _keyOfPreference2Highlight ->
+                                        highlightPreference(
+                                                _fragmentOfPreferenceScreen,
+                                                _keyOfPreference2Highlight)),
                 true,
                 fragmentContainerViewId,
                 requireActivity().getSupportFragmentManager());

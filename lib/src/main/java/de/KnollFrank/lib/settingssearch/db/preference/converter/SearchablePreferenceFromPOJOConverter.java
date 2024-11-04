@@ -51,10 +51,13 @@ public class SearchablePreferenceFromPOJOConverter {
         return searchablePreference;
     }
 
+    private static int id = 1;
+
     private static void copyAttributesFromSrc2Dst(final SearchablePreferencePOJO src,
                                                   final SearchablePreference dst,
                                                   final Resources resources) {
-        dst.setKey(src.key().orElse(null));
+        // FK-TODO: use IdGenerator
+        dst.setKey(src.key().orElse("") + id++);
         dst.setIcon(string2Drawable(src.icon(), resources).orElse(null));
         dst.setLayoutResource(src.layoutResId());
         dst.setSummary(src.summary().orElse(null));
