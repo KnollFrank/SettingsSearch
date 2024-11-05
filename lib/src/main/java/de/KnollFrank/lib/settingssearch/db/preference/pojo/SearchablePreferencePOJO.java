@@ -22,6 +22,7 @@ public final class SearchablePreferencePOJO {
     private final boolean visible;
     private final String searchableInfo;
     private final Bundle extras;
+    // FK-TODO: exclude children when saving to preferences.json?
     private List<SearchablePreferencePOJO> children = Collections.emptyList();
     @Exclude
     private SearchablePreferencePOJO parent;
