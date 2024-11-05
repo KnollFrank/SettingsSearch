@@ -2,12 +2,9 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.Bundle;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
 public final class SearchablePreferencePOJO {
 
@@ -22,37 +19,9 @@ public final class SearchablePreferencePOJO {
     private final boolean visible;
     private final String searchableInfo;
     private final Bundle extras;
-    // FK-TODO: exclude children when saving to preferences.json?
-    private List<SearchablePreferencePOJO> children = Collections.emptyList();
-    @Exclude
-    private SearchablePreferencePOJO parent;
+    private final List<SearchablePreferencePOJO> children;
 
-    private SearchablePreferencePOJO(
-            final int id,
-            final Optional<String> key,
-            final Optional<String> icon,
-            final int layoutResId,
-            final Optional<String> summary,
-            final Optional<String> title,
-            final int widgetLayoutResId,
-            final Optional<String> fragment,
-            final boolean visible,
-            final Optional<String> searchableInfo,
-            final Bundle extras) {
-        this.id = id;
-        this.key = key.orElse(null);
-        this.icon = icon.orElse(null);
-        this.layoutResId = layoutResId;
-        this.summary = summary.orElse(null);
-        this.title = title.orElse(null);
-        this.widgetLayoutResId = widgetLayoutResId;
-        this.fragment = fragment.orElse(null);
-        this.visible = visible;
-        this.searchableInfo = searchableInfo.orElse(null);
-        this.extras = extras;
-    }
-
-    public static SearchablePreferencePOJO of(
+    public SearchablePreferencePOJO(
             final int id,
             final Optional<String> key,
             final Optional<String> icon,
@@ -65,44 +34,26 @@ public final class SearchablePreferencePOJO {
             final Optional<String> searchableInfo,
             final Bundle extras,
             final List<SearchablePreferencePOJO> children) {
-        final SearchablePreferencePOJO searchablePreferencePOJO =
-                new SearchablePreferencePOJO(
-                        id,
-                        key,
-                        icon,
-                        layoutResId,
-                        summary,
-                        title,
-                        widgetLayoutResId,
-                        fragment,
-                        visible,
-                        searchableInfo,
-                        extras);
-        searchablePreferencePOJO.setChildren(children);
-        return searchablePreferencePOJO;
+        this.id = id;
+        this.key = key.orElse(null);
+        this.icon = icon.orElse(null);
+        this.layoutResId = layoutResId;
+        this.summary = summary.orElse(null);
+        this.title = title.orElse(null);
+        this.widgetLayoutResId = widgetLayoutResId;
+        this.fragment = fragment.orElse(null);
+        this.visible = visible;
+        this.searchableInfo = searchableInfo.orElse(null);
+        this.extras = extras;
+        this.children = children;
     }
 
     public int id() {
         return id;
     }
 
-    public Optional<SearchablePreferencePOJO> getParent() {
-        return Optional.ofNullable(parent);
-    }
-
-    private void setParent(final Optional<SearchablePreferencePOJO> parent) {
-        this.parent = parent.orElse(null);
-    }
-
     public List<SearchablePreferencePOJO> children() {
         return children;
-    }
-
-    private void setChildren(final List<SearchablePreferencePOJO> children) {
-        this.children = children;
-        for (final SearchablePreferencePOJO child : children) {
-            child.setParent(Optional.of(this));
-        }
     }
 
     public Optional<String> key() {

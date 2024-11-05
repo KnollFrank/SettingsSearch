@@ -92,7 +92,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                         "screen title",
                                         "screen summary",
                                         List.of(
-                                                SearchablePreferencePOJO.of(
+                                                new SearchablePreferencePOJO(
                                                         1,
                                                         Optional.of("parentKey"),
                                                         Optional.empty(),
@@ -105,7 +105,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                         Optional.of("some searchable info"),
                                                         new Bundle(),
                                                         List.of(
-                                                                SearchablePreferencePOJO.of(
+                                                                new SearchablePreferencePOJO(
                                                                         2,
                                                                         Optional.empty(),
                                                                         Optional.empty(),
@@ -118,7 +118,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         Optional.of("some searchable info of first child"),
                                                                         new Bundle(),
                                                                         List.of()),
-                                                                SearchablePreferencePOJO.of(
+                                                                new SearchablePreferencePOJO(
                                                                         3,
                                                                         Optional.empty(),
                                                                         Optional.empty(),

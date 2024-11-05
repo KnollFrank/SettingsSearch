@@ -15,7 +15,7 @@ public class POJOTestFactory {
 
     public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO(final Bundle extras,
                                                                               final Resources resources) {
-        return SearchablePreferencePOJO.of(
+        return new SearchablePreferencePOJO(
                 1,
                 Optional.of("some key"),
                 drawable2String(Optional.of(resources.getDrawable(R.drawable.smiley, null))),
@@ -28,7 +28,7 @@ public class POJOTestFactory {
                 Optional.of("some searchableInfo"),
                 extras,
                 List.of(
-                        SearchablePreferencePOJO.of(
+                        new SearchablePreferencePOJO(
                                 2,
                                 Optional.of("some key 2"),
                                 Optional.empty(),
@@ -54,7 +54,7 @@ public class POJOTestFactory {
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo) {
-        return SearchablePreferencePOJO.of(
+        return new SearchablePreferencePOJO(
                 id,
                 Optional.of("some key"),
                 Optional.empty(),
