@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 
@@ -26,7 +27,8 @@ class PreferenceSearcher {
     }
 
     public List<PreferenceMatch> searchFor(final String needle) {
-        return preferences
+        return PreferencePOJOs
+                .getPreferencesRecursively(preferences)
                 .stream()
                 .filter(this::shallIncludePreferenceOfHostInSearchResults)
                 .flatMap(searchablePreference -> PreferenceMatcher.getPreferenceMatches(searchablePreference, needle).stream())

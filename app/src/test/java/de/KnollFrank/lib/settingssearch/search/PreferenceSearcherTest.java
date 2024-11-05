@@ -32,6 +32,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -167,6 +168,34 @@ public class PreferenceSearcherTest {
                         assertThat(
                                 getKeys(preferenceMatches),
                                 hasItem(keyOfPreference)));
+    }
+
+    @Test
+    public void shouldSearchAndFindNestedPreference() {
+        final String keyword = "This is some keyword";
+        final String keyOfNestedPreference = "keyOfNestedPreference";
+        testSearch(
+                new PreferenceFragmentTemplate(
+                        (preferenceScreen, context) -> {
+                            final PreferenceCategory category = new PreferenceCategory(context);
+                            category.setKey("keyOfCategory");
+                            preferenceScreen.addPreference(category);
+
+                            final CheckBoxPreference nestedPreference = new CheckBoxPreference(context);
+                            nestedPreference.setKey(keyOfNestedPreference);
+                            nestedPreference.setTitle(keyword);
+
+                            category.addPreference(nestedPreference);
+                        }),
+                (preference, host) -> true,
+                (preference, host) -> true,
+                keyword,
+                (preference, hostOfPreference) -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfNestedPreference)));
     }
 
     @Test
