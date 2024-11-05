@@ -8,14 +8,14 @@ import androidx.preference.PreferenceScreen;
 import java.util.function.Predicate;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
 public class SearchablePreferenceScreenProvider implements PreferenceScreenProvider {
 
-    private final IsPreferenceSearchable isPreferenceSearchable;
+    private final PreferenceSearchablePredicate preferenceSearchablePredicate;
 
-    public SearchablePreferenceScreenProvider(final IsPreferenceSearchable isPreferenceSearchable) {
-        this.isPreferenceSearchable = isPreferenceSearchable;
+    public SearchablePreferenceScreenProvider(final PreferenceSearchablePredicate preferenceSearchablePredicate) {
+        this.preferenceSearchablePredicate = preferenceSearchablePredicate;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class SearchablePreferenceScreenProvider implements PreferenceScreenProvi
     private void removeNonSearchablePreferencesFromPreferenceScreen(final PreferenceScreen preferenceScreen, final PreferenceFragmentCompat preferenceFragment) {
         final Predicate<Preference> isPreferenceNonSearchable =
                 preference ->
-                        !isPreferenceSearchable.isPreferenceOfHostSearchable(
+                        !preferenceSearchablePredicate.isPreferenceOfHostSearchable(
                                 preference,
                                 preferenceFragment);
         removePreferencesFromPreferenceGroup(preferenceScreen, isPreferenceNonSearchable);

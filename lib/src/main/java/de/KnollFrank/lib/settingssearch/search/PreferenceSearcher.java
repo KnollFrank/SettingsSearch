@@ -8,20 +8,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.provider.ShallIncludePreferenceInSearchResults;
+import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 
 class PreferenceSearcher {
 
     // FK-TODO: SQL-Datenbank verwenden? (siehe Branch precompute-MergedPreferenceScreen-SQLite)
     private final Set<SearchablePreferencePOJO> preferences;
-    private final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults;
+    private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference;
 
     public PreferenceSearcher(final Set<SearchablePreferencePOJO> preferences,
-                              final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults,
+                              final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                               final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
         this.preferences = preferences;
-        this.shallIncludePreferenceInSearchResults = shallIncludePreferenceInSearchResults;
+        this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.hostByPreference = hostByPreference;
     }
 
@@ -34,7 +34,7 @@ class PreferenceSearcher {
     }
 
     private boolean shallIncludePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference) {
-        return shallIncludePreferenceInSearchResults.shallIncludePreferenceOfHostInSearchResults(
+        return includePreferenceInSearchResultsPredicate.includePreferenceOfHostInSearchResults(
                 preference,
                 hostByPreference.get(preference));
     }

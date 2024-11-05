@@ -41,11 +41,11 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
+import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
-import de.KnollFrank.lib.settingssearch.provider.ShallIncludePreferenceInSearchResults;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
@@ -92,18 +92,18 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         });
-        final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults =
-                new ShallIncludePreferenceInSearchResults() {
+        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate =
+                new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean shallIncludePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> host) {
+                    public boolean includePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> host) {
                         return Optional.of(keyOfPreference).equals(preference.key()) && preferenceFragment.getClass().equals(host);
                     }
                 };
         testSearch(
                 preferenceFragment,
                 (preference, host) -> true,
-                shallIncludePreferenceInSearchResults,
+                includePreferenceInSearchResultsPredicate,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -125,18 +125,18 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         });
-        final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults =
-                new ShallIncludePreferenceInSearchResults() {
+        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate =
+                new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean shallIncludePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> host) {
+                    public boolean includePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> host) {
                         return !(Optional.of(keyOfPreference).equals(preference.key()) && preferenceFragment.getClass().equals(host));
                     }
                 };
         testSearch(
                 preferenceFragment,
                 (preference, host) -> true,
-                shallIncludePreferenceInSearchResults,
+                includePreferenceInSearchResultsPredicate,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -508,8 +508,8 @@ public class PreferenceSearcherTest {
     }
 
     static void testSearch(final PreferenceFragmentCompat preferenceFragment,
-                           final IsPreferenceSearchable isPreferenceSearchable,
-                           final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults,
+                           final PreferenceSearchablePredicate preferenceSearchablePredicate,
+                           final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                            final String keyword,
                            final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
@@ -520,7 +520,7 @@ public class PreferenceSearcherTest {
                 final MergedPreferenceScreen mergedPreferenceScreen =
                         getMergedPreferenceScreen(
                                 preferenceFragment,
-                                isPreferenceSearchable,
+                                preferenceSearchablePredicate,
                                 fragmentActivity,
                                 createFragmentFactoryReturning(preferenceFragment),
                                 preferenceConnected2PreferenceFragmentProvider,
@@ -528,7 +528,7 @@ public class PreferenceSearcherTest {
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
-                                shallIncludePreferenceInSearchResults,
+                                includePreferenceInSearchResultsPredicate,
                                 mergedPreferenceScreen.hostByPreference());
 
                 // When
@@ -550,7 +550,7 @@ public class PreferenceSearcherTest {
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
             final PreferenceFragmentCompat preferenceFragment,
-            final IsPreferenceSearchable isPreferenceSearchable,
+            final PreferenceSearchablePredicate preferenceSearchablePredicate,
             final FragmentActivity fragmentActivity,
             final FragmentFactory fragmentFactory,
             final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
@@ -573,8 +573,8 @@ public class PreferenceSearcherTest {
                         new PreferenceScreenWithHostProvider(
                                 fragments,
                                 new SearchablePreferenceScreenProvider(
-                                        new IsPreferenceVisibleAndSearchable(
-                                                isPreferenceSearchable))),
+                                        new PreferenceVisibleAndSearchablePredicate(
+                                                preferenceSearchablePredicate))),
                         preferenceConnected2PreferenceFragmentProvider,
                         preferenceScreenGraph -> {
                         },

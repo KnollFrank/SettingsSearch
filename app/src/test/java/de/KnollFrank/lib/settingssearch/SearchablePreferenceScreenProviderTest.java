@@ -1,6 +1,10 @@
 package de.KnollFrank.lib.settingssearch;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
+
+import android.content.Context;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -8,18 +12,12 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
-
-import android.content.Context;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -77,7 +75,7 @@ public class SearchablePreferenceScreenProviderTest {
                                 activity);
                 final SearchablePreferenceScreenProvider searchablePreferenceScreenProvider =
                         new SearchablePreferenceScreenProvider(
-                                new IsPreferenceSearchable() {
+                                new PreferenceSearchablePredicate() {
 
                                     @Override
                                     public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat host) {

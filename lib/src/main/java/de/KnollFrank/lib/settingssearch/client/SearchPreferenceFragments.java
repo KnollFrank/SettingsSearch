@@ -7,12 +7,12 @@ import android.content.res.Resources;
 import androidx.fragment.app.FragmentManager;
 
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
+import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
-import de.KnollFrank.lib.settingssearch.provider.ShallIncludePreferenceInSearchResults;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
@@ -27,8 +27,8 @@ public class SearchPreferenceFragments {
     private final FragmentFactory fragmentFactory;
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
-    private final IsPreferenceSearchable isPreferenceSearchable;
-    private final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults;
+    private final PreferenceSearchablePredicate preferenceSearchablePredicate;
+    private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
@@ -55,8 +55,8 @@ public class SearchPreferenceFragments {
                                         final FragmentFactory fragmentFactory,
                                         final SearchableInfoProvider searchableInfoProvider,
                                         final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                                        final IsPreferenceSearchable isPreferenceSearchable,
-                                        final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults,
+                                        final PreferenceSearchablePredicate preferenceSearchablePredicate,
+                                        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                         final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                         final ShowPreferencePathPredicate showPreferencePathPredicate,
                                         final PrepareShow prepareShow,
@@ -69,8 +69,8 @@ public class SearchPreferenceFragments {
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
-        this.isPreferenceSearchable = isPreferenceSearchable;
-        this.shallIncludePreferenceInSearchResults = shallIncludePreferenceInSearchResults;
+        this.preferenceSearchablePredicate = preferenceSearchablePredicate;
+        this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -86,12 +86,12 @@ public class SearchPreferenceFragments {
                 new SearchPreferenceFragment(
                         searchConfiguration,
                         showPreferencePathPredicate,
-                        shallIncludePreferenceInSearchResults,
+                        includePreferenceInSearchResultsPredicate,
                         prepareShow,
                         new MergedPreferenceScreenFactory(
                                 searchConfiguration.rootPreferenceFragment(),
                                 fragmentFactory,
-                                isPreferenceSearchable,
+                                preferenceSearchablePredicate,
                                 preferenceConnected2PreferenceFragmentProvider,
                                 preferenceScreenGraphAvailableListener,
                                 searchableInfoProvider,

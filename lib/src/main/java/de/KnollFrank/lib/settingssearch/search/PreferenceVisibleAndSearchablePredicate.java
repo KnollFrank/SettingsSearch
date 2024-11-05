@@ -3,13 +3,13 @@ package de.KnollFrank.lib.settingssearch.search;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
-public class IsPreferenceVisibleAndSearchable implements IsPreferenceSearchable {
+public class PreferenceVisibleAndSearchablePredicate implements PreferenceSearchablePredicate {
 
-    private final IsPreferenceSearchable delegate;
+    private final PreferenceSearchablePredicate delegate;
 
-    public IsPreferenceVisibleAndSearchable(final IsPreferenceSearchable delegate) {
+    public PreferenceVisibleAndSearchablePredicate(final PreferenceSearchablePredicate delegate) {
         this.delegate = delegate;
     }
 

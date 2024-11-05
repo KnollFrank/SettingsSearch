@@ -8,12 +8,12 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
+import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
-import de.KnollFrank.lib.settingssearch.provider.ShallIncludePreferenceInSearchResults;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
@@ -29,8 +29,8 @@ public class SearchPreferenceFragmentsBuilder {
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
-    private IsPreferenceSearchable isPreferenceSearchable = (preference, host) -> true;
-    private ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults = (preference, host) -> true;
+    private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, host) -> true;
+    private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = (preference, host) -> true;
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
@@ -65,13 +65,13 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withIsPreferenceSearchable(final IsPreferenceSearchable isPreferenceSearchable) {
-        this.isPreferenceSearchable = isPreferenceSearchable;
+    public SearchPreferenceFragmentsBuilder withPreferenceSearchablePredicate(final PreferenceSearchablePredicate preferenceSearchablePredicate) {
+        this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withShallIncludePreferenceInSearchResults(final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults) {
-        this.shallIncludePreferenceInSearchResults = shallIncludePreferenceInSearchResults;
+    public SearchPreferenceFragmentsBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
+        this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         return this;
     }
 
@@ -101,8 +101,8 @@ public class SearchPreferenceFragmentsBuilder {
                 fragmentFactory,
                 searchableInfoProvider,
                 preferenceDialogAndSearchableInfoProvider,
-                isPreferenceSearchable,
-                shallIncludePreferenceInSearchResults,
+                preferenceSearchablePredicate,
+                includePreferenceInSearchResultsPredicate,
                 preferenceScreenGraphAvailableListener,
                 showPreferencePathPredicate,
                 prepareShow,

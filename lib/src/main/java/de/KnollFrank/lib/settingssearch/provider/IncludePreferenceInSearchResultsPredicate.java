@@ -5,7 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
 @FunctionalInterface
-public interface ShallIncludePreferenceInSearchResults {
+public interface IncludePreferenceInSearchResultsPredicate {
 
-    boolean shallIncludePreferenceOfHostInSearchResults(SearchablePreferencePOJO preference, Class<? extends PreferenceFragmentCompat> host);
+    boolean includePreferenceOfHostInSearchResults(SearchablePreferencePOJO preference, Class<? extends PreferenceFragmentCompat> host);
 }
