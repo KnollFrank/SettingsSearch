@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
+import de.KnollFrank.lib.settingssearch.provider.ShallIncludePreferenceInSearchResults;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
@@ -29,6 +30,7 @@ public class SearchPreferenceFragmentsBuilder {
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private IsPreferenceSearchable isPreferenceSearchable = (preference, host) -> true;
+    private ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults = (preference, host) -> true;
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
@@ -68,6 +70,11 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
+    public SearchPreferenceFragmentsBuilder withShallIncludePreferenceInSearchResults(final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults) {
+        this.shallIncludePreferenceInSearchResults = shallIncludePreferenceInSearchResults;
+        return this;
+    }
+
     public SearchPreferenceFragmentsBuilder withPreferenceScreenGraphAvailableListener(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         return this;
@@ -95,6 +102,7 @@ public class SearchPreferenceFragmentsBuilder {
                 searchableInfoProvider,
                 preferenceDialogAndSearchableInfoProvider,
                 isPreferenceSearchable,
+                shallIncludePreferenceInSearchResults,
                 preferenceScreenGraphAvailableListener,
                 showPreferencePathPredicate,
                 prepareShow,

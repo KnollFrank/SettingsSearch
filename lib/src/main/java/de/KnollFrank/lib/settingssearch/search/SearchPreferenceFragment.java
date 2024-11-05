@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
+import de.KnollFrank.lib.settingssearch.provider.ShallIncludePreferenceInSearchResults;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
 
@@ -20,16 +21,19 @@ public class SearchPreferenceFragment extends Fragment {
 
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final SearchConfiguration searchConfiguration;
+    private final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults;
     private final PrepareShow prepareShow;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
+                                    final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults,
                                     final PrepareShow prepareShow,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
+        this.shallIncludePreferenceInSearchResults = shallIncludePreferenceInSearchResults;
         this.prepareShow = prepareShow;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
     }
@@ -79,7 +83,7 @@ public class SearchPreferenceFragment extends Fragment {
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
                                 // FK-TODO: use user configured instance of IsPreferenceEnabled which shall be defined in SearchPreferenceFragmentsBuilder
-                                (preference, host) -> true,
+                                shallIncludePreferenceInSearchResults,
                                 mergedPreferenceScreen.hostByPreference()),
                         mergedPreferenceScreen.searchResultsDisplayer()));
         selectSearchView(searchView);

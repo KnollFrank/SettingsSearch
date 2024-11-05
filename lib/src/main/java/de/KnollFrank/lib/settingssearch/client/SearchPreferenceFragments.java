@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
+import de.KnollFrank.lib.settingssearch.provider.ShallIncludePreferenceInSearchResults;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
@@ -27,6 +28,7 @@ public class SearchPreferenceFragments {
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IsPreferenceSearchable isPreferenceSearchable;
+    private final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
@@ -54,6 +56,7 @@ public class SearchPreferenceFragments {
                                         final SearchableInfoProvider searchableInfoProvider,
                                         final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                         final IsPreferenceSearchable isPreferenceSearchable,
+                                        final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults,
                                         final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                         final ShowPreferencePathPredicate showPreferencePathPredicate,
                                         final PrepareShow prepareShow,
@@ -67,6 +70,7 @@ public class SearchPreferenceFragments {
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.isPreferenceSearchable = isPreferenceSearchable;
+        this.shallIncludePreferenceInSearchResults = shallIncludePreferenceInSearchResults;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -82,6 +86,7 @@ public class SearchPreferenceFragments {
                 new SearchPreferenceFragment(
                         searchConfiguration,
                         showPreferencePathPredicate,
+                        shallIncludePreferenceInSearchResults,
                         prepareShow,
                         new MergedPreferenceScreenFactory(
                                 searchConfiguration.rootPreferenceFragment(),
