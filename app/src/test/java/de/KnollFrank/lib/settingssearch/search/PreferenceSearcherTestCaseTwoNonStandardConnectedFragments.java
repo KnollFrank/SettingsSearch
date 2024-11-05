@@ -73,6 +73,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
         PreferenceSearcherTest.testSearch(
                 fragmentWithNonStandardConnection,
                 (preference, host) -> true,
+                (preference, host) -> true,
                 keyword,
                 preferenceConnected2PreferenceFragmentProvider,
                 (preference, hostOfPreference) -> Optional.empty(),

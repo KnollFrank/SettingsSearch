@@ -45,6 +45,7 @@ import de.KnollFrank.lib.settingssearch.provider.IsPreferenceSearchable;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.provider.ShallIncludePreferenceInSearchResults;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
@@ -69,6 +70,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, host) -> true,
+                (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -76,6 +78,72 @@ public class PreferenceSearcherTest {
                         assertThat(
                                 getKeys(preferenceMatches),
                                 hasItem(keyOfPreference)));
+    }
+
+    @Test
+    public void shouldSearchAndFindPreference_includePreferenceInSearchResults() {
+        final String keyword = "fourth";
+        final String keyOfPreference = "fourthfile";
+        final PreferenceFragment preferenceFragment =
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final CheckBoxPreference preference = new CheckBoxPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setTitle(String.format("Checkbox %s file", keyword));
+                            return preference;
+                        });
+        final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults =
+                new ShallIncludePreferenceInSearchResults() {
+
+                    @Override
+                    public boolean shallIncludePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> host) {
+                        return Optional.of(keyOfPreference).equals(preference.key()) && preferenceFragment.getClass().equals(host);
+                    }
+                };
+        testSearch(
+                preferenceFragment,
+                (preference, host) -> true,
+                shallIncludePreferenceInSearchResults,
+                keyword,
+                (preference, hostOfPreference) -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                hasItem(keyOfPreference)));
+    }
+
+    @Test
+    public void shouldSearchAndFindPreference_excludePreferenceFromSearchResults() {
+        final String keyword = "fourth";
+        final String keyOfPreference = "fourthfile";
+        final PreferenceFragment preferenceFragment =
+                PreferenceFragment.fromSinglePreference(
+                        context -> {
+                            final CheckBoxPreference preference = new CheckBoxPreference(context);
+                            preference.setKey(keyOfPreference);
+                            preference.setTitle(String.format("Checkbox %s file", keyword));
+                            return preference;
+                        });
+        final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults =
+                new ShallIncludePreferenceInSearchResults() {
+
+                    @Override
+                    public boolean shallIncludePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> host) {
+                        return !(Optional.of(keyOfPreference).equals(preference.key()) && preferenceFragment.getClass().equals(host));
+                    }
+                };
+        testSearch(
+                preferenceFragment,
+                (preference, host) -> true,
+                shallIncludePreferenceInSearchResults,
+                keyword,
+                (preference, hostOfPreference) -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
+                preferenceMatches ->
+                        assertThat(
+                                getKeys(preferenceMatches),
+                                not(hasItem(keyOfPreference))));
     }
 
     @Test
@@ -90,6 +158,7 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format(keyword));
                             return preference;
                         }),
+                (preference, host) -> true,
                 (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -113,6 +182,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, host) -> !(preference instanceof CheckBoxPreference && keyOfPreference.equals(preference.getKey())),
+                (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -134,6 +204,7 @@ public class PreferenceSearcherTest {
                             preference.setSummary(String.format("Checkbox %s file", keyword));
                             return preference;
                         }),
+                (preference, host) -> true,
                 (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -159,6 +230,7 @@ public class PreferenceSearcherTest {
                             preference.setEntries(new String[]{keyword});
                             return preference;
                         }),
+                (preference, host) -> true,
                 (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -186,6 +258,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, host) -> true,
+                (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -210,6 +283,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, host) -> true,
+                (preference, host) -> true,
                 summaryOff,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -233,6 +307,7 @@ public class PreferenceSearcherTest {
                             preference.setSummaryOn(summaryOn);
                             return preference;
                         }),
+                (preference, host) -> true,
                 (preference, host) -> true,
                 summaryOn,
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -259,6 +334,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, host) -> true,
+                (preference, host) -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -281,6 +357,7 @@ public class PreferenceSearcherTest {
                             preference.setTitle("title of CustomDialogPreference");
                             return preference;
                         }),
+                (preference, host) -> true,
                 (preference, host) -> true,
                 keyword,
                 (preference, host) -> Optional.empty(),
@@ -316,6 +393,7 @@ public class PreferenceSearcherTest {
                             }
                         }),
                 (preference, host) -> true,
+                (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -331,6 +409,7 @@ public class PreferenceSearcherTest {
         final String keyOfPreference = "keyOfPreferenceWithOnPreferenceClickListener";
         testSearch(
                 new PrefsFragmentFirst(),
+                (preference, host) -> true,
                 (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -356,6 +435,7 @@ public class PreferenceSearcherTest {
                             preference.setEntryValues(new String[]{"some entry value"});
                             return preference;
                         }),
+                (preference, host) -> true,
                 (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -383,6 +463,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, host) -> true,
+                (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -406,6 +487,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, host) -> true,
+                (preference, host) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -427,6 +509,7 @@ public class PreferenceSearcherTest {
 
     static void testSearch(final PreferenceFragmentCompat preferenceFragment,
                            final IsPreferenceSearchable isPreferenceSearchable,
+                           final ShallIncludePreferenceInSearchResults shallIncludePreferenceInSearchResults,
                            final String keyword,
                            final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
@@ -443,7 +526,10 @@ public class PreferenceSearcherTest {
                                 preferenceConnected2PreferenceFragmentProvider,
                                 preferenceDialogAndSearchableInfoProvider);
                 final PreferenceSearcher preferenceSearcher =
-                        new PreferenceSearcher(mergedPreferenceScreen.preferences());
+                        new PreferenceSearcher(
+                                mergedPreferenceScreen.preferences(),
+                                shallIncludePreferenceInSearchResults,
+                                mergedPreferenceScreen.hostByPreference());
 
                 // When
                 final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);

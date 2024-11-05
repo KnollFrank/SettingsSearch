@@ -33,7 +33,8 @@ public class MergedPreferenceScreens {
                 new PreferencePathNavigator(
                         mergedPreferenceScreenData.hostByPreference(),
                         fragmentFactoryAndInitializer,
-                        preferenceManager.getContext()));
+                        preferenceManager.getContext()),
+                mergedPreferenceScreenData.hostByPreference());
     }
 
     private static Map<Preference, PreferencePath> convertPojoKeys2EntityKeys(

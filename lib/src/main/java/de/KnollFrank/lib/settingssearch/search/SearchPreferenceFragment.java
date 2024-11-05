@@ -76,7 +76,11 @@ public class SearchPreferenceFragment extends Fragment {
                 searchView,
                 searchConfiguration.queryHint(),
                 new SearchAndDisplay(
-                        new PreferenceSearcher(mergedPreferenceScreen.preferences()),
+                        new PreferenceSearcher(
+                                mergedPreferenceScreen.preferences(),
+                                // FK-TODO: use user configured instance of IsPreferenceEnabled which shall be defined in SearchPreferenceFragmentsBuilder
+                                (preference, host) -> true,
+                                mergedPreferenceScreen.hostByPreference()),
                         mergedPreferenceScreen.searchResultsDisplayer()));
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
