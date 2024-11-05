@@ -13,6 +13,7 @@ import java.util.List;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
 
+// FK-TODO: DRY with PreferenceFragmentTemplate
 public abstract class PreferenceFragmentTemplateWithPreferences extends PreferenceFragmentCompat {
 
     @Override
