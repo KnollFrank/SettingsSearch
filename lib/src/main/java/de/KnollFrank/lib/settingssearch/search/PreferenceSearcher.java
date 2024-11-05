@@ -9,7 +9,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 class PreferenceSearcher {
 
-    // FK-TODO: SQL-Datenbank verwenden, siehe Branch precompute-MergedPreferenceScreen-SQLite
+    // FK-TODO: SQL-Datenbank verwenden? (siehe Branch precompute-MergedPreferenceScreen-SQLite)
     private final Set<SearchablePreferencePOJO> preferences;
 
     public PreferenceSearcher(final Set<SearchablePreferencePOJO> preferences) {
