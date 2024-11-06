@@ -97,8 +97,8 @@ public class PreferenceSearcherTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> host) {
-                        return Optional.of(keyOfPreference).equals(preference.key()) && preferenceFragment.getClass().equals(host);
+                    public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> hostOfPreference) {
+                        return Optional.of(keyOfPreference).equals(preference.key()) && preferenceFragment.getClass().equals(hostOfPreference);
                     }
                 };
         testSearch(
@@ -130,8 +130,8 @@ public class PreferenceSearcherTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> host) {
-                        return !(Optional.of(keyOfPreference).equals(preference.key()) && preferenceFragment.getClass().equals(host));
+                    public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> hostOfPreference) {
+                        return !(Optional.of(keyOfPreference).equals(preference.key()) && preferenceFragment.getClass().equals(hostOfPreference));
                     }
                 };
         testSearch(

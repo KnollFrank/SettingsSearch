@@ -36,7 +36,7 @@ class PreferenceSearcher {
     }
 
     private boolean shallIncludePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference) {
-        return includePreferenceInSearchResultsPredicate.includePreferenceOfHostInSearchResults(
+        return includePreferenceInSearchResultsPredicate.includePreferenceInSearchResults(
                 preference,
                 hostByPreference.get(preference));
     }
