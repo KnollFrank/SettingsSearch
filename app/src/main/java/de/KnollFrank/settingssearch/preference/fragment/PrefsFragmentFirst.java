@@ -19,6 +19,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     public static final String SUMMARY_OF_SRC_PREFERENCE = "summaryOfSrcPreference";
     public static final String NON_STANDARD_LINK_TO_SECOND_FRAGMENT = "non_standard_link_to_second_fragment";
+    private static final String KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER = "keyOfPreferenceWithOnPreferenceClickListener";
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -38,7 +39,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     @Override
     public boolean onPreferenceClick(@NonNull final Preference preference) {
-        if ("keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey())) {
+        if (KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER.equals(preference.getKey())) {
             CustomDialogFragment.showInstance(getParentFragmentManager());
             return true;
         }
@@ -63,7 +64,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     private void setOnPreferenceClickListeners() {
         Stream
                 .of(
-                        "keyOfPreferenceWithOnPreferenceClickListener",
+                        KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER,
                         NON_STANDARD_LINK_TO_SECOND_FRAGMENT)
                 .<Preference>map(this::findPreference)
                 .forEach(preference -> preference.setOnPreferenceClickListener(this));
