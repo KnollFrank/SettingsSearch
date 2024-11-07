@@ -51,7 +51,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     }
 
     private @NonNull Preference createPreferenceConnectedToPreferenceFragmentWithSinglePreference() {
-        final Preference preference = new Preference(getContext());
+        final Preference preference = new Preference(requireContext());
         preference.setFragment(PreferenceFragmentWithSinglePreference.class.getName());
         preference.setTitle("preference from src to dst");
         preference.setKey("keyOfSrcPreference");
