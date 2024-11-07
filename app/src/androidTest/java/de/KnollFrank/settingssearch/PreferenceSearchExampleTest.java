@@ -32,6 +32,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
+import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
+
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class PreferenceSearchExampleTest {
@@ -48,11 +51,20 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
-    public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult() {
+    public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult_srcIsPreferenceWithExtras() {
         onView(searchButton()).perform(click());
-        onView(searchView()).perform(replaceText("dst preference"), closeSoftKeyboard());
+        onView(searchView()).perform(replaceText(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS), closeSoftKeyboard());
         onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
-        final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: summary of src preference";
+        final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: " + PrefsFragmentFirst.SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS;
+        onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
+    }
+
+    @Test
+    public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult_srcIsPreferenceWithoutExtras() {
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS), closeSoftKeyboard());
+        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
+        final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: " + PrefsFragmentFirst.SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS;
         onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
     }
 
