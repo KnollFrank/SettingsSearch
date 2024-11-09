@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 
 class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
@@ -55,14 +56,15 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
         }
     }
 
-    public static class PreferenceFragmentWithSinglePreference extends PreferenceFragmentTemplateWithPreferences {
+    public static class PreferenceFragmentWithSinglePreference extends PreferenceFragmentTemplate {
 
-        @Override
-        protected List<Preference> createPreferences(final Context context) {
-            final Preference preference = new Preference(context);
-            preference.setKey(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT);
-            preference.setTitle(KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT);
-            return List.of(preference);
+        public PreferenceFragmentWithSinglePreference() {
+            super(context -> {
+                final Preference preference = new Preference(context);
+                preference.setKey(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT);
+                preference.setTitle(KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT);
+                return List.of(preference);
+            });
         }
     }
 
