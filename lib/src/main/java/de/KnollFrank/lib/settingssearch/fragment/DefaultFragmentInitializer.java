@@ -31,7 +31,6 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
     }
 
     private void add(final Fragment fragment) {
-        // FK-FIXME: fragmentManager hat host SearchPreferenceFragment, sollte aber für den PreferencePathNavigator SearchResultsPreferenceFragment als host haben.
         this
                 .fragmentManager
                 .beginTransaction()
