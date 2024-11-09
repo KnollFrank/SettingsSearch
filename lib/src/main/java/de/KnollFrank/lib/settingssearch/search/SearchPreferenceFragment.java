@@ -47,16 +47,10 @@ public class SearchPreferenceFragment extends Fragment {
                 searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen));
     }
 
-    private static MergedPreferenceScreen mergedPreferenceScreen;
-
     private MergedPreferenceScreen getMergedPreferenceScreen() {
-        if (mergedPreferenceScreen == null) {
-            mergedPreferenceScreen =
-                    mergedPreferenceScreenFactory.getMergedPreferenceScreen(
-                            getChildFragmentManager(),
-                            requireContext());
-        }
-        return mergedPreferenceScreen;
+        return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
+                getChildFragmentManager(),
+                requireContext());
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
