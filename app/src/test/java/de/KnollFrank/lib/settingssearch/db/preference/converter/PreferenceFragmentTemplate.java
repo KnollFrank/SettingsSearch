@@ -30,10 +30,6 @@ public class PreferenceFragmentTemplate extends PreferenceFragmentCompat {
                         .forEach(preferenceScreen::addPreference));
     }
 
-    public static PreferenceFragmentTemplate fromSinglePreference(final Function<Context, Preference> preferenceFactory) {
-        return new PreferenceFragmentTemplate(context -> List.of(preferenceFactory.apply(context)));
-    }
-
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         final Context context = getPreferenceManager().getContext();

@@ -32,6 +32,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -63,7 +64,7 @@ public class PreferenceSearcherTest {
         final String keyword = "fourth";
         final String keyOfPreference = "fourthfile";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CheckBoxPreference preference = new CheckBoxPreference(context);
                             preference.setKey(keyOfPreference);
@@ -86,7 +87,7 @@ public class PreferenceSearcherTest {
         final String keyword = "fourth";
         final String keyOfPreference = "fourthfile";
         final PreferenceFragmentCompat preferenceFragment =
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CheckBoxPreference preference = new CheckBoxPreference(context);
                             preference.setKey(keyOfPreference);
@@ -119,7 +120,7 @@ public class PreferenceSearcherTest {
         final String keyword = "fourth";
         final String keyOfPreference = "fourthfile";
         final PreferenceFragmentCompat preferenceFragment =
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CheckBoxPreference preference = new CheckBoxPreference(context);
                             preference.setKey(keyOfPreference);
@@ -152,7 +153,7 @@ public class PreferenceSearcherTest {
         final String keyword = "This is a preference category";
         final String keyOfPreference = "keyOfPreferenceCategory";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final PreferenceCategory preference = new PreferenceCategory(context);
                             preference.setKey(keyOfPreference);
@@ -203,7 +204,7 @@ public class PreferenceSearcherTest {
         final String keyword = "fourth";
         final String keyOfPreference = "fourthfile";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CheckBoxPreference preference = new CheckBoxPreference(context);
                             preference.setKey(keyOfPreference);
@@ -226,7 +227,7 @@ public class PreferenceSearcherTest {
         final String keyword = "fourth";
         final String keyOfPreference = "fourthfile";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CheckBoxPreference preference = new CheckBoxPreference(context);
                             preference.setKey(keyOfPreference);
@@ -249,7 +250,7 @@ public class PreferenceSearcherTest {
         final String keyword = "entry of some ListPreference";
         final String keyOfPreference = "keyOfSomeListPreference";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final ListPreference preference = new ListPreference(context);
                             preference.setKey(keyOfPreference);
@@ -275,7 +276,7 @@ public class PreferenceSearcherTest {
         final String keyword = "this is the dialog title";
         final String keyOfPreference = "keyOfSomeListPreference";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final ListPreference preference = new ListPreference(context);
                             preference.setKey(keyOfPreference);
@@ -302,7 +303,7 @@ public class PreferenceSearcherTest {
         final String summaryOff = "switch is off";
         final String keyOfPreference = "keyOfSomeSwitchPreference";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final SwitchPreference preference = new SwitchPreference(context);
                             preference.setKey(keyOfPreference);
@@ -327,7 +328,7 @@ public class PreferenceSearcherTest {
         final String summaryOn = "switch is on";
         final String keyOfPreference = "keyOfSomeSwitchPreference";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final SwitchPreference preference = new SwitchPreference(context);
                             preference.setKey(keyOfPreference);
@@ -352,7 +353,7 @@ public class PreferenceSearcherTest {
         final String keyword = "Windows Live";
         final String keyOfPreference = "keyOfReversedListPreference";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final ReversedListPreference preference = new ReversedListPreference(context);
                             preference.setKey(keyOfPreference);
@@ -378,7 +379,7 @@ public class PreferenceSearcherTest {
         final String keyword = "some text in a custom dialog";
         final String keyOfPreference = "keyOfCustomDialogPreference";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CustomDialogPreference preference = new CustomDialogPreference(context);
                             preference.setKey(keyOfPreference);
@@ -454,7 +455,7 @@ public class PreferenceSearcherTest {
         final String keyword = "entry of some MultiSelectListPreference";
         final String keyOfPreference = "keyOfSomeMultiSelectListPreference";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final MultiSelectListPreference preference = new MultiSelectListPreference(context);
                             preference.setKey(keyOfPreference);
@@ -480,7 +481,7 @@ public class PreferenceSearcherTest {
         final String keyword = "dialog title of some MultiSelectListPreference";
         final String keyOfPreference = "keyOfSomeMultiSelectListPreference";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final MultiSelectListPreference preference = new MultiSelectListPreference(context);
                             preference.setKey(keyOfPreference);
@@ -507,7 +508,7 @@ public class PreferenceSearcherTest {
         final String keyword = "non_existing_keyword";
         final String keyOfPreference = "fourthfile";
         testSearch(
-                PreferenceFragmentTemplate.fromSinglePreference(
+                PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CheckBoxPreference preference = new CheckBoxPreference(context);
                             preference.setKey(keyOfPreference);
