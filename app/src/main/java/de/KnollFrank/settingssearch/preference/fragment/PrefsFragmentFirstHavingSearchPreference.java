@@ -73,7 +73,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                                         R.raw.preferences,
                                         R.raw.preference_path_by_preference,
                                         R.raw.host_by_preference),
-                                MergedPreferenceScreenDataMode.PERSIST))
+                                MergedPreferenceScreenDataMode.PERSIST,
+                                requireActivity().getApplicationContext()))
                 .build();
     }
 

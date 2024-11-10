@@ -2,24 +2,37 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.Bundle;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Entity
 public final class SearchablePreferencePOJO {
 
-    private final int id;
-    private final String key;
-    private final String icon;
-    private final int layoutResId;
-    private final String summary;
-    private final String title;
-    private final int widgetLayoutResId;
-    private final String fragment;
-    private final boolean visible;
-    private final String searchableInfo;
-    private final Bundle extras;
-    private final List<SearchablePreferencePOJO> children;
+    @PrimaryKey
+    public int id;
+    public String key;
+    public String icon;
+    public int layoutResId;
+    public String summary;
+    public String title;
+    public int widgetLayoutResId;
+    public String fragment;
+    public boolean visible;
+    public String searchableInfo;
+    // FK-TODO: do not ignore extras
+    @Ignore
+    public Bundle extras;
+    // FK-TODO: do not ignore children
+    @Ignore
+    public List<SearchablePreferencePOJO> children;
+
+    public SearchablePreferencePOJO() {
+    }
 
     public SearchablePreferencePOJO(
             final int id,

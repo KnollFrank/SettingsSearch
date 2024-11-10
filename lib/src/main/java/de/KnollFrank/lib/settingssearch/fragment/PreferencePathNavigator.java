@@ -63,7 +63,7 @@ public class PreferencePathNavigator {
                                                  final String key) {
         final Preference preference = preferenceFragment.findPreference(key);
         if (preference == null) {
-            throw new IllegalArgumentException("can not find preference with key " + key + " within preferenceFragment " + preferenceFragment);
+            throw new IllegalArgumentException("can't find preference with key " + key + " within preferenceFragment " + preferenceFragment);
         }
         return preference;
     }

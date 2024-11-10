@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 class PreferenceSearcher {
 
     // FK-TODO: SQL-Datenbank verwenden? (siehe Branch precompute-MergedPreferenceScreen-SQLite)
+    // FK-TODO: Set<SearchablePreferencePOJO> in einer SQL-Datenkbank speichern.
     private final Set<SearchablePreferencePOJO> preferences;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference;
@@ -26,6 +27,7 @@ class PreferenceSearcher {
         this.hostByPreference = hostByPreference;
     }
 
+    // FK-TODO: suche nicht mehr in this.preferences, sondern in einer SQL-Datenbank nach der needle.
     public List<PreferenceMatch> searchFor(final String needle) {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferences)
