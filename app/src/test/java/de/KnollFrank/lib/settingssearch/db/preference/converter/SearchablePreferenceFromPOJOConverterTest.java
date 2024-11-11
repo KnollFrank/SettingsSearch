@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.drawable2String;
+import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndBytesConverter.drawable2Bytes;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 
@@ -66,7 +66,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
     }
 
     private static void assertEquals(final SearchablePreference actual, final SearchablePreferencePOJO expected) {
-        assertThat(drawable2String(Optional.ofNullable(actual.getIcon())), is(expected.icon()));
+        assertThat(drawable2Bytes(Optional.ofNullable(actual.getIcon())), is(expected.icon()));
         assertThat(actual.getLayoutResource(), is(expected.layoutResId()));
         assertThat(Optional.ofNullable(actual.getSummary()), is(expected.summary()));
         assertThat(Optional.ofNullable(actual.getTitle()), is(expected.title()));

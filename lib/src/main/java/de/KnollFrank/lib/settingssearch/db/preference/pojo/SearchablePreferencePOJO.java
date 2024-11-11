@@ -16,7 +16,7 @@ public final class SearchablePreferencePOJO implements Serializable {
 
     private int id;
     private String key;
-    private String icon;
+    private byte[] icon;
     private int layoutResId;
     private String summary;
     private String title;
@@ -30,7 +30,7 @@ public final class SearchablePreferencePOJO implements Serializable {
     public SearchablePreferencePOJO(
             final int id,
             final Optional<String> key,
-            final Optional<String> icon,
+            final Optional<byte[]> icon,
             final int layoutResId,
             final Optional<String> summary,
             final Optional<String> title,
@@ -66,7 +66,7 @@ public final class SearchablePreferencePOJO implements Serializable {
         return Optional.ofNullable(key);
     }
 
-    public Optional<String> icon() {
+    public Optional<byte[]> icon() {
         return Optional.ofNullable(icon);
     }
 
@@ -152,7 +152,7 @@ public final class SearchablePreferencePOJO implements Serializable {
     private void readObject(final ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
         id = inputStream.readInt();
         key = (String) inputStream.readObject();
-        icon = (String) inputStream.readObject();
+        icon = (byte[]) inputStream.readObject();
         layoutResId = inputStream.readInt();
         summary = (String) inputStream.readObject();
         title = (String) inputStream.readObject();
@@ -165,6 +165,7 @@ public final class SearchablePreferencePOJO implements Serializable {
     }
 
     private static void writeBytes(final ObjectOutputStream outputStream, final byte[] bytes) throws IOException {
+        // FK-TODO: just use writeObject()
         outputStream.writeInt(bytes.length);
         outputStream.write(bytes);
     }

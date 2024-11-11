@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.drawable2String;
+import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndBytesConverter.drawable2Bytes;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ public class POJOTestFactory {
         return new SearchablePreferencePOJO(
                 1,
                 Optional.of("some key"),
-                drawable2String(Optional.of(resources.getDrawable(R.drawable.smiley, null))),
+                drawable2Bytes(Optional.of(resources.getDrawable(R.drawable.smiley, null))),
                 4712,
                 Optional.of("some summary"),
                 Optional.of("some title"),

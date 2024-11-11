@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.drawable2String;
+import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndBytesConverter.drawable2Bytes;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
@@ -36,7 +36,7 @@ public class SearchablePreference2POJOConverter {
                 new SearchablePreferencePOJO(
                         id,
                         Optional.ofNullable(searchablePreference.getKey()),
-                        drawable2String(Optional.ofNullable(searchablePreference.getIcon())),
+                        drawable2Bytes(Optional.ofNullable(searchablePreference.getIcon())),
                         searchablePreference.getLayoutResource(),
                         toString(searchablePreference.getSummary()),
                         toString(searchablePreference.getTitle()),

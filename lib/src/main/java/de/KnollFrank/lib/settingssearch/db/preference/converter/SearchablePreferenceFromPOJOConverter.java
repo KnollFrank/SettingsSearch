@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.string2Drawable;
+import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndBytesConverter.bytes2Drawable;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -72,7 +72,7 @@ public class SearchablePreferenceFromPOJOConverter {
                                                   final SearchablePreference dst,
                                                   final Resources resources) {
         dst.setKey(src.key().orElse(null));
-        dst.setIcon(string2Drawable(src.icon(), resources).orElse(null));
+        dst.setIcon(bytes2Drawable(src.icon(), resources).orElse(null));
         dst.setLayoutResource(src.layoutResId());
         dst.setSummary(src.summary().orElse(null));
         dst.setTitle(src.title().orElse(null));
