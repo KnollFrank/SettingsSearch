@@ -11,19 +11,25 @@ import java.lang.reflect.Type;
 
 class EitherIntegerOrStringTypeAdapterFactory implements TypeAdapterFactory {
 
-    // FK-TODO: refactor
     @Override
     public <T> TypeAdapter<T> create(final Gson gson, final TypeToken<T> typeToken) {
-        final Type type = typeToken.getType();
-        if (typeToken.getRawType() != Either.class || !(type instanceof ParameterizedType)) {
-            return null;
-        }
+        return isEitherIntegerOrStringType(typeToken) ?
+                (TypeAdapter<T>) new EitherIntegerOrStringTypeAdapter().nullSafe() :
+                null;
+    }
 
-        final Type leftType = ((ParameterizedType) type).getActualTypeArguments()[0];
-        final Type rightType = ((ParameterizedType) type).getActualTypeArguments()[1];
-        if (leftType != Integer.class || rightType != String.class) {
-            return null;
-        }
-        return (TypeAdapter<T>) new EitherIntegerOrStringTypeAdapter().nullSafe();
+    private static <T> boolean isEitherIntegerOrStringType(final TypeToken<T> typeToken) {
+        return typeToken.getRawType() == Either.class
+                && typeToken.getType() instanceof final ParameterizedType parameterizedType
+                && getLeftType(parameterizedType) == Integer.class
+                && getRightType(parameterizedType) == String.class;
+    }
+
+    private static Type getLeftType(final ParameterizedType parameterizedType) {
+        return parameterizedType.getActualTypeArguments()[0];
+    }
+
+    private static Type getRightType(final ParameterizedType parameterizedType) {
+        return parameterizedType.getActualTypeArguments()[1];
     }
 }
