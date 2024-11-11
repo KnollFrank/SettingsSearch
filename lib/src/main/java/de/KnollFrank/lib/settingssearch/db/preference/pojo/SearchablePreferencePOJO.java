@@ -144,7 +144,7 @@ public final class SearchablePreferencePOJO implements Serializable {
         outputStream.writeObject(fragment);
         outputStream.writeBoolean(visible);
         outputStream.writeObject(searchableInfo);
-        writeBytes(outputStream, bundle2bytes(extras));
+        writeBundle(extras, outputStream);
         outputStream.writeObject(children);
     }
 
@@ -160,21 +160,16 @@ public final class SearchablePreferencePOJO implements Serializable {
         fragment = (String) inputStream.readObject();
         visible = inputStream.readBoolean();
         searchableInfo = (String) inputStream.readObject();
-        extras = bytes2bundle(readBytes(inputStream));
+        extras = readBundle(inputStream);
         children = (List<SearchablePreferencePOJO>) inputStream.readObject();
     }
 
-    private static void writeBytes(final ObjectOutputStream outputStream, final byte[] bytes) throws IOException {
-        // FK-TODO: just use writeObject()
-        outputStream.writeInt(bytes.length);
-        outputStream.write(bytes);
+    private void writeBundle(final Bundle bundle, final ObjectOutputStream outputStream) throws IOException {
+        outputStream.writeObject(bundle2bytes(bundle));
     }
 
-    private static byte[] readBytes(final ObjectInputStream inputStream) throws IOException {
-        final int size = inputStream.readInt();
-        final byte[] bytes = new byte[size];
-        inputStream.read(bytes);
-        return bytes;
+    private static Bundle readBundle(final ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
+        return bytes2bundle((byte[]) inputStream.readObject());
     }
 
     private static byte[] bundle2bytes(final Bundle bundle) {
