@@ -40,6 +40,7 @@ dependencies {
     implementation project(":lib")
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.activity:activity:1.9.3'
+    // FK-TODO: update dependency:
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-io
     implementation 'org.jgrapht:jgrapht-io:1.5.2'
@@ -61,4 +62,6 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.6.2'
     androidTestImplementation 'androidx.test:rules:1.6.1'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.6.1'
+    // https://mvnrepository.com/artifact/com.codepoetics/ambivalence
+    implementation 'com.codepoetics:ambivalence:0.2'
 }

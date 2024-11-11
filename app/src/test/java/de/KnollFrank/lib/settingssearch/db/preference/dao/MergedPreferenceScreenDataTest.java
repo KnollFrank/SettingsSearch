@@ -8,6 +8,7 @@ import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
+import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.ImmutableMap;
 
 import org.junit.Test;
@@ -23,8 +24,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -41,14 +44,16 @@ public class MergedPreferenceScreenDataTest {
                                 Optional.of("some title 1"),
                                 Optional.of("some summary 1"),
                                 Optional.of("searchable info also has a title 1"),
-                                POJOTestFactory.createBundle("someKey1", "someValue1"));
+                                POJOTestFactory.createBundle("someKey1", "someValue1"),
+                                Optional.of(Either.ofLeft(4711)));
                 final SearchablePreferencePOJO searchablePreferencePOJO2 =
                         createSearchablePreferencePOJO(
                                 2,
                                 Optional.of("some title 2"),
                                 Optional.of("some summary 2"),
                                 Optional.of("searchable info also has a title 2"),
-                                POJOTestFactory.createBundle("someKey2", "someValue2"));
+                                POJOTestFactory.createBundle("someKey2", "someValue2"),
+                                Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null)))));
                 final MergedPreferenceScreenData data =
                         new MergedPreferenceScreenData(
                                 Set.of(searchablePreferencePOJO1, searchablePreferencePOJO2),
@@ -91,7 +96,7 @@ public class MergedPreferenceScreenDataTest {
     private static void assertEquals(final SearchablePreferencePOJO actual, final SearchablePreferencePOJO expected) {
         assertThat(actual.id(), is(expected.id()));
         assertThat(actual.key(), is(expected.key()));
-        assertThat(actual.icon(), is(expected.icon()));
+        assertThat(actual.iconResourceIdOrIconPixelData(), is(expected.iconResourceIdOrIconPixelData()));
         assertThat(actual.layoutResId(), is(expected.layoutResId()));
         assertThat(actual.summary(), is(expected.summary()));
         assertThat(actual.title(), is(expected.title()));

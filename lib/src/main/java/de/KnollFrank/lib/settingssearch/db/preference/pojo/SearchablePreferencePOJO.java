@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.Bundle;
 
+import com.codepoetics.ambivalence.Either;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -10,7 +12,7 @@ public final class SearchablePreferencePOJO {
 
     private final int id;
     private final String key;
-    private final String icon;
+    private final Either<Integer, String> iconResourceIdOrIconPixelData;
     private final int layoutResId;
     private final String summary;
     private final String title;
@@ -24,7 +26,7 @@ public final class SearchablePreferencePOJO {
     public SearchablePreferencePOJO(
             final int id,
             final Optional<String> key,
-            final Optional<String> icon,
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final int layoutResId,
             final Optional<String> summary,
             final Optional<String> title,
@@ -36,7 +38,7 @@ public final class SearchablePreferencePOJO {
             final List<SearchablePreferencePOJO> children) {
         this.id = id;
         this.key = key.orElse(null);
-        this.icon = icon.orElse(null);
+        this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData.orElse(null);
         this.layoutResId = layoutResId;
         this.summary = summary.orElse(null);
         this.title = title.orElse(null);
@@ -60,8 +62,8 @@ public final class SearchablePreferencePOJO {
         return Optional.ofNullable(key);
     }
 
-    public Optional<String> icon() {
-        return Optional.ofNullable(icon);
+    public Optional<Either<Integer, String>> iconResourceIdOrIconPixelData() {
+        return Optional.ofNullable(iconResourceIdOrIconPixelData);
     }
 
     public int layoutResId() {
@@ -114,7 +116,7 @@ public final class SearchablePreferencePOJO {
         return "SearchablePreferencePOJO[" +
                 "id=" + id + ", " +
                 "key=" + key + ", " +
-                "icon=" + icon + ", " +
+                "iconResourceIdOrIconPixelData=" + iconResourceIdOrIconPixelData + ", " +
                 "layoutResId=" + layoutResId + ", " +
                 "summary=" + summary + ", " +
                 "title=" + title + ", " +

@@ -6,6 +6,8 @@ import static de.KnollFrank.lib.settingssearch.db.preference.converter.Searchabl
 
 import androidx.test.core.app.ActivityScenario;
 
+import com.codepoetics.ambivalence.Either;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -14,10 +16,12 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
+import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -42,7 +46,8 @@ public class SearchResultsDisplayerTest {
                                                 POJOTestFactory.createSearchablePreferencePOJO(
                                                         Optional.of(title),
                                                         Optional.of("some summary"),
-                                                        Optional.of("searchable info also has a title")),
+                                                        Optional.of("searchable info also has a title"),
+                                                        Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null))))),
                                                 Type.TITLE,
                                                 new IndexRange(0, 5))),
                                 "Title");

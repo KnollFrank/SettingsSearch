@@ -5,6 +5,8 @@ import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStrin
 import android.content.res.Resources;
 import android.os.Bundle;
 
+import com.codepoetics.ambivalence.Either;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +20,7 @@ public class POJOTestFactory {
         return new SearchablePreferencePOJO(
                 1,
                 Optional.of("some key"),
-                drawable2String(Optional.of(resources.getDrawable(R.drawable.smiley, null))),
+                Optional.of(Either.ofRight(drawable2String(resources.getDrawable(R.drawable.smiley, null)))),
                 4712,
                 Optional.of("some summary"),
                 Optional.of("some title"),
@@ -43,15 +45,18 @@ public class POJOTestFactory {
                                 List.of())));
     }
 
-    public static SearchablePreferencePOJO createSearchablePreferencePOJO(final Optional<String> title,
-                                                                          final Optional<String> summary,
-                                                                          final Optional<String> searchableInfo) {
+    public static SearchablePreferencePOJO createSearchablePreferencePOJO(
+            final Optional<String> title,
+            final Optional<String> summary,
+            final Optional<String> searchableInfo,
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
         return createSearchablePreferencePOJO(
                 1,
                 title,
                 summary,
                 searchableInfo,
-                createBundle("someKey", "someValue"));
+                createBundle("someKey", "someValue"),
+                iconResourceIdOrIconPixelData);
     }
 
     public static SearchablePreferencePOJO createSearchablePreferencePOJO(
@@ -59,11 +64,12 @@ public class POJOTestFactory {
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
-            final Bundle extras) {
+            final Bundle extras,
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
         return new SearchablePreferencePOJO(
                 id,
                 Optional.of("some key"),
-                Optional.empty(),
+                iconResourceIdOrIconPixelData,
                 4712,
                 summary,
                 title,

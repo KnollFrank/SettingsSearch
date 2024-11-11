@@ -2,15 +2,17 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.drawable2String;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
+
+import com.codepoetics.ambivalence.Either;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
@@ -66,7 +69,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
     }
 
     private static void assertEquals(final SearchablePreference actual, final SearchablePreferencePOJO expected) {
-        assertThat(drawable2String(Optional.ofNullable(actual.getIcon())), is(expected.icon()));
+        assertThat(asIconResourceIdOrIconPixelData(Optional.ofNullable(actual.getIcon())), is(expected.iconResourceIdOrIconPixelData()));
         assertThat(actual.getLayoutResource(), is(expected.layoutResId()));
         assertThat(Optional.ofNullable(actual.getSummary()), is(expected.summary()));
         assertThat(Optional.ofNullable(actual.getTitle()), is(expected.title()));
@@ -78,6 +81,12 @@ public class SearchablePreferenceFromPOJOConverterTest {
         assertEquals(
                 SearchablePreferenceCaster.cast(Preferences.getImmediateChildren(actual)),
                 expected.children());
+    }
+
+    private static Optional<Either<Integer, String>> asIconResourceIdOrIconPixelData(final Optional<Drawable> icon) {
+        return DrawableAndStringConverter
+                .drawable2String(icon)
+                .map(Either::ofRight);
     }
 
     private static void assertEquals(final List<SearchablePreference> actuals, final List<SearchablePreferencePOJO> expecteds) {

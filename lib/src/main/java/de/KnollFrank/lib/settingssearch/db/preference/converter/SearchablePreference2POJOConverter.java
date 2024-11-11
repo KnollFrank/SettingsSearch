@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.drawable2String;
-
+import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
@@ -11,6 +10,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
@@ -36,7 +36,9 @@ public class SearchablePreference2POJOConverter {
                 new SearchablePreferencePOJO(
                         id,
                         Optional.ofNullable(searchablePreference.getKey()),
-                        drawable2String(Optional.ofNullable(searchablePreference.getIcon())),
+                        DrawableAndStringConverter
+                                .drawable2String(Optional.ofNullable(searchablePreference.getIcon()))
+                                .map(Either::ofRight),
                         searchablePreference.getLayoutResource(),
                         toString(searchablePreference.getSummary()),
                         toString(searchablePreference.getTitle()),

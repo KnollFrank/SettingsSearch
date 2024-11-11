@@ -24,11 +24,11 @@ public class DrawableAndStringConverter {
         return string.map(s -> string2Drawable(s, resources));
     }
 
-    private static String drawable2String(final Drawable drawable) {
+    public static String drawable2String(final Drawable drawable) {
         return bytes2String(encodeBase64(bitmap2Bytes(drawable2Bitmap(drawable))));
     }
 
-    private static Drawable string2Drawable(final String string, final Resources resources) {
+    public static Drawable string2Drawable(final String string, final Resources resources) {
         return bitmap2Drawable(bytes2Bitmap(decodeBase64(string2Bytes(string))), resources);
     }
 }
