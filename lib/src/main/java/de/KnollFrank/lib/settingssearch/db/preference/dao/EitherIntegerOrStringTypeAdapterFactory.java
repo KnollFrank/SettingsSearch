@@ -9,7 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-class EitherTypeAdapterFactory implements TypeAdapterFactory {
+class EitherIntegerOrStringTypeAdapterFactory implements TypeAdapterFactory {
 
     // FK-TODO: refactor
     @Override
@@ -24,6 +24,6 @@ class EitherTypeAdapterFactory implements TypeAdapterFactory {
         if (leftType != Integer.class || rightType != String.class) {
             return null;
         }
-        return (TypeAdapter<T>) new EitherTypeAdapter().nullSafe();
+        return (TypeAdapter<T>) new EitherIntegerOrStringTypeAdapter().nullSafe();
     }
 }
