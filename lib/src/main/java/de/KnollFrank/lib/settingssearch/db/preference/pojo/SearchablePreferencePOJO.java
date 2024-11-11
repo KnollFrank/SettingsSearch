@@ -1,25 +1,31 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.Bundle;
+import android.os.Parcel;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class SearchablePreferencePOJO {
+public final class SearchablePreferencePOJO implements Serializable {
 
-    private final int id;
-    private final String key;
-    private final String icon;
-    private final int layoutResId;
-    private final String summary;
-    private final String title;
-    private final int widgetLayoutResId;
-    private final String fragment;
-    private final boolean visible;
-    private final String searchableInfo;
-    private final Bundle extras;
-    private final List<SearchablePreferencePOJO> children;
+    private int id;
+    private String key;
+    private String icon;
+    private int layoutResId;
+    private String summary;
+    private String title;
+    private int widgetLayoutResId;
+    private String fragment;
+    private boolean visible;
+    private String searchableInfo;
+    private Bundle extras;
+    private List<SearchablePreferencePOJO> children;
 
     public SearchablePreferencePOJO(
             final int id,
@@ -124,5 +130,66 @@ public final class SearchablePreferencePOJO {
                 "searchableInfo=" + searchableInfo + ", " +
                 "extras=" + extras + ", " +
                 "children=" + children + ']';
+    }
+
+    @Serial
+    private void writeObject(final ObjectOutputStream outputStream) throws IOException {
+        outputStream.writeInt(id);
+        outputStream.writeObject(key);
+        outputStream.writeObject(icon);
+        outputStream.writeInt(layoutResId);
+        outputStream.writeObject(summary);
+        outputStream.writeObject(title);
+        outputStream.writeInt(widgetLayoutResId);
+        outputStream.writeObject(fragment);
+        outputStream.writeBoolean(visible);
+        outputStream.writeObject(searchableInfo);
+        writeBytes(outputStream, bundle2bytes(extras));
+        outputStream.writeObject(children);
+    }
+
+    @Serial
+    private void readObject(final ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
+        id = inputStream.readInt();
+        key = (String) inputStream.readObject();
+        icon = (String) inputStream.readObject();
+        layoutResId = inputStream.readInt();
+        summary = (String) inputStream.readObject();
+        title = (String) inputStream.readObject();
+        widgetLayoutResId = inputStream.readInt();
+        fragment = (String) inputStream.readObject();
+        visible = inputStream.readBoolean();
+        searchableInfo = (String) inputStream.readObject();
+        extras = bytes2bundle(readBytes(inputStream));
+        children = (List<SearchablePreferencePOJO>) inputStream.readObject();
+    }
+
+    private static void writeBytes(final ObjectOutputStream outputStream, final byte[] bytes) throws IOException {
+        outputStream.writeInt(bytes.length);
+        outputStream.write(bytes);
+    }
+
+    private static byte[] readBytes(final ObjectInputStream inputStream) throws IOException {
+        final int size = inputStream.readInt();
+        final byte[] bytes = new byte[size];
+        inputStream.read(bytes);
+        return bytes;
+    }
+
+    private static byte[] bundle2bytes(final Bundle bundle) {
+        final Parcel parcel = Parcel.obtain();
+        bundle.writeToParcel(parcel, 0);
+        final byte[] bytes = parcel.marshall();
+        parcel.recycle();
+        return bytes;
+    }
+
+    private static Bundle bytes2bundle(final byte[] bytes) {
+        final Parcel parcel = Parcel.obtain();
+        parcel.unmarshall(bytes, 0, bytes.length);
+        parcel.setDataPosition(0);
+        final Bundle bundle = parcel.readBundle();
+        parcel.recycle();
+        return bundle;
     }
 }

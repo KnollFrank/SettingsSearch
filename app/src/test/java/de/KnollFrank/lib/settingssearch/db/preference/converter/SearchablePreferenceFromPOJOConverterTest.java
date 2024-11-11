@@ -42,7 +42,7 @@ public class SearchablePreferenceFromPOJOConverterTest {
                 final String value = "someValue";
                 final SearchablePreferencePOJO pojo =
                         POJOTestFactory.createSomeSearchablePreferencePOJO(
-                                createBundle(key, value),
+                                POJOTestFactory.createBundle(key, value),
                                 activity.getResources());
 
                 // When
@@ -63,12 +63,6 @@ public class SearchablePreferenceFromPOJOConverterTest {
                 getFragments(
                         preferenceFragment,
                         activity));
-    }
-
-    private static Bundle createBundle(final String key, final String value) {
-        final Bundle bundle = new Bundle();
-        bundle.putString(key, value);
-        return bundle;
     }
 
     private static void assertEquals(final SearchablePreference actual, final SearchablePreferencePOJO expected) {
