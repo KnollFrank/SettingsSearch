@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
@@ -23,12 +24,14 @@ class ComputeAndPersistMergedPreferenceScreenData {
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final Context context,
-            final Resources resources) {
+            final Resources resources,
+            final SearchablePreferencePOJODAO searchablePreferencePOJODAO) {
         final MergedPreferenceScreenData mergedPreferenceScreenData =
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphSupplier.get());
         MergedPreferenceScreenDataDAO.persist(
                 mergedPreferenceScreenData,
+                searchablePreferencePOJODAO,
                 getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.preferences(), resources), context),
                 getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.preferencePathByPreference(), resources), context),
                 getFileOutputStream(getFileName(mergedPreferenceScreenDataInput.hostByPreference(), resources), context));

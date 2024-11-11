@@ -1,12 +1,12 @@
 package de.KnollFrank.lib.settingssearch.client;
 
-import android.content.Context;
 import android.content.res.Resources;
 
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -27,7 +27,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final Resources resources;
     private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
-    private final Context applicationContext;
+    private final SearchablePreferencePOJODAO searchablePreferencePOJODAO;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -45,13 +45,13 @@ public class SearchPreferenceFragmentsBuilder {
                                                final Resources resources,
                                                final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
                                                final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
-                                               final Context applicationContext) {
+                                               final SearchablePreferencePOJODAO searchablePreferencePOJODAO) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.resources = resources;
         this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
         this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
-        this.applicationContext = applicationContext;
+        this.searchablePreferencePOJODAO = searchablePreferencePOJODAO;
     }
 
     public SearchPreferenceFragmentsBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
@@ -115,6 +115,6 @@ public class SearchPreferenceFragmentsBuilder {
                 mergedPreferenceScreenDataInput,
                 mergedPreferenceScreenDataMode,
                 resources,
-                applicationContext);
+                searchablePreferencePOJODAO);
     }
 }

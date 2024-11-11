@@ -24,10 +24,10 @@ public final class SearchablePreferencePOJO {
     public String fragment;
     public boolean visible;
     public String searchableInfo;
-    // FK-TODO: do not ignore extras
+    // FK-TODO: do not ignore extras for SQLite
     @Ignore
     public Bundle extras;
-    // FK-TODO: do not ignore children
+    // FK-TODO: do not ignore children for SQLite
     @Ignore
     public List<SearchablePreferencePOJO> children;
 

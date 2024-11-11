@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -48,6 +49,7 @@ public class MergedPreferenceScreenFactory {
     private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
     private final Resources resources;
+    private final SearchablePreferencePOJODAO searchablePreferencePOJODAO;
 
     public MergedPreferenceScreenFactory(
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -59,7 +61,8 @@ public class MergedPreferenceScreenFactory {
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
-            final Resources resources) {
+            final Resources resources,
+            final SearchablePreferencePOJODAO searchablePreferencePOJODAO) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
@@ -70,6 +73,7 @@ public class MergedPreferenceScreenFactory {
         this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
         this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
         this.resources = resources;
+        this.searchablePreferencePOJODAO = searchablePreferencePOJODAO;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
@@ -90,7 +94,8 @@ public class MergedPreferenceScreenFactory {
                         mergedPreferenceScreenDataInput,
                         context,
                         mergedPreferenceScreenDataMode,
-                        resources),
+                        resources,
+                        searchablePreferencePOJODAO),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment),
@@ -121,19 +126,28 @@ public class MergedPreferenceScreenFactory {
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final Context context,
             final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
-            final Resources resources) {
+            final Resources resources,
+            final SearchablePreferencePOJODAO searchablePreferencePOJODAO) {
         return switch (mergedPreferenceScreenDataMode) {
             case PERSIST -> computeAndPersistMergedPreferenceScreenData(
                     searchablePreferenceScreenGraphSupplier,
                     mergedPreferenceScreenDataInput,
                     context,
-                    resources);
-            case LOAD -> loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput, context);
+                    resources,
+                    searchablePreferencePOJODAO);
+            case LOAD -> loadMergedPreferenceScreenData(
+                    mergedPreferenceScreenDataInput,
+                    searchablePreferencePOJODAO,
+                    context);
         };
     }
 
-    private static MergedPreferenceScreenData loadMergedPreferenceScreenData(final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput, final Context context) {
+    private static MergedPreferenceScreenData loadMergedPreferenceScreenData(
+            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
+            final SearchablePreferencePOJODAO searchablePreferencePOJODAO,
+            final Context context) {
         return MergedPreferenceScreenDataDAO.load(
+                searchablePreferencePOJODAO,
                 context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferences()),
                 context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferencePathByPreference()),
                 context.getResources().openRawResource(mergedPreferenceScreenDataInput.hostByPreference()));

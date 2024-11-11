@@ -9,6 +9,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScree
 public class MergedPreferenceScreenDataDAO {
 
     public static void persist(final MergedPreferenceScreenData mergedPreferenceScreenData,
+                               final SearchablePreferencePOJODAO searchablePreferencePOJODAO,
                                final OutputStream preferences,
                                final OutputStream preferencePathByPreference,
                                final OutputStream hostByPreference) {
@@ -16,16 +17,19 @@ public class MergedPreferenceScreenDataDAO {
                 MergedPreferenceScreenDataConverter.addIds(mergedPreferenceScreenData);
         MergedPreferenceScreenDataWithIdsDAO.persist(
                 mergedPreferenceScreenDataWithIds,
+                searchablePreferencePOJODAO,
                 preferences,
                 preferencePathByPreference,
                 hostByPreference);
     }
 
-    public static MergedPreferenceScreenData load(final InputStream preferences,
+    public static MergedPreferenceScreenData load(final SearchablePreferencePOJODAO searchablePreferencePOJODAO,
+                                                  final InputStream preferences,
                                                   final InputStream preferencePathByPreference,
                                                   final InputStream hostByPreference) {
         final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds =
                 MergedPreferenceScreenDataWithIdsDAO.load(
+                        searchablePreferencePOJODAO,
                         preferences,
                         preferencePathByPreference,
                         hostByPreference);
