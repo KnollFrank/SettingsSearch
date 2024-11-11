@@ -16,9 +16,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +40,15 @@ public class MergedPreferenceScreenDataTest {
                                 1,
                                 Optional.of("some title 1"),
                                 Optional.of("some summary 1"),
-                                Optional.of("searchable info also has a title 1"));
+                                Optional.of("searchable info also has a title 1"),
+                                POJOTestFactory.createBundle("someKey1", "someValue1"));
                 final SearchablePreferencePOJO searchablePreferencePOJO2 =
                         createSearchablePreferencePOJO(
                                 2,
                                 Optional.of("some title 2"),
                                 Optional.of("some summary 2"),
-                                Optional.of("searchable info also has a title 2"));
+                                Optional.of("searchable info also has a title 2"),
+                                POJOTestFactory.createBundle("someKey2", "someValue2"));
                 final MergedPreferenceScreenData data =
                         new MergedPreferenceScreenData(
                                 Set.of(searchablePreferencePOJO1, searchablePreferencePOJO2),
@@ -85,8 +84,8 @@ public class MergedPreferenceScreenDataTest {
         }
     }
 
-    private static InputStream outputStream2InputStream(final OutputStream outputStream) {
-        return new ByteArrayInputStream(outputStream.toString().getBytes(StandardCharsets.UTF_8));
+    private static ByteArrayInputStream outputStream2InputStream(final ByteArrayOutputStream outputStream) {
+        return new ByteArrayInputStream(outputStream.toByteArray());
     }
 
     private static void assertEquals(final SearchablePreferencePOJO actual, final SearchablePreferencePOJO expected) {

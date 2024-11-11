@@ -46,14 +46,20 @@ public class POJOTestFactory {
     public static SearchablePreferencePOJO createSearchablePreferencePOJO(final Optional<String> title,
                                                                           final Optional<String> summary,
                                                                           final Optional<String> searchableInfo) {
-        return createSearchablePreferencePOJO(1, title, summary, searchableInfo);
+        return createSearchablePreferencePOJO(
+                1,
+                title,
+                summary,
+                searchableInfo,
+                createBundle("someKey", "someValue"));
     }
 
     public static SearchablePreferencePOJO createSearchablePreferencePOJO(
             final int id,
             final Optional<String> title,
             final Optional<String> summary,
-            final Optional<String> searchableInfo) {
+            final Optional<String> searchableInfo,
+            final Bundle extras) {
         return new SearchablePreferencePOJO(
                 id,
                 Optional.of("some key"),
@@ -65,7 +71,13 @@ public class POJOTestFactory {
                 Optional.of("some fragment"),
                 true,
                 searchableInfo,
-                new Bundle(),
+                extras,
                 List.of());
+    }
+
+    public static Bundle createBundle(final String key, final String value) {
+        final Bundle bundle = new Bundle();
+        bundle.putString(key, value);
+        return bundle;
     }
 }
