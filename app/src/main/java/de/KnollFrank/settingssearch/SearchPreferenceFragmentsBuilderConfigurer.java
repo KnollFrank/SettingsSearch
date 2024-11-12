@@ -7,10 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.jgrapht.Graph;
 
-import java.lang.reflect.Field;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
@@ -23,7 +21,6 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
@@ -75,27 +72,6 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                                                         new CustomDialogFragment(),
                                                         CustomDialogFragment::getSearchableInfo)) :
                                         Optional.empty();
-                            }
-                        })
-                .withIconResourceIdProvider(
-                        new IconResourceIdProvider() {
-
-                            @Override
-                            public Optional<Integer> getIconResourceIdOfPreference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-                                // FK-TODO: move this code into the library
-                                final int iconResourceId = getIconResourceId(preference);
-                                return iconResourceId != 0 ?
-                                        Optional.of(iconResourceId) :
-                                        Optional.empty();
-                            }
-
-                            private static int getIconResourceId(final Preference preference) {
-                                final Field mIconResIdField = FieldUtils.getField(preference.getClass(), "mIconResId", true);
-                                try {
-                                    return mIconResIdField.getInt(preference);
-                                } catch (IllegalAccessException e) {
-                                    throw new RuntimeException(e);
-                                }
                             }
                         })
                 .withPreferenceScreenGraphAvailableListener(
