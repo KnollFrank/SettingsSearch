@@ -32,7 +32,7 @@ public class IconProvider implements de.KnollFrank.lib.settingssearch.search.pro
                 .map(Either::ofLeft);
     }
 
-    private static Optional<Either<Integer, Drawable>> getIconDrawable(final Preference preference) {
+    public static Optional<Either<Integer, Drawable>> getIconDrawable(final Preference preference) {
         return Optional
                 .ofNullable(preference.getIcon())
                 .map(Either::ofRight);

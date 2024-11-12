@@ -14,8 +14,6 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
-import com.codepoetics.ambivalence.Either;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -26,6 +24,7 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.search.IconProvider;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -91,9 +90,7 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
                 new SearchablePreference(
                         preference.getContext(),
                         Optional.empty(),
-                        Optional
-                                .ofNullable(preference.getIcon())
-                                .map(Either::ofRight));
+                        IconProvider.getIconDrawable(preference));
         SearchablePreferenceTransformer.copyAttributes(preference, searchablePreference);
         return searchablePreference;
     }
