@@ -10,19 +10,23 @@ import com.google.common.collect.ImmutableMap;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.search.provider.IconProvider;
 
 public class SearchablePreferenceTransformer {
 
     private final PreferenceManager preferenceManager;
     private final PreferenceFragmentCompat host;
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
+    private final IconProvider iconProvider;
 
     public SearchablePreferenceTransformer(final PreferenceManager preferenceManager,
                                            final PreferenceFragmentCompat host,
-                                           final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
+                                           final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
+                                           final IconProvider iconProvider) {
         this.preferenceManager = preferenceManager;
         this.host = host;
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
+        this.iconProvider = iconProvider;
     }
 
     public SearchablePreferenceScreenWithMap transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
@@ -50,7 +54,8 @@ public class SearchablePreferenceTransformer {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         preference.getContext(),
-                        searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, host));
+                        searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, host),
+                        iconProvider.getIconResourceIdOrIconDrawableOfPreference(preference, host));
         copyAttributes(preference, searchablePreference);
         return searchablePreference;
     }

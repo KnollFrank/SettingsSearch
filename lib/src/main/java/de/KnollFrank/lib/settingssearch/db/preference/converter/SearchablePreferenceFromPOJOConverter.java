@@ -55,12 +55,28 @@ public class SearchablePreferenceFromPOJOConverter {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         context,
-                        searchablePreferencePOJO.searchableInfo());
+                        searchablePreferencePOJO.searchableInfo(),
+                        getIconResourceIdOrIconDrawable(
+                                searchablePreferencePOJO.iconResourceIdOrIconPixelData(),
+                                context));
         copyAttributesFromSrc2Dst(
                 searchablePreferencePOJO,
                 searchablePreference,
                 context.getResources());
         return searchablePreference;
+    }
+
+    private static Optional<Either<Integer, Drawable>> getIconResourceIdOrIconDrawable(
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+            final Context context) {
+        return iconResourceIdOrIconPixelData.map(
+                _iconResourceIdOrIconPixelData ->
+                        _iconResourceIdOrIconPixelData.map(
+                                iconResourceId -> iconResourceId,
+                                iconPixelData ->
+                                        DrawableAndStringConverter.string2Drawable(
+                                                iconPixelData,
+                                                context.getResources())));
     }
 
     private static SearchablePreference createPlainSearchablePreferenceHavingKey(final SearchablePreferencePOJO searchablePreferencePOJO,

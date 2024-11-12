@@ -31,14 +31,14 @@
   "30": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
   "31": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
   "32": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
-  "33": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFourth",
-  "34": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
+  "33": "de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference",
+  "34": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFourth",
   "35": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
   "36": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
   "37": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
   "38": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
   "39": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
-  "40": "de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference",
+  "40": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond",
   "41": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird",
   "42": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird"
 }

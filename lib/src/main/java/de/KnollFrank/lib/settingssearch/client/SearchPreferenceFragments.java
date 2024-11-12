@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
+import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragments {
@@ -27,6 +28,7 @@ public class SearchPreferenceFragments {
     private final FragmentFactory fragmentFactory;
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
+    private final IconResourceIdProvider iconResourceIdProvider;
     private final PreferenceSearchablePredicate preferenceSearchablePredicate;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
@@ -55,6 +57,7 @@ public class SearchPreferenceFragments {
                                         final FragmentFactory fragmentFactory,
                                         final SearchableInfoProvider searchableInfoProvider,
                                         final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+                                        final IconResourceIdProvider iconResourceIdProvider,
                                         final PreferenceSearchablePredicate preferenceSearchablePredicate,
                                         final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                         final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
@@ -69,6 +72,7 @@ public class SearchPreferenceFragments {
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
+        this.iconResourceIdProvider = iconResourceIdProvider;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
@@ -96,6 +100,7 @@ public class SearchPreferenceFragments {
                                 preferenceScreenGraphAvailableListener,
                                 searchableInfoProvider,
                                 preferenceDialogAndSearchableInfoProvider,
+                                iconResourceIdProvider,
                                 mergedPreferenceScreenDataInput,
                                 mergedPreferenceScreenDataMode,
                                 resources)),

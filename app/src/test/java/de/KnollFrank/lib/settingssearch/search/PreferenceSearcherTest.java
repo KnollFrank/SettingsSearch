@@ -612,7 +612,8 @@ public class PreferenceSearcherTest {
                                 new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
                                 new SearchableDialogInfoOfProvider(
                                         fragmentInitializer,
-                                        preferenceDialogAndSearchableInfoProvider)));
+                                        preferenceDialogAndSearchableInfoProvider)),
+                        new IconProvider((preference, hostOfPreference) -> Optional.empty()));
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),

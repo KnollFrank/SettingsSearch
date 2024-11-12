@@ -33,7 +33,11 @@ public class PreferenceMatchesHighlighterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(context -> {
                 // Given
-                final SearchablePreference preference = new SearchablePreference(context, Optional.empty());
+                final SearchablePreference preference =
+                        new SearchablePreference(
+                                context,
+                                Optional.empty(),
+                                Optional.empty());
                 preference.setKey("feedback");
                 preference.setTitle("title, title");
                 final SearchablePreferencePOJOWithMap searchablePreferencePOJOWithMap =
@@ -75,7 +79,11 @@ public class PreferenceMatchesHighlighterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(context -> {
                 // Given
-                final SearchablePreference preference = new SearchablePreference(context, Optional.empty());
+                final SearchablePreference preference =
+                        new SearchablePreference(
+                                context,
+                                Optional.empty(),
+                                Optional.empty());
                 preference.setKey("feedback");
                 preference.setSummary("summary, summary");
                 final SearchablePreferencePOJOWithMap searchablePreferencePOJOWithMap =
@@ -118,7 +126,11 @@ public class PreferenceMatchesHighlighterTest {
             scenario.onActivity(context -> {
                 // Given
                 final String _searchableInfo = "info, info";
-                final SearchablePreference preference = new SearchablePreference(context, Optional.of(_searchableInfo));
+                final SearchablePreference preference =
+                        new SearchablePreference(
+                                context,
+                                Optional.of(_searchableInfo),
+                                Optional.empty());
                 preference.setKey("feedback");
                 final SearchableInfoAttribute searchableInfoAttribute = new SearchableInfoAttribute();
                 searchableInfoAttribute.setSearchableInfo(preference, _searchableInfo);

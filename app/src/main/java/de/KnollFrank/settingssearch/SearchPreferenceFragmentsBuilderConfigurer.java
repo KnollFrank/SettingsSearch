@@ -21,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
@@ -72,6 +73,14 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                                                         new CustomDialogFragment(),
                                                         CustomDialogFragment::getSearchableInfo)) :
                                         Optional.empty();
+                            }
+                        })
+                .withIconResourceIdProvider(
+                        new IconResourceIdProvider() {
+
+                            @Override
+                            public Optional<Integer> getIconResourceIdOfPreference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+                                return Optional.empty();
                             }
                         })
                 .withPreferenceScreenGraphAvailableListener(

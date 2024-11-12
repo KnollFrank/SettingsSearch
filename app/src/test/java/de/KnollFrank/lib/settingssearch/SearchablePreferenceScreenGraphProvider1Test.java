@@ -120,7 +120,8 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 },
                 new SearchableInfoAndDialogInfoProvider(
                         preference -> Optional.empty(),
-                        (preference, hostOfPreference) -> Optional.empty()));
+                        (preference, hostOfPreference) -> Optional.empty()),
+                (preference, hostOfPreference) -> Optional.empty());
     }
 
     private static SearchablePreferencePOJO getPreference(

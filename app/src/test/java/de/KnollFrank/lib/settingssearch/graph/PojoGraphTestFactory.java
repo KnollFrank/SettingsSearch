@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.search.IconProvider;
 
 public class PojoGraphTestFactory {
 
@@ -34,10 +35,12 @@ public class PojoGraphTestFactory {
 
     private static Graph<PreferenceScreenWithHost, PreferenceEdge> transformPreferences2SearchablePreferences(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        return new Preferences2SearchablePreferencesTransformer(
-                new SearchableInfoAndDialogInfoProvider(
-                        preference -> Optional.empty(),
-                        (preference, hostOfPreference) -> Optional.empty()))
-                .transformPreferences2SearchablePreferences(preferenceScreenGraph);
+        final Preferences2SearchablePreferencesTransformer transformer =
+                new Preferences2SearchablePreferencesTransformer(
+                        new SearchableInfoAndDialogInfoProvider(
+                                preference -> Optional.empty(),
+                                (preference, hostOfPreference) -> Optional.empty()),
+                        new IconProvider((preference, hostOfPreference) -> Optional.empty()));
+        return transformer.transformPreferences2SearchablePreferences(preferenceScreenGraph);
     }
 }

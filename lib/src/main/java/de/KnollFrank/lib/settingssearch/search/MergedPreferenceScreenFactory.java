@@ -34,6 +34,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class MergedPreferenceScreenFactory {
@@ -45,6 +46,7 @@ public class MergedPreferenceScreenFactory {
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
+    private final IconResourceIdProvider iconResourceIdProvider;
     private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
     private final Resources resources;
@@ -57,6 +59,7 @@ public class MergedPreferenceScreenFactory {
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+            final IconResourceIdProvider iconResourceIdProvider,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
             final Resources resources) {
@@ -67,6 +70,7 @@ public class MergedPreferenceScreenFactory {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
+        this.iconResourceIdProvider = iconResourceIdProvider;
         this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
         this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
         this.resources = resources;
@@ -113,7 +117,8 @@ public class MergedPreferenceScreenFactory {
                         searchableInfoProvider,
                         new SearchableDialogInfoOfProvider(
                                 preferenceDialogs,
-                                preferenceDialogAndSearchableInfoProvider)));
+                                preferenceDialogAndSearchableInfoProvider)),
+                new IconProvider(iconResourceIdProvider));
     }
 
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(

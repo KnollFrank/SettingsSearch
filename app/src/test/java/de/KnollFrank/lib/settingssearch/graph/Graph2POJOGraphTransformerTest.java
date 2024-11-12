@@ -80,7 +80,8 @@ public class Graph2POJOGraphTransformerTest {
                 final SearchablePreference searchablePreference =
                         new SearchablePreference(
                                 context,
-                                Optional.of("some searchable info"));
+                                Optional.of("some searchable info"),
+                                Optional.empty());
                 searchablePreference.setKey("parentKey");
                 searchablePreference.setLayoutResource(15);
                 return searchablePreference;
@@ -90,7 +91,8 @@ public class Graph2POJOGraphTransformerTest {
                 final SearchablePreference child =
                         new SearchablePreference(
                                 context,
-                                searchableInfo);
+                                searchableInfo,
+                                Optional.empty());
                 child.setLayoutResource(16);
                 return child;
             }

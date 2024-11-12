@@ -14,6 +14,8 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
+import com.codepoetics.ambivalence.Either;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -88,7 +90,10 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         preference.getContext(),
-                        Optional.empty());
+                        Optional.empty(),
+                        Optional
+                                .ofNullable(preference.getIcon())
+                                .map(Either::ofRight));
         SearchablePreferenceTransformer.copyAttributes(preference, searchablePreference);
         return searchablePreference;
     }

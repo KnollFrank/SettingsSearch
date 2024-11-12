@@ -17,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataInput;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
+import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchPreferenceFragmentsBuilder {
@@ -29,6 +30,7 @@ public class SearchPreferenceFragmentsBuilder {
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
+    private IconResourceIdProvider iconResourceIdProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, host) -> true;
     private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = (preference, host) -> true;
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
@@ -62,6 +64,12 @@ public class SearchPreferenceFragmentsBuilder {
 
     public SearchPreferenceFragmentsBuilder withPreferenceDialogAndSearchableInfoProvider(final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
+        return this;
+    }
+
+
+    public SearchPreferenceFragmentsBuilder withIconResourceIdProvider(final IconResourceIdProvider iconResourceIdProvider) {
+        this.iconResourceIdProvider = iconResourceIdProvider;
         return this;
     }
 
@@ -101,6 +109,7 @@ public class SearchPreferenceFragmentsBuilder {
                 fragmentFactory,
                 searchableInfoProvider,
                 preferenceDialogAndSearchableInfoProvider,
+                iconResourceIdProvider,
                 preferenceSearchablePredicate,
                 includePreferenceInSearchResultsPredicate,
                 preferenceScreenGraphAvailableListener,
