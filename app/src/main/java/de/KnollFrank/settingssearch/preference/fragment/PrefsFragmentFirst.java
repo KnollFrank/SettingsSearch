@@ -30,6 +30,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference1());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
+        getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
         setOnPreferenceClickListeners();
     }
 

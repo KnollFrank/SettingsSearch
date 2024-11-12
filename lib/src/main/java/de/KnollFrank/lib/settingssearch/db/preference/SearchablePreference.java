@@ -15,6 +15,7 @@ import java.util.Optional;
 public class SearchablePreference extends PreferenceCategory {
 
     private final Optional<String> searchableInfo;
+
     private final Optional<Either<Integer, Drawable>> iconResourceIdOrIconDrawable;
 
     public SearchablePreference(@NonNull final Context context,
@@ -35,6 +36,10 @@ public class SearchablePreference extends PreferenceCategory {
 
     public Optional<String> getSearchableInfo() {
         return searchableInfo;
+    }
+
+    public Optional<Either<Integer, Drawable>> getIconResourceIdOrIconDrawable() {
+        return iconResourceIdOrIconDrawable;
     }
 
     @Override

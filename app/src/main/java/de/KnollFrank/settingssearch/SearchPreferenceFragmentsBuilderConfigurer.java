@@ -80,7 +80,9 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
 
                             @Override
                             public Optional<Integer> getIconResourceIdOfPreference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-                                return Optional.empty();
+                                return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
+                                        Optional.of(R.drawable.face) :
+                                        Optional.empty();
                             }
                         })
                 .withPreferenceScreenGraphAvailableListener(

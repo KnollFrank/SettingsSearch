@@ -17,6 +17,9 @@
   {
     "children": [],
     "extras": {},
+    "iconResourceIdOrIconPixelData": {
+      "left": 2131165319
+    },
     "id": 2,
     "key": "non_standard_link_to_second_fragment",
     "layoutResId": 2131427444,
@@ -296,19 +299,8 @@
   {
     "children": [],
     "extras": {},
-    "id": 26,
-    "key": "keyOfPreferenceOfConnectedFragment1",
-    "layoutResId": 2131427444,
-    "summary": "copied summary: summary of src preference with extras",
-    "title": "title of dst preference coming from src with extras",
-    "visible": true,
-    "widgetLayoutResId": 0
-  },
-  {
-    "children": [],
-    "extras": {},
     "fragment": "de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentThird",
-    "id": 27,
+    "id": 26,
     "key": "link_to_third_fragment",
     "layoutResId": 2131427444,
     "summary": "some summary to third fragment",
@@ -319,7 +311,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 28,
+    "id": 27,
     "key": "keyOfPreferenceWithCustomLayout",
     "layoutResId": 2131427357,
     "summary": "summary of preference with custom layout",
@@ -330,7 +322,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 29,
+    "id": 28,
     "key": "secondfile",
     "layoutResId": 2131427444,
     "summary": "This checkbox is a preference coming from a second file",
@@ -341,7 +333,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 30,
+    "id": 29,
     "key": "searchsummary",
     "layoutResId": 2131427444,
     "summary": "This checkbox is a preference coming from a second file",
@@ -352,7 +344,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 31,
+    "id": 30,
     "key": "searchkeyword",
     "layoutResId": 2131427444,
     "summary": "This checkbox has additional keywords",
@@ -363,7 +355,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 32,
+    "id": 31,
     "key": "ignoredcheckbox",
     "layoutResId": 2131427444,
     "summary": "This checkbox should not be displayed",
@@ -374,7 +366,7 @@
   {
     "children": [],
     "extras": {},
-    "id": 33,
+    "id": 32,
     "key": "keyOfPreferenceOfConnectedFragment2",
     "layoutResId": 2131427444,
     "summary": "copied summary: summary of src preference without extras",
@@ -385,13 +377,24 @@
   {
     "children": [],
     "extras": {},
-    "id": 34,
+    "id": 33,
     "key": "fourthfile",
     "layoutResId": 2131427444,
     "summary": "This checkbox is a preference coming from a fourth file",
     "title": "Checkbox fourth file",
     "visible": true,
     "widgetLayoutResId": 2131427446
+  },
+  {
+    "children": [],
+    "extras": {},
+    "id": 34,
+    "key": "keyOfPreferenceOfConnectedFragment1",
+    "layoutResId": 2131427444,
+    "summary": "copied summary: summary of src preference with extras",
+    "title": "title of dst preference coming from src with extras",
+    "visible": true,
+    "widgetLayoutResId": 0
   },
   {
     "children": [],

@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableBiMap;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
@@ -36,9 +37,7 @@ public class SearchablePreference2POJOConverter {
                 new SearchablePreferencePOJO(
                         id,
                         Optional.ofNullable(searchablePreference.getKey()),
-                        DrawableAndStringConverter
-                                .drawable2String(Optional.ofNullable(searchablePreference.getIcon()))
-                                .map(Either::ofRight),
+                        getIconResourceIdOrIconPixelData(searchablePreference),
                         searchablePreference.getLayoutResource(),
                         toString(searchablePreference.getSummary()),
                         toString(searchablePreference.getTitle()),
@@ -55,6 +54,15 @@ public class SearchablePreference2POJOConverter {
                         .putAll(searchablePreferencePOJOsWithMap.pojoEntityMap())
                         .put(searchablePreferencePOJO, searchablePreference)
                         .buildOrThrow());
+    }
+
+    private static Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData(final SearchablePreference searchablePreference) {
+        return searchablePreference
+                .getIconResourceIdOrIconDrawable()
+                .map(iconResourceIdOrIconDrawable ->
+                        iconResourceIdOrIconDrawable.map(
+                                Function.identity(),
+                                DrawableAndStringConverter::drawable2String));
     }
 
     public static SearchablePreferencePOJOsWithMap convert2POJOs(final List<SearchablePreference> searchablePreferences,
