@@ -26,7 +26,8 @@ public class IconProvider implements de.KnollFrank.lib.settingssearch.search.pro
                 .or(() -> getIconDrawable(preference));
     }
 
-    private Optional<Either<Integer, Drawable>> getIconResourceId(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+    private Optional<Either<Integer, Drawable>> getIconResourceId(final Preference preference,
+                                                                  final PreferenceFragmentCompat hostOfPreference) {
         return iconResourceIdProvider
                 .getIconResourceIdOfPreference(preference, hostOfPreference)
                 .map(Either::ofLeft);
