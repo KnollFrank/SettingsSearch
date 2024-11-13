@@ -110,7 +110,6 @@ public class MergedPreferenceScreenFactory {
                 new IconProvider(iconResourceIdProvider));
     }
 
-    // FK-TODO: remove resources when context is available, and use context.getResources()? Dito multiple places in this library
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final Context context) {
