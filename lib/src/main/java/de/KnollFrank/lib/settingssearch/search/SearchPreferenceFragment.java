@@ -6,6 +6,7 @@ import android.widget.SearchView;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.Locale;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
@@ -24,21 +25,21 @@ public class SearchPreferenceFragment extends Fragment {
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final PrepareShow prepareShow;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
-    private final String language;
+    private final Locale locale;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final PrepareShow prepareShow,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
-                                    final String language) {
+                                    final Locale locale) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.prepareShow = prepareShow;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
-        this.language = language;
+        this.locale = locale;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class SearchPreferenceFragment extends Fragment {
     private MergedPreferenceScreen getMergedPreferenceScreen() {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
-                language,
+                locale,
                 requireContext());
     }
 

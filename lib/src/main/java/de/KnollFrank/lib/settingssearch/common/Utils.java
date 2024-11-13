@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.common;
 
 import android.content.res.Resources;
 
+import java.util.Locale;
+
 public class Utils {
 
     public static <T> Class<? extends T> getClass(final String className) {
@@ -12,7 +14,7 @@ public class Utils {
         }
     }
 
-    public static String geCurrentLanguage(final Resources resources) {
-        return resources.getConfiguration().getLocales().get(0).getLanguage();
+    public static Locale geCurrentLocale(final Resources resources) {
+        return resources.getConfiguration().getLocales().get(0);
     }
 }

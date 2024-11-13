@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import org.jgrapht.Graph;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
@@ -69,7 +70,7 @@ public class MergedPreferenceScreenFactory {
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
-                                                            final String language,
+                                                            final Locale locale,
                                                             final Context context) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
@@ -84,7 +85,7 @@ public class MergedPreferenceScreenFactory {
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 computeOrLoadMergedPreferenceScreenData(
                         () -> getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs).getSearchablePreferenceScreenGraph(),
-                        language,
+                        locale,
                         context),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
@@ -114,20 +115,20 @@ public class MergedPreferenceScreenFactory {
 
     private static MergedPreferenceScreenData computeOrLoadMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
-            final String language,
+            final Locale locale,
             final Context context) {
-        final File directory = getDirectory4Language(language, context);
+        final File directory = getDirectory4Locale(locale, context);
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
         return exists(dataFiles) ?
                 load(dataFiles) :
                 computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, dataFiles);
     }
 
-    private static File getDirectory4Language(final String language, final Context context) {
+    private static File getDirectory4Locale(final Locale locale, final Context context) {
         final File directory =
                 new File(
                         context.getDir("settingssearch", Context.MODE_PRIVATE),
-                        language);
+                        locale.getLanguage());
         directory.mkdirs();
         return directory;
     }
