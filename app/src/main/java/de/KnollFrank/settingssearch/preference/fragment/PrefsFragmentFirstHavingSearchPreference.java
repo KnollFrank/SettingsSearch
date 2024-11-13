@@ -7,6 +7,7 @@ import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.io.File;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
@@ -68,11 +69,10 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                                         Optional.empty(),
                                         getClass()),
                                 getParentFragmentManager(),
-                                getResources(),
                                 new MergedPreferenceScreenDataInput(
-                                        R.raw.preferences,
-                                        R.raw.preference_path_by_preference,
-                                        R.raw.host_by_preference),
+                                        new File("preferences.json"),
+                                        new File("preference_path_by_preference.json"),
+                                        new File("host_by_preference.json")),
                                 MergedPreferenceScreenDataMode.PERSIST))
                 .build();
     }

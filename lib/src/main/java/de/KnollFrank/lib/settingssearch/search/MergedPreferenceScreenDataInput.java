@@ -1,8 +1,8 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import androidx.annotation.RawRes;
+import java.io.File;
 
-public record MergedPreferenceScreenDataInput(@RawRes int preferences,
-                                              @RawRes int preferencePathByPreference,
-                                              @RawRes int hostByPreference) {
+public record MergedPreferenceScreenDataInput(File preferences,
+                                              File preferencePathByPreference,
+                                              File hostByPreference) {
 }

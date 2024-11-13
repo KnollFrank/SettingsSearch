@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.client;
 
-import android.content.res.Resources;
-
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Optional;
@@ -25,7 +23,6 @@ public class SearchPreferenceFragmentsBuilder {
 
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
-    private final Resources resources;
     private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
@@ -43,12 +40,10 @@ public class SearchPreferenceFragmentsBuilder {
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
-                                               final Resources resources,
                                                final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
                                                final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
-        this.resources = resources;
         this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
         this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
     }
@@ -119,7 +114,6 @@ public class SearchPreferenceFragmentsBuilder {
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
                 mergedPreferenceScreenDataInput,
-                mergedPreferenceScreenDataMode,
-                resources);
+                mergedPreferenceScreenDataMode);
     }
 }

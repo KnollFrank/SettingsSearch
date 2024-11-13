@@ -2,8 +2,14 @@ package de.KnollFrank.lib.settingssearch.common;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import android.content.Context;
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,5 +39,21 @@ public class IOUtils {
 
     public static Reader getReader(final InputStream inputStream) {
         return new InputStreamReader(inputStream);
+    }
+
+    public static FileOutputStream getFileOutputStream(final File file, final Context context) {
+        try {
+            return context.openFileOutput(file.getName(), Context.MODE_PRIVATE);
+        } catch (final FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static FileInputStream getFileInputStream(final File file, final Context context) {
+        try {
+            return context.openFileInput(file.getName());
+        } catch (final FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.client;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
-import android.content.res.Resources;
-
 import androidx.fragment.app.FragmentManager;
 
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -38,17 +36,14 @@ public class SearchPreferenceFragments {
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
-    private final Resources resources;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
-                                                           final Resources resources,
                                                            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
                                                            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
         return new SearchPreferenceFragmentsBuilder(
                 searchConfiguration,
                 fragmentManager,
-                resources,
                 mergedPreferenceScreenDataInput,
                 mergedPreferenceScreenDataMode);
     }
@@ -66,8 +61,7 @@ public class SearchPreferenceFragments {
                                         final FragmentManager fragmentManager,
                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                         final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
-                                        final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
-                                        final Resources resources) {
+                                        final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -82,7 +76,6 @@ public class SearchPreferenceFragments {
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
         this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
-        this.resources = resources;
     }
 
     public void showSearchPreferenceFragment() {
@@ -102,8 +95,7 @@ public class SearchPreferenceFragments {
                                 preferenceDialogAndSearchableInfoProvider,
                                 iconResourceIdProvider,
                                 mergedPreferenceScreenDataInput,
-                                mergedPreferenceScreenDataMode,
-                                resources)),
+                                mergedPreferenceScreenDataMode)),
                 searchPreferenceFragment -> {
                 },
                 true,

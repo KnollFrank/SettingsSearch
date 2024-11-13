@@ -1,11 +1,9 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import static de.KnollFrank.lib.settingssearch.common.IOUtils.getFileInputStream;
 import static de.KnollFrank.lib.settingssearch.search.ComputeAndPersistMergedPreferenceScreenData.computeAndPersistMergedPreferenceScreenData;
-import static de.KnollFrank.lib.settingssearch.search.ComputeAndPersistMergedPreferenceScreenData.getFileInputStream;
-import static de.KnollFrank.lib.settingssearch.search.ComputeAndPersistMergedPreferenceScreenData.getFileName;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
@@ -51,7 +49,6 @@ public class MergedPreferenceScreenFactory {
     private final IconResourceIdProvider iconResourceIdProvider;
     private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
-    private final Resources resources;
 
     public MergedPreferenceScreenFactory(
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -63,8 +60,7 @@ public class MergedPreferenceScreenFactory {
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final IconResourceIdProvider iconResourceIdProvider,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
-            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
-            final Resources resources) {
+            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
@@ -75,7 +71,6 @@ public class MergedPreferenceScreenFactory {
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
         this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
-        this.resources = resources;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
@@ -95,8 +90,7 @@ public class MergedPreferenceScreenFactory {
                         () -> getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs).getSearchablePreferenceScreenGraph(),
                         mergedPreferenceScreenDataInput,
                         context,
-                        mergedPreferenceScreenDataMode,
-                        resources),
+                        mergedPreferenceScreenDataMode),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment),
@@ -128,22 +122,20 @@ public class MergedPreferenceScreenFactory {
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final Context context,
-            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode,
-            final Resources resources) {
+            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
         return switch (mergedPreferenceScreenDataMode) {
             case PERSIST -> computeAndPersistMergedPreferenceScreenData(
                     searchablePreferenceScreenGraphSupplier,
                     mergedPreferenceScreenDataInput,
-                    context,
-                    resources);
+                    context);
             case LOAD -> loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput, context);
         };
     }
 
     private static MergedPreferenceScreenData loadMergedPreferenceScreenData(final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput, final Context context) {
         return MergedPreferenceScreenDataDAO.load(
-                getFileInputStream(getFileName(mergedPreferenceScreenDataInput.preferences(), context.getResources()), context),
-                getFileInputStream(getFileName(mergedPreferenceScreenDataInput.preferencePathByPreference(), context.getResources()), context),
-                getFileInputStream(getFileName(mergedPreferenceScreenDataInput.hostByPreference(), context.getResources()), context));
+                getFileInputStream(mergedPreferenceScreenDataInput.preferences(), context),
+                getFileInputStream(mergedPreferenceScreenDataInput.preferencePathByPreference(), context),
+                getFileInputStream(mergedPreferenceScreenDataInput.hostByPreference(), context));
     }
 }
