@@ -2,8 +2,11 @@ package de.KnollFrank.lib.settingssearch.client;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.content.res.Resources;
+
 import androidx.fragment.app.FragmentManager;
 
+import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -32,10 +35,15 @@ public class SearchPreferenceFragments {
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
+    private final String language;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
-                                                           final FragmentManager fragmentManager) {
-        return new SearchPreferenceFragmentsBuilder(searchConfiguration, fragmentManager);
+                                                           final FragmentManager fragmentManager,
+                                                           final Resources resources) {
+        return new SearchPreferenceFragmentsBuilder(
+                searchConfiguration,
+                fragmentManager,
+                Utils.geCurrentLanguage(resources));
     }
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
@@ -49,7 +57,8 @@ public class SearchPreferenceFragments {
                                         final ShowPreferencePathPredicate showPreferencePathPredicate,
                                         final PrepareShow prepareShow,
                                         final FragmentManager fragmentManager,
-                                        final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
+                                        final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                                        final String language) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -62,6 +71,7 @@ public class SearchPreferenceFragments {
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
+        this.language = language;
     }
 
     public void showSearchPreferenceFragment() {
@@ -79,7 +89,8 @@ public class SearchPreferenceFragments {
                                 preferenceScreenGraphAvailableListener,
                                 searchableInfoProvider,
                                 preferenceDialogAndSearchableInfoProvider,
-                                iconResourceIdProvider)),
+                                iconResourceIdProvider),
+                        language),
                 searchPreferenceFragment -> {
                 },
                 true,

@@ -24,18 +24,21 @@ public class SearchPreferenceFragment extends Fragment {
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final PrepareShow prepareShow;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
+    private final String language;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final PrepareShow prepareShow,
-                                    final MergedPreferenceScreenFactory mergedPreferenceScreenFactory) {
+                                    final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
+                                    final String language) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.prepareShow = prepareShow;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
+        this.language = language;
     }
 
     @Override
@@ -50,6 +53,7 @@ public class SearchPreferenceFragment extends Fragment {
     private MergedPreferenceScreen getMergedPreferenceScreen() {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
+                language,
                 requireContext());
     }
 

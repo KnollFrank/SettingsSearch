@@ -69,6 +69,7 @@ public class MergedPreferenceScreenFactory {
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
+                                                            final String language,
                                                             final Context context) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
@@ -83,6 +84,7 @@ public class MergedPreferenceScreenFactory {
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 getMergedPreferenceScreenData(
                         () -> getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs).getSearchablePreferenceScreenGraph(),
+                        language,
                         context),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
@@ -112,19 +114,30 @@ public class MergedPreferenceScreenFactory {
 
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
+            final String language,
             final Context context) {
-        final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles = getMergedPreferenceScreenDataInput(context);
+        final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles = getMergedPreferenceScreenDataInput(language, context);
         return exists(mergedPreferenceScreenDataFiles) ?
                 load(mergedPreferenceScreenDataFiles) :
                 computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, mergedPreferenceScreenDataFiles);
     }
 
-    private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataInput(final Context context) {
-        final File directory = context.getDir("settingssearch", Context.MODE_PRIVATE);
+    private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataInput(final String language,
+                                                                                      final Context context) {
+        final File directory = getDirectory(language, context);
         return new MergedPreferenceScreenDataFiles(
                 new File(directory, "preferences.json"),
                 new File(directory, "preference_path_by_preference.json"),
                 new File(directory, "host_by_preference.json"));
+    }
+
+    private static File getDirectory(final String language, final Context context) {
+        final File directory =
+                new File(
+                        context.getDir("settingssearch", Context.MODE_PRIVATE),
+                        language);
+        directory.mkdirs();
+        return directory;
     }
 
     private static boolean exists(final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {

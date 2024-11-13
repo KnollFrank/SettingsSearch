@@ -61,7 +61,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 .configure(
                         SearchPreferenceFragments.builder(
                                 createSearchConfiguration(PrefsFragmentFirst.class),
-                                getSupportFragmentManager()))
+                                getSupportFragmentManager(),
+                                getResources()))
                 .build();
     }
 

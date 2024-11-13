@@ -21,6 +21,7 @@ public class SearchPreferenceFragmentsBuilder {
 
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
+    private final String language;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -35,9 +36,11 @@ public class SearchPreferenceFragmentsBuilder {
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
-                                               final FragmentManager fragmentManager) {
+                                               final FragmentManager fragmentManager,
+                                               final String language) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
+        this.language = language;
     }
 
     public SearchPreferenceFragmentsBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
@@ -104,6 +107,7 @@ public class SearchPreferenceFragmentsBuilder {
                 showPreferencePathPredicate,
                 prepareShow,
                 fragmentManager,
-                preferenceConnected2PreferenceFragmentProvider);
+                preferenceConnected2PreferenceFragmentProvider,
+                language);
     }
 }

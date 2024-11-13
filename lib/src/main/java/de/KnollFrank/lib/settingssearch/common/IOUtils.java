@@ -55,4 +55,15 @@ public class IOUtils {
             throw new RuntimeException(e);
         }
     }
+
+    // adapted from https://www.baeldung.com/java-delete-directory
+    public static boolean deleteDirectory(final File directory) {
+        final File[] files = directory.listFiles();
+        if (files != null) {
+            for (final File file : files) {
+                deleteDirectory(file);
+            }
+        }
+        return directory.delete();
+    }
 }
