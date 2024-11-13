@@ -82,7 +82,7 @@ public class MergedPreferenceScreenFactory {
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         context);
         return MergedPreferenceScreens.createMergedPreferenceScreen(
-                getMergedPreferenceScreenData(
+                computeOrLoadMergedPreferenceScreenData(
                         () -> getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs).getSearchablePreferenceScreenGraph(),
                         language,
                         context),
@@ -112,26 +112,18 @@ public class MergedPreferenceScreenFactory {
                 new IconProvider(iconResourceIdProvider));
     }
 
-    private static MergedPreferenceScreenData getMergedPreferenceScreenData(
+    private static MergedPreferenceScreenData computeOrLoadMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final String language,
             final Context context) {
-        final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles = getMergedPreferenceScreenDataInput(language, context);
-        return exists(mergedPreferenceScreenDataFiles) ?
-                load(mergedPreferenceScreenDataFiles) :
-                computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, mergedPreferenceScreenDataFiles);
+        final File directory = getDirectory4Language(language, context);
+        final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
+        return exists(dataFiles) ?
+                load(dataFiles) :
+                computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, dataFiles);
     }
 
-    private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataInput(final String language,
-                                                                                      final Context context) {
-        final File directory = getDirectory(language, context);
-        return new MergedPreferenceScreenDataFiles(
-                new File(directory, "preferences.json"),
-                new File(directory, "preference_path_by_preference.json"),
-                new File(directory, "host_by_preference.json"));
-    }
-
-    private static File getDirectory(final String language, final Context context) {
+    private static File getDirectory4Language(final String language, final Context context) {
         final File directory =
                 new File(
                         context.getDir("settingssearch", Context.MODE_PRIVATE),
@@ -140,14 +132,21 @@ public class MergedPreferenceScreenFactory {
         return directory;
     }
 
+    private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataFiles(final File directory) {
+        return new MergedPreferenceScreenDataFiles(
+                new File(directory, "preferences.json"),
+                new File(directory, "preference_path_by_preference.json"),
+                new File(directory, "host_by_preference.json"));
+    }
+
     private static boolean exists(final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {
         return mergedPreferenceScreenDataFiles.preferences().exists();
     }
 
-    private static MergedPreferenceScreenData load(final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {
+    private static MergedPreferenceScreenData load(final MergedPreferenceScreenDataFiles dataFiles) {
         return MergedPreferenceScreenDataDAO.load(
-                getFileInputStream(mergedPreferenceScreenDataFiles.preferences()),
-                getFileInputStream(mergedPreferenceScreenDataFiles.preferencePathByPreference()),
-                getFileInputStream(mergedPreferenceScreenDataFiles.hostByPreference()));
+                getFileInputStream(dataFiles.preferences()),
+                getFileInputStream(dataFiles.preferencePathByPreference()),
+                getFileInputStream(dataFiles.hostByPreference()));
     }
 }
