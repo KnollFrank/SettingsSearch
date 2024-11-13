@@ -12,7 +12,6 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
@@ -33,15 +32,10 @@ public class SearchPreferenceFragments {
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
-    private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
-                                                           final FragmentManager fragmentManager,
-                                                           final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
-        return new SearchPreferenceFragmentsBuilder(
-                searchConfiguration,
-                fragmentManager,
-                mergedPreferenceScreenDataMode);
+                                                           final FragmentManager fragmentManager) {
+        return new SearchPreferenceFragmentsBuilder(searchConfiguration, fragmentManager);
     }
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
@@ -55,8 +49,7 @@ public class SearchPreferenceFragments {
                                         final ShowPreferencePathPredicate showPreferencePathPredicate,
                                         final PrepareShow prepareShow,
                                         final FragmentManager fragmentManager,
-                                        final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                        final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
+                                        final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -69,7 +62,6 @@ public class SearchPreferenceFragments {
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
-        this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
     }
 
     public void showSearchPreferenceFragment() {
@@ -87,8 +79,7 @@ public class SearchPreferenceFragments {
                                 preferenceScreenGraphAvailableListener,
                                 searchableInfoProvider,
                                 preferenceDialogAndSearchableInfoProvider,
-                                iconResourceIdProvider,
-                                mergedPreferenceScreenDataMode)),
+                                iconResourceIdProvider)),
                 searchPreferenceFragment -> {
                 },
                 true,

@@ -48,7 +48,6 @@ public class MergedPreferenceScreenFactory {
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IconResourceIdProvider iconResourceIdProvider;
-    private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
 
     public MergedPreferenceScreenFactory(
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -58,8 +57,7 @@ public class MergedPreferenceScreenFactory {
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final IconResourceIdProvider iconResourceIdProvider,
-            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
+            final IconResourceIdProvider iconResourceIdProvider) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
@@ -68,7 +66,6 @@ public class MergedPreferenceScreenFactory {
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.iconResourceIdProvider = iconResourceIdProvider;
-        this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
@@ -86,8 +83,7 @@ public class MergedPreferenceScreenFactory {
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 getMergedPreferenceScreenData(
                         () -> getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs).getSearchablePreferenceScreenGraph(),
-                        context,
-                        mergedPreferenceScreenDataMode),
+                        context),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment),
@@ -117,15 +113,12 @@ public class MergedPreferenceScreenFactory {
     // FK-TODO: remove resources when context is available, and use context.getResources()? Dito multiple places in this library
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
-            final Context context,
-            final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
+            final Context context) {
         final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput = getMergedPreferenceScreenDataInput(context);
-        return switch (mergedPreferenceScreenDataMode) {
-            case PERSIST -> computeAndPersistMergedPreferenceScreenData(
-                    searchablePreferenceScreenGraphSupplier,
-                    mergedPreferenceScreenDataInput);
-            case LOAD -> loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput);
-        };
+        if (!mergedPreferenceScreenDataInput.preferences().exists()) {
+            computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, mergedPreferenceScreenDataInput);
+        }
+        return loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput);
     }
 
     private static MergedPreferenceScreenDataInput getMergedPreferenceScreenDataInput(final Context context) {

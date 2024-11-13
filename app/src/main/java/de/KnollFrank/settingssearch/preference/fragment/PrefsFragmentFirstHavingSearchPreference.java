@@ -12,7 +12,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
-import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataMode;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsBuilderConfigurer;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
@@ -66,8 +65,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                                         getId(),
                                         Optional.empty(),
                                         getClass()),
-                                getParentFragmentManager(),
-                                MergedPreferenceScreenDataMode.PERSIST))
+                                getParentFragmentManager()))
                 .build();
     }
 
