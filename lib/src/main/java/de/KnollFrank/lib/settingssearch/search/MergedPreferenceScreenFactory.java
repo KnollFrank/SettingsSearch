@@ -10,6 +10,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
 
+import java.io.File;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
@@ -123,19 +124,23 @@ public class MergedPreferenceScreenFactory {
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final Context context,
             final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
+        // FK-TODO: make "FKtmp" a parameter (of type String?)
+        final File directory = context.getDir("FKtmp", Context.MODE_PRIVATE);
         return switch (mergedPreferenceScreenDataMode) {
             case PERSIST -> computeAndPersistMergedPreferenceScreenData(
                     searchablePreferenceScreenGraphSupplier,
                     mergedPreferenceScreenDataInput,
-                    context);
-            case LOAD -> loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput, context);
+                    directory);
+            case LOAD -> loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput, directory);
         };
     }
 
-    private static MergedPreferenceScreenData loadMergedPreferenceScreenData(final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput, final Context context) {
+    private static MergedPreferenceScreenData loadMergedPreferenceScreenData(
+            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
+            final File directory) {
         return MergedPreferenceScreenDataDAO.load(
-                getFileInputStream(mergedPreferenceScreenDataInput.preferences(), context),
-                getFileInputStream(mergedPreferenceScreenDataInput.preferencePathByPreference(), context),
-                getFileInputStream(mergedPreferenceScreenDataInput.hostByPreference(), context));
+                getFileInputStream(new File(directory, mergedPreferenceScreenDataInput.preferences().getName())),
+                getFileInputStream(new File(directory, mergedPreferenceScreenDataInput.preferencePathByPreference().getName())),
+                getFileInputStream(new File(directory, mergedPreferenceScreenDataInput.hostByPreference().getName())));
     }
 }
