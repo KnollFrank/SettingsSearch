@@ -48,7 +48,6 @@ public class MergedPreferenceScreenFactory {
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IconResourceIdProvider iconResourceIdProvider;
-    private final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput;
     private final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode;
 
     public MergedPreferenceScreenFactory(
@@ -60,7 +59,6 @@ public class MergedPreferenceScreenFactory {
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final IconResourceIdProvider iconResourceIdProvider,
-            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
@@ -70,7 +68,6 @@ public class MergedPreferenceScreenFactory {
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.iconResourceIdProvider = iconResourceIdProvider;
-        this.mergedPreferenceScreenDataInput = mergedPreferenceScreenDataInput;
         this.mergedPreferenceScreenDataMode = mergedPreferenceScreenDataMode;
     }
 
@@ -89,7 +86,6 @@ public class MergedPreferenceScreenFactory {
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 getMergedPreferenceScreenData(
                         () -> getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs).getSearchablePreferenceScreenGraph(),
-                        mergedPreferenceScreenDataInput,
                         context,
                         mergedPreferenceScreenDataMode),
                 PreferenceManagerProvider.getPreferenceManager(
@@ -121,9 +117,13 @@ public class MergedPreferenceScreenFactory {
     // FK-TODO: remove resources when context is available, and use context.getResources()? Dito multiple places in this library
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
-            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
             final Context context,
             final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
+        final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput =
+                new MergedPreferenceScreenDataInput(
+                        new File("preferences.json"),
+                        new File("preference_path_by_preference.json"),
+                        new File("host_by_preference.json"));
         // FK-TODO: make "FKtmp" a parameter (of type String?)
         final File directory = context.getDir("FKtmp", Context.MODE_PRIVATE);
         return switch (mergedPreferenceScreenDataMode) {
