@@ -113,26 +113,28 @@ public class MergedPreferenceScreenFactory {
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final Context context) {
-        final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput = getMergedPreferenceScreenDataInput(context);
-        if (!mergedPreferenceScreenDataInput.preferences().exists()) {
-            computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, mergedPreferenceScreenDataInput);
-        }
-        return loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput);
+        final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles = getMergedPreferenceScreenDataInput(context);
+        return exists(mergedPreferenceScreenDataFiles) ?
+                load(mergedPreferenceScreenDataFiles) :
+                computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, mergedPreferenceScreenDataFiles);
     }
 
-    private static MergedPreferenceScreenDataInput getMergedPreferenceScreenDataInput(final Context context) {
+    private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataInput(final Context context) {
         final File directory = context.getDir("settingssearch", Context.MODE_PRIVATE);
-        return new MergedPreferenceScreenDataInput(
+        return new MergedPreferenceScreenDataFiles(
                 new File(directory, "preferences.json"),
                 new File(directory, "preference_path_by_preference.json"),
                 new File(directory, "host_by_preference.json"));
     }
 
-    private static MergedPreferenceScreenData loadMergedPreferenceScreenData(
-            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput) {
+    private static boolean exists(final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {
+        return mergedPreferenceScreenDataFiles.preferences().exists();
+    }
+
+    private static MergedPreferenceScreenData load(final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {
         return MergedPreferenceScreenDataDAO.load(
-                getFileInputStream(mergedPreferenceScreenDataInput.preferences()),
-                getFileInputStream(mergedPreferenceScreenDataInput.preferencePathByPreference()),
-                getFileInputStream(mergedPreferenceScreenDataInput.hostByPreference()));
+                getFileInputStream(mergedPreferenceScreenDataFiles.preferences()),
+                getFileInputStream(mergedPreferenceScreenDataFiles.preferencePathByPreference()),
+                getFileInputStream(mergedPreferenceScreenDataFiles.hostByPreference()));
     }
 }

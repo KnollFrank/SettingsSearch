@@ -16,15 +16,15 @@ class ComputeAndPersistMergedPreferenceScreenData {
 
     public static MergedPreferenceScreenData computeAndPersistMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
-            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput) {
+            final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {
         final MergedPreferenceScreenData mergedPreferenceScreenData =
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphSupplier.get());
         MergedPreferenceScreenDataDAO.persist(
                 mergedPreferenceScreenData,
-                getFileOutputStream(mergedPreferenceScreenDataInput.preferences()),
-                getFileOutputStream(mergedPreferenceScreenDataInput.preferencePathByPreference()),
-                getFileOutputStream(mergedPreferenceScreenDataInput.hostByPreference()));
+                getFileOutputStream(mergedPreferenceScreenDataFiles.preferences()),
+                getFileOutputStream(mergedPreferenceScreenDataFiles.preferencePathByPreference()),
+                getFileOutputStream(mergedPreferenceScreenDataFiles.hostByPreference()));
         return mergedPreferenceScreenData;
     }
 }
