@@ -7,6 +7,7 @@ import androidx.annotation.RawRes;
 
 import org.jgrapht.Graph;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.function.Supplier;
@@ -35,13 +36,21 @@ class ComputeAndPersistMergedPreferenceScreenData {
         return mergedPreferenceScreenData;
     }
 
-    private static String getFileName(final @RawRes int id, final Resources resources) {
+    public static String getFileName(final @RawRes int id, final Resources resources) {
         return resources.getResourceEntryName(id) + ".json";
     }
 
     private static FileOutputStream getFileOutputStream(final String fileName, final Context context) {
         try {
             return context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        } catch (final FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static FileInputStream getFileInputStream(final String fileName, final Context context) {
+        try {
+            return context.openFileInput(fileName);
         } catch (final FileNotFoundException e) {
             throw new RuntimeException(e);
         }

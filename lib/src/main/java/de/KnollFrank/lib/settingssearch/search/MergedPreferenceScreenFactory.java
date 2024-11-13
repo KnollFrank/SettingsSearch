@@ -1,6 +1,8 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.search.ComputeAndPersistMergedPreferenceScreenData.computeAndPersistMergedPreferenceScreenData;
+import static de.KnollFrank.lib.settingssearch.search.ComputeAndPersistMergedPreferenceScreenData.getFileInputStream;
+import static de.KnollFrank.lib.settingssearch.search.ComputeAndPersistMergedPreferenceScreenData.getFileName;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -121,6 +123,7 @@ public class MergedPreferenceScreenFactory {
                 new IconProvider(iconResourceIdProvider));
     }
 
+    // FK-TODO: remove resources when context is available, and use context.getResources()? Dito multiple places in this library
     private static MergedPreferenceScreenData getMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
@@ -139,8 +142,8 @@ public class MergedPreferenceScreenFactory {
 
     private static MergedPreferenceScreenData loadMergedPreferenceScreenData(final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput, final Context context) {
         return MergedPreferenceScreenDataDAO.load(
-                context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferences()),
-                context.getResources().openRawResource(mergedPreferenceScreenDataInput.preferencePathByPreference()),
-                context.getResources().openRawResource(mergedPreferenceScreenDataInput.hostByPreference()));
+                getFileInputStream(getFileName(mergedPreferenceScreenDataInput.preferences(), context.getResources()), context),
+                getFileInputStream(getFileName(mergedPreferenceScreenDataInput.preferencePathByPreference(), context.getResources()), context),
+                getFileInputStream(getFileName(mergedPreferenceScreenDataInput.hostByPreference(), context.getResources()), context));
     }
 }
