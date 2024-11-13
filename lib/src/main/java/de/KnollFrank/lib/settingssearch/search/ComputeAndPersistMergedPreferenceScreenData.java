@@ -4,7 +4,6 @@ import static de.KnollFrank.lib.settingssearch.common.IOUtils.getFileOutputStrea
 
 import org.jgrapht.Graph;
 
-import java.io.File;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataDAO;
@@ -17,16 +16,15 @@ class ComputeAndPersistMergedPreferenceScreenData {
 
     public static MergedPreferenceScreenData computeAndPersistMergedPreferenceScreenData(
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
-            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
-            final File directory) {
+            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput) {
         final MergedPreferenceScreenData mergedPreferenceScreenData =
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphSupplier.get());
         MergedPreferenceScreenDataDAO.persist(
                 mergedPreferenceScreenData,
-                getFileOutputStream(new File(directory, mergedPreferenceScreenDataInput.preferences().getName())),
-                getFileOutputStream(new File(directory, mergedPreferenceScreenDataInput.preferencePathByPreference().getName())),
-                getFileOutputStream(new File(directory, mergedPreferenceScreenDataInput.hostByPreference().getName())));
+                getFileOutputStream(mergedPreferenceScreenDataInput.preferences()),
+                getFileOutputStream(mergedPreferenceScreenDataInput.preferencePathByPreference()),
+                getFileOutputStream(mergedPreferenceScreenDataInput.hostByPreference()));
         return mergedPreferenceScreenData;
     }
 }

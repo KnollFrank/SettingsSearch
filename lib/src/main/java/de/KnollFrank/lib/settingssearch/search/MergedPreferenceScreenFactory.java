@@ -119,28 +119,28 @@ public class MergedPreferenceScreenFactory {
             final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier,
             final Context context,
             final MergedPreferenceScreenDataMode mergedPreferenceScreenDataMode) {
-        final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput =
-                new MergedPreferenceScreenDataInput(
-                        new File("preferences.json"),
-                        new File("preference_path_by_preference.json"),
-                        new File("host_by_preference.json"));
-        // FK-TODO: make "FKtmp" a parameter (of type String?)
-        final File directory = context.getDir("FKtmp", Context.MODE_PRIVATE);
+        final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput = getMergedPreferenceScreenDataInput(context);
         return switch (mergedPreferenceScreenDataMode) {
             case PERSIST -> computeAndPersistMergedPreferenceScreenData(
                     searchablePreferenceScreenGraphSupplier,
-                    mergedPreferenceScreenDataInput,
-                    directory);
-            case LOAD -> loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput, directory);
+                    mergedPreferenceScreenDataInput);
+            case LOAD -> loadMergedPreferenceScreenData(mergedPreferenceScreenDataInput);
         };
     }
 
+    private static MergedPreferenceScreenDataInput getMergedPreferenceScreenDataInput(final Context context) {
+        final File directory = context.getDir("settingssearch", Context.MODE_PRIVATE);
+        return new MergedPreferenceScreenDataInput(
+                new File(directory, "preferences.json"),
+                new File(directory, "preference_path_by_preference.json"),
+                new File(directory, "host_by_preference.json"));
+    }
+
     private static MergedPreferenceScreenData loadMergedPreferenceScreenData(
-            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput,
-            final File directory) {
+            final MergedPreferenceScreenDataInput mergedPreferenceScreenDataInput) {
         return MergedPreferenceScreenDataDAO.load(
-                getFileInputStream(new File(directory, mergedPreferenceScreenDataInput.preferences().getName())),
-                getFileInputStream(new File(directory, mergedPreferenceScreenDataInput.preferencePathByPreference().getName())),
-                getFileInputStream(new File(directory, mergedPreferenceScreenDataInput.hostByPreference().getName())));
+                getFileInputStream(mergedPreferenceScreenDataInput.preferences()),
+                getFileInputStream(mergedPreferenceScreenDataInput.preferencePathByPreference()),
+                getFileInputStream(mergedPreferenceScreenDataInput.hostByPreference()));
     }
 }

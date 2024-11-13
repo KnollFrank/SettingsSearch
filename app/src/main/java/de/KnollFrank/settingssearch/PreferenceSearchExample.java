@@ -63,7 +63,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         SearchPreferenceFragments.builder(
                                 createSearchConfiguration(PrefsFragmentFirst.class),
                                 getSupportFragmentManager(),
-                                MergedPreferenceScreenDataMode.PERSIST))
+                                MergedPreferenceScreenDataMode.LOAD))
                 .build();
     }
 
