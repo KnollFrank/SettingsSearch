@@ -25,6 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
+    <!-- FK-TODO: use Determinate Progress -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
