@@ -1,29 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground"
     android:clipToPadding="false"
-    android:orientation="vertical"
     android:paddingTop="?android:attr/actionBarSize">
 
-    <include layout="@layout/searchpreference_searchbar" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
+    <include
+        android:id="@+id/searchView"
+        layout="@layout/searchpreference_searchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/searchResultsFragmentContainerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="2dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintEnd_toEndOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintStart_toStartOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintTop_toTopOf="@+id/searchResultsFragmentContainerView" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/dummyFragmentContainerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="invisible" />
-</LinearLayout>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintEnd_toEndOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintStart_toStartOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintTop_toTopOf="@+id/searchResultsFragmentContainerView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
