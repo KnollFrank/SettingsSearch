@@ -13,6 +13,8 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningUiTask;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -45,10 +47,16 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        final MergedPreferenceScreen mergedPreferenceScreen = getMergedPreferenceScreen();
-        showSearchResultsPreferenceFragment(
-                mergedPreferenceScreen,
-                searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen));
+        final LongRunningUiTask<MergedPreferenceScreen> longRunningUiTask =
+                new LongRunningUiTask<>(
+                        this::getMergedPreferenceScreen,
+                        mergedPreferenceScreen ->
+                                showSearchResultsPreferenceFragment(
+                                        mergedPreferenceScreen,
+                                        searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
+                        OnUiThreadRunnerFactory.fromActivity(requireActivity()),
+                        getContext());
+        longRunningUiTask.execute();
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {
