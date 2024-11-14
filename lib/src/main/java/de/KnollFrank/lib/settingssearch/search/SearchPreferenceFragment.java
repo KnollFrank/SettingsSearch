@@ -55,7 +55,7 @@ public class SearchPreferenceFragment extends Fragment {
                                         mergedPreferenceScreen,
                                         searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
                         OnUiThreadRunnerFactory.fromActivity(requireActivity()),
-                        getContext());
+                        requireView().findViewById(R.id.progressBar));
         longRunningUiTask.execute();
     }
 

@@ -1,8 +1,8 @@
 package de.KnollFrank.lib.settingssearch.common.task;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
@@ -12,21 +12,21 @@ public class LongRunningUiTask<V> extends AsyncTask<Void, Void, V> {
     private final Callable<V> calculateUiResult;
     private final Consumer<V> doWithUiResult;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final ProgressDialog dialog;
+    private final ProgressBar progressBar;
 
     public LongRunningUiTask(final Callable<V> calculateUiResult,
                              final Consumer<V> doWithUiResult,
                              final OnUiThreadRunner onUiThreadRunner,
-                             final Context context) {
+                             final ProgressBar progressBar) {
         this.calculateUiResult = calculateUiResult;
         this.doWithUiResult = doWithUiResult;
         this.onUiThreadRunner = onUiThreadRunner;
-        this.dialog = createProgressDialog(context);
+        this.progressBar = progressBar;
     }
 
     @Override
     protected void onPreExecute() {
-        dialog.show();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -36,17 +36,7 @@ public class LongRunningUiTask<V> extends AsyncTask<Void, Void, V> {
 
     @Override
     protected void onPostExecute(final V result) {
-        dialog.dismiss();
+        progressBar.setVisibility(View.GONE);
         doWithUiResult.accept(result);
-    }
-
-    private static ProgressDialog createProgressDialog(final Context context) {
-        final ProgressDialog dialog = new ProgressDialog(context);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setTitle("Loading");
-        dialog.setMessage("Loading. Please wait...");
-        dialog.setIndeterminate(true);
-        dialog.setCanceledOnTouchOutside(false);
-        return dialog;
     }
 }
