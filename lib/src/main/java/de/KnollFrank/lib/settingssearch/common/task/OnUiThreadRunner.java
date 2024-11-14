@@ -6,7 +6,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 import java.util.function.Consumer;
 
-public class OnUiThreadRunner {
+class OnUiThreadRunner {
 
     private final Consumer<Runnable> runOnUiThread;
 
