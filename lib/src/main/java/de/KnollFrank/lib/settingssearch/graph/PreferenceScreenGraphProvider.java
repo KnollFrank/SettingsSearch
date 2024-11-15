@@ -53,9 +53,8 @@ public class PreferenceScreenGraphProvider {
         }
         preferenceScreenGraph.addVertex(root);
         LongRunningUiTask.onUiThreadRunner.runOnUiThread(() -> {
-            final TextView title = SearchPreferenceFragment.progressContainer.findViewById(R.id.title);
-            // FK-TODO: edit progressText instead of title
-            title.setText("processing " + root.host().toString());
+            final TextView progressText = SearchPreferenceFragment.progressContainer.findViewById(R.id.progressText);
+            progressText.setText("processing " + root.host().getClass().getSimpleName());
             return null;
         });
         // FK-TODO: remove sleep
