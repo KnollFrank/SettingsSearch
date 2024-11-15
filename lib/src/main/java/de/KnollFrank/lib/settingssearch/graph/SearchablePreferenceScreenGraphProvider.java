@@ -7,6 +7,7 @@ import org.jgrapht.Graph;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -22,19 +23,22 @@ public class SearchablePreferenceScreenGraphProvider {
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
     private final IconProvider iconProvider;
+    private final OnUiThreadRunner onUiThreadRunner;
 
     public SearchablePreferenceScreenGraphProvider(final String rootPreferenceFragmentClassName,
                                                    final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                                    final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                                    final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                                    final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
-                                                   final IconProvider iconProvider) {
+                                                   final IconProvider iconProvider,
+                                                   final OnUiThreadRunner onUiThreadRunner) {
         this.rootPreferenceFragmentClassName = rootPreferenceFragmentClassName;
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
         this.iconProvider = iconProvider;
+        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     public Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph() {
@@ -44,8 +48,12 @@ public class SearchablePreferenceScreenGraphProvider {
     }
 
     private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph() {
-        return new PreferenceScreenGraphProvider(preferenceScreenWithHostProvider, preferenceConnected2PreferenceFragmentProvider)
-                .getPreferenceScreenGraph(rootPreferenceFragmentClassName);
+        final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
+                new PreferenceScreenGraphProvider(
+                        preferenceScreenWithHostProvider,
+                        preferenceConnected2PreferenceFragmentProvider,
+                        onUiThreadRunner);
+        return preferenceScreenGraphProvider.getPreferenceScreenGraph(rootPreferenceFragmentClassName);
     }
 
     private Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> transformGraph2POJOGraph(

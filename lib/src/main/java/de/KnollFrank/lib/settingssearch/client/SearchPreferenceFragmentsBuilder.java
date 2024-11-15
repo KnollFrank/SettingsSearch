@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -23,6 +24,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
     private final Locale locale;
+    private final OnUiThreadRunner onUiThreadRunner;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -38,10 +40,12 @@ public class SearchPreferenceFragmentsBuilder {
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
-                                               final Locale locale) {
+                                               final Locale locale,
+                                               final OnUiThreadRunner onUiThreadRunner) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
+        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     public SearchPreferenceFragmentsBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
@@ -109,6 +113,7 @@ public class SearchPreferenceFragmentsBuilder {
                 prepareShow,
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
-                locale);
+                locale,
+                onUiThreadRunner);
     }
 }

@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsBuilderConfigurer;
@@ -66,7 +67,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                                         Optional.empty(),
                                         getClass()),
                                 getParentFragmentManager(),
-                                getResources()))
+                                getResources(),
+                                OnUiThreadRunnerFactory.fromActivity(requireActivity())))
                 .build();
     }
 

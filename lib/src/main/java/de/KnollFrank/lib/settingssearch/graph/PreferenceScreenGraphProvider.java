@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import android.widget.TextView;
-
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -17,22 +15,24 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
-import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 
 public class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
+    private final OnUiThreadRunner onUiThreadRunner;
     private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider) {
+                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                                         final OnUiThreadRunner onUiThreadRunner) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
+        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final String rootPreferenceFragmentClassName) {
@@ -51,11 +51,14 @@ public class PreferenceScreenGraphProvider {
             return;
         }
         preferenceScreenGraph.addVertex(root);
-        SearchPreferenceFragment.onUiThreadRunner.runOnUiThread(() -> {
-            final TextView progressText = SearchPreferenceFragment.progressContainer.findViewById(R.id.progressText);
-            progressText.setText("processing " + root.host().getClass().getSimpleName());
+        // FK-TODO-START: diesen Code über einen Listener als VertexSetListener ausführen (siehe Shelf)
+        onUiThreadRunner.runOnUiThread(() -> {
+            // FK-TODO: reactivate
+            // final TextView progressText = SearchPreferenceFragment.progressContainer.findViewById(R.id.progressText);
+            // progressText.setText("processing " + root.host().getClass().getSimpleName());
             return null;
         });
+        // FK-TODO-END
         // FK-TODO: remove sleep
         try {
             Thread.sleep(1000);

@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class PreferenceSearchExample extends AppCompatActivity {
@@ -62,7 +63,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         SearchPreferenceFragments.builder(
                                 createSearchConfiguration(PrefsFragmentFirst.class),
                                 getSupportFragmentManager(),
-                                getResources()))
+                                getResources(),
+                                OnUiThreadRunnerFactory.fromActivity(this)))
                 .build();
     }
 

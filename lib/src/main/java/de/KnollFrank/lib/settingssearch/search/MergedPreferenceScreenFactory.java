@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
@@ -40,6 +41,7 @@ public class MergedPreferenceScreenFactory {
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IconResourceIdProvider iconResourceIdProvider;
+    private final OnUiThreadRunner onUiThreadRunner;
 
     public MergedPreferenceScreenFactory(
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -49,7 +51,8 @@ public class MergedPreferenceScreenFactory {
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final IconResourceIdProvider iconResourceIdProvider) {
+            final IconResourceIdProvider iconResourceIdProvider,
+            final OnUiThreadRunner onUiThreadRunner) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
@@ -58,15 +61,18 @@ public class MergedPreferenceScreenFactory {
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.iconResourceIdProvider = iconResourceIdProvider;
+        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
                                                             final Locale locale,
+                                                            // FK-TODO: make context an instance variable of this class?
                                                             final Context context) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         childFragmentManager,
-                        R.id.dummyFragmentContainerView);
+                        R.id.dummyFragmentContainerView,
+                        onUiThreadRunner);
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(fragmentFactory, preferenceDialogs);
         final Fragments fragments =
@@ -107,6 +113,7 @@ public class MergedPreferenceScreenFactory {
                         new SearchableDialogInfoOfProvider(
                                 preferenceDialogs,
                                 preferenceDialogAndSearchableInfoProvider)),
-                new IconProvider(iconResourceIdProvider));
+                new IconProvider(iconResourceIdProvider),
+                onUiThreadRunner);
     }
 }

@@ -31,6 +31,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -588,7 +589,8 @@ public class PreferenceSearcherTest {
         final DefaultFragmentInitializer fragmentInitializer =
                 new DefaultFragmentInitializer(
                         fragmentActivity.getSupportFragmentManager(),
-                        TestActivity.FRAGMENT_CONTAINER_VIEW);
+                        TestActivity.FRAGMENT_CONTAINER_VIEW,
+                        OnUiThreadRunnerFactory.fromActivity(fragmentActivity));
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
@@ -613,7 +615,8 @@ public class PreferenceSearcherTest {
                                 new SearchableDialogInfoOfProvider(
                                         fragmentInitializer,
                                         preferenceDialogAndSearchableInfoProvider)),
-                        new IconProvider((preference, hostOfPreference) -> Optional.empty()));
+                        new IconProvider((preference, hostOfPreference) -> Optional.empty()),
+                        OnUiThreadRunnerFactory.fromActivity(fragmentActivity));
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),

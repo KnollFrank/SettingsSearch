@@ -49,7 +49,8 @@ public class Graph2POJOGraphTransformerTest {
                 final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph =
                         createSomePojoPreferenceScreenGraph(
                                 preferenceFragment,
-                                getFragments(preferenceFragment, activity));
+                                getFragments(preferenceFragment, activity),
+                                activity);
 
                 // When
                 final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph =

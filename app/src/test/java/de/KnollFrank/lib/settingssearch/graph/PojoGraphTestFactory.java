@@ -10,27 +10,37 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.search.IconProvider;
+import de.KnollFrank.settingssearch.test.TestActivity;
 
 public class PojoGraphTestFactory {
 
     public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> createSomePojoPreferenceScreenGraph(
             final PreferenceFragmentCompat preferenceFragment,
-            final Fragments fragments) {
+            final Fragments fragments,
+            final TestActivity activity) {
         return Host2HostClassTransformer.transformHost2HostClass(
                 transformPreferences2SearchablePreferences(
                         createSomeEntityPreferenceScreenGraph(
                                 preferenceFragment,
-                                fragments)));
+                                fragments,
+                                activity)));
     }
 
-    private static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(final PreferenceFragmentCompat preferenceFragment, final Fragments fragments) {
-        return new PreferenceScreenGraphProvider(
-                new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
-                (preference, hostOfPreference) -> Optional.empty())
-                .getPreferenceScreenGraph(preferenceFragment.getClass().getName());
+    private static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(
+            final PreferenceFragmentCompat preferenceFragment,
+            final Fragments fragments,
+            final TestActivity activity) {
+        final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
+                new PreferenceScreenGraphProvider(
+                        new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
+                        (preference, hostOfPreference) -> Optional.empty(),
+                        // FK-TODO: make OnUiThreadRunner a parameter of this method instead of activity
+                        OnUiThreadRunnerFactory.fromActivity(activity));
+        return preferenceScreenGraphProvider.getPreferenceScreenGraph(preferenceFragment.getClass().getName());
     }
 
     private static Graph<PreferenceScreenWithHost, PreferenceEdge> transformPreferences2SearchablePreferences(
