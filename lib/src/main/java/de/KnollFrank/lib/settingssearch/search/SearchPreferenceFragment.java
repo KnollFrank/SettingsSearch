@@ -52,7 +52,6 @@ public class SearchPreferenceFragment extends Fragment {
         super.onResume();
         // FK-TODO: pass progressContainer as a parameter to methods
         progressContainer = requireView().findViewById(R.id.progressContainer);
-        // FK-TODO: pass onUiThreadRunner as a parameter to methods
         final LongRunningTask<MergedPreferenceScreen> longRunningTask =
                 new LongRunningTask<>(
                         this::getMergedPreferenceScreen,
