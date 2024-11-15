@@ -4,6 +4,8 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningUiTask;
+
 public class DefaultFragmentInitializer implements FragmentInitializer, PreferenceDialogs {
 
     private final FragmentManager fragmentManager;
@@ -31,18 +33,26 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
     }
 
     private void add(final Fragment fragment) {
-        this
-                .fragmentManager
-                .beginTransaction()
-                .add(this.containerViewId, fragment)
-                .commitNow();
+        LongRunningUiTask.onUiThreadRunner.runOnUiThread(
+                () -> {
+                    this
+                            .fragmentManager
+                            .beginTransaction()
+                            .add(this.containerViewId, fragment)
+                            .commitNow();
+                    return null;
+                });
     }
 
     private void remove(final Fragment fragment) {
-        this
-                .fragmentManager
-                .beginTransaction()
-                .remove(fragment)
-                .commitNow();
+        LongRunningUiTask.onUiThreadRunner.runOnUiThread(
+                () -> {
+                    this
+                            .fragmentManager
+                            .beginTransaction()
+                            .remove(fragment)
+                            .commitNow();
+                    return null;
+                });
     }
 }

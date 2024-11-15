@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.view.View;
 import android.widget.SearchView;
 
 import androidx.fragment.app.Fragment;
@@ -44,9 +45,14 @@ public class SearchPreferenceFragment extends Fragment {
         this.locale = locale;
     }
 
+    // FK-TODO: remove progressContainer
+    public static View progressContainer;
+
     @Override
     public void onResume() {
         super.onResume();
+        // FK-TODO: pass progressContainer as a parameter to methods
+        progressContainer = requireView().findViewById(R.id.progressContainer);
         final LongRunningUiTask<MergedPreferenceScreen> longRunningUiTask =
                 new LongRunningUiTask<>(
                         this::getMergedPreferenceScreen,
@@ -55,7 +61,7 @@ public class SearchPreferenceFragment extends Fragment {
                                         mergedPreferenceScreen,
                                         searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
                         OnUiThreadRunnerFactory.fromActivity(requireActivity()),
-                        requireView().findViewById(R.id.progressContainer));
+                        progressContainer);
         longRunningUiTask.execute();
     }
 

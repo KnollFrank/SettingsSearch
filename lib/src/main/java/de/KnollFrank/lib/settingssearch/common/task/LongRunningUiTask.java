@@ -6,11 +6,13 @@ import android.view.View;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
+// FK-TODO: rename to LongRunningTask
 public class LongRunningUiTask<V> extends AsyncTask<Void, Void, V> {
 
     private final Callable<V> calculateUiResult;
     private final Consumer<V> doWithUiResult;
-    private final OnUiThreadRunner onUiThreadRunner;
+    // FK-TODO: pass onUiThreadRunner as a parameter to methods
+    public static OnUiThreadRunner onUiThreadRunner;
     private final View progressContainer;
 
     public LongRunningUiTask(final Callable<V> calculateUiResult,
@@ -19,7 +21,7 @@ public class LongRunningUiTask<V> extends AsyncTask<Void, Void, V> {
                              final View progressContainer) {
         this.calculateUiResult = calculateUiResult;
         this.doWithUiResult = doWithUiResult;
-        this.onUiThreadRunner = onUiThreadRunner;
+        LongRunningUiTask.onUiThreadRunner = onUiThreadRunner;
         this.progressContainer = progressContainer;
     }
 
@@ -30,7 +32,11 @@ public class LongRunningUiTask<V> extends AsyncTask<Void, Void, V> {
 
     @Override
     protected V doInBackground(final Void... voids) {
-        return onUiThreadRunner.runOnUiThread(calculateUiResult);
+        try {
+            return calculateUiResult.call();
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

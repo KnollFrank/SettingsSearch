@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import android.widget.TextView;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -15,9 +17,12 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningUiTask;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
+import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 
 public class PreferenceScreenGraphProvider {
 
@@ -47,6 +52,18 @@ public class PreferenceScreenGraphProvider {
             return;
         }
         preferenceScreenGraph.addVertex(root);
+        LongRunningUiTask.onUiThreadRunner.runOnUiThread(() -> {
+            final TextView title = SearchPreferenceFragment.progressContainer.findViewById(R.id.title);
+            // FK-TODO: edit progressText instead of title
+            title.setText("processing " + root.host().toString());
+            return null;
+        });
+        // FK-TODO: remove sleep
+        try {
+            Thread.sleep(1000);
+        } catch (final InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         this
                 .getConnectedPreferenceScreenByPreference(root)
                 .forEach(
