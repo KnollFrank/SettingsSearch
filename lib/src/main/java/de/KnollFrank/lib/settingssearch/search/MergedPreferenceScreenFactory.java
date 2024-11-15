@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
@@ -23,6 +24,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -83,7 +85,15 @@ public class MergedPreferenceScreenFactory {
                         context);
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 MergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(
-                        () -> computePreferenceScreenData(fragments, preferenceDialogs, progressContainer),
+                        () -> computePreferenceScreenData(
+                                fragments,
+                                preferenceDialogs,
+                                preferenceScreenWithHost ->
+                                        onUiThreadRunner.runOnUiThread(() -> {
+                                            final TextView progressText = progressContainer.findViewById(R.id.progressText);
+                                            progressText.setText("processing " + preferenceScreenWithHost.host().getClass().getSimpleName());
+                                            return null;
+                                        })),
                         locale,
                         context),
                 PreferenceManagerProvider.getPreferenceManager(
@@ -95,16 +105,19 @@ public class MergedPreferenceScreenFactory {
     private MergedPreferenceScreenData computePreferenceScreenData(
             final Fragments fragments,
             final DefaultFragmentInitializer preferenceDialogs,
-            final View progressContainer) {
+            final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
-                getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs, progressContainer)
+                getSearchablePreferenceScreenGraphProvider(
+                        fragments,
+                        preferenceDialogs,
+                        preferenceScreenGraphListener)
                         .getSearchablePreferenceScreenGraph());
     }
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider(
             final Fragments fragments,
             final PreferenceDialogs preferenceDialogs,
-            final View progressContainer) {
+            final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragment.getName(),
                 new PreferenceScreenWithHostProvider(
@@ -120,7 +133,6 @@ public class MergedPreferenceScreenFactory {
                                 preferenceDialogs,
                                 preferenceDialogAndSearchableInfoProvider)),
                 new IconProvider(iconResourceIdProvider),
-                onUiThreadRunner,
-                progressContainer);
+                preferenceScreenGraphListener);
     }
 }
