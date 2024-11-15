@@ -119,7 +119,7 @@ public class MergedPreferenceScreenFactory {
             final Context context) {
         final File directory = getDirectory4Locale(locale, context);
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
-        // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()
+        // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
         return exists(dataFiles) ?
                 load(dataFiles) :
                 computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, dataFiles);
