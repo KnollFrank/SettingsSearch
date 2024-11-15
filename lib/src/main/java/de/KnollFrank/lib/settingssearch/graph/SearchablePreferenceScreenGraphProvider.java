@@ -2,11 +2,15 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static de.KnollFrank.lib.settingssearch.graph.Host2HostClassTransformer.transformHost2HostClass;
 
+import android.view.View;
+import android.widget.TextView;
+
 import org.jgrapht.Graph;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
@@ -24,6 +28,7 @@ public class SearchablePreferenceScreenGraphProvider {
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
     private final IconProvider iconProvider;
     private final OnUiThreadRunner onUiThreadRunner;
+    private final View progressContainer;
 
     public SearchablePreferenceScreenGraphProvider(final String rootPreferenceFragmentClassName,
                                                    final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
@@ -31,7 +36,8 @@ public class SearchablePreferenceScreenGraphProvider {
                                                    final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                                    final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
                                                    final IconProvider iconProvider,
-                                                   final OnUiThreadRunner onUiThreadRunner) {
+                                                   final OnUiThreadRunner onUiThreadRunner,
+                                                   final View progressContainer) {
         this.rootPreferenceFragmentClassName = rootPreferenceFragmentClassName;
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
@@ -39,6 +45,7 @@ public class SearchablePreferenceScreenGraphProvider {
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
         this.iconProvider = iconProvider;
         this.onUiThreadRunner = onUiThreadRunner;
+        this.progressContainer = progressContainer;
     }
 
     public Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> getSearchablePreferenceScreenGraph() {
@@ -57,8 +64,8 @@ public class SearchablePreferenceScreenGraphProvider {
                             @Override
                             public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
                                 onUiThreadRunner.runOnUiThread(() -> {
-                                    // final TextView progressText = SearchPreferenceFragment.progressContainer.findViewById(R.id.progressText);
-                                    // progressText.setText("processing " + preferenceScreenWithHost.host().getClass().getSimpleName());
+                                    final TextView progressText = progressContainer.findViewById(R.id.progressText);
+                                    progressText.setText("processing " + preferenceScreenWithHost.host().getClass().getSimpleName());
                                     return null;
                                 });
                             }

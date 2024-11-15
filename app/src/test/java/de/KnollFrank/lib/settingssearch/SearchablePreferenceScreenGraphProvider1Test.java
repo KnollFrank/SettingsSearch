@@ -123,7 +123,8 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                         preference -> Optional.empty(),
                         (preference, hostOfPreference) -> Optional.empty()),
                 (preference, hostOfPreference) -> Optional.empty(),
-                OnUiThreadRunnerFactory.fromActivity(activity));
+                OnUiThreadRunnerFactory.fromActivity(activity),
+                null);
     }
 
     private static SearchablePreferencePOJO getPreference(

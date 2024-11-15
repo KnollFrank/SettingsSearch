@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
@@ -66,6 +67,7 @@ public class MergedPreferenceScreenFactory {
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
                                                             final Locale locale,
+                                                            final View progressContainer,
                                                             // FK-TODO: make context an instance variable of this class?
                                                             final Context context) {
         final DefaultFragmentInitializer preferenceDialogs =
@@ -81,7 +83,7 @@ public class MergedPreferenceScreenFactory {
                         context);
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 MergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(
-                        () -> computePreferenceScreenData(fragments, preferenceDialogs),
+                        () -> computePreferenceScreenData(fragments, preferenceDialogs, progressContainer),
                         locale,
                         context),
                 PreferenceManagerProvider.getPreferenceManager(
@@ -90,15 +92,19 @@ public class MergedPreferenceScreenFactory {
                 fragmentFactoryAndInitializer);
     }
 
-    private MergedPreferenceScreenData computePreferenceScreenData(final Fragments fragments, final DefaultFragmentInitializer preferenceDialogs) {
+    private MergedPreferenceScreenData computePreferenceScreenData(
+            final Fragments fragments,
+            final DefaultFragmentInitializer preferenceDialogs,
+            final View progressContainer) {
         return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
-                getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs)
+                getSearchablePreferenceScreenGraphProvider(fragments, preferenceDialogs, progressContainer)
                         .getSearchablePreferenceScreenGraph());
     }
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider(
             final Fragments fragments,
-            final PreferenceDialogs preferenceDialogs) {
+            final PreferenceDialogs preferenceDialogs,
+            final View progressContainer) {
         return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragment.getName(),
                 new PreferenceScreenWithHostProvider(
@@ -114,6 +120,7 @@ public class MergedPreferenceScreenFactory {
                                 preferenceDialogs,
                                 preferenceDialogAndSearchableInfoProvider)),
                 new IconProvider(iconResourceIdProvider),
-                onUiThreadRunner);
+                onUiThreadRunner,
+                progressContainer);
     }
 }

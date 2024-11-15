@@ -616,7 +616,8 @@ public class PreferenceSearcherTest {
                                         fragmentInitializer,
                                         preferenceDialogAndSearchableInfoProvider)),
                         new IconProvider((preference, hostOfPreference) -> Optional.empty()),
-                        OnUiThreadRunnerFactory.fromActivity(fragmentActivity));
+                        OnUiThreadRunnerFactory.fromActivity(fragmentActivity),
+                        null);
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),

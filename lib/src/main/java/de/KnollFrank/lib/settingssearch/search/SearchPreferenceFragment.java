@@ -44,17 +44,13 @@ public class SearchPreferenceFragment extends Fragment {
         this.locale = locale;
     }
 
-    // FK-TODO: remove progressContainer
-    public static View progressContainer;
-
     @Override
     public void onResume() {
         super.onResume();
-        // FK-TODO: pass progressContainer as a parameter to methods
-        progressContainer = requireView().findViewById(R.id.progressContainer);
+        final View progressContainer = requireView().findViewById(R.id.progressContainer);
         final LongRunningTask<MergedPreferenceScreen> longRunningTask =
                 new LongRunningTask<>(
-                        this::getMergedPreferenceScreen,
+                        () -> getMergedPreferenceScreen(progressContainer),
                         mergedPreferenceScreen ->
                                 showSearchResultsPreferenceFragment(
                                         mergedPreferenceScreen,
@@ -63,10 +59,11 @@ public class SearchPreferenceFragment extends Fragment {
         longRunningTask.execute();
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen() {
+    private MergedPreferenceScreen getMergedPreferenceScreen(final View progressContainer) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
                 locale,
+                progressContainer,
                 requireContext());
     }
 
