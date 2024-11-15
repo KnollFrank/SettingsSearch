@@ -97,9 +97,9 @@ public class SearchPreferenceFragments {
                                 preferenceScreenGraphAvailableListener,
                                 searchableInfoProvider,
                                 preferenceDialogAndSearchableInfoProvider,
-                                iconResourceIdProvider,
-                                onUiThreadRunner),
-                        locale),
+                                iconResourceIdProvider),
+                        locale,
+                        onUiThreadRunner),
                 searchPreferenceFragment -> {
                 },
                 true,

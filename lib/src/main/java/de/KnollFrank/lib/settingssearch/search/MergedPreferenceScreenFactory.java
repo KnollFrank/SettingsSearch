@@ -1,14 +1,11 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Locale;
-import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
@@ -45,7 +42,6 @@ public class MergedPreferenceScreenFactory {
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IconResourceIdProvider iconResourceIdProvider;
-    private final OnUiThreadRunner onUiThreadRunner;
 
     public MergedPreferenceScreenFactory(
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -55,8 +51,7 @@ public class MergedPreferenceScreenFactory {
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final IconResourceIdProvider iconResourceIdProvider,
-            final OnUiThreadRunner onUiThreadRunner) {
+            final IconResourceIdProvider iconResourceIdProvider) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
@@ -65,14 +60,14 @@ public class MergedPreferenceScreenFactory {
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.iconResourceIdProvider = iconResourceIdProvider;
-        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
                                                             final Locale locale,
-                                                            final View progressContainer,
+                                                            final OnUiThreadRunner onUiThreadRunner,
                                                             // FK-TODO: make context an instance variable of this class?
-                                                            final Context context) {
+                                                            final Context context,
+                                                            final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         childFragmentManager,
@@ -89,12 +84,7 @@ public class MergedPreferenceScreenFactory {
                         () -> computePreferenceScreenData(
                                 fragments,
                                 preferenceDialogs,
-                                preferenceScreenWithHost ->
-                                        onUiThreadRunner.runOnUiThread(() -> {
-                                            final TextView progressText = progressContainer.findViewById(R.id.progressText);
-                                            progressText.setText("processing " + preferenceScreenWithHost.host().getClass().getSimpleName());
-                                            return Optional.empty();
-                                        })),
+                                preferenceScreenGraphListener),
                         locale,
                         context),
                 PreferenceManagerProvider.getPreferenceManager(

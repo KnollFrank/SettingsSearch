@@ -4,6 +4,7 @@ import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -11,10 +12,13 @@ import java.util.Locale;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -28,13 +32,15 @@ public class SearchPreferenceFragment extends Fragment {
     private final PrepareShow prepareShow;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final Locale locale;
+    private final OnUiThreadRunner onUiThreadRunner;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final PrepareShow prepareShow,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
-                                    final Locale locale) {
+                                    final Locale locale,
+                                    final OnUiThreadRunner onUiThreadRunner) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
@@ -42,6 +48,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.prepareShow = prepareShow;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.locale = locale;
+        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     @Override
@@ -63,8 +70,19 @@ public class SearchPreferenceFragment extends Fragment {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
                 locale,
-                progressContainer,
-                requireContext());
+                onUiThreadRunner,
+                requireContext(),
+                new PreferenceScreenGraphListener() {
+
+                    @Override
+                    public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
+                        onUiThreadRunner.runOnUiThread(() -> {
+                            final TextView progressText = progressContainer.findViewById(R.id.progressText);
+                            progressText.setText("processing " + preferenceScreenWithHost.host().getClass().getSimpleName());
+                            return null;
+                        });
+                    }
+                });
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
