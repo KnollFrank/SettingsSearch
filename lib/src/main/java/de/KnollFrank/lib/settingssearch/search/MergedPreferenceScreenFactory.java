@@ -42,6 +42,7 @@ public class MergedPreferenceScreenFactory {
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IconResourceIdProvider iconResourceIdProvider;
+    private final Context context;
 
     public MergedPreferenceScreenFactory(
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -51,7 +52,8 @@ public class MergedPreferenceScreenFactory {
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final IconResourceIdProvider iconResourceIdProvider) {
+            final IconResourceIdProvider iconResourceIdProvider,
+            final Context context) {
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
@@ -60,13 +62,12 @@ public class MergedPreferenceScreenFactory {
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.iconResourceIdProvider = iconResourceIdProvider;
+        this.context = context;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
                                                             final Locale locale,
                                                             final OnUiThreadRunner onUiThreadRunner,
-                                                            // FK-TODO: make context an instance variable of this class?
-                                                            final Context context,
                                                             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(

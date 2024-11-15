@@ -71,7 +71,6 @@ public class SearchPreferenceFragment extends Fragment {
                 getChildFragmentManager(),
                 locale,
                 onUiThreadRunner,
-                requireContext(),
                 new PreferenceScreenGraphListener() {
 
                     @Override

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import android.content.Context;
+
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
@@ -25,6 +27,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
+    private final Context context;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -41,11 +44,13 @@ public class SearchPreferenceFragmentsBuilder {
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
                                                final Locale locale,
-                                               final OnUiThreadRunner onUiThreadRunner) {
+                                               final OnUiThreadRunner onUiThreadRunner,
+                                               final Context context) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
+        this.context = context;
     }
 
     public SearchPreferenceFragmentsBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
@@ -114,6 +119,7 @@ public class SearchPreferenceFragmentsBuilder {
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
                 locale,
-                onUiThreadRunner);
+                onUiThreadRunner,
+                context);
     }
 }
