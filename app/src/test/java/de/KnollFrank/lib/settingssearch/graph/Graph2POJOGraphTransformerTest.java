@@ -28,7 +28,6 @@ import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
@@ -50,8 +49,7 @@ public class Graph2POJOGraphTransformerTest {
                 final Graph<PreferenceScreenWithHostClass, PreferenceEdge> entityGraph =
                         createSomePojoPreferenceScreenGraph(
                                 preferenceFragment,
-                                getFragments(preferenceFragment, activity),
-                                OnUiThreadRunnerFactory.fromActivity(activity));
+                                getFragments(preferenceFragment, activity));
 
                 // When
                 final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferencePOJOEdge> pojoGraph =

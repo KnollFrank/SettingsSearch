@@ -52,7 +52,17 @@ public class SearchablePreferenceScreenGraphProvider {
                 new PreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         preferenceConnected2PreferenceFragmentProvider,
-                        onUiThreadRunner);
+                        new PreferenceScreenGraphListener() {
+
+                            @Override
+                            public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
+                                onUiThreadRunner.runOnUiThread(() -> {
+                                    // final TextView progressText = SearchPreferenceFragment.progressContainer.findViewById(R.id.progressText);
+                                    // progressText.setText("processing " + preferenceScreenWithHost.host().getClass().getSimpleName());
+                                    return null;
+                                });
+                            }
+                        });
         return preferenceScreenGraphProvider.getPreferenceScreenGraph(rootPreferenceFragmentClassName);
     }
 

@@ -4,7 +4,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.Map;
 import java.util.Optional;
@@ -17,26 +16,25 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 
 public class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
-    private final OnUiThreadRunner onUiThreadRunner;
+    private final PreferenceScreenGraphListener preferenceScreenGraphListener;
     private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                          final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-                                         final OnUiThreadRunner onUiThreadRunner) {
+                                         final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
-        this.onUiThreadRunner = onUiThreadRunner;
+        this.preferenceScreenGraphListener = preferenceScreenGraphListener;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final String rootPreferenceFragmentClassName) {
-        preferenceScreenGraph = new DefaultDirectedGraph<>(PreferenceEdge.class);
+        preferenceScreenGraph = PreferenceScreenGraphFactory.createEmptyPreferenceScreenGraph(preferenceScreenGraphListener);
         buildPreferenceScreenGraph(
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
@@ -52,12 +50,7 @@ public class PreferenceScreenGraphProvider {
         }
         preferenceScreenGraph.addVertex(root);
         // FK-TODO-START: diesen Code über einen Listener als VertexSetListener ausführen (siehe Shelf)
-        onUiThreadRunner.runOnUiThread(() -> {
-            // FK-TODO: reactivate
-            // final TextView progressText = SearchPreferenceFragment.progressContainer.findViewById(R.id.progressText);
-            // progressText.setText("processing " + root.host().getClass().getSimpleName());
-            return null;
-        });
+
         // FK-TODO-END
         // FK-TODO: remove sleep
         try {
