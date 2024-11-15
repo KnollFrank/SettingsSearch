@@ -49,9 +49,6 @@ public class PreferenceScreenGraphProvider {
             return;
         }
         preferenceScreenGraph.addVertex(root);
-        // FK-TODO-START: diesen Code über einen Listener als VertexSetListener ausführen (siehe Shelf)
-
-        // FK-TODO-END
         // FK-TODO: remove sleep
         try {
             Thread.sleep(1000);
