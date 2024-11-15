@@ -37,6 +37,7 @@
         app:layout_constraintStart_toStartOf="@+id/searchResultsFragmentContainerView"
         app:layout_constraintTop_toTopOf="@+id/searchResultsFragmentContainerView">
 
+        <!-- FK-TODO: use string resource for android:text -->
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
