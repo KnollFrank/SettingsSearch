@@ -4,7 +4,7 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import de.KnollFrank.lib.settingssearch.common.task.LongRunningUiTask;
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 
 public class DefaultFragmentInitializer implements FragmentInitializer, PreferenceDialogs {
 
@@ -33,7 +33,7 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
     }
 
     private void add(final Fragment fragment) {
-        LongRunningUiTask.onUiThreadRunner.runOnUiThread(
+        LongRunningTask.onUiThreadRunner.runOnUiThread(
                 () -> {
                     this
                             .fragmentManager
@@ -45,7 +45,7 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
     }
 
     private void remove(final Fragment fragment) {
-        LongRunningUiTask.onUiThreadRunner.runOnUiThread(
+        LongRunningTask.onUiThreadRunner.runOnUiThread(
                 () -> {
                     this
                             .fragmentManager

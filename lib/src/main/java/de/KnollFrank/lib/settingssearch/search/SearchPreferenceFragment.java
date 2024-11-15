@@ -14,7 +14,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
-import de.KnollFrank.lib.settingssearch.common.task.LongRunningUiTask;
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -53,8 +53,8 @@ public class SearchPreferenceFragment extends Fragment {
         super.onResume();
         // FK-TODO: pass progressContainer as a parameter to methods
         progressContainer = requireView().findViewById(R.id.progressContainer);
-        final LongRunningUiTask<MergedPreferenceScreen> longRunningUiTask =
-                new LongRunningUiTask<>(
+        final LongRunningTask<MergedPreferenceScreen> longRunningTask =
+                new LongRunningTask<>(
                         this::getMergedPreferenceScreen,
                         mergedPreferenceScreen ->
                                 showSearchResultsPreferenceFragment(
@@ -62,7 +62,7 @@ public class SearchPreferenceFragment extends Fragment {
                                         searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
                         OnUiThreadRunnerFactory.fromActivity(requireActivity()),
                         progressContainer);
-        longRunningUiTask.execute();
+        longRunningTask.execute();
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {

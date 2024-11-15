@@ -6,8 +6,7 @@ import android.view.View;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
-// FK-TODO: rename to LongRunningTask
-public class LongRunningUiTask<V> extends AsyncTask<Void, Void, V> {
+public class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
 
     private final Callable<V> calculateUiResult;
     private final Consumer<V> doWithUiResult;
@@ -15,13 +14,13 @@ public class LongRunningUiTask<V> extends AsyncTask<Void, Void, V> {
     public static OnUiThreadRunner onUiThreadRunner;
     private final View progressContainer;
 
-    public LongRunningUiTask(final Callable<V> calculateUiResult,
-                             final Consumer<V> doWithUiResult,
-                             final OnUiThreadRunner onUiThreadRunner,
-                             final View progressContainer) {
+    public LongRunningTask(final Callable<V> calculateUiResult,
+                           final Consumer<V> doWithUiResult,
+                           final OnUiThreadRunner onUiThreadRunner,
+                           final View progressContainer) {
         this.calculateUiResult = calculateUiResult;
         this.doWithUiResult = doWithUiResult;
-        LongRunningUiTask.onUiThreadRunner = onUiThreadRunner;
+        LongRunningTask.onUiThreadRunner = onUiThreadRunner;
         this.progressContainer = progressContainer;
     }
 
