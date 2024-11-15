@@ -8,16 +8,16 @@ import java.util.function.Consumer;
 
 public class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
 
-    private final Callable<V> calculateUiResult;
-    private final Consumer<V> doWithUiResult;
+    private final Callable<V> doInBackground;
+    private final Consumer<V> onPostExecute;
     private final View progressContainer;
 
     // FK-TODO: refactor, wrap AsyncTask, do not extend AsyncTask
-    public LongRunningTask(final Callable<V> calculateUiResult,
-                           final Consumer<V> doWithUiResult,
+    public LongRunningTask(final Callable<V> doInBackground,
+                           final Consumer<V> onPostExecute,
                            final View progressContainer) {
-        this.calculateUiResult = calculateUiResult;
-        this.doWithUiResult = doWithUiResult;
+        this.doInBackground = doInBackground;
+        this.onPostExecute = onPostExecute;
         this.progressContainer = progressContainer;
     }
 
@@ -29,7 +29,7 @@ public class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
     @Override
     protected V doInBackground(final Void... voids) {
         try {
-            return calculateUiResult.call();
+            return doInBackground.call();
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -38,6 +38,6 @@ public class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
     @Override
     protected void onPostExecute(final V result) {
         progressContainer.setVisibility(View.GONE);
-        doWithUiResult.accept(result);
+        onPostExecute.accept(result);
     }
 }
