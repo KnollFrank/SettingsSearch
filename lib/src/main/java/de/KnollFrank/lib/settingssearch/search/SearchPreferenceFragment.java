@@ -15,6 +15,7 @@ import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -47,12 +48,16 @@ public class SearchPreferenceFragment extends Fragment {
 
     // FK-TODO: remove progressContainer
     public static View progressContainer;
+    // FK-TODO: remove onUiThreadRunner
+    public static OnUiThreadRunner onUiThreadRunner;
 
     @Override
     public void onResume() {
         super.onResume();
         // FK-TODO: pass progressContainer as a parameter to methods
         progressContainer = requireView().findViewById(R.id.progressContainer);
+        // FK-TODO: pass onUiThreadRunner as a parameter to methods
+        onUiThreadRunner = OnUiThreadRunnerFactory.fromActivity(requireActivity());
         final LongRunningTask<MergedPreferenceScreen> longRunningTask =
                 new LongRunningTask<>(
                         this::getMergedPreferenceScreen,
@@ -60,7 +65,6 @@ public class SearchPreferenceFragment extends Fragment {
                                 showSearchResultsPreferenceFragment(
                                         mergedPreferenceScreen,
                                         searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
-                        OnUiThreadRunnerFactory.fromActivity(requireActivity()),
                         progressContainer);
         longRunningTask.execute();
     }

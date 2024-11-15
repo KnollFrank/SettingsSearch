@@ -10,18 +10,14 @@ public class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
 
     private final Callable<V> calculateUiResult;
     private final Consumer<V> doWithUiResult;
-    // FK-TODO: pass onUiThreadRunner as a parameter to methods
-    public static OnUiThreadRunner onUiThreadRunner;
     private final View progressContainer;
 
     // FK-TODO: refactor, wrap AsyncTask, do not extend AsyncTask
     public LongRunningTask(final Callable<V> calculateUiResult,
                            final Consumer<V> doWithUiResult,
-                           final OnUiThreadRunner onUiThreadRunner,
                            final View progressContainer) {
         this.calculateUiResult = calculateUiResult;
         this.doWithUiResult = doWithUiResult;
-        LongRunningTask.onUiThreadRunner = onUiThreadRunner;
         this.progressContainer = progressContainer;
     }
 

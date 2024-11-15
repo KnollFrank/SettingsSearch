@@ -20,7 +20,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
-import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 
@@ -52,7 +51,7 @@ public class PreferenceScreenGraphProvider {
             return;
         }
         preferenceScreenGraph.addVertex(root);
-        LongRunningTask.onUiThreadRunner.runOnUiThread(() -> {
+        SearchPreferenceFragment.onUiThreadRunner.runOnUiThread(() -> {
             final TextView progressText = SearchPreferenceFragment.progressContainer.findViewById(R.id.progressText);
             progressText.setText("processing " + root.host().getClass().getSimpleName());
             return null;
