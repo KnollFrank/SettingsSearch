@@ -121,7 +121,7 @@ public class MergedPreferenceScreenFactory {
         // FK-TODO: eine Löschung der dataFiles ermöglichen, damit eine Neuberechnung stattfindet (z.B. durch neue Plugins in OsmAnd ausgelöst).
         return exists(dataFiles) ?
                 MergedPreferenceScreenDataFileDAO.load(dataFiles) :
-                persistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier.get(), dataFiles);
+                computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, dataFiles);
     }
 
     private static File getDirectory4Locale(final Locale locale, final Context context) {
@@ -144,13 +144,15 @@ public class MergedPreferenceScreenFactory {
         return mergedPreferenceScreenDataFiles.preferences().exists();
     }
 
-    private static MergedPreferenceScreenData persistMergedPreferenceScreenData(
-            final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph,
-            final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {
+    private static MergedPreferenceScreenData computeAndPersistMergedPreferenceScreenData(final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier, final MergedPreferenceScreenDataFiles dataFiles) {
         final MergedPreferenceScreenData mergedPreferenceScreenData =
-                MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
-                        pojoGraph);
-        MergedPreferenceScreenDataFileDAO.persist(mergedPreferenceScreenData, mergedPreferenceScreenDataFiles);
+                computeMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier);
+        MergedPreferenceScreenDataFileDAO.persist(mergedPreferenceScreenData, dataFiles);
         return mergedPreferenceScreenData;
+    }
+
+    private static MergedPreferenceScreenData computeMergedPreferenceScreenData(final Supplier<Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge>> searchablePreferenceScreenGraphSupplier) {
+        return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
+                searchablePreferenceScreenGraphSupplier.get());
     }
 }
