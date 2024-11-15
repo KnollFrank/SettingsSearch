@@ -14,6 +14,7 @@ public class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
     public static OnUiThreadRunner onUiThreadRunner;
     private final View progressContainer;
 
+    // FK-TODO: refactor, wrap AsyncTask, do not extend AsyncTask
     public LongRunningTask(final Callable<V> calculateUiResult,
                            final Consumer<V> doWithUiResult,
                            final OnUiThreadRunner onUiThreadRunner,
