@@ -76,7 +76,9 @@ public class SearchPreferenceFragment extends Fragment {
                     @Override
                     public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
                         onUiThreadRunner.runOnUiThread(() -> {
+                            // FK-TODO: Da nach dem letzten "processing ..." die Anzeige scheinbar stehen bleibt, sollen die nachfolgenden Schritte wie Speichern, ... auch noch im UI angezeigt werden.
                             final TextView progressText = progressContainer.findViewById(R.id.progressText);
+                            // FK-TODO: zeige idealerweise preferenceScreenWithHost.host().getPreferenceScreen().getTitle() an, falls vorhanden, ansonsten preferenceScreenWithHost.host().getClass().getSimpleName().
                             progressText.setText("processing " + preferenceScreenWithHost.host().getClass().getSimpleName());
                             return null;
                         });
