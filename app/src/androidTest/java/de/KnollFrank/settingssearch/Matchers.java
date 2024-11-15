@@ -20,7 +20,7 @@ class Matchers {
         return new BoundedMatcher<>(RecyclerView.class) {
 
             @Override
-            public void describeTo(Description description) {
+            public void describeTo(final Description description) {
                 description.appendText("has item: ");
                 matcher.describeTo(description);
             }
@@ -37,6 +37,22 @@ class Matchers {
                     }
                 }
                 return false;
+            }
+        };
+    }
+
+    public static Matcher<View> recyclerViewHasItemCount(final Matcher<Integer> itemCountMatcher) {
+        return new BoundedMatcher<>(RecyclerView.class) {
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("recyclerView's itemCount ");
+                itemCountMatcher.describeTo(description);
+            }
+
+            @Override
+            protected boolean matchesSafely(final RecyclerView view) {
+                return itemCountMatcher.matches(view.getAdapter().getItemCount());
             }
         };
     }
