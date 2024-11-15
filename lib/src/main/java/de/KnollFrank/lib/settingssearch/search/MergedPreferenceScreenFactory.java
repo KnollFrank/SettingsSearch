@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.common.IOUtils.getFileInputStream;
-import static de.KnollFrank.lib.settingssearch.search.ComputeAndPersistMergedPreferenceScreenData.computeAndPersistMergedPreferenceScreenData;
+import static de.KnollFrank.lib.settingssearch.common.IOUtils.getFileOutputStream;
 
 import android.content.Context;
 
@@ -22,6 +22,7 @@ import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -123,7 +124,7 @@ public class MergedPreferenceScreenFactory {
         // FK-TODO: eine Löschung der dataFiles ermöglichen, damit eine Neuberechnung stattfindet (z.B. durch neue Plugins in OsmAnd ausgelöst).
         return exists(dataFiles) ?
                 load(dataFiles) :
-                computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, dataFiles);
+                persistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier.get(), dataFiles);
     }
 
     private static File getDirectory4Locale(final Locale locale, final Context context) {
@@ -146,10 +147,29 @@ public class MergedPreferenceScreenFactory {
         return mergedPreferenceScreenDataFiles.preferences().exists();
     }
 
-    private static MergedPreferenceScreenData load(final MergedPreferenceScreenDataFiles dataFiles) {
+    private static MergedPreferenceScreenData persistMergedPreferenceScreenData(
+            final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph,
+            final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {
+        final MergedPreferenceScreenData mergedPreferenceScreenData =
+                MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
+                        pojoGraph);
+        persist(mergedPreferenceScreenData, mergedPreferenceScreenDataFiles);
+        return mergedPreferenceScreenData;
+    }
+
+    private static void persist(final MergedPreferenceScreenData mergedPreferenceScreenData,
+                                final MergedPreferenceScreenDataFiles sink) {
+        MergedPreferenceScreenDataDAO.persist(
+                mergedPreferenceScreenData,
+                getFileOutputStream(sink.preferences()),
+                getFileOutputStream(sink.preferencePathByPreference()),
+                getFileOutputStream(sink.hostByPreference()));
+    }
+
+    private static MergedPreferenceScreenData load(final MergedPreferenceScreenDataFiles source) {
         return MergedPreferenceScreenDataDAO.load(
-                getFileInputStream(dataFiles.preferences()),
-                getFileInputStream(dataFiles.preferencePathByPreference()),
-                getFileInputStream(dataFiles.hostByPreference()));
+                getFileInputStream(source.preferences()),
+                getFileInputStream(source.preferencePathByPreference()),
+                getFileInputStream(source.hostByPreference()));
     }
 }
