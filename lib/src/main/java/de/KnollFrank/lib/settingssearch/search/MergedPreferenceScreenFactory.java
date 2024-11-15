@@ -153,5 +153,4 @@ public class MergedPreferenceScreenFactory {
         MergedPreferenceScreenDataFileDAO.persist(mergedPreferenceScreenData, mergedPreferenceScreenDataFiles);
         return mergedPreferenceScreenData;
     }
-
 }
