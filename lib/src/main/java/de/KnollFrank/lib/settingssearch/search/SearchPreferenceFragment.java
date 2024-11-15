@@ -55,11 +55,16 @@ public class SearchPreferenceFragment extends Fragment {
                                         mergedPreferenceScreen,
                                         searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
                         OnUiThreadRunnerFactory.fromActivity(requireActivity()),
-                        requireView().findViewById(R.id.progressBar));
+                        requireView().findViewById(R.id.progressContainer));
         longRunningUiTask.execute();
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
                 locale,
