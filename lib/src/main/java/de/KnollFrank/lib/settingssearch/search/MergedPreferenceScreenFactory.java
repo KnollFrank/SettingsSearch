@@ -120,6 +120,7 @@ public class MergedPreferenceScreenFactory {
         final File directory = getDirectory4Locale(locale, context);
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
         // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
+        // FK-TODO: eine Löschung der dataFiles ermöglichen, damit eine Neuberechnung stattfindet (z.B. durch neue Plugins in OsmAnd ausgelöst).
         return exists(dataFiles) ?
                 load(dataFiles) :
                 computeAndPersistMergedPreferenceScreenData(searchablePreferenceScreenGraphSupplier, dataFiles);
