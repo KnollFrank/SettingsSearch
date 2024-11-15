@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
@@ -92,7 +93,7 @@ public class MergedPreferenceScreenFactory {
                                         onUiThreadRunner.runOnUiThread(() -> {
                                             final TextView progressText = progressContainer.findViewById(R.id.progressText);
                                             progressText.setText("processing " + preferenceScreenWithHost.host().getClass().getSimpleName());
-                                            return null;
+                                            return Optional.empty();
                                         })),
                         locale,
                         context),
@@ -107,10 +108,11 @@ public class MergedPreferenceScreenFactory {
             final DefaultFragmentInitializer preferenceDialogs,
             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
-                getSearchablePreferenceScreenGraphProvider(
-                        fragments,
-                        preferenceDialogs,
-                        preferenceScreenGraphListener)
+                this
+                        .getSearchablePreferenceScreenGraphProvider(
+                                fragments,
+                                preferenceDialogs,
+                                preferenceScreenGraphListener)
                         .getSearchablePreferenceScreenGraph());
     }
 
