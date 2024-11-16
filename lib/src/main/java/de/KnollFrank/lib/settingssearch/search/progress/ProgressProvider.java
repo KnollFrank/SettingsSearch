@@ -14,11 +14,11 @@ public class ProgressProvider {
 
     private static String getTitleOrClassName(final PreferenceScreenWithHost preferenceScreenWithHost) {
         return ProgressProvider
-                .getTitle(preferenceScreenWithHost.preferenceScreen())
+                .getQuotedTitle(preferenceScreenWithHost.preferenceScreen())
                 .orElseGet(() -> preferenceScreenWithHost.host().getClass().getSimpleName());
     }
 
-    private static Optional<String> getTitle(final PreferenceScreen preferenceScreen) {
+    private static Optional<String> getQuotedTitle(final PreferenceScreen preferenceScreen) {
         return Optional
                 .ofNullable(preferenceScreen.getTitle())
                 .map(CharSequence::toString)
