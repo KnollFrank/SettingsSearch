@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.common.Utils;
-import de.KnollFrank.lib.settingssearch.common.task.BlockingOnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -39,18 +39,18 @@ public class SearchPreferenceFragments {
     private final FragmentManager fragmentManager;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final Locale locale;
-    private final BlockingOnUiThreadRunner blockingOnUiThreadRunner;
+    private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
                                                            final Context context,
-                                                           final BlockingOnUiThreadRunner blockingOnUiThreadRunner) {
+                                                           final OnUiThreadRunner onUiThreadRunner) {
         return new SearchPreferenceFragmentsBuilder(
                 searchConfiguration,
                 fragmentManager,
                 Utils.geCurrentLocale(context.getResources()),
-                blockingOnUiThreadRunner,
+                onUiThreadRunner,
                 context);
     }
 
@@ -67,7 +67,7 @@ public class SearchPreferenceFragments {
                                         final FragmentManager fragmentManager,
                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                         final Locale locale,
-                                        final BlockingOnUiThreadRunner blockingOnUiThreadRunner,
+                                        final OnUiThreadRunner onUiThreadRunner,
                                         final Context context) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
@@ -82,7 +82,7 @@ public class SearchPreferenceFragments {
         this.fragmentManager = fragmentManager;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.locale = locale;
-        this.blockingOnUiThreadRunner = blockingOnUiThreadRunner;
+        this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
     }
 
@@ -104,7 +104,7 @@ public class SearchPreferenceFragments {
                                 iconResourceIdProvider,
                                 context),
                         locale,
-                        blockingOnUiThreadRunner),
+                        onUiThreadRunner),
                 searchPreferenceFragment -> {
                 },
                 true,

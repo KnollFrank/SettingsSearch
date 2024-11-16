@@ -6,17 +6,21 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 import java.util.function.Consumer;
 
-public class BlockingOnUiThreadRunner {
+public class OnUiThreadRunner {
 
-    private final Consumer<Runnable> runOnUiThread;
+    private final Consumer<Runnable> runNonBlockingOnUiThread;
 
-    public BlockingOnUiThreadRunner(final Consumer<Runnable> runOnUiThread) {
-        this.runOnUiThread = runOnUiThread;
+    public OnUiThreadRunner(final Consumer<Runnable> runNonBlockingOnUiThread) {
+        this.runNonBlockingOnUiThread = runNonBlockingOnUiThread;
     }
 
-    public <V> V runOnUiThread(final Callable<V> callable) {
+    public void runNonBlockingOnUiThread(final Runnable runnable) {
+        runNonBlockingOnUiThread.accept(runnable);
+    }
+
+    public <V> V runBlockingOnUiThread(final Callable<V> callable) {
         final RunnableFuture<V> task = new FutureTask<>(callable);
-        runOnUiThread.accept(task);
+        runNonBlockingOnUiThread.accept(task);
         return get(task);
     }
 

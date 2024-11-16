@@ -4,20 +4,20 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import de.KnollFrank.lib.settingssearch.common.task.BlockingOnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 
 public class DefaultFragmentInitializer implements FragmentInitializer, PreferenceDialogs {
 
     private final FragmentManager fragmentManager;
     private final @IdRes int containerViewId;
-    private final BlockingOnUiThreadRunner blockingOnUiThreadRunner;
+    private final OnUiThreadRunner onUiThreadRunner;
 
     public DefaultFragmentInitializer(final FragmentManager fragmentManager,
                                       final @IdRes int containerViewId,
-                                      final BlockingOnUiThreadRunner blockingOnUiThreadRunner) {
+                                      final OnUiThreadRunner onUiThreadRunner) {
         this.fragmentManager = fragmentManager;
         this.containerViewId = containerViewId;
-        this.blockingOnUiThreadRunner = blockingOnUiThreadRunner;
+        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
     }
 
     private void add(final Fragment fragment) {
-        blockingOnUiThreadRunner.runOnUiThread(
+        onUiThreadRunner.runBlockingOnUiThread(
                 () -> {
                     this
                             .fragmentManager
@@ -49,7 +49,7 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
     }
 
     private void remove(final Fragment fragment) {
-        blockingOnUiThreadRunner.runOnUiThread(
+        onUiThreadRunner.runBlockingOnUiThread(
                 () -> {
                     this
                             .fragmentManager

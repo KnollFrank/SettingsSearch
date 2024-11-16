@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
-import de.KnollFrank.lib.settingssearch.common.task.BlockingOnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
@@ -67,13 +67,13 @@ public class MergedPreferenceScreenFactory {
 
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
                                                             final Locale locale,
-                                                            final BlockingOnUiThreadRunner blockingOnUiThreadRunner,
+                                                            final OnUiThreadRunner onUiThreadRunner,
                                                             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         childFragmentManager,
                         R.id.dummyFragmentContainerView,
-                        blockingOnUiThreadRunner);
+                        onUiThreadRunner);
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(fragmentFactory, preferenceDialogs);
         final Fragments fragments =
