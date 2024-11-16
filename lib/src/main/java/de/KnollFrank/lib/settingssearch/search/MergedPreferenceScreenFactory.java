@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
+import org.jgrapht.Graph;
+
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
@@ -16,6 +18,8 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -87,6 +91,7 @@ public class MergedPreferenceScreenFactory {
                         () -> computePreferenceScreenData(
                                 fragments,
                                 preferenceDialogs,
+                                progressDisplayer,
                                 preferenceScreenGraphListener),
                         locale,
                         context,
@@ -100,14 +105,17 @@ public class MergedPreferenceScreenFactory {
     private MergedPreferenceScreenData computePreferenceScreenData(
             final Fragments fragments,
             final DefaultFragmentInitializer preferenceDialogs,
+            final IProgressDisplayer progressDisplayer,
             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
-        return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
+        final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider(
                                 fragments,
                                 preferenceDialogs,
                                 preferenceScreenGraphListener)
-                        .getSearchablePreferenceScreenGraph());
+                        .getSearchablePreferenceScreenGraph();
+        progressDisplayer.displayProgress("preparing search database");
+        return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(searchablePreferenceScreenGraph);
     }
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider(

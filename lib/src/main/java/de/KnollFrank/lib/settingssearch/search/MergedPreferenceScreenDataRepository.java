@@ -25,7 +25,6 @@ class MergedPreferenceScreenDataRepository {
             progressDisplayer.displayProgress("loading search database");
             return MergedPreferenceScreenDataFileDAO.load(dataFiles);
         } else {
-            progressDisplayer.displayProgress("preparing search database");
             final MergedPreferenceScreenData mergedPreferenceScreenData = computeMergedPreferenceScreenData.get();
             progressDisplayer.displayProgress("persisting search database");
             MergedPreferenceScreenDataFileDAO.persist(mergedPreferenceScreenData, dataFiles);
