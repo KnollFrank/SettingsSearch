@@ -29,6 +29,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -68,6 +69,7 @@ public class MergedPreferenceScreenFactory {
     public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
                                                             final Locale locale,
                                                             final OnUiThreadRunner onUiThreadRunner,
+                                                            final IProgressDisplayer progressDisplayer,
                                                             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
@@ -87,7 +89,8 @@ public class MergedPreferenceScreenFactory {
                                 preferenceDialogs,
                                 preferenceScreenGraphListener),
                         locale,
-                        context),
+                        context,
+                        progressDisplayer),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment),

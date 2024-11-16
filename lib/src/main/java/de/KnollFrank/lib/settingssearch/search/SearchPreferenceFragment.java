@@ -22,7 +22,8 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayerFactory;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 
 public class SearchPreferenceFragment extends Fragment {
@@ -58,7 +59,7 @@ public class SearchPreferenceFragment extends Fragment {
         final View progressContainer = requireView().findViewById(R.id.progressContainer);
         final LongRunningTask<MergedPreferenceScreen> longRunningTask =
                 new LongRunningTask<>(
-                        () -> getMergedPreferenceScreen(new ProgressDisplayer(progressContainer)),
+                        () -> getMergedPreferenceScreen(ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(progressContainer, onUiThreadRunner)),
                         mergedPreferenceScreen ->
                                 showSearchResultsPreferenceFragment(
                                         mergedPreferenceScreen,
@@ -67,23 +68,17 @@ public class SearchPreferenceFragment extends Fragment {
         longRunningTask.execute();
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(final ProgressDisplayer progressDisplayer) {
+    private MergedPreferenceScreen getMergedPreferenceScreen(final IProgressDisplayer progressDisplayer) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
                 locale,
                 onUiThreadRunner,
+                progressDisplayer,
                 new PreferenceScreenGraphListener() {
 
                     @Override
                     public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
-                        displayProgressOnUiThread(ProgressProvider.getProgress(preferenceScreenWithHost));
-                    }
-
-                    private void displayProgressOnUiThread(final String progress) {
-                        onUiThreadRunner.runNonBlockingOnUiThread(() -> {
-                            // FK-TODO: Da nach dem letzten "processing ..." die Anzeige scheinbar stehen bleibt, sollen die nachfolgenden Schritte wie Speichern, ... auch noch im UI angezeigt werden.
-                            progressDisplayer.displayProgress(progress);
-                        });
+                        progressDisplayer.displayProgress(ProgressProvider.getProgress(preferenceScreenWithHost));
                     }
                 });
     }
