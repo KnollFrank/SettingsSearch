@@ -6,11 +6,11 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 import java.util.function.Consumer;
 
-public class OnUiThreadRunner {
+public class BlockingOnUiThreadRunner {
 
     private final Consumer<Runnable> runOnUiThread;
 
-    public OnUiThreadRunner(final Consumer<Runnable> runOnUiThread) {
+    public BlockingOnUiThreadRunner(final Consumer<Runnable> runOnUiThread) {
         this.runOnUiThread = runOnUiThread;
     }
 

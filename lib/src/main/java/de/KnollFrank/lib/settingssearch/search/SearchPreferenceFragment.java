@@ -16,8 +16,8 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
+import de.KnollFrank.lib.settingssearch.common.task.BlockingOnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -32,7 +32,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final PrepareShow prepareShow;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final Locale locale;
-    private final OnUiThreadRunner onUiThreadRunner;
+    private final BlockingOnUiThreadRunner blockingOnUiThreadRunner;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -40,7 +40,7 @@ public class SearchPreferenceFragment extends Fragment {
                                     final PrepareShow prepareShow,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
                                     final Locale locale,
-                                    final OnUiThreadRunner onUiThreadRunner) {
+                                    final BlockingOnUiThreadRunner blockingOnUiThreadRunner) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
@@ -48,7 +48,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.prepareShow = prepareShow;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.locale = locale;
-        this.onUiThreadRunner = onUiThreadRunner;
+        this.blockingOnUiThreadRunner = blockingOnUiThreadRunner;
     }
 
     @Override
@@ -70,12 +70,12 @@ public class SearchPreferenceFragment extends Fragment {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
                 locale,
-                onUiThreadRunner,
+                blockingOnUiThreadRunner,
                 new PreferenceScreenGraphListener() {
 
                     @Override
                     public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
-                        onUiThreadRunner.runOnUiThread(() -> {
+                        blockingOnUiThreadRunner.runOnUiThread(() -> {
                             // FK-TODO: Da nach dem letzten "processing ..." die Anzeige scheinbar stehen bleibt, sollen die nachfolgenden Schritte wie Speichern, ... auch noch im UI angezeigt werden.
                             final TextView progressText = progressContainer.findViewById(R.id.progressText);
                             // FK-TODO: zeige idealerweise preferenceScreenWithHost.host().getPreferenceScreen().getTitle() an, falls vorhanden, ansonsten preferenceScreenWithHost.host().getClass().getSimpleName().

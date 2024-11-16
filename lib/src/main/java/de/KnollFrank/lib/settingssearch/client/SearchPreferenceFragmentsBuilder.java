@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.common.task.BlockingOnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -26,7 +26,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
     private final Locale locale;
-    private final OnUiThreadRunner onUiThreadRunner;
+    private final BlockingOnUiThreadRunner blockingOnUiThreadRunner;
     private final Context context;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
@@ -44,12 +44,12 @@ public class SearchPreferenceFragmentsBuilder {
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
                                                final Locale locale,
-                                               final OnUiThreadRunner onUiThreadRunner,
+                                               final BlockingOnUiThreadRunner blockingOnUiThreadRunner,
                                                final Context context) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
-        this.onUiThreadRunner = onUiThreadRunner;
+        this.blockingOnUiThreadRunner = blockingOnUiThreadRunner;
         this.context = context;
     }
 
@@ -119,7 +119,7 @@ public class SearchPreferenceFragmentsBuilder {
                 fragmentManager,
                 preferenceConnected2PreferenceFragmentProvider,
                 locale,
-                onUiThreadRunner,
+                blockingOnUiThreadRunner,
                 context);
     }
 }

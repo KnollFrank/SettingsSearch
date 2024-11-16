@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch;
 
 import androidx.fragment.app.FragmentActivity;
 
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
+import de.KnollFrank.lib.settingssearch.common.task.BlockingOnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -20,7 +20,7 @@ class FragmentsFactory {
                                 new DefaultFragmentInitializer(
                                         activity.getSupportFragmentManager(),
                                         TestActivity.FRAGMENT_CONTAINER_VIEW,
-                                        OnUiThreadRunnerFactory.fromActivity(activity)))),
+                                        BlockingOnUiThreadRunnerFactory.fromActivity(activity)))),
                 activity);
     }
 }
