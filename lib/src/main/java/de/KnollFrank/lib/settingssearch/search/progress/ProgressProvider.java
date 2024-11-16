@@ -21,6 +21,11 @@ public class ProgressProvider {
     private static Optional<String> getTitle(final PreferenceScreen preferenceScreen) {
         return Optional
                 .ofNullable(preferenceScreen.getTitle())
-                .map(CharSequence::toString);
+                .map(CharSequence::toString)
+                .map(ProgressProvider::quote);
+    }
+
+    private static String quote(final String s) {
+        return "\"" + s + "\"";
     }
 }
