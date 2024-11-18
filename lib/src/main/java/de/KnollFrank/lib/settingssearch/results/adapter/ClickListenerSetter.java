@@ -3,17 +3,12 @@ package de.KnollFrank.lib.settingssearch.results.adapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Optional;
-
 public class ClickListenerSetter {
 
-    public static void setOnClickListener(final View view, final Optional<View.OnClickListener> onClickListener) {
+    public static void setOnClickListener(final View view, final View.OnClickListener onClickListener) {
         setClickableRecursive(view, false);
-        onClickListener.ifPresent(
-                _onClickListener -> {
-                    view.setClickable(true);
-                    view.setOnClickListener(_onClickListener);
-                });
+        view.setClickable(true);
+        view.setOnClickListener(onClickListener);
     }
 
     private static void setClickableRecursive(final View view, boolean clickable) {

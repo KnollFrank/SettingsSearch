@@ -38,7 +38,7 @@ public class SearchPreference extends Preference {
     public void onBindViewHolder(@NonNull final PreferenceViewHolder holder) {
         setOnClickListener(
                 holder.itemView,
-                Optional.of(view -> onPreferenceClick()));
+                view -> onPreferenceClick());
         configure((SearchView) holder.findViewById(R.id.searchView));
     }
 

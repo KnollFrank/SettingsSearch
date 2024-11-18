@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceViewHolder;
@@ -22,7 +21,6 @@ import androidx.preference.PreferenceViewHolder;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -35,20 +33,17 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
     private final SearchableInfoGetter searchableInfoGetter;
     private final Map<Preference, PreferencePath> preferencePathByPreference;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
-    private final Set<PreferenceCategory> nonClickablePreferences;
     private final Consumer<Preference> onPreferenceClickListener;
 
     public SearchablePreferenceGroupAdapter(final PreferenceGroup preferenceGroup,
                                             final SearchableInfoGetter searchableInfoGetter,
                                             final Map<Preference, PreferencePath> preferencePathByPreference,
                                             final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                            final Set<PreferenceCategory> nonClickablePreferences,
                                             final Consumer<Preference> onPreferenceClickListener) {
         super(preferenceGroup);
         this.searchableInfoGetter = searchableInfoGetter;
         this.preferencePathByPreference = preferencePathByPreference;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
-        this.nonClickablePreferences = nonClickablePreferences;
         this.onPreferenceClickListener = onPreferenceClickListener;
     }
 
@@ -96,9 +91,7 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
         return preferencePath.filter(showPreferencePathPredicate::shallShowPreferencePath).isPresent();
     }
 
-    private Optional<View.OnClickListener> getOnClickListener(final Preference preference) {
-        return nonClickablePreferences.contains(preference) ?
-                Optional.empty() :
-                Optional.of(v -> onPreferenceClickListener.accept(preference));
+    private View.OnClickListener getOnClickListener(final Preference preference) {
+        return v -> onPreferenceClickListener.accept(preference);
     }
 }

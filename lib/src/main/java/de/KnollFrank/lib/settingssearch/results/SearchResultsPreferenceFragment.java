@@ -21,7 +21,6 @@ import org.threeten.bp.Duration;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Optional;
-import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
@@ -93,7 +92,6 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat im
                 searchResultsDescription.searchableInfoAttribute(),
                 searchResultsDescription.preferencePathByPreference(),
                 showPreferencePathPredicate,
-                Set.of(),
                 this::showPreferenceScreenAndHighlightPreference);
     }
 
