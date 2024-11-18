@@ -7,7 +7,6 @@ import java.util.function.Consumer;
 
 public class Tasks {
 
-    // FK-TODO: refactor, wrap AsyncTask, do not extend AsyncTask
     public static <V> void execute(final Callable<V> doInBackground,
                                    final Consumer<V> onPostExecute,
                                    final View progressContainer) {
