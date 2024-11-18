@@ -88,15 +88,13 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat im
     @Override
     protected Adapter<PreferenceViewHolder> onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
         // FK-TODO: die Preferences des preferenceScreen sollen ihren aktuellen Zustand widerspiegeln (z.B. soll der Haken einer CheckBoxPreference gemäß den darunterliegenden Daten gesetzt oder nicht gesetzt sein.)
-        final SearchablePreferenceGroupAdapter searchablePreferenceGroupAdapter =
-                new SearchablePreferenceGroupAdapter(
-                        preferenceScreen,
-                        searchResultsDescription.searchableInfoAttribute(),
-                        searchResultsDescription.preferencePathByPreference(),
-                        showPreferencePathPredicate,
-                        Set.of(),
-                        this::showPreferenceScreenAndHighlightPreference);
-        return searchablePreferenceGroupAdapter;
+        return new SearchablePreferenceGroupAdapter(
+                preferenceScreen,
+                searchResultsDescription.searchableInfoAttribute(),
+                searchResultsDescription.preferencePathByPreference(),
+                showPreferencePathPredicate,
+                Set.of(),
+                this::showPreferenceScreenAndHighlightPreference);
     }
 
     private void setSearchResultsDescription(final SearchResultsDescription searchResultsDescription) {
