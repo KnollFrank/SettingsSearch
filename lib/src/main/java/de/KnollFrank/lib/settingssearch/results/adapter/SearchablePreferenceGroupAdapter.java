@@ -9,7 +9,6 @@ import static de.KnollFrank.lib.settingssearch.results.adapter.SearchableInfoVie
 import static de.KnollFrank.lib.settingssearch.results.adapter.ViewsAdder.addViews;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,8 +19,6 @@ import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceViewHolder;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,13 +28,12 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.results.SearchResultsDescription;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoGetter;
 
-public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter implements PropertyChangeListener {
+public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter {
 
-    private SearchableInfoGetter searchableInfoGetter;
-    private Map<Preference, PreferencePath> preferencePathByPreference;
+    private final SearchableInfoGetter searchableInfoGetter;
+    private final Map<Preference, PreferencePath> preferencePathByPreference;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final Set<PreferenceCategory> nonClickablePreferences;
     private final Consumer<Preference> onPreferenceClickListener;
@@ -74,14 +70,6 @@ public class SearchablePreferenceGroupAdapter extends PreferenceGroupAdapter imp
         setOnClickListener(
                 holder.itemView,
                 getOnClickListener(preference));
-    }
-
-    @Override
-    public void propertyChange(final PropertyChangeEvent evt) {
-        final SearchResultsDescription searchResultsDescription = (SearchResultsDescription) evt.getNewValue();
-        this.searchableInfoGetter = searchResultsDescription.searchableInfoAttribute();
-        this.preferencePathByPreference = searchResultsDescription.preferencePathByPreference();
-        Log.i(this.getClass().getName(), "new Info");
     }
 
     private static PreferenceViewHolder addSearchableInfoViewAndPreferencePathViewIfAbsent(

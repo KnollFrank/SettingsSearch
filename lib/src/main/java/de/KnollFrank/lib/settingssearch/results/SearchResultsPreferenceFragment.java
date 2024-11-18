@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import org.threeten.bp.Duration;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,20 +29,36 @@ import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.SearchablePreferenceGroupAdapter;
 
-public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
+public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat implements PropertyChangeListener {
 
-    private final SearchResultsDisplayer searchResultsDisplayer;
+    private SearchResultsDescription searchResultsDescription;
     private final PreferencePathNavigator preferencePathNavigator;
     private final @IdRes int fragmentContainerViewId;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
 
-    public SearchResultsPreferenceFragment(final SearchResultsDisplayer searchResultsDisplayer,
-                                           final PreferencePathNavigator preferencePathNavigator,
-                                           final @IdRes int fragmentContainerViewId,
-                                           final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                           final PrepareShow prepareShow) {
-        this.searchResultsDisplayer = searchResultsDisplayer;
+    public static SearchResultsPreferenceFragment createInstance(final SearchResultsDisplayer searchResultsDisplayer,
+                                                                 final PreferencePathNavigator preferencePathNavigator,
+                                                                 final @IdRes int fragmentContainerViewId,
+                                                                 final ShowPreferencePathPredicate showPreferencePathPredicate,
+                                                                 final PrepareShow prepareShow) {
+        final SearchResultsPreferenceFragment searchResultsPreferenceFragment =
+                new SearchResultsPreferenceFragment(
+                        searchResultsDisplayer.getSearchResultsDescription(),
+                        preferencePathNavigator,
+                        fragmentContainerViewId,
+                        showPreferencePathPredicate,
+                        prepareShow);
+        searchResultsDisplayer.addPropertyChangeListener(searchResultsPreferenceFragment);
+        return searchResultsPreferenceFragment;
+    }
+
+    private SearchResultsPreferenceFragment(final SearchResultsDescription searchResultsDescription,
+                                            final PreferencePathNavigator preferencePathNavigator,
+                                            final @IdRes int fragmentContainerViewId,
+                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
+                                            final PrepareShow prepareShow) {
+        this.searchResultsDescription = searchResultsDescription;
         this.preferencePathNavigator = preferencePathNavigator;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
@@ -49,7 +67,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable final Bundle savedInstanceState, @Nullable final String rootKey) {
-        setPreferenceScreen(searchResultsDisplayer.getSearchResultsDescription().preferenceScreenWithMap().preferenceScreen());
+        setPreferenceScreen(searchResultsDescription.preferenceScreenWithMap().preferenceScreen());
     }
 
     @NonNull
@@ -61,6 +79,11 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         return recyclerView;
     }
 
+    @Override
+    public void propertyChange(final PropertyChangeEvent evt) {
+        setSearchResultsDescription((SearchResultsDescription) evt.getNewValue());
+    }
+
     @NonNull
     @Override
     protected Adapter<PreferenceViewHolder> onCreateAdapter(@NonNull final PreferenceScreen preferenceScreen) {
@@ -68,18 +91,27 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
         final SearchablePreferenceGroupAdapter searchablePreferenceGroupAdapter =
                 new SearchablePreferenceGroupAdapter(
                         preferenceScreen,
-                        searchResultsDisplayer.getSearchResultsDescription().searchableInfoAttribute(),
-                        searchResultsDisplayer.getSearchResultsDescription().preferencePathByPreference(),
+                        searchResultsDescription.searchableInfoAttribute(),
+                        searchResultsDescription.preferencePathByPreference(),
                         showPreferencePathPredicate,
                         Set.of(),
                         this::showPreferenceScreenAndHighlightPreference);
-        searchResultsDisplayer.addPropertyChangeListener(searchablePreferenceGroupAdapter);
         return searchablePreferenceGroupAdapter;
+    }
+
+    private void setSearchResultsDescription(final SearchResultsDescription searchResultsDescription) {
+        this.searchResultsDescription = searchResultsDescription;
+        resetPreferenceScreen(searchResultsDescription.preferenceScreenWithMap().preferenceScreen());
+    }
+
+    private void resetPreferenceScreen(final PreferenceScreen preferenceScreen) {
+        setPreferenceScreen(null);
+        setPreferenceScreen(preferenceScreen);
     }
 
     private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
         showPreferenceScreenAndHighlightPreference(
-                preferencePathNavigator.navigatePreferencePath(searchResultsDisplayer.getSearchResultsDescription().preferencePathByPreference().get(preference)),
+                preferencePathNavigator.navigatePreferencePath(searchResultsDescription.preferencePathByPreference().get(preference)),
                 getOriginalKey(preference));
     }
 
@@ -88,8 +120,7 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat {
     }
 
     private SearchablePreferencePOJO getSearchablePreferencePOJO(final Preference preference) {
-        return searchResultsDisplayer
-                .getSearchResultsDescription()
+        return searchResultsDescription
                 .preferenceScreenWithMap()
                 .pojoEntityMap()
                 .inverse()

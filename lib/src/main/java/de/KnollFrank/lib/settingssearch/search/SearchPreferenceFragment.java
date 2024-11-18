@@ -84,7 +84,7 @@ public class SearchPreferenceFragment extends Fragment {
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
                                                      final Consumer<SearchResultsPreferenceFragment> onFragmentStarted) {
         showFragment(
-                new SearchResultsPreferenceFragment(
+                SearchResultsPreferenceFragment.createInstance(
                         mergedPreferenceScreen.searchResultsDisplayer(),
                         mergedPreferenceScreen.preferencePathNavigator(),
                         searchConfiguration.fragmentContainerViewId(),
