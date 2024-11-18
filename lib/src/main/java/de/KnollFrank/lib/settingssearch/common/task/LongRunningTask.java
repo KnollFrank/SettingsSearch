@@ -6,13 +6,12 @@ import android.view.View;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
-public class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
+class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
 
     private final Callable<V> doInBackground;
     private final Consumer<V> onPostExecute;
     private final View progressContainer;
 
-    // FK-TODO: refactor, wrap AsyncTask, do not extend AsyncTask
     public LongRunningTask(final Callable<V> doInBackground,
                            final Consumer<V> onPostExecute,
                            final View progressContainer) {

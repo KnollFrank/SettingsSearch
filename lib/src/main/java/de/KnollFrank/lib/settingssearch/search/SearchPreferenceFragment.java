@@ -15,8 +15,8 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
-import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -57,15 +57,13 @@ public class SearchPreferenceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final View progressContainer = requireView().findViewById(R.id.progressContainer);
-        final LongRunningTask<MergedPreferenceScreen> longRunningTask =
-                new LongRunningTask<>(
-                        () -> getMergedPreferenceScreen(ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(progressContainer, onUiThreadRunner)),
-                        mergedPreferenceScreen ->
-                                showSearchResultsPreferenceFragment(
-                                        mergedPreferenceScreen,
-                                        searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
-                        progressContainer);
-        longRunningTask.execute();
+        Tasks.execute(
+                () -> getMergedPreferenceScreen(ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(progressContainer, onUiThreadRunner)),
+                mergedPreferenceScreen ->
+                        showSearchResultsPreferenceFragment(
+                                mergedPreferenceScreen,
+                                searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
+                progressContainer);
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final IProgressDisplayer progressDisplayer) {
