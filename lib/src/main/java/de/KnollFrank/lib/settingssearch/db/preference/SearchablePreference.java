@@ -16,6 +16,7 @@ public class SearchablePreference extends PreferenceCategory {
 
     private final Optional<String> searchableInfo;
 
+    // FK-TODO: performance optimization: Optional<Either<Integer, Supplier<Drawable>>>
     private final Optional<Either<Integer, Drawable>> iconResourceIdOrIconDrawable;
 
     public SearchablePreference(@NonNull final Context context,

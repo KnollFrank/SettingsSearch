@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
 import androidx.preference.PreferenceGroup;
@@ -12,7 +11,6 @@ import com.google.common.collect.ImmutableBiMap;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
@@ -31,6 +29,7 @@ public class SearchablePreferenceFromPOJOConverter {
                         searchablePreferencePOJO,
                         preferenceKeyGenerator.nextString(),
                         parent.getContext());
+        // FK-TODO: performance optimization: overwrite PreferenceGroup.addPreference() and remove its method call of findPReference().
         parent.addPreference(searchablePreference);
         return ImmutableBiMap
                 .<SearchablePreferencePOJO, SearchablePreference>builder()
@@ -59,10 +58,7 @@ public class SearchablePreferenceFromPOJOConverter {
                         getIconResourceIdOrIconDrawable(
                                 searchablePreferencePOJO.iconResourceIdOrIconPixelData(),
                                 context));
-        copyAttributesFromSrc2Dst(
-                searchablePreferencePOJO,
-                searchablePreference,
-                context.getResources());
+        copyAttributesFromSrc2Dst(searchablePreferencePOJO, searchablePreference);
         return searchablePreference;
     }
 
@@ -88,10 +84,8 @@ public class SearchablePreferenceFromPOJOConverter {
     }
 
     private static void copyAttributesFromSrc2Dst(final SearchablePreferencePOJO src,
-                                                  final SearchablePreference dst,
-                                                  final Resources resources) {
+                                                  final SearchablePreference dst) {
         dst.setKey(src.key().orElse(null));
-        copyIconFromSrc2Dst(src, dst, resources);
         dst.setLayoutResource(src.layoutResId());
         dst.setSummary(src.summary().orElse(null));
         dst.setTitle(src.title().orElse(null));
@@ -99,22 +93,5 @@ public class SearchablePreferenceFromPOJOConverter {
         dst.setFragment(src.fragment().orElse(null));
         dst.setVisible(src.visible());
         dst.getExtras().putAll(src.extras());
-    }
-
-    private static void copyIconFromSrc2Dst(final SearchablePreferencePOJO src, final SearchablePreference dst, final Resources resources) {
-        SearchablePreferenceFromPOJOConverter
-                .iconPixelData2Drawable(src.iconResourceIdOrIconPixelData(), resources)
-                .forEither(dst::setIcon, dst::setIcon);
-    }
-
-    private static Either<Integer, Drawable> iconPixelData2Drawable(
-            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Resources resources) {
-        return iconResourceIdOrIconPixelData
-                .map(_iconResourceIdOrIconPixelData ->
-                        _iconResourceIdOrIconPixelData.map(
-                                Function.identity(),
-                                iconStr -> DrawableAndStringConverter.string2Drawable(iconStr, resources)))
-                .orElse(Either.ofRight(null));
     }
 }
