@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/progressContainer"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:translationZ="2dp"
-    android:visibility="gone"
-    app:layout_constraintBottom_toBottomOf="@+id/searchResultsFragmentContainerView"
-    app:layout_constraintEnd_toEndOf="@+id/searchResultsFragmentContainerView"
-    app:layout_constraintStart_toStartOf="@+id/searchResultsFragmentContainerView"
-    app:layout_constraintTop_toTopOf="@+id/searchResultsFragmentContainerView">
+    android:layout_height="wrap_content">
 
     <!-- FK-TODO: use string resource for android:text -->
     <TextView

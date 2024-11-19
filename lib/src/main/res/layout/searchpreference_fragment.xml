@@ -25,7 +25,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
-    <include layout="@layout/progress_container" />
+    <include
+        android:id="@+id/progressContainer"
+        layout="@layout/progress_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationZ="2dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintEnd_toEndOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintStart_toStartOf="@+id/searchResultsFragmentContainerView"
+        app:layout_constraintTop_toTopOf="@+id/searchResultsFragmentContainerView" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/dummyFragmentContainerView"
