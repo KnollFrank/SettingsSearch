@@ -42,6 +42,10 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
                 searchablePreferencePOJO
                         .summary()
                         .orElse("unknown summary"));
+        holder.searchableInfo.setText(
+                searchablePreferencePOJO
+                        .searchableInfo()
+                        .orElse("unknown searchable info"));
         holder.itemView.setOnClickListener(
                 view -> {
                     if (itemClickListener != null) {

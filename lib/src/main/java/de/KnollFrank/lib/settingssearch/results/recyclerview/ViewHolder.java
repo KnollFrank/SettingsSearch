@@ -11,10 +11,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     public final TextView title;
     public final TextView summary;
+    public final TextView searchableInfo;
 
     public ViewHolder(final View itemView) {
         super(itemView);
         title = itemView.findViewById(R.id.title);
         summary = itemView.findViewById(R.id.summary);
+        searchableInfo = itemView.findViewById(R.id.searchableInfo);
     }
 }
