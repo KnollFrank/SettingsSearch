@@ -18,6 +18,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
@@ -35,6 +36,7 @@ public class SearchResultsDisplayerTest {
                 final String title = "Title, title part";
                 final SearchResultsDisplayer searchResultsDisplayer =
                         SearchResultsDisplayerFactory.createSearchResultsDisplayer(
+                                new SearchResultsFragment(),
                                 createSomePreferenceFragment(activity).getPreferenceManager(),
                                 pojoEntityMap -> null);
 

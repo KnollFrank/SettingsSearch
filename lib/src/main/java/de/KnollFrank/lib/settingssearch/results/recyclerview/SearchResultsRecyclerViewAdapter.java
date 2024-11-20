@@ -34,11 +34,15 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final SearchablePreferencePOJO searchablePreferencePOJO = data.get(position);
         holder.title.setText(
-                data
-                        .get(position)
+                searchablePreferencePOJO
                         .title()
-                        .orElse("unknown"));
+                        .orElse("unknown title"));
+        holder.summary.setText(
+                searchablePreferencePOJO
+                        .summary()
+                        .orElse("unknown summary"));
     }
 
     @Override
@@ -49,10 +53,12 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView title;
+        public final TextView summary;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
+            summary = itemView.findViewById(R.id.summary);
             itemView.setOnClickListener(this);
         }
 
