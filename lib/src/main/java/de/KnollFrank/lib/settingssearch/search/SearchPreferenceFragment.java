@@ -7,6 +7,7 @@ import android.widget.SearchView;
 
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.function.Consumer;
 
@@ -21,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayerFactory;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
@@ -82,15 +83,18 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
-                                                     final Consumer<SearchResultsPreferenceFragment> onFragmentStarted) {
+                                                     final Consumer<de.KnollFrank.lib.settingssearch.results.SearchResultsPreferenceFragment> onFragmentStarted) {
         showFragment(
-                SearchResultsPreferenceFragment.createInstance(
-                        mergedPreferenceScreen.searchResultsDisplayer(),
-                        mergedPreferenceScreen.preferencePathNavigator(),
-                        searchConfiguration.fragmentContainerViewId(),
-                        showPreferencePathPredicate,
-                        prepareShow),
-                onFragmentStarted,
+//                SearchResultsPreferenceFragment.createInstance(
+//                        mergedPreferenceScreen.searchResultsDisplayer(),
+//                        mergedPreferenceScreen.preferencePathNavigator(),
+//                        searchConfiguration.fragmentContainerViewId(),
+//                        showPreferencePathPredicate,
+//                        prepareShow),
+                new SearchResultsFragment(),
+                searchResultsFragment ->
+                        searchResultsFragment.setData(
+                                new ArrayList<>(mergedPreferenceScreen.preferences())),
                 false,
                 R.id.searchResultsFragmentContainerView,
                 getChildFragmentManager());
