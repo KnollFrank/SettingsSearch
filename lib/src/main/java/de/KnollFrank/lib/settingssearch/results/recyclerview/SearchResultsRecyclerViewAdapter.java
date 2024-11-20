@@ -38,11 +38,11 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
         holder.title.setText(
                 searchablePreferencePOJO
                         .title()
-                        .orElse("unknown title"));
+                        .orElse("some unknown title"));
         holder.summary.setText(
                 searchablePreferencePOJO
                         .summary()
-                        .orElse("unknown summary"));
+                        .orElse("some unknown summary"));
     }
 
     @Override
