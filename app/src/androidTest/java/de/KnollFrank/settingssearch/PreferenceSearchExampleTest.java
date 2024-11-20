@@ -87,7 +87,7 @@ public class PreferenceSearchExampleTest {
 
     private static Matcher<View> searchButton() {
         return allOf(
-                withId(R.id.search_action),
+                withId(de.KnollFrank.settingssearch.R.id.search_action),
                 withContentDescription("title"),
                 childAtPosition(
                         childAtPosition(
@@ -112,11 +112,7 @@ public class PreferenceSearchExampleTest {
 
     private static Matcher<View> searchResultsView() {
         return allOf(
-                withId(androidx.preference.R.id.recycler_view),
-                withParent(
-                        allOf(
-                                withId(android.R.id.list_container),
-                                withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout.class)))),
+                withId(de.KnollFrank.lib.settingssearch.R.id.searchResults),
                 isDisplayed());
     }
 
