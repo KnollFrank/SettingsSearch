@@ -56,6 +56,10 @@ public class SearchResultsDisplayer {
         return searchResultsDescription;
     }
 
+    public SearchResultsFragment getSearchResultsFragment() {
+        return searchResultsFragment;
+    }
+
     public void addPropertyChangeListener(final PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }

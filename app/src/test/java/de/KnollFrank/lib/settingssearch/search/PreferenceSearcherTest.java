@@ -49,7 +49,6 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
@@ -620,7 +619,10 @@ public class PreferenceSearcherTest {
                         preferenceScreenWithHost -> {
                         });
         return MergedPreferenceScreens.createMergedPreferenceScreen(
-                new SearchResultsFragment(),
+                TestActivity.FRAGMENT_CONTAINER_VIEW,
+                _preferenceFragment -> {
+                },
+                fragmentActivity.getSupportFragmentManager(),
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),
                 PreferenceManagerProvider.getPreferenceManager(

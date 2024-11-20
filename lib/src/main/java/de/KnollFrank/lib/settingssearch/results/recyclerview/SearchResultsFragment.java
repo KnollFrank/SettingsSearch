@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.results.recyclerview;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,13 +14,16 @@ import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.results.IShowPreferenceScreenAndHighlightPreference;
 
 public class SearchResultsFragment extends Fragment {
 
+    private final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
     private RecyclerView recyclerView;
 
-    public SearchResultsFragment() {
+    public SearchResultsFragment(final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference) {
         super(R.layout.searchresults_fragment);
+        this.showPreferenceScreenAndHighlightPreference = showPreferenceScreenAndHighlightPreference;
     }
 
     @Override
@@ -49,12 +51,7 @@ public class SearchResultsFragment extends Fragment {
         recyclerView.setLayoutAnimation(null);
         final Adapter adapter =
                 new Adapter(
-                        searchablePreferencePOJO ->
-                                Toast
-                                        .makeText(
-                                                getContext(),
-                                                "You clicked " + searchablePreferencePOJO, Toast.LENGTH_SHORT)
-                                        .show(),
+                        showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
                         getContext());
         recyclerView.setAdapter(adapter);
     }

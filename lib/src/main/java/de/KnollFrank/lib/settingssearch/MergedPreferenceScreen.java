@@ -10,6 +10,7 @@ import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 
 public record MergedPreferenceScreen(
+        Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
         Set<SearchablePreferencePOJO> preferences,
         SearchResultsDisplayer searchResultsDisplayer,
         PreferencePathNavigator preferencePathNavigator,

@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
 
+import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -32,8 +33,8 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
+import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -71,12 +72,15 @@ public class MergedPreferenceScreenFactory {
         this.context = context;
     }
 
-    public MergedPreferenceScreen getMergedPreferenceScreen(final FragmentManager childFragmentManager,
-                                                            final Locale locale,
-                                                            final OnUiThreadRunner onUiThreadRunner,
-                                                            final IProgressDisplayer progressDisplayer,
-                                                            final PreferenceScreenGraphListener preferenceScreenGraphListener,
-                                                            final SearchResultsFragment searchResultsFragment) {
+    public MergedPreferenceScreen getMergedPreferenceScreen(
+            final @IdRes int fragmentContainerViewId,
+            final PrepareShow prepareShow,
+            final FragmentManager fragmentManager,
+            final FragmentManager childFragmentManager,
+            final Locale locale,
+            final OnUiThreadRunner onUiThreadRunner,
+            final IProgressDisplayer progressDisplayer,
+            final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         childFragmentManager,
@@ -89,7 +93,9 @@ public class MergedPreferenceScreenFactory {
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         context);
         return MergedPreferenceScreens.createMergedPreferenceScreen(
-                searchResultsFragment,
+                fragmentContainerViewId,
+                prepareShow,
+                fragmentManager,
                 MergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(
                         () -> computePreferenceScreenData(
                                 fragments,

@@ -68,7 +68,10 @@ public class SearchResultsDisplayerTest {
     }
 
     private static SearchResultsFragment getInitializedSearchResultsFragment(final TestActivity activity) {
-        final SearchResultsFragment searchResultsFragment = new SearchResultsFragment();
+        final SearchResultsFragment searchResultsFragment =
+                new SearchResultsFragment(
+                        preference -> {
+                        });
         PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment(
                 searchResultsFragment,
                 getFragments(searchResultsFragment, activity));

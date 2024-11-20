@@ -5,7 +5,9 @@ import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 import android.view.View;
 import android.widget.SearchView;
 
+import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -35,7 +37,6 @@ public class SearchPreferenceFragment extends Fragment {
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final SearchResultsFragment searchResultsFragment;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -52,7 +53,6 @@ public class SearchPreferenceFragment extends Fragment {
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
-        this.searchResultsFragment = new SearchResultsFragment();
     }
 
     @Override
@@ -60,16 +60,27 @@ public class SearchPreferenceFragment extends Fragment {
         super.onResume();
         final View progressContainer = requireView().findViewById(R.id.progressContainer);
         Tasks.execute(
-                () -> getMergedPreferenceScreen(ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(progressContainer, onUiThreadRunner)),
+                () -> getMergedPreferenceScreen(
+                        searchConfiguration.fragmentContainerViewId(),
+                        prepareShow,
+                        requireActivity().getSupportFragmentManager(),
+                        ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(progressContainer, onUiThreadRunner)),
                 mergedPreferenceScreen ->
-                        showSearchResultsPreferenceFragment(
-                                mergedPreferenceScreen,
+                        showSearchResultsFragment(
+                                mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
                                 searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
                 progressContainer);
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(final IProgressDisplayer progressDisplayer) {
+    private MergedPreferenceScreen getMergedPreferenceScreen(
+            final @IdRes int fragmentContainerViewId,
+            final PrepareShow prepareShow,
+            final FragmentManager fragmentManager,
+            final IProgressDisplayer progressDisplayer) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
+                fragmentContainerViewId,
+                prepareShow,
+                fragmentManager,
                 getChildFragmentManager(),
                 locale,
                 onUiThreadRunner,
@@ -80,12 +91,11 @@ public class SearchPreferenceFragment extends Fragment {
                     public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
                         progressDisplayer.displayProgress(ProgressProvider.getProgress(preferenceScreenWithHost));
                     }
-                },
-                searchResultsFragment);
+                });
     }
 
-    private void showSearchResultsPreferenceFragment(final MergedPreferenceScreen mergedPreferenceScreen,
-                                                     final Consumer<SearchResultsFragment> onFragmentStarted) {
+    private void showSearchResultsFragment(final SearchResultsFragment searchResultsFragment,
+                                           final Consumer<SearchResultsFragment> onFragmentStarted) {
         showFragment(
 //                SearchResultsPreferenceFragment.createInstance(
 //                        mergedPreferenceScreen.searchResultsDisplayer(),

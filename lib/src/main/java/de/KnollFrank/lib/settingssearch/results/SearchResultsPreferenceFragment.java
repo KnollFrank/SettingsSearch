@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,20 +7,15 @@ import android.view.ViewGroup;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
-import org.threeten.bp.Duration;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -92,7 +85,17 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat im
                 searchResultsDescription.searchableInfoAttribute(),
                 searchResultsDescription.preferencePathByPreference(),
                 showPreferencePathPredicate,
-                this::showPreferenceScreenAndHighlightPreference);
+                preference -> {
+                    final _ShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference =
+                            new _ShowPreferenceScreenAndHighlightPreference(
+                                    preferencePathNavigator,
+                                    null,
+                                    fragmentContainerViewId,
+                                    searchResultsDescription,
+                                    prepareShow,
+                                    requireActivity().getSupportFragmentManager());
+                    showPreferenceScreenAndHighlightPreference.showPreferenceScreenAndHighlightPreference(preference);
+                });
     }
 
     private void setSearchResultsDescription(final SearchResultsDescription searchResultsDescription) {
@@ -103,49 +106,5 @@ public class SearchResultsPreferenceFragment extends PreferenceFragmentCompat im
     private void resetPreferenceScreen(final PreferenceScreen preferenceScreen) {
         setPreferenceScreen(null);
         setPreferenceScreen(preferenceScreen);
-    }
-
-    private void showPreferenceScreenAndHighlightPreference(final Preference preference) {
-        showPreferenceScreenAndHighlightPreference(
-                preferencePathNavigator.navigatePreferencePath(searchResultsDescription.preferencePathByPreference().get(preference)),
-                getOriginalKey(preference));
-    }
-
-    private Optional<String> getOriginalKey(final Preference preference) {
-        return getSearchablePreferencePOJO(preference).key();
-    }
-
-    private SearchablePreferencePOJO getSearchablePreferencePOJO(final Preference preference) {
-        return searchResultsDescription
-                .preferenceScreenWithMap()
-                .pojoEntityMap()
-                .inverse()
-                .get(preference);
-    }
-
-    private void showPreferenceScreenAndHighlightPreference(
-            final PreferenceFragmentCompat fragmentOfPreferenceScreen,
-            final Optional<String> keyOfPreference2Highlight) {
-        prepareShow.prepareShow(fragmentOfPreferenceScreen);
-        showFragment(
-                fragmentOfPreferenceScreen,
-                _fragmentOfPreferenceScreen ->
-                        keyOfPreference2Highlight.ifPresent(
-                                _keyOfPreference2Highlight ->
-                                        highlightPreference(
-                                                _fragmentOfPreferenceScreen,
-                                                _keyOfPreference2Highlight)),
-                true,
-                fragmentContainerViewId,
-                requireActivity().getSupportFragmentManager());
-    }
-
-    private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment,
-                                            final String keyOfPreference2Highlight) {
-        preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
-        PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
-                keyOfPreference2Highlight,
-                preferenceFragment,
-                Duration.ofSeconds(1));
     }
 }
