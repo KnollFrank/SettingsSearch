@@ -15,16 +15,19 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 
 public class MergedPreferenceScreens {
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
+            final SearchResultsFragment searchResultsFragment,
             final MergedPreferenceScreenData mergedPreferenceScreenData,
             final PreferenceManager preferenceManager,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
         return new MergedPreferenceScreen(
                 mergedPreferenceScreenData.preferences(),
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
+                        searchResultsFragment,
                         preferenceManager,
                         pojoEntityMap ->
                                 convertPojoKeys2EntityKeys(

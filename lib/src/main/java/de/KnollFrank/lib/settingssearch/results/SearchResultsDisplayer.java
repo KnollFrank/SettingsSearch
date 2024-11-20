@@ -21,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.StringGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
@@ -29,18 +30,22 @@ public class SearchResultsDisplayer {
 
     private SearchResultsDescription searchResultsDescription;
     private final Supplier<List<Object>> markupsFactory;
+    private final SearchResultsFragment searchResultsFragment;
     private final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory;
     private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    protected SearchResultsDisplayer(final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
+    protected SearchResultsDisplayer(final SearchResultsFragment searchResultsFragment,
+                                     final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory,
                                      final Supplier<List<Object>> markupsFactory,
                                      final SearchResultsDescription searchResultsDescription) {
+        this.searchResultsFragment = searchResultsFragment;
         this.preferencePathByPreferenceFactory = preferencePathByPreferenceFactory;
         this.markupsFactory = markupsFactory;
         this.searchResultsDescription = searchResultsDescription;
     }
 
     public SearchResultsDescription displaySearchResults(final List<PreferenceMatch> preferenceMatches, final String query) {
+        searchResultsFragment.setData(getPreferences(preferenceMatches));
         final SearchResultsDescription oldSearchResultsDescription = searchResultsDescription;
         searchResultsDescription = addPreferenceMatches2PreferenceScreen(preferenceMatches, query);
         propertyChangeSupport.firePropertyChange("SearchResultsDescription", oldSearchResultsDescription, searchResultsDescription);

@@ -33,6 +33,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -74,7 +75,8 @@ public class MergedPreferenceScreenFactory {
                                                             final Locale locale,
                                                             final OnUiThreadRunner onUiThreadRunner,
                                                             final IProgressDisplayer progressDisplayer,
-                                                            final PreferenceScreenGraphListener preferenceScreenGraphListener) {
+                                                            final PreferenceScreenGraphListener preferenceScreenGraphListener,
+                                                            final SearchResultsFragment searchResultsFragment) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         childFragmentManager,
@@ -87,6 +89,7 @@ public class MergedPreferenceScreenFactory {
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         context);
         return MergedPreferenceScreens.createMergedPreferenceScreen(
+                searchResultsFragment,
                 MergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(
                         () -> computePreferenceScreenData(
                                 fragments,

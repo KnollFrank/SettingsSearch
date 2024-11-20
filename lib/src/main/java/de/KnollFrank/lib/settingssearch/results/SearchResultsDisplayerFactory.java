@@ -12,15 +12,18 @@ import java.util.function.Function;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.MarkupFactory;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class SearchResultsDisplayerFactory {
 
     public static SearchResultsDisplayer createSearchResultsDisplayer(
+            final SearchResultsFragment searchResultsFragment,
             final PreferenceManager preferenceManager,
             final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         return new SearchResultsDisplayer(
+                searchResultsFragment,
                 preferencePathByPreferenceFactory,
                 () -> MarkupFactory.createMarkups(preferenceManager.getContext()),
                 createInitialSearchResultsDescription(preferenceManager, preferencePathByPreferenceFactory));
