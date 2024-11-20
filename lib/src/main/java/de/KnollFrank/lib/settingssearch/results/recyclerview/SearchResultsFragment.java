@@ -17,7 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 public class SearchResultsFragment extends Fragment implements ItemClickListener {
 
-    private SearchResultsRecyclerViewAdapter adapter;
+    private Adapter adapter;
 
     public SearchResultsFragment() {
         super(R.layout.searchresults_fragment);
@@ -28,7 +28,9 @@ public class SearchResultsFragment extends Fragment implements ItemClickListener
         super.onViewCreated(view, savedInstanceState);
         final RecyclerView recyclerView = view.findViewById(R.id.searchResults);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new SearchResultsRecyclerViewAdapter(getContext());
+        recyclerView.setItemAnimator(null);
+        recyclerView.setLayoutAnimation(null);
+        adapter = new Adapter(getContext());
         adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);
     }
