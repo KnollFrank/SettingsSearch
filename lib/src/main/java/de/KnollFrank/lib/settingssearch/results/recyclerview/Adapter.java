@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -17,10 +18,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
     private final List<SearchablePreferencePOJO> data = new ArrayList<>();
+    private final Consumer<SearchablePreferencePOJO> onPreferenceClickListener;
     private final LayoutInflater layoutInflater;
-    private ItemClickListener itemClickListener;
 
-    public Adapter(final Context context) {
+    public Adapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener, final Context context) {
+        this.onPreferenceClickListener = onPreferenceClickListener;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
@@ -33,7 +35,7 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final SearchablePreferencePOJO searchablePreferencePOJO = data.get(position);
+        final SearchablePreferencePOJO searchablePreferencePOJO = getItem(position);
         holder.title.setText(
                 searchablePreferencePOJO
                         .title()
@@ -46,12 +48,7 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
                 searchablePreferencePOJO
                         .searchableInfo()
                         .orElse("unknown searchable info"));
-        holder.itemView.setOnClickListener(
-                view -> {
-                    if (itemClickListener != null) {
-                        itemClickListener.onItemClick(view, position);
-                    }
-                });
+        holder.itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreferencePOJO));
     }
 
     @Override
@@ -59,12 +56,8 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
         return data.size();
     }
 
-    public SearchablePreferencePOJO getItem(final int id) {
-        return data.get(id);
-    }
-
-    public void setItemClickListener(final ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+    public SearchablePreferencePOJO getItem(final int position) {
+        return data.get(position);
     }
 
     public void setData(final List<SearchablePreferencePOJO> data) {

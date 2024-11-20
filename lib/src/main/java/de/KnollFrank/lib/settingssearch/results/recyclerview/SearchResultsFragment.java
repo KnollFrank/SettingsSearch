@@ -16,7 +16,7 @@ import java.util.List;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-public class SearchResultsFragment extends Fragment implements ItemClickListener {
+public class SearchResultsFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
@@ -39,11 +39,6 @@ public class SearchResultsFragment extends Fragment implements ItemClickListener
         return (Adapter) recyclerView.getAdapter();
     }
 
-    @Override
-    public void onItemClick(View view, int position) {
-        Toast.makeText(getContext(), "You clicked " + getAdapter().getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-    }
-
     public void setData(final List<SearchablePreferencePOJO> data) {
         getAdapter().setData(data);
     }
@@ -52,8 +47,15 @@ public class SearchResultsFragment extends Fragment implements ItemClickListener
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setItemAnimator(null);
         recyclerView.setLayoutAnimation(null);
-        final Adapter adapter = new Adapter(getContext());
-        adapter.setItemClickListener(this);
+        final Adapter adapter =
+                new Adapter(
+                        searchablePreferencePOJO ->
+                                Toast
+                                        .makeText(
+                                                getContext(),
+                                                "You clicked " + searchablePreferencePOJO, Toast.LENGTH_SHORT)
+                                        .show(),
+                        getContext());
         recyclerView.setAdapter(adapter);
     }
 }
