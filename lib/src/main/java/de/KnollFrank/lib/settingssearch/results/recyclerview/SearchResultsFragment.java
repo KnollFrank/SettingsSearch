@@ -49,10 +49,7 @@ public class SearchResultsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setItemAnimator(null);
         recyclerView.setLayoutAnimation(null);
-        final Adapter adapter =
-                new Adapter(
-                        showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
-                        getContext());
+        final Adapter adapter = new Adapter(showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference);
         recyclerView.setAdapter(adapter);
     }
 }
