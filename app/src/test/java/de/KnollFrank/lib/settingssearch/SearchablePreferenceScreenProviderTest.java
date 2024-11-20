@@ -65,7 +65,7 @@ public class SearchablePreferenceScreenProviderTest {
                 // Given
                 final String keyOfSearchableOrNonSearchablePreference = "somePreference";
                 final PreferenceFragmentCompat preferenceFragment =
-                        initializeFragment(
+                        (PreferenceFragmentCompat) initializeFragment(
                                 new PreferenceFragmentTemplate(
                                         (screen, context) ->
                                                 addPreferences2Screen.addPreferences2Screen(

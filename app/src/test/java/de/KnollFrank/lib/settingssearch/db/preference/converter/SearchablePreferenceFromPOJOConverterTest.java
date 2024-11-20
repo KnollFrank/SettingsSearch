@@ -61,11 +61,9 @@ public class SearchablePreferenceFromPOJOConverterTest {
 
     public static PreferenceFragmentCompat createSomePreferenceFragment(final TestActivity activity) {
         final PreferenceFragmentCompat preferenceFragment = new TestPreferenceFragment();
-        return initializeFragment(
+        return (PreferenceFragmentCompat) initializeFragment(
                 preferenceFragment,
-                getFragments(
-                        preferenceFragment,
-                        activity));
+                getFragments(preferenceFragment, activity));
     }
 
     private static void assertEquals(final SearchablePreference actual, final SearchablePreferencePOJO expected) {

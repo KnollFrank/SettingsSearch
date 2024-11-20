@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.is;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -141,20 +142,19 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
 
     public static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,
                                                        final FragmentActivity activity) {
-        return initializeFragment(preferenceFragment, activity).getPreferenceScreen();
+        return ((PreferenceFragmentCompat) initializeFragment(preferenceFragment, activity)).getPreferenceScreen();
     }
 
-    public static PreferenceFragmentCompat initializeFragment(final PreferenceFragmentCompat preferenceFragment,
-                                                              final FragmentActivity activity) {
+    public static Fragment initializeFragment(final Fragment preferenceFragment,
+                                              final FragmentActivity activity) {
         return initializeFragment(preferenceFragment, getFragments(preferenceFragment, activity));
     }
 
-    public static Fragments getFragments(final PreferenceFragmentCompat preferenceFragment,
-                                         final FragmentActivity activity) {
+    public static Fragments getFragments(final Fragment fragment, final FragmentActivity activity) {
         return new Fragments(
                 new FragmentFactoryAndInitializerWithCache(
                         new FragmentFactoryAndInitializer(
-                                createFragmentFactoryReturning(preferenceFragment),
+                                createFragmentFactoryReturning(fragment),
                                 new DefaultFragmentInitializer(
                                         activity.getSupportFragmentManager(),
                                         TestActivity.FRAGMENT_CONTAINER_VIEW,
@@ -162,18 +162,17 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                 activity);
     }
 
-    private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat preferenceFragment) {
+    private static FragmentFactory createFragmentFactoryReturning(final Fragment fragment) {
         final DefaultFragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
         return (fragmentClassName, src, context) ->
-                preferenceFragment.getClass().getName().equals(fragmentClassName) ?
-                        preferenceFragment :
+                fragment.getClass().getName().equals(fragmentClassName) ?
+                        fragment :
                         defaultFragmentFactory.instantiate(fragmentClassName, src, context);
     }
 
-    public static PreferenceFragmentCompat initializeFragment(final PreferenceFragmentCompat preferenceFragment,
-                                                              final Fragments fragments) {
-        return (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                preferenceFragment.getClass().getName(),
+    public static Fragment initializeFragment(final Fragment fragment, final Fragments fragments) {
+        return fragments.instantiateAndInitializeFragment(
+                fragment.getClass().getName(),
                 Optional.empty());
     }
 }

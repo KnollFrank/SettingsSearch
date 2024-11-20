@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -17,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 public class SearchResultsFragment extends Fragment implements ItemClickListener {
 
-    private Adapter adapter;
+    private RecyclerView recyclerView;
 
     public SearchResultsFragment() {
         super(R.layout.searchresults_fragment);
@@ -26,21 +27,33 @@ public class SearchResultsFragment extends Fragment implements ItemClickListener
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final RecyclerView recyclerView = view.findViewById(R.id.searchResults);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        recyclerView.setItemAnimator(null);
-        recyclerView.setLayoutAnimation(null);
-        adapter = new Adapter(getContext());
-        adapter.setItemClickListener(this);
-        recyclerView.setAdapter(adapter);
+        recyclerView = view.findViewById(R.id.searchResults);
+        configureRecyclerView(recyclerView, view.getContext());
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    private Adapter getAdapter() {
+        return (Adapter) recyclerView.getAdapter();
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(getContext(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "You clicked " + getAdapter().getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 
     public void setData(final List<SearchablePreferencePOJO> data) {
-        adapter.setData(data);
+        getAdapter().setData(data);
+    }
+
+    private void configureRecyclerView(final RecyclerView recyclerView, final Context context) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setItemAnimator(null);
+        recyclerView.setLayoutAnimation(null);
+        final Adapter adapter = new Adapter(getContext());
+        adapter.setItemClickListener(this);
+        recyclerView.setAdapter(adapter);
     }
 }
