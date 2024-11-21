@@ -45,7 +45,7 @@ public class SearchResultsDisplayer {
     }
 
     public SearchResultsDescription displaySearchResults(final List<PreferenceMatch> preferenceMatches, final String query) {
-        searchResultsFragment.setData(getPreferences(preferenceMatches));
+        searchResultsFragment.setSearchResults(getPreferences(preferenceMatches));
 //        final SearchResultsDescription oldSearchResultsDescription = searchResultsDescription;
 //        searchResultsDescription = addPreferenceMatches2PreferenceScreen(preferenceMatches, query);
 //        propertyChangeSupport.firePropertyChange("SearchResultsDescription", oldSearchResultsDescription, searchResultsDescription);

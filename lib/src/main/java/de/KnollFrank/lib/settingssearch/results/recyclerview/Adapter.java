@@ -22,11 +22,16 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 // FK-TODO: see androidx.preference.PreferenceGroupAdapter
 public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
-    private final List<SearchablePreferencePOJO> data = new ArrayList<>();
+    private final List<SearchablePreferencePOJO> items = new ArrayList<>();
     private final Consumer<SearchablePreferencePOJO> onPreferenceClickListener;
 
     public Adapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener) {
         this.onPreferenceClickListener = onPreferenceClickListener;
+    }
+
+    @Override
+    public int getItemViewType(final int position) {
+        return super.getItemViewType(position);
     }
 
     // FK-TODO: adapt from PreferenceGroupAdapter.onCreateViewHolder()
@@ -62,17 +67,17 @@ public class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return items.size();
     }
 
-    public void setData(final List<SearchablePreferencePOJO> data) {
-        this.data.clear();
-        this.data.addAll(data);
+    public void setItems(final List<SearchablePreferencePOJO> items) {
+        this.items.clear();
+        this.items.addAll(items);
         notifyDataSetChanged();
     }
 
     private SearchablePreferencePOJO getItem(final int position) {
-        return data.get(position);
+        return items.get(position);
     }
 
     private static Optional<Drawable> getIcon(final SearchablePreferencePOJO searchablePreferencePOJO,

@@ -41,8 +41,8 @@ public class SearchResultsFragment extends Fragment {
         return (Adapter) recyclerView.getAdapter();
     }
 
-    public void setData(final List<SearchablePreferencePOJO> data) {
-        getAdapter().setData(data);
+    public void setSearchResults(final List<SearchablePreferencePOJO> searchResults) {
+        getAdapter().setItems(searchResults);
     }
 
     private void configureRecyclerView(final RecyclerView recyclerView, final Context context) {
