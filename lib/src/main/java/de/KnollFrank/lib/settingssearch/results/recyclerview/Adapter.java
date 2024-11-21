@@ -24,7 +24,6 @@ import androidx.preference.AndroidResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,7 +31,6 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
@@ -45,7 +43,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
-    private final Map<SearchablePreferencePOJO, Optional<Drawable>> iconByPreference = new HashMap<>();
+    private final IconProvider iconProvider = new IconProvider();
 
     public Adapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener,
                    final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -132,23 +130,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
         return items.get(position);
     }
 
-    private Optional<Drawable> getIcon(final SearchablePreferencePOJO searchablePreferencePOJO,
-                                       final Context context) {
-        if (!iconByPreference.containsKey(searchablePreferencePOJO)) {
-            iconByPreference.put(
-                    searchablePreferencePOJO,
-                    searchablePreferencePOJO
-                            .iconResourceIdOrIconPixelData()
-                            .map(iconResourceIdOrIconPixelData ->
-                                    iconResourceIdOrIconPixelData.join(
-                                            iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
-                                            iconPixelData ->
-                                                    DrawableAndStringConverter.string2Drawable(
-                                                            iconPixelData,
-                                                            context.getResources()))));
-        }
-        return iconByPreference.get(searchablePreferencePOJO);
-    }
 
     private record ItemResourceDescriptor(int layoutResId, int widgetLayoutResId) {
 
@@ -195,7 +176,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
             }
         }
 
-        final Optional<Drawable> icon = getIcon(searchablePreferencePOJO, itemView.getContext());
+        final Optional<Drawable> icon = iconProvider.getIcon(searchablePreferencePOJO, itemView.getContext());
         final ImageView imageView = (ImageView) holder.findViewById(android.R.id.icon);
         if (imageView != null) {
             icon.ifPresentOrElse(
