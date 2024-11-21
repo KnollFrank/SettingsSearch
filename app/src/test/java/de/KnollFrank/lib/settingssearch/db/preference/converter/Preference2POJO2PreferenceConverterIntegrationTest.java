@@ -28,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.search.IconProvider;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
+// FK-TODO: remove
 @RunWith(RobolectricTestRunner.class)
 public class Preference2POJO2PreferenceConverterIntegrationTest {
 

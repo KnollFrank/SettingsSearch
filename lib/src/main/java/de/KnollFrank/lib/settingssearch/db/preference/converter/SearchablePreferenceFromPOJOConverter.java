@@ -18,6 +18,7 @@ import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConver
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
+// FK-TODO: remove
 public class SearchablePreferenceFromPOJOConverter {
 
     public static BiMap<SearchablePreferencePOJO, SearchablePreference> addConvertedPOJO2Parent(

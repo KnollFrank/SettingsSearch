@@ -30,15 +30,6 @@ class PreferenceMatcher {
                 .build();
     }
 
-    public static boolean matches(final String haystack, final String needle) {
-        final List<PreferenceMatch> preferenceMatches =
-                getPreferenceMatches(
-                        Optional.of(haystack),
-                        needle,
-                        indexRange -> null);
-        return !preferenceMatches.isEmpty();
-    }
-
     private static List<PreferenceMatch> getTitlePreferenceMatches(
             final SearchablePreferencePOJO haystack,
             final String needle) {

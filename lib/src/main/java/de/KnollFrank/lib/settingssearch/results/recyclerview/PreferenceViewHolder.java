@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.preference.AndroidResources;
-import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 
 // FK-TODO: refactor
@@ -45,13 +44,6 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
         return new PreferenceViewHolder(itemView);
     }
 
-    /**
-     * Returns a cached reference to a subview managed by this object. If the view reference is not
-     * yet cached, it falls back to calling {@link View#findViewById(int)} and caches the result.
-     *
-     * @param id Resource ID of the view to find
-     * @return The view, or {@code null} if no view with the requested ID is found
-     */
     public View findViewById(@IdRes int id) {
         final View cachedView = mCachedViews.get(id);
         if (cachedView != null) {
@@ -65,11 +57,6 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    /**
-     * Resets the state of properties modified by
-     * {@link Preference#onBindViewHolder(PreferenceViewHolder)} to ensure that we don't keep
-     * stale state for a different {@link Preference} around.
-     */
     void resetState() {
         if (itemView.getBackground() != mBackground) {
             ViewCompat.setBackground(itemView, mBackground);

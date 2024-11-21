@@ -15,8 +15,6 @@ class OnUiThreadProgressDisplayer implements IProgressDisplayer {
 
     @Override
     public void displayProgress(final String progress) {
-        onUiThreadRunner.runNonBlockingOnUiThread(() -> {
-            delegate.displayProgress(progress);
-        });
+        onUiThreadRunner.runNonBlockingOnUiThread(() -> delegate.displayProgress(progress));
     }
 }

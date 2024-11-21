@@ -123,6 +123,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     public void setItems(final List<SearchablePreferencePOJO> items) {
         this.items.clear();
         this.items.addAll(items);
+        // FK-TODO: use DiffUtil like in PreferenceGroupAdapter?
         notifyDataSetChanged();
     }
 
