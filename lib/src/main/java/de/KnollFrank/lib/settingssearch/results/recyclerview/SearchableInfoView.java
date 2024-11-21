@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.preference.PreferenceViewHolder;
-
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.R;

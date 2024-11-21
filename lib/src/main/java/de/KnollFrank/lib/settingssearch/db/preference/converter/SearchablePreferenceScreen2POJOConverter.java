@@ -8,9 +8,8 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
-import de.KnollFrank.lib.settingssearch.search.PreferenceSummary;
-import de.KnollFrank.lib.settingssearch.search.PreferenceTitle;
 
+// FK-TODO: remove?
 class SearchablePreferenceScreen2POJOConverter {
 
     public static SearchablePreferenceScreenPOJOWithMap convert2POJO(final PreferenceScreen preferenceScreen,
@@ -21,8 +20,8 @@ class SearchablePreferenceScreen2POJOConverter {
                         idGenerator);
         return new SearchablePreferenceScreenPOJOWithMap(
                 new SearchablePreferenceScreenPOJO(
-                        toStringOrNull(PreferenceTitle.getOptionalTitle(preferenceScreen)),
-                        toStringOrNull(PreferenceSummary.getOptionalSummary(preferenceScreen)),
+                        toStringOrNull(Optional.ofNullable(preferenceScreen.getTitle())),
+                        toStringOrNull(Optional.ofNullable(preferenceScreen.getSummary())),
                         searchablePreferencePOJOsWithMap.searchablePreferencePOJOs()),
                 searchablePreferencePOJOsWithMap.pojoEntityMap());
     }

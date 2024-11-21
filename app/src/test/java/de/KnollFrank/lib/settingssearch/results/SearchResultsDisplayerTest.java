@@ -53,14 +53,14 @@ public class SearchResultsDisplayerTest {
                                                 Optional.of("searchable info also has a title"),
                                                 Optional.empty()),
                                         Type.TITLE,
-                                        new IndexRange(0, 5))),
-                        "Title");
+                                        new IndexRange(0, 5)))
+                );
 
                 // Then
                 assertThat(
                         Matchers.recyclerViewHasItem(
                                 searchResultsFragment.getRecyclerView(),
-                                (final PreferenceViewHolder viewHolder) -> ((TextView) viewHolder.findViewById(android.R.id.title)).getText().equals(title)),
+                                (final PreferenceViewHolder viewHolder) -> ((TextView) viewHolder.findViewById(android.R.id.title)).getText().toString().equals(title)),
                         is(true));
             });
         }

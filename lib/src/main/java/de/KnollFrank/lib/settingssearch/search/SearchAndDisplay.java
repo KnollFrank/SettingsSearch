@@ -18,6 +18,6 @@ class SearchAndDisplay {
     // FK-TODO: es dauert sehr lange, bis ein Suchergebnis angezeigt wird.
     public void searchForQueryAndDisplayResults(final String query) {
         final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
-        searchResultsDisplayer.displaySearchResults(preferenceMatches, query);
+        searchResultsDisplayer.displaySearchResults(preferenceMatches);
     }
 }

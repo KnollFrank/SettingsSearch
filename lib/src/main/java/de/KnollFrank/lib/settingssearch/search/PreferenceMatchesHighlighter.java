@@ -6,30 +6,21 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Pair;
 
-import androidx.preference.Preference;
-
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoAttribute;
 
 public class PreferenceMatchesHighlighter {
 
     private final Supplier<List<Object>> markupsFactory;
-    private final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap;
-    private final SearchableInfoAttribute searchableInfoAttribute;
 
-    public PreferenceMatchesHighlighter(final Supplier<List<Object>> markupsFactory,
-                                        final Map<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap,
-                                        final SearchableInfoAttribute searchableInfoAttribute) {
+    public PreferenceMatchesHighlighter(final Supplier<List<Object>> markupsFactory) {
         this.markupsFactory = markupsFactory;
-        this.pojoEntityMap = pojoEntityMap;
-        this.searchableInfoAttribute = searchableInfoAttribute;
     }
 
     public void highlight(final List<PreferenceMatch> preferenceMatches) {
@@ -43,7 +34,7 @@ public class PreferenceMatchesHighlighter {
                                         indexRanges));
     }
 
-    private Map<Pair<Preference, Type>, List<IndexRange>> getIndexRangesByPreferenceAndType(
+    private Map<Pair<SearchablePreferencePOJO, Type>, List<IndexRange>> getIndexRangesByPreferenceAndType(
             final List<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
@@ -51,14 +42,14 @@ public class PreferenceMatchesHighlighter {
                         Collectors.groupingBy(
                                 preferenceMatch ->
                                         Pair.create(
-                                                pojoEntityMap.get(preferenceMatch.preference()),
+                                                preferenceMatch.preference(),
                                                 preferenceMatch.type()),
                                 Collectors.mapping(
                                         PreferenceMatch::indexRange,
                                         toList())));
     }
 
-    private void highlight(final Preference preference,
+    private void highlight(final SearchablePreferencePOJO preference,
                            final Type type,
                            final List<IndexRange> indexRanges) {
         switch (type) {
@@ -74,37 +65,29 @@ public class PreferenceMatchesHighlighter {
         }
     }
 
-    private void highlightTitle(final Preference preference, final List<IndexRange> indexRanges) {
-        PreferenceTitle.setTitle(
-                preference,
-                highlight(
-                        PreferenceTitle
-                                .getOptionalTitle(preference)
-                                .map(CharSequence::toString)
-                                .orElse(""),
-                        indexRanges));
+    // FK-TODO: DRY highlightTitle(), highlightSummary(), highlightSearchableInfo()
+    private void highlightTitle(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
+        preference.setDisplayTitle(
+                Optional.of(
+                        highlight(
+                                preference.title().orElse(""),
+                                indexRanges)));
     }
 
-    private void highlightSummary(final Preference preference, final List<IndexRange> indexRanges) {
-        PreferenceSummary.setSummary(
-                preference,
-                highlight(
-                        PreferenceSummary
-                                .getOptionalSummary(preference)
-                                .map(CharSequence::toString)
-                                .orElse(""),
-                        indexRanges));
+    private void highlightSummary(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
+        preference.setDisplaySummary(
+                Optional.of(
+                        highlight(
+                                preference.summary().orElse(""),
+                                indexRanges)));
     }
 
-    private void highlightSearchableInfo(final Preference preference, final List<IndexRange> indexRanges) {
-        searchableInfoAttribute.setSearchableInfo(
-                preference,
-                highlight(
-                        searchableInfoAttribute
-                                .getSearchableInfo(preference)
-                                .map(CharSequence::toString)
-                                .orElse(""),
-                        indexRanges));
+    private void highlightSearchableInfo(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
+        preference.setDisplaySearchableInfo(
+                Optional.of(
+                        highlight(
+                                preference.searchableInfo().orElse(""),
+                                indexRanges)));
     }
 
     private SpannableString highlight(final String str, final List<IndexRange> indexRanges) {

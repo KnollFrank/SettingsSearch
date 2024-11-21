@@ -1,10 +1,10 @@
 package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
-import static de.KnollFrank.lib.settingssearch.results.recyclerview.Adapter.SearchableInfoView.createSearchableInfoView;
-import static de.KnollFrank.lib.settingssearch.results.recyclerview.Adapter.SearchableInfoView.displaySearchableInfo;
-import static de.KnollFrank.lib.settingssearch.results.recyclerview.Adapter.SearchableInfoView.hasSearchableInfoView;
 import static de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathView.createPreferencePathView;
 import static de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathView.hasPreferencePathView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.SearchableInfoView.createSearchableInfoView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.SearchableInfoView.displaySearchableInfo;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.SearchableInfoView.hasSearchableInfoView;
 import static de.KnollFrank.lib.settingssearch.results.recyclerview.ViewsAdder.addViews;
 
 import android.content.Context;
@@ -30,7 +30,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -105,7 +104,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
         final SearchablePreferencePOJO searchablePreferencePOJO = getItem(position);
         holder.resetState();
         onBindViewHolder(holder, searchablePreferencePOJO, true, true, true);
-        displaySearchableInfo(holder, searchablePreferencePOJO.searchableInfo());
+        displaySearchableInfo(holder, searchablePreferencePOJO.getDisplaySearchableInfo());
         displayPreferencePath(
                 Maps.get(preferencePathByPreference, searchablePreferencePOJO),
                 holder);
@@ -162,7 +161,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
         final TextView summaryView = (TextView) holder.findViewById(android.R.id.summary);
         if (summaryView != null) {
-            final CharSequence summary = searchablePreferencePOJO.summary().orElse("");
+            final CharSequence summary = searchablePreferencePOJO.getDisplaySummary().orElse("");
             if (!TextUtils.isEmpty(summary)) {
                 summaryView.setText(summary);
                 summaryView.setVisibility(View.VISIBLE);
@@ -173,7 +172,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
         final TextView titleView = (TextView) holder.findViewById(android.R.id.title);
         if (titleView != null) {
-            final CharSequence title = searchablePreferencePOJO.title().orElse("");
+            final CharSequence title = searchablePreferencePOJO.getDisplayTitle().orElse("");
             if (!TextUtils.isEmpty(title)) {
                 titleView.setText(title);
                 titleView.setVisibility(View.VISIBLE);
@@ -246,37 +245,5 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
         return preferencePath
                 .filter(showPreferencePathPredicate::shallShowPreferencePath)
                 .isPresent();
-    }
-
-    public static class SearchableInfoView {
-
-        private static final int SEARCHABLE_INFO_VIEW_ID = R.id.searchable_info;
-
-        public static TextView createSearchableInfoView(final String text, final Context context) {
-            final TextView searchableInfoView = new TextView(context);
-            searchableInfoView.setText(text);
-            searchableInfoView.setId(SEARCHABLE_INFO_VIEW_ID);
-            searchableInfoView.setVisibility(View.GONE);
-            return searchableInfoView;
-        }
-
-        public static void displaySearchableInfo(final PreferenceViewHolder holder,
-                                                 final Optional<String> searchableInfo) {
-            final TextView searchableInfoView = getSearchableInfoView(holder);
-            if (searchableInfo.isPresent()) {
-                searchableInfoView.setText(searchableInfo.get());
-                searchableInfoView.setVisibility(View.VISIBLE);
-            } else {
-                searchableInfoView.setVisibility(View.GONE);
-            }
-        }
-
-        public static boolean hasSearchableInfoView(final PreferenceViewHolder holder) {
-            return holder.findViewById(SEARCHABLE_INFO_VIEW_ID) != null;
-        }
-
-        private static TextView getSearchableInfoView(final PreferenceViewHolder holder) {
-            return (TextView) holder.findViewById(SEARCHABLE_INFO_VIEW_ID);
-        }
     }
 }

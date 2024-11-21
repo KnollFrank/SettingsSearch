@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
+
 public final class SearchablePreferencePOJO {
 
     private final int id;
@@ -15,11 +17,17 @@ public final class SearchablePreferencePOJO {
     private final Either<Integer, String> iconResourceIdOrIconPixelData;
     private final int layoutResId;
     private final String summary;
+    @Exclude
+    private CharSequence displaySummary;
     private final String title;
+    @Exclude
+    private CharSequence displayTitle;
     private final int widgetLayoutResId;
     private final String fragment;
     private final boolean visible;
     private final String searchableInfo;
+    @Exclude
+    private CharSequence displaySearchableInfo;
     private final Bundle extras;
     private final List<SearchablePreferencePOJO> children;
 
@@ -74,8 +82,24 @@ public final class SearchablePreferencePOJO {
         return Optional.ofNullable(summary);
     }
 
+    public Optional<CharSequence> getDisplaySummary() {
+        return Optional.ofNullable(displaySummary);
+    }
+
+    public void setDisplaySummary(final Optional<CharSequence> displaySummary) {
+        this.displaySummary = displaySummary.orElse(null);
+    }
+
     public Optional<String> title() {
         return Optional.ofNullable(title);
+    }
+
+    public Optional<CharSequence> getDisplayTitle() {
+        return Optional.ofNullable(displayTitle);
+    }
+
+    public void setDisplayTitle(final Optional<CharSequence> displayTitle) {
+        this.displayTitle = displayTitle.orElse(null);
     }
 
     public int widgetLayoutResId() {
@@ -92,6 +116,14 @@ public final class SearchablePreferencePOJO {
 
     public Optional<String> searchableInfo() {
         return Optional.ofNullable(searchableInfo);
+    }
+
+    public Optional<CharSequence> getDisplaySearchableInfo() {
+        return Optional.ofNullable(displaySearchableInfo);
+    }
+
+    public void setDisplaySearchableInfo(final Optional<CharSequence> displaySearchableInfo) {
+        this.displaySearchableInfo = displaySearchableInfo.orElse(null);
     }
 
     public Bundle extras() {

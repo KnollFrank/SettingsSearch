@@ -24,7 +24,6 @@ public class SearchResultsDisplayerFactory {
             final Function<BiMap<SearchablePreferencePOJO, SearchablePreference>, Map<Preference, PreferencePath>> preferencePathByPreferenceFactory) {
         return new SearchResultsDisplayer(
                 searchResultsFragment,
-                preferencePathByPreferenceFactory,
                 () -> MarkupFactory.createMarkups(preferenceManager.getContext()),
                 createInitialSearchResultsDescription(preferenceManager, preferencePathByPreferenceFactory));
     }
