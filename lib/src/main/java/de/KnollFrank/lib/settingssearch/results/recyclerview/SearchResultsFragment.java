@@ -1,12 +1,12 @@
 package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +35,7 @@ public class SearchResultsFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.searchResults);
-        configureRecyclerView(recyclerView, view.getContext());
+        configure(recyclerView);
     }
 
     public RecyclerView getRecyclerView() {
@@ -50,13 +50,19 @@ public class SearchResultsFragment extends Fragment {
         getAdapter().setItems(searchResults);
     }
 
-    private void configureRecyclerView(final RecyclerView recyclerView, final Context context) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+    private void configure(final RecyclerView recyclerView) {
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(null);
         recyclerView.setLayoutAnimation(null);
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(
+                        recyclerView.getContext(),
+                        layoutManager.getOrientation()));
         final Adapter adapter =
                 new Adapter(
                         showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
+                        // FK-TODO: use predicate defined by user
                         preferencePath -> true,
                         preferencePathByPreference);
         recyclerView.setAdapter(adapter);
