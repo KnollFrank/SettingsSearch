@@ -16,19 +16,23 @@ import java.util.Map;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.IShowPreferenceScreenAndHighlightPreference;
 
 public class SearchResultsFragment extends Fragment {
 
     private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
+    private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private RecyclerView recyclerView;
 
     public SearchResultsFragment(final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
-                                 final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference) {
+                                 final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference,
+                                 final ShowPreferencePathPredicate showPreferencePathPredicate) {
         super(R.layout.searchresults_fragment);
         this.preferencePathByPreference = preferencePathByPreference;
         this.showPreferenceScreenAndHighlightPreference = showPreferenceScreenAndHighlightPreference;
+        this.showPreferencePathPredicate = showPreferencePathPredicate;
     }
 
     @Override
@@ -62,8 +66,7 @@ public class SearchResultsFragment extends Fragment {
         final Adapter adapter =
                 new Adapter(
                         showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
-                        // FK-TODO: use predicate defined by user
-                        preferencePath -> true,
+                        showPreferencePathPredicate,
                         preferencePathByPreference);
         recyclerView.setAdapter(adapter);
     }

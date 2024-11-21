@@ -17,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
+import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
 import de.KnollFrank.lib.settingssearch.results.ShowPreferenceScreenAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -26,6 +27,7 @@ public class MergedPreferenceScreens {
     public static MergedPreferenceScreen createMergedPreferenceScreen(
             final @IdRes int fragmentContainerViewId,
             final PrepareShow prepareShow,
+            final ShowPreferencePathPredicate showPreferencePathPredicate,
             final FragmentManager fragmentManager,
             final MergedPreferenceScreenData mergedPreferenceScreenData,
             final PreferenceManager preferenceManager,
@@ -46,7 +48,8 @@ public class MergedPreferenceScreens {
                                         mergedPreferenceScreenData.preferencePathByPreference(),
                                         fragmentContainerViewId,
                                         prepareShow,
-                                        fragmentManager)),
+                                        fragmentManager),
+                                showPreferencePathPredicate),
                         preferenceManager,
                         pojoEntityMap ->
                                 convertPojoKeys2EntityKeys(

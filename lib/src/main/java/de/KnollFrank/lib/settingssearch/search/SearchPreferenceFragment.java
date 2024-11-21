@@ -63,6 +63,7 @@ public class SearchPreferenceFragment extends Fragment {
                 () -> getMergedPreferenceScreen(
                         searchConfiguration.fragmentContainerViewId(),
                         prepareShow,
+                        showPreferencePathPredicate,
                         requireActivity().getSupportFragmentManager(),
                         ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(progressContainer, onUiThreadRunner)),
                 mergedPreferenceScreen ->
@@ -75,11 +76,13 @@ public class SearchPreferenceFragment extends Fragment {
     private MergedPreferenceScreen getMergedPreferenceScreen(
             final @IdRes int fragmentContainerViewId,
             final PrepareShow prepareShow,
+            final ShowPreferencePathPredicate showPreferencePathPredicate,
             final FragmentManager fragmentManager,
             final IProgressDisplayer progressDisplayer) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 fragmentContainerViewId,
                 prepareShow,
+                showPreferencePathPredicate,
                 fragmentManager,
                 getChildFragmentManager(),
                 locale,

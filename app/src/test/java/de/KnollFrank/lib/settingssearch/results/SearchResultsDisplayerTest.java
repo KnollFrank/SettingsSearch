@@ -71,7 +71,8 @@ public class SearchResultsDisplayerTest {
                 new SearchResultsFragment(
                         Map.of(),
                         preference -> {
-                        });
+                        },
+                        preferencePath -> true);
         PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment(
                 searchResultsFragment,
                 getFragments(searchResultsFragment, activity));
