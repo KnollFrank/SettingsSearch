@@ -108,7 +108,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     public void onBindViewHolder(final PreferenceViewHolder holder, final int position) {
         final SearchablePreferencePOJO searchablePreferencePOJO = getItem(position);
         holder.resetState();
-        onBindViewHolder(holder, searchablePreferencePOJO, true, true, true);
+        onBindViewHolder(holder, searchablePreferencePOJO, true);
         displaySearchableInfo(holder, searchablePreferencePOJO.getDisplaySearchableInfo());
         displayPreferencePath(
                 Maps.get(preferencePathByPreference, searchablePreferencePOJO),
@@ -143,11 +143,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     // FK-TODO: refactor
     private void onBindViewHolder(final PreferenceViewHolder holder,
                                   final SearchablePreferencePOJO searchablePreferencePOJO,
-                                  final boolean iconSpaceReserved,
-                                  // FK-TODO: remove
-                                  final boolean mAllowDividerAbove,
-                                  // FK-TODO: remove
-                                  final boolean mAllowDividerBelow) {
+                                  final boolean iconSpaceReserved) {
         final View itemView = holder.itemView;
 
         itemView.setClickable(true);
@@ -200,9 +196,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
         }
 
         setEnabledStateOnViews(itemView, true);
-
-        holder.setDividerAllowedAbove(mAllowDividerAbove);
-        holder.setDividerAllowedBelow(mAllowDividerBelow);
     }
 
     private void setEnabledStateOnViews(final View view, final boolean enabled) {

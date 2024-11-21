@@ -21,8 +21,6 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
     private final Drawable mBackground;
     private ColorStateList mTitleTextColors;
     private final SparseArray<View> mCachedViews = new SparseArray<>(4);
-    private boolean mDividerAllowedAbove;
-    private boolean mDividerAllowedBelow;
 
     public PreferenceViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -65,54 +63,6 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
             }
             return v;
         }
-    }
-
-    /**
-     * Dividers are only drawn between items if both items allow it, or above the first and below
-     * the last item if that item allows it.
-     *
-     * @return {@code true} if dividers are allowed above this item
-     */
-    public boolean isDividerAllowedAbove() {
-        return mDividerAllowedAbove;
-    }
-
-    /**
-     * Dividers are only drawn between items if both items allow it, or above the first and below
-     * the last item if that item allows it.
-     * <p>
-     * By default, {@link Preference#onBindViewHolder(PreferenceViewHolder)} will set this to the
-     * same value as returned by {@link Preference#isSelectable()}, so that non-selectable items
-     * do not have a divider drawn above them.
-     *
-     * @param allowed False to prevent dividers being drawn above this item
-     */
-    public void setDividerAllowedAbove(boolean allowed) {
-        mDividerAllowedAbove = allowed;
-    }
-
-    /**
-     * Dividers are only drawn between items if both items allow it, or above the first and below
-     * the last item if that item allows it.
-     *
-     * @return {@code true} if dividers are allowed below this item
-     */
-    public boolean isDividerAllowedBelow() {
-        return mDividerAllowedBelow;
-    }
-
-    /**
-     * Dividers are only drawn between items if both items allow it, or above the first and below
-     * the last item if that item allows it.
-     * <p>
-     * By default, {@link Preference#onBindViewHolder(PreferenceViewHolder)} will set this to the
-     * same value as returned by {@link Preference#isSelectable()}, so that non-selectable items
-     * do not have a divider drawn below them.
-     *
-     * @param allowed False to prevent dividers being drawn below this item
-     */
-    public void setDividerAllowedBelow(boolean allowed) {
-        mDividerAllowedBelow = allowed;
     }
 
     /**
