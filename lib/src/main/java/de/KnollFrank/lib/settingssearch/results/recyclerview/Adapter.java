@@ -188,7 +188,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
             }
         }
 
-        final Optional<Drawable> icon = Adapter.getIcon(searchablePreferencePOJO, itemView.getContext());
+        final Optional<Drawable> icon = getIcon(searchablePreferencePOJO, itemView.getContext());
         final ImageView imageView = (ImageView) holder.findViewById(android.R.id.icon);
         if (imageView != null) {
             icon.ifPresentOrElse(
@@ -196,9 +196,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
                         imageView.setImageDrawable(drawable);
                         imageView.setVisibility(View.VISIBLE);
                     },
-                    () -> {
-                        imageView.setVisibility(iconSpaceReserved ? View.INVISIBLE : View.GONE);
-                    });
+                    () -> imageView.setVisibility(iconSpaceReserved ? View.INVISIBLE : View.GONE));
         }
 
         View imageFrame = holder.findViewById(androidx.preference.R.id.icon_frame);

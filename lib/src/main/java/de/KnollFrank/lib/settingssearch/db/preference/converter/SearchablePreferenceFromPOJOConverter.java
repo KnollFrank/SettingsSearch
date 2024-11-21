@@ -29,7 +29,7 @@ public class SearchablePreferenceFromPOJOConverter {
                         searchablePreferencePOJO,
                         preferenceKeyGenerator.nextString(),
                         parent.getContext());
-        // FK-TODO: performance optimization: overwrite PreferenceGroup.addPreference() and remove its method call of findPReference().
+        // FK-TODO: performance optimization: overwrite PreferenceGroup.addPreference() and remove its method call of findPreference().
         parent.addPreference(searchablePreference);
         return ImmutableBiMap
                 .<SearchablePreferencePOJO, SearchablePreference>builder()
