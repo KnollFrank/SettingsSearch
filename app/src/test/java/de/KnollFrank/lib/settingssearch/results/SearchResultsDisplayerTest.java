@@ -40,8 +40,7 @@ public class SearchResultsDisplayerTest {
                 final SearchResultsDisplayer searchResultsDisplayer =
                         SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                                 searchResultsFragment,
-                                createSomePreferenceFragment(activity).getPreferenceManager(),
-                                pojoEntityMap -> null);
+                                createSomePreferenceFragment(activity).getPreferenceManager());
 
                 // When
                 searchResultsDisplayer.displaySearchResults(
