@@ -6,9 +6,13 @@ import android.view.ViewGroup;
 public class ClickListenerSetter {
 
     public static void setOnClickListener(final View view, final View.OnClickListener onClickListener) {
+        disableClicksOnSubviews(view);
+        view.setOnClickListener(onClickListener);
+    }
+
+    public static void disableClicksOnSubviews(final View view) {
         setClickableRecursive(view, false);
         view.setClickable(true);
-        view.setOnClickListener(onClickListener);
     }
 
     private static void setClickableRecursive(final View view, boolean clickable) {

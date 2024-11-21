@@ -34,6 +34,7 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
 
 // FK-TODO: see androidx.preference.PreferenceGroupAdapter
 public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
@@ -92,14 +93,16 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
             }
         }
 
-        return addSearchableInfoViewAndPreferencePathViewIfAbsent(
-                new PreferenceViewHolder(view),
-                parent.getContext());
+        final PreferenceViewHolder preferenceViewHolder =
+                addSearchableInfoViewAndPreferencePathViewIfAbsent(
+                        new PreferenceViewHolder(view),
+                        parent.getContext());
+        ClickListenerSetter.disableClicksOnSubviews(preferenceViewHolder.itemView);
+        return preferenceViewHolder;
     }
 
     // FK-TODO: adapt from PreferenceGroupAdapter.onBindViewHolder()
     // FK-TODO: refactor
-    // FK-TODO: Standardklicklistener aussschalten, damit z.B. ein Häckchen einer Preference im Suchergebnis nicht aus Versehen scheinbar gesetzt oder scheinbar gelöscht werden kann.
     // FK-TODO: Performanceverbesserung: Highlighten (und Cachen der Highlights) einer Preference erst dann durchführen, wenn sie angezeigt wird?
     @Override
     public void onBindViewHolder(final PreferenceViewHolder holder, final int position) {
@@ -153,9 +156,11 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     private void onBindViewHolder(final PreferenceViewHolder holder,
                                   final SearchablePreferencePOJO searchablePreferencePOJO,
                                   final boolean iconSpaceReserved,
+                                  // FK-TODO: remove
                                   final boolean mAllowDividerAbove,
+                                  // FK-TODO: remove
                                   final boolean mAllowDividerBelow) {
-        View itemView = holder.itemView;
+        final View itemView = holder.itemView;
 
         itemView.setClickable(true);
         itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreferencePOJO));
