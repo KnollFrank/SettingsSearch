@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.results.adapter;
+package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
 import android.content.Context;
 import android.view.View;
@@ -6,7 +6,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
 import androidx.annotation.IdRes;
-import androidx.preference.PreferenceViewHolder;
 
 import com.google.common.collect.ImmutableList;
 
@@ -39,7 +38,7 @@ class ViewsAdder {
                                     .addAll(views)
                                     .build(),
                             context);
-            return PreferenceViewHolder.createInstanceForTests(container);
+            return PreferenceViewHolder.createInstance(container);
         }
     }
 

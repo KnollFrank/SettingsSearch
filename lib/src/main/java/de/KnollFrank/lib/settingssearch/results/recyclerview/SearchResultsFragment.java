@@ -11,18 +11,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Map;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.results.IShowPreferenceScreenAndHighlightPreference;
 
 public class SearchResultsFragment extends Fragment {
 
+    private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
     private RecyclerView recyclerView;
 
-    public SearchResultsFragment(final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference) {
+    public SearchResultsFragment(final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
+                                 final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference) {
         super(R.layout.searchresults_fragment);
+        this.preferencePathByPreference = preferencePathByPreference;
         this.showPreferenceScreenAndHighlightPreference = showPreferenceScreenAndHighlightPreference;
     }
 
@@ -49,7 +54,11 @@ public class SearchResultsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setItemAnimator(null);
         recyclerView.setLayoutAnimation(null);
-        final Adapter adapter = new Adapter(showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference);
+        final Adapter adapter =
+                new Adapter(
+                        showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
+                        preferencePath -> true,
+                        preferencePathByPreference);
         recyclerView.setAdapter(adapter);
     }
 }

@@ -5,27 +5,26 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceFromPOJOConverterTest.createSomePreferenceFragment;
 
-import androidx.test.core.app.ActivityScenario;
+import android.widget.TextView;
 
-import com.codepoetics.ambivalence.Either;
+import androidx.test.core.app.ActivityScenario;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.Matchers;
-import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.ViewHolder;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
-import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -52,7 +51,7 @@ public class SearchResultsDisplayerTest {
                                                 Optional.of(title),
                                                 Optional.of("some summary"),
                                                 Optional.of("searchable info also has a title"),
-                                                Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null))))),
+                                                Optional.empty()),
                                         Type.TITLE,
                                         new IndexRange(0, 5))),
                         "Title");
@@ -61,7 +60,7 @@ public class SearchResultsDisplayerTest {
                 assertThat(
                         Matchers.recyclerViewHasItem(
                                 searchResultsFragment.getRecyclerView(),
-                                (final ViewHolder viewHolder) -> viewHolder.title.getText().equals(title)),
+                                (final PreferenceViewHolder viewHolder) -> ((TextView) viewHolder.findViewById(android.R.id.title)).getText().equals(title)),
                         is(true));
             });
         }
@@ -70,6 +69,7 @@ public class SearchResultsDisplayerTest {
     private static SearchResultsFragment getInitializedSearchResultsFragment(final TestActivity activity) {
         final SearchResultsFragment searchResultsFragment =
                 new SearchResultsFragment(
+                        Map.of(),
                         preference -> {
                         });
         PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment(

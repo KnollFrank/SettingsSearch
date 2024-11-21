@@ -1,10 +1,8 @@
-package de.KnollFrank.lib.settingssearch.results.adapter;
+package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
-
-import androidx.preference.PreferenceViewHolder;
 
 import java.text.MessageFormat;
 import java.util.Optional;

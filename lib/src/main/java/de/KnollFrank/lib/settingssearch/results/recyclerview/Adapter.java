@@ -1,5 +1,12 @@
 package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.Adapter.SearchableInfoView.createSearchableInfoView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.Adapter.SearchableInfoView.displaySearchableInfo;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.Adapter.SearchableInfoView.hasSearchableInfoView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathView.createPreferencePathView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathView.hasPreferencePathView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.ViewsAdder.addViews;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -18,21 +25,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.R;
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 
 // FK-TODO: see androidx.preference.PreferenceGroupAdapter
 public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
     private final List<SearchablePreferencePOJO> items = new ArrayList<>();
     private final Consumer<SearchablePreferencePOJO> onPreferenceClickListener;
+    private final ShowPreferencePathPredicate showPreferencePathPredicate;
+    private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
 
-    public Adapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener) {
+    public Adapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener,
+                   final ShowPreferencePathPredicate showPreferencePathPredicate,
+                   final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference) {
         this.onPreferenceClickListener = onPreferenceClickListener;
+        this.showPreferencePathPredicate = showPreferencePathPredicate;
+        this.preferencePathByPreference = preferencePathByPreference;
     }
 
     @Override
@@ -75,15 +93,22 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
             }
         }
 
-        return new PreferenceViewHolder(view);
+        return addSearchableInfoViewAndPreferencePathViewIfAbsent(
+                new PreferenceViewHolder(view),
+                parent.getContext());
     }
 
     // FK-TODO: adapt from PreferenceGroupAdapter.onBindViewHolder()
+    // FK-TODO: refactor
     @Override
     public void onBindViewHolder(final PreferenceViewHolder holder, final int position) {
         final SearchablePreferencePOJO searchablePreferencePOJO = getItem(position);
         holder.resetState();
         onBindViewHolder(holder, searchablePreferencePOJO, true, true, true);
+        displaySearchableInfo(holder, searchablePreferencePOJO.searchableInfo());
+        displayPreferencePath(
+                Maps.get(preferencePathByPreference, searchablePreferencePOJO),
+                holder);
     }
 
     @Override
@@ -130,7 +155,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
                                   final boolean mAllowDividerAbove,
                                   final boolean mAllowDividerBelow) {
         View itemView = holder.itemView;
-        Integer summaryTextColor = null;
 
         itemView.setClickable(true);
         itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreferencePOJO));
@@ -142,7 +166,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
             if (!TextUtils.isEmpty(summary)) {
                 summaryView.setText(summary);
                 summaryView.setVisibility(View.VISIBLE);
-                summaryTextColor = summaryView.getCurrentTextColor();
             } else {
                 summaryView.setVisibility(View.GONE);
             }
@@ -196,6 +219,64 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
             for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
                 setEnabledStateOnViews(viewGroup.getChildAt(i), enabled);
             }
+        }
+    }
+
+    private static PreferenceViewHolder addSearchableInfoViewAndPreferencePathViewIfAbsent(
+            final PreferenceViewHolder holder,
+            final Context context) {
+        return hasSearchableInfoView(holder) && hasPreferencePathView(holder) ?
+                holder :
+                addViews(
+                        List.of(
+                                createSearchableInfoView("", context),
+                                createPreferencePathView(context)),
+                        holder,
+                        context);
+    }
+
+    private void displayPreferencePath(final Optional<PreferencePath> preferencePath, final PreferenceViewHolder holder) {
+        PreferencePathView.displayPreferencePath(
+                holder,
+                preferencePath,
+                showPreferencePath(preferencePath));
+    }
+
+    private boolean showPreferencePath(final Optional<PreferencePath> preferencePath) {
+        return preferencePath
+                .filter(showPreferencePathPredicate::shallShowPreferencePath)
+                .isPresent();
+    }
+
+    public static class SearchableInfoView {
+
+        private static final int SEARCHABLE_INFO_VIEW_ID = R.id.searchable_info;
+
+        public static TextView createSearchableInfoView(final String text, final Context context) {
+            final TextView searchableInfoView = new TextView(context);
+            searchableInfoView.setText(text);
+            searchableInfoView.setId(SEARCHABLE_INFO_VIEW_ID);
+            searchableInfoView.setVisibility(View.GONE);
+            return searchableInfoView;
+        }
+
+        public static void displaySearchableInfo(final PreferenceViewHolder holder,
+                                                 final Optional<String> searchableInfo) {
+            final TextView searchableInfoView = getSearchableInfoView(holder);
+            if (searchableInfo.isPresent()) {
+                searchableInfoView.setText(searchableInfo.get());
+                searchableInfoView.setVisibility(View.VISIBLE);
+            } else {
+                searchableInfoView.setVisibility(View.GONE);
+            }
+        }
+
+        public static boolean hasSearchableInfoView(final PreferenceViewHolder holder) {
+            return holder.findViewById(SEARCHABLE_INFO_VIEW_ID) != null;
+        }
+
+        private static TextView getSearchableInfoView(final PreferenceViewHolder holder) {
+            return (TextView) holder.findViewById(SEARCHABLE_INFO_VIEW_ID);
         }
     }
 }

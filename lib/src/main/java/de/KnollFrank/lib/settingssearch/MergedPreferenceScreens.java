@@ -40,6 +40,7 @@ public class MergedPreferenceScreens {
                 mergedPreferenceScreenData.preferences(),
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                         new SearchResultsFragment(
+                                mergedPreferenceScreenData.preferencePathByPreference(),
                                 new ShowPreferenceScreenAndHighlightPreference(
                                         preferencePathNavigator,
                                         mergedPreferenceScreenData.preferencePathByPreference(),

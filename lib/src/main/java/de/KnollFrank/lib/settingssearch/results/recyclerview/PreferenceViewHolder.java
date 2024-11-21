@@ -14,7 +14,9 @@ import androidx.preference.AndroidResources;
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 
+// FK-TODO: refactor
 public class PreferenceViewHolder extends RecyclerView.ViewHolder {
+
     @Nullable
     private final Drawable mBackground;
     private ColorStateList mTitleTextColors;
@@ -41,8 +43,7 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    @NonNull
-    public static PreferenceViewHolder createInstanceForTests(@NonNull View itemView) {
+    public static PreferenceViewHolder createInstance(final View itemView) {
         return new PreferenceViewHolder(itemView);
     }
 
