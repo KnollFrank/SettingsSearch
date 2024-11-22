@@ -10,6 +10,7 @@ import android.util.Pair;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -66,31 +67,36 @@ public class PreferenceMatchesHighlighter {
         }
     }
 
-    // FK-TODO: DRY highlightTitle(), highlightSummary(), highlightSearchableInfo()
     private void highlightTitle(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
-        preference.setDisplayTitleProvider(
-                memoize(
-                        () -> Optional.of(
-                                highlight(
-                                        preference.title().orElse(""),
-                                        indexRanges))));
+        highlight(
+                preference::setDisplayTitleProvider,
+                preference::title,
+                indexRanges);
     }
 
     private void highlightSummary(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
-        preference.setDisplaySummaryProvider(
-                memoize(
-                        () -> Optional.of(
-                                highlight(
-                                        preference.summary().orElse(""),
-                                        indexRanges))));
+        highlight(
+                preference::setDisplaySummaryProvider,
+                preference::summary,
+                indexRanges);
     }
 
     private void highlightSearchableInfo(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
-        preference.setDisplaySearchableInfoProvider(
+        highlight(
+                preference::setDisplaySearchableInfoProvider,
+                preference::searchableInfo,
+                indexRanges);
+    }
+
+    private void highlight(
+            final Consumer<Supplier<Optional<CharSequence>>> setDisplayProvider,
+            final Supplier<Optional<String>> strSupplier,
+            final List<IndexRange> indexRanges) {
+        setDisplayProvider.accept(
                 memoize(
                         () -> Optional.of(
                                 highlight(
-                                        preference.searchableInfo().orElse(""),
+                                        strSupplier.get().orElse(""),
                                         indexRanges))));
     }
 
