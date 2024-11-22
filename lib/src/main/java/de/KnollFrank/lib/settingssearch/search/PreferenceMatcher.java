@@ -1,79 +1,42 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import android.text.TextUtils;
-
-import com.google.common.collect.ImmutableList;
-
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 
 class PreferenceMatcher {
 
-    public static List<PreferenceMatch> getPreferenceMatches(
+    public static Optional<PreferenceMatch> getPreferenceMatch(
             final SearchablePreferencePOJO haystack,
             final String needle) {
-        if (TextUtils.isEmpty(needle)) {
-            return Collections.emptyList();
-        }
-        return ImmutableList
-                .<PreferenceMatch>builder()
-                .addAll(getTitlePreferenceMatches(haystack, needle))
-                .addAll(getSummaryPreferenceMatches(haystack, needle))
-                .addAll(getSearchableInfoPreferenceMatches(haystack, needle))
-                .build();
+        final Set<IndexRange> titleMatches = getMatches(haystack.title(), needle);
+        final Set<IndexRange> summaryMatches = getMatches(haystack.summary(), needle);
+        final Set<IndexRange> searchableInfoMatches = getMatches(haystack.searchableInfo(), needle);
+        return !titleMatches.isEmpty() || !summaryMatches.isEmpty() || !searchableInfoMatches.isEmpty() ?
+                Optional.of(
+                        new PreferenceMatch(
+                                haystack,
+                                titleMatches,
+                                summaryMatches,
+                                searchableInfoMatches)) :
+                Optional.empty();
     }
 
-    private static List<PreferenceMatch> getTitlePreferenceMatches(
-            final SearchablePreferencePOJO haystack,
-            final String needle) {
-        return getPreferenceMatches(
-                haystack.title(),
-                needle,
-                indexRange -> new PreferenceMatch(haystack, Type.TITLE, indexRange));
-    }
-
-    private static List<PreferenceMatch> getSummaryPreferenceMatches(
-            final SearchablePreferencePOJO haystack,
-            final String needle) {
-        return getPreferenceMatches(
-                haystack.summary(),
-                needle,
-                indexRange -> new PreferenceMatch(haystack, Type.SUMMARY, indexRange));
-    }
-
-    private static List<PreferenceMatch> getSearchableInfoPreferenceMatches(
-            final SearchablePreferencePOJO haystack,
-            final String needle) {
-        return getPreferenceMatches(
-                haystack.searchableInfo(),
-                needle,
-                indexRange -> new PreferenceMatch(haystack, Type.SEARCHABLE_INFO, indexRange));
-    }
-
-    private static List<PreferenceMatch> getPreferenceMatches(
-            final Optional<String> haystack,
-            final String needle,
-            final Function<IndexRange, PreferenceMatch> createPreferenceMatch) {
+    private static Set<IndexRange> getMatches(final Optional<String> haystack, final String needle) {
         return haystack
-                .map(_haystack -> getPreferenceMatches(_haystack, needle, createPreferenceMatch))
-                .orElse(Collections.emptyList());
+                .map(_haystack -> getMatches(_haystack, needle))
+                .orElseGet(Collections::emptySet);
     }
 
-    private static List<PreferenceMatch> getPreferenceMatches(
-            final String haystack,
-            final String needle,
-            final Function<IndexRange, PreferenceMatch> createPreferenceMatch) {
+    private static Set<IndexRange> getMatches(final String haystack, final String needle) {
         return Strings
                 .getIndicesOfNeedleWithinHaystack(haystack.toLowerCase(), needle.toLowerCase())
                 .stream()
-                .map(index -> createPreferenceMatch.apply(new IndexRange(index, index + needle.length())))
-                .collect(Collectors.toList());
+                .map(index -> new IndexRange(index, index + needle.length()))
+                .collect(Collectors.toSet());
     }
 }

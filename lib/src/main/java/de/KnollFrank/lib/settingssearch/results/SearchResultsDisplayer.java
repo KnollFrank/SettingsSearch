@@ -1,6 +1,8 @@
 package de.KnollFrank.lib.settingssearch.results;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -20,9 +22,8 @@ public class SearchResultsDisplayer {
         this.markupsFactory = markupsFactory;
     }
 
-    public void displaySearchResults(final List<PreferenceMatch> preferenceMatches) {
-        final List<SearchablePreferencePOJO> preferences = getPreferences(preferenceMatches);
-        searchResultsFragment.setSearchResults(preferences);
+    public void displaySearchResults(final Set<PreferenceMatch> preferenceMatches) {
+        searchResultsFragment.setSearchResults(new ArrayList<>(getPreferences(preferenceMatches)));
         new PreferenceMatchesHighlighter(markupsFactory).highlight(preferenceMatches);
     }
 
@@ -30,11 +31,10 @@ public class SearchResultsDisplayer {
         return searchResultsFragment;
     }
 
-    private static List<SearchablePreferencePOJO> getPreferences(final List<PreferenceMatch> preferenceMatches) {
+    private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
-                .distinct()
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 }

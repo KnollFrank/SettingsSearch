@@ -2,8 +2,8 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,13 +26,14 @@ class PreferenceSearcher {
         this.hostByPreference = hostByPreference;
     }
 
-    public List<PreferenceMatch> searchFor(final String needle) {
+    public Set<PreferenceMatch> searchFor(final String needle) {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferences)
                 .stream()
                 .filter(this::shallIncludePreferenceOfHostInSearchResults)
-                .flatMap(searchablePreference -> PreferenceMatcher.getPreferenceMatches(searchablePreference, needle).stream())
-                .collect(Collectors.toList());
+                .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))
+                .flatMap(Optional::stream)
+                .collect(Collectors.toSet());
     }
 
     private boolean shallIncludePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference) {

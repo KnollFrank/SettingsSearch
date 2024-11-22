@@ -23,6 +23,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -544,7 +545,7 @@ public class PreferenceSearcherTest {
                            final String keyword,
                            final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                           final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
+                           final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -563,7 +564,7 @@ public class PreferenceSearcherTest {
                                 mergedPreferenceScreen.hostByPreference());
 
                 // When
-                final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
+                final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
 
                 // Then
                 checkPreferenceMatches.accept(preferenceMatches);
@@ -632,14 +633,14 @@ public class PreferenceSearcherTest {
                 fragmentFactoryAndInitializer);
     }
 
-    static List<String> getKeys(final List<PreferenceMatch> preferenceMatches) {
+    static Set<String> getKeys(final Set<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
                 .map(SearchablePreferencePOJO::key)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

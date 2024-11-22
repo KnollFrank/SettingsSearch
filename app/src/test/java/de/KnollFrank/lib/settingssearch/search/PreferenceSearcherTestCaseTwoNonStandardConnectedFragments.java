@@ -12,6 +12,7 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -71,7 +72,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
     private static void testSearch(final FragmentWithNonStandardConnection fragmentWithNonStandardConnection,
                                    final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                    final String keyword,
-                                   final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
+                                   final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         PreferenceSearcherTest.testSearch(
                 fragmentWithNonStandardConnection,
                 (preference, host) -> true,

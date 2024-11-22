@@ -7,19 +7,17 @@ import android.text.Spannable;
 
 import androidx.test.core.app.ActivityScenario;
 
-import com.google.common.collect.ImmutableList;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -37,16 +35,15 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.empty(),
                                 Optional.empty());
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
-                final List<PreferenceMatch> preferenceMatches =
-                        ImmutableList.of(
+                final Set<PreferenceMatch> preferenceMatches =
+                        Set.of(
                                 new PreferenceMatch(
                                         preference,
-                                        Type.TITLE,
-                                        new IndexRange(0, 5)),
-                                new PreferenceMatch(
-                                        preference,
-                                        Type.TITLE,
-                                        new IndexRange(7, 12)));
+                                        Set.of(
+                                                new IndexRange(0, 5),
+                                                new IndexRange(7, 12)),
+                                        Set.of(),
+                                        Set.of()));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(markupsFactory);
 
@@ -74,16 +71,15 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.empty(),
                                 Optional.empty());
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
-                final List<PreferenceMatch> preferenceMatches =
-                        ImmutableList.of(
+                final Set<PreferenceMatch> preferenceMatches =
+                        Set.of(
                                 new PreferenceMatch(
                                         preference,
-                                        Type.SUMMARY,
-                                        new IndexRange(0, 7)),
-                                new PreferenceMatch(
-                                        preference,
-                                        Type.SUMMARY,
-                                        new IndexRange(9, 16)));
+                                        Set.of(),
+                                        Set.of(
+                                                new IndexRange(0, 7),
+                                                new IndexRange(9, 16)),
+                                        Set.of()));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(markupsFactory);
 
@@ -112,16 +108,15 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.of(_searchableInfo),
                                 Optional.empty());
                 final Supplier<List<Object>> markupsFactory = () -> MarkupFactory.createMarkups(context);
-                final List<PreferenceMatch> preferenceMatches =
-                        ImmutableList.of(
+                final Set<PreferenceMatch> preferenceMatches =
+                        Set.of(
                                 new PreferenceMatch(
                                         preference,
-                                        Type.SEARCHABLE_INFO,
-                                        new IndexRange(0, 4)),
-                                new PreferenceMatch(
-                                        preference,
-                                        Type.SEARCHABLE_INFO,
-                                        new IndexRange(6, 10)));
+                                        Set.of(),
+                                        Set.of(),
+                                        Set.of(
+                                                new IndexRange(0, 4),
+                                                new IndexRange(6, 10))));
                 final PreferenceMatchesHighlighter preferenceMatchesHighlighter =
                         new PreferenceMatchesHighlighter(markupsFactory);
 

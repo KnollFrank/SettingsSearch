@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import java.util.List;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 
@@ -17,7 +17,7 @@ class SearchAndDisplay {
 
     // FK-TODO: es dauert sehr lange, bis ein Suchergebnis angezeigt wird.
     public void searchForQueryAndDisplayResults(final String query) {
-        final List<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
+        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
         searchResultsDisplayer.displaySearchResults(preferenceMatches);
     }
 }

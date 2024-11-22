@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import androidx.test.core.app.ActivityScenario;
@@ -11,13 +11,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -37,19 +36,22 @@ public class PreferenceMatcherTest {
                                 Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null)))));
 
                 // When
-                final List<PreferenceMatch> preferenceMatches =
-                        PreferenceMatcher.getPreferenceMatches(
+                final Optional<PreferenceMatch> preferenceMatch =
+                        PreferenceMatcher.getPreferenceMatch(
                                 searchablePreferencePOJO,
                                 "title");
 
                 // Then
                 assertThat(
-                        preferenceMatches,
-                        hasItems(
-                                new PreferenceMatch(searchablePreferencePOJO, Type.TITLE, new IndexRange(0, 5)),
-                                new PreferenceMatch(searchablePreferencePOJO, Type.TITLE, new IndexRange(7, 12)),
-                                new PreferenceMatch(searchablePreferencePOJO, Type.SUMMARY, new IndexRange(0, 5)),
-                                new PreferenceMatch(searchablePreferencePOJO, Type.SEARCHABLE_INFO, new IndexRange(27, 32))));
+                        preferenceMatch,
+                        is(Optional.of(
+                                new PreferenceMatch(
+                                        searchablePreferencePOJO,
+                                        Set.of(
+                                                new IndexRange(0, 5),
+                                                new IndexRange(7, 12)),
+                                        Set.of(new IndexRange(0, 5)),
+                                        Set.of(new IndexRange(27, 32))))));
             });
         }
     }

@@ -13,9 +13,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.Matchers;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest;
@@ -24,7 +24,6 @@ import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolde
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
-import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -44,15 +43,16 @@ public class SearchResultsDisplayerTest {
 
                 // When
                 searchResultsDisplayer.displaySearchResults(
-                        List.of(
+                        Set.of(
                                 new PreferenceMatch(
                                         POJOTestFactory.createSearchablePreferencePOJO(
                                                 Optional.of(title),
                                                 Optional.of("some summary"),
                                                 Optional.of("searchable info also has a title"),
                                                 Optional.empty()),
-                                        Type.TITLE,
-                                        new IndexRange(0, 5)))
+                                        Set.of(new IndexRange(0, 5)),
+                                        Set.of(),
+                                        Set.of()))
                 );
 
                 // Then

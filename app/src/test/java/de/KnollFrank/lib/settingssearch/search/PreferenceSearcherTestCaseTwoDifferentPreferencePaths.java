@@ -13,6 +13,7 @@ import androidx.preference.PreferenceScreen;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -30,6 +31,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT,
                 // Then there are TWO preference search results
                 preferenceMatches ->
+                        // FK-FIXME: check preference paths of preferenceMatches, do not check their keys
                         assertThat(
                                 PreferenceSearcherTest.getKeys(preferenceMatches),
                                 contains(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT, KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT)));
@@ -79,7 +81,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
 
     private static void testSearch(final FragmentWith2Connections fragmentWith2Connections,
                                    final String keyword,
-                                   final Consumer<List<PreferenceMatch>> checkPreferenceMatches) {
+                                   final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         PreferenceSearcherTest.testSearch(
                 fragmentWith2Connections,
                 (preference, host) -> true,
