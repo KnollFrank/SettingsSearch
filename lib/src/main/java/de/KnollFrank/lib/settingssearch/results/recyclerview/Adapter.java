@@ -103,7 +103,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
     // FK-TODO: adapt from PreferenceGroupAdapter.onBindViewHolder()
     // FK-TODO: refactor
-    // FK-TODO: Performanceverbesserung: Highlighten (und Cachen der Highlights) einer Preference erst dann durchführen, wenn sie angezeigt wird?
     @Override
     public void onBindViewHolder(final PreferenceViewHolder holder, final int position) {
         final SearchablePreferencePOJO searchablePreferencePOJO = getItem(position);
