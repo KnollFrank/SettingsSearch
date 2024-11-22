@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 
@@ -67,11 +68,12 @@ public class PreferenceMatchesHighlighter {
 
     // FK-TODO: DRY highlightTitle(), highlightSummary(), highlightSearchableInfo()
     private void highlightTitle(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
-        preference.setDisplayTitle(
-                Optional.of(
-                        highlight(
-                                preference.title().orElse(""),
-                                indexRanges)));
+        preference.setDisplayTitleProvider(
+                Utils.memoize(
+                        () -> Optional.of(
+                                highlight(
+                                        preference.title().orElse(""),
+                                        indexRanges))));
     }
 
     private void highlightSummary(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {

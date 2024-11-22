@@ -7,6 +7,7 @@ import com.codepoetics.ambivalence.Either;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
@@ -21,7 +22,7 @@ public final class SearchablePreferencePOJO {
     private CharSequence displaySummary;
     private final String title;
     @Exclude
-    private CharSequence displayTitle;
+    private Supplier<Optional<CharSequence>> displayTitleProvider;
     private final int widgetLayoutResId;
     private final String fragment;
     private final boolean visible;
@@ -82,24 +83,27 @@ public final class SearchablePreferencePOJO {
         return Optional.ofNullable(summary);
     }
 
-    public Optional<CharSequence> getDisplaySummary() {
-        return Optional.ofNullable(displaySummary);
-    }
-
     public void setDisplaySummary(final Optional<CharSequence> displaySummary) {
         this.displaySummary = displaySummary.orElse(null);
+    }
+
+    public Optional<CharSequence> getDisplaySummary() {
+        return Optional.ofNullable(displaySummary);
     }
 
     public Optional<String> title() {
         return Optional.ofNullable(title);
     }
 
-    public Optional<CharSequence> getDisplayTitle() {
-        return Optional.ofNullable(displayTitle);
+    public void setDisplayTitleProvider(final Supplier<Optional<CharSequence>> displayTitleProvider) {
+        this.displayTitleProvider = displayTitleProvider;
     }
 
-    public void setDisplayTitle(final Optional<CharSequence> displayTitle) {
-        this.displayTitle = displayTitle.orElse(null);
+    public Optional<CharSequence> getDisplayTitle() {
+        if (displayTitleProvider == null) {
+            displayTitleProvider = Optional::empty;
+        }
+        return displayTitleProvider.get();
     }
 
     public int widgetLayoutResId() {
@@ -118,12 +122,12 @@ public final class SearchablePreferencePOJO {
         return Optional.ofNullable(searchableInfo);
     }
 
-    public Optional<CharSequence> getDisplaySearchableInfo() {
-        return Optional.ofNullable(displaySearchableInfo);
-    }
-
     public void setDisplaySearchableInfo(final Optional<CharSequence> displaySearchableInfo) {
         this.displaySearchableInfo = displaySearchableInfo.orElse(null);
+    }
+
+    public Optional<CharSequence> getDisplaySearchableInfo() {
+        return Optional.ofNullable(displaySearchableInfo);
     }
 
     public Bundle extras() {
