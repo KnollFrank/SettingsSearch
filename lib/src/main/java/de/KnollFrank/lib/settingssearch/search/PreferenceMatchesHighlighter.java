@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import static java.util.stream.Collectors.toList;
+import static de.KnollFrank.lib.settingssearch.common.Utils.memoize;
 
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -12,7 +13,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch.Type;
 
@@ -69,7 +69,7 @@ public class PreferenceMatchesHighlighter {
     // FK-TODO: DRY highlightTitle(), highlightSummary(), highlightSearchableInfo()
     private void highlightTitle(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
         preference.setDisplayTitleProvider(
-                Utils.memoize(
+                memoize(
                         () -> Optional.of(
                                 highlight(
                                         preference.title().orElse(""),
@@ -77,11 +77,12 @@ public class PreferenceMatchesHighlighter {
     }
 
     private void highlightSummary(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
-        preference.setDisplaySummary(
-                Optional.of(
-                        highlight(
-                                preference.summary().orElse(""),
-                                indexRanges)));
+        preference.setDisplaySummaryProvider(
+                memoize(
+                        () -> Optional.of(
+                                highlight(
+                                        preference.summary().orElse(""),
+                                        indexRanges))));
     }
 
     private void highlightSearchableInfo(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {

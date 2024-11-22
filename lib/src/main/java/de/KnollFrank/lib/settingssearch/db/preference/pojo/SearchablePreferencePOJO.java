@@ -19,7 +19,7 @@ public final class SearchablePreferencePOJO {
     private final int layoutResId;
     private final String summary;
     @Exclude
-    private CharSequence displaySummary;
+    private Supplier<Optional<CharSequence>> displaySummaryProvider;
     private final String title;
     @Exclude
     private Supplier<Optional<CharSequence>> displayTitleProvider;
@@ -83,12 +83,15 @@ public final class SearchablePreferencePOJO {
         return Optional.ofNullable(summary);
     }
 
-    public void setDisplaySummary(final Optional<CharSequence> displaySummary) {
-        this.displaySummary = displaySummary.orElse(null);
+    public void setDisplaySummaryProvider(final Supplier<Optional<CharSequence>> displaySummaryProvider) {
+        this.displaySummaryProvider = displaySummaryProvider;
     }
 
     public Optional<CharSequence> getDisplaySummary() {
-        return Optional.ofNullable(displaySummary);
+        if (displaySummaryProvider == null) {
+            displaySummaryProvider = Optional::empty;
+        }
+        return displaySummaryProvider.get();
     }
 
     public Optional<String> title() {
