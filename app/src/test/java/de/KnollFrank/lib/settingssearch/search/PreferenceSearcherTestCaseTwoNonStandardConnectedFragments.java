@@ -36,7 +36,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 // Then the preference of the non standard connected fragment is found
                 preferenceMatches ->
                         assertThat(
-                                PreferenceSearcherTest.getKeys(preferenceMatches),
+                                PreferenceSearcherTest.getKeySet(preferenceMatches),
                                 hasItem(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT)));
     }
 

@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
@@ -80,7 +81,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -113,7 +114,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -146,7 +147,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))));
     }
 
@@ -169,7 +170,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -197,7 +198,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfNestedPreference)));
     }
 
@@ -220,7 +221,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))));
     }
 
@@ -243,7 +244,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -269,7 +270,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -296,7 +297,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -321,7 +322,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -346,7 +347,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -372,7 +373,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -396,7 +397,7 @@ public class PreferenceSearcherTest {
                 new PreferenceDialogAndSearchableInfoProvider(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -431,7 +432,7 @@ public class PreferenceSearcherTest {
                 new PreferenceDialogAndSearchableInfoProvider(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItems(keyOfPreference1, keyOfPreference2)));
     }
 
@@ -448,7 +449,7 @@ public class PreferenceSearcherTest {
                 new PreferenceDialogAndSearchableInfoProvider(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -474,7 +475,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -501,7 +502,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
     }
 
@@ -525,7 +526,7 @@ public class PreferenceSearcherTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
-                                getKeys(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))));
     }
 
@@ -633,14 +634,26 @@ public class PreferenceSearcherTest {
                 fragmentFactoryAndInitializer);
     }
 
-    static Set<String> getKeys(final Set<PreferenceMatch> preferenceMatches) {
+    static Set<String> getKeySet(final Set<PreferenceMatch> preferenceMatches) {
+        return
+                PreferenceSearcherTest
+                        .getKeyStream(preferenceMatches)
+                        .collect(Collectors.toSet());
+    }
+
+    static List<String> getKeyList(final Set<PreferenceMatch> preferenceMatches) {
+        return
+                PreferenceSearcherTest
+                        .getKeyStream(preferenceMatches)
+                        .collect(Collectors.toList());
+    }
+
+    private static Stream<String> getKeyStream(final Set<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
                 .map(SearchablePreferencePOJO::key)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
+                .flatMap(Optional::stream);
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {
