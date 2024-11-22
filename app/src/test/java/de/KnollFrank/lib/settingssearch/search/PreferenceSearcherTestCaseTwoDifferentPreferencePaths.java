@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeyList;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 // Then there are TWO preference search results
                 preferenceMatches ->
                         assertThat(
-                                PreferenceSearcherTest.getKeyList(preferenceMatches),
+                                getKeyList(preferenceMatches),
                                 contains(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT, KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT)));
     }
 

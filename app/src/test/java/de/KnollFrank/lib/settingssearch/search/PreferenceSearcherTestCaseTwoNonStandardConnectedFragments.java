@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 // Then the preference of the non standard connected fragment is found
                 preferenceMatches ->
                         assertThat(
-                                PreferenceSearcherTest.getKeySet(preferenceMatches),
+                                getKeySet(preferenceMatches),
                                 hasItem(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT)));
     }
 

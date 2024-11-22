@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
+import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 
 import android.content.Context;
 
@@ -26,8 +27,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
@@ -632,28 +631,6 @@ public class PreferenceSearcherTest {
                         fragments,
                         preferenceFragment.getClass()),
                 fragmentFactoryAndInitializer);
-    }
-
-    static Set<String> getKeySet(final Set<PreferenceMatch> preferenceMatches) {
-        return
-                PreferenceSearcherTest
-                        .getKeyStream(preferenceMatches)
-                        .collect(Collectors.toSet());
-    }
-
-    static List<String> getKeyList(final Set<PreferenceMatch> preferenceMatches) {
-        return
-                PreferenceSearcherTest
-                        .getKeyStream(preferenceMatches)
-                        .collect(Collectors.toList());
-    }
-
-    private static Stream<String> getKeyStream(final Set<PreferenceMatch> preferenceMatches) {
-        return preferenceMatches
-                .stream()
-                .map(PreferenceMatch::preference)
-                .map(SearchablePreferencePOJO::key)
-                .flatMap(Optional::stream);
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {
