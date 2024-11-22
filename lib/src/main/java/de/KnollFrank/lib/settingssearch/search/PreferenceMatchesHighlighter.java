@@ -86,11 +86,12 @@ public class PreferenceMatchesHighlighter {
     }
 
     private void highlightSearchableInfo(final SearchablePreferencePOJO preference, final List<IndexRange> indexRanges) {
-        preference.setDisplaySearchableInfo(
-                Optional.of(
-                        highlight(
-                                preference.searchableInfo().orElse(""),
-                                indexRanges)));
+        preference.setDisplaySearchableInfoProvider(
+                memoize(
+                        () -> Optional.of(
+                                highlight(
+                                        preference.searchableInfo().orElse(""),
+                                        indexRanges))));
     }
 
     private SpannableString highlight(final String str, final List<IndexRange> indexRanges) {

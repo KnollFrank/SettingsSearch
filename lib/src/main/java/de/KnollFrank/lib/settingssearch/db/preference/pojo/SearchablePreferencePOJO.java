@@ -28,7 +28,7 @@ public final class SearchablePreferencePOJO {
     private final boolean visible;
     private final String searchableInfo;
     @Exclude
-    private CharSequence displaySearchableInfo;
+    private Supplier<Optional<CharSequence>> displaySearchableInfoProvider;
     private final Bundle extras;
     private final List<SearchablePreferencePOJO> children;
 
@@ -125,12 +125,15 @@ public final class SearchablePreferencePOJO {
         return Optional.ofNullable(searchableInfo);
     }
 
-    public void setDisplaySearchableInfo(final Optional<CharSequence> displaySearchableInfo) {
-        this.displaySearchableInfo = displaySearchableInfo.orElse(null);
+    public void setDisplaySearchableInfoProvider(final Supplier<Optional<CharSequence>> displaySearchableInfoProvider) {
+        this.displaySearchableInfoProvider = displaySearchableInfoProvider;
     }
 
     public Optional<CharSequence> getDisplaySearchableInfo() {
-        return Optional.ofNullable(displaySearchableInfo);
+        if (displaySearchableInfoProvider == null) {
+            displaySearchableInfoProvider = Optional::empty;
+        }
+        return displaySearchableInfoProvider.get();
     }
 
     public Bundle extras() {
