@@ -92,12 +92,7 @@ public class PreferenceMatchesHighlighter {
             final Consumer<Supplier<Optional<CharSequence>>> setDisplayProvider,
             final Supplier<Optional<String>> strSupplier,
             final List<IndexRange> indexRanges) {
-        setDisplayProvider.accept(
-                memoize(
-                        () -> Optional.of(
-                                highlight(
-                                        strSupplier.get().orElse(""),
-                                        indexRanges))));
+        setDisplayProvider.accept(memoize(() -> strSupplier.get().map(str -> highlight(str, indexRanges))));
     }
 
     private SpannableString highlight(final String str, final List<IndexRange> indexRanges) {
