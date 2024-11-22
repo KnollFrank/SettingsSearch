@@ -55,15 +55,9 @@ public class PreferenceMatchesHighlighter {
                            final Type type,
                            final List<IndexRange> indexRanges) {
         switch (type) {
-            case TITLE:
-                highlightTitle(preference, indexRanges);
-                break;
-            case SUMMARY:
-                highlightSummary(preference, indexRanges);
-                break;
-            case SEARCHABLE_INFO:
-                highlightSearchableInfo(preference, indexRanges);
-                break;
+            case TITLE -> highlightTitle(preference, indexRanges);
+            case SUMMARY -> highlightSummary(preference, indexRanges);
+            case SEARCHABLE_INFO -> highlightSearchableInfo(preference, indexRanges);
         }
     }
 
