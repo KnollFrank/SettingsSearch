@@ -52,11 +52,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
     @Override
     public int getItemViewType(final int position) {
-        final ItemResourceDescriptor itemResourceDescriptor = ItemResourceDescriptor.from(getItem(position));
-        if (!itemResourceDescriptors.contains(itemResourceDescriptor)) {
-            itemResourceDescriptors.add(itemResourceDescriptor);
-        }
-        return itemResourceDescriptors.indexOf(itemResourceDescriptor);
+        return getItemViewType(ItemResourceDescriptor.from(getItem(position)));
     }
 
     // FK-TODO: adapt from PreferenceGroupAdapter.onCreateViewHolder()
@@ -104,19 +100,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
         onBindViewHolder(holder, getItem(position));
     }
 
-    private void onBindViewHolder(final PreferenceViewHolder viewHolder, final SearchablePreferencePOJO searchablePreferencePOJO) {
-        viewHolder.resetState();
-        viewHolder.itemView.setClickable(true);
-        viewHolder.itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreferencePOJO));
-        // itemView.setId(mViewId);
-        displayTitle(viewHolder, searchablePreferencePOJO);
-        displaySummary(viewHolder, searchablePreferencePOJO);
-        displaySearchableInfo(viewHolder, searchablePreferencePOJO);
-        displayPreferencePath(viewHolder, searchablePreferencePOJO);
-        displayIcon(viewHolder, searchablePreferencePOJO, true);
-        setEnabledStateOnViews(viewHolder.itemView, true);
-    }
-
     @Override
     public int getItemCount() {
         return items.size();
@@ -140,6 +123,26 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
                     searchablePreferencePOJO.getLayoutResId(),
                     searchablePreferencePOJO.getWidgetLayoutResId());
         }
+    }
+
+    private int getItemViewType(final ItemResourceDescriptor itemResourceDescriptor) {
+        if (!itemResourceDescriptors.contains(itemResourceDescriptor)) {
+            itemResourceDescriptors.add(itemResourceDescriptor);
+        }
+        return itemResourceDescriptors.indexOf(itemResourceDescriptor);
+    }
+
+    private void onBindViewHolder(final PreferenceViewHolder viewHolder, final SearchablePreferencePOJO searchablePreferencePOJO) {
+        viewHolder.resetState();
+        viewHolder.itemView.setClickable(true);
+        viewHolder.itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreferencePOJO));
+        // itemView.setId(mViewId);
+        displayTitle(viewHolder, searchablePreferencePOJO);
+        displaySummary(viewHolder, searchablePreferencePOJO);
+        displaySearchableInfo(viewHolder, searchablePreferencePOJO);
+        displayPreferencePath(viewHolder, searchablePreferencePOJO);
+        displayIcon(viewHolder, searchablePreferencePOJO, true);
+        setEnabledStateOnViews(viewHolder.itemView, true);
     }
 
     private static void displayTitle(final PreferenceViewHolder holder,
