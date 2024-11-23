@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.codepoetics.ambivalence.Either;
@@ -23,14 +24,14 @@ public final class SearchablePreferencePOJO {
     private final Either<Integer, String> iconResourceIdOrIconPixelData;
     @Exclude
     private Optional<Drawable> iconCache;
-    private final int layoutResId;
+    private final @LayoutRes int layoutResId;
     private final String summary;
     @Exclude
     private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
     private final String title;
     @Exclude
     private Supplier<Optional<CharSequence>> highlightedTitleProvider;
-    private final int widgetLayoutResId;
+    private final @LayoutRes int widgetLayoutResId;
     private final String fragment;
     private final boolean visible;
     private final String searchableInfo;
@@ -43,10 +44,10 @@ public final class SearchablePreferencePOJO {
             final int id,
             final Optional<String> key,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final int layoutResId,
+            final @LayoutRes int layoutResId,
             final Optional<String> summary,
             final Optional<String> title,
-            final int widgetLayoutResId,
+            final @LayoutRes int widgetLayoutResId,
             final Optional<String> fragment,
             final boolean visible,
             final Optional<String> searchableInfo,
@@ -89,7 +90,7 @@ public final class SearchablePreferencePOJO {
         return iconCache;
     }
 
-    public int getLayoutResId() {
+    public @LayoutRes int getLayoutResId() {
         return layoutResId;
     }
 
@@ -138,7 +139,7 @@ public final class SearchablePreferencePOJO {
         return highlightedSearchableInfoProvider.get();
     }
 
-    public int getWidgetLayoutResId() {
+    public @LayoutRes int getWidgetLayoutResId() {
         return widgetLayoutResId;
     }
 
