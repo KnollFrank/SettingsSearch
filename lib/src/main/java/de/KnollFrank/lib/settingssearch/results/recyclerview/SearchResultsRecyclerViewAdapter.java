@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -86,7 +85,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         return items.get(position);
     }
 
-    private record ItemResourceDescriptor(@IdRes int layoutResId,
+    private record ItemResourceDescriptor(@LayoutRes int layoutResId,
                                           @LayoutRes int widgetLayoutResId) {
 
         public static ItemResourceDescriptor from(final SearchablePreferencePOJO searchablePreferencePOJO) {
