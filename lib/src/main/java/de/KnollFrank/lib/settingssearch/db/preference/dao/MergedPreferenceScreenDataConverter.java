@@ -38,7 +38,7 @@ class MergedPreferenceScreenDataConverter {
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                SearchablePreferencePOJO::id,
+                                SearchablePreferencePOJO::getId,
                                 Function.identity()));
     }
 }

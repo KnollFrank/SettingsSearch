@@ -133,7 +133,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
         return getPreference(
                 preferenceScreenWithHostSet,
                 (_hostOfPreference, preference) ->
-                        hostOfPreference.equals(_hostOfPreference) && preference.fragment().equals(Optional.of(fragmentPointedTo.getName())));
+                        hostOfPreference.equals(_hostOfPreference) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
     private static SearchablePreferencePOJO getPreference(

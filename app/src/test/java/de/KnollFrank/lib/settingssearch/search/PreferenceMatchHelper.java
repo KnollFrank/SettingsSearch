@@ -26,7 +26,7 @@ class PreferenceMatchHelper {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
-                .map(SearchablePreferencePOJO::key)
+                .map(SearchablePreferencePOJO::getKey)
                 .flatMap(Optional::stream);
     }
 }

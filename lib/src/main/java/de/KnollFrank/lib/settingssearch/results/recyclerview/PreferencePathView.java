@@ -50,7 +50,7 @@ class PreferencePathView {
                 .stream()
                 .map(searchablePreferencePOJO ->
                         searchablePreferencePOJO
-                                .title()
+                                .getTitle()
                                 .orElse("?"))
                 .collect(Collectors.joining(" > "));
     }

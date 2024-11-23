@@ -94,18 +94,18 @@ public class MergedPreferenceScreenDataTest {
     }
 
     private static void assertEquals(final SearchablePreferencePOJO actual, final SearchablePreferencePOJO expected) {
-        assertThat(actual.id(), is(expected.id()));
-        assertThat(actual.key(), is(expected.key()));
-        assertThat(actual.iconResourceIdOrIconPixelData(), is(expected.iconResourceIdOrIconPixelData()));
-        assertThat(actual.layoutResId(), is(expected.layoutResId()));
-        assertThat(actual.summary(), is(expected.summary()));
-        assertThat(actual.title(), is(expected.title()));
-        assertThat(actual.widgetLayoutResId(), is(expected.widgetLayoutResId()));
-        assertThat(actual.fragment(), is(expected.fragment()));
-        assertThat(actual.visible(), is(expected.visible()));
-        assertThat(actual.searchableInfo(), is(expected.searchableInfo()));
-        assertThat(equalBundles(actual.extras(), expected.extras()), is(true));
-        assertEquals(actual.children(), expected.children());
+        assertThat(actual.getId(), is(expected.getId()));
+        assertThat(actual.getKey(), is(expected.getKey()));
+        assertThat(actual.getIconResourceIdOrIconPixelData(), is(expected.getIconResourceIdOrIconPixelData()));
+        assertThat(actual.getLayoutResId(), is(expected.getLayoutResId()));
+        assertThat(actual.getSummary(), is(expected.getSummary()));
+        assertThat(actual.getTitle(), is(expected.getTitle()));
+        assertThat(actual.getWidgetLayoutResId(), is(expected.getWidgetLayoutResId()));
+        assertThat(actual.getFragment(), is(expected.getFragment()));
+        assertThat(actual.isVisible(), is(expected.isVisible()));
+        assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
+        assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
+        assertEquals(actual.getChildren(), expected.getChildren());
     }
 
     private static void assertEquals(final List<SearchablePreferencePOJO> actuals, final List<SearchablePreferencePOJO> expecteds) {

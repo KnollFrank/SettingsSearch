@@ -137,8 +137,8 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
         public static ItemResourceDescriptor from(final SearchablePreferencePOJO searchablePreferencePOJO) {
             return new ItemResourceDescriptor(
-                    searchablePreferencePOJO.layoutResId(),
-                    searchablePreferencePOJO.widgetLayoutResId());
+                    searchablePreferencePOJO.getLayoutResId(),
+                    searchablePreferencePOJO.getWidgetLayoutResId());
         }
     }
 

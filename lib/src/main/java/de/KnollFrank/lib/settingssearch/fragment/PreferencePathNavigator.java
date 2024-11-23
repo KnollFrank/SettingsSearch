@@ -46,7 +46,7 @@ public class PreferencePathNavigator {
         final Class<? extends PreferenceFragmentCompat> host = hostByPreference.get(preference);
         final PreferenceFragmentCompat hostOfPreference = instantiateAndInitializePreferenceFragment(host, src);
         return new PreferenceWithHost(
-                getPreferenceByKey(hostOfPreference, preference.key().orElseThrow()),
+                getPreferenceByKey(hostOfPreference, preference.getKey().orElseThrow()),
                 hostOfPreference);
     }
 

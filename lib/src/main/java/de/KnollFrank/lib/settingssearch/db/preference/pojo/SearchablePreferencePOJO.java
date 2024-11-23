@@ -66,19 +66,19 @@ public final class SearchablePreferencePOJO {
         this.children = children;
     }
 
-    public int id() {
+    public int getId() {
         return id;
     }
 
-    public List<SearchablePreferencePOJO> children() {
+    public List<SearchablePreferencePOJO> getChildren() {
         return children;
     }
 
-    public Optional<String> key() {
+    public Optional<String> getKey() {
         return Optional.ofNullable(key);
     }
 
-    public Optional<Either<Integer, String>> iconResourceIdOrIconPixelData() {
+    public Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData() {
         return Optional.ofNullable(iconResourceIdOrIconPixelData);
     }
 
@@ -89,11 +89,11 @@ public final class SearchablePreferencePOJO {
         return iconCache;
     }
 
-    public int layoutResId() {
+    public int getLayoutResId() {
         return layoutResId;
     }
 
-    public Optional<String> summary() {
+    public Optional<String> getSummary() {
         return Optional.ofNullable(summary);
     }
 
@@ -109,7 +109,7 @@ public final class SearchablePreferencePOJO {
         return displaySummaryProvider.get();
     }
 
-    public Optional<String> title() {
+    public Optional<String> getTitle() {
         return Optional.ofNullable(title);
     }
 
@@ -124,19 +124,19 @@ public final class SearchablePreferencePOJO {
         return displayTitleProvider.get();
     }
 
-    public int widgetLayoutResId() {
+    public int getWidgetLayoutResId() {
         return widgetLayoutResId;
     }
 
-    public Optional<String> fragment() {
+    public Optional<String> getFragment() {
         return Optional.ofNullable(fragment);
     }
 
-    public boolean visible() {
+    public boolean isVisible() {
         return visible;
     }
 
-    public Optional<String> searchableInfo() {
+    public Optional<String> getSearchableInfo() {
         return Optional.ofNullable(searchableInfo);
     }
 
@@ -151,7 +151,7 @@ public final class SearchablePreferencePOJO {
         return displaySearchableInfoProvider.get();
     }
 
-    public Bundle extras() {
+    public Bundle getExtras() {
         return extras;
     }
 
@@ -187,7 +187,7 @@ public final class SearchablePreferencePOJO {
 
     private Optional<Drawable> _getIcon(final Context context) {
         return this
-                .iconResourceIdOrIconPixelData()
+                .getIconResourceIdOrIconPixelData()
                 .map(iconResourceIdOrIconPixelData ->
                         iconResourceIdOrIconPixelData.join(
                                 iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),

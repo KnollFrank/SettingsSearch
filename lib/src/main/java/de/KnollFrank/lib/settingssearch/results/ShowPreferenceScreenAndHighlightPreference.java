@@ -41,7 +41,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
     public void showPreferenceScreenAndHighlightPreference(final SearchablePreferencePOJO preference) {
         showPreferenceScreenAndHighlightPreference(
                 preferencePathNavigator.navigatePreferencePath(preferencePathByPreference.get(preference)),
-                preference.key());
+                preference.getKey());
     }
 
     private void showPreferenceScreenAndHighlightPreference(

@@ -16,7 +16,7 @@ class PreferencePathByPreferenceConverter {
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                entry -> entry.getKey().id(),
+                                entry -> entry.getKey().getId(),
                                 entry -> PreferencePathConverter.addIds(entry.getValue())));
     }
 

@@ -17,7 +17,7 @@ class HostByPreferenceConverter {
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                entry -> entry.getKey().id(),
+                                entry -> entry.getKey().getId(),
                                 Entry::getValue));
     }
 

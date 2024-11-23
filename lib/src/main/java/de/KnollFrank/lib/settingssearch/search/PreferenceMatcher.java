@@ -13,9 +13,9 @@ class PreferenceMatcher {
     public static Optional<PreferenceMatch> getPreferenceMatch(
             final SearchablePreferencePOJO haystack,
             final String needle) {
-        final Set<IndexRange> titleMatches = getMatches(haystack.title(), needle);
-        final Set<IndexRange> summaryMatches = getMatches(haystack.summary(), needle);
-        final Set<IndexRange> searchableInfoMatches = getMatches(haystack.searchableInfo(), needle);
+        final Set<IndexRange> titleMatches = getMatches(haystack.getTitle(), needle);
+        final Set<IndexRange> summaryMatches = getMatches(haystack.getSummary(), needle);
+        final Set<IndexRange> searchableInfoMatches = getMatches(haystack.getSearchableInfo(), needle);
         return !titleMatches.isEmpty() || !summaryMatches.isEmpty() || !searchableInfoMatches.isEmpty() ?
                 Optional.of(
                         new PreferenceMatch(

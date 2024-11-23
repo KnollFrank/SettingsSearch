@@ -13,7 +13,7 @@ class PreferencePathConverter {
         return preferencePath
                 .preferences()
                 .stream()
-                .map(SearchablePreferencePOJO::id)
+                .map(SearchablePreferencePOJO::getId)
                 .collect(Collectors.toList());
     }
 

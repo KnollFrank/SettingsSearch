@@ -14,7 +14,7 @@ public class PreferencePOJOs {
         return ImmutableSet
                 .<SearchablePreferencePOJO>builder()
                 .add(preference)
-                .addAll(getPreferencesRecursively(preference.children()))
+                .addAll(getPreferencesRecursively(preference.getChildren()))
                 .build();
     }
 
