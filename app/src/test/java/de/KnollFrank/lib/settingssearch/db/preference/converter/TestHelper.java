@@ -2,21 +2,11 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceScreen;
-import androidx.test.core.app.ActivityScenario;
-
 import com.codepoetics.ambivalence.Either;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import java.util.HashSet;
 import java.util.List;
@@ -26,45 +16,9 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.settingssearch.test.TestActivity;
 
-@RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceFromPOJOConverterTest {
-
-    @Test
-    public void shouldConvertSearchablePreferencePOJO2SearchablePreference() {
-        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(activity -> {
-                // Given
-                final PreferenceFragmentCompat preferenceFragment = createSomePreferenceFragment(activity);
-                final PreferenceScreen preferenceScreen = preferenceFragment.getPreferenceScreen();
-                final String key = "someKey";
-                final String value = "someValue";
-                final SearchablePreferencePOJO pojo =
-                        POJOTestFactory.createSomeSearchablePreferencePOJO(
-                                POJOTestFactory.createBundle(key, value),
-                                activity.getResources());
-
-                // When
-                SearchablePreferenceFromPOJOConverter.addConvertedPOJO2Parent(pojo, preferenceScreen, new StringGenerator());
-
-                // Then
-                assertEquals(
-                        (SearchablePreference) preferenceScreen.getPreference(0),
-                        pojo);
-            });
-        }
-    }
-
-    public static PreferenceFragmentCompat createSomePreferenceFragment(final TestActivity activity) {
-        final PreferenceFragmentCompat preferenceFragment = new TestPreferenceFragment();
-        return (PreferenceFragmentCompat) initializeFragment(
-                preferenceFragment,
-                getFragments(preferenceFragment, activity));
-    }
+public class TestHelper {
 
     private static void assertEquals(final SearchablePreference actual, final SearchablePreferencePOJO expected) {
         assertThat(asIconResourceIdOrIconPixelData(Optional.ofNullable(actual.getIcon())), is(expected.iconResourceIdOrIconPixelData()));
