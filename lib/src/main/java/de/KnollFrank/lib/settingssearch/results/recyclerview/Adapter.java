@@ -1,21 +1,19 @@
 package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
 import static de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathView.createPreferencePathView;
-import static de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathView.hasPreferencePathView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathView.getPreferencePathView;
 import static de.KnollFrank.lib.settingssearch.results.recyclerview.SearchableInfoView.createSearchableInfoView;
-import static de.KnollFrank.lib.settingssearch.results.recyclerview.SearchableInfoView.displaySearchableInfo;
-import static de.KnollFrank.lib.settingssearch.results.recyclerview.SearchableInfoView.hasSearchableInfoView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.SearchableInfoView.getSearchableInfoView;
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.TextViews.setOptionalTextOnOptionalTextView;
 import static de.KnollFrank.lib.settingssearch.results.recyclerview.ViewsAdder.addViews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -101,16 +99,22 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     }
 
     // FK-TODO: adapt from PreferenceGroupAdapter.onBindViewHolder()
-    // FK-TODO: refactor
     @Override
     public void onBindViewHolder(final PreferenceViewHolder holder, final int position) {
-        final SearchablePreferencePOJO searchablePreferencePOJO = getItem(position);
-        holder.resetState();
-        onBindViewHolder(holder, searchablePreferencePOJO, true);
-        displaySearchableInfo(holder, searchablePreferencePOJO.getDisplaySearchableInfo());
-        displayPreferencePath(
-                Maps.get(preferencePathByPreference, searchablePreferencePOJO),
-                holder);
+        onBindViewHolder(holder, getItem(position));
+    }
+
+    private void onBindViewHolder(final PreferenceViewHolder viewHolder, final SearchablePreferencePOJO searchablePreferencePOJO) {
+        viewHolder.resetState();
+        viewHolder.itemView.setClickable(true);
+        viewHolder.itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreferencePOJO));
+        // itemView.setId(mViewId);
+        displayTitle(viewHolder, searchablePreferencePOJO);
+        displaySummary(viewHolder, searchablePreferencePOJO);
+        displaySearchableInfo(viewHolder, searchablePreferencePOJO);
+        displayPreferencePath(viewHolder, searchablePreferencePOJO);
+        displayIcon(viewHolder, searchablePreferencePOJO, true);
+        setEnabledStateOnViews(viewHolder.itemView, true);
     }
 
     @Override
@@ -129,7 +133,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
         return items.get(position);
     }
 
-
     private record ItemResourceDescriptor(int layoutResId, int widgetLayoutResId) {
 
         public static ItemResourceDescriptor from(final SearchablePreferencePOJO searchablePreferencePOJO) {
@@ -139,62 +142,70 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
         }
     }
 
-    // FK-TODO: refactor
-    private void onBindViewHolder(final PreferenceViewHolder holder,
-                                  final SearchablePreferencePOJO searchablePreferencePOJO,
-                                  final boolean iconSpaceReserved) {
-        final View itemView = holder.itemView;
+    private static void displayTitle(final PreferenceViewHolder holder,
+                                     final SearchablePreferencePOJO searchablePreferencePOJO) {
+        setOptionalTextOnOptionalTextView(
+                holder.findViewById(android.R.id.title),
+                searchablePreferencePOJO.getDisplayTitle());
+    }
 
-        itemView.setClickable(true);
-        itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreferencePOJO));
-        // itemView.setId(mViewId);
+    private static void displaySummary(final PreferenceViewHolder holder,
+                                       final SearchablePreferencePOJO searchablePreferencePOJO) {
+        setOptionalTextOnOptionalTextView(
+                holder.findViewById(android.R.id.summary),
+                searchablePreferencePOJO.getDisplaySummary());
+    }
 
-        final TextView summaryView = (TextView) holder.findViewById(android.R.id.summary);
-        if (summaryView != null) {
-            final CharSequence summary = searchablePreferencePOJO.getDisplaySummary().orElse("");
-            if (!TextUtils.isEmpty(summary)) {
-                summaryView.setText(summary);
-                summaryView.setVisibility(View.VISIBLE);
-            } else {
-                summaryView.setVisibility(View.GONE);
-            }
-        }
+    private static void displaySearchableInfo(final PreferenceViewHolder holder,
+                                              final SearchablePreferencePOJO searchablePreferencePOJO) {
+        setOptionalTextOnOptionalTextView(
+                getSearchableInfoView(holder),
+                searchablePreferencePOJO.getDisplaySearchableInfo());
+    }
 
-        final TextView titleView = (TextView) holder.findViewById(android.R.id.title);
-        if (titleView != null) {
-            final CharSequence title = searchablePreferencePOJO.getDisplayTitle().orElse("");
-            if (!TextUtils.isEmpty(title)) {
-                titleView.setText(title);
-                titleView.setVisibility(View.VISIBLE);
-            } else {
-                titleView.setVisibility(View.GONE);
-            }
-        }
+    private void displayPreferencePath(final PreferenceViewHolder holder,
+                                       final SearchablePreferencePOJO searchablePreferencePOJO) {
+        final Optional<PreferencePath> preferencePath = Maps.get(preferencePathByPreference, searchablePreferencePOJO);
+        PreferencePathView.displayPreferencePath(
+                getPreferencePathView(holder),
+                preferencePath,
+                showPreferencePath(preferencePath));
+    }
 
-        final Optional<Drawable> icon = searchablePreferencePOJO.getIcon(itemView.getContext());
-        final ImageView imageView = (ImageView) holder.findViewById(android.R.id.icon);
-        if (imageView != null) {
-            icon.ifPresentOrElse(
-                    drawable -> {
-                        imageView.setImageDrawable(drawable);
-                        imageView.setVisibility(View.VISIBLE);
-                    },
-                    () -> imageView.setVisibility(iconSpaceReserved ? View.INVISIBLE : View.GONE));
-        }
+    private boolean showPreferencePath(final Optional<PreferencePath> preferencePath) {
+        return preferencePath
+                .filter(showPreferencePathPredicate::shallShowPreferencePath)
+                .isPresent();
+    }
 
-        View imageFrame = holder.findViewById(androidx.preference.R.id.icon_frame);
-        if (imageFrame == null) {
-            imageFrame = holder.findViewById(AndroidResources.ANDROID_R_ICON_FRAME);
-        }
-        if (imageFrame != null) {
-            if (icon.isPresent()) {
-                imageFrame.setVisibility(View.VISIBLE);
-            } else {
-                imageFrame.setVisibility(iconSpaceReserved ? View.INVISIBLE : View.GONE);
-            }
-        }
+    private static void displayIcon(final PreferenceViewHolder holder, final SearchablePreferencePOJO searchablePreferencePOJO, final boolean iconSpaceReserved) {
+        final Optional<Drawable> icon = searchablePreferencePOJO.getIcon(holder.itemView.getContext());
+        holder
+                .<ImageView>findViewById(android.R.id.icon)
+                .ifPresent(
+                        iconView -> {
+                            icon.ifPresent(iconView::setImageDrawable);
+                            iconView.setVisibility(getVisibility(icon, iconSpaceReserved));
+                        });
+        getImageFrame(holder)
+                .ifPresent(
+                        imageFrame ->
+                                imageFrame.setVisibility(
+                                        getVisibility(icon, iconSpaceReserved)));
+    }
 
-        setEnabledStateOnViews(itemView, true);
+    private static int getVisibility(final Optional<Drawable> icon, final boolean iconSpaceReserved) {
+        return icon.isPresent() ?
+                View.VISIBLE :
+                iconSpaceReserved ?
+                        View.INVISIBLE :
+                        View.GONE;
+    }
+
+    private static Optional<View> getImageFrame(final PreferenceViewHolder holder) {
+        return holder
+                .findViewById(androidx.preference.R.id.icon_frame)
+                .or(() -> holder.findViewById(AndroidResources.ANDROID_R_ICON_FRAME));
     }
 
     private void setEnabledStateOnViews(final View view, final boolean enabled) {
@@ -209,7 +220,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     private static PreferenceViewHolder addSearchableInfoViewAndPreferencePathViewIfAbsent(
             final PreferenceViewHolder holder,
             final Context context) {
-        return hasSearchableInfoView(holder) && hasPreferencePathView(holder) ?
+        return getSearchableInfoView(holder).isPresent() && getPreferencePathView(holder).isPresent() ?
                 holder :
                 addViews(
                         List.of(
@@ -217,18 +228,5 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
                                 createPreferencePathView(context)),
                         holder,
                         context);
-    }
-
-    private void displayPreferencePath(final Optional<PreferencePath> preferencePath, final PreferenceViewHolder holder) {
-        PreferencePathView.displayPreferencePath(
-                holder,
-                preferencePath,
-                showPreferencePath(preferencePath));
-    }
-
-    private boolean showPreferencePath(final Optional<PreferencePath> preferencePath) {
-        return preferencePath
-                .filter(showPreferencePathPredicate::shallShowPreferencePath)
-                .isPresent();
     }
 }

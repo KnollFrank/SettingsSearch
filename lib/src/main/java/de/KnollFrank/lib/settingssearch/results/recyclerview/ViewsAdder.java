@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
-import androidx.annotation.IdRes;
-
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -18,7 +16,7 @@ class ViewsAdder {
             final List<View> views,
             final PreferenceViewHolder holder,
             final Context context) {
-        final Optional<View> summaryView = findViewById(holder, android.R.id.summary);
+        final Optional<View> summaryView = holder.findViewById(android.R.id.summary);
         if (summaryView.isPresent()) {
             ViewAdder.replaceViewWithViews(
                     summaryView.get(),
@@ -52,9 +50,5 @@ class ViewsAdder {
                                 LayoutParams.WRAP_CONTENT));
         ViewAdder.addViews2LinearLayout(children, container);
         return container;
-    }
-
-    private static Optional<View> findViewById(final PreferenceViewHolder holder, final @IdRes int id) {
-        return Optional.ofNullable(holder.findViewById(id));
     }
 }

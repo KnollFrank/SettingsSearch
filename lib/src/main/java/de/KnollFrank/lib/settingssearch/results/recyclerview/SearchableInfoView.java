@@ -20,22 +20,7 @@ class SearchableInfoView {
         return searchableInfoView;
     }
 
-    public static void displaySearchableInfo(final PreferenceViewHolder holder,
-                                             final Optional<CharSequence> searchableInfo) {
-        final TextView searchableInfoView = getSearchableInfoView(holder);
-        if (searchableInfo.isPresent()) {
-            searchableInfoView.setText(searchableInfo.get());
-            searchableInfoView.setVisibility(View.VISIBLE);
-        } else {
-            searchableInfoView.setVisibility(View.GONE);
-        }
-    }
-
-    public static boolean hasSearchableInfoView(final PreferenceViewHolder holder) {
-        return holder.findViewById(SEARCHABLE_INFO_VIEW_ID) != null;
-    }
-
-    private static TextView getSearchableInfoView(final PreferenceViewHolder holder) {
-        return (TextView) holder.findViewById(SEARCHABLE_INFO_VIEW_ID);
+    public static Optional<TextView> getSearchableInfoView(final PreferenceViewHolder holder) {
+        return holder.findViewById(SEARCHABLE_INFO_VIEW_ID);
     }
 }

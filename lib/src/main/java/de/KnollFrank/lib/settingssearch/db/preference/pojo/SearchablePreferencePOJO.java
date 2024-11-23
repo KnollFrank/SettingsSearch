@@ -101,6 +101,7 @@ public final class SearchablePreferencePOJO {
         this.displaySummaryProvider = displaySummaryProvider;
     }
 
+    // FK-TODO: rename to highlightedSummary, dito title and searchableInfo
     public Optional<CharSequence> getDisplaySummary() {
         if (displaySummaryProvider == null) {
             displaySummaryProvider = Optional::empty;

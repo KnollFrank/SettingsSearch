@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
+import static de.KnollFrank.lib.settingssearch.results.recyclerview.TextViews.setOptionalTextOnOptionalTextView;
+
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
@@ -22,27 +24,24 @@ class PreferencePathView {
         return preferencePathView;
     }
 
-    public static void displayPreferencePath(final PreferenceViewHolder holder,
+    public static void displayPreferencePath(final Optional<TextView> preferencePathView,
                                              final Optional<PreferencePath> preferencePath,
                                              final boolean showPreferencePath) {
-        final TextView preferencePathView = getPreferencePathView(holder);
-        if (showPreferencePath && preferencePath.isPresent()) {
-            preferencePathView.setText(
-                    MessageFormat.format(
-                            "Path: {0}",
-                            toString(preferencePath.get())));
-            preferencePathView.setVisibility(View.VISIBLE);
+        if (showPreferencePath) {
+            setOptionalTextOnOptionalTextView(
+                    preferencePathView,
+                    preferencePath.map(
+                            _preferencePath ->
+                                    MessageFormat.format(
+                                            "Path: {0}",
+                                            toString(_preferencePath))));
         } else {
-            preferencePathView.setVisibility(View.GONE);
+            preferencePathView.ifPresent(_preferencePathView -> _preferencePathView.setVisibility(View.GONE));
         }
     }
 
-    public static boolean hasPreferencePathView(final PreferenceViewHolder holder) {
-        return holder.findViewById(PREFERENCE_PATH_VIEW_ID) != null;
-    }
-
-    private static TextView getPreferencePathView(final PreferenceViewHolder holder) {
-        return (TextView) holder.findViewById(PREFERENCE_PATH_VIEW_ID);
+    public static Optional<TextView> getPreferencePathView(final PreferenceViewHolder holder) {
+        return holder.findViewById(PREFERENCE_PATH_VIEW_ID);
     }
 
     private static String toString(final PreferencePath preferencePath) {

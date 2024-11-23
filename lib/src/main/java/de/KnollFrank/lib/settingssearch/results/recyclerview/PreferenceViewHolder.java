@@ -13,6 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.preference.AndroidResources;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Optional;
+
 // FK-TODO: refactor
 public class PreferenceViewHolder extends RecyclerView.ViewHolder {
 
@@ -23,17 +25,13 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
 
     public PreferenceViewHolder(@NonNull View itemView) {
         super(itemView);
-
         final TextView titleView = itemView.findViewById(android.R.id.title);
-
         // Pre-cache the views that we know in advance we'll want to find
         mCachedViews.put(android.R.id.title, titleView);
         mCachedViews.put(android.R.id.summary, itemView.findViewById(android.R.id.summary));
         mCachedViews.put(android.R.id.icon, itemView.findViewById(android.R.id.icon));
         mCachedViews.put(androidx.preference.R.id.icon_frame, itemView.findViewById(androidx.preference.R.id.icon_frame));
-        mCachedViews.put(AndroidResources.ANDROID_R_ICON_FRAME,
-                itemView.findViewById(AndroidResources.ANDROID_R_ICON_FRAME));
-
+        mCachedViews.put(AndroidResources.ANDROID_R_ICON_FRAME, itemView.findViewById(AndroidResources.ANDROID_R_ICON_FRAME));
         mBackground = itemView.getBackground();
         if (titleView != null) {
             mTitleTextColors = titleView.getTextColors();
@@ -44,16 +42,16 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
         return new PreferenceViewHolder(itemView);
     }
 
-    public View findViewById(@IdRes int id) {
-        final View cachedView = mCachedViews.get(id);
+    public <T extends View> Optional<T> findViewById(@IdRes int id) {
+        final T cachedView = (T) mCachedViews.get(id);
         if (cachedView != null) {
-            return cachedView;
+            return Optional.of(cachedView);
         } else {
-            final View v = itemView.findViewById(id);
-            if (v != null) {
-                mCachedViews.put(id, v);
+            final T view = itemView.findViewById(id);
+            if (view != null) {
+                mCachedViews.put(id, view);
             }
-            return v;
+            return Optional.ofNullable(view);
         }
     }
 
@@ -61,12 +59,16 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
         if (itemView.getBackground() != mBackground) {
             ViewCompat.setBackground(itemView, mBackground);
         }
+        if (mTitleTextColors != null) {
+            this
+                    .<TextView>findViewById(android.R.id.title)
+                    .ifPresent(titleView -> setTextColor(titleView, mTitleTextColors));
+        }
+    }
 
-        final TextView titleView = (TextView) findViewById(android.R.id.title);
-        if (titleView != null && mTitleTextColors != null) {
-            if (!titleView.getTextColors().equals(mTitleTextColors)) {
-                titleView.setTextColor(mTitleTextColors);
-            }
+    private static void setTextColor(final TextView titleView, final ColorStateList colorStateList) {
+        if (!titleView.getTextColors().equals(colorStateList)) {
+            titleView.setTextColor(colorStateList);
         }
     }
 }

@@ -59,10 +59,18 @@ public class SearchResultsDisplayerTest {
                 assertThat(
                         Matchers.recyclerViewHasItem(
                                 searchResultsFragment.getRecyclerView(),
-                                (final PreferenceViewHolder viewHolder) -> ((TextView) viewHolder.findViewById(android.R.id.title)).getText().toString().equals(title)),
+                                (final PreferenceViewHolder viewHolder) -> getTitle(viewHolder).equals(title)),
                         is(true));
             });
         }
+    }
+
+    private static String getTitle(final PreferenceViewHolder viewHolder) {
+        return viewHolder
+                .<TextView>findViewById(android.R.id.title)
+                .orElseThrow()
+                .getText()
+                .toString();
     }
 
     private static SearchResultsFragment getInitializedSearchResultsFragment(final TestActivity activity) {
