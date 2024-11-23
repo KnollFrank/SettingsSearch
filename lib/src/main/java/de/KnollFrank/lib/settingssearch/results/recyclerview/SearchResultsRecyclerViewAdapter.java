@@ -86,7 +86,8 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         return items.get(position);
     }
 
-    private record ItemResourceDescriptor(int layoutResId, int widgetLayoutResId) {
+    private record ItemResourceDescriptor(@IdRes int layoutResId,
+                                          @LayoutRes int widgetLayoutResId) {
 
         public static ItemResourceDescriptor from(final SearchablePreferencePOJO searchablePreferencePOJO) {
             return new ItemResourceDescriptor(
@@ -107,7 +108,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View view = inflater.inflate(itemResourceDescriptor.layoutResId(), parent, false);
         setBackground(view, parent.getContext());
-        showWidgetFrame(android.R.id.widget_frame, itemResourceDescriptor.widgetLayoutResId(), view, inflater);
+        showWidgetFrame(itemResourceDescriptor.widgetLayoutResId(), view, inflater);
         final PreferenceViewHolder preferenceViewHolder =
                 addSearchableInfoViewAndPreferencePathViewIfAbsent(
                         new PreferenceViewHolder(view),
@@ -137,11 +138,10 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
                         android.R.drawable.list_selector_background);
     }
 
-    private static void showWidgetFrame(final @IdRes int widgetFrameId,
-                                        final @LayoutRes int widgetLayoutResId,
+    private static void showWidgetFrame(final @LayoutRes int widgetLayoutResId,
                                         final View view,
                                         final LayoutInflater inflater) {
-        final ViewGroup widgetFrame = view.findViewById(widgetFrameId);
+        final ViewGroup widgetFrame = view.findViewById(android.R.id.widget_frame);
         if (widgetFrame != null) {
             if (widgetLayoutResId != 0) {
                 inflater.inflate(widgetLayoutResId, widgetFrame);
