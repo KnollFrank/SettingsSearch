@@ -106,12 +106,12 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
                                                            final ItemResourceDescriptor itemResourceDescriptor) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View view = inflater.inflate(itemResourceDescriptor.layoutResId(), parent, false);
-        setBackground(view, inflater.getContext());
+        setBackground(view, parent.getContext());
         showWidgetFrame(android.R.id.widget_frame, itemResourceDescriptor.widgetLayoutResId(), view, inflater);
         final PreferenceViewHolder preferenceViewHolder =
                 addSearchableInfoViewAndPreferencePathViewIfAbsent(
                         new PreferenceViewHolder(view),
-                        inflater.getContext());
+                        parent.getContext());
         ClickListenerSetter.disableClicksOnSubviews(preferenceViewHolder.itemView);
         return preferenceViewHolder;
     }
