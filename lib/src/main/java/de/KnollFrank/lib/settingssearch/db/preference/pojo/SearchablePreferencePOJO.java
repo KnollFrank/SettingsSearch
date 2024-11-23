@@ -26,16 +26,16 @@ public final class SearchablePreferencePOJO {
     private final int layoutResId;
     private final String summary;
     @Exclude
-    private Supplier<Optional<CharSequence>> displaySummaryProvider;
+    private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
     private final String title;
     @Exclude
-    private Supplier<Optional<CharSequence>> displayTitleProvider;
+    private Supplier<Optional<CharSequence>> highlightedTitleProvider;
     private final int widgetLayoutResId;
     private final String fragment;
     private final boolean visible;
     private final String searchableInfo;
     @Exclude
-    private Supplier<Optional<CharSequence>> displaySearchableInfoProvider;
+    private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
     private final Bundle extras;
     private final List<SearchablePreferencePOJO> children;
 
@@ -97,31 +97,45 @@ public final class SearchablePreferencePOJO {
         return Optional.ofNullable(summary);
     }
 
-    public void setDisplaySummaryProvider(final Supplier<Optional<CharSequence>> displaySummaryProvider) {
-        this.displaySummaryProvider = displaySummaryProvider;
+    public void setHighlightedSummaryProvider(final Supplier<Optional<CharSequence>> highlightedSummaryProvider) {
+        this.highlightedSummaryProvider = highlightedSummaryProvider;
     }
 
-    // FK-TODO: rename to highlightedSummary, dito title and searchableInfo
-    public Optional<CharSequence> getDisplaySummary() {
-        if (displaySummaryProvider == null) {
-            displaySummaryProvider = Optional::empty;
+    public Optional<CharSequence> getHighlightedSummary() {
+        if (highlightedSummaryProvider == null) {
+            highlightedSummaryProvider = Optional::empty;
         }
-        return displaySummaryProvider.get();
+        return highlightedSummaryProvider.get();
     }
 
     public Optional<String> getTitle() {
         return Optional.ofNullable(title);
     }
 
-    public void setDisplayTitleProvider(final Supplier<Optional<CharSequence>> displayTitleProvider) {
-        this.displayTitleProvider = displayTitleProvider;
+    public void setHighlightedTitleProvider(final Supplier<Optional<CharSequence>> highlightedTitleProvider) {
+        this.highlightedTitleProvider = highlightedTitleProvider;
     }
 
-    public Optional<CharSequence> getDisplayTitle() {
-        if (displayTitleProvider == null) {
-            displayTitleProvider = Optional::empty;
+    public Optional<CharSequence> getHighlightedTitle() {
+        if (highlightedTitleProvider == null) {
+            highlightedTitleProvider = Optional::empty;
         }
-        return displayTitleProvider.get();
+        return highlightedTitleProvider.get();
+    }
+
+    public Optional<String> getSearchableInfo() {
+        return Optional.ofNullable(searchableInfo);
+    }
+
+    public void setHighlightedSearchableInfoProvider(final Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider) {
+        this.highlightedSearchableInfoProvider = highlightedSearchableInfoProvider;
+    }
+
+    public Optional<CharSequence> getHighlightedSearchableInfo() {
+        if (highlightedSearchableInfoProvider == null) {
+            highlightedSearchableInfoProvider = Optional::empty;
+        }
+        return highlightedSearchableInfoProvider.get();
     }
 
     public int getWidgetLayoutResId() {
@@ -134,21 +148,6 @@ public final class SearchablePreferencePOJO {
 
     public boolean isVisible() {
         return visible;
-    }
-
-    public Optional<String> getSearchableInfo() {
-        return Optional.ofNullable(searchableInfo);
-    }
-
-    public void setDisplaySearchableInfoProvider(final Supplier<Optional<CharSequence>> displaySearchableInfoProvider) {
-        this.displaySearchableInfoProvider = displaySearchableInfoProvider;
-    }
-
-    public Optional<CharSequence> getDisplaySearchableInfo() {
-        if (displaySearchableInfoProvider == null) {
-            displaySearchableInfoProvider = Optional::empty;
-        }
-        return displaySearchableInfoProvider.get();
     }
 
     public Bundle getExtras() {

@@ -146,21 +146,21 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
                                      final SearchablePreferencePOJO searchablePreferencePOJO) {
         setOptionalTextOnOptionalTextView(
                 holder.findViewById(android.R.id.title),
-                searchablePreferencePOJO.getDisplayTitle());
+                searchablePreferencePOJO.getHighlightedTitle());
     }
 
     private static void displaySummary(final PreferenceViewHolder holder,
                                        final SearchablePreferencePOJO searchablePreferencePOJO) {
         setOptionalTextOnOptionalTextView(
                 holder.findViewById(android.R.id.summary),
-                searchablePreferencePOJO.getDisplaySummary());
+                searchablePreferencePOJO.getHighlightedSummary());
     }
 
     private static void displaySearchableInfo(final PreferenceViewHolder holder,
                                               final SearchablePreferencePOJO searchablePreferencePOJO) {
         setOptionalTextOnOptionalTextView(
                 getSearchableInfoView(holder),
-                searchablePreferencePOJO.getDisplaySearchableInfo());
+                searchablePreferencePOJO.getHighlightedSearchableInfo());
     }
 
     private void displayPreferencePath(final PreferenceViewHolder holder,

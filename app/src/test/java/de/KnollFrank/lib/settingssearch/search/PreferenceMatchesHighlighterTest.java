@@ -51,7 +51,7 @@ public class PreferenceMatchesHighlighterTest {
                 preferenceMatchesHighlighter.highlight(preferenceMatches);
 
                 // Then
-                final Spannable title = (Spannable) preference.getDisplayTitle().orElseThrow();
+                final Spannable title = (Spannable) preference.getHighlightedTitle().orElseThrow();
                 final int markupsSize = markupsFactory.get().size();
                 assertThat(title.getSpans(0, 5, Object.class), arrayWithSize(markupsSize));
                 assertThat(title.getSpans(7, 12, Object.class), arrayWithSize(markupsSize));
@@ -87,7 +87,7 @@ public class PreferenceMatchesHighlighterTest {
                 preferenceMatchesHighlighter.highlight(preferenceMatches);
 
                 // Then
-                final Spannable summary = (Spannable) preference.getDisplaySummary().orElseThrow();
+                final Spannable summary = (Spannable) preference.getHighlightedSummary().orElseThrow();
                 final int markupsSize = markupsFactory.get().size();
                 assertThat(summary.getSpans(0, 7, Object.class), arrayWithSize(markupsSize));
                 assertThat(summary.getSpans(9, 16, Object.class), arrayWithSize(markupsSize));
@@ -124,7 +124,7 @@ public class PreferenceMatchesHighlighterTest {
                 preferenceMatchesHighlighter.highlight(preferenceMatches);
 
                 // Then
-                final Spannable searchableInfo = (Spannable) preference.getDisplaySearchableInfo().orElseThrow();
+                final Spannable searchableInfo = (Spannable) preference.getHighlightedSearchableInfo().orElseThrow();
                 final int markupsSize = markupsFactory.get().size();
                 assertThat(searchableInfo.getSpans(0, 4, Object.class), arrayWithSize(markupsSize));
                 assertThat(searchableInfo.getSpans(6, 10, Object.class), arrayWithSize(markupsSize));

@@ -32,21 +32,21 @@ public class PreferenceMatchesHighlighter {
 
     private void highlightTitle(final PreferenceMatch preferenceMatch) {
         highlight(
-                preferenceMatch.preference()::setDisplayTitleProvider,
+                preferenceMatch.preference()::setHighlightedTitleProvider,
                 preferenceMatch.preference()::getTitle,
                 preferenceMatch.titleMatches());
     }
 
     private void highlightSummary(final PreferenceMatch preferenceMatch) {
         highlight(
-                preferenceMatch.preference()::setDisplaySummaryProvider,
+                preferenceMatch.preference()::setHighlightedSummaryProvider,
                 preferenceMatch.preference()::getSummary,
                 preferenceMatch.summaryMatches());
     }
 
     private void highlightSearchableInfo(final PreferenceMatch preferenceMatch) {
         highlight(
-                preferenceMatch.preference()::setDisplaySearchableInfoProvider,
+                preferenceMatch.preference()::setHighlightedSearchableInfoProvider,
                 preferenceMatch.preference()::getSearchableInfo,
                 preferenceMatch.searchableInfoMatches());
     }
