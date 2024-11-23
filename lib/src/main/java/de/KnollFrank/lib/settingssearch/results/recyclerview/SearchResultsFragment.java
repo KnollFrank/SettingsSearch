@@ -46,12 +46,12 @@ public class SearchResultsFragment extends Fragment {
         return recyclerView;
     }
 
-    private Adapter getAdapter() {
-        return (Adapter) recyclerView.getAdapter();
+    private SearchResultsRecyclerViewAdapter getSearchResultsRecyclerViewAdapter() {
+        return (SearchResultsRecyclerViewAdapter) recyclerView.getAdapter();
     }
 
     public void setSearchResults(final List<SearchablePreferencePOJO> searchResults) {
-        getAdapter().setItems(searchResults);
+        getSearchResultsRecyclerViewAdapter().setItems(searchResults);
     }
 
     private void configure(final RecyclerView recyclerView) {
@@ -63,11 +63,11 @@ public class SearchResultsFragment extends Fragment {
                 new DividerItemDecoration(
                         recyclerView.getContext(),
                         layoutManager.getOrientation()));
-        final Adapter adapter =
-                new Adapter(
+        final SearchResultsRecyclerViewAdapter searchResultsRecyclerViewAdapter =
+                new SearchResultsRecyclerViewAdapter(
                         showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
                         showPreferencePathPredicate,
                         preferencePathByPreference);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(searchResultsRecyclerViewAdapter);
     }
 }

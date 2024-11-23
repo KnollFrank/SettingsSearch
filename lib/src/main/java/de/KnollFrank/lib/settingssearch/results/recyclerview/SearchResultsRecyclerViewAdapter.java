@@ -36,7 +36,7 @@ import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
 
 // FK-TODO: see androidx.preference.PreferenceGroupAdapter
-public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
+public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
     private final List<SearchablePreferencePOJO> items = new ArrayList<>();
     private final Consumer<SearchablePreferencePOJO> onPreferenceClickListener;
@@ -44,9 +44,9 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
 
-    public Adapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener,
-                   final ShowPreferencePathPredicate showPreferencePathPredicate,
-                   final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference) {
+    public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener,
+                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
+                                            final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference) {
         this.onPreferenceClickListener = onPreferenceClickListener;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.preferencePathByPreference = preferencePathByPreference;
