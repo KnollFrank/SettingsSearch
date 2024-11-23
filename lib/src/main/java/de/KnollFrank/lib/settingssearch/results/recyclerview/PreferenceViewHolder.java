@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Optional;
 
-// FK-TODO: refactor
 public class PreferenceViewHolder extends RecyclerView.ViewHolder {
 
     @Nullable
