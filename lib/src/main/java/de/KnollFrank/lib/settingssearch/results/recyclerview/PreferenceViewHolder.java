@@ -19,46 +19,46 @@ import java.util.Optional;
 public class PreferenceViewHolder extends RecyclerView.ViewHolder {
 
     @Nullable
-    private final Drawable mBackground;
-    private ColorStateList mTitleTextColors;
-    private final SparseArray<View> mCachedViews = new SparseArray<>(4);
+    private final Drawable background;
+    private ColorStateList titleTextColors;
+    private final SparseArray<View> cachedViews = new SparseArray<>(4);
 
     public PreferenceViewHolder(@NonNull View itemView) {
         super(itemView);
         final TextView titleView = itemView.findViewById(android.R.id.title);
         // Pre-cache the views that we know in advance we'll want to find
-        mCachedViews.put(android.R.id.title, titleView);
-        mCachedViews.put(android.R.id.summary, itemView.findViewById(android.R.id.summary));
-        mCachedViews.put(android.R.id.icon, itemView.findViewById(android.R.id.icon));
-        mCachedViews.put(androidx.preference.R.id.icon_frame, itemView.findViewById(androidx.preference.R.id.icon_frame));
-        mCachedViews.put(AndroidResources.ANDROID_R_ICON_FRAME, itemView.findViewById(AndroidResources.ANDROID_R_ICON_FRAME));
-        mBackground = itemView.getBackground();
+        cachedViews.put(android.R.id.title, titleView);
+        cachedViews.put(android.R.id.summary, itemView.findViewById(android.R.id.summary));
+        cachedViews.put(android.R.id.icon, itemView.findViewById(android.R.id.icon));
+        cachedViews.put(androidx.preference.R.id.icon_frame, itemView.findViewById(androidx.preference.R.id.icon_frame));
+        cachedViews.put(AndroidResources.ANDROID_R_ICON_FRAME, itemView.findViewById(AndroidResources.ANDROID_R_ICON_FRAME));
+        background = itemView.getBackground();
         if (titleView != null) {
-            mTitleTextColors = titleView.getTextColors();
+            titleTextColors = titleView.getTextColors();
         }
     }
 
     public <T extends View> Optional<T> findViewById(@IdRes int id) {
-        final T cachedView = (T) mCachedViews.get(id);
+        final T cachedView = (T) cachedViews.get(id);
         if (cachedView != null) {
             return Optional.of(cachedView);
         } else {
             final T view = itemView.findViewById(id);
             if (view != null) {
-                mCachedViews.put(id, view);
+                cachedViews.put(id, view);
             }
             return Optional.ofNullable(view);
         }
     }
 
     void resetState() {
-        if (itemView.getBackground() != mBackground) {
-            ViewCompat.setBackground(itemView, mBackground);
+        if (itemView.getBackground() != background) {
+            ViewCompat.setBackground(itemView, background);
         }
-        if (mTitleTextColors != null) {
+        if (titleTextColors != null) {
             this
                     .<TextView>findViewById(android.R.id.title)
-                    .ifPresent(titleView -> setTextColor(titleView, mTitleTextColors));
+                    .ifPresent(titleView -> setTextColor(titleView, titleTextColors));
         }
     }
 
