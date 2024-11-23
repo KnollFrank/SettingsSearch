@@ -132,13 +132,13 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     }
 
     private static Drawable getBackground(final Context context) {
-        try (final TypedArray a = context.obtainStyledAttributes(null, androidx.preference.R.styleable.BackgroundStyle)) {
-            return getBackground(a, context);
+        try (final TypedArray typedArray = context.obtainStyledAttributes(null, androidx.preference.R.styleable.BackgroundStyle)) {
+            return getBackground(typedArray, context);
         }
     }
 
-    private static Drawable getBackground(final TypedArray a, final Context context) {
-        final Drawable background = a.getDrawable(androidx.preference.R.styleable.BackgroundStyle_android_selectableItemBackground);
+    private static Drawable getBackground(final TypedArray typedArray, final Context context) {
+        final Drawable background = typedArray.getDrawable(androidx.preference.R.styleable.BackgroundStyle_android_selectableItemBackground);
         return background != null ?
                 background :
                 AppCompatResources.getDrawable(
