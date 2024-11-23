@@ -21,6 +21,7 @@ class MergedPreferenceScreenDataRepository {
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
         // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
         // FK-TODO: eine Löschung der dataFiles ermöglichen, damit eine Neuberechnung stattfindet (z.B. durch neue Plugins in OsmAnd ausgelöst).
+        // FK-TODO: die Berechnung der dataFiles über eine API startbar machen zu jedem beliebigen Zeitpunkt, z.B. schon beim Appstart und nicht erst im letzmöglichen Augenblick wie hier.
         if (exists(dataFiles)) {
             progressDisplayer.displayProgress("loading search database");
             return MergedPreferenceScreenDataFileDAO.load(dataFiles);
