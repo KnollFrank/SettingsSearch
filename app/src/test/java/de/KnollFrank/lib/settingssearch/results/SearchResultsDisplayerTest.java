@@ -17,13 +17,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.Matchers;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
+import de.KnollFrank.lib.settingssearch.test.Matchers;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch;
+package de.KnollFrank.lib.settingssearch.test;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
