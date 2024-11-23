@@ -29,6 +29,7 @@ public class SearchablePreferenceTransformer {
         this.iconProvider = iconProvider;
     }
 
+    // FK-TODO: transform directly to SearchablePreferenceScreenPOJO, do not use SearchablePreference any more
     public SearchablePreferenceScreenWithMap transform2SearchablePreferenceScreen(final PreferenceScreen preferenceScreen) {
         final PreferenceScreen searchablePreferenceScreen = preferenceManager.createPreferenceScreen(preferenceManager.getContext());
         copyAttributes(preferenceScreen, searchablePreferenceScreen);
