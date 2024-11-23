@@ -36,7 +36,7 @@ class ViewsAdder {
                                     .addAll(views)
                                     .build(),
                             context);
-            return PreferenceViewHolder.createInstance(container);
+            return new PreferenceViewHolder(container);
         }
     }
 

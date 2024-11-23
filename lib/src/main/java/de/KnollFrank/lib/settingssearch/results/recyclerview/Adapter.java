@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.ViewCompat;
@@ -59,16 +61,12 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     @NonNull
     @Override
     public PreferenceViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        final ItemResourceDescriptor itemResourceDescriptor = itemResourceDescriptors.get(viewType);
-        return onCreateViewHolder(
-                parent,
-                itemResourceDescriptor.layoutResId(),
-                itemResourceDescriptor.widgetLayoutResId());
+        return onCreateViewHolder(parent, itemResourceDescriptors.get(viewType));
     }
 
     // FK-TODO: adapt from PreferenceGroupAdapter.onBindViewHolder()
     @Override
-    public void onBindViewHolder(final PreferenceViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final PreferenceViewHolder holder, final int position) {
         onBindViewHolder(holder, getItem(position));
     }
 
@@ -104,17 +102,17 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
         return itemResourceDescriptors.indexOf(itemResourceDescriptor);
     }
 
-    // FK-TODO: refactor
-    private static PreferenceViewHolder onCreateViewHolder(final ViewGroup parent,
-                                                           final int layoutResId,
-                                                           final int widgetLayoutResId) {
-        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        final View view = inflater.inflate(layoutResId, parent, false);
+    private static void setBackground(final View view, final Context context) {
         if (view.getBackground() == null) {
-            ViewCompat.setBackground(view, getBackground(parent.getContext()));
+            ViewCompat.setBackground(view, getBackground(context));
         }
+    }
 
-        final ViewGroup widgetFrame = view.findViewById(android.R.id.widget_frame);
+    private static void showWidgetFrame(final @IdRes int widgetFrameId,
+                                        final @LayoutRes int widgetLayoutResId,
+                                        final View view,
+                                        final LayoutInflater inflater) {
+        final ViewGroup widgetFrame = view.findViewById(widgetFrameId);
         if (widgetFrame != null) {
             if (widgetLayoutResId != 0) {
                 inflater.inflate(widgetLayoutResId, widgetFrame);
@@ -122,13 +120,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
                 widgetFrame.setVisibility(View.GONE);
             }
         }
-
-        final PreferenceViewHolder preferenceViewHolder =
-                addSearchableInfoViewAndPreferencePathViewIfAbsent(
-                        new PreferenceViewHolder(view),
-                        parent.getContext());
-        ClickListenerSetter.disableClicksOnSubviews(preferenceViewHolder.itemView);
-        return preferenceViewHolder;
     }
 
     private static Drawable getBackground(final Context context) {
@@ -144,6 +135,20 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
                 AppCompatResources.getDrawable(
                         context,
                         android.R.drawable.list_selector_background);
+    }
+
+    private static PreferenceViewHolder onCreateViewHolder(final @NonNull ViewGroup parent,
+                                                           final ItemResourceDescriptor itemResourceDescriptor) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final View view = inflater.inflate(itemResourceDescriptor.layoutResId(), parent, false);
+        setBackground(view, inflater.getContext());
+        showWidgetFrame(android.R.id.widget_frame, itemResourceDescriptor.widgetLayoutResId(), view, inflater);
+        final PreferenceViewHolder preferenceViewHolder =
+                addSearchableInfoViewAndPreferencePathViewIfAbsent(
+                        new PreferenceViewHolder(view),
+                        inflater.getContext());
+        ClickListenerSetter.disableClicksOnSubviews(preferenceViewHolder.itemView);
+        return preferenceViewHolder;
     }
 
     private void onBindViewHolder(final PreferenceViewHolder viewHolder, final SearchablePreferencePOJO searchablePreferencePOJO) {

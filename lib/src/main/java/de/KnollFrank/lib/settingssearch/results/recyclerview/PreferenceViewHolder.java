@@ -38,10 +38,6 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public static PreferenceViewHolder createInstance(final View itemView) {
-        return new PreferenceViewHolder(itemView);
-    }
-
     public <T extends View> Optional<T> findViewById(@IdRes int id) {
         final T cachedView = (T) mCachedViews.get(id);
         if (cachedView != null) {
