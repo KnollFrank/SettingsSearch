@@ -9,7 +9,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
-// FK-TODO: remove?
 class SearchablePreferenceScreen2POJOConverter {
 
     public static SearchablePreferenceScreenPOJOWithMap convert2POJO(final PreferenceScreen preferenceScreen,

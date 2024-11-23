@@ -12,10 +12,11 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-class IconProvider {
+public class IconProvider {
 
     private final Map<SearchablePreferencePOJO, Optional<Drawable>> iconByPreference = new HashMap<>();
 
+    // FK-TODO: move method into SearchablePreferencePOJO?
     public Optional<Drawable> getIcon(final SearchablePreferencePOJO searchablePreferencePOJO,
                                       final Context context) {
         if (!iconByPreference.containsKey(searchablePreferencePOJO)) {
