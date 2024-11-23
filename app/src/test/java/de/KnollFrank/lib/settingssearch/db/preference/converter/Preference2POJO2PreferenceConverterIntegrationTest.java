@@ -19,7 +19,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.IconProvider;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -38,7 +37,7 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
                 final SearchablePreferencePOJO pojo = convertPreference2POJO(preference);
 
                 // Then
-                final Drawable pojoIcon = new IconProvider().getIcon(pojo, activity).orElseThrow();
+                final Drawable pojoIcon = pojo.getIcon(activity).orElseThrow();
                 assertThat(equals(pojoIcon, preference.getIcon()), is(true));
             });
         }

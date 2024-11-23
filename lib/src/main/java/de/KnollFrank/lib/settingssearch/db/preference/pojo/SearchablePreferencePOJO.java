@@ -1,6 +1,10 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -9,6 +13,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
 public final class SearchablePreferencePOJO {
@@ -16,6 +21,8 @@ public final class SearchablePreferencePOJO {
     private final int id;
     private final String key;
     private final Either<Integer, String> iconResourceIdOrIconPixelData;
+    @Exclude
+    private Optional<Drawable> iconCache;
     private final int layoutResId;
     private final String summary;
     @Exclude
@@ -73,6 +80,13 @@ public final class SearchablePreferencePOJO {
 
     public Optional<Either<Integer, String>> iconResourceIdOrIconPixelData() {
         return Optional.ofNullable(iconResourceIdOrIconPixelData);
+    }
+
+    public Optional<Drawable> getIcon(final Context context) {
+        if (iconCache == null) {
+            iconCache = _getIcon(context);
+        }
+        return iconCache;
     }
 
     public int layoutResId() {
@@ -168,5 +182,17 @@ public final class SearchablePreferencePOJO {
                 "searchableInfo=" + searchableInfo + ", " +
                 "extras=" + extras + ", " +
                 "children=" + children + ']';
+    }
+
+    private Optional<Drawable> _getIcon(final Context context) {
+        return this
+                .iconResourceIdOrIconPixelData()
+                .map(iconResourceIdOrIconPixelData ->
+                        iconResourceIdOrIconPixelData.join(
+                                iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
+                                iconPixelData ->
+                                        DrawableAndStringConverter.string2Drawable(
+                                                iconPixelData,
+                                                context.getResources())));
     }
 }

@@ -43,7 +43,6 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
-    private final IconProvider iconProvider = new IconProvider();
 
     public Adapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener,
                    final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -172,7 +171,7 @@ public class Adapter extends RecyclerView.Adapter<PreferenceViewHolder> {
             }
         }
 
-        final Optional<Drawable> icon = iconProvider.getIcon(searchablePreferencePOJO, itemView.getContext());
+        final Optional<Drawable> icon = searchablePreferencePOJO.getIcon(itemView.getContext());
         final ImageView imageView = (ImageView) holder.findViewById(android.R.id.icon);
         if (imageView != null) {
             icon.ifPresentOrElse(
