@@ -3,12 +3,16 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndBitmapConverter.drawable2Bitmap;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTestFactory.createSomePreferenceFragment;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
+
+import com.codepoetics.ambivalence.Either;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +20,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -34,7 +37,10 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
                 final Preference preference = createPreferenceWithIcon(activity, icon);
 
                 // When
-                final SearchablePreferencePOJO pojo = convertPreference2POJO(preference);
+                final SearchablePreferencePOJO pojo =
+                        convertPreference2POJO(
+                                preference,
+                                createSomePreferenceFragment(activity));
 
                 // Then
                 final Drawable pojoIcon = pojo.getIcon(activity).orElseThrow();
@@ -49,22 +55,21 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
         return preference;
     }
 
-    private static SearchablePreferencePOJO convertPreference2POJO(final Preference preference) {
-        return SearchablePreference2POJOConverter
-                .convert2POJO(
-                        asSearchablePreference(preference),
-                        new IdGenerator())
+    private static SearchablePreferencePOJO convertPreference2POJO(final Preference preference,
+                                                                   final PreferenceFragmentCompat hostOfPreference) {
+        final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
+                new Preference2SearchablePreferencePOJOConverter(
+                        (_preference, _hostOfPreference) ->
+                                preference.equals(_preference) ?
+                                        Optional.of(Either.ofRight(preference.getIcon())) :
+                                        Optional.empty(),
+                        new SearchableInfoAndDialogInfoProvider(
+                                _preference -> Optional.empty(),
+                                (_preference, _hostOfPreference) -> Optional.empty()),
+                        new IdGenerator());
+        return preference2SearchablePreferencePOJOConverter
+                .convert2POJO(preference, hostOfPreference)
                 .searchablePreferencePOJO();
-    }
-
-    private static SearchablePreference asSearchablePreference(final Preference preference) {
-        final SearchablePreference searchablePreference =
-                new SearchablePreference(
-                        preference.getContext(),
-                        Optional.empty(),
-                        de.KnollFrank.lib.settingssearch.search.IconProvider.getIconDrawable(preference));
-        SearchablePreferenceTransformer.copyAttributes(preference, searchablePreference);
-        return searchablePreference;
     }
 
     private static boolean equals(final Drawable drawable1, final Drawable drawable2) {

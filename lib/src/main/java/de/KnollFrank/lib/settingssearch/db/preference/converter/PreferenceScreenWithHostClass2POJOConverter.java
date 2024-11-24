@@ -1,9 +1,10 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import androidx.preference.Preference;
+
 import com.google.common.collect.BiMap;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
-import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
@@ -11,21 +12,22 @@ public class PreferenceScreenWithHostClass2POJOConverter {
 
     public record PreferenceScreenWithHostClassPOJOWithMap(
             PreferenceScreenWithHostClassPOJO preferenceScreenWithHostClass,
-            BiMap<SearchablePreferencePOJO, SearchablePreference> pojoEntityMap) {
+            BiMap<SearchablePreferencePOJO, Preference> pojoEntityMap) {
     }
 
-    public static PreferenceScreenWithHostClassPOJOWithMap convert2POJO(final PreferenceScreenWithHostClass preferenceScreenWithHostClass,
+    public static PreferenceScreenWithHostClassPOJOWithMap convert2POJO(final PreferenceScreenWithHost preferenceScreenWithHost,
                                                                         final int id,
-                                                                        final IdGenerator idGenerator) {
+                                                                        final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter) {
         final SearchablePreferenceScreenPOJOWithMap searchablePreferenceScreenPOJOWithMap =
                 SearchablePreferenceScreen2POJOConverter.convert2POJO(
-                        preferenceScreenWithHostClass.preferenceScreen(),
-                        idGenerator);
+                        preferenceScreenWithHost.preferenceScreen(),
+                        preferenceScreenWithHost.host(),
+                        preference2SearchablePreferencePOJOConverter);
         return new PreferenceScreenWithHostClassPOJOWithMap(
                 new PreferenceScreenWithHostClassPOJO(
                         id,
                         searchablePreferenceScreenPOJOWithMap.searchablePreferenceScreen(),
-                        preferenceScreenWithHostClass.host()),
+                        preferenceScreenWithHost.host().getClass()),
                 searchablePreferenceScreenPOJOWithMap.pojoEntityMap());
     }
 }

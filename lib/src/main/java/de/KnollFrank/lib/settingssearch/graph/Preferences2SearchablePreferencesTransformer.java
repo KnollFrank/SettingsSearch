@@ -18,6 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.search.provider.IconProvider;
 
+// FK-TODO: remove or move to unitTest folder
 public class Preferences2SearchablePreferencesTransformer {
 
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;

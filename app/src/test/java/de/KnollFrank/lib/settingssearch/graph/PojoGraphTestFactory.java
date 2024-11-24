@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -16,14 +15,13 @@ import de.KnollFrank.lib.settingssearch.search.IconProvider;
 
 public class PojoGraphTestFactory {
 
-    public static Graph<PreferenceScreenWithHostClass, PreferenceEdge> createSomePojoPreferenceScreenGraph(
+    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomePojoPreferenceScreenGraph(
             final PreferenceFragmentCompat preferenceFragment,
             final Fragments fragments) {
-        return Host2HostClassTransformer.transformHost2HostClass(
-                transformPreferences2SearchablePreferences(
-                        createSomeEntityPreferenceScreenGraph(
-                                preferenceFragment,
-                                fragments)));
+        return transformPreferences2SearchablePreferences(
+                createSomeEntityPreferenceScreenGraph(
+                        preferenceFragment,
+                        fragments));
     }
 
     private static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(

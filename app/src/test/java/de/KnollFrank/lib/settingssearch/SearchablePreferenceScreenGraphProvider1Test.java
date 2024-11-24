@@ -27,6 +27,8 @@ import java.util.function.BiPredicate;
 
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
@@ -118,12 +120,14 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 (preference, hostOfPreference) -> Optional.empty(),
                 preferenceScreenGraph -> {
                 },
-                new SearchableInfoAndDialogInfoProvider(
-                        preference -> Optional.empty(),
-                        (preference, hostOfPreference) -> Optional.empty()),
-                (preference, hostOfPreference) -> Optional.empty(),
                 preferenceScreenWithHost -> {
-                });
+                },
+                new Preference2SearchablePreferencePOJOConverter(
+                        (preference, hostOfPreference) -> Optional.empty(),
+                        new SearchableInfoAndDialogInfoProvider(
+                                preference -> Optional.empty(),
+                                (preference, hostOfPreference) -> Optional.empty()),
+                        new IdGenerator()));
     }
 
     private static SearchablePreferencePOJO getPreference(

@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -75,17 +76,23 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                             }
                         };
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(addPreferences2Screen);
-                final PreferenceScreenWithHostClass entity =
-                        new PreferenceScreenWithHostClass(
+                final PreferenceScreenWithHost entity =
+                        new PreferenceScreenWithHost(
                                 getPreferenceScreen(preferenceFragment, activity),
-                                preferenceFragment.getClass());
+                                preferenceFragment);
                 final int id = 4711;
-                final IdGenerator idGenerator = new IdGenerator();
+                final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
+                        new Preference2SearchablePreferencePOJOConverter(
+                                (preference, hostOfPreference) -> Optional.empty(),
+                                new SearchableInfoAndDialogInfoProvider(
+                                        preference -> Optional.empty(),
+                                        (preference, hostOfPreference) -> Optional.empty()),
+                                new IdGenerator());
 
                 // When
                 final PreferenceScreenWithHostClassPOJO pojo =
                         PreferenceScreenWithHostClass2POJOConverter
-                                .convert2POJO(entity, id, idGenerator)
+                                .convert2POJO(entity, id, preference2SearchablePreferencePOJOConverter)
                                 .preferenceScreenWithHostClass();
 
                 // Then

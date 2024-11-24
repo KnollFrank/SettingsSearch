@@ -17,6 +17,8 @@ import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
@@ -134,6 +136,18 @@ public class MergedPreferenceScreenFactory {
             final Fragments fragments,
             final PreferenceDialogs preferenceDialogs,
             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
+        final IconProvider iconProvider = new IconProvider(iconResourceIdProvider);
+        final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider =
+                new SearchableInfoAndDialogInfoProvider(
+                        searchableInfoProvider,
+                        new SearchableDialogInfoOfProvider(
+                                preferenceDialogs,
+                                preferenceDialogAndSearchableInfoProvider));
+        final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
+                new Preference2SearchablePreferencePOJOConverter(
+                        iconProvider,
+                        searchableInfoAndDialogInfoProvider,
+                        new IdGenerator());
         return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragment.getName(),
                 new PreferenceScreenWithHostProvider(
@@ -143,12 +157,7 @@ public class MergedPreferenceScreenFactory {
                                         preferenceSearchablePredicate))),
                 preferenceConnected2PreferenceFragmentProvider,
                 preferenceScreenGraphAvailableListener,
-                new SearchableInfoAndDialogInfoProvider(
-                        searchableInfoProvider,
-                        new SearchableDialogInfoOfProvider(
-                                preferenceDialogs,
-                                preferenceDialogAndSearchableInfoProvider)),
-                new IconProvider(iconResourceIdProvider),
-                preferenceScreenGraphListener);
+                preferenceScreenGraphListener,
+                preference2SearchablePreferencePOJOConverter);
     }
 }

@@ -1,22 +1,23 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreference2POJOConverter.SearchablePreferencePOJOsWithMap;
-
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter.SearchablePreferencePOJOsWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
 class SearchablePreferenceScreen2POJOConverter {
 
     public static SearchablePreferenceScreenPOJOWithMap convert2POJO(final PreferenceScreen preferenceScreen,
-                                                                     final IdGenerator idGenerator) {
+                                                                     final PreferenceFragmentCompat hostOfPreferenceScreen,
+                                                                     final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter) {
         final SearchablePreferencePOJOsWithMap searchablePreferencePOJOsWithMap =
-                SearchablePreference2POJOConverter.convert2POJOs(
-                        SearchablePreferenceCaster.cast(Preferences.getImmediateChildren(preferenceScreen)),
-                        idGenerator);
+                preference2SearchablePreferencePOJOConverter.convert2POJOs(
+                        Preferences.getImmediateChildren(preferenceScreen),
+                        hostOfPreferenceScreen);
         return new SearchablePreferenceScreenPOJOWithMap(
                 new SearchablePreferenceScreenPOJO(
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getTitle())),

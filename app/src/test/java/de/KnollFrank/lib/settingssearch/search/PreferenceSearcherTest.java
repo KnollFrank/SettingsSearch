@@ -34,6 +34,8 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
@@ -611,14 +613,16 @@ public class PreferenceSearcherTest {
                         preferenceConnected2PreferenceFragmentProvider,
                         preferenceScreenGraph -> {
                         },
-                        new SearchableInfoAndDialogInfoProvider(
-                                new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
-                                new SearchableDialogInfoOfProvider(
-                                        fragmentInitializer,
-                                        preferenceDialogAndSearchableInfoProvider)),
-                        new IconProvider((preference, hostOfPreference) -> Optional.empty()),
                         preferenceScreenWithHost -> {
-                        });
+                        },
+                        new Preference2SearchablePreferencePOJOConverter(
+                                new IconProvider(new ReflectionIconResourceIdProvider()),
+                                new SearchableInfoAndDialogInfoProvider(
+                                        new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
+                                        new SearchableDialogInfoOfProvider(
+                                                fragmentInitializer,
+                                                preferenceDialogAndSearchableInfoProvider)),
+                                new IdGenerator()));
         return MergedPreferenceScreens.createMergedPreferenceScreen(
                 TestActivity.FRAGMENT_CONTAINER_VIEW,
                 _preferenceFragment -> {
