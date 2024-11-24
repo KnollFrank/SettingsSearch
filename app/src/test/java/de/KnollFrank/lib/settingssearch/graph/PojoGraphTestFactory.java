@@ -9,22 +9,11 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.search.IconProvider;
 
 public class PojoGraphTestFactory {
 
-    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomePojoPreferenceScreenGraph(
-            final PreferenceFragmentCompat preferenceFragment,
-            final Fragments fragments) {
-        return transformPreferences2SearchablePreferences(
-                createSomeEntityPreferenceScreenGraph(
-                        preferenceFragment,
-                        fragments));
-    }
-
-    private static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(
+    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(
             final PreferenceFragmentCompat preferenceFragment,
             final Fragments fragments) {
         final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
@@ -34,16 +23,5 @@ public class PojoGraphTestFactory {
                         preferenceScreenWithHost -> {
                         });
         return preferenceScreenGraphProvider.getPreferenceScreenGraph(preferenceFragment.getClass().getName());
-    }
-
-    private static Graph<PreferenceScreenWithHost, PreferenceEdge> transformPreferences2SearchablePreferences(
-            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        final Preferences2SearchablePreferencesTransformer transformer =
-                new Preferences2SearchablePreferencesTransformer(
-                        new SearchableInfoAndDialogInfoProvider(
-                                preference -> Optional.empty(),
-                                (preference, hostOfPreference) -> Optional.empty()),
-                        new IconProvider((preference, hostOfPreference) -> Optional.empty()));
-        return transformer.transformPreferences2SearchablePreferences(preferenceScreenGraph);
     }
 }

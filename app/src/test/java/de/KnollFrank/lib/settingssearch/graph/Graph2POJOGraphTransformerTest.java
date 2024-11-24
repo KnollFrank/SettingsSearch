@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassPOJOWithMap;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
-import static de.KnollFrank.lib.settingssearch.graph.PojoGraphTestFactory.createSomePojoPreferenceScreenGraph;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -38,6 +37,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithH
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -49,10 +49,9 @@ public class Graph2POJOGraphTransformerTest {
             scenario.onActivity(activity -> {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
+                final Fragments fragments = getFragments(preferenceFragment, activity);
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
-                        createSomePojoPreferenceScreenGraph(
-                                preferenceFragment,
-                                getFragments(preferenceFragment, activity));
+                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, fragments);
                 final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
                         new Preference2SearchablePreferencePOJOConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),
