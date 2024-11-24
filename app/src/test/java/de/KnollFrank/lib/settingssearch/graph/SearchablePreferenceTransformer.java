@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db;
+package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -9,10 +9,12 @@ import androidx.preference.PreferenceScreen;
 import com.google.common.collect.ImmutableMap;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.search.provider.IconProvider;
 
-public class SearchablePreferenceTransformer {
+class SearchablePreferenceTransformer {
 
     private final PreferenceManager preferenceManager;
     private final PreferenceFragmentCompat host;

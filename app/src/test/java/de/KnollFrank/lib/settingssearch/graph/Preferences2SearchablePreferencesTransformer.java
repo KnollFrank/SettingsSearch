@@ -14,12 +14,11 @@ import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceScreenWithMap;
-import de.KnollFrank.lib.settingssearch.db.SearchablePreferenceTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.search.provider.IconProvider;
 
-// FK-TODO: remove or move to unitTest folder
-public class Preferences2SearchablePreferencesTransformer {
+// FK-TODO: remove?
+class Preferences2SearchablePreferencesTransformer {
 
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
     private final IconProvider iconProvider;
