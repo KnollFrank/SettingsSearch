@@ -8,6 +8,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
@@ -23,7 +25,6 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
@@ -48,31 +49,23 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
 
                             @Override
                             public void accept(final PreferenceScreen screen, final Context context) {
-                                final SearchablePreference searchablePreference = createParent(context);
-                                screen.addPreference(searchablePreference);
-                                searchablePreference.addPreference(createChild(context, Optional.of("some searchable info of first child")));
-                                searchablePreference.addPreference(createChild(context, Optional.of("some searchable info of second child")));
+                                final PreferenceCategory preference = createParent(context);
+                                screen.addPreference(preference);
+                                preference.addPreference(createChild(context));
+                                preference.addPreference(createChild(context));
                             }
 
-                            private static SearchablePreference createParent(final Context context) {
-                                final SearchablePreference searchablePreference =
-                                        new SearchablePreference(
-                                                context,
-                                                Optional.of("some searchable info"),
-                                                Optional.empty());
-                                searchablePreference.setKey("parentKey");
-                                searchablePreference.setLayoutResource(15);
-                                return searchablePreference;
+                            private static PreferenceCategory createParent(final Context context) {
+                                final PreferenceCategory preference = new PreferenceCategory(context);
+                                preference.setKey("parentKey");
+                                preference.setLayoutResource(15);
+                                return preference;
                             }
 
-                            private static SearchablePreference createChild(final Context context, final Optional<String> searchableInfo) {
-                                final SearchablePreference child =
-                                        new SearchablePreference(
-                                                context,
-                                                searchableInfo,
-                                                Optional.empty());
-                                child.setLayoutResource(16);
-                                return child;
+                            private static Preference createChild(final Context context) {
+                                final Preference preference = new Preference(context);
+                                preference.setLayoutResource(16);
+                                return preference;
                             }
                         };
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(addPreferences2Screen);
