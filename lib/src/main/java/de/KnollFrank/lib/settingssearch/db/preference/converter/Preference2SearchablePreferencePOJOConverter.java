@@ -27,7 +27,10 @@ public class Preference2SearchablePreferencePOJOConverter {
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
     private final IdGenerator idGenerator;
 
-    public Preference2SearchablePreferencePOJOConverter(final IconProvider iconProvider, final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider, final IdGenerator idGenerator) {
+    public Preference2SearchablePreferencePOJOConverter(
+            final IconProvider iconProvider,
+            final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
+            final IdGenerator idGenerator) {
         this.iconProvider = iconProvider;
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
         this.idGenerator = idGenerator;
@@ -70,6 +73,18 @@ public class Preference2SearchablePreferencePOJOConverter {
                         .buildOrThrow());
     }
 
+    public SearchablePreferencePOJOsWithMap convert2POJOs(final List<Preference> preferences,
+                                                          final PreferenceFragmentCompat hostOfPreferences) {
+        final List<SearchablePreferencePOJOWithMap> pojoWithMapList =
+                preferences
+                        .stream()
+                        .map(preference -> convert2POJO(preference, hostOfPreferences))
+                        .collect(Collectors.toList());
+        return new SearchablePreferencePOJOsWithMap(
+                getSearchablePreferencePOJOs(pojoWithMapList),
+                getPojoEntityMap(pojoWithMapList));
+    }
+
     private SearchablePreferencePOJOsWithMap convertChildren2POJOs(final Preference preference,
                                                                    final PreferenceFragmentCompat hostOfPreference) {
         return preference instanceof final PreferenceGroup preferenceGroup ?
@@ -79,18 +94,6 @@ public class Preference2SearchablePreferencePOJOConverter {
                 new SearchablePreferencePOJOsWithMap(
                         Collections.emptyList(),
                         ImmutableBiMap.<SearchablePreferencePOJO, Preference>builder().build());
-    }
-
-    private SearchablePreferencePOJOsWithMap convert2POJOs(final List<Preference> preferences,
-                                                           final PreferenceFragmentCompat hostOfPreferences) {
-        final List<SearchablePreferencePOJOWithMap> pojoWithMapList =
-                preferences
-                        .stream()
-                        .map(preference -> convert2POJO(preference, hostOfPreferences))
-                        .collect(Collectors.toList());
-        return new SearchablePreferencePOJOsWithMap(
-                getSearchablePreferencePOJOs(pojoWithMapList),
-                getPojoEntityMap(pojoWithMapList));
     }
 
     private Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData(final Preference preference,
