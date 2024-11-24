@@ -34,7 +34,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
 
-// FK-TODO: see androidx.preference.PreferenceGroupAdapter
+// adapted from androidx.preference.PreferenceGroupAdapter
 public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
     private final List<SearchablePreferencePOJO> items = new ArrayList<>();
@@ -56,14 +56,12 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         return getItemViewType(ItemResourceDescriptor.from(getItem(position)));
     }
 
-    // FK-TODO: adapt from PreferenceGroupAdapter.onCreateViewHolder()
     @NonNull
     @Override
     public PreferenceViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         return onCreateViewHolder(parent, itemResourceDescriptors.get(viewType));
     }
 
-    // FK-TODO: adapt from PreferenceGroupAdapter.onBindViewHolder()
     @Override
     public void onBindViewHolder(@NonNull final PreferenceViewHolder holder, final int position) {
         onBindViewHolder(holder, getItem(position));
