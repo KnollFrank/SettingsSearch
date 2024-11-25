@@ -114,6 +114,7 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {
+        // FK-TODO: im SearchPreferenceFragmentsBuilder anbieten, vom Benutzer definierte UI-Elemente SearchView und RecyclerView entgegenzunehmen, anstatt sie selbst in der Bibliothek zu erzeugen.
         final SearchView searchView = requireView().findViewById(R.id.searchView);
         SearchViewConfigurer.configureSearchView(
                 searchView,
