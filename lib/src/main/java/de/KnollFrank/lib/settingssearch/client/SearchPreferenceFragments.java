@@ -18,6 +18,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
@@ -110,5 +111,9 @@ public class SearchPreferenceFragments {
                 true,
                 searchConfiguration.fragmentContainerViewId(),
                 fragmentManager);
+    }
+
+    public void rebuildSearchDatabase() {
+        MergedPreferenceScreenDataRepository.removeMergedPreferenceScreenDataFiles(context);
     }
 }
