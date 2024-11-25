@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.view.ViewCompat;
 import androidx.preference.AndroidResources;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.DiffUtil.DiffResult;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -73,10 +75,12 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     }
 
     public void setItems(final List<SearchablePreferencePOJO> items) {
-        this.items.clear();
-        this.items.addAll(items);
-        // FK-TODO: use DiffUtil like in PreferenceGroupAdapter?
-        notifyDataSetChanged();
+        final DiffResult diffResult = DiffUtil.calculateDiff(getDiffUtilCallback(this.items, items));
+        {
+            this.items.clear();
+            this.items.addAll(items);
+        }
+        diffResult.dispatchUpdatesTo(this);
     }
 
     private SearchablePreferencePOJO getItem(final int position) {
@@ -247,5 +251,32 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
                                 createPreferencePathView(context)),
                         holder,
                         context);
+    }
+
+    private static DiffUtil.Callback getDiffUtilCallback(
+            final List<SearchablePreferencePOJO> oldItems,
+            final List<SearchablePreferencePOJO> newItems) {
+        return new DiffUtil.Callback() {
+
+            @Override
+            public int getOldListSize() {
+                return oldItems.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newItems.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return oldItems.get(oldItemPosition).getId() == newItems.get(newItemPosition).getId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                return false;
+            }
+        };
     }
 }
