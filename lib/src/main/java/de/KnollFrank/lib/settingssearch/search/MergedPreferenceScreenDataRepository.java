@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.stream.Stream;
 
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -28,6 +29,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -35,7 +37,6 @@ class MergedPreferenceScreenDataRepository {
 
     private final Fragments fragments;
     private final DefaultFragmentInitializer preferenceDialogs;
-    private final PreferenceScreenGraphListener preferenceScreenGraphListener;
     private final IconResourceIdProvider iconResourceIdProvider;
     private final SearchableInfoProvider searchableInfoProvider;
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
@@ -50,7 +51,6 @@ class MergedPreferenceScreenDataRepository {
     public MergedPreferenceScreenDataRepository(
             final Fragments fragments,
             final DefaultFragmentInitializer preferenceDialogs,
-            final PreferenceScreenGraphListener preferenceScreenGraphListener,
             final IconResourceIdProvider iconResourceIdProvider,
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
@@ -63,7 +63,6 @@ class MergedPreferenceScreenDataRepository {
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO) {
         this.fragments = fragments;
         this.preferenceDialogs = preferenceDialogs;
-        this.preferenceScreenGraphListener = preferenceScreenGraphListener;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
@@ -123,7 +122,13 @@ class MergedPreferenceScreenDataRepository {
                                         preferenceSearchablePredicate))),
                 preferenceConnected2PreferenceFragmentProvider,
                 preferenceScreenGraphAvailableListener,
-                preferenceScreenGraphListener,
+                new PreferenceScreenGraphListener() {
+
+                    @Override
+                    public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
+                        progressDisplayer.displayProgress(ProgressProvider.getProgress(preferenceScreenWithHost));
+                    }
+                },
                 new Preference2SearchablePreferencePOJOConverter(
                         new IconProvider(iconResourceIdProvider),
                         new SearchableInfoAndDialogInfoProvider(

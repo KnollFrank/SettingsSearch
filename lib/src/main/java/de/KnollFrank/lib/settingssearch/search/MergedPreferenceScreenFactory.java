@@ -19,7 +19,6 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
@@ -84,8 +83,7 @@ public class MergedPreferenceScreenFactory {
     public MergedPreferenceScreen getMergedPreferenceScreen(
             final FragmentManager fragmentManager,
             final FragmentManager childFragmentManager,
-            final IProgressDisplayer progressDisplayer,
-            final PreferenceScreenGraphListener preferenceScreenGraphListener) {
+            final IProgressDisplayer progressDisplayer) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         childFragmentManager,
@@ -104,7 +102,6 @@ public class MergedPreferenceScreenFactory {
                 fragmentManager,
                 getMergedPreferenceScreenData(
                         progressDisplayer,
-                        preferenceScreenGraphListener,
                         fragments,
                         preferenceDialogs),
                 PreferenceManagerProvider.getPreferenceManager(
@@ -146,14 +143,12 @@ public class MergedPreferenceScreenFactory {
 
     private MergedPreferenceScreenData getMergedPreferenceScreenData(
             final IProgressDisplayer progressDisplayer,
-            final PreferenceScreenGraphListener preferenceScreenGraphListener,
             final Fragments fragments,
             final DefaultFragmentInitializer preferenceDialogs) {
         final MergedPreferenceScreenDataRepository mergedPreferenceScreenDataRepository =
                 new MergedPreferenceScreenDataRepository(
                         fragments,
                         preferenceDialogs,
-                        preferenceScreenGraphListener,
                         iconResourceIdProvider,
                         searchableInfoProvider,
                         preferenceDialogAndSearchableInfoProvider,

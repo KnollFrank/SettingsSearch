@@ -10,18 +10,15 @@ import androidx.fragment.app.Fragment;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayerFactory;
-import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 
 public class SearchPreferenceFragment extends Fragment {
 
@@ -62,14 +59,7 @@ public class SearchPreferenceFragment extends Fragment {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 requireActivity().getSupportFragmentManager(),
                 getChildFragmentManager(),
-                progressDisplayer,
-                new PreferenceScreenGraphListener() {
-
-                    @Override
-                    public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
-                        progressDisplayer.displayProgress(ProgressProvider.getProgress(preferenceScreenWithHost));
-                    }
-                });
+                progressDisplayer);
     }
 
     private void showSearchResultsFragment(final SearchResultsFragment searchResultsFragment,
