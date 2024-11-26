@@ -5,9 +5,7 @@ import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 import android.view.View;
 import android.widget.SearchView;
 
-import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
 import java.util.function.Consumer;
@@ -60,12 +58,7 @@ public class SearchPreferenceFragment extends Fragment {
         super.onResume();
         final View progressContainer = requireView().findViewById(R.id.progressContainer);
         Tasks.execute(
-                () -> getMergedPreferenceScreen(
-                        searchConfiguration.fragmentContainerViewId(),
-                        prepareShow,
-                        showPreferencePathPredicate,
-                        requireActivity().getSupportFragmentManager(),
-                        ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(progressContainer, onUiThreadRunner)),
+                this::getMergedPreferenceScreen,
                 mergedPreferenceScreen ->
                         showSearchResultsFragment(
                                 mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
@@ -73,17 +66,16 @@ public class SearchPreferenceFragment extends Fragment {
                 progressContainer);
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(
-            final @IdRes int fragmentContainerViewId,
-            final PrepareShow prepareShow,
-            final ShowPreferencePathPredicate showPreferencePathPredicate,
-            final FragmentManager fragmentManager,
-            final IProgressDisplayer progressDisplayer) {
+    private MergedPreferenceScreen getMergedPreferenceScreen() {
+        final IProgressDisplayer progressDisplayer =
+                ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(
+                        requireView().findViewById(R.id.progressContainer),
+                        onUiThreadRunner);
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
-                fragmentContainerViewId,
+                searchConfiguration.fragmentContainerViewId(),
                 prepareShow,
                 showPreferencePathPredicate,
-                fragmentManager,
+                requireActivity().getSupportFragmentManager(),
                 getChildFragmentManager(),
                 locale,
                 onUiThreadRunner,
@@ -100,12 +92,6 @@ public class SearchPreferenceFragment extends Fragment {
     private void showSearchResultsFragment(final SearchResultsFragment searchResultsFragment,
                                            final Consumer<SearchResultsFragment> onFragmentStarted) {
         showFragment(
-//                SearchResultsPreferenceFragment.createInstance(
-//                        mergedPreferenceScreen.searchResultsDisplayer(),
-//                        mergedPreferenceScreen.preferencePathNavigator(),
-//                        searchConfiguration.fragmentContainerViewId(),
-//                        showPreferencePathPredicate,
-//                        prepareShow),
                 searchResultsFragment,
                 onFragmentStarted,
                 false,
