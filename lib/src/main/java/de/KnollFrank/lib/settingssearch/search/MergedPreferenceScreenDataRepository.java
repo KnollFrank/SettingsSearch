@@ -5,6 +5,7 @@ import android.content.Context;
 import java.io.File;
 import java.util.Locale;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataFileDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
@@ -39,7 +40,12 @@ class MergedPreferenceScreenDataRepository {
                 new File(directory, "host_by_preference.json"));
     }
 
-    private static boolean exists(final MergedPreferenceScreenDataFiles mergedPreferenceScreenDataFiles) {
-        return mergedPreferenceScreenDataFiles.preferences().exists();
+    private static boolean exists(final MergedPreferenceScreenDataFiles dataFiles) {
+        return Stream
+                .of(
+                        dataFiles.preferences(),
+                        dataFiles.preferencePathByPreference(),
+                        dataFiles.hostByPreference())
+                .allMatch(File::exists);
     }
 }
