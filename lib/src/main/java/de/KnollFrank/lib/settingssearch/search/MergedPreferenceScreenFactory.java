@@ -44,6 +44,7 @@ public class MergedPreferenceScreenFactory {
     private final IconResourceIdProvider iconResourceIdProvider;
     private final Context context;
     private final Locale locale;
+    private final OnUiThreadRunner onUiThreadRunner;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -58,7 +59,8 @@ public class MergedPreferenceScreenFactory {
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final IconResourceIdProvider iconResourceIdProvider,
             final Context context,
-            final Locale locale) {
+            final Locale locale,
+            final OnUiThreadRunner onUiThreadRunner) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
@@ -72,12 +74,12 @@ public class MergedPreferenceScreenFactory {
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.context = context;
         this.locale = locale;
+        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
             final FragmentManager fragmentManager,
             final FragmentManager childFragmentManager,
-            final OnUiThreadRunner onUiThreadRunner,
             final IProgressDisplayer progressDisplayer,
             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         final DefaultFragmentInitializer preferenceDialogs =

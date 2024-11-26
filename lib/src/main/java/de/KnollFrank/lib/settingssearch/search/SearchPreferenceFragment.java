@@ -62,7 +62,6 @@ public class SearchPreferenceFragment extends Fragment {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 requireActivity().getSupportFragmentManager(),
                 getChildFragmentManager(),
-                onUiThreadRunner,
                 progressDisplayer,
                 new PreferenceScreenGraphListener() {
 

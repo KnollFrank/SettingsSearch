@@ -105,7 +105,8 @@ public class SearchPreferenceFragments {
                                 preferenceDialogAndSearchableInfoProvider,
                                 iconResourceIdProvider,
                                 context,
-                                locale),
+                                locale,
+                                onUiThreadRunner),
                         onUiThreadRunner),
                 searchPreferenceFragment -> {
                 },
