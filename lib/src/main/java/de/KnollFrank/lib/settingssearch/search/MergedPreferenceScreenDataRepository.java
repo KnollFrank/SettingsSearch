@@ -83,17 +83,20 @@ class MergedPreferenceScreenDataRepository {
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
         // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
         if (!exists(dataFiles)) {
-            final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> searchablePreferenceScreenGraph =
-                    this
-                            .getSearchablePreferenceScreenGraphProvider()
-                            .getSearchablePreferenceScreenGraph();
-            progressDisplayer.displayProgress("preparing search database");
-            final MergedPreferenceScreenData mergedPreferenceScreenData =
-                    MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(searchablePreferenceScreenGraph);
+            final MergedPreferenceScreenData mergedPreferenceScreenData = computeMergedPreferenceScreenData();
             progressDisplayer.displayProgress("persisting search database");
             MergedPreferenceScreenDataFileDAO.persist(mergedPreferenceScreenData, dataFiles);
         }
         return MergedPreferenceScreenDataFileDAO.load(dataFiles);
+    }
+
+    private MergedPreferenceScreenData computeMergedPreferenceScreenData() {
+        final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> searchablePreferenceScreenGraph =
+                this
+                        .getSearchablePreferenceScreenGraphProvider()
+                        .getSearchablePreferenceScreenGraph();
+        progressDisplayer.displayProgress("preparing search database");
+        return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(searchablePreferenceScreenGraph);
     }
 
     private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataFiles(final File directory) {
@@ -113,18 +116,6 @@ class MergedPreferenceScreenDataRepository {
     }
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
-        final IconProvider iconProvider = new IconProvider(iconResourceIdProvider);
-        final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider =
-                new SearchableInfoAndDialogInfoProvider(
-                        searchableInfoProvider,
-                        new SearchableDialogInfoOfProvider(
-                                preferenceDialogs,
-                                preferenceDialogAndSearchableInfoProvider));
-        final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
-                new Preference2SearchablePreferencePOJOConverter(
-                        iconProvider,
-                        searchableInfoAndDialogInfoProvider,
-                        new IdGenerator());
         return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragment.getName(),
                 new PreferenceScreenWithHostProvider(
@@ -135,6 +126,13 @@ class MergedPreferenceScreenDataRepository {
                 preferenceConnected2PreferenceFragmentProvider,
                 preferenceScreenGraphAvailableListener,
                 preferenceScreenGraphListener,
-                preference2SearchablePreferencePOJOConverter);
+                new Preference2SearchablePreferencePOJOConverter(
+                        new IconProvider(iconResourceIdProvider),
+                        new SearchableInfoAndDialogInfoProvider(
+                                searchableInfoProvider,
+                                new SearchableDialogInfoOfProvider(
+                                        preferenceDialogs,
+                                        preferenceDialogAndSearchableInfoProvider)),
+                        new IdGenerator()));
     }
 }
