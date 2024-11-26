@@ -29,7 +29,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
@@ -623,7 +622,7 @@ public class PreferenceSearcherTest {
                                                 fragmentInitializer,
                                                 preferenceDialogAndSearchableInfoProvider)),
                                 new IdGenerator()));
-        return MergedPreferenceScreens.createMergedPreferenceScreen(
+        return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 TestActivity.FRAGMENT_CONTAINER_VIEW,
                 _preferenceFragment -> {
                 },

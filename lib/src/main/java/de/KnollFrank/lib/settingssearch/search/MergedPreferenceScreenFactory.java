@@ -5,11 +5,11 @@ import android.content.Context;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreens;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
@@ -17,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -25,6 +26,9 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
+import de.KnollFrank.lib.settingssearch.results.ShowPreferenceScreenAndHighlightPreference;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -93,7 +97,7 @@ public class MergedPreferenceScreenFactory {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         context);
-        return MergedPreferenceScreens.createMergedPreferenceScreen(
+        return createMergedPreferenceScreen(
                 fragmentContainerViewId,
                 prepareShow,
                 showPreferencePathPredicate,
@@ -107,6 +111,37 @@ public class MergedPreferenceScreenFactory {
                         fragments,
                         rootPreferenceFragment),
                 fragmentFactoryAndInitializer);
+    }
+
+    public static MergedPreferenceScreen createMergedPreferenceScreen(
+            final @IdRes int fragmentContainerViewId,
+            final PrepareShow prepareShow,
+            final ShowPreferencePathPredicate showPreferencePathPredicate,
+            final FragmentManager fragmentManager,
+            final MergedPreferenceScreenData mergedPreferenceScreenData,
+            final PreferenceManager preferenceManager,
+            final FragmentFactoryAndInitializer fragmentFactoryAndInitializer) {
+        final PreferencePathNavigator preferencePathNavigator =
+                new PreferencePathNavigator(
+                        mergedPreferenceScreenData.hostByPreference(),
+                        fragmentFactoryAndInitializer,
+                        preferenceManager.getContext());
+        return new MergedPreferenceScreen(
+                mergedPreferenceScreenData.preferencePathByPreference(),
+                mergedPreferenceScreenData.preferences(),
+                SearchResultsDisplayerFactory.createSearchResultsDisplayer(
+                        new SearchResultsFragment(
+                                mergedPreferenceScreenData.preferencePathByPreference(),
+                                new ShowPreferenceScreenAndHighlightPreference(
+                                        preferencePathNavigator,
+                                        mergedPreferenceScreenData.preferencePathByPreference(),
+                                        fragmentContainerViewId,
+                                        prepareShow,
+                                        fragmentManager),
+                                showPreferencePathPredicate),
+                        preferenceManager),
+                preferencePathNavigator,
+                mergedPreferenceScreenData.hostByPreference());
     }
 
     private MergedPreferenceScreenData getMergedPreferenceScreenData(
