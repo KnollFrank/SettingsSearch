@@ -18,7 +18,12 @@ class MergedPreferenceScreenDataRepository {
             final Locale locale,
             final Context context,
             final IProgressDisplayer progressDisplayer) {
-        final MergedPreferenceScreenDataFiles dataFiles = computeAndPersistMergedPreferenceScreenDataFiles(computeMergedPreferenceScreenData, locale, context, progressDisplayer);
+        final MergedPreferenceScreenDataFiles dataFiles =
+                computeAndPersistMergedPreferenceScreenDataFiles(
+                        computeMergedPreferenceScreenData,
+                        locale,
+                        context,
+                        progressDisplayer);
         return MergedPreferenceScreenDataFileDAO.load(dataFiles);
     }
 
