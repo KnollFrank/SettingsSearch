@@ -100,7 +100,12 @@ public class MergedPreferenceScreenFactory {
                 fragmentFactoryAndInitializer);
     }
 
-    private MergedPreferenceScreenData getMergedPreferenceScreenData(final Locale locale, final IProgressDisplayer progressDisplayer, final PreferenceScreenGraphListener preferenceScreenGraphListener, final Fragments fragments, final DefaultFragmentInitializer preferenceDialogs) {
+    private MergedPreferenceScreenData getMergedPreferenceScreenData(
+            final Locale locale,
+            final IProgressDisplayer progressDisplayer,
+            final PreferenceScreenGraphListener preferenceScreenGraphListener,
+            final Fragments fragments,
+            final DefaultFragmentInitializer preferenceDialogs) {
         final MergedPreferenceScreenDataRepository mergedPreferenceScreenDataRepository =
                 new MergedPreferenceScreenDataRepository(
                         fragments,
