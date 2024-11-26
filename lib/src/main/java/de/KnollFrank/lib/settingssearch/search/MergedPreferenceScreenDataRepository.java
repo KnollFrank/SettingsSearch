@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import android.content.Context;
-
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
@@ -46,8 +44,8 @@ class MergedPreferenceScreenDataRepository {
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final Locale locale;
-    private final Context context;
     private final IProgressDisplayer progressDisplayer;
+    private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
 
     public MergedPreferenceScreenDataRepository(
             final Fragments fragments,
@@ -61,8 +59,8 @@ class MergedPreferenceScreenDataRepository {
             final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final Locale locale,
-            final Context context,
-            final IProgressDisplayer progressDisplayer) {
+            final IProgressDisplayer progressDisplayer,
+            final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO) {
         this.fragments = fragments;
         this.preferenceDialogs = preferenceDialogs;
         this.preferenceScreenGraphListener = preferenceScreenGraphListener;
@@ -74,12 +72,12 @@ class MergedPreferenceScreenDataRepository {
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.locale = locale;
-        this.context = context;
         this.progressDisplayer = progressDisplayer;
+        this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
     }
 
     public MergedPreferenceScreenData getMergedPreferenceScreenData() {
-        final File directory = new SearchDatabaseDirectoryIO(context).getAndMakeSearchDatabaseDirectory4Locale(locale);
+        final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
         // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
         if (!exists(dataFiles)) {
