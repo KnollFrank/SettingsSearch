@@ -31,6 +31,9 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class MergedPreferenceScreenFactory {
 
+    private final ShowPreferencePathPredicate showPreferencePathPredicate;
+    private final PrepareShow prepareShow;
+    private final @IdRes int fragmentContainerViewId;
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final FragmentFactory fragmentFactory;
     private final PreferenceSearchablePredicate preferenceSearchablePredicate;
@@ -40,8 +43,12 @@ public class MergedPreferenceScreenFactory {
     private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
     private final IconResourceIdProvider iconResourceIdProvider;
     private final Context context;
+    private final Locale locale;
 
     public MergedPreferenceScreenFactory(
+            final ShowPreferencePathPredicate showPreferencePathPredicate,
+            final PrepareShow prepareShow,
+            final @IdRes int fragmentContainerViewId,
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
             final FragmentFactory fragmentFactory,
             final PreferenceSearchablePredicate preferenceSearchablePredicate,
@@ -50,7 +57,11 @@ public class MergedPreferenceScreenFactory {
             final SearchableInfoProvider searchableInfoProvider,
             final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final IconResourceIdProvider iconResourceIdProvider,
-            final Context context) {
+            final Context context,
+            final Locale locale) {
+        this.showPreferencePathPredicate = showPreferencePathPredicate;
+        this.prepareShow = prepareShow;
+        this.fragmentContainerViewId = fragmentContainerViewId;
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
@@ -60,15 +71,12 @@ public class MergedPreferenceScreenFactory {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.context = context;
+        this.locale = locale;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
-            final @IdRes int fragmentContainerViewId,
-            final PrepareShow prepareShow,
-            final ShowPreferencePathPredicate showPreferencePathPredicate,
             final FragmentManager fragmentManager,
             final FragmentManager childFragmentManager,
-            final Locale locale,
             final OnUiThreadRunner onUiThreadRunner,
             final IProgressDisplayer progressDisplayer,
             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
@@ -89,7 +97,6 @@ public class MergedPreferenceScreenFactory {
                 showPreferencePathPredicate,
                 fragmentManager,
                 getMergedPreferenceScreenData(
-                        locale,
                         progressDisplayer,
                         preferenceScreenGraphListener,
                         fragments,
@@ -101,7 +108,6 @@ public class MergedPreferenceScreenFactory {
     }
 
     private MergedPreferenceScreenData getMergedPreferenceScreenData(
-            final Locale locale,
             final IProgressDisplayer progressDisplayer,
             final PreferenceScreenGraphListener preferenceScreenGraphListener,
             final Fragments fragments,

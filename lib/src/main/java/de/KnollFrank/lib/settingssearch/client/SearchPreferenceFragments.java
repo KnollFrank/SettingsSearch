@@ -91,10 +91,11 @@ public class SearchPreferenceFragments {
         showFragment(
                 new SearchPreferenceFragment(
                         searchConfiguration,
-                        showPreferencePathPredicate,
                         includePreferenceInSearchResultsPredicate,
-                        prepareShow,
                         new MergedPreferenceScreenFactory(
+                                showPreferencePathPredicate,
+                                prepareShow,
+                                searchConfiguration.fragmentContainerViewId(),
                                 searchConfiguration.rootPreferenceFragment(),
                                 fragmentFactory,
                                 preferenceSearchablePredicate,
@@ -103,8 +104,8 @@ public class SearchPreferenceFragments {
                                 searchableInfoProvider,
                                 preferenceDialogAndSearchableInfoProvider,
                                 iconResourceIdProvider,
-                                context),
-                        locale,
+                                context,
+                                locale),
                         onUiThreadRunner),
                 searchPreferenceFragment -> {
                 },
