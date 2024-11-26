@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import androidx.annotation.IdRes;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -12,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 public class ReflectionIconResourceIdProvider implements IconResourceIdProvider {
 
     @Override
+    @IdRes
     public Optional<Integer> getIconResourceIdOfPreference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
         final int iconResourceId = getIconResourceId(preference);
         return iconResourceId != 0 ? Optional.of(iconResourceId) : Optional.empty();
