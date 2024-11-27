@@ -44,7 +44,6 @@ class MergedPreferenceScreenDataRepository {
     private final PreferenceSearchablePredicate preferenceSearchablePredicate;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
-    private final Locale locale;
     private final IProgressDisplayer progressDisplayer;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
 
@@ -58,7 +57,6 @@ class MergedPreferenceScreenDataRepository {
             final PreferenceSearchablePredicate preferenceSearchablePredicate,
             final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-            final Locale locale,
             final IProgressDisplayer progressDisplayer,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO) {
         this.fragments = fragments;
@@ -70,12 +68,11 @@ class MergedPreferenceScreenDataRepository {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
-        this.locale = locale;
         this.progressDisplayer = progressDisplayer;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
     }
 
-    public MergedPreferenceScreenData getMergedPreferenceScreenData() {
+    public MergedPreferenceScreenData getMergedPreferenceScreenData(final Locale locale) {
         final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
         // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?

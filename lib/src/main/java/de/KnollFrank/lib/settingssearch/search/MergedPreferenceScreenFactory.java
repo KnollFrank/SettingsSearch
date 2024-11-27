@@ -156,9 +156,8 @@ public class MergedPreferenceScreenFactory {
                         preferenceSearchablePredicate,
                         preferenceConnected2PreferenceFragmentProvider,
                         preferenceScreenGraphAvailableListener,
-                        locale,
                         progressDisplayer,
                         new SearchDatabaseDirectoryIO(context));
-        return mergedPreferenceScreenDataRepository.getMergedPreferenceScreenData();
+        return mergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(locale);
     }
 }
