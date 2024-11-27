@@ -43,7 +43,7 @@ public class SearchPreferenceFragmentsBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
-    private Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier = Optional::empty;
+    private Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask = Optional::empty;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -108,8 +108,8 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withTaskSupplier(final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier) {
-        this.taskSupplier = taskSupplier;
+    public SearchPreferenceFragmentsBuilder withGetCreateSearchDatabaseTask(final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
+        this.getCreateSearchDatabaseTask = getCreateSearchDatabaseTask;
         return this;
     }
 
@@ -130,6 +130,6 @@ public class SearchPreferenceFragmentsBuilder {
                 locale,
                 onUiThreadRunner,
                 context,
-                taskSupplier);
+                getCreateSearchDatabaseTask);
     }
 }

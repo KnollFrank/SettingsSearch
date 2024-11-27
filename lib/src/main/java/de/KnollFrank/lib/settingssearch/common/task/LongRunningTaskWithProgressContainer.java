@@ -11,18 +11,21 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Voi
     private final Callable<V> doInBackground;
     private final Consumer<V> onPostExecute;
     private final View progressContainer;
+    private final OnUiThreadRunner onUiThreadRunner;
 
     public LongRunningTaskWithProgressContainer(final Callable<V> doInBackground,
                                                 final Consumer<V> onPostExecute,
-                                                final View progressContainer) {
+                                                final View progressContainer,
+                                                final OnUiThreadRunner onUiThreadRunner) {
         this.doInBackground = doInBackground;
         this.onPostExecute = onPostExecute;
         this.progressContainer = progressContainer;
+        this.onUiThreadRunner = onUiThreadRunner;
     }
 
     @Override
     protected void onPreExecute() {
-        progressContainer.setVisibility(View.VISIBLE);
+        onUiThreadRunner.runNonBlockingOnUiThread(() -> progressContainer.setVisibility(View.VISIBLE));
     }
 
     @Override
@@ -36,7 +39,7 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Voi
 
     @Override
     protected void onPostExecute(final V result) {
-        progressContainer.setVisibility(View.GONE);
+        onUiThreadRunner.runNonBlockingOnUiThread(() -> progressContainer.setVisibility(View.GONE));
         onPostExecute.accept(result);
     }
 }

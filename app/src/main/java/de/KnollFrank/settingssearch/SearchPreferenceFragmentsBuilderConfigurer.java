@@ -35,9 +35,9 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
 
     public static SearchPreferenceFragmentsBuilder configure(
             final SearchPreferenceFragmentsBuilder builder,
-            final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier) {
+            final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
         return builder
-                .withTaskSupplier(taskSupplier)
+                .withGetCreateSearchDatabaseTask(getCreateSearchDatabaseTask)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceConnected2PreferenceFragmentProvider(
                         new PreferenceConnected2PreferenceFragmentProvider() {

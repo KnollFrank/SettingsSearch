@@ -46,7 +46,7 @@ public class SearchPreferenceFragments {
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
-    private final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier;
+    private final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
@@ -75,7 +75,7 @@ public class SearchPreferenceFragments {
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final Context context,
-                                        final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier) {
+                                        final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -91,7 +91,7 @@ public class SearchPreferenceFragments {
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
-        this.taskSupplier = taskSupplier;
+        this.getCreateSearchDatabaseTask = getCreateSearchDatabaseTask;
     }
 
     public void showSearchPreferenceFragment() {
@@ -115,7 +115,7 @@ public class SearchPreferenceFragments {
                                 locale,
                                 onUiThreadRunner),
                         onUiThreadRunner,
-                        taskSupplier),
+                        getCreateSearchDatabaseTask),
                 searchPreferenceFragment -> {
                 },
                 true,
