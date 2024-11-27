@@ -10,8 +10,7 @@ public class LongRunningTask<V> extends AsyncTask<Void, Void, V> {
     private final Callable<V> doInBackground;
     private final Consumer<V> onPostExecute;
 
-    public LongRunningTask(final Callable<V> doInBackground,
-                           final Consumer<V> onPostExecute) {
+    public LongRunningTask(final Callable<V> doInBackground, final Consumer<V> onPostExecute) {
         this.doInBackground = doInBackground;
         this.onPostExecute = onPostExecute;
     }
