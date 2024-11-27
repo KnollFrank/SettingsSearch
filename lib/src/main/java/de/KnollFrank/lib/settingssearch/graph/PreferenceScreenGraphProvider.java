@@ -50,11 +50,11 @@ public class PreferenceScreenGraphProvider {
         }
         preferenceScreenGraph.addVertex(root);
         // FK-TODO: remove sleep
-        try {
-            Thread.sleep(1000);
-        } catch (final InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            Thread.sleep(1000);
+//        } catch (final InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
         this
                 .getConnectedPreferenceScreenByPreference(root)
                 .forEach(
