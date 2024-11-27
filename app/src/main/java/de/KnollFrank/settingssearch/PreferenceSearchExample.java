@@ -10,11 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
+import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
+import de.KnollFrank.lib.settingssearch.search.SearchDatabaseDirectoryIO;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
@@ -29,6 +37,12 @@ public class PreferenceSearchExample extends AppCompatActivity {
         if (savedInstanceState == null) {
             show(new PrefsFragmentFirst());
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        createSearchDatabase();
     }
 
     @Override
@@ -74,5 +88,36 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 FRAGMENT_CONTAINER_VIEW,
                 Optional.empty(),
                 rootPreferenceFragment);
+    }
+
+    private void createSearchDatabase() {
+        final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
+        final DefaultFragmentInitializer preferenceDialogs =
+                new DefaultFragmentInitializer(
+                        getSupportFragmentManager(),
+                        // FK-TODO: erzeuge den FragmentContainerView mit der dummyFragmentContainerView2 dynamisch und nicht in der xml-Datei.
+                        R.id.dummyFragmentContainerView2,
+                        OnUiThreadRunnerFactory.fromActivity(this));
+        final MergedPreferenceScreenDataRepository mergedPreferenceScreenDataRepository =
+                new MergedPreferenceScreenDataRepository(
+                        new Fragments(
+                                new FragmentFactoryAndInitializerWithCache(
+                                        new FragmentFactoryAndInitializer(
+                                                searchPreferenceFragments.fragmentFactory,
+                                                preferenceDialogs)),
+                                this),
+                        preferenceDialogs,
+                        searchPreferenceFragments.iconResourceIdProvider,
+                        searchPreferenceFragments.searchableInfoProvider,
+                        searchPreferenceFragments.preferenceDialogAndSearchableInfoProvider,
+                        searchPreferenceFragments.searchConfiguration.rootPreferenceFragment(),
+                        searchPreferenceFragments.preferenceSearchablePredicate,
+                        searchPreferenceFragments.preferenceConnected2PreferenceFragmentProvider,
+                        searchPreferenceFragments.preferenceScreenGraphAvailableListener,
+                        progress -> {
+                        },
+                        new SearchDatabaseDirectoryIO(this));
+        final Locale locale = Utils.geCurrentLocale(getResources());
+        mergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(locale);
     }
 }

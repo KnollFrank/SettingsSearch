@@ -33,7 +33,7 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
-class MergedPreferenceScreenDataRepository {
+public class MergedPreferenceScreenDataRepository {
 
     private final Fragments fragments;
     private final DefaultFragmentInitializer preferenceDialogs;

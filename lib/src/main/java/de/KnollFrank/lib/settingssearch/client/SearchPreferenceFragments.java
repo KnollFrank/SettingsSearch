@@ -28,17 +28,17 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 public class SearchPreferenceFragments {
 
     public final SearchConfiguration searchConfiguration;
-    private final FragmentFactory fragmentFactory;
-    private final SearchableInfoProvider searchableInfoProvider;
-    private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
-    private final IconResourceIdProvider iconResourceIdProvider;
-    private final PreferenceSearchablePredicate preferenceSearchablePredicate;
+    public final FragmentFactory fragmentFactory;
+    public final SearchableInfoProvider searchableInfoProvider;
+    public final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
+    public final IconResourceIdProvider iconResourceIdProvider;
+    public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
-    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
+    public final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
-    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
+    public final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
