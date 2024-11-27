@@ -10,11 +10,11 @@ public class Tasks {
     public static <V> void execute(final Callable<V> doInBackground,
                                    final Consumer<V> onPostExecute,
                                    final View progressContainer) {
-        final LongRunningTask<V> longRunningTask =
-                new LongRunningTask<>(
+        final LongRunningTaskWithProgressContainer<V> task =
+                new LongRunningTaskWithProgressContainer<>(
                         doInBackground,
                         onPostExecute,
                         progressContainer);
-        longRunningTask.execute();
+        task.execute();
     }
 }
