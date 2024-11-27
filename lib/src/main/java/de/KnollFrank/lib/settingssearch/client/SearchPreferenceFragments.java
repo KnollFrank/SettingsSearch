@@ -7,9 +7,13 @@ import android.content.Context;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.common.Utils;
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -42,6 +46,7 @@ public class SearchPreferenceFragments {
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
+    private final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
@@ -69,7 +74,8 @@ public class SearchPreferenceFragments {
                                         final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
-                                        final Context context) {
+                                        final Context context,
+                                        final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -85,6 +91,7 @@ public class SearchPreferenceFragments {
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
+        this.taskSupplier = taskSupplier;
     }
 
     public void showSearchPreferenceFragment() {
@@ -107,7 +114,8 @@ public class SearchPreferenceFragments {
                                 context,
                                 locale,
                                 onUiThreadRunner),
-                        onUiThreadRunner),
+                        onUiThreadRunner,
+                        taskSupplier),
                 searchPreferenceFragment -> {
                 },
                 true,

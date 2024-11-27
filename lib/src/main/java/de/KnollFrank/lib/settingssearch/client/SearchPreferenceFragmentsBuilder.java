@@ -6,8 +6,11 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Supplier;
 
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -40,6 +43,7 @@ public class SearchPreferenceFragmentsBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
+    private Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier = Optional::empty;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -104,6 +108,11 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
+    public SearchPreferenceFragmentsBuilder withTaskSupplier(final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier) {
+        this.taskSupplier = taskSupplier;
+        return this;
+    }
+
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
                 searchConfiguration,
@@ -120,6 +129,7 @@ public class SearchPreferenceFragmentsBuilder {
                 preferenceConnected2PreferenceFragmentProvider,
                 locale,
                 onUiThreadRunner,
-                context);
+                context,
+                taskSupplier);
     }
 }

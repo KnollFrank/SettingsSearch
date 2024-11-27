@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.search;
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +14,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningTaskWithProgressContainer;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.common.task.Tasks;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -35,16 +41,19 @@ public class SearchPreferenceFragment extends Fragment {
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
+    final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
-                                    final OnUiThreadRunner onUiThreadRunner) {
+                                    final OnUiThreadRunner onUiThreadRunner,
+                                    final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.onUiThreadRunner = onUiThreadRunner;
+        this.taskSupplier = taskSupplier;
     }
 
     @Nullable
@@ -61,13 +70,35 @@ public class SearchPreferenceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final View progressContainer = requireView().findViewById(R.id.progressContainer);
-        Tasks.execute(
-                this::getMergedPreferenceScreen,
-                mergedPreferenceScreen ->
-                        showSearchResultsFragment(
-                                mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
-                                searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
-                progressContainer);
+        final LongRunningTaskWithProgressContainer<MergedPreferenceScreen> task =
+                new LongRunningTaskWithProgressContainer<>(
+                        this::getMergedPreferenceScreen,
+                        mergedPreferenceScreen ->
+                                showSearchResultsFragment(
+                                        mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
+                                        searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
+                        progressContainer);
+        taskSupplier
+                .get()
+                .ifPresentOrElse(
+                        mergedPreferenceScreenDataLongRunningTask -> {
+                            waitFor(mergedPreferenceScreenDataLongRunningTask);
+                            task.execute();
+                        },
+                        task::execute);
+    }
+
+    private static void waitFor(final LongRunningTask<MergedPreferenceScreenData> task) {
+        if (task.isCancelled()) {
+            return;
+        }
+        try {
+            Log.i(SearchPreferenceFragment.class.getSimpleName(), "TASK: waitFor: BEGIN");
+            task.get();
+            Log.i(SearchPreferenceFragment.class.getSimpleName(), "TASK: waitFor: END");
+        } catch (final ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen() {

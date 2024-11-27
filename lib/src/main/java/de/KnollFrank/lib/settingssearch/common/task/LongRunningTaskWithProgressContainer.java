@@ -6,7 +6,7 @@ import android.view.View;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
 
-class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Void, V> {
+public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Void, V> {
 
     private final Callable<V> doInBackground;
     private final Consumer<V> onPostExecute;

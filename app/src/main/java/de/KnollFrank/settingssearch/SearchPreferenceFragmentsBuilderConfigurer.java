@@ -10,11 +10,14 @@ import androidx.preference.PreferenceFragmentCompat;
 import org.jgrapht.Graph;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragmentsBuilder;
+import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -30,8 +33,11 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
 public class SearchPreferenceFragmentsBuilderConfigurer {
 
-    public static SearchPreferenceFragmentsBuilder configure(final SearchPreferenceFragmentsBuilder builder) {
+    public static SearchPreferenceFragmentsBuilder configure(
+            final SearchPreferenceFragmentsBuilder builder,
+            final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> taskSupplier) {
         return builder
+                .withTaskSupplier(taskSupplier)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceConnected2PreferenceFragmentProvider(
                         new PreferenceConnected2PreferenceFragmentProvider() {

@@ -1,6 +1,7 @@
 package de.KnollFrank.settingssearch;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
     private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
+    private Optional<LongRunningTask<MergedPreferenceScreenData>> searchDatabaseTask;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +50,11 @@ public class PreferenceSearchExample extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        createSearchDatabase();
+        final var createSearchDatabaseTask = getCreateSearchDatabaseTask();
+        Log.i(this.getClass().getSimpleName(), "TASK: createSearchDatabaseTask: BEGIN");
+        this.searchDatabaseTask = Optional.of(createSearchDatabaseTask);
+        createSearchDatabaseTask.execute();
+        Log.i(this.getClass().getSimpleName(), "TASK: createSearchDatabaseTask: BEGIN");
     }
 
     @Override
@@ -63,6 +70,10 @@ public class PreferenceSearchExample extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public Optional<LongRunningTask<MergedPreferenceScreenData>> getSearchDatabaseTask() {
+        return searchDatabaseTask;
     }
 
     private void show(final Fragment fragment) {
@@ -84,7 +95,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 createSearchConfiguration(PrefsFragmentFirst.class),
                                 getSupportFragmentManager(),
                                 this,
-                                OnUiThreadRunnerFactory.fromActivity(this)))
+                                OnUiThreadRunnerFactory.fromActivity(this)),
+                        this::getSearchDatabaseTask)
                 .build();
     }
 
@@ -95,16 +107,14 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 rootPreferenceFragment);
     }
 
-    private void createSearchDatabase() {
+    private LongRunningTask<MergedPreferenceScreenData> getCreateSearchDatabaseTask() {
         final var mergedPreferenceScreenDataRepository = getMergedPreferenceScreenDataRepository();
         final Locale locale = Utils.geCurrentLocale(getResources());
-        final LongRunningTask<MergedPreferenceScreenData> task =
-                new LongRunningTask<>(
-                        () -> mergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(locale),
-                        mergedPreferenceScreenData -> {
-                        });
         // FK-FIXME: koordiniere diesen Task (1.) mit dem Task (2.) in SearchPreferenceFragment und mit (3.) SearchPreferenceFragments.rebuildSearchDatabase()
-        task.execute();
+        return new LongRunningTask<>(
+                () -> mergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(locale),
+                mergedPreferenceScreenData -> {
+                });
     }
 
     private MergedPreferenceScreenDataRepository getMergedPreferenceScreenDataRepository() {

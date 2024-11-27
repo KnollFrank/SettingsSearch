@@ -68,7 +68,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                                         getClass()),
                                 getParentFragmentManager(),
                                 getContext(),
-                                OnUiThreadRunnerFactory.fromActivity(requireActivity())))
+                                OnUiThreadRunnerFactory.fromActivity(requireActivity())),
+                        Optional::empty)
                 .build();
     }
 
