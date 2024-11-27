@@ -3,6 +3,7 @@ package de.KnollFrank.settingssearch;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
 import de.KnollFrank.lib.settingssearch.search.SearchDatabaseDirectoryIO;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
@@ -29,6 +31,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
+    private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -90,13 +93,16 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 rootPreferenceFragment);
     }
 
+    // FK-TODO: in einem AsyncTask ausführen.
     private void createSearchDatabase() {
+        FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
+                findViewById(android.R.id.content),
+                DUMMY_FRAGMENT_CONTAINER_VIEW);
         final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         getSupportFragmentManager(),
-                        // FK-TODO: erzeuge den FragmentContainerView mit der dummyFragmentContainerView2 dynamisch und nicht in der xml-Datei.
-                        R.id.dummyFragmentContainerView2,
+                        DUMMY_FRAGMENT_CONTAINER_VIEW,
                         OnUiThreadRunnerFactory.fromActivity(this));
         final MergedPreferenceScreenDataRepository mergedPreferenceScreenDataRepository =
                 new MergedPreferenceScreenDataRepository(

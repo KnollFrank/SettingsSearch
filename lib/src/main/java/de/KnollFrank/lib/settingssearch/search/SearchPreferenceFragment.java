@@ -2,9 +2,15 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.SearchView;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.function.Consumer;
@@ -16,11 +22,14 @@ import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayerFactory;
 
 public class SearchPreferenceFragment extends Fragment {
+
+    private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
     private final SearchConfiguration searchConfiguration;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
@@ -36,6 +45,16 @@ public class SearchPreferenceFragment extends Fragment {
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.onUiThreadRunner = onUiThreadRunner;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.searchpreference_fragment, container, false);
+        FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
+                (ViewGroup) view,
+                DUMMY_FRAGMENT_CONTAINER_VIEW);
+        return view;
     }
 
     @Override
@@ -59,7 +78,8 @@ public class SearchPreferenceFragment extends Fragment {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 requireActivity().getSupportFragmentManager(),
                 getChildFragmentManager(),
-                progressDisplayer);
+                progressDisplayer,
+                DUMMY_FRAGMENT_CONTAINER_VIEW);
     }
 
     private void showSearchResultsFragment(final SearchResultsFragment searchResultsFragment,

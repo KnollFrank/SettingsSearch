@@ -10,7 +10,6 @@ import androidx.preference.PreferenceManager;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -83,11 +82,12 @@ public class MergedPreferenceScreenFactory {
     public MergedPreferenceScreen getMergedPreferenceScreen(
             final FragmentManager fragmentManager,
             final FragmentManager childFragmentManager,
-            final IProgressDisplayer progressDisplayer) {
+            final IProgressDisplayer progressDisplayer,
+            final @IdRes int containerViewId) {
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         childFragmentManager,
-                        R.id.dummyFragmentContainerView,
+                        containerViewId,
                         onUiThreadRunner);
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(fragmentFactory, preferenceDialogs);
