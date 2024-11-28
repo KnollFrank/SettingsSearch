@@ -68,14 +68,20 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Tasks.executeAsynchronouslyTask1AndThenTask2(
+        final IProgressDisplayer progressDisplayer =
+                ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(
+                        requireView().findViewById(R.id.progressContainer),
+                        onUiThreadRunner);
+        Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
                 getCreateSearchDatabaseTask.get(),
-                createGetMergedPreferenceScreenAndShowSearchResultsTask());
+                () -> progressDisplayer.displayProgress("Please wait."),
+                createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer));
     }
 
-    private LongRunningTaskWithProgressContainer<MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask() {
+    private LongRunningTaskWithProgressContainer<MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask(
+            final IProgressDisplayer progressDisplayer) {
         return new LongRunningTaskWithProgressContainer<>(
-                this::getMergedPreferenceScreen,
+                () -> getMergedPreferenceScreen(progressDisplayer),
                 mergedPreferenceScreen ->
                         showSearchResultsFragment(
                                 mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
@@ -84,11 +90,7 @@ public class SearchPreferenceFragment extends Fragment {
                 onUiThreadRunner);
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen() {
-        final IProgressDisplayer progressDisplayer =
-                ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(
-                        requireView().findViewById(R.id.progressContainer),
-                        onUiThreadRunner);
+    private MergedPreferenceScreen getMergedPreferenceScreen(final IProgressDisplayer progressDisplayer) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 requireActivity().getSupportFragmentManager(),
                 getChildFragmentManager(),

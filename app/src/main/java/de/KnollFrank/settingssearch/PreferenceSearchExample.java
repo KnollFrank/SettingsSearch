@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,7 +52,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         super.onStart();
         final var createSearchDatabaseTask = _getCreateSearchDatabaseTask();
         this.createSearchDatabaseTask = Optional.of(createSearchDatabaseTask);
-        createSearchDatabaseTask.execute();
+        createSearchDatabaseTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override

@@ -15,6 +15,7 @@ class ProgressDisplayer implements IProgressDisplayer {
 
     @Override
     public void displayProgress(final String progress) {
+        progressContainer.setVisibility(View.VISIBLE);
         progressContainer
                 .<TextView>findViewById(R.id.progressText)
                 .setText(progress);

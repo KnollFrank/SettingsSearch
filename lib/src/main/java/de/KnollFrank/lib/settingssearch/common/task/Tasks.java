@@ -11,29 +11,32 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScree
 public class Tasks {
 
     // FK-TODO: replace all params here and elsewhere with AsyncTask<Params, Progress, Result>
-    public static void executeAsynchronouslyTask1AndThenTask2(
+    public static void asynchronouslyWaitForTask1ThenExecuteTask2(
             final Optional<LongRunningTask<MergedPreferenceScreenData>> task1,
+            final Runnable onWaitingForTask1,
             final LongRunningTaskWithProgressContainer<MergedPreferenceScreen> task2) {
         final LongRunningTask<Object> task =
                 new LongRunningTask<>(
                         () -> {
-                            executeTask1AndThenTask2(task1, task2);
+                            waitForTask1ThenExecuteTask2(task1, onWaitingForTask1, task2);
                             return null;
                         },
                         _void -> {
                         });
-        task.execute();
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private static void executeTask1AndThenTask2(
+    private static void waitForTask1ThenExecuteTask2(
             final Optional<LongRunningTask<MergedPreferenceScreenData>> task1,
-            LongRunningTaskWithProgressContainer<MergedPreferenceScreen> task2) {
+            final Runnable onWaitingForTask1,
+            final LongRunningTaskWithProgressContainer<MergedPreferenceScreen> task2) {
         task1.ifPresentOrElse(
                 _task1 -> {
+                    onWaitingForTask1.run();
                     waitFor(_task1);
-                    task2.execute();
+                    task2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 },
-                task2::execute);
+                () -> task2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR));
     }
 
     private static <Params, Progress, Result> void waitFor(final AsyncTask<Params, Progress, Result> task) {
