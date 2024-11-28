@@ -14,7 +14,7 @@ public class PreferenceVisibleAndSearchablePredicate implements PreferenceSearch
     }
 
     @Override
-    public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-        return preference.isVisible() && delegate.isPreferenceOfHostSearchable(preference, hostOfPreference);
+    public boolean isPreferenceSearchable(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+        return preference.isVisible() && delegate.isPreferenceSearchable(preference, hostOfPreference);
     }
 }

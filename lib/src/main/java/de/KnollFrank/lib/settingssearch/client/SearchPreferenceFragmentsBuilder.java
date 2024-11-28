@@ -35,8 +35,8 @@ public class SearchPreferenceFragmentsBuilder {
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private IconResourceIdProvider iconResourceIdProvider = new ReflectionIconResourceIdProvider();
-    private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, host) -> true;
-    private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = (preference, host) -> true;
+    private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
+    private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = (preference, hostOfPreference) -> true;
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();

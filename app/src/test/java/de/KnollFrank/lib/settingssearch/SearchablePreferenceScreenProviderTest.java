@@ -78,7 +78,7 @@ public class SearchablePreferenceScreenProviderTest {
                                 new PreferenceSearchablePredicate() {
 
                                     @Override
-                                    public boolean isPreferenceOfHostSearchable(final Preference preference, final PreferenceFragmentCompat host) {
+                                    public boolean isPreferenceSearchable(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
                                         return keyOfSearchableOrNonSearchablePreference.equals(preference.getKey()) ?
                                                 preferenceSearchable :
                                                 true;

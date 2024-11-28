@@ -74,8 +74,8 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -107,7 +107,7 @@ public class PreferenceSearcherTest {
                 };
         testSearch(
                 preferenceFragment,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
                 includePreferenceInSearchResultsPredicate,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -140,7 +140,7 @@ public class PreferenceSearcherTest {
                 };
         testSearch(
                 preferenceFragment,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
                 includePreferenceInSearchResultsPredicate,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -163,8 +163,8 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format(keyword));
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -191,8 +191,8 @@ public class PreferenceSearcherTest {
 
                             category.addPreference(nestedPreference);
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -214,8 +214,8 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         }),
-                (preference, host) -> !(preference instanceof CheckBoxPreference && keyOfPreference.equals(preference.getKey())),
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> !(preference instanceof CheckBoxPreference && keyOfPreference.equals(preference.getKey())),
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -237,8 +237,8 @@ public class PreferenceSearcherTest {
                             preference.setSummary(String.format("Checkbox %s file", keyword));
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -263,8 +263,8 @@ public class PreferenceSearcherTest {
                             preference.setEntries(new String[]{keyword});
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -290,8 +290,8 @@ public class PreferenceSearcherTest {
                             preference.setDialogTitle(keyword);
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -315,8 +315,8 @@ public class PreferenceSearcherTest {
                             preference.setSummaryOn("switch is on");
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 summaryOff,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -340,8 +340,8 @@ public class PreferenceSearcherTest {
                             preference.setSummaryOn(summaryOn);
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 summaryOn,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -366,8 +366,8 @@ public class PreferenceSearcherTest {
                             preference.setEntries(new String[]{keyword});
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -390,10 +390,10 @@ public class PreferenceSearcherTest {
                             preference.setTitle("title of CustomDialogPreference");
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
-                (preference, host) -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
                 preferenceMatches ->
                         assertThat(
@@ -425,8 +425,8 @@ public class PreferenceSearcherTest {
                                 return preference;
                             }
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -442,8 +442,8 @@ public class PreferenceSearcherTest {
         final String keyOfPreference = "keyOfPreferenceWithOnPreferenceClickListener";
         testSearch(
                 new PrefsFragmentFirst(),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -468,8 +468,8 @@ public class PreferenceSearcherTest {
                             preference.setEntryValues(new String[]{"some entry value"});
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -495,8 +495,8 @@ public class PreferenceSearcherTest {
                             preference.setDialogTitle(keyword);
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -519,8 +519,8 @@ public class PreferenceSearcherTest {
                             preference.setTitle("Checkbox fourth file");
                             return preference;
                         }),
-                (preference, host) -> true,
-                (preference, host) -> true,
+                (preference, hostOfPreference) -> true,
+                (preference, hostOfPreference) -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
