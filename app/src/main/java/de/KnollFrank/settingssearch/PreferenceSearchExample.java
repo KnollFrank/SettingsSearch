@@ -32,8 +32,8 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
 public class PreferenceSearchExample extends AppCompatActivity {
 
-    private static final @IdRes int FRAGMENT_CONTAINER_VIEW = R.id.fragmentContainerView;
-    private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
+    private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
+    private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     private Optional<LongRunningTask<MergedPreferenceScreenData>> createSearchDatabaseTask = Optional.empty();
 
@@ -77,7 +77,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(FRAGMENT_CONTAINER_VIEW, fragment)
+                .replace(FRAGMENT_CONTAINER_VIEW_ID, fragment)
                 .commit();
     }
 
@@ -99,7 +99,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
         return new SearchConfiguration(
-                FRAGMENT_CONTAINER_VIEW,
+                FRAGMENT_CONTAINER_VIEW_ID,
                 Optional.empty(),
                 rootPreferenceFragment);
     }
@@ -117,12 +117,12 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private MergedPreferenceScreenDataRepository getMergedPreferenceScreenDataRepository() {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 findViewById(android.R.id.content),
-                DUMMY_FRAGMENT_CONTAINER_VIEW);
+                DUMMY_FRAGMENT_CONTAINER_VIEW_ID);
         final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         getSupportFragmentManager(),
-                        DUMMY_FRAGMENT_CONTAINER_VIEW,
+                        DUMMY_FRAGMENT_CONTAINER_VIEW_ID,
                         OnUiThreadRunnerFactory.fromActivity(this));
         return new MergedPreferenceScreenDataRepository(
                 new Fragments(
