@@ -15,7 +15,6 @@ class SearchAndDisplay {
         this.searchResultsDisplayer = searchResultsDisplayer;
     }
 
-    // FK-TODO: es dauert sehr lange, bis ein Suchergebnis angezeigt wird.
     public void searchForQueryAndDisplayResults(final String query) {
         final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
         searchResultsDisplayer.displaySearchResults(preferenceMatches);
