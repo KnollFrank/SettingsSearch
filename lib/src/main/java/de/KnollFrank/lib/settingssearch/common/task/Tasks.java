@@ -32,6 +32,7 @@ public class Tasks {
             final LongRunningTaskWithProgressContainer<MergedPreferenceScreen> task2) {
         task1.ifPresentOrElse(
                 _task1 -> {
+                    // FK-TODO: nicht nur eine statische Meldung anzeigen, sondern in den task2 über einen Listener einschalten und den Fortschritt von task2 mit einem ProgressProvider anzeigen.
                     onWaitingForTask1.run();
                     waitFor(_task1);
                     task2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
