@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.search.progress.OnUiThreadProgressDisplayer;
 
@@ -15,7 +14,7 @@ public class Tasks {
     public static void asynchronouslyWaitForTask1ThenExecuteTask2(
             final Optional<? extends LongRunningTask<MergedPreferenceScreenData>> task1,
             final OnUiThreadProgressDisplayer progressDisplayer,
-            final AsyncTask<Void, String, MergedPreferenceScreen> task2) {
+            final AsyncTask<Void, ?, ?> task2) {
         final AsyncTask<Void, Void, Void> asyncTask =
                 new AsyncTask<>() {
 
@@ -31,7 +30,7 @@ public class Tasks {
     private static void waitForTask1ThenExecuteTask2(
             final Optional<? extends LongRunningTask<MergedPreferenceScreenData>> task1,
             final OnUiThreadProgressDisplayer progressDisplayer,
-            final AsyncTask<Void, String, MergedPreferenceScreen> task2) {
+            final AsyncTask<Void, ?, ?> task2) {
         task1.ifPresentOrElse(
                 _task1 -> {
                     waitForTaskWhileDisplayingItsProgress(_task1, progressDisplayer);
@@ -47,7 +46,7 @@ public class Tasks {
         task.removeProgressUpdateListener(progressDisplayer);
     }
 
-    private static <Params, Progress, Result> void waitFor(final AsyncTask<Params, Progress, Result> task) {
+    private static void waitFor(final AsyncTask<?, ?, ?> task) {
         try {
             task.get();
         } catch (final ExecutionException | InterruptedException e) {
