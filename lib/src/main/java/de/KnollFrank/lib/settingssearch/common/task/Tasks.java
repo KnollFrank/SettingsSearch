@@ -15,7 +15,6 @@ public class Tasks {
         return task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
     }
 
-    // FK-TODO: replace all params here and elsewhere with AsyncTask<Params, Progress, Result>
     public static void asynchronouslyWaitForTask1ThenExecuteTask2(
             final Optional<? extends AsyncTaskWithProgressUpdateListeners<?>> task1,
             final ProgressUpdateListener progressUpdateListener4Task1,
