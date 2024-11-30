@@ -75,7 +75,7 @@ public class SearchPreferenceFragment extends Fragment {
                         onUiThreadRunner);
         Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
                 getCreateSearchDatabaseTask.get(),
-                () -> progressDisplayer.onProgressUpdate("Please wait."),
+                progressDisplayer,
                 createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer));
     }
 

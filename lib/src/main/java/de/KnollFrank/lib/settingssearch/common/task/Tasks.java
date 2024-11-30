@@ -7,34 +7,36 @@ import java.util.concurrent.ExecutionException;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
+import de.KnollFrank.lib.settingssearch.search.progress.OnUiThreadProgressDisplayer;
 
 public class Tasks {
 
     // FK-TODO: replace all params here and elsewhere with AsyncTask<Params, Progress, Result>
     public static void asynchronouslyWaitForTask1ThenExecuteTask2(
             final Optional<LongRunningTask<MergedPreferenceScreenData>> task1,
-            final Runnable onWaitingForTask1,
+            final OnUiThreadProgressDisplayer progressDisplayer,
             final LongRunningTaskWithProgressContainer<MergedPreferenceScreen> task2) {
-        final LongRunningTask<Object> task =
-                new LongRunningTask<>(
-                        progressDisplayer -> {
-                            waitForTask1ThenExecuteTask2(task1, onWaitingForTask1, task2);
-                            return null;
-                        },
-                        _void -> {
-                        });
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        final AsyncTask<Void, Void, Void> asyncTask =
+                new AsyncTask<>() {
+
+                    @Override
+                    protected Void doInBackground(final Void... voids) {
+                        waitForTask1ThenExecuteTask2(task1, progressDisplayer, task2);
+                        return null;
+                    }
+                };
+        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private static void waitForTask1ThenExecuteTask2(
             final Optional<LongRunningTask<MergedPreferenceScreenData>> task1,
-            final Runnable onWaitingForTask1,
+            final OnUiThreadProgressDisplayer progressDisplayer,
             final LongRunningTaskWithProgressContainer<MergedPreferenceScreen> task2) {
         task1.ifPresentOrElse(
                 _task1 -> {
-                    // FK-TODO: nicht nur eine statische Meldung anzeigen, sondern in den task2 über einen Listener einschalten und den Fortschritt von task2 mit einem ProgressProvider anzeigen.
-                    onWaitingForTask1.run();
+                    _task1.addProgressUpdateListener(progressDisplayer);
                     waitFor(_task1);
+                    _task1.removeProgressUpdateListener(progressDisplayer);
                     task2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 },
                 () -> task2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR));

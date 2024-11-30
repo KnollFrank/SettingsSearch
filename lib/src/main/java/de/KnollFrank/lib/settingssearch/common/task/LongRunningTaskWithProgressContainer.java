@@ -32,6 +32,10 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Str
         progressUpdateListeners.add(progressUpdateListener);
     }
 
+    public void removeProgressUpdateListener(final ProgressUpdateListener progressUpdateListener) {
+        progressUpdateListeners.remove(progressUpdateListener);
+    }
+
     @Override
     protected void onPreExecute() {
         setVisibilityOfProgressContainer(View.VISIBLE);

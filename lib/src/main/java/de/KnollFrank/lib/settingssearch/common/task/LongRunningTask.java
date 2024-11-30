@@ -25,6 +25,10 @@ public class LongRunningTask<V> extends AsyncTask<Void, String, V> {
         progressUpdateListeners.add(progressUpdateListener);
     }
 
+    public void removeProgressUpdateListener(final ProgressUpdateListener progressUpdateListener) {
+        progressUpdateListeners.remove(progressUpdateListener);
+    }
+
     @Override
     protected V doInBackground(final Void... voids) {
         try {
