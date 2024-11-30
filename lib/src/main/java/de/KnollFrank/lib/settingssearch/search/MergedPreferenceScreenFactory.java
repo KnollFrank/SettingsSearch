@@ -18,18 +18,12 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
 import de.KnollFrank.lib.settingssearch.results.ShowPreferenceScreenAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
-import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class MergedPreferenceScreenFactory {
 
@@ -38,15 +32,10 @@ public class MergedPreferenceScreenFactory {
     private final @IdRes int fragmentContainerViewId;
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final FragmentFactory fragmentFactory;
-    private final PreferenceSearchablePredicate preferenceSearchablePredicate;
-    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
-    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
-    private final SearchableInfoProvider searchableInfoProvider;
-    private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
-    private final IconResourceIdProvider iconResourceIdProvider;
     private final Context context;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
+    private final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -54,29 +43,19 @@ public class MergedPreferenceScreenFactory {
             final @IdRes int fragmentContainerViewId,
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
             final FragmentFactory fragmentFactory,
-            final PreferenceSearchablePredicate preferenceSearchablePredicate,
-            final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
-            final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-            final SearchableInfoProvider searchableInfoProvider,
-            final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final IconResourceIdProvider iconResourceIdProvider,
             final Context context,
             final Locale locale,
-            final OnUiThreadRunner onUiThreadRunner) {
+            final OnUiThreadRunner onUiThreadRunner,
+            final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
-        this.preferenceSearchablePredicate = preferenceSearchablePredicate;
-        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
-        this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
-        this.searchableInfoProvider = searchableInfoProvider;
-        this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
-        this.iconResourceIdProvider = iconResourceIdProvider;
         this.context = context;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
+        this.mergedPreferenceScreenDataRepositoryFactory = mergedPreferenceScreenDataRepositoryFactory;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
@@ -100,10 +79,13 @@ public class MergedPreferenceScreenFactory {
                 prepareShow,
                 showPreferencePathPredicate,
                 fragmentManager,
-                getMergedPreferenceScreenData(
-                        progressDisplayer,
-                        fragments,
-                        preferenceDialogs),
+                mergedPreferenceScreenDataRepositoryFactory
+                        .createMergedPreferenceScreenDataRepository(
+                                preferenceDialogs,
+                                context,
+                                progressDisplayer,
+                                fragments)
+                        .getMergedPreferenceScreenData(locale),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment),
@@ -139,25 +121,5 @@ public class MergedPreferenceScreenFactory {
                         preferenceManager),
                 preferencePathNavigator,
                 mergedPreferenceScreenData.hostByPreference());
-    }
-
-    private MergedPreferenceScreenData getMergedPreferenceScreenData(
-            final IProgressDisplayer progressDisplayer,
-            final Fragments fragments,
-            final DefaultFragmentInitializer preferenceDialogs) {
-        final MergedPreferenceScreenDataRepository mergedPreferenceScreenDataRepository =
-                new MergedPreferenceScreenDataRepository(
-                        fragments,
-                        preferenceDialogs,
-                        iconResourceIdProvider,
-                        searchableInfoProvider,
-                        preferenceDialogAndSearchableInfoProvider,
-                        rootPreferenceFragment,
-                        preferenceSearchablePredicate,
-                        preferenceConnected2PreferenceFragmentProvider,
-                        preferenceScreenGraphAvailableListener,
-                        progressDisplayer,
-                        new SearchDatabaseDirectoryIO(context));
-        return mergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(locale);
     }
 }

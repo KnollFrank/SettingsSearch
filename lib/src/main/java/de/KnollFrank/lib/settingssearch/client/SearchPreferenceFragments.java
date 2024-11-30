@@ -14,7 +14,11 @@ import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
+import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -22,27 +26,30 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
+import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
-public class SearchPreferenceFragments {
+public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepositoryFactory {
 
     public final SearchConfiguration searchConfiguration;
-    public final FragmentFactory fragmentFactory;
-    public final SearchableInfoProvider searchableInfoProvider;
-    public final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
-    public final IconResourceIdProvider iconResourceIdProvider;
-    public final PreferenceSearchablePredicate preferenceSearchablePredicate;
+    private final FragmentFactory fragmentFactory;
+    private final SearchableInfoProvider searchableInfoProvider;
+    private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
+    private final IconResourceIdProvider iconResourceIdProvider;
+    private final PreferenceSearchablePredicate preferenceSearchablePredicate;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
-    public final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
+    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
-    public final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
+    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
@@ -105,15 +112,10 @@ public class SearchPreferenceFragments {
                                 searchConfiguration.fragmentContainerViewId(),
                                 searchConfiguration.rootPreferenceFragment(),
                                 fragmentFactory,
-                                preferenceSearchablePredicate,
-                                preferenceConnected2PreferenceFragmentProvider,
-                                preferenceScreenGraphAvailableListener,
-                                searchableInfoProvider,
-                                preferenceDialogAndSearchableInfoProvider,
-                                iconResourceIdProvider,
                                 context,
                                 locale,
-                                onUiThreadRunner),
+                                onUiThreadRunner,
+                                this),
                         onUiThreadRunner,
                         getCreateSearchDatabaseTask),
                 searchPreferenceFragment -> {
@@ -125,5 +127,42 @@ public class SearchPreferenceFragments {
 
     public void rebuildSearchDatabase() {
         new SearchDatabaseDirectoryIO(context).removeSearchDatabaseDirectories4AllLocales();
+    }
+
+    @Override
+    public MergedPreferenceScreenDataRepository createMergedPreferenceScreenDataRepository(
+            final DefaultFragmentInitializer preferenceDialogs,
+            final Context context,
+            final IProgressDisplayer progressDisplayer) {
+        return createMergedPreferenceScreenDataRepository(
+                preferenceDialogs,
+                context,
+                progressDisplayer,
+                new Fragments(
+                        new FragmentFactoryAndInitializerWithCache(
+                                new FragmentFactoryAndInitializer(
+                                        fragmentFactory,
+                                        preferenceDialogs)),
+                        context));
+    }
+
+    @Override
+    public MergedPreferenceScreenDataRepository createMergedPreferenceScreenDataRepository(
+            final DefaultFragmentInitializer preferenceDialogs,
+            final Context context,
+            final IProgressDisplayer progressDisplayer,
+            final Fragments fragments) {
+        return new MergedPreferenceScreenDataRepository(
+                fragments,
+                preferenceDialogs,
+                iconResourceIdProvider,
+                searchableInfoProvider,
+                preferenceDialogAndSearchableInfoProvider,
+                searchConfiguration.rootPreferenceFragment(),
+                preferenceSearchablePredicate,
+                preferenceConnected2PreferenceFragmentProvider,
+                preferenceScreenGraphAvailableListener,
+                progressDisplayer,
+                new SearchDatabaseDirectoryIO(context));
     }
 }

@@ -22,12 +22,8 @@ import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
-import de.KnollFrank.lib.settingssearch.search.SearchDatabaseDirectoryIO;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
@@ -119,29 +115,13 @@ public class PreferenceSearchExample extends AppCompatActivity {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 findViewById(android.R.id.content),
                 DUMMY_FRAGMENT_CONTAINER_VIEW_ID);
-        final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
-        final DefaultFragmentInitializer preferenceDialogs =
+        return createSearchPreferenceFragments().createMergedPreferenceScreenDataRepository(
                 new DefaultFragmentInitializer(
                         getSupportFragmentManager(),
                         DUMMY_FRAGMENT_CONTAINER_VIEW_ID,
-                        OnUiThreadRunnerFactory.fromActivity(this));
-        return new MergedPreferenceScreenDataRepository(
-                new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(
-                                new FragmentFactoryAndInitializer(
-                                        searchPreferenceFragments.fragmentFactory,
-                                        preferenceDialogs)),
-                        this),
-                preferenceDialogs,
-                searchPreferenceFragments.iconResourceIdProvider,
-                searchPreferenceFragments.searchableInfoProvider,
-                searchPreferenceFragments.preferenceDialogAndSearchableInfoProvider,
-                searchPreferenceFragments.searchConfiguration.rootPreferenceFragment(),
-                searchPreferenceFragments.preferenceSearchablePredicate,
-                searchPreferenceFragments.preferenceConnected2PreferenceFragmentProvider,
-                searchPreferenceFragments.preferenceScreenGraphAvailableListener,
+                        OnUiThreadRunnerFactory.fromActivity(this)),
+                this,
                 progress -> {
-                },
-                new SearchDatabaseDirectoryIO(this));
+                });
     }
 }
