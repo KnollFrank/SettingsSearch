@@ -29,11 +29,15 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Str
     }
 
     public void addProgressUpdateListener(final ProgressUpdateListener progressUpdateListener) {
-        progressUpdateListeners.add(progressUpdateListener);
+        synchronized (progressUpdateListeners) {
+            progressUpdateListeners.add(progressUpdateListener);
+        }
     }
 
     public void removeProgressUpdateListener(final ProgressUpdateListener progressUpdateListener) {
-        progressUpdateListeners.remove(progressUpdateListener);
+        synchronized (progressUpdateListeners) {
+            progressUpdateListeners.remove(progressUpdateListener);
+        }
     }
 
     @Override
@@ -52,8 +56,10 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Str
 
     @Override
     protected void onProgressUpdate(final String... values) {
-        for (final ProgressUpdateListener progressUpdateListener : progressUpdateListeners) {
-            progressUpdateListener.onProgressUpdate(values[0]);
+        synchronized (progressUpdateListeners) {
+            for (final ProgressUpdateListener progressUpdateListener : progressUpdateListeners) {
+                progressUpdateListener.onProgressUpdate(values[0]);
+            }
         }
     }
 
