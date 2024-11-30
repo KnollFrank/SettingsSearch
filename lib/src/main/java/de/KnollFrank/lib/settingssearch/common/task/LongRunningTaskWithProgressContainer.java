@@ -42,7 +42,6 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Str
         }
     }
 
-
     @Override
     protected void onProgressUpdate(final String... values) {
         progressDisplayer.displayProgress(values[0]);

@@ -14,6 +14,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
@@ -23,7 +24,7 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
-import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
+import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
@@ -102,26 +103,31 @@ public class PreferenceSearchExample extends AppCompatActivity {
     }
 
     private LongRunningTask<MergedPreferenceScreenData> _getCreateSearchDatabaseTask() {
-        final var mergedPreferenceScreenDataRepository = getMergedPreferenceScreenDataRepository();
-        final Locale locale = Utils.geCurrentLocale(getResources());
-        // FK-FIXME: koordiniere diesen Task (1.) mit dem Task (2.) in SearchPreferenceFragment und mit (3.) SearchPreferenceFragments.rebuildSearchDatabase()
-        return new LongRunningTask<>(
-                () -> mergedPreferenceScreenDataRepository.getMergedPreferenceScreenData(locale),
-                mergedPreferenceScreenData -> {
-                });
-    }
-
-    private MergedPreferenceScreenDataRepository getMergedPreferenceScreenDataRepository() {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 findViewById(android.R.id.content),
                 DUMMY_FRAGMENT_CONTAINER_VIEW_ID);
-        return createSearchPreferenceFragments().createMergedPreferenceScreenDataRepository(
+        // FK-FIXME: koordiniere diesen Task (1.) mit dem Task (2.) in SearchPreferenceFragment und mit (3.) SearchPreferenceFragments.rebuildSearchDatabase()
+        return new LongRunningTask<>(
+                getMergedPreferenceScreenData(Utils.geCurrentLocale(getResources())),
+                mergedPreferenceScreenData -> {
+                },
+                progress -> {
+                });
+    }
+
+    private Function<IProgressDisplayer, MergedPreferenceScreenData> getMergedPreferenceScreenData(final Locale locale) {
+        final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
+        final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
                         getSupportFragmentManager(),
                         DUMMY_FRAGMENT_CONTAINER_VIEW_ID,
-                        OnUiThreadRunnerFactory.fromActivity(this)),
-                this,
-                progress -> {
-                });
+                        OnUiThreadRunnerFactory.fromActivity(PreferenceSearchExample.this));
+        return progressDisplayer ->
+                searchPreferenceFragments
+                        .createMergedPreferenceScreenDataRepository(
+                                preferenceDialogs,
+                                this,
+                                progressDisplayer)
+                        .getMergedPreferenceScreenData(locale);
     }
 }

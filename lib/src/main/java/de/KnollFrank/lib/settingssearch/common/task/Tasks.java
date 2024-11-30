@@ -17,11 +17,13 @@ public class Tasks {
             final LongRunningTaskWithProgressContainer<MergedPreferenceScreen> task2) {
         final LongRunningTask<Object> task =
                 new LongRunningTask<>(
-                        () -> {
+                        progressDisplayer -> {
                             waitForTask1ThenExecuteTask2(task1, onWaitingForTask1, task2);
                             return null;
                         },
                         _void -> {
+                        },
+                        progress -> {
                         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
