@@ -119,7 +119,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 new DefaultFragmentInitializer(
                         getSupportFragmentManager(),
                         DUMMY_FRAGMENT_CONTAINER_VIEW_ID,
-                        OnUiThreadRunnerFactory.fromActivity(PreferenceSearchExample.this));
+                        OnUiThreadRunnerFactory.fromActivity(this));
         return progressDisplayer ->
                 searchPreferenceFragments
                         .createMergedPreferenceScreenDataRepository(
