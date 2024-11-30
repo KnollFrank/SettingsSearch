@@ -3,6 +3,8 @@ package de.KnollFrank.lib.settingssearch.common.task;
 import android.os.AsyncTask;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -14,18 +16,20 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Str
     private final Consumer<V> onPostExecute;
     private final View progressContainer;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final ProgressUpdateListener progressUpdateListener;
+    private final List<ProgressUpdateListener> progressUpdateListeners = new ArrayList<>();
 
     public LongRunningTaskWithProgressContainer(final Function<ProgressUpdateListener, V> doInBackground,
                                                 final Consumer<V> onPostExecute,
                                                 final View progressContainer,
-                                                final OnUiThreadRunner onUiThreadRunner,
-                                                final ProgressUpdateListener progressUpdateListener) {
+                                                final OnUiThreadRunner onUiThreadRunner) {
         this.doInBackground = doInBackground;
         this.onPostExecute = onPostExecute;
         this.progressContainer = progressContainer;
         this.onUiThreadRunner = onUiThreadRunner;
-        this.progressUpdateListener = progressUpdateListener;
+    }
+
+    public void addProgressUpdateListener(final ProgressUpdateListener progressUpdateListener) {
+        progressUpdateListeners.add(progressUpdateListener);
     }
 
     @Override
@@ -44,7 +48,9 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Str
 
     @Override
     protected void onProgressUpdate(final String... values) {
-        progressUpdateListener.onProgressUpdate(values[0]);
+        for (final ProgressUpdateListener progressUpdateListener : progressUpdateListeners) {
+            progressUpdateListener.onProgressUpdate(values[0]);
+        }
     }
 
     @Override

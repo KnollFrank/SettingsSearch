@@ -22,8 +22,6 @@ public class Tasks {
                             return null;
                         },
                         _void -> {
-                        },
-                        progress -> {
                         });
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }

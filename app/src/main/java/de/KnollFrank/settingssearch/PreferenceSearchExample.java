@@ -110,8 +110,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
         return new LongRunningTask<>(
                 getMergedPreferenceScreenData(Utils.geCurrentLocale(getResources())),
                 mergedPreferenceScreenData -> {
-                },
-                progress -> {
                 });
     }
 
