@@ -29,7 +29,7 @@ public class Tasks {
                         return null;
                     }
                 };
-        Tasks.executeTaskInParallelWithOtherTasks(asyncTask);
+        executeTaskInParallelWithOtherTasks(asyncTask);
     }
 
     private static void waitForTask1ThenExecuteTask2(
