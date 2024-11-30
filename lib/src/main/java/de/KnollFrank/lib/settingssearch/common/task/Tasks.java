@@ -18,7 +18,7 @@ public class Tasks {
 
     // FK-TODO: replace all params here and elsewhere with AsyncTask<Params, Progress, Result>
     public static void asynchronouslyWaitForTask1ThenExecuteTask2(
-            final Optional<? extends LongRunningTask<MergedPreferenceScreenData>> task1,
+            final Optional<? extends AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>> task1,
             final OnUiThreadProgressDisplayer progressDisplayer,
             final AsyncTask<Void, ?, ?> task2) {
         final AsyncTask<Void, Void, Void> asyncTask =
@@ -34,7 +34,7 @@ public class Tasks {
     }
 
     private static void waitForTask1ThenExecuteTask2(
-            final Optional<? extends LongRunningTask<MergedPreferenceScreenData>> task1,
+            final Optional<? extends AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>> task1,
             final OnUiThreadProgressDisplayer progressDisplayer,
             final AsyncTask<Void, ?, ?> task2) {
         task1.ifPresentOrElse(
@@ -45,7 +45,7 @@ public class Tasks {
                 () -> executeTaskInParallelWithOtherTasks(task2));
     }
 
-    private static void waitForTaskWhileDisplayingItsProgress(final LongRunningTask<MergedPreferenceScreenData> task,
+    private static void waitForTaskWhileDisplayingItsProgress(final AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData> task,
                                                               final OnUiThreadProgressDisplayer progressDisplayer) {
         task.addProgressUpdateListener(progressDisplayer);
         waitFor(task);

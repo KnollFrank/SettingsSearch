@@ -9,14 +9,14 @@ import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
-public class LongRunningTask<V> extends AsyncTask<Void, String, V> {
+public class AsyncTaskWithProgressUpdateListeners<V> extends AsyncTask<Void, String, V> {
 
     private final Function<ProgressUpdateListener, V> doInBackground;
     private final Consumer<V> onPostExecute;
     private final List<ProgressUpdateListener> progressUpdateListeners = new ArrayList<>();
 
-    public LongRunningTask(final Function<ProgressUpdateListener, V> doInBackground,
-                           final Consumer<V> onPostExecute) {
+    public AsyncTaskWithProgressUpdateListeners(final Function<ProgressUpdateListener, V> doInBackground,
+                                                final Consumer<V> onPostExecute) {
         this.doInBackground = doInBackground;
         this.onPostExecute = onPostExecute;
     }

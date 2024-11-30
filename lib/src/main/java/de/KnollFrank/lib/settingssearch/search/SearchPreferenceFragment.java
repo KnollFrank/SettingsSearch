@@ -21,8 +21,8 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
-import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
-import de.KnollFrank.lib.settingssearch.common.task.LongRunningTaskWithProgressContainer;
+import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
+import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListenersAndProgressContainer;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
@@ -41,13 +41,13 @@ public class SearchPreferenceFragment extends Fragment {
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
-                                    final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
+                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
@@ -79,10 +79,10 @@ public class SearchPreferenceFragment extends Fragment {
                 createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer));
     }
 
-    private LongRunningTaskWithProgressContainer<MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask(
+    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask(
             final ProgressUpdateListener progressUpdateListener) {
-        final LongRunningTaskWithProgressContainer<MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask =
-                new LongRunningTaskWithProgressContainer<>(
+        final AsyncTaskWithProgressUpdateListenersAndProgressContainer<MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask =
+                new AsyncTaskWithProgressUpdateListenersAndProgressContainer<>(
                         this::getMergedPreferenceScreen,
                         mergedPreferenceScreen ->
                                 showSearchResultsFragment(

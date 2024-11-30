@@ -18,7 +18,7 @@ import java.util.function.Function;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.Utils;
-import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
+import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
@@ -33,7 +33,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
     private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
-    private Optional<LongRunningTask<MergedPreferenceScreenData>> createSearchDatabaseTask = Optional.empty();
+    private Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>> createSearchDatabaseTask = Optional.empty();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public Optional<LongRunningTask<MergedPreferenceScreenData>> getCreateSearchDatabaseTask() {
+    public Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>> getCreateSearchDatabaseTask() {
         return createSearchDatabaseTask;
     }
 
@@ -102,12 +102,12 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 rootPreferenceFragment);
     }
 
-    private LongRunningTask<MergedPreferenceScreenData> _getCreateSearchDatabaseTask() {
+    private AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData> _getCreateSearchDatabaseTask() {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 findViewById(android.R.id.content),
                 DUMMY_FRAGMENT_CONTAINER_VIEW_ID);
         // FK-FIXME: koordiniere diesen Task (1.) mit dem Task (2.) in SearchPreferenceFragment und mit (3.) SearchPreferenceFragments.rebuildSearchDatabase()
-        return new LongRunningTask<>(
+        return new AsyncTaskWithProgressUpdateListeners<>(
                 getMergedPreferenceScreenData(Utils.geCurrentLocale(getResources())),
                 mergedPreferenceScreenData -> {
                 });

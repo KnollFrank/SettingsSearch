@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.common.Utils;
-import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
+import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -53,7 +53,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
-    private final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
@@ -82,7 +82,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final Context context,
-                                        final Supplier<Optional<LongRunningTask<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
+                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());

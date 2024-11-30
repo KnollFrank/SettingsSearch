@@ -7,15 +7,16 @@ import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
-public class LongRunningTaskWithProgressContainer<V> extends LongRunningTask<V> {
+public class AsyncTaskWithProgressUpdateListenersAndProgressContainer<V> extends AsyncTaskWithProgressUpdateListeners<V> {
 
     private final View progressContainer;
     private final OnUiThreadRunner onUiThreadRunner;
 
-    public LongRunningTaskWithProgressContainer(final Function<ProgressUpdateListener, V> doInBackground,
-                                                final Consumer<V> onPostExecute,
-                                                final View progressContainer,
-                                                final OnUiThreadRunner onUiThreadRunner) {
+    public AsyncTaskWithProgressUpdateListenersAndProgressContainer(
+            final Function<ProgressUpdateListener, V> doInBackground,
+            final Consumer<V> onPostExecute,
+            final View progressContainer,
+            final OnUiThreadRunner onUiThreadRunner) {
         super(doInBackground, onPostExecute);
         this.progressContainer = progressContainer;
         this.onUiThreadRunner = onUiThreadRunner;
