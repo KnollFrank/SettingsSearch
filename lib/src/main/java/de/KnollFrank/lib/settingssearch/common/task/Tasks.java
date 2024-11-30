@@ -10,6 +10,12 @@ import de.KnollFrank.lib.settingssearch.search.progress.OnUiThreadProgressDispla
 
 public class Tasks {
 
+    public static <Params, Progress, Result> AsyncTask<Params, Progress, Result> executeTaskInParallelWithOtherTasks(
+            final AsyncTask<Params, Progress, Result> task,
+            final Params... params) {
+        return task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
+    }
+
     // FK-TODO: replace all params here and elsewhere with AsyncTask<Params, Progress, Result>
     public static void asynchronouslyWaitForTask1ThenExecuteTask2(
             final Optional<? extends LongRunningTask<MergedPreferenceScreenData>> task1,
@@ -24,7 +30,7 @@ public class Tasks {
                         return null;
                     }
                 };
-        asyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        Tasks.executeTaskInParallelWithOtherTasks(asyncTask);
     }
 
     private static void waitForTask1ThenExecuteTask2(
@@ -34,9 +40,9 @@ public class Tasks {
         task1.ifPresentOrElse(
                 _task1 -> {
                     waitForTaskWhileDisplayingItsProgress(_task1, progressDisplayer);
-                    task2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    executeTaskInParallelWithOtherTasks(task2);
                 },
-                () -> task2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR));
+                () -> executeTaskInParallelWithOtherTasks(task2));
     }
 
     private static void waitForTaskWhileDisplayingItsProgress(final LongRunningTask<MergedPreferenceScreenData> task,

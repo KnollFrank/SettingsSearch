@@ -1,6 +1,5 @@
 package de.KnollFrank.settingssearch;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.LongRunningTask;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
+import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
@@ -49,7 +49,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         super.onStart();
         final var createSearchDatabaseTask = _getCreateSearchDatabaseTask();
         this.createSearchDatabaseTask = Optional.of(createSearchDatabaseTask);
-        createSearchDatabaseTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask);
     }
 
     @Override
