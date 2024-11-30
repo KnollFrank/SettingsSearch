@@ -31,7 +31,7 @@ import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataReposit
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -133,11 +133,11 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     public MergedPreferenceScreenDataRepository createMergedPreferenceScreenDataRepository(
             final DefaultFragmentInitializer preferenceDialogs,
             final Context context,
-            final IProgressDisplayer progressDisplayer) {
+            final ProgressUpdateListener progressUpdateListener) {
         return createMergedPreferenceScreenDataRepository(
                 preferenceDialogs,
                 context,
-                progressDisplayer,
+                progressUpdateListener,
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(
                                 new FragmentFactoryAndInitializer(
@@ -150,7 +150,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     public MergedPreferenceScreenDataRepository createMergedPreferenceScreenDataRepository(
             final DefaultFragmentInitializer preferenceDialogs,
             final Context context,
-            final IProgressDisplayer progressDisplayer,
+            final ProgressUpdateListener progressUpdateListener,
             final Fragments fragments) {
         return new MergedPreferenceScreenDataRepository(
                 fragments,
@@ -162,7 +162,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 preferenceSearchablePredicate,
                 preferenceConnected2PreferenceFragmentProvider,
                 preferenceScreenGraphAvailableListener,
-                progressDisplayer,
+                progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context));
     }
 }

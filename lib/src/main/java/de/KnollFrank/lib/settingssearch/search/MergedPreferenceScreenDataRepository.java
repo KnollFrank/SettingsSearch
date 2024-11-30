@@ -28,8 +28,8 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
-import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -44,7 +44,7 @@ public class MergedPreferenceScreenDataRepository {
     private final PreferenceSearchablePredicate preferenceSearchablePredicate;
     private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
-    private final IProgressDisplayer progressDisplayer;
+    private final ProgressUpdateListener progressUpdateListener;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
 
     public MergedPreferenceScreenDataRepository(
@@ -57,7 +57,7 @@ public class MergedPreferenceScreenDataRepository {
             final PreferenceSearchablePredicate preferenceSearchablePredicate,
             final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
             final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-            final IProgressDisplayer progressDisplayer,
+            final ProgressUpdateListener progressUpdateListener,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO) {
         this.fragments = fragments;
         this.preferenceDialogs = preferenceDialogs;
@@ -68,7 +68,7 @@ public class MergedPreferenceScreenDataRepository {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
-        this.progressDisplayer = progressDisplayer;
+        this.progressUpdateListener = progressUpdateListener;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
     }
 
@@ -78,7 +78,7 @@ public class MergedPreferenceScreenDataRepository {
         // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
         if (!exists(dataFiles)) {
             final MergedPreferenceScreenData mergedPreferenceScreenData = computeMergedPreferenceScreenData();
-            progressDisplayer.displayProgress("persisting search database");
+            progressUpdateListener.onProgressUpdate("persisting search database");
             MergedPreferenceScreenDataFileDAO.persist(mergedPreferenceScreenData, dataFiles);
         }
         return MergedPreferenceScreenDataFileDAO.load(dataFiles);
@@ -89,7 +89,7 @@ public class MergedPreferenceScreenDataRepository {
                 this
                         .getSearchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenGraph();
-        progressDisplayer.displayProgress("preparing search database");
+        progressUpdateListener.onProgressUpdate("preparing search database");
         return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(searchablePreferenceScreenGraph);
     }
 
@@ -123,7 +123,7 @@ public class MergedPreferenceScreenDataRepository {
 
                     @Override
                     public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
-                        progressDisplayer.displayProgress(ProgressProvider.getProgress(preferenceScreenWithHost));
+                        progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                     }
                 },
                 new Preference2SearchablePreferencePOJOConverter(

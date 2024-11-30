@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import de.KnollFrank.lib.settingssearch.R;
 
-class ProgressDisplayer implements IProgressDisplayer {
+class ProgressDisplayer implements ProgressUpdateListener {
 
     private final View progressContainer;
 
@@ -14,7 +14,7 @@ class ProgressDisplayer implements IProgressDisplayer {
     }
 
     @Override
-    public void displayProgress(final String progress) {
+    public void onProgressUpdate(final String progress) {
         progressContainer.setVisibility(View.VISIBLE);
         progressContainer
                 .<TextView>findViewById(R.id.progressText)

@@ -6,26 +6,26 @@ import android.view.View;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, String, V> {
 
-    private final Function<IProgressDisplayer, V> doInBackground;
+    private final Function<ProgressUpdateListener, V> doInBackground;
     private final Consumer<V> onPostExecute;
     private final View progressContainer;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final IProgressDisplayer progressDisplayer;
+    private final ProgressUpdateListener progressUpdateListener;
 
-    public LongRunningTaskWithProgressContainer(final Function<IProgressDisplayer, V> doInBackground,
+    public LongRunningTaskWithProgressContainer(final Function<ProgressUpdateListener, V> doInBackground,
                                                 final Consumer<V> onPostExecute,
                                                 final View progressContainer,
                                                 final OnUiThreadRunner onUiThreadRunner,
-                                                final IProgressDisplayer progressDisplayer) {
+                                                final ProgressUpdateListener progressUpdateListener) {
         this.doInBackground = doInBackground;
         this.onPostExecute = onPostExecute;
         this.progressContainer = progressContainer;
         this.onUiThreadRunner = onUiThreadRunner;
-        this.progressDisplayer = progressDisplayer;
+        this.progressUpdateListener = progressUpdateListener;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Str
 
     @Override
     protected void onProgressUpdate(final String... values) {
-        progressDisplayer.displayProgress(values[0]);
+        progressUpdateListener.onProgressUpdate(values[0]);
     }
 
     @Override

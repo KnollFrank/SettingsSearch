@@ -5,20 +5,20 @@ import android.os.AsyncTask;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class LongRunningTask<V> extends AsyncTask<Void, String, V> {
 
-    private final Function<IProgressDisplayer, V> doInBackground;
+    private final Function<ProgressUpdateListener, V> doInBackground;
     private final Consumer<V> onPostExecute;
-    private final IProgressDisplayer progressDisplayer;
+    private final ProgressUpdateListener progressUpdateListener;
 
-    public LongRunningTask(final Function<IProgressDisplayer, V> doInBackground,
+    public LongRunningTask(final Function<ProgressUpdateListener, V> doInBackground,
                            final Consumer<V> onPostExecute,
-                           final IProgressDisplayer progressDisplayer) {
+                           final ProgressUpdateListener progressUpdateListener) {
         this.doInBackground = doInBackground;
         this.onPostExecute = onPostExecute;
-        this.progressDisplayer = progressDisplayer;
+        this.progressUpdateListener = progressUpdateListener;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class LongRunningTask<V> extends AsyncTask<Void, String, V> {
 
     @Override
     protected void onProgressUpdate(final String... values) {
-        progressDisplayer.displayProgress(values[0]);
+        progressUpdateListener.onProgressUpdate(values[0]);
     }
 
     @Override

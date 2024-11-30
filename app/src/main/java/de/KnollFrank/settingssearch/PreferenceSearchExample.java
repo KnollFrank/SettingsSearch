@@ -24,7 +24,7 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
-import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
@@ -115,7 +115,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 });
     }
 
-    private Function<IProgressDisplayer, MergedPreferenceScreenData> getMergedPreferenceScreenData(final Locale locale) {
+    private Function<ProgressUpdateListener, MergedPreferenceScreenData> getMergedPreferenceScreenData(final Locale locale) {
         final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
         final DefaultFragmentInitializer preferenceDialogs =
                 new DefaultFragmentInitializer(
