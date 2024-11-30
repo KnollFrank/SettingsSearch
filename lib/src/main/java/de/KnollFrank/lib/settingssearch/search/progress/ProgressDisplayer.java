@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import de.KnollFrank.lib.settingssearch.R;
 
-class ProgressDisplayer implements ProgressUpdateListener {
+public class ProgressDisplayer implements ProgressUpdateListener {
 
     private final View progressContainer;
 

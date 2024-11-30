@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-import de.KnollFrank.lib.settingssearch.search.progress.OnUiThreadProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class Tasks {
 
@@ -18,14 +18,14 @@ public class Tasks {
     // FK-TODO: replace all params here and elsewhere with AsyncTask<Params, Progress, Result>
     public static void asynchronouslyWaitForTask1ThenExecuteTask2(
             final Optional<? extends AsyncTaskWithProgressUpdateListeners<?>> task1,
-            final OnUiThreadProgressDisplayer progressDisplayer,
+            final ProgressUpdateListener progressUpdateListener4Task1,
             final AsyncTask<Void, ?, ?> task2) {
         final AsyncTask<Void, Void, Void> asyncTask =
                 new AsyncTask<>() {
 
                     @Override
                     protected Void doInBackground(final Void... voids) {
-                        waitForTask1ThenExecuteTask2(task1, progressDisplayer, task2);
+                        waitForTask1ThenExecuteTask2(task1, progressUpdateListener4Task1, task2);
                         return null;
                     }
                 };
@@ -34,21 +34,21 @@ public class Tasks {
 
     private static void waitForTask1ThenExecuteTask2(
             final Optional<? extends AsyncTaskWithProgressUpdateListeners<?>> task1,
-            final OnUiThreadProgressDisplayer progressDisplayer,
+            final ProgressUpdateListener progressUpdateListener4Task1,
             final AsyncTask<Void, ?, ?> task2) {
         task1.ifPresentOrElse(
                 _task1 -> {
-                    waitForTaskWhileDisplayingItsProgress(_task1, progressDisplayer);
+                    waitForTaskWhileListeningToItsProgress(_task1, progressUpdateListener4Task1);
                     executeTaskInParallelWithOtherTasks(task2);
                 },
                 () -> executeTaskInParallelWithOtherTasks(task2));
     }
 
-    private static void waitForTaskWhileDisplayingItsProgress(final AsyncTaskWithProgressUpdateListeners<?> task,
-                                                              final OnUiThreadProgressDisplayer progressDisplayer) {
-        task.addProgressUpdateListener(progressDisplayer);
+    private static void waitForTaskWhileListeningToItsProgress(final AsyncTaskWithProgressUpdateListeners<?> task,
+                                                               final ProgressUpdateListener progressUpdateListener) {
+        task.addProgressUpdateListener(progressUpdateListener);
         waitFor(task);
-        task.removeProgressUpdateListener(progressDisplayer);
+        task.removeProgressUpdateListener(progressUpdateListener);
     }
 
     private static void waitFor(final AsyncTask<?, ?, ?> task) {

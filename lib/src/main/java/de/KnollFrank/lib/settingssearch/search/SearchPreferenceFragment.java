@@ -29,8 +29,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScree
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
-import de.KnollFrank.lib.settingssearch.search.progress.OnUiThreadProgressDisplayer;
-import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayerFactory;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class SearchPreferenceFragment extends Fragment {
@@ -69,10 +68,9 @@ public class SearchPreferenceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        final OnUiThreadProgressDisplayer progressDisplayer =
-                ProgressDisplayerFactory.createOnUiThreadProgressDisplayer(
-                        requireView().findViewById(R.id.progressContainer),
-                        onUiThreadRunner);
+        final ProgressDisplayer progressDisplayer =
+                new ProgressDisplayer(
+                        requireView().findViewById(R.id.progressContainer));
         Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
                 getCreateSearchDatabaseTask.get(),
                 progressDisplayer,
