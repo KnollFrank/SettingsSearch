@@ -81,13 +81,14 @@ public class SearchPreferenceFragment extends Fragment {
     private LongRunningTaskWithProgressContainer<MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask(
             final IProgressDisplayer progressDisplayer) {
         return new LongRunningTaskWithProgressContainer<>(
-                () -> getMergedPreferenceScreen(progressDisplayer),
+                this::getMergedPreferenceScreen,
                 mergedPreferenceScreen ->
                         showSearchResultsFragment(
                                 mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
                                 searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
                 requireView().findViewById(R.id.progressContainer),
-                onUiThreadRunner);
+                onUiThreadRunner,
+                progressDisplayer);
     }
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final IProgressDisplayer progressDisplayer) {

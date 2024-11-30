@@ -3,24 +3,29 @@ package de.KnollFrank.lib.settingssearch.common.task;
 import android.os.AsyncTask;
 import android.view.View;
 
-import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
-public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Void, V> {
+import de.KnollFrank.lib.settingssearch.search.progress.IProgressDisplayer;
 
-    private final Callable<V> doInBackground;
+public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, String, V> {
+
+    private final Function<IProgressDisplayer, V> doInBackground;
     private final Consumer<V> onPostExecute;
     private final View progressContainer;
     private final OnUiThreadRunner onUiThreadRunner;
+    private final IProgressDisplayer progressDisplayer;
 
-    public LongRunningTaskWithProgressContainer(final Callable<V> doInBackground,
+    public LongRunningTaskWithProgressContainer(final Function<IProgressDisplayer, V> doInBackground,
                                                 final Consumer<V> onPostExecute,
                                                 final View progressContainer,
-                                                final OnUiThreadRunner onUiThreadRunner) {
+                                                final OnUiThreadRunner onUiThreadRunner,
+                                                final IProgressDisplayer progressDisplayer) {
         this.doInBackground = doInBackground;
         this.onPostExecute = onPostExecute;
         this.progressContainer = progressContainer;
         this.onUiThreadRunner = onUiThreadRunner;
+        this.progressDisplayer = progressDisplayer;
     }
 
     @Override
@@ -31,10 +36,16 @@ public class LongRunningTaskWithProgressContainer<V> extends AsyncTask<Void, Voi
     @Override
     protected V doInBackground(final Void... voids) {
         try {
-            return doInBackground.call();
+            return doInBackground.apply(this::publishProgress);
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    @Override
+    protected void onProgressUpdate(final String... values) {
+        progressDisplayer.displayProgress(values[0]);
     }
 
     @Override
