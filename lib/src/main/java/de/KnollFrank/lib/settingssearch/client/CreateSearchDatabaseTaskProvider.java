@@ -17,7 +17,6 @@ public class CreateSearchDatabaseTaskProvider {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
-    // FK-TODO: die Information MergedPreferenceScreenData im Rückgabetyp entfernen
     public static AsyncTaskWithProgressUpdateListeners<?> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
             final FragmentActivity activity) {
