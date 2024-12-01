@@ -3,7 +3,6 @@ package de.KnollFrank.settingssearch;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -11,27 +10,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.Locale;
 import java.util.Optional;
-import java.util.function.Function;
 
+import de.KnollFrank.lib.settingssearch.client.CreateSearchDatabaseTaskProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
-import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
-import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
 public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
-    private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     private Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>> createSearchDatabaseTask = Optional.empty();
 
@@ -47,9 +40,12 @@ public class PreferenceSearchExample extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        final var createSearchDatabaseTask = _getCreateSearchDatabaseTask();
-        this.createSearchDatabaseTask = Optional.of(createSearchDatabaseTask);
-        Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask);
+        createSearchDatabaseTask =
+                Optional.of(
+                        CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
+                                createSearchPreferenceFragments(),
+                                this));
+        Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 
     @Override
@@ -65,10 +61,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>> getCreateSearchDatabaseTask() {
-        return createSearchDatabaseTask;
     }
 
     private void show(final Fragment fragment) {
@@ -89,9 +81,10 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         SearchPreferenceFragments.builder(
                                 createSearchConfiguration(PrefsFragmentFirst.class),
                                 getSupportFragmentManager(),
+                                // FK-TODO: introduce parameter Activity and remove the following two parameters
                                 this,
                                 OnUiThreadRunnerFactory.fromActivity(this)),
-                        this::getCreateSearchDatabaseTask)
+                        () -> createSearchDatabaseTask)
                 .build();
     }
 
@@ -100,32 +93,5 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 FRAGMENT_CONTAINER_VIEW_ID,
                 Optional.empty(),
                 rootPreferenceFragment);
-    }
-
-    private AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData> _getCreateSearchDatabaseTask() {
-        FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
-                findViewById(android.R.id.content),
-                DUMMY_FRAGMENT_CONTAINER_VIEW_ID);
-        // FK-FIXME: koordiniere diesen Task (1.) mit dem Task (2.) in SearchPreferenceFragment und mit (3.) SearchPreferenceFragments.rebuildSearchDatabase()
-        return new AsyncTaskWithProgressUpdateListeners<>(
-                getMergedPreferenceScreenData(Utils.geCurrentLocale(getResources())),
-                mergedPreferenceScreenData -> {
-                });
-    }
-
-    private Function<ProgressUpdateListener, MergedPreferenceScreenData> getMergedPreferenceScreenData(final Locale locale) {
-        final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments();
-        final DefaultFragmentInitializer preferenceDialogs =
-                new DefaultFragmentInitializer(
-                        getSupportFragmentManager(),
-                        DUMMY_FRAGMENT_CONTAINER_VIEW_ID,
-                        OnUiThreadRunnerFactory.fromActivity(this));
-        return progressDisplayer ->
-                searchPreferenceFragments
-                        .createMergedPreferenceScreenDataRepository(
-                                preferenceDialogs,
-                                this,
-                                progressDisplayer)
-                        .getMergedPreferenceScreenData(locale);
     }
 }
