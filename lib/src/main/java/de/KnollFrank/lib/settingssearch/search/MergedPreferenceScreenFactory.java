@@ -85,7 +85,7 @@ public class MergedPreferenceScreenFactory {
                                 context,
                                 progressUpdateListener,
                                 fragments)
-                        .getMergedPreferenceScreenData(locale),
+                        .persistOrLoadMergedPreferenceScreenData(locale),
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         rootPreferenceFragment),

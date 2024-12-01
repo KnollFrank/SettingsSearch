@@ -25,7 +25,6 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListenersAndProgressContainer;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -40,13 +39,13 @@ public class SearchPreferenceFragment extends Fragment {
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
-                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
+                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;

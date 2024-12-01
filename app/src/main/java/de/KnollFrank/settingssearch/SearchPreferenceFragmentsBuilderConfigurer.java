@@ -17,7 +17,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragmentsBuilder;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
@@ -35,7 +34,7 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
 
     public static SearchPreferenceFragmentsBuilder configure(
             final SearchPreferenceFragmentsBuilder builder,
-            final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
+            final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask) {
         return builder
                 .withGetCreateSearchDatabaseTask(getCreateSearchDatabaseTask)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())

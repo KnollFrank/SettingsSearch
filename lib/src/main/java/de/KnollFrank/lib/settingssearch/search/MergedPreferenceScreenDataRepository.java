@@ -72,7 +72,7 @@ public class MergedPreferenceScreenDataRepository {
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
     }
 
-    public MergedPreferenceScreenData getMergedPreferenceScreenData(final Locale locale) {
+    public MergedPreferenceScreenData persistOrLoadMergedPreferenceScreenData(final Locale locale) {
         final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
         // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?

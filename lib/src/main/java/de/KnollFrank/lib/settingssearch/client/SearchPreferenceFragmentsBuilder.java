@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -44,7 +43,7 @@ public class SearchPreferenceFragmentsBuilder {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
     // FK-TODO: rename getCreateSearchDatabaseTask to createSearchDatabaseTaskSupplier. Dito other places and methods
-    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask = Optional::empty;
+    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask = Optional::empty;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -109,7 +108,7 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withGetCreateSearchDatabaseTask(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<MergedPreferenceScreenData>>> getCreateSearchDatabaseTask) {
+    public SearchPreferenceFragmentsBuilder withGetCreateSearchDatabaseTask(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask) {
         this.getCreateSearchDatabaseTask = getCreateSearchDatabaseTask;
         return this;
     }
