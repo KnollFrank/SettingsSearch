@@ -23,6 +23,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentLayout;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
@@ -36,6 +37,13 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
             final SearchPreferenceFragmentsBuilder builder,
             final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
         return builder
+                .withSearchPreferenceFragmentLayout(
+                        new SearchPreferenceFragmentLayout(
+                                R.layout.custom_searchpreference_fragment,
+                                R.id.searchViewCustom,
+                                R.id.searchResultsFragmentContainerViewCustom,
+                                R.id.progressContainerCustom,
+                                de.KnollFrank.lib.settingssearch.R.id.progressText))
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceConnected2PreferenceFragmentProvider(

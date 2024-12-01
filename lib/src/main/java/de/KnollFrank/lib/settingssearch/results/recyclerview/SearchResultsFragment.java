@@ -29,6 +29,7 @@ public class SearchResultsFragment extends Fragment {
     public SearchResultsFragment(final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
                                  final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference,
                                  final ShowPreferencePathPredicate showPreferencePathPredicate) {
+        // FK-TODO: R.layout.searchresults_fragment konfigurierbar machen
         super(R.layout.searchresults_fragment);
         this.preferencePathByPreference = preferencePathByPreference;
         this.showPreferenceScreenAndHighlightPreference = showPreferenceScreenAndHighlightPreference;

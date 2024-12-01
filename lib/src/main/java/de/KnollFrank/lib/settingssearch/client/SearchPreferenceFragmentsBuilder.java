@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -20,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
+import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentLayout;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -43,6 +45,13 @@ public class SearchPreferenceFragmentsBuilder {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
+    private SearchPreferenceFragmentLayout searchPreferenceFragmentLayout =
+            new SearchPreferenceFragmentLayout(
+                    R.layout.searchpreference_fragment,
+                    R.id.searchView,
+                    R.id.searchResultsFragmentContainerView,
+                    R.id.progressContainer,
+                    R.id.progressText);
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -111,6 +120,11 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
+    public SearchPreferenceFragmentsBuilder withSearchPreferenceFragmentLayout(final SearchPreferenceFragmentLayout searchPreferenceFragmentLayout) {
+        this.searchPreferenceFragmentLayout = searchPreferenceFragmentLayout;
+        return this;
+    }
+
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
                 searchConfiguration,
@@ -128,6 +142,7 @@ public class SearchPreferenceFragmentsBuilder {
                 locale,
                 onUiThreadRunner,
                 context,
-                createSearchDatabaseTaskSupplier);
+                createSearchDatabaseTaskSupplier,
+                searchPreferenceFragmentLayout);
     }
 }
