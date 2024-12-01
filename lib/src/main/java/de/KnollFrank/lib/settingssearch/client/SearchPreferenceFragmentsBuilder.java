@@ -72,7 +72,6 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-
     private SearchPreferenceFragmentsBuilder withIconResourceIdProvider(final IconResourceIdProvider iconResourceIdProvider) {
         this.iconResourceIdProvider = iconResourceIdProvider;
         return this;
