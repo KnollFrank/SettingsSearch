@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.client;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.fragment.app.FragmentManager;
@@ -13,6 +14,7 @@ import java.util.function.Supplier;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -56,14 +58,13 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
-                                                           final Context context,
-                                                           final OnUiThreadRunner onUiThreadRunner) {
+                                                           final Activity activity) {
         return new SearchPreferenceFragmentsBuilder(
                 searchConfiguration,
                 fragmentManager,
-                Utils.geCurrentLocale(context.getResources()),
-                onUiThreadRunner,
-                context);
+                Utils.geCurrentLocale(activity.getResources()),
+                OnUiThreadRunnerFactory.fromActivity(activity),
+                activity);
     }
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,

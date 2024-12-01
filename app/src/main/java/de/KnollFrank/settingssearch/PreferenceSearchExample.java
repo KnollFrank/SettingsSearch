@@ -16,7 +16,6 @@ import de.KnollFrank.lib.settingssearch.client.CreateSearchDatabaseTaskProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
@@ -80,9 +79,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         SearchPreferenceFragments.builder(
                                 createSearchConfiguration(PrefsFragmentFirst.class),
                                 getSupportFragmentManager(),
-                                // FK-TODO: introduce parameter Activity and remove the following two parameters
-                                this,
-                                OnUiThreadRunnerFactory.fromActivity(this)),
+                                this),
                         () -> createSearchDatabaseTask)
                 .build();
     }
