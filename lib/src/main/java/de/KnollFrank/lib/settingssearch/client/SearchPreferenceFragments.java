@@ -52,7 +52,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
-    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
@@ -81,7 +81,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final Context context,
-                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask) {
+                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -97,7 +97,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
-        this.getCreateSearchDatabaseTask = getCreateSearchDatabaseTask;
+        this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
     }
 
     public void showSearchPreferenceFragment() {
@@ -116,7 +116,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                 onUiThreadRunner,
                                 this),
                         onUiThreadRunner,
-                        getCreateSearchDatabaseTask),
+                        createSearchDatabaseTaskSupplier),
                 searchPreferenceFragment -> {
                 },
                 true,

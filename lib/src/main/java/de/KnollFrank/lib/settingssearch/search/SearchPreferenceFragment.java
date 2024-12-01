@@ -39,19 +39,19 @@ public class SearchPreferenceFragment extends Fragment {
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
-                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask) {
+                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
         super(R.layout.searchpreference_fragment);
         this.searchConfiguration = searchConfiguration;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.onUiThreadRunner = onUiThreadRunner;
-        this.getCreateSearchDatabaseTask = getCreateSearchDatabaseTask;
+        this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
     }
 
     @Nullable
@@ -71,7 +71,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new ProgressDisplayer(
                         requireView().findViewById(R.id.progressContainer));
         Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
-                getCreateSearchDatabaseTask.get(),
+                createSearchDatabaseTaskSupplier.get(),
                 progressDisplayer,
                 createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer));
     }

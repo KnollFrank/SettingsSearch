@@ -42,8 +42,7 @@ public class SearchPreferenceFragmentsBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
-    // FK-TODO: rename getCreateSearchDatabaseTask to createSearchDatabaseTaskSupplier. Dito other places and methods
-    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask = Optional::empty;
+    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -107,8 +106,8 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withGetCreateSearchDatabaseTask(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> getCreateSearchDatabaseTask) {
-        this.getCreateSearchDatabaseTask = getCreateSearchDatabaseTask;
+    public SearchPreferenceFragmentsBuilder withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
+        this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         return this;
     }
 
@@ -129,6 +128,6 @@ public class SearchPreferenceFragmentsBuilder {
                 locale,
                 onUiThreadRunner,
                 context,
-                getCreateSearchDatabaseTask);
+                createSearchDatabaseTaskSupplier);
     }
 }
