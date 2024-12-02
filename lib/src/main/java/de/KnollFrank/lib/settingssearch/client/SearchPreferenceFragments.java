@@ -21,8 +21,8 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -52,7 +52,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
-    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
+    private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
@@ -82,7 +82,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final ShowPreferencePathPredicate showPreferencePathPredicate,
                                         final PrepareShow prepareShow,
                                         final FragmentManager fragmentManager,
-                                        final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                                        final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final Context context,
@@ -100,7 +100,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
-        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
+        this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
@@ -170,7 +170,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 preferenceDialogAndSearchableInfoProvider,
                 searchConfiguration.rootPreferenceFragment(),
                 preferenceSearchablePredicate,
-                preferenceConnected2PreferenceFragmentProvider,
+                preferenceFragmentConnected2PreferenceProvider,
                 preferenceScreenGraphAvailableListener,
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context));

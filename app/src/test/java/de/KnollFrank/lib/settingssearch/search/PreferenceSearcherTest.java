@@ -49,8 +49,8 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
@@ -547,7 +547,7 @@ public class PreferenceSearcherTest {
                            final PreferenceSearchablePredicate preferenceSearchablePredicate,
                            final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                            final String keyword,
-                           final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                           final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
@@ -559,7 +559,7 @@ public class PreferenceSearcherTest {
                                 preferenceSearchablePredicate,
                                 fragmentActivity,
                                 createFragmentFactoryReturning(preferenceFragment),
-                                preferenceConnected2PreferenceFragmentProvider,
+                                preferenceFragmentConnected2PreferenceProvider,
                                 preferenceDialogAndSearchableInfoProvider);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
@@ -589,7 +589,7 @@ public class PreferenceSearcherTest {
             final PreferenceSearchablePredicate preferenceSearchablePredicate,
             final FragmentActivity fragmentActivity,
             final FragmentFactory fragmentFactory,
-            final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+            final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         final DefaultFragmentInitializer fragmentInitializer =
                 new DefaultFragmentInitializer(
@@ -612,7 +612,7 @@ public class PreferenceSearcherTest {
                                 new SearchablePreferenceScreenProvider(
                                         new PreferenceVisibleAndSearchablePredicate(
                                                 preferenceSearchablePredicate))),
-                        preferenceConnected2PreferenceFragmentProvider,
+                        preferenceFragmentConnected2PreferenceProvider,
                         preferenceScreenGraph -> {
                         },
                         preferenceScreenWithHost -> {

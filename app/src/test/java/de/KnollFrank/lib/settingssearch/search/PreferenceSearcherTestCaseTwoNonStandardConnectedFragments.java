@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 
 class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
 
@@ -71,7 +71,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
     }
 
     private static void testSearch(final FragmentWithNonStandardConnection fragmentWithNonStandardConnection,
-                                   final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                                   final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         PreferenceSearcherTest.testSearch(
@@ -79,7 +79,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 (preference, hostOfPreference) -> true,
                 (preference, hostOfPreference) -> true,
                 keyword,
-                preferenceConnected2PreferenceFragmentProvider,
+                preferenceFragmentConnected2PreferenceProvider,
                 (preference, hostOfPreference) -> Optional.empty(),
                 checkPreferenceMatches);
     }

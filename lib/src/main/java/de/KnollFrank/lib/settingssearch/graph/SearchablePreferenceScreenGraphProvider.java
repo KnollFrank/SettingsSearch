@@ -8,27 +8,27 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceFragmentProvider;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 
 public class SearchablePreferenceScreenGraphProvider {
 
     private final String rootPreferenceFragmentClassName;
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
-    private final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider;
+    private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
     private final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter;
 
     public SearchablePreferenceScreenGraphProvider(final String rootPreferenceFragmentClassName,
                                                    final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-                                                   final PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider,
+                                                   final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                                                    final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                                    final PreferenceScreenGraphListener preferenceScreenGraphListener,
                                                    final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter) {
         this.rootPreferenceFragmentClassName = rootPreferenceFragmentClassName;
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
-        this.preferenceConnected2PreferenceFragmentProvider = preferenceConnected2PreferenceFragmentProvider;
+        this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.preferenceScreenGraphListener = preferenceScreenGraphListener;
         this.preference2SearchablePreferencePOJOConverter = preference2SearchablePreferencePOJOConverter;
@@ -44,7 +44,7 @@ public class SearchablePreferenceScreenGraphProvider {
         final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
                 new PreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
-                        preferenceConnected2PreferenceFragmentProvider,
+                        preferenceFragmentConnected2PreferenceProvider,
                         preferenceScreenGraphListener);
         return preferenceScreenGraphProvider.getPreferenceScreenGraph(rootPreferenceFragmentClassName);
     }
