@@ -83,7 +83,7 @@ public class SearchPreferenceFragment extends Fragment {
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask(
             final ProgressUpdateListener progressUpdateListener) {
         final var getMergedPreferenceScreenAndShowSearchResultsTask =
-                new AsyncTaskWithProgressUpdateListenersAndProgressContainer<MergedPreferenceScreen>(
+                new AsyncTaskWithProgressUpdateListenersAndProgressContainer<>(
                         this::getMergedPreferenceScreen,
                         mergedPreferenceScreen ->
                                 showSearchResultsFragment(
