@@ -2,8 +2,13 @@ package de.KnollFrank.settingssearch;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.SearchView;
+import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -23,7 +28,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentLayout;
+import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentUI;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
@@ -37,13 +42,34 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
             final SearchPreferenceFragmentsBuilder builder,
             final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
         return builder
-                .withSearchPreferenceFragmentLayout(
-                        new SearchPreferenceFragmentLayout(
-                                R.layout.custom_searchpreference_fragment,
-                                R.id.searchViewCustom,
-                                R.id.searchResultsFragmentContainerViewCustom,
-                                R.id.progressContainerCustom,
-                                de.KnollFrank.lib.settingssearch.R.id.progressText))
+                .withSearchPreferenceFragmentUI(
+                        new SearchPreferenceFragmentUI() {
+
+                            @Override
+                            public @LayoutRes int getRootViewId() {
+                                return R.layout.custom_searchpreference_fragment;
+                            }
+
+                            @Override
+                            public SearchView getSearchView(final View rootView) {
+                                return rootView.requireViewById(R.id.searchViewCustom);
+                            }
+
+                            @Override
+                            public FragmentContainerView getSearchResultsFragmentContainerView(final View rootView) {
+                                return rootView.requireViewById(R.id.searchResultsFragmentContainerViewCustom);
+                            }
+
+                            @Override
+                            public View getProgressContainer(final View rootView) {
+                                return rootView.requireViewById(R.id.progressContainerCustom);
+                            }
+
+                            @Override
+                            public TextView getProgressText(final View progressContainer) {
+                                return progressContainer.requireViewById(de.KnollFrank.lib.settingssearch.R.id.progressText);
+                            }
+                        })
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceConnected2PreferenceFragmentProvider(

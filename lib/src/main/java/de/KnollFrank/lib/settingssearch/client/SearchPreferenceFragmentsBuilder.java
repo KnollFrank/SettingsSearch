@@ -1,7 +1,12 @@
 package de.KnollFrank.lib.settingssearch.client;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.SearchView;
+import android.widget.TextView;
 
+import androidx.annotation.LayoutRes;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
@@ -21,7 +26,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
-import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentLayout;
+import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -45,13 +50,34 @@ public class SearchPreferenceFragmentsBuilder {
     };
     private PreferenceConnected2PreferenceFragmentProvider preferenceConnected2PreferenceFragmentProvider = (preference, hostOfPreference) -> Optional.empty();
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
-    private SearchPreferenceFragmentLayout searchPreferenceFragmentLayout =
-            new SearchPreferenceFragmentLayout(
-                    R.layout.searchpreference_fragment,
-                    R.id.searchView,
-                    R.id.searchResultsFragmentContainerView,
-                    R.id.progressContainer,
-                    R.id.progressText);
+    private SearchPreferenceFragmentUI searchPreferenceFragmentUI =
+            new SearchPreferenceFragmentUI() {
+
+                @Override
+                public @LayoutRes int getRootViewId() {
+                    return R.layout.searchpreference_fragment;
+                }
+
+                @Override
+                public SearchView getSearchView(final View rootView) {
+                    return rootView.requireViewById(R.id.searchView);
+                }
+
+                @Override
+                public FragmentContainerView getSearchResultsFragmentContainerView(final View rootView) {
+                    return rootView.requireViewById(R.id.searchResultsFragmentContainerView);
+                }
+
+                @Override
+                public View getProgressContainer(final View rootView) {
+                    return rootView.requireViewById(R.id.progressContainer);
+                }
+
+                @Override
+                public TextView getProgressText(final View progressContainer) {
+                    return progressContainer.requireViewById(R.id.progressText);
+                }
+            };
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -120,8 +146,8 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withSearchPreferenceFragmentLayout(final SearchPreferenceFragmentLayout searchPreferenceFragmentLayout) {
-        this.searchPreferenceFragmentLayout = searchPreferenceFragmentLayout;
+    public SearchPreferenceFragmentsBuilder withSearchPreferenceFragmentUI(final SearchPreferenceFragmentUI searchPreferenceFragmentUI) {
+        this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
         return this;
     }
 
@@ -143,6 +169,6 @@ public class SearchPreferenceFragmentsBuilder {
                 onUiThreadRunner,
                 context,
                 createSearchDatabaseTaskSupplier,
-                searchPreferenceFragmentLayout);
+                searchPreferenceFragmentUI);
     }
 }

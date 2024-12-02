@@ -28,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayer;
+import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayerFactory;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class SearchPreferenceFragment extends Fragment {
@@ -39,26 +40,26 @@ public class SearchPreferenceFragment extends Fragment {
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
-    private final SearchPreferenceFragmentLayout searchPreferenceFragmentLayout;
+    private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
                                     final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
-                                    final SearchPreferenceFragmentLayout searchPreferenceFragmentLayout) {
+                                    final SearchPreferenceFragmentUI searchPreferenceFragmentUI) {
         this.searchConfiguration = searchConfiguration;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.onUiThreadRunner = onUiThreadRunner;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
-        this.searchPreferenceFragmentLayout = searchPreferenceFragmentLayout;
+        this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
-        final View view = inflater.inflate(searchPreferenceFragmentLayout.contentLayoutId(), container, false);
+        final View view = inflater.inflate(searchPreferenceFragmentUI.getRootViewId(), container, false);
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 (ViewGroup) view,
                 DUMMY_FRAGMENT_CONTAINER_VIEW);
@@ -69,9 +70,9 @@ public class SearchPreferenceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final ProgressDisplayer progressDisplayer =
-                new ProgressDisplayer(
-                        requireView().findViewById(searchPreferenceFragmentLayout.progressContainerId()),
-                        searchPreferenceFragmentLayout.progressTextId());
+                ProgressDisplayerFactory.createProgressDisplayer(
+                        searchPreferenceFragmentUI.getProgressContainer(requireView()),
+                        searchPreferenceFragmentUI::getProgressText);
         Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
                 createSearchDatabaseTaskSupplier.get(),
                 progressDisplayer,
@@ -87,7 +88,7 @@ public class SearchPreferenceFragment extends Fragment {
                                 showSearchResultsFragment(
                                         mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
                                         searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
-                        requireView().findViewById(searchPreferenceFragmentLayout.progressContainerId()),
+                        searchPreferenceFragmentUI.getProgressContainer(requireView()),
                         onUiThreadRunner);
         getMergedPreferenceScreenAndShowSearchResultsTask.addProgressUpdateListener(progressUpdateListener);
         return getMergedPreferenceScreenAndShowSearchResultsTask;
@@ -107,12 +108,14 @@ public class SearchPreferenceFragment extends Fragment {
                 searchResultsFragment,
                 onFragmentStarted,
                 false,
-                searchPreferenceFragmentLayout.searchResultsFragmentContainerViewId(),
+                searchPreferenceFragmentUI
+                        .getSearchResultsFragmentContainerView(requireView())
+                        .getId(),
                 getChildFragmentManager());
     }
 
     private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {
-        final SearchView searchView = requireView().findViewById(searchPreferenceFragmentLayout.searchViewId());
+        final SearchView searchView = searchPreferenceFragmentUI.getSearchView(requireView());
         SearchViewConfigurer.configureSearchView(
                 searchView,
                 searchConfiguration.queryHint(),

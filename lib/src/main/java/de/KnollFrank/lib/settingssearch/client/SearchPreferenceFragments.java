@@ -32,7 +32,7 @@ import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataReposit
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentLayout;
+import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
@@ -56,7 +56,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
-    private final SearchPreferenceFragmentLayout searchPreferenceFragmentLayout;
+    private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
@@ -85,7 +85,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final Context context,
                                         final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
-                                        final SearchPreferenceFragmentLayout searchPreferenceFragmentLayout) {
+                                        final SearchPreferenceFragmentUI searchPreferenceFragmentUI) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentFactory = fragmentFactory;
         this.searchableInfoProvider = searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider());
@@ -102,7 +102,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
-        this.searchPreferenceFragmentLayout = searchPreferenceFragmentLayout;
+        this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
     }
 
     public void showSearchPreferenceFragment() {
@@ -122,7 +122,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                 this),
                         onUiThreadRunner,
                         createSearchDatabaseTaskSupplier,
-                        searchPreferenceFragmentLayout),
+                        searchPreferenceFragmentUI),
                 searchPreferenceFragment -> {
                 },
                 true,
