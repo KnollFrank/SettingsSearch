@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.LayoutRes;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -30,6 +31,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchPreferenceFragmentsBuilder {
 
@@ -83,6 +85,19 @@ public class SearchPreferenceFragmentsBuilder {
                             return getRoot().requireViewById(R.id.progressText);
                         }
                     };
+                }
+            };
+    private SearchResultsFragmentUI searchResultsFragmentUI =
+            new SearchResultsFragmentUI() {
+
+                @Override
+                public int getRootViewId() {
+                    return R.layout.searchresults_fragment;
+                }
+
+                @Override
+                public RecyclerView getSearchResultsView(View rootView) {
+                    return rootView.requireViewById(R.id.searchResults);
                 }
             };
 
@@ -158,6 +173,11 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
+    public SearchPreferenceFragmentsBuilder withSearchResultsFragmentUI(final SearchResultsFragmentUI searchResultsFragmentUI) {
+        this.searchResultsFragmentUI = searchResultsFragmentUI;
+        return this;
+    }
+
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
                 searchConfiguration,
@@ -176,6 +196,7 @@ public class SearchPreferenceFragmentsBuilder {
                 onUiThreadRunner,
                 context,
                 createSearchDatabaseTaskSupplier,
-                searchPreferenceFragmentUI);
+                searchPreferenceFragmentUI,
+                searchResultsFragmentUI);
     }
 }

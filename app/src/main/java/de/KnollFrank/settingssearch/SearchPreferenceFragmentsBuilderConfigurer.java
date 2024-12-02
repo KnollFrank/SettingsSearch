@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.jgrapht.Graph;
 
@@ -30,6 +31,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
@@ -77,6 +79,20 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                                 };
                             }
                         })
+                .withSearchResultsFragmentUI(
+                        new SearchResultsFragmentUI() {
+
+                            @Override
+                            public @LayoutRes int getRootViewId() {
+                                return R.layout.custom_searchresults_fragment;
+                            }
+
+                            @Override
+                            public RecyclerView getSearchResultsView(final View rootView) {
+                                return rootView.requireViewById(R.id.searchResultsCustom);
+                            }
+                        }
+                )
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceConnected2PreferenceFragmentProvider(

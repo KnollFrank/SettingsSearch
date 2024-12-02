@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 
 import android.content.Context;
+import android.view.View;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
@@ -16,6 +17,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
 import org.junit.Test;
@@ -52,6 +54,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
@@ -633,7 +636,19 @@ public class PreferenceSearcherTest {
                 PreferenceManagerProvider.getPreferenceManager(
                         fragments,
                         preferenceFragment.getClass()),
-                fragmentFactoryAndInitializer);
+                fragmentFactoryAndInitializer,
+                new SearchResultsFragmentUI() {
+
+                    @Override
+                    public int getRootViewId() {
+                        return de.KnollFrank.lib.settingssearch.R.layout.searchresults_fragment;
+                    }
+
+                    @Override
+                    public RecyclerView getSearchResultsView(View rootView) {
+                        return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
+                    }
+                });
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

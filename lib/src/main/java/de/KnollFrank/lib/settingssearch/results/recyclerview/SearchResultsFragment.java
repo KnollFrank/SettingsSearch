@@ -14,32 +14,34 @@ import java.util.List;
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.IShowPreferenceScreenAndHighlightPreference;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchResultsFragment extends Fragment {
 
     private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
+    private final SearchResultsFragmentUI searchResultsFragmentUI;
     private RecyclerView recyclerView;
 
     public SearchResultsFragment(final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
                                  final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference,
-                                 final ShowPreferencePathPredicate showPreferencePathPredicate) {
-        // FK-TODO: R.layout.searchresults_fragment konfigurierbar machen
-        super(R.layout.searchresults_fragment);
+                                 final ShowPreferencePathPredicate showPreferencePathPredicate,
+                                 final SearchResultsFragmentUI searchResultsFragmentUI) {
+        super(searchResultsFragmentUI.getRootViewId());
         this.preferencePathByPreference = preferencePathByPreference;
         this.showPreferenceScreenAndHighlightPreference = showPreferenceScreenAndHighlightPreference;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
+        this.searchResultsFragmentUI = searchResultsFragmentUI;
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.searchResults);
+        recyclerView = searchResultsFragmentUI.getSearchResultsView(view);
         configure(recyclerView);
     }
 

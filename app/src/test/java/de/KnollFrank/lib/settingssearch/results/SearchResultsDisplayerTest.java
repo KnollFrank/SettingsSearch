@@ -5,8 +5,10 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTestFactory.createSomePreferenceFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 
+import android.view.View;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
 import org.junit.Test;
@@ -23,6 +25,7 @@ import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolde
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.lib.settingssearch.test.Matchers;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -79,7 +82,19 @@ public class SearchResultsDisplayerTest {
                         Map.of(),
                         preference -> {
                         },
-                        preferencePath -> true);
+                        preferencePath -> true,
+                        new SearchResultsFragmentUI() {
+
+                            @Override
+                            public int getRootViewId() {
+                                return de.KnollFrank.lib.settingssearch.R.layout.searchresults_fragment;
+                            }
+
+                            @Override
+                            public RecyclerView getSearchResultsView(View rootView) {
+                                return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
+                            }
+                        });
         PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment(
                 searchResultsFragment,
                 getFragments(searchResultsFragment, activity));

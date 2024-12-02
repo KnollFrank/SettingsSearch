@@ -112,7 +112,7 @@ public class PreferenceSearchExampleTest {
 
     private static Matcher<View> searchResultsView() {
         return allOf(
-                withId(de.KnollFrank.lib.settingssearch.R.id.searchResults),
+                withId(R.id.searchResultsCustom),
                 isDisplayed());
     }
 
