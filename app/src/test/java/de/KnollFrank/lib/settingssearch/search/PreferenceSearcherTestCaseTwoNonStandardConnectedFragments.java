@@ -30,7 +30,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 new FragmentWithNonStandardConnection(),
                 (preference, hostOfPreference) ->
                         "key".equals(preference.getKey()) ?
-                                Optional.of(PreferenceFragmentWithSinglePreference.class.getName()) :
+                                Optional.of(PreferenceFragmentWithSinglePreference.class) :
                                 Optional.empty(),
                 // When searching for KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT of that connected fragment
                 KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT,

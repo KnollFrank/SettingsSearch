@@ -99,9 +99,9 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                         new PreferenceConnected2PreferenceFragmentProvider() {
 
                             @Override
-                            public Optional<String> getClassNameOfConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+                            public Optional<Class<? extends Fragment>> getClassOfConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
                                 return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
-                                        Optional.of(PrefsFragmentSecond.class.getName()) :
+                                        Optional.of(PrefsFragmentSecond.class) :
                                         Optional.empty();
                             }
                         })
