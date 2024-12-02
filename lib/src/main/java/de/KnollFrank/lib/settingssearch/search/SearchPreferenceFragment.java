@@ -30,6 +30,7 @@ import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragme
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayerFactory;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 
 public class SearchPreferenceFragment extends Fragment {
 
@@ -71,8 +72,8 @@ public class SearchPreferenceFragment extends Fragment {
         super.onResume();
         final ProgressDisplayer progressDisplayer =
                 ProgressDisplayerFactory.createProgressDisplayer(
-                        searchPreferenceFragmentUI.getProgressContainer(requireView()),
-                        searchPreferenceFragmentUI::getProgressText);
+                        requireView(),
+                        searchPreferenceFragmentUI.getProgressContainerUI());
         Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
                 createSearchDatabaseTaskSupplier.get(),
                 progressDisplayer,
@@ -88,7 +89,7 @@ public class SearchPreferenceFragment extends Fragment {
                                 showSearchResultsFragment(
                                         mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
                                         searchResultsPreferenceFragment -> configureSearchView(mergedPreferenceScreen)),
-                        searchPreferenceFragmentUI.getProgressContainer(requireView()),
+                        searchPreferenceFragmentUI.getProgressContainerUI().getProgressContainer(requireView()),
                         onUiThreadRunner);
         getMergedPreferenceScreenAndShowSearchResultsTask.addProgressUpdateListener(progressUpdateListener);
         return getMergedPreferenceScreenAndShowSearchResultsTask;

@@ -1,8 +1,7 @@
-package de.KnollFrank.lib.settingssearch.search;
+package de.KnollFrank.lib.settingssearch.search.ui;
 
 import android.view.View;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.fragment.app.FragmentContainerView;
@@ -16,8 +15,5 @@ public interface SearchPreferenceFragmentUI {
 
     FragmentContainerView getSearchResultsFragmentContainerView(View rootView);
 
-    // FK-TODO: embed getProgressContainer() and getProgressText() in a ProgressContainerUI interface
-    View getProgressContainer(View rootView);
-
-    TextView getProgressText(View progressContainer);
+    ProgressContainerUI getProgressContainerUI();
 }

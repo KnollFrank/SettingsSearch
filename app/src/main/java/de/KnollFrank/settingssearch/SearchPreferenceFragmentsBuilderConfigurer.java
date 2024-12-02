@@ -28,7 +28,8 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceConnected2PreferenceF
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentUI;
+import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
@@ -61,13 +62,19 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                             }
 
                             @Override
-                            public View getProgressContainer(final View rootView) {
-                                return rootView.requireViewById(R.id.progressContainerCustom);
-                            }
+                            public ProgressContainerUI getProgressContainerUI() {
+                                return new ProgressContainerUI() {
 
-                            @Override
-                            public TextView getProgressText(final View progressContainer) {
-                                return progressContainer.requireViewById(de.KnollFrank.lib.settingssearch.R.id.progressText);
+                                    @Override
+                                    public View getProgressContainer(final View rootView) {
+                                        return rootView.requireViewById(R.id.progressContainerCustom);
+                                    }
+
+                                    @Override
+                                    public TextView getProgressText(final View progressContainer) {
+                                        return progressContainer.requireViewById(de.KnollFrank.lib.settingssearch.R.id.progressText);
+                                    }
+                                };
                             }
                         })
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)

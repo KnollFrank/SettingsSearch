@@ -1,16 +1,16 @@
 package de.KnollFrank.lib.settingssearch.search.progress;
 
 import android.view.View;
-import android.widget.TextView;
 
-import java.util.function.Function;
+import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 
 public class ProgressDisplayerFactory {
 
-    public static ProgressDisplayer createProgressDisplayer(final View progressContainer,
-                                                            final Function<View, TextView> getProgressText) {
+    public static ProgressDisplayer createProgressDisplayer(final View rootView,
+                                                            final ProgressContainerUI progressContainerUI) {
+        final View progressContainer = progressContainerUI.getProgressContainer(rootView);
         return new ProgressDisplayer(
                 progressContainer,
-                getProgressText.apply(progressContainer));
+                progressContainerUI.getProgressText(progressContainer));
     }
 }

@@ -26,9 +26,10 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
-import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
+import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 
 public class SearchPreferenceFragmentsBuilder {
 
@@ -69,13 +70,19 @@ public class SearchPreferenceFragmentsBuilder {
                 }
 
                 @Override
-                public View getProgressContainer(final View rootView) {
-                    return rootView.requireViewById(R.id.progressContainer);
-                }
+                public ProgressContainerUI getProgressContainerUI() {
+                    return new ProgressContainerUI() {
 
-                @Override
-                public TextView getProgressText(final View progressContainer) {
-                    return progressContainer.requireViewById(R.id.progressText);
+                        @Override
+                        public View getProgressContainer(final View rootView) {
+                            return rootView.requireViewById(R.id.progressContainer);
+                        }
+
+                        @Override
+                        public TextView getProgressText(final View progressContainer) {
+                            return progressContainer.requireViewById(R.id.progressText);
+                        }
+                    };
                 }
             };
 

@@ -32,11 +32,11 @@ import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataReposit
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
+import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 
 public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepositoryFactory {
 
