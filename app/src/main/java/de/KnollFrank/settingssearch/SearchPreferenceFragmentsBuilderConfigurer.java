@@ -62,17 +62,17 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                             }
 
                             @Override
-                            public ProgressContainerUI getProgressContainerUI() {
+                            public ProgressContainerUI getProgressContainerUI(View rootView) {
                                 return new ProgressContainerUI() {
 
                                     @Override
-                                    public View getProgressContainer(final View rootView) {
+                                    public View getRoot() {
                                         return rootView.requireViewById(R.id.progressContainerCustom);
                                     }
 
                                     @Override
-                                    public TextView getProgressText(final View progressContainer) {
-                                        return progressContainer.requireViewById(de.KnollFrank.lib.settingssearch.R.id.progressText);
+                                    public TextView getProgressText() {
+                                        return getRoot().requireViewById(de.KnollFrank.lib.settingssearch.R.id.progressText);
                                     }
                                 };
                             }

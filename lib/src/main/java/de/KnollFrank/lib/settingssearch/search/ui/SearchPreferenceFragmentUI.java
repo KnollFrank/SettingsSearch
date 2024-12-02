@@ -15,5 +15,5 @@ public interface SearchPreferenceFragmentUI {
 
     FragmentContainerView getSearchResultsFragmentContainerView(View rootView);
 
-    ProgressContainerUI getProgressContainerUI();
+    ProgressContainerUI getProgressContainerUI(View rootView);
 }

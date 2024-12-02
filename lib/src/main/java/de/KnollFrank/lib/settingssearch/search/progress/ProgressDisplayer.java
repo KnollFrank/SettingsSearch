@@ -8,7 +8,7 @@ public class ProgressDisplayer implements ProgressUpdateListener {
     private final View progressContainer;
     private final TextView progressText;
 
-    protected ProgressDisplayer(final View progressContainer, final TextView progressText) {
+    public ProgressDisplayer(final View progressContainer, final TextView progressText) {
         this.progressContainer = progressContainer;
         this.progressText = progressText;
     }

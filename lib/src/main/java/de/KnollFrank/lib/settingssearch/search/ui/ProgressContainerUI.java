@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 public interface ProgressContainerUI {
 
-    View getProgressContainer(View rootView);
+    View getRoot();
 
-    TextView getProgressText(View progressContainer);
+    TextView getProgressText();
 }

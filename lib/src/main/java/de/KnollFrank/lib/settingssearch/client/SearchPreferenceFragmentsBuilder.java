@@ -70,17 +70,17 @@ public class SearchPreferenceFragmentsBuilder {
                 }
 
                 @Override
-                public ProgressContainerUI getProgressContainerUI() {
+                public ProgressContainerUI getProgressContainerUI(final View rootView) {
                     return new ProgressContainerUI() {
 
                         @Override
-                        public View getProgressContainer(final View rootView) {
+                        public View getRoot() {
                             return rootView.requireViewById(R.id.progressContainer);
                         }
 
                         @Override
-                        public TextView getProgressText(final View progressContainer) {
-                            return progressContainer.requireViewById(R.id.progressText);
+                        public TextView getProgressText() {
+                            return getRoot().requireViewById(R.id.progressText);
                         }
                     };
                 }
