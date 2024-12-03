@@ -91,8 +91,7 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                             public RecyclerView getSearchResultsView(final View rootView) {
                                 return rootView.requireViewById(R.id.searchResultsCustom);
                             }
-                        }
-                )
+                        })
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceFragmentConnected2PreferenceProvider(
