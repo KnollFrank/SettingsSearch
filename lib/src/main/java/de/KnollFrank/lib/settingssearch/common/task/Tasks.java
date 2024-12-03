@@ -38,9 +38,15 @@ public class Tasks {
         task1.ifPresentOrElse(
                 _task1 -> {
                     waitForTaskWhileListeningToItsProgress(_task1, progressUpdateListener4Task1);
-                    executeTaskInParallelWithOtherTasks(task2);
+                    executeIfNotYetCancelled(task2);
                 },
-                () -> executeTaskInParallelWithOtherTasks(task2));
+                () -> executeIfNotYetCancelled(task2));
+    }
+
+    private static void executeIfNotYetCancelled(final AsyncTask<Void, ?, ?> task) {
+        if (!task.isCancelled()) {
+            executeTaskInParallelWithOtherTasks(task);
+        }
     }
 
     private static void waitForTaskWhileListeningToItsProgress(final AsyncTaskWithProgressUpdateListeners<?> task,

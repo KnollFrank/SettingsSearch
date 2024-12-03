@@ -44,6 +44,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
     private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
+    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask;
 
     public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
@@ -80,10 +81,17 @@ public class SearchPreferenceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final ProgressDisplayer progressDisplayer = createProgressDisplayer();
+        getMergedPreferenceScreenAndShowSearchResultsTask = createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer);
         Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
                 createSearchDatabaseTaskSupplier.get(),
                 progressDisplayer,
-                createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer));
+                getMergedPreferenceScreenAndShowSearchResultsTask);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getMergedPreferenceScreenAndShowSearchResultsTask.cancel(false);
     }
 
     private ProgressDisplayer createProgressDisplayer() {
