@@ -17,9 +17,6 @@ import java.util.function.Supplier;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
-import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
-import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.DefaultSearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
@@ -35,10 +32,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
     private SearchDatabase searchDatabase = new SearchDatabaseBuilder().build();
-    private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = (preference, hostOfPreference) -> true;
-    private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
-    private PrepareShow prepareShow = preferenceFragment -> {
-    };
+    private Search search = new SearchBuilder().build();
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI =
             new SearchPreferenceFragmentUI() {
@@ -106,18 +100,8 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
-        this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
-        return this;
-    }
-
-    public SearchPreferenceFragmentsBuilder withShowPreferencePathPredicate(final ShowPreferencePathPredicate showPreferencePathPredicate) {
-        this.showPreferencePathPredicate = showPreferencePathPredicate;
-        return this;
-    }
-
-    public SearchPreferenceFragmentsBuilder withPrepareShow(final PrepareShow prepareShow) {
-        this.prepareShow = prepareShow;
+    public SearchPreferenceFragmentsBuilder setSearch(final Search search) {
+        this.search = search;
         return this;
     }
 
@@ -142,12 +126,13 @@ public class SearchPreferenceFragmentsBuilder {
     }
 
     public SearchPreferenceFragments build() {
+        // FK-TODO: add search as a parameter and inline 3 of the following obvious constructor params
         return new SearchPreferenceFragments(
                 searchConfiguration,
                 searchDatabase,
-                includePreferenceInSearchResultsPredicate,
-                showPreferencePathPredicate,
-                prepareShow,
+                search.includePreferenceInSearchResultsPredicate(),
+                search.showPreferencePathPredicate(),
+                search.prepareShow(),
                 fragmentManager,
                 locale,
                 onUiThreadRunner,
