@@ -29,7 +29,6 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.results.DefaultSearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
@@ -143,7 +142,6 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                             public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
                                 Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
                             }
-                        })
-                .withSearchResultsSorter(new DefaultSearchResultsSorter());
+                        });
     }
 }
