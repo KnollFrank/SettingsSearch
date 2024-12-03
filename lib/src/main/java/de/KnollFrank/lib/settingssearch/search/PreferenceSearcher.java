@@ -30,13 +30,13 @@ class PreferenceSearcher {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferences)
                 .stream()
-                .filter(this::shallIncludePreferenceOfHostInSearchResults)
+                .filter(this::includePreferenceInSearchResults)
                 .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::stream)
                 .collect(Collectors.toSet());
     }
 
-    private boolean shallIncludePreferenceOfHostInSearchResults(final SearchablePreferencePOJO preference) {
+    private boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference) {
         return includePreferenceInSearchResultsPredicate.includePreferenceInSearchResults(
                 preference,
                 hostByPreference.get(preference));
