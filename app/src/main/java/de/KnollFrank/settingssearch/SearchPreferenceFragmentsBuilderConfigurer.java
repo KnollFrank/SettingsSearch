@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
-import de.KnollFrank.lib.settingssearch.client.SearchDatabase;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragmentsBuilder;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
@@ -28,14 +27,13 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
             final SearchConfiguration searchConfiguration,
             final FragmentManager fragmentManager,
             final Activity activity,
-            final SearchDatabase searchDatabase,
             final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
         return SearchPreferenceFragments
                 .builder(
                         searchConfiguration,
                         fragmentManager,
-                        activity,
-                        searchDatabase)
+                        activity)
+                .withSearchDatabase(SearchDatabaseFactory.createSearchDatabase())
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {
 

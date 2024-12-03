@@ -34,7 +34,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
-    private final SearchDatabase searchDatabase;
+    private SearchDatabase searchDatabase = new SearchDatabaseBuilder().build();
     private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = (preference, hostOfPreference) -> true;
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
     private PrepareShow prepareShow = preferenceFragment -> {
@@ -94,14 +94,17 @@ public class SearchPreferenceFragmentsBuilder {
                                                final FragmentManager fragmentManager,
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
-                                               final Context context,
-                                               final SearchDatabase searchDatabase) {
+                                               final Context context) {
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
+    }
+
+    public SearchPreferenceFragmentsBuilder withSearchDatabase(final SearchDatabase searchDatabase) {
         this.searchDatabase = searchDatabase;
+        return this;
     }
 
     public SearchPreferenceFragmentsBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {

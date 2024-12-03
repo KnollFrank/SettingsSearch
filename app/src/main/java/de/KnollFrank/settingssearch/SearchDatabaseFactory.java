@@ -29,7 +29,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSi
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
-public class SearchDatabaseFactory {
+class SearchDatabaseFactory {
 
     public static SearchDatabase createSearchDatabase() {
         return new SearchDatabaseBuilder()
