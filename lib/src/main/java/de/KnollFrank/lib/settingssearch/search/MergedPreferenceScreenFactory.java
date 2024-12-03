@@ -4,8 +4,6 @@ import android.content.Context;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 import java.util.Locale;
 
@@ -31,7 +29,6 @@ public class MergedPreferenceScreenFactory {
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
     private final @IdRes int fragmentContainerViewId;
-    private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final FragmentFactory fragmentFactory;
     private final Context context;
     private final Locale locale;
@@ -43,7 +40,6 @@ public class MergedPreferenceScreenFactory {
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PrepareShow prepareShow,
             final @IdRes int fragmentContainerViewId,
-            final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
             final FragmentFactory fragmentFactory,
             final Context context,
             final Locale locale,
@@ -53,7 +49,6 @@ public class MergedPreferenceScreenFactory {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
-        this.rootPreferenceFragment = rootPreferenceFragment;
         this.fragmentFactory = fragmentFactory;
         this.context = context;
         this.locale = locale;
@@ -90,11 +85,9 @@ public class MergedPreferenceScreenFactory {
                                 progressUpdateListener,
                                 fragments)
                         .persistOrLoadMergedPreferenceScreenData(locale),
-                PreferenceManagerProvider.getPreferenceManager(
-                        fragments,
-                        rootPreferenceFragment),
                 fragmentFactoryAndInitializer,
-                searchResultsFragmentUI);
+                searchResultsFragmentUI,
+                context);
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
@@ -103,14 +96,14 @@ public class MergedPreferenceScreenFactory {
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final FragmentManager fragmentManager,
             final MergedPreferenceScreenData mergedPreferenceScreenData,
-            final PreferenceManager preferenceManager,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
-            final SearchResultsFragmentUI searchResultsFragmentUI) {
+            final SearchResultsFragmentUI searchResultsFragmentUI,
+            final Context context) {
         final PreferencePathNavigator preferencePathNavigator =
                 new PreferencePathNavigator(
                         mergedPreferenceScreenData.hostByPreference(),
                         fragmentFactoryAndInitializer,
-                        preferenceManager.getContext());
+                        context);
         return new MergedPreferenceScreen(
                 mergedPreferenceScreenData.preferencePathByPreference(),
                 mergedPreferenceScreenData.preferences(),
@@ -125,7 +118,7 @@ public class MergedPreferenceScreenFactory {
                                         fragmentManager),
                                 showPreferencePathPredicate,
                                 searchResultsFragmentUI),
-                        preferenceManager),
+                        context),
                 preferencePathNavigator,
                 mergedPreferenceScreenData.hostByPreference());
     }

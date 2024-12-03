@@ -633,9 +633,6 @@ public class PreferenceSearcherTest {
                 fragmentActivity.getSupportFragmentManager(),
                 MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),
-                PreferenceManagerProvider.getPreferenceManager(
-                        fragments,
-                        preferenceFragment.getClass()),
                 fragmentFactoryAndInitializer,
                 new SearchResultsFragmentUI() {
 
@@ -648,7 +645,8 @@ public class PreferenceSearcherTest {
                     public RecyclerView getSearchResultsView(View rootView) {
                         return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                     }
-                });
+                },
+                fragmentActivity);
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

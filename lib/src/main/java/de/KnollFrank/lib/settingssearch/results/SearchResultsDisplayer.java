@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -15,15 +14,18 @@ public class SearchResultsDisplayer {
 
     private final Supplier<List<Object>> markupsFactory;
     private final SearchResultsFragment searchResultsFragment;
+    private final SearchResultsSorter searchResultsSorter;
 
     protected SearchResultsDisplayer(final SearchResultsFragment searchResultsFragment,
-                                     final Supplier<List<Object>> markupsFactory) {
+                                     final Supplier<List<Object>> markupsFactory,
+                                     final SearchResultsSorter searchResultsSorter) {
         this.searchResultsFragment = searchResultsFragment;
         this.markupsFactory = markupsFactory;
+        this.searchResultsSorter = searchResultsSorter;
     }
 
     public void displaySearchResults(final Set<PreferenceMatch> preferenceMatches) {
-        searchResultsFragment.setSearchResults(new ArrayList<>(getPreferences(preferenceMatches)));
+        searchResultsFragment.setSearchResults(searchResultsSorter.sort(getPreferences(preferenceMatches)));
         new PreferenceMatchesHighlighter(markupsFactory).highlight(preferenceMatches);
     }
 

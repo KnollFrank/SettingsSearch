@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTestFactory.createSomePreferenceFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 
 import android.view.View;
@@ -42,7 +41,7 @@ public class SearchResultsDisplayerTest {
                 final SearchResultsDisplayer searchResultsDisplayer =
                         SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                                 searchResultsFragment,
-                                createSomePreferenceFragment(activity).getPreferenceManager());
+                                activity);
 
                 // When
                 searchResultsDisplayer.displaySearchResults(
