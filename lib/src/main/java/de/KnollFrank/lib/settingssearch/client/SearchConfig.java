@@ -7,7 +7,7 @@ import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
-public record Search(
+public record SearchConfig(
         IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
         ShowPreferencePathPredicate showPreferencePathPredicate,
         PrepareShow prepareShow,

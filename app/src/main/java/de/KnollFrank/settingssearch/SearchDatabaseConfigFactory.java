@@ -14,8 +14,8 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.client.SearchDatabase;
-import de.KnollFrank.lib.settingssearch.client.SearchDatabaseBuilder;
+import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
@@ -29,10 +29,10 @@ import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSi
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
-class SearchDatabaseFactory {
+class SearchDatabaseConfigFactory {
 
-    public static SearchDatabase createSearchDatabase() {
-        return new SearchDatabaseBuilder()
+    public static SearchDatabaseConfig createSearchDatabaseConfig() {
+        return new SearchDatabaseConfigBuilder()
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceFragmentConnected2PreferenceProvider(
                         new PreferenceFragmentConnected2PreferenceProvider() {

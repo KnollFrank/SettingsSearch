@@ -8,16 +8,16 @@ import androidx.annotation.LayoutRes;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import de.KnollFrank.lib.settingssearch.client.Search;
-import de.KnollFrank.lib.settingssearch.client.SearchBuilder;
+import de.KnollFrank.lib.settingssearch.client.SearchConfig;
+import de.KnollFrank.lib.settingssearch.client.SearchConfigBuilder;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
-class SearchFactory {
+class SearchConfigFactory {
 
-    public static Search createSearch() {
-        return new SearchBuilder()
+    public static SearchConfig createSearchConfig() {
+        return new SearchConfigBuilder()
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {
 

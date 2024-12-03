@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoPro
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
-public class SearchDatabaseBuilder {
+public class SearchDatabaseConfigBuilder {
 
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private IconResourceIdProvider iconResourceIdProvider = new ReflectionIconResourceIdProvider();
@@ -24,43 +24,43 @@ public class SearchDatabaseBuilder {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
 
-    public SearchDatabaseBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
+    public SearchDatabaseConfigBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
         this.fragmentFactory = fragmentFactory;
         return this;
     }
 
-    private SearchDatabaseBuilder withIconResourceIdProvider(final IconResourceIdProvider iconResourceIdProvider) {
+    private SearchDatabaseConfigBuilder withIconResourceIdProvider(final IconResourceIdProvider iconResourceIdProvider) {
         this.iconResourceIdProvider = iconResourceIdProvider;
         return this;
     }
 
-    public SearchDatabaseBuilder withSearchableInfoProvider(final SearchableInfoProvider searchableInfoProvider) {
+    public SearchDatabaseConfigBuilder withSearchableInfoProvider(final SearchableInfoProvider searchableInfoProvider) {
         this.searchableInfoProvider = searchableInfoProvider;
         return this;
     }
 
-    public SearchDatabaseBuilder withPreferenceDialogAndSearchableInfoProvider(final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
+    public SearchDatabaseConfigBuilder withPreferenceDialogAndSearchableInfoProvider(final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         return this;
     }
 
-    public SearchDatabaseBuilder withPreferenceFragmentConnected2PreferenceProvider(final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider) {
+    public SearchDatabaseConfigBuilder withPreferenceFragmentConnected2PreferenceProvider(final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider) {
         this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
         return this;
     }
 
-    public SearchDatabaseBuilder withPreferenceScreenGraphAvailableListener(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
+    public SearchDatabaseConfigBuilder withPreferenceScreenGraphAvailableListener(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         return this;
     }
 
-    public SearchDatabaseBuilder withPreferenceSearchablePredicate(final PreferenceSearchablePredicate preferenceSearchablePredicate) {
+    public SearchDatabaseConfigBuilder withPreferenceSearchablePredicate(final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         return this;
     }
 
-    public SearchDatabase build() {
-        return new SearchDatabase(
+    public SearchDatabaseConfig build() {
+        return new SearchDatabaseConfig(
                 fragmentFactory,
                 iconResourceIdProvider,
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),

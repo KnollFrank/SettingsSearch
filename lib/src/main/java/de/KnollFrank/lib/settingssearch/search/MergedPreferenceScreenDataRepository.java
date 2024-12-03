@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
-import de.KnollFrank.lib.settingssearch.client.SearchDatabase;
+import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
@@ -32,7 +32,7 @@ public class MergedPreferenceScreenDataRepository {
 
     private final Fragments fragments;
     private final DefaultFragmentInitializer preferenceDialogs;
-    private final SearchDatabase searchDatabase;
+    private final SearchDatabaseConfig searchDatabaseConfig;
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final ProgressUpdateListener progressUpdateListener;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
@@ -40,13 +40,13 @@ public class MergedPreferenceScreenDataRepository {
     public MergedPreferenceScreenDataRepository(
             final Fragments fragments,
             final DefaultFragmentInitializer preferenceDialogs,
-            final SearchDatabase searchDatabase,
+            final SearchDatabaseConfig searchDatabaseConfig,
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
             final ProgressUpdateListener progressUpdateListener,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO) {
         this.fragments = fragments;
         this.preferenceDialogs = preferenceDialogs;
-        this.searchDatabase = searchDatabase;
+        this.searchDatabaseConfig = searchDatabaseConfig;
         this.rootPreferenceFragment = rootPreferenceFragment;
         this.progressUpdateListener = progressUpdateListener;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
@@ -96,9 +96,9 @@ public class MergedPreferenceScreenDataRepository {
                         fragments,
                         new SearchablePreferenceScreenProvider(
                                 new PreferenceVisibleAndSearchablePredicate(
-                                        searchDatabase.preferenceSearchablePredicate()))),
-                searchDatabase.preferenceFragmentConnected2PreferenceProvider(),
-                searchDatabase.preferenceScreenGraphAvailableListener(),
+                                        searchDatabaseConfig.preferenceSearchablePredicate()))),
+                searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider(),
+                searchDatabaseConfig.preferenceScreenGraphAvailableListener(),
                 new PreferenceScreenGraphListener() {
 
                     @Override
@@ -107,12 +107,12 @@ public class MergedPreferenceScreenDataRepository {
                     }
                 },
                 new Preference2SearchablePreferencePOJOConverter(
-                        new IconProvider(searchDatabase.iconResourceIdProvider()),
+                        new IconProvider(searchDatabaseConfig.iconResourceIdProvider()),
                         new SearchableInfoAndDialogInfoProvider(
-                                searchDatabase.searchableInfoProvider(),
+                                searchDatabaseConfig.searchableInfoProvider(),
                                 new SearchableDialogInfoOfProvider(
                                         preferenceDialogs,
-                                        searchDatabase.preferenceDialogAndSearchableInfoProvider())),
+                                        searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider())),
                         new IdGenerator()));
     }
 }

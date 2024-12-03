@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
-public class SearchBuilder {
+public class SearchConfigBuilder {
 
     private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = (preference, hostOfPreference) -> true;
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
@@ -73,38 +73,38 @@ public class SearchBuilder {
                 }
             };
 
-    public SearchBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
+    public SearchConfigBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         return this;
     }
 
-    public SearchBuilder withShowPreferencePathPredicate(final ShowPreferencePathPredicate showPreferencePathPredicate) {
+    public SearchConfigBuilder withShowPreferencePathPredicate(final ShowPreferencePathPredicate showPreferencePathPredicate) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         return this;
     }
 
-    public SearchBuilder withPrepareShow(final PrepareShow prepareShow) {
+    public SearchConfigBuilder withPrepareShow(final PrepareShow prepareShow) {
         this.prepareShow = prepareShow;
         return this;
     }
 
-    public SearchBuilder withSearchResultsSorter(final SearchResultsSorter searchResultsSorter) {
+    public SearchConfigBuilder withSearchResultsSorter(final SearchResultsSorter searchResultsSorter) {
         this.searchResultsSorter = searchResultsSorter;
         return this;
     }
 
-    public SearchBuilder withSearchPreferenceFragmentUI(final SearchPreferenceFragmentUI searchPreferenceFragmentUI) {
+    public SearchConfigBuilder withSearchPreferenceFragmentUI(final SearchPreferenceFragmentUI searchPreferenceFragmentUI) {
         this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
         return this;
     }
 
-    public SearchBuilder withSearchResultsFragmentUI(final SearchResultsFragmentUI searchResultsFragmentUI) {
+    public SearchConfigBuilder withSearchResultsFragmentUI(final SearchResultsFragmentUI searchResultsFragmentUI) {
         this.searchResultsFragmentUI = searchResultsFragmentUI;
         return this;
     }
 
-    public Search build() {
-        return new Search(
+    public SearchConfig build() {
+        return new SearchConfig(
                 includePreferenceInSearchResultsPredicate,
                 showPreferencePathPredicate,
                 prepareShow,

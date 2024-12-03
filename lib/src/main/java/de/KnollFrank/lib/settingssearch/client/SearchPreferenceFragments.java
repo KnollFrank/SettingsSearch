@@ -29,8 +29,8 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepositoryFactory {
 
     public final SearchConfiguration searchConfiguration;
-    private final SearchDatabase searchDatabase;
-    private final Search search;
+    private final SearchDatabaseConfig searchDatabaseConfig;
+    private final SearchConfig searchConfig;
     private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
@@ -49,16 +49,16 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     }
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
-                                        final SearchDatabase searchDatabase,
-                                        final Search search,
+                                        final SearchDatabaseConfig searchDatabaseConfig,
+                                        final SearchConfig searchConfig,
                                         final FragmentManager fragmentManager,
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final Context context,
                                         final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
         this.searchConfiguration = searchConfiguration;
-        this.searchDatabase = searchDatabase;
-        this.search = search;
+        this.searchDatabaseConfig = searchDatabaseConfig;
+        this.searchConfig = searchConfig;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
@@ -70,21 +70,21 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         showFragment(
                 new SearchPreferenceFragment(
                         searchConfiguration,
-                        search.includePreferenceInSearchResultsPredicate(),
+                        searchConfig.includePreferenceInSearchResultsPredicate(),
                         new MergedPreferenceScreenFactory(
-                                search.showPreferencePathPredicate(),
-                                search.prepareShow(),
+                                searchConfig.showPreferencePathPredicate(),
+                                searchConfig.prepareShow(),
                                 searchConfiguration.fragmentContainerViewId(),
-                                searchDatabase.fragmentFactory(),
+                                searchDatabaseConfig.fragmentFactory(),
                                 context,
                                 locale,
                                 onUiThreadRunner,
                                 this,
-                                search.searchResultsFragmentUI(),
-                                search.searchResultsSorter()),
+                                searchConfig.searchResultsFragmentUI(),
+                                searchConfig.searchResultsSorter()),
                         onUiThreadRunner,
                         createSearchDatabaseTaskSupplier,
-                        search.searchPreferenceFragmentUI()),
+                        searchConfig.searchPreferenceFragmentUI()),
                 searchPreferenceFragment -> {
                 },
                 true,
@@ -108,7 +108,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(
                                 new FragmentFactoryAndInitializer(
-                                        searchDatabase.fragmentFactory(),
+                                        searchDatabaseConfig.fragmentFactory(),
                                         preferenceDialogs)),
                         context));
     }
@@ -122,7 +122,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         return new MergedPreferenceScreenDataRepository(
                 fragments,
                 preferenceDialogs,
-                searchDatabase,
+                searchDatabaseConfig,
                 searchConfiguration.rootPreferenceFragment(),
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context));

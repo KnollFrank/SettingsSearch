@@ -23,8 +23,8 @@ public class SearchPreferenceFragmentsFactory {
                         searchConfiguration,
                         fragmentManager,
                         activity)
-                .withSearchDatabase(SearchDatabaseFactory.createSearchDatabase())
-                .withSearch(SearchFactory.createSearch())
+                .withSearchDatabaseConfig(SearchDatabaseConfigFactory.createSearchDatabaseConfig())
+                .withSearchConfig(SearchConfigFactory.createSearchConfig())
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .build();
     }
