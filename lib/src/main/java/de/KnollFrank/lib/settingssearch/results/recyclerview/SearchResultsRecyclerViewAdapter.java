@@ -197,7 +197,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
 
     private boolean showPreferencePath(final Optional<PreferencePath> preferencePath) {
         return preferencePath
-                .filter(showPreferencePathPredicate::shallShowPreferencePath)
+                .filter(showPreferencePathPredicate::showPreferencePath)
                 .isPresent();
     }
 

@@ -5,5 +5,5 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 @FunctionalInterface
 public interface ShowPreferencePathPredicate {
 
-    boolean shallShowPreferencePath(PreferencePath preferencePath);
+    boolean showPreferencePath(PreferencePath preferencePath);
 }
