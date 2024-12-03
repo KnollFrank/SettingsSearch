@@ -26,6 +26,8 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableL
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.results.DefaultSearchResultsSorter;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
@@ -35,6 +37,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchPreferenceFragmentsBuilder {
 
+    // FK-TODO: teile diese Felder in Subbuilder ein, z.B. ein Subbuilder für die Grapherzeugung, ein anderer Subbuilder für das UI, ...
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
     private final Locale locale;
@@ -100,6 +103,7 @@ public class SearchPreferenceFragmentsBuilder {
                     return rootView.findViewById(R.id.searchResults);
                 }
             };
+    private SearchResultsSorter searchResultsSorter = new DefaultSearchResultsSorter();
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -178,6 +182,11 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
+    public SearchPreferenceFragmentsBuilder withSearchResultsSorter(final SearchResultsSorter searchResultsSorter) {
+        this.searchResultsSorter = searchResultsSorter;
+        return this;
+    }
+
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
                 searchConfiguration,
@@ -197,6 +206,7 @@ public class SearchPreferenceFragmentsBuilder {
                 context,
                 createSearchDatabaseTaskSupplier,
                 searchPreferenceFragmentUI,
-                searchResultsFragmentUI);
+                searchResultsFragmentUI,
+                searchResultsSorter);
     }
 }

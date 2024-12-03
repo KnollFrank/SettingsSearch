@@ -9,10 +9,11 @@ public class SearchResultsDisplayerFactory {
 
     public static SearchResultsDisplayer createSearchResultsDisplayer(
             final SearchResultsFragment searchResultsFragment,
-            final Context context) {
+            final Context context,
+            final SearchResultsSorter searchResultsSorter) {
         return new SearchResultsDisplayer(
                 searchResultsFragment,
                 () -> MarkupFactory.createMarkups(context),
-                new DefaultSearchResultsSorter());
+                searchResultsSorter);
     }
 }

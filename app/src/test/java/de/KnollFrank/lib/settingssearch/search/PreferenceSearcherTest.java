@@ -53,6 +53,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
+import de.KnollFrank.lib.settingssearch.results.DefaultSearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
@@ -646,7 +647,8 @@ public class PreferenceSearcherTest {
                         return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                     }
                 },
-                fragmentActivity);
+                fragmentActivity,
+                new DefaultSearchResultsSorter());
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

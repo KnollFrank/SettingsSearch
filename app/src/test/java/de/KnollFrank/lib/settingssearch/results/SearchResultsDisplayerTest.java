@@ -41,7 +41,8 @@ public class SearchResultsDisplayerTest {
                 final SearchResultsDisplayer searchResultsDisplayer =
                         SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                                 searchResultsFragment,
-                                activity);
+                                activity,
+                                new DefaultSearchResultsSorter());
 
                 // When
                 searchResultsDisplayer.displaySearchResults(
