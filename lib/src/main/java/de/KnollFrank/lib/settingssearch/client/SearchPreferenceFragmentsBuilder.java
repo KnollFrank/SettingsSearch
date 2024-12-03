@@ -89,7 +89,6 @@ public class SearchPreferenceFragmentsBuilder {
             };
     private SearchResultsSorter searchResultsSorter = new DefaultSearchResultsSorter();
 
-    // FK-TODO: move constructor params to build() method
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
                                                final Locale locale,
