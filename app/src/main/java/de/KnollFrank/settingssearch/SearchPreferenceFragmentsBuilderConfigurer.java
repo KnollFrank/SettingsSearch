@@ -55,12 +55,12 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
 
                             @Override
                             public SearchView getSearchView(final View rootView) {
-                                return rootView.requireViewById(R.id.searchViewCustom);
+                                return rootView.findViewById(R.id.searchViewCustom);
                             }
 
                             @Override
                             public FragmentContainerView getSearchResultsFragmentContainerView(final View rootView) {
-                                return rootView.requireViewById(R.id.searchResultsFragmentContainerViewCustom);
+                                return rootView.findViewById(R.id.searchResultsFragmentContainerViewCustom);
                             }
 
                             @Override
@@ -69,12 +69,12 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
 
                                     @Override
                                     public View getRoot() {
-                                        return rootView.requireViewById(R.id.progressContainerCustom);
+                                        return rootView.findViewById(R.id.progressContainerCustom);
                                     }
 
                                     @Override
                                     public TextView getProgressText() {
-                                        return getRoot().requireViewById(de.KnollFrank.lib.settingssearch.R.id.progressText);
+                                        return getRoot().findViewById(de.KnollFrank.lib.settingssearch.R.id.progressText);
                                     }
                                 };
                             }
@@ -89,7 +89,7 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
 
                             @Override
                             public RecyclerView getSearchResultsView(final View rootView) {
-                                return rootView.requireViewById(R.id.searchResultsCustom);
+                                return rootView.findViewById(R.id.searchResultsCustom);
                             }
                         })
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)

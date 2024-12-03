@@ -63,12 +63,12 @@ public class SearchPreferenceFragmentsBuilder {
 
                 @Override
                 public SearchView getSearchView(final View rootView) {
-                    return rootView.requireViewById(R.id.searchView);
+                    return rootView.findViewById(R.id.searchView);
                 }
 
                 @Override
                 public FragmentContainerView getSearchResultsFragmentContainerView(final View rootView) {
-                    return rootView.requireViewById(R.id.searchResultsFragmentContainerView);
+                    return rootView.findViewById(R.id.searchResultsFragmentContainerView);
                 }
 
                 @Override
@@ -77,12 +77,12 @@ public class SearchPreferenceFragmentsBuilder {
 
                         @Override
                         public View getRoot() {
-                            return rootView.requireViewById(R.id.progressContainer);
+                            return rootView.findViewById(R.id.progressContainer);
                         }
 
                         @Override
                         public TextView getProgressText() {
-                            return getRoot().requireViewById(R.id.progressText);
+                            return getRoot().findViewById(R.id.progressText);
                         }
                     };
                 }
@@ -97,7 +97,7 @@ public class SearchPreferenceFragmentsBuilder {
 
                 @Override
                 public RecyclerView getSearchResultsView(View rootView) {
-                    return rootView.requireViewById(R.id.searchResults);
+                    return rootView.findViewById(R.id.searchResults);
                 }
             };
 
