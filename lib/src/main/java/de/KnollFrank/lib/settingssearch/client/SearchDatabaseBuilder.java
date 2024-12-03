@@ -9,6 +9,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2Pre
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
+import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -62,7 +63,7 @@ public class SearchDatabaseBuilder {
         return new SearchDatabase(
                 fragmentFactory,
                 iconResourceIdProvider,
-                searchableInfoProvider,
+                searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
                 preferenceScreenGraphAvailableListener,

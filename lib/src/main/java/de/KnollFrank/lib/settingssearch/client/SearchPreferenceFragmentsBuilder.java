@@ -143,20 +143,13 @@ public class SearchPreferenceFragmentsBuilder {
     }
 
     public SearchPreferenceFragments build() {
-        // FK-TODO: use SearchDatabase as a constructor parameter
         return new SearchPreferenceFragments(
                 searchConfiguration,
-                searchDatabase.fragmentFactory(),
-                searchDatabase.searchableInfoProvider(),
-                searchDatabase.preferenceDialogAndSearchableInfoProvider(),
-                searchDatabase.iconResourceIdProvider(),
-                searchDatabase.preferenceSearchablePredicate(),
+                searchDatabase,
                 includePreferenceInSearchResultsPredicate,
-                searchDatabase.preferenceScreenGraphAvailableListener(),
                 showPreferencePathPredicate,
                 prepareShow,
                 fragmentManager,
-                searchDatabase.preferenceFragmentConnected2PreferenceProvider(),
                 locale,
                 onUiThreadRunner,
                 context,
