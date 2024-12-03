@@ -30,20 +30,6 @@ class Comparators {
     private static Comparator<SearchablePreferencePOJO> comparing(final Function<SearchablePreferencePOJO, Optional<String>> keyExtractor) {
         return Comparator.comparing(
                 keyExtractor,
-                emptiesLast(String.CASE_INSENSITIVE_ORDER));
-    }
-
-    private static <T extends Comparable<T>> Comparator<Optional<T>> emptiesLast(final Comparator<T> comparator) {
-        return (optional1, optional2) -> {
-            if (optional1.isEmpty() && optional2.isEmpty()) {
-                return 0;
-            } else if (optional1.isEmpty()) {
-                return +1;
-            } else if (optional2.isEmpty()) {
-                return -1;
-            } else {
-                return comparator.compare(optional1.get(), optional2.get());
-            }
-        };
+                de.KnollFrank.lib.settingssearch.common.Comparators.emptiesLast(String.CASE_INSENSITIVE_ORDER));
     }
 }
