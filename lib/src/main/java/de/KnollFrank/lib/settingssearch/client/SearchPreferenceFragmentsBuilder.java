@@ -34,6 +34,7 @@ public class SearchPreferenceFragmentsBuilder {
     private SearchDatabase searchDatabase = new SearchDatabaseBuilder().build();
     private Search search = new SearchBuilder().build();
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
+    // FK-TODO: add to SearchBuilder and Search
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI =
             new SearchPreferenceFragmentUI() {
 
@@ -68,6 +69,7 @@ public class SearchPreferenceFragmentsBuilder {
                     };
                 }
             };
+    // FK-TODO: add to SearchBuilder and Search
     private SearchResultsFragmentUI searchResultsFragmentUI =
             new SearchResultsFragmentUI() {
 
@@ -81,6 +83,7 @@ public class SearchPreferenceFragmentsBuilder {
                     return rootView.findViewById(R.id.searchResults);
                 }
             };
+    // FK-TODO: add searchResultsSorter to SearchBuilder and Search class
     private SearchResultsSorter searchResultsSorter = new DefaultSearchResultsSorter();
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
@@ -126,13 +129,10 @@ public class SearchPreferenceFragmentsBuilder {
     }
 
     public SearchPreferenceFragments build() {
-        // FK-TODO: add search as a parameter and inline 3 of the following obvious constructor params
         return new SearchPreferenceFragments(
                 searchConfiguration,
                 searchDatabase,
-                search.includePreferenceInSearchResultsPredicate(),
-                search.showPreferencePathPredicate(),
-                search.prepareShow(),
+                search,
                 fragmentManager,
                 locale,
                 onUiThreadRunner,

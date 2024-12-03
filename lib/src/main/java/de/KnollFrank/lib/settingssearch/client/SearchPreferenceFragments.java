@@ -19,9 +19,6 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
-import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
-import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
@@ -36,9 +33,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
 
     public final SearchConfiguration searchConfiguration;
     private final SearchDatabase searchDatabase;
-    private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
-    private final ShowPreferencePathPredicate showPreferencePathPredicate;
-    private final PrepareShow prepareShow;
+    private final Search search;
     private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
@@ -61,9 +56,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
                                         final SearchDatabase searchDatabase,
-                                        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
-                                        final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                        final PrepareShow prepareShow,
+                                        final Search search,
                                         final FragmentManager fragmentManager,
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
@@ -74,9 +67,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final SearchResultsSorter searchResultsSorter) {
         this.searchConfiguration = searchConfiguration;
         this.searchDatabase = searchDatabase;
-        this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
-        this.showPreferencePathPredicate = showPreferencePathPredicate;
-        this.prepareShow = prepareShow;
+        this.search = search;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
@@ -91,10 +82,10 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         showFragment(
                 new SearchPreferenceFragment(
                         searchConfiguration,
-                        includePreferenceInSearchResultsPredicate,
+                        search.includePreferenceInSearchResultsPredicate(),
                         new MergedPreferenceScreenFactory(
-                                showPreferencePathPredicate,
-                                prepareShow,
+                                search.showPreferencePathPredicate(),
+                                search.prepareShow(),
                                 searchConfiguration.fragmentContainerViewId(),
                                 searchDatabase.fragmentFactory(),
                                 context,
