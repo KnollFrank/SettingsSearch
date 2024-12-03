@@ -6,10 +6,10 @@ import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-class Comparators {
+class SearchablePreferencePOJOComparatorFactory {
 
     public static Comparator<SearchablePreferencePOJO> searchablePreferencePOJOComparator() {
-        return Comparators
+        return SearchablePreferencePOJOComparatorFactory
                 .title()
                 .thenComparing(summary())
                 .thenComparing(searchableInfo());
