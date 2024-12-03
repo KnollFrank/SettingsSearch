@@ -1,39 +1,23 @@
 package de.KnollFrank.settingssearch;
 
-import android.app.Activity;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
-import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
-import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
-import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragmentsBuilder;
-import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
+import de.KnollFrank.lib.settingssearch.client.Search;
+import de.KnollFrank.lib.settingssearch.client.SearchBuilder;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
-public class SearchPreferenceFragmentsBuilderConfigurer {
+class SearchFactory {
 
-    public static SearchPreferenceFragmentsBuilder configure(
-            final SearchConfiguration searchConfiguration,
-            final FragmentManager fragmentManager,
-            final Activity activity,
-            final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
-        return SearchPreferenceFragments
-                .builder(
-                        searchConfiguration,
-                        fragmentManager,
-                        activity)
-                .withSearchDatabase(SearchDatabaseFactory.createSearchDatabase())
+    public static Search createSearch() {
+        return new SearchBuilder()
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {
 
@@ -81,6 +65,6 @@ public class SearchPreferenceFragmentsBuilderConfigurer {
                                 return rootView.findViewById(R.id.searchResultsCustom);
                             }
                         })
-                .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier);
+                .build();
     }
 }

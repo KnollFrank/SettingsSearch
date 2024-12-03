@@ -19,15 +19,12 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
-import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
-import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepositoryFactory {
 
@@ -39,9 +36,6 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
-    private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
-    private final SearchResultsFragmentUI searchResultsFragmentUI;
-    private final SearchResultsSorter searchResultsSorter;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
@@ -61,10 +55,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final Context context,
-                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
-                                        final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
-                                        final SearchResultsFragmentUI searchResultsFragmentUI,
-                                        final SearchResultsSorter searchResultsSorter) {
+                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
         this.searchConfiguration = searchConfiguration;
         this.searchDatabase = searchDatabase;
         this.search = search;
@@ -73,9 +64,6 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
-        this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
-        this.searchResultsFragmentUI = searchResultsFragmentUI;
-        this.searchResultsSorter = searchResultsSorter;
     }
 
     public void showSearchPreferenceFragment() {
@@ -92,11 +80,11 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                 locale,
                                 onUiThreadRunner,
                                 this,
-                                searchResultsFragmentUI,
-                                searchResultsSorter),
+                                search.searchResultsFragmentUI(),
+                                search.searchResultsSorter()),
                         onUiThreadRunner,
                         createSearchDatabaseTaskSupplier,
-                        searchPreferenceFragmentUI),
+                        search.searchPreferenceFragmentUI()),
                 searchPreferenceFragment -> {
                 },
                 true,

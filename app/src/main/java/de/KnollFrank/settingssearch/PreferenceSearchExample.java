@@ -74,13 +74,11 @@ public class PreferenceSearchExample extends AppCompatActivity {
     }
 
     private SearchPreferenceFragments createSearchPreferenceFragments() {
-        return SearchPreferenceFragmentsBuilderConfigurer
-                .configure(
-                        createSearchConfiguration(PrefsFragmentFirst.class),
-                        getSupportFragmentManager(),
-                        this,
-                        () -> createSearchDatabaseTask)
-                .build();
+        return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
+                createSearchConfiguration(PrefsFragmentFirst.class),
+                getSupportFragmentManager(),
+                this,
+                () -> createSearchDatabaseTask);
     }
 
     private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
