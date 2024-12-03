@@ -64,13 +64,15 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
-                                                           final Activity activity) {
+                                                           final Activity activity,
+                                                           final SearchDatabase searchDatabase) {
         return new SearchPreferenceFragmentsBuilder(
                 searchConfiguration,
                 fragmentManager,
                 Utils.geCurrentLocale(activity.getResources()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
-                activity);
+                activity,
+                searchDatabase);
     }
 
     protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,

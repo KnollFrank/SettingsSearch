@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.settingssearch.R;
+import de.KnollFrank.settingssearch.SearchDatabaseFactory;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsBuilderConfigurer;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 
@@ -60,13 +61,13 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return SearchPreferenceFragmentsBuilderConfigurer
                 .configure(
-                        SearchPreferenceFragments.builder(
-                                new SearchConfiguration(
-                                        getId(),
-                                        Optional.empty(),
-                                        getClass()),
-                                getParentFragmentManager(),
-                                requireActivity()),
+                        new SearchConfiguration(
+                                getId(),
+                                Optional.empty(),
+                                getClass()),
+                        getParentFragmentManager(),
+                        requireActivity(),
+                        SearchDatabaseFactory.createSearchDatabase(),
                         Optional::empty)
                 .build();
     }
