@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.client.SearchDatabase;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
@@ -23,51 +24,30 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
-import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
-import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class MergedPreferenceScreenDataRepository {
 
     private final Fragments fragments;
     private final DefaultFragmentInitializer preferenceDialogs;
-    private final IconResourceIdProvider iconResourceIdProvider;
-    private final SearchableInfoProvider searchableInfoProvider;
-    private final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider;
+    private final SearchDatabase searchDatabase;
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
-    private final PreferenceSearchablePredicate preferenceSearchablePredicate;
-    private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
-    private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final ProgressUpdateListener progressUpdateListener;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
 
     public MergedPreferenceScreenDataRepository(
             final Fragments fragments,
             final DefaultFragmentInitializer preferenceDialogs,
-            final IconResourceIdProvider iconResourceIdProvider,
-            final SearchableInfoProvider searchableInfoProvider,
-            final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+            final SearchDatabase searchDatabase,
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
-            final PreferenceSearchablePredicate preferenceSearchablePredicate,
-            final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
-            final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
             final ProgressUpdateListener progressUpdateListener,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO) {
         this.fragments = fragments;
         this.preferenceDialogs = preferenceDialogs;
-        this.iconResourceIdProvider = iconResourceIdProvider;
-        this.searchableInfoProvider = searchableInfoProvider;
-        this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
+        this.searchDatabase = searchDatabase;
         this.rootPreferenceFragment = rootPreferenceFragment;
-        this.preferenceSearchablePredicate = preferenceSearchablePredicate;
-        this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
-        this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.progressUpdateListener = progressUpdateListener;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
     }
@@ -116,9 +96,9 @@ public class MergedPreferenceScreenDataRepository {
                         fragments,
                         new SearchablePreferenceScreenProvider(
                                 new PreferenceVisibleAndSearchablePredicate(
-                                        preferenceSearchablePredicate))),
-                preferenceFragmentConnected2PreferenceProvider,
-                preferenceScreenGraphAvailableListener,
+                                        searchDatabase.preferenceSearchablePredicate()))),
+                searchDatabase.preferenceFragmentConnected2PreferenceProvider(),
+                searchDatabase.preferenceScreenGraphAvailableListener(),
                 new PreferenceScreenGraphListener() {
 
                     @Override
@@ -127,12 +107,12 @@ public class MergedPreferenceScreenDataRepository {
                     }
                 },
                 new Preference2SearchablePreferencePOJOConverter(
-                        new IconProvider(iconResourceIdProvider),
+                        new IconProvider(searchDatabase.iconResourceIdProvider()),
                         new SearchableInfoAndDialogInfoProvider(
-                                searchableInfoProvider,
+                                searchDatabase.searchableInfoProvider(),
                                 new SearchableDialogInfoOfProvider(
                                         preferenceDialogs,
-                                        preferenceDialogAndSearchableInfoProvider)),
+                                        searchDatabase.preferenceDialogAndSearchableInfoProvider())),
                         new IdGenerator()));
     }
 }

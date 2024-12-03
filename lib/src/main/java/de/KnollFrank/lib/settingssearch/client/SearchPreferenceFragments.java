@@ -143,13 +143,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         return new MergedPreferenceScreenDataRepository(
                 fragments,
                 preferenceDialogs,
-                searchDatabase.iconResourceIdProvider(),
-                searchDatabase.searchableInfoProvider(),
-                searchDatabase.preferenceDialogAndSearchableInfoProvider(),
+                searchDatabase,
                 searchConfiguration.rootPreferenceFragment(),
-                searchDatabase.preferenceSearchablePredicate(),
-                searchDatabase.preferenceFragmentConnected2PreferenceProvider(),
-                searchDatabase.preferenceScreenGraphAvailableListener(),
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context));
     }
