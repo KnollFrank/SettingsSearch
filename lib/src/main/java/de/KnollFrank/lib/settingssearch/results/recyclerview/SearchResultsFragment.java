@@ -45,16 +45,16 @@ public class SearchResultsFragment extends Fragment {
         configure(recyclerView);
     }
 
+    public void setSearchResults(final List<SearchablePreferencePOJO> searchResults) {
+        getSearchResultsRecyclerViewAdapter().setItems(searchResults);
+    }
+
     public RecyclerView getRecyclerView() {
         return recyclerView;
     }
 
     private SearchResultsRecyclerViewAdapter getSearchResultsRecyclerViewAdapter() {
         return (SearchResultsRecyclerViewAdapter) recyclerView.getAdapter();
-    }
-
-    public void setSearchResults(final List<SearchablePreferencePOJO> searchResults) {
-        getSearchResultsRecyclerViewAdapter().setItems(searchResults);
     }
 
     private void configure(final RecyclerView recyclerView) {
