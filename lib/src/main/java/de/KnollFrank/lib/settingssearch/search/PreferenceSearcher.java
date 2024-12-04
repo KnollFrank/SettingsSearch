@@ -1,8 +1,5 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import androidx.preference.PreferenceFragmentCompat;
-
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,14 +13,11 @@ class PreferenceSearcher {
     // FK-TODO: SQL-Datenbank verwenden? (siehe Branch precompute-MergedPreferenceScreen-SQLite)
     private final Set<SearchablePreferencePOJO> preferences;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
-    private final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference;
 
     public PreferenceSearcher(final Set<SearchablePreferencePOJO> preferences,
-                              final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
-                              final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
+                              final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         this.preferences = preferences;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
-        this.hostByPreference = hostByPreference;
     }
 
     public Set<PreferenceMatch> searchFor(final String needle) {
@@ -39,6 +33,6 @@ class PreferenceSearcher {
     private boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference) {
         return includePreferenceInSearchResultsPredicate.includePreferenceInSearchResults(
                 preference,
-                hostByPreference.get(preference));
+                preference.getHost());
     }
 }

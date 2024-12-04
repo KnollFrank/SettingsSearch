@@ -7,5 +7,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 @FunctionalInterface
 public interface IncludePreferenceInSearchResultsPredicate {
 
+    // FK-TODO: remove hostOfPreference
     boolean includePreferenceInSearchResults(SearchablePreferencePOJO preference, Class<? extends PreferenceFragmentCompat> hostOfPreference);
 }

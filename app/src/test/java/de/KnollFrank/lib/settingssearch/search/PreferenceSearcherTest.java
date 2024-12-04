@@ -565,8 +565,7 @@ public class PreferenceSearcherTest {
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
-                                includePreferenceInSearchResultsPredicate,
-                                mergedPreferenceScreen.hostByPreference());
+                                includePreferenceInSearchResultsPredicate);
 
                 // When
                 final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
