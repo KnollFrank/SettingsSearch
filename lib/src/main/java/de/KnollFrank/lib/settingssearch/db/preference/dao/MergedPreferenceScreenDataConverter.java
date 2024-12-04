@@ -25,7 +25,7 @@ class MergedPreferenceScreenDataConverter {
         return new MergedPreferenceScreenData(
                 mergedPreferenceScreenDataWithIds.preferences(),
                 PreferencePathByPreferenceConverter.removeIds(
-                        mergedPreferenceScreenDataWithIds.preferencePathIdByPreferenceId(),
+                        mergedPreferenceScreenDataWithIds.preferencePathIdsByPreferenceId(),
                         preferenceById),
                 HostByPreferenceConverter.removeIds(
                         mergedPreferenceScreenDataWithIds.hostByPreferenceId(),

@@ -21,9 +21,9 @@ class PreferencePathByPreferenceConverter {
     }
 
     public static Map<SearchablePreferencePOJO, PreferencePath> removeIds(
-            final Map<Integer, List<Integer>> preferencePathIdByPreferenceId,
+            final Map<Integer, List<Integer>> preferencePathIdsByPreferenceId,
             final Map<Integer, SearchablePreferencePOJO> preferenceById) {
-        return preferencePathIdByPreferenceId
+        return preferencePathIdsByPreferenceId
                 .entrySet()
                 .stream()
                 .collect(
