@@ -111,7 +111,6 @@ public class MergedPreferenceScreenFactory {
                         fragmentFactoryAndInitializer,
                         context);
         return new MergedPreferenceScreen(
-                mergedPreferenceScreenData.preferencePathByPreference(),
                 mergedPreferenceScreenData.preferences(),
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                         new SearchResultsFragment(
