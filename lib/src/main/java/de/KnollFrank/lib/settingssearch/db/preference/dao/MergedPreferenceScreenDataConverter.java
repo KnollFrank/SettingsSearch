@@ -14,10 +14,11 @@ class MergedPreferenceScreenDataConverter {
 
     public static MergedPreferenceScreenDataWithIds addIds(
             final MergedPreferenceScreenData mergedPreferenceScreenData) {
+        final Set<SearchablePreferencePOJO> preferences = PreferencePOJOs.getPreferencesRecursively(mergedPreferenceScreenData.preferences());
         return new MergedPreferenceScreenDataWithIds(
                 mergedPreferenceScreenData.preferences(),
-                PreferencePathByPreferenceConverter.addIds(PreferencePOJOs.getPreferencesRecursively(mergedPreferenceScreenData.preferences())),
-                HostByPreferenceConverter.addIds(mergedPreferenceScreenData.hostByPreference()));
+                PreferencePathByPreferenceConverter.addIds(preferences),
+                HostByPreferenceConverter.addIds(preferences));
     }
 
     public static MergedPreferenceScreenData removeIds(final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds) {

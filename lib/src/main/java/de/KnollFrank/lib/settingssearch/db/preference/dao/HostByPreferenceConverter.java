@@ -4,21 +4,20 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
 class HostByPreferenceConverter {
 
-    public static Map<Integer, Class<? extends PreferenceFragmentCompat>> addIds(
-            final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
-        return hostByPreference
-                .entrySet()
+    public static Map<Integer, Class<? extends PreferenceFragmentCompat>> addIds(final Set<SearchablePreferencePOJO> preferences) {
+        return preferences
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                entry -> entry.getKey().getId(),
-                                Entry::getValue));
+                                SearchablePreferencePOJO::getId,
+                                SearchablePreferencePOJO::getHost));
     }
 
     public static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> removeIds(
