@@ -91,7 +91,7 @@ public class MergedPreferenceScreenDataTest {
                         new ArrayList<>(dataActual.preferences()),
                         new ArrayList<>(data.preferences()));
                 assertThat(preferencePathByPreference(dataActual.preferences()), is(preferencePathByPreference(data.preferences())));
-                assertThat(dataActual.hostByPreference(), is(data.hostByPreference()));
+                assertThat(hostByPreference(data.preferences()), is(hostByPreference(data.preferences())));
             });
         }
     }
@@ -123,12 +123,26 @@ public class MergedPreferenceScreenDataTest {
     }
 
     private static Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference(final Set<SearchablePreferencePOJO> preferences) {
+        return attributeByPreference(
+                preferences,
+                SearchablePreferencePOJO::getPreferencePath);
+    }
+
+    private static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference(final Set<SearchablePreferencePOJO> preferences) {
+        return attributeByPreference(
+                preferences,
+                SearchablePreferencePOJO::getHost);
+    }
+
+    private static <T> Map<SearchablePreferencePOJO, T> attributeByPreference(
+            final Set<SearchablePreferencePOJO> preferences,
+            final Function<SearchablePreferencePOJO, T> getAttribute) {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferences)
                 .stream()
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                SearchablePreferencePOJO::getPreferencePath));
+                                getAttribute));
     }
 }

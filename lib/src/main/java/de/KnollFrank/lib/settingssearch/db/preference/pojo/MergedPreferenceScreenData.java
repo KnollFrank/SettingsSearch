@@ -5,11 +5,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 
 public final class MergedPreferenceScreenData {
 
@@ -26,17 +23,6 @@ public final class MergedPreferenceScreenData {
 
     public Set<SearchablePreferencePOJO> preferences() {
         return preferences;
-    }
-
-    // FK-TODO: refactor code until this method is not used any more
-    public Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference() {
-        return PreferencePOJOs
-                .getPreferencesRecursively(preferences)
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                Function.identity(),
-                                SearchablePreferencePOJO::getHost));
     }
 
     @Override
