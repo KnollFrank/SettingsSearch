@@ -6,10 +6,11 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -88,7 +89,7 @@ public class MergedPreferenceScreenFactory {
                                 context,
                                 progressUpdateListener,
                                 fragments)
-                        .persistOrLoadMergedPreferenceScreenData(locale),
+                        .persistOrLoadPreferences(locale),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 context,
@@ -100,7 +101,7 @@ public class MergedPreferenceScreenFactory {
             final PrepareShow prepareShow,
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final FragmentManager fragmentManager,
-            final MergedPreferenceScreenData mergedPreferenceScreenData,
+            final Set<SearchablePreferencePOJO> preferences,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final Context context,
@@ -110,7 +111,7 @@ public class MergedPreferenceScreenFactory {
                         fragmentFactoryAndInitializer,
                         context);
         return new MergedPreferenceScreen(
-                mergedPreferenceScreenData.preferences(),
+                preferences,
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                         new SearchResultsFragment(
                                 new ShowPreferenceScreenAndHighlightPreference(

@@ -8,22 +8,27 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 
-class PreferencePathsAndHostsSetter {
+public class PreferencePathsAndHostsSetter {
 
-    public static void setPreferencePathsAndHosts(
-            final Set<SearchablePreferencePOJO> preferences,
-            final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
-            final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
-        setPreferencePaths(preferences, preferencePathByPreference);
-        setHosts(preferences, hostByPreference);
+    private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
+    private final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference;
+
+    public PreferencePathsAndHostsSetter(final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
+                                         final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
+        this.preferencePathByPreference = preferencePathByPreference;
+        this.hostByPreference = hostByPreference;
     }
 
-    private static void setPreferencePaths(final Set<SearchablePreferencePOJO> preferences, final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference) {
-        preferences.forEach(preference -> setPreferencePathIncludingChildren(preference, preferencePathByPreference));
+    public void setPreferencePathsAndHosts(final Set<SearchablePreferencePOJO> preferences) {
+        setPreferencePaths(preferences);
+        setHosts(preferences);
     }
 
-    private static void setPreferencePathIncludingChildren(final SearchablePreferencePOJO preference,
-                                                           final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference) {
+    private void setPreferencePaths(final Set<SearchablePreferencePOJO> preferences) {
+        preferences.forEach(this::setPreferencePathIncludingChildren);
+    }
+
+    private void setPreferencePathIncludingChildren(final SearchablePreferencePOJO preference) {
         PreferencePOJOs
                 .getPreferencesRecursively(preference)
                 .forEach(
@@ -31,12 +36,11 @@ class PreferencePathsAndHostsSetter {
                                 _preference.setPreferencePath(preferencePathByPreference.get(_preference)));
     }
 
-    private static void setHosts(final Set<SearchablePreferencePOJO> preferences, final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
-        preferences.forEach(preference -> setHostIncludingChildren(preference, hostByPreference));
+    private void setHosts(final Set<SearchablePreferencePOJO> preferences) {
+        preferences.forEach(this::setHostIncludingChildren);
     }
 
-    private static void setHostIncludingChildren(final SearchablePreferencePOJO preference,
-                                                 final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
+    private void setHostIncludingChildren(final SearchablePreferencePOJO preference) {
         PreferencePOJOs
                 .getPreferencesRecursively(preference)
                 .forEach(

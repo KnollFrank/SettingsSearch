@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsAndHostsSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -57,9 +57,8 @@ public class MergedPreferenceScreenDataTest {
                                 Optional.of("searchable info also has a title 2"),
                                 POJOTestFactory.createBundle("someKey2", "someValue2"),
                                 Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null)))));
-                final MergedPreferenceScreenData data =
-                        new MergedPreferenceScreenData(
-                                Set.of(searchablePreferencePOJO1, searchablePreferencePOJO2),
+                final PreferencePathsAndHostsSetter preferencePathsAndHostsSetter =
+                        new PreferencePathsAndHostsSetter(
                                 ImmutableMap
                                         .<SearchablePreferencePOJO, PreferencePath>builder()
                                         .put(searchablePreferencePOJO1, new PreferencePath(List.of(searchablePreferencePOJO1)))
@@ -70,6 +69,11 @@ public class MergedPreferenceScreenDataTest {
                                         .put(searchablePreferencePOJO1, PreferenceFragmentCompat.class)
                                         .put(searchablePreferencePOJO2, PreferenceFragmentCompat.class)
                                         .build());
+                final Set<SearchablePreferencePOJO> data =
+                        Set.of(
+                                searchablePreferencePOJO1,
+                                searchablePreferencePOJO2);
+                preferencePathsAndHostsSetter.setPreferencePathsAndHosts(data);
                 final var preferences = new ByteArrayOutputStream();
                 final var preferencePathByPreference = new ByteArrayOutputStream();
                 final var hostByPreference = new ByteArrayOutputStream();
@@ -80,7 +84,7 @@ public class MergedPreferenceScreenDataTest {
                         preferences,
                         preferencePathByPreference,
                         hostByPreference);
-                final MergedPreferenceScreenData dataActual =
+                final Set<SearchablePreferencePOJO> dataActual =
                         MergedPreferenceScreenDataDAO.load(
                                 outputStream2InputStream(preferences),
                                 outputStream2InputStream(preferencePathByPreference),
@@ -88,10 +92,10 @@ public class MergedPreferenceScreenDataTest {
 
                 // Then
                 assertEquals(
-                        new ArrayList<>(dataActual.preferences()),
-                        new ArrayList<>(data.preferences()));
-                assertThat(preferencePathByPreference(dataActual.preferences()), is(preferencePathByPreference(data.preferences())));
-                assertThat(hostByPreference(data.preferences()), is(hostByPreference(data.preferences())));
+                        new ArrayList<>(dataActual),
+                        new ArrayList<>(data));
+                assertThat(preferencePathByPreference(dataActual), is(preferencePathByPreference(data)));
+                assertThat(hostByPreference(data), is(hostByPreference(data)));
             });
         }
     }

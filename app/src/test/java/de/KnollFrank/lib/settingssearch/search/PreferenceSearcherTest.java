@@ -631,7 +631,7 @@ public class PreferenceSearcherTest {
                 },
                 preferencePath -> true,
                 fragmentActivity.getSupportFragmentManager(),
-                MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(
+                MergedPreferenceScreenDataFactory.getPreferences(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),
                 fragmentFactoryAndInitializer,
                 new SearchResultsFragmentUI() {

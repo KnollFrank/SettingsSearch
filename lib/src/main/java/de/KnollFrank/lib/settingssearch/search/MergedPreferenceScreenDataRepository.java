@@ -6,6 +6,7 @@ import org.jgrapht.Graph;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
@@ -16,9 +17,9 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataFileDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -52,25 +53,25 @@ public class MergedPreferenceScreenDataRepository {
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
     }
 
-    public MergedPreferenceScreenData persistOrLoadMergedPreferenceScreenData(final Locale locale) {
+    public Set<SearchablePreferencePOJO> persistOrLoadPreferences(final Locale locale) {
         final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
         final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
         // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
         if (!exists(dataFiles)) {
-            final MergedPreferenceScreenData mergedPreferenceScreenData = computeMergedPreferenceScreenData();
+            final Set<SearchablePreferencePOJO> preferences = computePreferences();
             progressUpdateListener.onProgressUpdate("persisting search database");
-            MergedPreferenceScreenDataFileDAO.persist(mergedPreferenceScreenData, dataFiles);
+            MergedPreferenceScreenDataFileDAO.persist(preferences, dataFiles);
         }
         return MergedPreferenceScreenDataFileDAO.load(dataFiles);
     }
 
-    private MergedPreferenceScreenData computeMergedPreferenceScreenData() {
+    private Set<SearchablePreferencePOJO> computePreferences() {
         final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenGraph();
         progressUpdateListener.onProgressUpdate("preparing search database");
-        return MergedPreferenceScreenDataFactory.getMergedPreferenceScreenData(searchablePreferenceScreenGraph);
+        return MergedPreferenceScreenDataFactory.getPreferences(searchablePreferenceScreenGraph);
     }
 
     private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataFiles(final File directory) {

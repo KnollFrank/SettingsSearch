@@ -12,13 +12,16 @@ import de.KnollFrank.lib.settingssearch.provider.HostByPreferenceProvider;
 
 public class MergedPreferenceScreenDataFactory {
 
-    public static MergedPreferenceScreenData getMergedPreferenceScreenData(
+    public static Set<SearchablePreferencePOJO> getPreferences(
             final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
-        return new MergedPreferenceScreenData(
-                getPreferences(pojoGraph.vertexSet()),
-                PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
-                        HostClassFromPojoNodesRemover.removeHostClassFromNodes(pojoGraph)),
-                HostByPreferenceProvider.getHostByPreference(new ArrayList<>(pojoGraph.vertexSet())));
+        final PreferencePathsAndHostsSetter preferencePathsAndHostsSetter =
+                new PreferencePathsAndHostsSetter(
+                        PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
+                                HostClassFromPojoNodesRemover.removeHostClassFromNodes(pojoGraph)),
+                        HostByPreferenceProvider.getHostByPreference(new ArrayList<>(pojoGraph.vertexSet())));
+        final Set<SearchablePreferencePOJO> preferences = getPreferences(pojoGraph.vertexSet());
+        preferencePathsAndHostsSetter.setPreferencePathsAndHosts(preferences);
+        return preferences;
     }
 
     private static Set<SearchablePreferencePOJO> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {

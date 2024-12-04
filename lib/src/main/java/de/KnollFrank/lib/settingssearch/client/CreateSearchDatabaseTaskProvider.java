@@ -45,6 +45,6 @@ public class CreateSearchDatabaseTaskProvider {
                                 OnUiThreadRunnerFactory.fromActivity(activity)),
                         activity,
                         progressUpdateListener)
-                .persistOrLoadMergedPreferenceScreenData(Utils.geCurrentLocale(activity.getResources()));
+                .persistOrLoadPreferences(Utils.geCurrentLocale(activity.getResources()));
     }
 }
