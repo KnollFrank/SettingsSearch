@@ -107,7 +107,6 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsSorter searchResultsSorter) {
         final PreferencePathNavigator preferencePathNavigator =
                 new PreferencePathNavigator(
-                        mergedPreferenceScreenData.hostByPreference(),
                         fragmentFactoryAndInitializer,
                         context);
         return new MergedPreferenceScreen(

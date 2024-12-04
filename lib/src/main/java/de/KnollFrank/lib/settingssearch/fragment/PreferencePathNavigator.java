@@ -6,7 +6,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -16,14 +15,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 public class PreferencePathNavigator {
 
-    private final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference;
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final Context context;
 
-    public PreferencePathNavigator(final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference,
-                                   final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
+    public PreferencePathNavigator(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                    final Context context) {
-        this.hostByPreference = hostByPreference;
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.context = context;
     }
@@ -43,8 +39,7 @@ public class PreferencePathNavigator {
 
     private PreferenceWithHost getPreferenceWithHost(final SearchablePreferencePOJO preference,
                                                      final Optional<PreferenceWithHost> src) {
-        final Class<? extends PreferenceFragmentCompat> host = hostByPreference.get(preference);
-        final PreferenceFragmentCompat hostOfPreference = instantiateAndInitializePreferenceFragment(host, src);
+        final PreferenceFragmentCompat hostOfPreference = instantiateAndInitializePreferenceFragment(preference.getHost(), src);
         return new PreferenceWithHost(
                 getPreferenceByKey(hostOfPreference, preference.getKey().orElseThrow()),
                 hostOfPreference);
