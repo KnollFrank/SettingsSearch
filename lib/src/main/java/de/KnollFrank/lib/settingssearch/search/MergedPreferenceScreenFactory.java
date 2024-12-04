@@ -106,23 +106,20 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final Context context,
             final SearchResultsSorter searchResultsSorter) {
-        final PreferencePathNavigator preferencePathNavigator =
-                new PreferencePathNavigator(
-                        fragmentFactoryAndInitializer,
-                        context);
         return new MergedPreferenceScreen(
                 preferences,
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                         new SearchResultsFragment(
                                 new ShowPreferenceScreenAndHighlightPreference(
-                                        preferencePathNavigator,
+                                        new PreferencePathNavigator(
+                                                fragmentFactoryAndInitializer,
+                                                context),
                                         fragmentContainerViewId,
                                         prepareShow,
                                         fragmentManager),
                                 showPreferencePathPredicate,
                                 searchResultsFragmentUI),
                         context,
-                        searchResultsSorter),
-                preferencePathNavigator);
+                        searchResultsSorter));
     }
 }
