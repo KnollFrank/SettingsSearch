@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -62,7 +61,11 @@ public class MergedPreferenceScreenDataTest {
                                         .put(searchablePreferencePOJO1, new PreferencePath(List.of(searchablePreferencePOJO1)))
                                         .put(searchablePreferencePOJO2, new PreferencePath(List.of(searchablePreferencePOJO1, searchablePreferencePOJO2)))
                                         .build(),
-                                Map.of(searchablePreferencePOJO1, PreferenceFragmentCompat.class));
+                                ImmutableMap
+                                        .<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>>builder()
+                                        .put(searchablePreferencePOJO1, PreferenceFragmentCompat.class)
+                                        .put(searchablePreferencePOJO2, PreferenceFragmentCompat.class)
+                                        .build());
                 final var preferences = new ByteArrayOutputStream();
                 final var preferencePathByPreference = new ByteArrayOutputStream();
                 final var hostByPreference = new ByteArrayOutputStream();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
@@ -39,6 +41,10 @@ public final class SearchablePreferencePOJO {
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
     private final Bundle extras;
     private final List<SearchablePreferencePOJO> children;
+    @Exclude
+    private PreferencePath preferencePath;
+    @Exclude
+    private Class<? extends PreferenceFragmentCompat> host;
 
     public SearchablePreferencePOJO(
             final int id,
@@ -153,6 +159,22 @@ public final class SearchablePreferencePOJO {
 
     public Bundle getExtras() {
         return extras;
+    }
+
+    public void setPreferencePath(final PreferencePath preferencePath) {
+        this.preferencePath = preferencePath;
+    }
+
+    public PreferencePath getPreferencePath() {
+        return preferencePath;
+    }
+
+    public Class<? extends PreferenceFragmentCompat> getHost() {
+        return host;
+    }
+
+    public void setHost(final Class<? extends PreferenceFragmentCompat> host) {
+        this.host = host;
     }
 
     @Override
