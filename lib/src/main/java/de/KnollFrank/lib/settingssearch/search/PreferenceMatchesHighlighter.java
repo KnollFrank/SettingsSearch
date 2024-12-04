@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+
 public class PreferenceMatchesHighlighter {
 
     private final Supplier<List<Object>> markupsFactory;
@@ -27,7 +29,7 @@ public class PreferenceMatchesHighlighter {
     private void highlight(final PreferenceMatch preferenceMatch) {
         highlightTitle(preferenceMatch);
         highlightSummary(preferenceMatch);
-        highlightSearchableInfo(preferenceMatch);
+        highlightOrHideSearchableInfo(preferenceMatch);
     }
 
     private void highlightTitle(final PreferenceMatch preferenceMatch) {
@@ -44,11 +46,19 @@ public class PreferenceMatchesHighlighter {
                 preferenceMatch.summaryMatches());
     }
 
-    private void highlightSearchableInfo(final PreferenceMatch preferenceMatch) {
-        highlight(
-                preferenceMatch.preference()::setHighlightedSearchableInfoProvider,
-                preferenceMatch.preference()::getSearchableInfo,
-                preferenceMatch.searchableInfoMatches());
+    private void highlightOrHideSearchableInfo(final PreferenceMatch preferenceMatch) {
+        if (!preferenceMatch.searchableInfoMatches().isEmpty()) {
+            highlight(
+                    preferenceMatch.preference()::setHighlightedSearchableInfoProvider,
+                    preferenceMatch.preference()::getSearchableInfo,
+                    preferenceMatch.searchableInfoMatches());
+        } else {
+            hideSearchableInfo(preferenceMatch.preference());
+        }
+    }
+
+    private static void hideSearchableInfo(final SearchablePreferencePOJO preference) {
+        preference.setHighlightedSearchableInfoProvider(Optional::empty);
     }
 
     private void highlight(
