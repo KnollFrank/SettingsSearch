@@ -8,10 +8,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.threeten.bp.Duration;
 
-import java.util.Map;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -19,19 +17,15 @@ import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferenceScreenAndHighlightPreference {
 
     private final PreferencePathNavigator preferencePathNavigator;
-    private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final @IdRes int fragmentContainerViewId;
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
 
-    public ShowPreferenceScreenAndHighlightPreference(
-            final PreferencePathNavigator preferencePathNavigator,
-            final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
-            final @IdRes int fragmentContainerViewId,
-            final PrepareShow prepareShow,
-            final FragmentManager fragmentManager) {
+    public ShowPreferenceScreenAndHighlightPreference(final PreferencePathNavigator preferencePathNavigator,
+                                                      final @IdRes int fragmentContainerViewId,
+                                                      final PrepareShow prepareShow,
+                                                      final FragmentManager fragmentManager) {
         this.preferencePathNavigator = preferencePathNavigator;
-        this.preferencePathByPreference = preferencePathByPreference;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.prepareShow = prepareShow;
         this.fragmentManager = fragmentManager;
@@ -40,7 +34,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
     @Override
     public void showPreferenceScreenAndHighlightPreference(final SearchablePreferencePOJO preference) {
         showPreferenceScreenAndHighlightPreference(
-                preferencePathNavigator.navigatePreferencePath(preferencePathByPreference.get(preference)),
+                preferencePathNavigator.navigatePreferencePath(preference.getPreferencePath()),
                 preference.getKey());
     }
 
