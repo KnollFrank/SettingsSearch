@@ -8,5 +8,5 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 @FunctionalInterface
 public interface SearchResultsSorter {
 
-    List<SearchablePreferencePOJO> sort(Collection<SearchablePreferencePOJO> preferences);
+    List<SearchablePreferencePOJO> sort(Collection<SearchablePreferencePOJO> searchResults);
 }

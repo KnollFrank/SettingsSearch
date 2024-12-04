@@ -14,8 +14,8 @@ public class DefaultSearchResultsSorter implements SearchResultsSorter {
     private static final Comparator<SearchablePreferencePOJO> COMPARATOR = searchablePreferencePOJOComparator();
 
     @Override
-    public List<SearchablePreferencePOJO> sort(final Collection<SearchablePreferencePOJO> preferences) {
-        return preferences
+    public List<SearchablePreferencePOJO> sort(final Collection<SearchablePreferencePOJO> searchResults) {
+        return searchResults
                 .stream()
                 .sorted(COMPARATOR)
                 .collect(Collectors.toList());
