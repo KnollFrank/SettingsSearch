@@ -25,8 +25,8 @@ public class SearchResultsDisplayer {
     }
 
     public void displaySearchResults(final Set<PreferenceMatch> preferenceMatches) {
-        searchResultsFragment.setSearchResults(searchResultsSorter.sort(getPreferences(preferenceMatches)));
         new PreferenceMatchesHighlighter(markupsFactory).highlight(preferenceMatches);
+        searchResultsFragment.setSearchResults(searchResultsSorter.sort(getPreferences(preferenceMatches)));
     }
 
     public SearchResultsFragment getSearchResultsFragment() {
