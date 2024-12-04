@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchConfigBuilder {
 
-    private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = (preference, hostOfPreference) -> true;
+    private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = preference -> true;
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
     private PrepareShow prepareShow = preferenceFragment -> {
     };

@@ -24,15 +24,9 @@ class PreferenceSearcher {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferences)
                 .stream()
-                .filter(this::includePreferenceInSearchResults)
+                .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
                 .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::stream)
                 .collect(Collectors.toSet());
-    }
-
-    private boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference) {
-        return includePreferenceInSearchResultsPredicate.includePreferenceInSearchResults(
-                preference,
-                preference.getHost());
     }
 }

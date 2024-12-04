@@ -79,7 +79,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -105,8 +105,8 @@ public class PreferenceSearcherTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> hostOfPreference) {
-                        return Optional.of(keyOfPreference).equals(preference.getKey()) && preferenceFragment.getClass().equals(hostOfPreference);
+                    public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference) {
+                        return Optional.of(keyOfPreference).equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost());
                     }
                 };
         testSearch(
@@ -138,8 +138,8 @@ public class PreferenceSearcherTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference, final Class<? extends PreferenceFragmentCompat> hostOfPreference) {
-                        return !(Optional.of(keyOfPreference).equals(preference.getKey()) && preferenceFragment.getClass().equals(hostOfPreference));
+                    public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference) {
+                        return !(Optional.of(keyOfPreference).equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost()));
                     }
                 };
         testSearch(
@@ -168,7 +168,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -196,7 +196,7 @@ public class PreferenceSearcherTest {
                             category.addPreference(nestedPreference);
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -219,7 +219,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> !(preference instanceof CheckBoxPreference && keyOfPreference.equals(preference.getKey())),
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -242,7 +242,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -268,7 +268,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -295,7 +295,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -320,7 +320,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 summaryOff,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -345,7 +345,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 summaryOn,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -371,7 +371,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 ReversedListPreference.getReverse(keyword).toString(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -395,7 +395,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -430,7 +430,7 @@ public class PreferenceSearcherTest {
                             }
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -447,7 +447,7 @@ public class PreferenceSearcherTest {
         testSearch(
                 new PrefsFragmentFirst(),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
@@ -473,7 +473,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -500,7 +500,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -524,7 +524,7 @@ public class PreferenceSearcherTest {
                             return preference;
                         }),
                 (preference, hostOfPreference) -> true,
-                (preference, hostOfPreference) -> true,
+                preference -> true,
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
