@@ -8,6 +8,7 @@ import java.util.Set;
 
 public record MergedPreferenceScreenDataWithIds(
         Set<SearchablePreferencePOJO> preferences,
+        // FK-TODO: rename to preferencePathIdsByPreferenceId
         Map<Integer, List<Integer>> preferencePathIdByPreferenceId,
         Map<Integer, Class<? extends PreferenceFragmentCompat>> hostByPreferenceId) {
 }

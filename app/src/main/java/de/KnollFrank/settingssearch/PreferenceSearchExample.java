@@ -20,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
+// FK-TODO: falls in einem SearchableInfo einer Preference kein Suchtreffer vorhanden ist, sondern z.B. nur in ihrem Titel, dann soll die Preference ohne diese SearchableInfo angezeigt werden.
 public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
