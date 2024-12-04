@@ -19,10 +19,14 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
@@ -86,7 +90,7 @@ public class MergedPreferenceScreenDataTest {
                 assertEquals(
                         new ArrayList<>(dataActual.preferences()),
                         new ArrayList<>(data.preferences()));
-                assertThat(dataActual.preferencePathByPreference(), is(data.preferencePathByPreference()));
+                assertThat(preferencePathByPreference(dataActual.preferences()), is(preferencePathByPreference(data.preferences())));
                 assertThat(dataActual.hostByPreference(), is(data.hostByPreference()));
             });
         }
@@ -116,5 +120,15 @@ public class MergedPreferenceScreenDataTest {
         for (int i = 0; i < actuals.size(); i++) {
             assertEquals(actuals.get(i), expecteds.get(i));
         }
+    }
+
+    private static Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference(final Set<SearchablePreferencePOJO> preferences) {
+        return PreferencePOJOs
+                .getPreferencesRecursively(preferences)
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                Function.identity(),
+                                SearchablePreferencePOJO::getPreferencePath));
     }
 }

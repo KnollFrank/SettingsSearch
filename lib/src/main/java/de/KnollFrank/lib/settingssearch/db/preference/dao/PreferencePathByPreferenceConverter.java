@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -9,15 +10,13 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 class PreferencePathByPreferenceConverter {
 
-    public static Map<Integer, List<Integer>> addIds(
-            final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference) {
-        return preferencePathByPreference
-                .entrySet()
+    public static Map<Integer, List<Integer>> addIds(final Set<SearchablePreferencePOJO> preferences) {
+        return preferences
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                entry -> entry.getKey().getId(),
-                                entry -> PreferencePathConverter.addIds(entry.getValue())));
+                                SearchablePreferencePOJO::getId,
+                                preference -> PreferencePathConverter.addIds(preference.getPreferencePath())));
     }
 
     public static Map<SearchablePreferencePOJO, PreferencePath> removeIds(

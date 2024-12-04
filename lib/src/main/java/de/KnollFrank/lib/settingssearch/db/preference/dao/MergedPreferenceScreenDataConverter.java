@@ -16,7 +16,7 @@ class MergedPreferenceScreenDataConverter {
             final MergedPreferenceScreenData mergedPreferenceScreenData) {
         return new MergedPreferenceScreenDataWithIds(
                 mergedPreferenceScreenData.preferences(),
-                PreferencePathByPreferenceConverter.addIds(mergedPreferenceScreenData.preferencePathByPreference()),
+                PreferencePathByPreferenceConverter.addIds(PreferencePOJOs.getPreferencesRecursively(mergedPreferenceScreenData.preferences())),
                 HostByPreferenceConverter.addIds(mergedPreferenceScreenData.hostByPreference()));
     }
 

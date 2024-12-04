@@ -29,17 +29,6 @@ public final class MergedPreferenceScreenData {
     }
 
     // FK-TODO: refactor code until this method is not used any more
-    public Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference() {
-        return PreferencePOJOs
-                .getPreferencesRecursively(preferences)
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                Function.identity(),
-                                SearchablePreferencePOJO::getPreferencePath));
-    }
-
-    // FK-TODO: refactor code until this method is not used any more
     public Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference() {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferences)
