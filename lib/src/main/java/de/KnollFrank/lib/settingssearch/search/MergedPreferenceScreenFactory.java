@@ -122,7 +122,6 @@ public class MergedPreferenceScreenFactory {
                                 searchResultsFragmentUI),
                         context,
                         searchResultsSorter),
-                preferencePathNavigator,
-                mergedPreferenceScreenData.hostByPreference());
+                preferencePathNavigator);
     }
 }
