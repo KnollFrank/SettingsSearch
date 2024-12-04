@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Optional;
 
+// adapted from androidx.preference.PreferenceViewHolder
 public class PreferenceViewHolder extends RecyclerView.ViewHolder {
 
     @Nullable
