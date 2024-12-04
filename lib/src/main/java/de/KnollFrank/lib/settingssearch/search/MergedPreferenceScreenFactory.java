@@ -115,7 +115,6 @@ public class MergedPreferenceScreenFactory {
                 mergedPreferenceScreenData.preferences(),
                 SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                         new SearchResultsFragment(
-                                mergedPreferenceScreenData.preferencePathByPreference(),
                                 new ShowPreferenceScreenAndHighlightPreference(
                                         preferencePathNavigator,
                                         mergedPreferenceScreenData.preferencePathByPreference(),

@@ -26,12 +26,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
@@ -42,15 +40,12 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     private final List<SearchablePreferencePOJO> items = new ArrayList<>();
     private final Consumer<SearchablePreferencePOJO> onPreferenceClickListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
-    private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
 
     public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener,
-                                            final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                            final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference) {
+                                            final ShowPreferencePathPredicate showPreferencePathPredicate) {
         this.onPreferenceClickListener = onPreferenceClickListener;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
-        this.preferencePathByPreference = preferencePathByPreference;
     }
 
     @Override
@@ -188,17 +183,11 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
 
     private void displayPreferencePath(final PreferenceViewHolder holder,
                                        final SearchablePreferencePOJO searchablePreferencePOJO) {
-        final Optional<PreferencePath> preferencePath = Maps.get(preferencePathByPreference, searchablePreferencePOJO);
+        final PreferencePath preferencePath = searchablePreferencePOJO.getPreferencePath();
         PreferencePathView.displayPreferencePath(
                 getPreferencePathView(holder),
                 preferencePath,
-                showPreferencePath(preferencePath));
-    }
-
-    private boolean showPreferencePath(final Optional<PreferencePath> preferencePath) {
-        return preferencePath
-                .filter(showPreferencePathPredicate::showPreferencePath)
-                .isPresent();
+                showPreferencePathPredicate.showPreferencePath(preferencePath));
     }
 
     private static void displayIcon(final PreferenceViewHolder holder, final SearchablePreferencePOJO searchablePreferencePOJO, final boolean iconSpaceReserved) {

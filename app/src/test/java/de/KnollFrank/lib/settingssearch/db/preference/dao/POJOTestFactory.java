@@ -10,6 +10,7 @@ import com.codepoetics.ambivalence.Either;
 import java.util.List;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.settingssearch.R;
 
@@ -66,19 +67,23 @@ public class POJOTestFactory {
             final Optional<String> searchableInfo,
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
-        return new SearchablePreferencePOJO(
-                id,
-                Optional.of("some key"),
-                iconResourceIdOrIconPixelData,
-                androidx.preference.R.layout.preference,
-                summary,
-                title,
-                0,
-                Optional.of("some fragment"),
-                true,
-                searchableInfo,
-                extras,
-                List.of());
+        final SearchablePreferencePOJO searchablePreferencePOJO =
+                new SearchablePreferencePOJO(
+                        id,
+                        Optional.of("some key"),
+                        iconResourceIdOrIconPixelData,
+                        androidx.preference.R.layout.preference,
+                        summary,
+                        title,
+                        0,
+                        Optional.of("some fragment"),
+                        true,
+                        searchableInfo,
+                        extras,
+                        List.of());
+        searchablePreferencePOJO.setPreferencePath(new PreferencePath(List.of(searchablePreferencePOJO)));
+        searchablePreferencePOJO.setHost(TestPreferenceFragment.class);
+        return searchablePreferencePOJO;
     }
 
     public static Bundle createBundle(final String key, final String value) {

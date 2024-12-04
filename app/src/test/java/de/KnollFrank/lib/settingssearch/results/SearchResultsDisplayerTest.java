@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -79,7 +78,6 @@ public class SearchResultsDisplayerTest {
     private static SearchResultsFragment getInitializedSearchResultsFragment(final TestActivity activity) {
         final SearchResultsFragment searchResultsFragment =
                 new SearchResultsFragment(
-                        Map.of(),
                         preference -> {
                         },
                         preferencePath -> true,

@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.IShowPreferenceScreenAndHighlightPreference;
@@ -21,18 +19,15 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchResultsFragment extends Fragment {
 
-    private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
     private final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
     private RecyclerView recyclerView;
 
-    public SearchResultsFragment(final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
-                                 final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference,
+    public SearchResultsFragment(final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference,
                                  final ShowPreferencePathPredicate showPreferencePathPredicate,
                                  final SearchResultsFragmentUI searchResultsFragmentUI) {
         super(searchResultsFragmentUI.getRootViewId());
-        this.preferencePathByPreference = preferencePathByPreference;
         this.showPreferenceScreenAndHighlightPreference = showPreferenceScreenAndHighlightPreference;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
@@ -69,8 +64,7 @@ public class SearchResultsFragment extends Fragment {
         final SearchResultsRecyclerViewAdapter searchResultsRecyclerViewAdapter =
                 new SearchResultsRecyclerViewAdapter(
                         showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
-                        showPreferencePathPredicate,
-                        preferencePathByPreference);
+                        showPreferencePathPredicate);
         recyclerView.setAdapter(searchResultsRecyclerViewAdapter);
     }
 }

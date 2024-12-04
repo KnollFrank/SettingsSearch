@@ -16,4 +16,14 @@ class TextViews {
                     textView.setVisibility(optionalText.isPresent() ? View.VISIBLE : View.GONE);
                 });
     }
+
+    public static void setTextOnOptionalTextView(
+            final Optional<TextView> optionalTextView,
+            final CharSequence text) {
+        optionalTextView.ifPresent(
+                textView -> {
+                    textView.setText(text);
+                    textView.setVisibility(View.VISIBLE);
+                });
+    }
 }

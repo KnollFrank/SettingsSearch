@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
-import static de.KnollFrank.lib.settingssearch.results.recyclerview.TextViews.setOptionalTextOnOptionalTextView;
-
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
@@ -25,16 +23,14 @@ class PreferencePathView {
     }
 
     public static void displayPreferencePath(final Optional<TextView> preferencePathView,
-                                             final Optional<PreferencePath> preferencePath,
+                                             final PreferencePath preferencePath,
                                              final boolean showPreferencePath) {
         if (showPreferencePath) {
-            setOptionalTextOnOptionalTextView(
+            TextViews.setTextOnOptionalTextView(
                     preferencePathView,
-                    preferencePath.map(
-                            _preferencePath ->
-                                    MessageFormat.format(
-                                            "Path: {0}",
-                                            toString(_preferencePath))));
+                    MessageFormat.format(
+                            "Path: {0}",
+                            toString(preferencePath)));
         } else {
             preferencePathView.ifPresent(_preferencePathView -> _preferencePathView.setVisibility(View.GONE));
         }

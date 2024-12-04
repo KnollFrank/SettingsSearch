@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 
 public final class MergedPreferenceScreenData {
 
@@ -27,8 +28,10 @@ public final class MergedPreferenceScreenData {
         return preferences;
     }
 
+    // FK-TODO: refactor code until this method is not used any more
     public Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference() {
-        return preferences
+        return PreferencePOJOs
+                .getPreferencesRecursively(preferences)
                 .stream()
                 .collect(
                         Collectors.toMap(
@@ -36,8 +39,10 @@ public final class MergedPreferenceScreenData {
                                 SearchablePreferencePOJO::getPreferencePath));
     }
 
+    // FK-TODO: refactor code until this method is not used any more
     public Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference() {
-        return preferences
+        return PreferencePOJOs
+                .getPreferencesRecursively(preferences)
                 .stream()
                 .collect(
                         Collectors.toMap(
