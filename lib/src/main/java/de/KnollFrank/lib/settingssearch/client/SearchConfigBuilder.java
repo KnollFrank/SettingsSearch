@@ -1,20 +1,12 @@
 package de.KnollFrank.lib.settingssearch.client;
 
-import android.view.View;
-import android.widget.SearchView;
-import android.widget.TextView;
-
-import androidx.annotation.LayoutRes;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.recyclerview.widget.RecyclerView;
-
-import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.DefaultSearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
-import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
+import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchPreferenceFragmentUI;
+import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchResultsFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
@@ -25,53 +17,8 @@ public class SearchConfigBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private SearchResultsSorter searchResultsSorter = new DefaultSearchResultsSorter();
-    private SearchPreferenceFragmentUI searchPreferenceFragmentUI =
-            new SearchPreferenceFragmentUI() {
-
-                @Override
-                public @LayoutRes int getRootViewId() {
-                    return R.layout.searchpreference_fragment;
-                }
-
-                @Override
-                public SearchView getSearchView(final View rootView) {
-                    return rootView.findViewById(R.id.searchView);
-                }
-
-                @Override
-                public FragmentContainerView getSearchResultsFragmentContainerView(final View rootView) {
-                    return rootView.findViewById(R.id.searchResultsFragmentContainerView);
-                }
-
-                @Override
-                public ProgressContainerUI getProgressContainerUI(final View rootView) {
-                    return new ProgressContainerUI() {
-
-                        @Override
-                        public View getRoot() {
-                            return rootView.findViewById(R.id.progressContainer);
-                        }
-
-                        @Override
-                        public TextView getProgressText() {
-                            return getRoot().findViewById(R.id.progressText);
-                        }
-                    };
-                }
-            };
-    private SearchResultsFragmentUI searchResultsFragmentUI =
-            new SearchResultsFragmentUI() {
-
-                @Override
-                public int getRootViewId() {
-                    return R.layout.searchresults_fragment;
-                }
-
-                @Override
-                public RecyclerView getSearchResultsView(View rootView) {
-                    return rootView.findViewById(R.id.searchResults);
-                }
-            };
+    private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
+    private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
 
     public SearchConfigBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;

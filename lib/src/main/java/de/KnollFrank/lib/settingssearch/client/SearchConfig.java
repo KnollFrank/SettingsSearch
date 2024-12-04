@@ -7,6 +7,7 @@ import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
+// FK-TODO: Suchergebnisse gruppierbar machen
 public record SearchConfig(
         IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
         ShowPreferencePathPredicate showPreferencePathPredicate,
