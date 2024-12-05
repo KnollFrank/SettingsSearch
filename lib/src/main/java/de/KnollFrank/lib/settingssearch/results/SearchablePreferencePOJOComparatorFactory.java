@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Function;
 
+import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
 class SearchablePreferencePOJOComparatorFactory {
@@ -30,6 +31,6 @@ class SearchablePreferencePOJOComparatorFactory {
     private static Comparator<SearchablePreferencePOJO> comparing(final Function<SearchablePreferencePOJO, Optional<String>> keyExtractor) {
         return Comparator.comparing(
                 keyExtractor,
-                de.KnollFrank.lib.settingssearch.common.Comparators.emptiesLast(String.CASE_INSENSITIVE_ORDER));
+                ComparatorFactory.emptiesLast(String.CASE_INSENSITIVE_ORDER));
     }
 }
