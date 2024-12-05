@@ -41,7 +41,7 @@ public class SearchResultsDisplayerTest {
                         SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                                 searchResultsFragment,
                                 activity,
-                                new DefaultSearchResultsSorter());
+                                new LexicographicalSearchResultsSorter());
 
                 // When
                 searchResultsDisplayer.displaySearchResults(

@@ -8,7 +8,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 
 class SearchablePreferencePOJOComparatorFactory {
 
-    public static Comparator<SearchablePreferencePOJO> searchablePreferencePOJOComparator() {
+    public static Comparator<SearchablePreferencePOJO> lexicographicalComparator() {
         return SearchablePreferencePOJOComparatorFactory
                 .title()
                 .thenComparing(summary())
