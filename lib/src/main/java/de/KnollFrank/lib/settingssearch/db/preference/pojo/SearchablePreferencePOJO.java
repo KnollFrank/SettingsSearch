@@ -206,7 +206,6 @@ public final class SearchablePreferencePOJO {
                 ", searchableInfo='" + searchableInfo + '\'' +
                 ", extras=" + extras +
                 ", children=" + children +
-                ", preferencePath=" + preferencePath +
                 ", host=" + host +
                 '}';
     }
