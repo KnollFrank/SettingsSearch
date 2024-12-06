@@ -192,19 +192,23 @@ public final class SearchablePreferencePOJO {
 
     @Override
     public String toString() {
-        return "SearchablePreferencePOJO[" +
-                "id=" + id + ", " +
-                "key=" + key + ", " +
-                "iconResourceIdOrIconPixelData=" + iconResourceIdOrIconPixelData + ", " +
-                "layoutResId=" + layoutResId + ", " +
-                "summary=" + summary + ", " +
-                "title=" + title + ", " +
-                "widgetLayoutResId=" + widgetLayoutResId + ", " +
-                "fragment=" + fragment + ", " +
-                "visible=" + visible + ", " +
-                "searchableInfo=" + searchableInfo + ", " +
-                "extras=" + extras + ", " +
-                "children=" + children + ']';
+        return "SearchablePreferencePOJO{" +
+                "id=" + id +
+                ", key='" + key + '\'' +
+                ", iconResourceIdOrIconPixelData=" + iconResourceIdOrIconPixelData +
+                ", iconCache=" + iconCache +
+                ", layoutResId=" + layoutResId +
+                ", summary='" + summary + '\'' +
+                ", title='" + title + '\'' +
+                ", widgetLayoutResId=" + widgetLayoutResId +
+                ", fragment='" + fragment + '\'' +
+                ", visible=" + visible +
+                ", searchableInfo='" + searchableInfo + '\'' +
+                ", extras=" + extras +
+                ", children=" + children +
+                ", preferencePath=" + preferencePath +
+                ", host=" + host +
+                '}';
     }
 
     private Optional<Drawable> _getIcon(final Context context) {
