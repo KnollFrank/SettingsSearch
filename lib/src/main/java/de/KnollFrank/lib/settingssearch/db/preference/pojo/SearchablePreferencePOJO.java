@@ -200,7 +200,6 @@ public final class SearchablePreferencePOJO {
                 ", key='" + key + '\'' +
                 ", fragment='" + fragment + '\'' +
                 ", visible=" + visible +
-                ", extras=" + extras +
                 ", children=" + children +
                 ", host=" + host +
                 '}';
