@@ -194,16 +194,12 @@ public final class SearchablePreferencePOJO {
     public String toString() {
         return "SearchablePreferencePOJO{" +
                 "id=" + id +
-                ", key='" + key + '\'' +
-                ", iconResourceIdOrIconPixelData=" + iconResourceIdOrIconPixelData +
-                ", iconCache=" + iconCache +
-                ", layoutResId=" + layoutResId +
-                ", summary='" + summary + '\'' +
                 ", title='" + title + '\'' +
-                ", widgetLayoutResId=" + widgetLayoutResId +
+                ", summary='" + summary + '\'' +
+                ", searchableInfo='" + searchableInfo + '\'' +
+                ", key='" + key + '\'' +
                 ", fragment='" + fragment + '\'' +
                 ", visible=" + visible +
-                ", searchableInfo='" + searchableInfo + '\'' +
                 ", extras=" + extras +
                 ", children=" + children +
                 ", host=" + host +
