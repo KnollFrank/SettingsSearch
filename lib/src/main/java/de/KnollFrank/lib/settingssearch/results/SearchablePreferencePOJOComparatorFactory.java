@@ -7,7 +7,7 @@ import java.util.function.Function;
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-class SearchablePreferencePOJOComparatorFactory {
+public class SearchablePreferencePOJOComparatorFactory {
 
     public static Comparator<SearchablePreferencePOJO> lexicographicalComparator() {
         return SearchablePreferencePOJOComparatorFactory
