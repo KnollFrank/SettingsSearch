@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.common;
 
 import android.util.Pair;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -15,20 +16,6 @@ public class Lists {
         return lists
                 .stream()
                 .flatMap(List::stream)
-                .collect(Collectors.toList());
-    }
-
-    public static <T> List<T> asList(final Optional<T[]> elements) {
-        return elements
-                .map(Arrays::asList)
-                .orElseGet(Collections::emptyList);
-    }
-
-    public static <T> List<T> getPresentElements(final List<Optional<T>> elements) {
-        return elements
-                .stream()
-                .filter(Optional::isPresent)
-                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 
@@ -48,6 +35,12 @@ public class Lists {
         return ts.subList(1, ts.size());
     }
 
+    public static <T> List<T> reverse(final List<T> ts) {
+        final List<T> tsReversed = new ArrayList<>(ts);
+        Collections.reverse(tsReversed);
+        return tsReversed;
+    }
+
     // adapted from https://stackoverflow.com/questions/31963297/how-to-zip-two-java-lists
     public static <A, B> List<Pair<A, B>> zip(final List<A> as, final List<B> bs) {
         if (as.size() != bs.size()) {
@@ -56,6 +49,20 @@ public class Lists {
         return IntStream
                 .range(0, as.size())
                 .mapToObj(i -> Pair.create(as.get(i), bs.get(i)))
+                .collect(Collectors.toList());
+    }
+
+    public static <T> List<T> asList(final Optional<T[]> elements) {
+        return elements
+                .map(Arrays::asList)
+                .orElseGet(Collections::emptyList);
+    }
+
+    public static <T> List<T> getPresentElements(final List<Optional<T>> elements) {
+        return elements
+                .stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
     }
 }

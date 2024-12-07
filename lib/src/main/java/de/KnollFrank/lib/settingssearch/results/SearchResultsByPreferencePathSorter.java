@@ -1,14 +1,13 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.common.compare.LexicographicalListComparator;
+import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
 public class SearchResultsByPreferencePathSorter implements SearchResultsSorter {
@@ -31,13 +30,7 @@ public class SearchResultsByPreferencePathSorter implements SearchResultsSorter 
 
     private static Comparator<PreferencePath> getPreferencePathComparator() {
         return Comparator.comparing(
-                preferencePath -> reverse(preferencePath.preferences()),
-                new LexicographicalListComparator<>(SearchablePreferencePOJOComparatorFactory.lexicographicalComparator()));
-    }
-
-    private static <T> List<T> reverse(final List<T> ts) {
-        final List<T> tsReversed = new ArrayList<>(ts);
-        Collections.reverse(tsReversed);
-        return tsReversed;
+                preferencePath -> Lists.reverse(preferencePath.preferences()),
+                ComparatorFactory.lexicographicalListComparator(SearchablePreferencePOJOComparatorFactory.lexicographicalComparator()));
     }
 }

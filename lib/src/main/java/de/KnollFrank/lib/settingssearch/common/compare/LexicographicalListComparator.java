@@ -1,32 +1,35 @@
 package de.KnollFrank.lib.settingssearch.common.compare;
 
-import java.util.Comparator;
+import static de.KnollFrank.lib.settingssearch.common.compare.CompareResult.ARG1_EQUAL_TO_ARG2;
+import static de.KnollFrank.lib.settingssearch.common.compare.CompareResult.ARG1_GREATER_THAN_ARG2;
+import static de.KnollFrank.lib.settingssearch.common.compare.CompareResult.ARG1_LESS_THAN_ARG2;
+
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
 
-public class LexicographicalListComparator<T> implements Comparator<List<T>> {
+class LexicographicalListComparator<T> implements ComparatorWithCompareResult<List<T>> {
 
-	private final Comparator<T> elementComparator;
+    private final ComparatorWithCompareResult<T> elementComparator;
 
-	public LexicographicalListComparator(final Comparator<T> elementComparator) {
-		this.elementComparator = elementComparator;
-	}
+    public LexicographicalListComparator(final ComparatorWithCompareResult<T> elementComparator) {
+        this.elementComparator = elementComparator;
+    }
 
-	@Override
-	public int compare(final List<T> list1, final List<T> list2) {
-		if (list1.size() < list2.size()) {
-			return -1;
-		} else if (list1.size() > list2.size()) {
-			return +1;
-		} else {
-			return Lists
-					.zip(list1, list2)
-					.stream()
-					.map(elementPair -> elementComparator.compare(elementPair.first, elementPair.second))
-					.filter(compareResult -> compareResult != 0)
-					.findFirst()
-					.orElse(0);
-		}
-	}
+    @Override
+    public CompareResult compare(final List<T> list1, final List<T> list2) {
+        if (list1.size() < list2.size()) {
+            return ARG1_LESS_THAN_ARG2;
+        } else if (list1.size() > list2.size()) {
+            return ARG1_GREATER_THAN_ARG2;
+        } else {
+            return Lists
+                    .zip(list1, list2)
+                    .stream()
+                    .map(elementPair -> elementComparator.compare(elementPair.first, elementPair.second))
+                    .filter(compareResult -> compareResult != ARG1_EQUAL_TO_ARG2)
+                    .findFirst()
+                    .orElse(ARG1_EQUAL_TO_ARG2);
+        }
+    }
 }

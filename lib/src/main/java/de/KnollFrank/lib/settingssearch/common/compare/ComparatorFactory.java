@@ -7,9 +7,14 @@ import static de.KnollFrank.lib.settingssearch.common.compare.CompareResult.ARG1
 import static de.KnollFrank.lib.settingssearch.common.compare.CompareResult.ARG1_LESS_THAN_ARG2;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 public class ComparatorFactory {
+
+    public static <T> Comparator<List<T>> lexicographicalListComparator(final Comparator<T> elementComparator) {
+        return asComparator(new LexicographicalListComparator<>(asComparatorWithCompareResult(elementComparator)));
+    }
 
     public static <T> Comparator<Optional<T>> emptiesLast(final Comparator<T> comparator) {
         return asComparator(emptiesLast(asComparatorWithCompareResult(comparator)));
