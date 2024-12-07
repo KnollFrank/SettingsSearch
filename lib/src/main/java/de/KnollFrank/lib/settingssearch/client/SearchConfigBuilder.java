@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.client;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.results.LexicographicalSearchResultsSorter;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchResultsFragmentUI;
@@ -16,7 +16,7 @@ public class SearchConfigBuilder {
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
     private PrepareShow prepareShow = preferenceFragment -> {
     };
-    private SearchResultsSorter searchResultsSorter = new LexicographicalSearchResultsSorter();
+    private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
 

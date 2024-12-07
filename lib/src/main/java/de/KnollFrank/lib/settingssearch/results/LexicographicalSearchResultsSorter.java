@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
-public class LexicographicalSearchResultsSorter implements SearchResultsSorter {
+class LexicographicalSearchResultsSorter implements SearchResultsSorter {
 
     private static final Comparator<SearchablePreferencePOJO> COMPARATOR = lexicographicalComparator();
 
