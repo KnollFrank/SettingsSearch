@@ -1,10 +1,13 @@
 package de.KnollFrank.lib.settingssearch.common;
 
+import android.util.Pair;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Lists {
 
@@ -43,5 +46,16 @@ public class Lists {
 
     public static <T> List<T> tail(final List<T> ts) {
         return ts.subList(1, ts.size());
+    }
+
+    // adapted from https://stackoverflow.com/questions/31963297/how-to-zip-two-java-lists
+    public static <A, B> List<Pair<A, B>> zip(final List<A> as, final List<B> bs) {
+        if (as.size() != bs.size()) {
+            throw new IllegalArgumentException();
+        }
+        return IntStream
+                .range(0, as.size())
+                .mapToObj(i -> Pair.create(as.get(i), bs.get(i)))
+                .collect(Collectors.toList());
     }
 }
