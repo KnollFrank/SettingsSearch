@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 
 public class SearchResultsDisplayer {
 
+    // FK-TODO: make markupsFactory an interface supplied by SearchConfigBuilder
     private final Supplier<List<Object>> markupsFactory;
     private final SearchResultsFragment searchResultsFragment;
     private final SearchResultsSorter searchResultsSorter;

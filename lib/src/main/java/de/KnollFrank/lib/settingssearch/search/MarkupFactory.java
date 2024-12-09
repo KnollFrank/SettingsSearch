@@ -26,7 +26,10 @@ public class MarkupFactory {
     }
 
     private static Optional<Integer> getBackgroundColor(final Context context) {
-        try (final TypedArray typedArray = context.obtainStyledAttributes(R.style.SearchPreferenceResultBackgroundColor, R.styleable.SearchPreferenceResultBackgroundColor)) {
+        try (final TypedArray typedArray =
+                     context.obtainStyledAttributes(
+                             R.style.SearchPreferenceResultBackgroundColor,
+                             R.styleable.SearchPreferenceResultBackgroundColor)) {
             final int backgroundColorAttr = R.styleable.SearchPreferenceResultBackgroundColor_backgroundColor;
             return typedArray.hasValue(backgroundColorAttr) ?
                     Optional.of(typedArray.getColor(backgroundColorAttr, Color.GREEN)) :
