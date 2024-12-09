@@ -5,6 +5,8 @@ import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchResultsFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
@@ -16,6 +18,7 @@ public class SearchConfigBuilder {
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
     private PrepareShow prepareShow = preferenceFragment -> {
     };
+    private PreferencePathDisplayer preferencePathDisplayer = new DefaultPreferencePathDisplayer();
     private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
@@ -32,6 +35,11 @@ public class SearchConfigBuilder {
 
     public SearchConfigBuilder withPrepareShow(final PrepareShow prepareShow) {
         this.prepareShow = prepareShow;
+        return this;
+    }
+
+    public SearchConfigBuilder withPreferencePathDisplayer(final PreferencePathDisplayer preferencePathDisplayer) {
+        this.preferencePathDisplayer = preferencePathDisplayer;
         return this;
     }
 
@@ -55,6 +63,7 @@ public class SearchConfigBuilder {
                 includePreferenceInSearchResultsPredicate,
                 showPreferencePathPredicate,
                 prepareShow,
+                preferencePathDisplayer,
                 searchResultsSorter,
                 searchPreferenceFragmentUI,
                 searchResultsFragmentUI);

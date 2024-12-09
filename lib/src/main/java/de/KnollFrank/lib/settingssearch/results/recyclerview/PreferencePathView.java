@@ -1,12 +1,11 @@
 package de.KnollFrank.lib.settingssearch.results.recyclerview;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import java.text.MessageFormat;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.R;
@@ -24,13 +23,14 @@ class PreferencePathView {
 
     public static void displayPreferencePath(final Optional<TextView> preferencePathView,
                                              final PreferencePath preferencePath,
-                                             final boolean showPreferencePath) {
+                                             final boolean showPreferencePath,
+                                             final PreferencePathDisplayer preferencePathDisplayer) {
         if (showPreferencePath) {
             TextViews.setTextOnOptionalTextView(
                     preferencePathView,
-                    MessageFormat.format(
-                            "Path: {0}",
-                            toString(preferencePath)));
+                    TextUtils.concat(
+                            "Path: ",
+                            preferencePathDisplayer.toCharSequence(preferencePath)));
         } else {
             preferencePathView.ifPresent(_preferencePathView -> _preferencePathView.setVisibility(View.GONE));
         }
@@ -38,16 +38,5 @@ class PreferencePathView {
 
     public static Optional<TextView> getPreferencePathView(final PreferenceViewHolder holder) {
         return holder.findViewById(PREFERENCE_PATH_VIEW_ID);
-    }
-
-    private static String toString(final PreferencePath preferencePath) {
-        return preferencePath
-                .preferences()
-                .stream()
-                .map(searchablePreferencePOJO ->
-                        searchablePreferencePOJO
-                                .getTitle()
-                                .orElse("?"))
-                .collect(Collectors.joining(" > "));
     }
 }

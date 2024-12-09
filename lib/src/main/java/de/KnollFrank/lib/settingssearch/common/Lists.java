@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Lists {
 
@@ -16,6 +17,14 @@ public class Lists {
         return lists
                 .stream()
                 .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
+
+    public static <T> List<T> insert(final List<T> ts, final T delimiter) {
+        return ts
+                .stream()
+                .flatMap(t -> Stream.of(t, delimiter))
+                .limit(ts.size() * 2L - 1)
                 .collect(Collectors.toList());
     }
 

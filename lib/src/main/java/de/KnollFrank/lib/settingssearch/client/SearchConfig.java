@@ -4,6 +4,7 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
@@ -12,6 +13,7 @@ public record SearchConfig(
         IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
         ShowPreferencePathPredicate showPreferencePathPredicate,
         PrepareShow prepareShow,
+        PreferencePathDisplayer preferencePathDisplayer,
         SearchResultsSorter searchResultsSorter,
         SearchPreferenceFragmentUI searchPreferenceFragmentUI,
         SearchResultsFragmentUI searchResultsFragmentUI) {

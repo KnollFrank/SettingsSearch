@@ -21,15 +21,18 @@ public class SearchResultsFragment extends Fragment {
 
     private final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
+    private final PreferencePathDisplayer preferencePathDisplayer;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
     private RecyclerView recyclerView;
 
     public SearchResultsFragment(final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference,
                                  final ShowPreferencePathPredicate showPreferencePathPredicate,
+                                 final PreferencePathDisplayer preferencePathDisplayer,
                                  final SearchResultsFragmentUI searchResultsFragmentUI) {
         super(searchResultsFragmentUI.getRootViewId());
         this.showPreferenceScreenAndHighlightPreference = showPreferenceScreenAndHighlightPreference;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
+        this.preferencePathDisplayer = preferencePathDisplayer;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
     }
 
@@ -64,7 +67,8 @@ public class SearchResultsFragment extends Fragment {
         final SearchResultsRecyclerViewAdapter searchResultsRecyclerViewAdapter =
                 new SearchResultsRecyclerViewAdapter(
                         showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
-                        showPreferencePathPredicate);
+                        showPreferencePathPredicate,
+                        preferencePathDisplayer);
         recyclerView.setAdapter(searchResultsRecyclerViewAdapter);
     }
 }

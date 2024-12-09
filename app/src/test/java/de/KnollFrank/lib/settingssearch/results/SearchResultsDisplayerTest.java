@@ -19,6 +19,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
@@ -81,6 +82,7 @@ public class SearchResultsDisplayerTest {
                         preference -> {
                         },
                         preferencePath -> true,
+                        new DefaultPreferencePathDisplayer(),
                         new SearchResultsFragmentUI() {
 
                             @Override
