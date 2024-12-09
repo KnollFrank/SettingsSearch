@@ -4,10 +4,10 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 
-public class DefaultPreferencePathConverter implements PreferencePathConverter {
+public class DefaultPreferencePathDisplayer implements PreferencePathDisplayer {
 
     @Override
-    public CharSequence toCharSequence(final PreferencePath preferencePath) {
+    public CharSequence display(final PreferencePath preferencePath) {
         return preferencePath
                 .preferences()
                 .stream()

@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.results.recyclerview;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 
 @FunctionalInterface
-public interface PreferencePathConverter {
+public interface PreferencePathDisplayer {
 
-    CharSequence toCharSequence(final PreferencePath preferencePath);
+    CharSequence display(final PreferencePath preferencePath);
 }

@@ -40,15 +40,15 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     private final List<SearchablePreferencePOJO> items = new ArrayList<>();
     private final Consumer<SearchablePreferencePOJO> onPreferenceClickListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
-    private final PreferencePathConverter preferencePathConverter;
+    private final PreferencePathDisplayer preferencePathDisplayer;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
 
     public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreferencePOJO> onPreferenceClickListener,
                                             final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                            final PreferencePathConverter preferencePathConverter) {
+                                            final PreferencePathDisplayer preferencePathDisplayer) {
         this.onPreferenceClickListener = onPreferenceClickListener;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
-        this.preferencePathConverter = preferencePathConverter;
+        this.preferencePathDisplayer = preferencePathDisplayer;
     }
 
     @Override
@@ -191,7 +191,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
                 getPreferencePathView(holder),
                 preferencePath,
                 showPreferencePathPredicate.showPreferencePath(preferencePath),
-                preferencePathConverter);
+                preferencePathDisplayer);
     }
 
     private static void displayIcon(final PreferenceViewHolder holder, final SearchablePreferencePOJO searchablePreferencePOJO, final boolean iconSpaceReserved) {

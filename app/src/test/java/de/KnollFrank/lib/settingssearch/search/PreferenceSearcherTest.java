@@ -54,7 +54,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2Pre
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathConverter;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
@@ -631,7 +631,7 @@ public class PreferenceSearcherTest {
                 _preferenceFragment -> {
                 },
                 preferencePath -> true,
-                new DefaultPreferencePathConverter(),
+                new DefaultPreferencePathDisplayer(),
                 fragmentActivity.getSupportFragmentManager(),
                 MergedPreferenceScreenDataFactory.getPreferences(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),

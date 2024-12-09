@@ -5,8 +5,8 @@ import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathConverter;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathConverter;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchResultsFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
@@ -18,7 +18,7 @@ public class SearchConfigBuilder {
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
     private PrepareShow prepareShow = preferenceFragment -> {
     };
-    private PreferencePathConverter preferencePathConverter = new DefaultPreferencePathConverter();
+    private PreferencePathDisplayer preferencePathDisplayer = new DefaultPreferencePathDisplayer();
     private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
@@ -38,8 +38,8 @@ public class SearchConfigBuilder {
         return this;
     }
 
-    public SearchConfigBuilder withPreferencePathConverter(final PreferencePathConverter preferencePathConverter) {
-        this.preferencePathConverter = preferencePathConverter;
+    public SearchConfigBuilder withPreferencePathDisplayer(final PreferencePathDisplayer preferencePathDisplayer) {
+        this.preferencePathDisplayer = preferencePathDisplayer;
         return this;
     }
 
@@ -63,7 +63,7 @@ public class SearchConfigBuilder {
                 includePreferenceInSearchResultsPredicate,
                 showPreferencePathPredicate,
                 prepareShow,
-                preferencePathConverter,
+                preferencePathDisplayer,
                 searchResultsSorter,
                 searchPreferenceFragmentUI,
                 searchResultsFragmentUI);
