@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.results.recyclerview;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 
 public class DefaultPreferencePathDisplayer implements PreferencePathDisplayer {
 
@@ -11,11 +12,8 @@ public class DefaultPreferencePathDisplayer implements PreferencePathDisplayer {
         return preferencePath
                 .preferences()
                 .stream()
-                .map(
-                        searchablePreferencePOJO ->
-                                searchablePreferencePOJO
-                                        .getTitle()
-                                        .orElse("?"))
+                .map(SearchablePreferencePOJO::getTitle)
+                .map(title -> title.orElse("?"))
                 .collect(Collectors.joining(" > "));
     }
 }
