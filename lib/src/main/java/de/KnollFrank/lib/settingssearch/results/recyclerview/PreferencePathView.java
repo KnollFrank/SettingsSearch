@@ -24,13 +24,13 @@ class PreferencePathView {
     public static void displayPreferencePath(final Optional<TextView> preferencePathView,
                                              final PreferencePath preferencePath,
                                              final boolean showPreferencePath,
-                                             final PreferencePathDisplayer preferencePathDisplayer) {
+                                             final PreferencePathConverter preferencePathConverter) {
         if (showPreferencePath) {
             TextViews.setTextOnOptionalTextView(
                     preferencePathView,
                     TextUtils.concat(
                             "Path: ",
-                            preferencePathDisplayer.toCharSequence(preferencePath)));
+                            preferencePathConverter.toCharSequence(preferencePath)));
         } else {
             preferencePathView.ifPresent(_preferencePathView -> _preferencePathView.setVisibility(View.GONE));
         }

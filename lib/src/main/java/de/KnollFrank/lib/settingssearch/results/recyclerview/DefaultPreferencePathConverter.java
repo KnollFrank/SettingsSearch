@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 
-public class DefaultPreferencePathDisplayer implements PreferencePathDisplayer {
+public class DefaultPreferencePathConverter implements PreferencePathConverter {
 
     @Override
     public CharSequence toCharSequence(final PreferencePath preferencePath) {

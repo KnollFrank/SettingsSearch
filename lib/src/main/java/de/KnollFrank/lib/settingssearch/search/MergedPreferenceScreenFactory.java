@@ -22,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.results.ShowPreferenceScreenAndHighlightPreference;
-import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathConverter;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
@@ -39,7 +39,7 @@ public class MergedPreferenceScreenFactory {
     private final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
     private final SearchResultsSorter searchResultsSorter;
-    private final PreferencePathDisplayer preferencePathDisplayer;
+    private final PreferencePathConverter preferencePathConverter;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -52,7 +52,7 @@ public class MergedPreferenceScreenFactory {
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final SearchResultsSorter searchResultsSorter,
-            final PreferencePathDisplayer preferencePathDisplayer) {
+            final PreferencePathConverter preferencePathConverter) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
@@ -63,7 +63,7 @@ public class MergedPreferenceScreenFactory {
         this.mergedPreferenceScreenDataRepositoryFactory = mergedPreferenceScreenDataRepositoryFactory;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
         this.searchResultsSorter = searchResultsSorter;
-        this.preferencePathDisplayer = preferencePathDisplayer;
+        this.preferencePathConverter = preferencePathConverter;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
@@ -86,7 +86,7 @@ public class MergedPreferenceScreenFactory {
                 fragmentContainerViewId,
                 prepareShow,
                 showPreferencePathPredicate,
-                preferencePathDisplayer,
+                preferencePathConverter,
                 fragmentManager,
                 mergedPreferenceScreenDataRepositoryFactory
                         .createMergedPreferenceScreenDataRepository(
@@ -105,7 +105,7 @@ public class MergedPreferenceScreenFactory {
             final @IdRes int fragmentContainerViewId,
             final PrepareShow prepareShow,
             final ShowPreferencePathPredicate showPreferencePathPredicate,
-            final PreferencePathDisplayer preferencePathDisplayer,
+            final PreferencePathConverter preferencePathConverter,
             final FragmentManager fragmentManager,
             final Set<SearchablePreferencePOJO> preferences,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
@@ -124,7 +124,7 @@ public class MergedPreferenceScreenFactory {
                                         prepareShow,
                                         fragmentManager),
                                 showPreferencePathPredicate,
-                                preferencePathDisplayer,
+                                preferencePathConverter,
                                 searchResultsFragmentUI),
                         context,
                         searchResultsSorter));
