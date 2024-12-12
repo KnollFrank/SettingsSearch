@@ -112,7 +112,7 @@ public class PreferenceSearchExampleTest {
 
     private static Matcher<View> searchResultsView() {
         return allOf(
-                withId(R.id.searchResultsCustom),
+                withId(SearchConfigFactory.SEARCH_RESULTS_VIEW_ID),
                 isDisplayed());
     }
 

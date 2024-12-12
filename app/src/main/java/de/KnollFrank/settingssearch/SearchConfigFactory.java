@@ -4,7 +4,9 @@ import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +17,10 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 class SearchConfigFactory {
+
+    @VisibleForTesting
+    @IdRes
+    static final int SEARCH_RESULTS_VIEW_ID = R.id.searchResultsCustom;
 
     public static SearchConfig createSearchConfig() {
         return new SearchConfigBuilder()
@@ -62,7 +68,7 @@ class SearchConfigFactory {
 
                             @Override
                             public RecyclerView getSearchResultsView(final View rootView) {
-                                return rootView.findViewById(R.id.searchResultsCustom);
+                                return rootView.findViewById(SEARCH_RESULTS_VIEW_ID);
                             }
                         })
                 .build();
