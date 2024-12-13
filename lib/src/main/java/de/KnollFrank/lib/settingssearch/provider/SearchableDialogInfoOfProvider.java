@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -25,7 +26,7 @@ public class SearchableDialogInfoOfProvider implements ISearchableDialogInfoOfPr
                 .map(this::getSearchableDialogInfoOfPreference);
     }
 
-    private String getSearchableDialogInfoOfPreference(final PreferenceDialogAndSearchableInfoByPreferenceDialogProvider data) {
+    private <T extends Fragment> String getSearchableDialogInfoOfPreference(final PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<T> data) {
         preferenceDialogs.showPreferenceDialog(data.preferenceDialog());
         final String searchableInfo = data.searchableInfoByPreferenceDialogProvider().getSearchableInfo(data.preferenceDialog());
         preferenceDialogs.hidePreferenceDialog(data.preferenceDialog());
