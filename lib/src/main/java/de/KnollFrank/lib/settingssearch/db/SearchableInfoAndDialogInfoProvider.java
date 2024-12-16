@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.db;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
@@ -35,6 +34,6 @@ public class SearchableInfoAndDialogInfoProvider {
     }
 
     private static String join2Str(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
-        return String.join(delimiter, Lists.getPresentElements(List.of(str1, str2)));
+        return String.join(delimiter, Lists.getPresentElements(str1, str2));
     }
 }

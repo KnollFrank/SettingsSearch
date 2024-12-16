@@ -65,4 +65,9 @@ public class Lists {
                 .map(Optional::get)
                 .collect(Collectors.toList());
     }
+
+    @SafeVarargs
+    public static <T> List<T> getPresentElements(final Optional<T>... elements) {
+        return getPresentElements(List.of(elements));
+    }
 }

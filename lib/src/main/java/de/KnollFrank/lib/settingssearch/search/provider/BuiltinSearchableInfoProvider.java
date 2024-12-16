@@ -48,9 +48,8 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
         return String.join(
                 ", ",
                 Lists.getPresentElements(
-                        List.of(
-                                Optional.ofNullable(switchPreference.getSummaryOff()),
-                                Optional.ofNullable(switchPreference.getSummaryOn()))));
+                        Optional.ofNullable(switchPreference.getSummaryOff()),
+                        Optional.ofNullable(switchPreference.getSummaryOn())));
     }
 
     private static String getDropDownPreferenceSearchableInfo(final DropDownPreference dropDownPreference) {
@@ -71,7 +70,7 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
                                              final Optional<CharSequence[]> entries) {
         return ImmutableList
                 .<CharSequence>builder()
-                .addAll(Lists.getPresentElements(List.of(dialogTitle)))
+                .addAll(Lists.getPresentElements(dialogTitle))
                 .addAll(Lists.asList(entries))
                 .build();
     }
