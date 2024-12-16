@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.common;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -50,24 +49,5 @@ public class Lists {
                 .range(0, as.size())
                 .mapToObj(i -> Pair.create(as.get(i), bs.get(i)))
                 .collect(Collectors.toList());
-    }
-
-    public static <T> List<T> asList(final Optional<T[]> elements) {
-        return elements
-                .map(Arrays::asList)
-                .orElseGet(Collections::emptyList);
-    }
-
-    public static <T> List<T> getPresentElements(final List<Optional<T>> elements) {
-        return elements
-                .stream()
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
-    }
-
-    @SafeVarargs
-    public static <T> List<T> getPresentElements(final Optional<T>... elements) {
-        return getPresentElements(List.of(elements));
     }
 }

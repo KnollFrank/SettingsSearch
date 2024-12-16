@@ -10,8 +10,9 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.common.Optionals;
 
 public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
 
@@ -45,17 +46,17 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
     }
 
     private static String getSwitchPreferenceSearchableInfo(final SwitchPreference switchPreference) {
-        return String.join(
-                ", ",
-                Lists.getPresentElements(
+        return Optionals
+                .streamOfPresentElements(
                         Optional.ofNullable(switchPreference.getSummaryOff()),
-                        Optional.ofNullable(switchPreference.getSummaryOn())));
+                        Optional.ofNullable(switchPreference.getSummaryOn()))
+                .collect(Collectors.joining(", "));
     }
 
     private static String getDropDownPreferenceSearchableInfo(final DropDownPreference dropDownPreference) {
         return String.join(
                 ", ",
-                Lists.asList(Optional.ofNullable(dropDownPreference.getEntries())));
+                Optionals.asList(Optional.ofNullable(dropDownPreference.getEntries())));
     }
 
     private static String getMultiSelectListPreferenceSearchableInfo(final MultiSelectListPreference multiSelectListPreference) {
@@ -70,8 +71,8 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
                                              final Optional<CharSequence[]> entries) {
         return ImmutableList
                 .<CharSequence>builder()
-                .addAll(Lists.getPresentElements(dialogTitle))
-                .addAll(Lists.asList(entries))
+                .addAll(Optionals.getPresentElements(dialogTitle))
+                .addAll(Optionals.asList(entries))
                 .build();
     }
 }

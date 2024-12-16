@@ -4,8 +4,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.common.Lists;
+import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.provider.ISearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -34,6 +35,8 @@ public class SearchableInfoAndDialogInfoProvider {
     }
 
     private static String join2Str(final Optional<String> str1, final Optional<String> str2, final String delimiter) {
-        return String.join(delimiter, Lists.getPresentElements(str1, str2));
+        return Optionals
+                .streamOfPresentElements(str1, str2)
+                .collect(Collectors.joining(delimiter));
     }
 }
