@@ -71,7 +71,10 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
                                              final Optional<CharSequence[]> entries) {
         return ImmutableList
                 .<CharSequence>builder()
-                .addAll(Optionals.getPresentElements(dialogTitle))
+                .addAll(
+                        Optionals
+                                .streamOfPresentElements(dialogTitle)
+                                .collect(Collectors.toList()))
                 .addAll(Optionals.asList(entries))
                 .build();
     }

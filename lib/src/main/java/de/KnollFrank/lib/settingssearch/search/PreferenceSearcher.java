@@ -26,7 +26,7 @@ class PreferenceSearcher {
                 .stream()
                 .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
                 .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))
-                .flatMap(Optionals::stream)
+                .flatMap(Optionals::streamOfPresentElements)
                 .collect(Collectors.toSet());
     }
 }
