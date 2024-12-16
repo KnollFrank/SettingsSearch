@@ -48,7 +48,7 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
         return String.join(
                 ", ",
                 Lists.getPresentElements(
-                        ImmutableList.of(
+                        List.of(
                                 Optional.ofNullable(switchPreference.getSummaryOff()),
                                 Optional.ofNullable(switchPreference.getSummaryOn()))));
     }
