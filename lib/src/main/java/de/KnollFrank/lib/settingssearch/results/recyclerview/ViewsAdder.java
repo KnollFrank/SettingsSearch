@@ -12,10 +12,9 @@ import java.util.Optional;
 
 class ViewsAdder {
 
-    public static PreferenceViewHolder addViews(
-            final List<View> views,
-            final PreferenceViewHolder holder,
-            final Context context) {
+    public static PreferenceViewHolder addViews(final List<View> views,
+                                                final PreferenceViewHolder holder,
+                                                final Context context) {
         final Optional<View> summaryView = holder.findViewById(android.R.id.summary);
         if (summaryView.isPresent()) {
             ViewAdder.replaceViewWithViews(
