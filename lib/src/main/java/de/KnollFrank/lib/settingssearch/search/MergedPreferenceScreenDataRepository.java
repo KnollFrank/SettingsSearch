@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
@@ -54,15 +55,17 @@ public class MergedPreferenceScreenDataRepository {
     }
 
     public Set<SearchablePreferencePOJO> persistOrLoadPreferences(final Locale locale) {
-        final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
-        final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
-        // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
-        if (!exists(dataFiles)) {
-            final Set<SearchablePreferencePOJO> preferences = computePreferences();
-            progressUpdateListener.onProgressUpdate("persisting search database");
-            MergedPreferenceScreenDataFileDAO.persist(preferences, dataFiles);
+        synchronized (LockingSupport.searchDatabaseLock) {
+            final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
+            final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
+            // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
+            if (!exists(dataFiles)) {
+                final Set<SearchablePreferencePOJO> preferences = computePreferences();
+                progressUpdateListener.onProgressUpdate("persisting search database");
+                MergedPreferenceScreenDataFileDAO.persist(preferences, dataFiles);
+            }
+            return MergedPreferenceScreenDataFileDAO.load(dataFiles);
         }
-        return MergedPreferenceScreenDataFileDAO.load(dataFiles);
     }
 
     private Set<SearchablePreferencePOJO> computePreferences() {

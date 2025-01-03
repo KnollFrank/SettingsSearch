@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.common.IOUtils;
+import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 
 public class SearchDatabaseDirectoryIO {
 
@@ -16,16 +17,20 @@ public class SearchDatabaseDirectoryIO {
     }
 
     public File getAndMakeSearchDatabaseDirectory4Locale(final Locale locale) {
-        final File searchDatabaseDirectory4Locale =
-                new File(
-                        getSearchDatabaseDirectory(),
-                        locale.getLanguage());
-        searchDatabaseDirectory4Locale.mkdirs();
-        return searchDatabaseDirectory4Locale;
+        synchronized (LockingSupport.searchDatabaseLock) {
+            final File searchDatabaseDirectory4Locale =
+                    new File(
+                            getSearchDatabaseDirectory(),
+                            locale.getLanguage());
+            searchDatabaseDirectory4Locale.mkdirs();
+            return searchDatabaseDirectory4Locale;
+        }
     }
 
     public void removeSearchDatabaseDirectories4AllLocales() {
-        IOUtils.deleteDirectory(getSearchDatabaseDirectory());
+        synchronized (LockingSupport.searchDatabaseLock) {
+            IOUtils.deleteDirectory(getSearchDatabaseDirectory());
+        }
     }
 
     private File getSearchDatabaseDirectory() {
