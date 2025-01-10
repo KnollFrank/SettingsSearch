@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
+import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataWithIds;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsAndHostsSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 class MergedPreferenceScreenDataConverter {
 
     public static MergedPreferenceScreenDataWithIds addIds(final Set<SearchablePreference> preferences) {
-        final Set<SearchablePreference> preferencesRecursively = PreferencePOJOs.getPreferencesRecursively(preferences);
+        final Set<SearchablePreference> preferencesRecursively = SearchablePreferences.getPreferencesRecursively(preferences);
         return new MergedPreferenceScreenDataWithIds(
                 preferences,
                 PreferencePathByPreferenceConverter.addIds(preferencesRecursively),
@@ -35,7 +35,7 @@ class MergedPreferenceScreenDataConverter {
     }
 
     private static Map<Integer, SearchablePreference> getPreferenceById(final Set<SearchablePreference> preferences) {
-        return PreferencePOJOs
+        return SearchablePreferences
                 .getPreferencesRecursively(preferences)
                 .stream()
                 .collect(

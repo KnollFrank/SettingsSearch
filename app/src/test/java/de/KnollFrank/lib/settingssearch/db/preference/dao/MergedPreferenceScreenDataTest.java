@@ -26,7 +26,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
+import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsAndHostsSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -141,7 +141,7 @@ public class MergedPreferenceScreenDataTest {
     private static <T> Map<SearchablePreference, T> attributeByPreference(
             final Set<SearchablePreference> preferences,
             final Function<SearchablePreference, T> getAttribute) {
-        return PreferencePOJOs
+        return SearchablePreferences
                 .getPreferencesRecursively(preferences)
                 .stream()
                 .collect(

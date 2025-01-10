@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
+import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 
 public class PreferencePathsAndHostsSetter {
 
@@ -29,7 +29,7 @@ public class PreferencePathsAndHostsSetter {
     }
 
     private void setPreferencePathIncludingChildren(final SearchablePreference preference) {
-        PreferencePOJOs
+        SearchablePreferences
                 .getPreferencesRecursively(preference)
                 .forEach(
                         _preference ->
@@ -41,7 +41,7 @@ public class PreferencePathsAndHostsSetter {
     }
 
     private void setHostIncludingChildren(final SearchablePreference preference) {
-        PreferencePOJOs
+        SearchablePreferences
                 .getPreferencesRecursively(preference)
                 .forEach(
                         _preference ->

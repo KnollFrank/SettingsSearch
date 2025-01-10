@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-public class PreferencePOJOs {
+public class SearchablePreferences {
 
     public static Set<SearchablePreference> getPreferencesRecursively(final SearchablePreference preference) {
         return ImmutableSet
@@ -22,7 +22,7 @@ public class PreferencePOJOs {
         return Sets.union(
                 preferences
                         .stream()
-                        .map(PreferencePOJOs::getPreferencesRecursively)
+                        .map(SearchablePreferences::getPreferencesRecursively)
                         .collect(Collectors.toSet()));
     }
 }

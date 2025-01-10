@@ -5,13 +5,13 @@ import androidx.preference.Preference;
 import com.google.common.collect.BiMap;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferenceScreenWithHostClass2POJOConverter {
 
     public record PreferenceScreenWithHostClassPOJOWithMap(
-            PreferenceScreenWithHostClassPOJO preferenceScreenWithHostClass,
+            PreferenceScreenWithHostClass preferenceScreenWithHostClass,
             BiMap<SearchablePreference, Preference> pojoEntityMap) {
     }
 
@@ -24,7 +24,7 @@ public class PreferenceScreenWithHostClass2POJOConverter {
                         preferenceScreenWithHost.host(),
                         preference2SearchablePreferencePOJOConverter);
         return new PreferenceScreenWithHostClassPOJOWithMap(
-                new PreferenceScreenWithHostClassPOJO(
+                new PreferenceScreenWithHostClass(
                         id,
                         searchablePreferenceScreenPOJOWithMap.searchablePreferenceScreen(),
                         preferenceScreenWithHost.host().getClass()),

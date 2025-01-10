@@ -4,11 +4,11 @@ import org.jgrapht.graph.DefaultEdge;
 
 import java.util.Objects;
 
-public class SearchablePreferencePOJOEdge extends DefaultEdge {
+public class SearchablePreferenceEdge extends DefaultEdge {
 
     public final SearchablePreference preference;
 
-    public SearchablePreferencePOJOEdge(final SearchablePreference preference) {
+    public SearchablePreferenceEdge(final SearchablePreference preference) {
         this.preference = preference;
     }
 
@@ -16,7 +16,7 @@ public class SearchablePreferencePOJOEdge extends DefaultEdge {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreferencePOJOEdge that = (SearchablePreferencePOJOEdge) o;
+        final SearchablePreferenceEdge that = (SearchablePreferenceEdge) o;
         return Objects.equals(getSource(), that.getSource()) && Objects.equals(getTarget(), that.getTarget()) && Objects.equals(preference, that.preference);
     }
 

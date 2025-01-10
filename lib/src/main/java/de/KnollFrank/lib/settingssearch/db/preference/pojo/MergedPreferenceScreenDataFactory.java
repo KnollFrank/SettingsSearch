@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.provider.HostByPreferenceProvider;
 public class MergedPreferenceScreenDataFactory {
 
     public static Set<SearchablePreference> getPreferences(
-            final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
+            final Graph<PreferenceScreenWithHostClass, SearchablePreferenceEdge> pojoGraph) {
         final PreferencePathsAndHostsSetter preferencePathsAndHostsSetter =
                 new PreferencePathsAndHostsSetter(
                         PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
@@ -24,7 +24,7 @@ public class MergedPreferenceScreenDataFactory {
         return preferences;
     }
 
-    private static Set<SearchablePreference> getPreferences(final Set<PreferenceScreenWithHostClassPOJO> preferenceScreens) {
+    private static Set<SearchablePreference> getPreferences(final Set<PreferenceScreenWithHostClass> preferenceScreens) {
         return preferenceScreens
                 .stream()
                 .flatMap(preferenceScreenWithHostClassPOJO -> preferenceScreenWithHostClassPOJO.preferenceScreen().children().stream())

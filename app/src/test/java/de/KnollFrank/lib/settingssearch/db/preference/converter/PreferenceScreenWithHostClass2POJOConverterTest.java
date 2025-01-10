@@ -25,9 +25,9 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -83,16 +83,16 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                 new IdGenerator());
 
                 // When
-                final PreferenceScreenWithHostClassPOJO pojo =
+                final PreferenceScreenWithHostClass pojo =
                         PreferenceScreenWithHostClass2POJOConverter
                                 .convert2POJO(entity, id, preference2SearchablePreferencePOJOConverter)
                                 .preferenceScreenWithHostClass();
 
                 // Then
                 assertThat(pojo, is(
-                        new PreferenceScreenWithHostClassPOJO(
+                        new PreferenceScreenWithHostClass(
                                 id,
-                                new SearchablePreferenceScreenPOJO(
+                                new SearchablePreferenceScreen(
                                         "screen title",
                                         "screen summary",
                                         List.of(
