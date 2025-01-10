@@ -81,7 +81,7 @@ public class Preference2SearchablePreferenceConverter {
                         .map(preference -> convert2POJO(preference, hostOfPreferences))
                         .collect(Collectors.toList());
         return new SearchablePreferencesWithMap(
-                getSearchablePreferencePOJOs(pojoWithMapList),
+                getSearchablePreferences(pojoWithMapList),
                 getPojoEntityMap(pojoWithMapList));
     }
 
@@ -106,7 +106,7 @@ public class Preference2SearchablePreferenceConverter {
                                 DrawableAndStringConverter::drawable2String));
     }
 
-    private static List<SearchablePreference> getSearchablePreferencePOJOs(final List<SearchablePreferenceWithMap> pojoWithMapList) {
+    private static List<SearchablePreference> getSearchablePreferences(final List<SearchablePreferenceWithMap> pojoWithMapList) {
         return pojoWithMapList
                 .stream()
                 .map(SearchablePreferenceWithMap::searchablePreference)

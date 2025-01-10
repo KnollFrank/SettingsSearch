@@ -7,10 +7,10 @@ import java.util.function.Function;
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-class SearchablePreferencePOJOComparatorFactory {
+class SearchablePreferenceComparatorFactory {
 
     public static Comparator<SearchablePreference> lexicographicalComparator() {
-        return SearchablePreferencePOJOComparatorFactory
+        return SearchablePreferenceComparatorFactory
                 .title()
                 .thenComparing(summary())
                 .thenComparing(searchableInfo());

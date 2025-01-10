@@ -31,6 +31,6 @@ public class SearchResultsByPreferencePathSorter implements SearchResultsSorter 
     private static Comparator<PreferencePath> getPreferencePathComparator() {
         return Comparator.comparing(
                 preferencePath -> Lists.reverse(preferencePath.preferences()),
-                ComparatorFactory.lexicographicalListComparator(SearchablePreferencePOJOComparatorFactory.lexicographicalComparator()));
+                ComparatorFactory.lexicographicalListComparator(SearchablePreferenceComparatorFactory.lexicographicalComparator()));
     }
 }

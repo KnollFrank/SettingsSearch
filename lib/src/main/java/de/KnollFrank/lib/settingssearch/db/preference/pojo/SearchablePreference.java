@@ -192,7 +192,7 @@ public final class SearchablePreference {
 
     @Override
     public String toString() {
-        return "SearchablePreferencePOJO{" +
+        return "SearchablePreference{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", summary='" + summary + '\'' +

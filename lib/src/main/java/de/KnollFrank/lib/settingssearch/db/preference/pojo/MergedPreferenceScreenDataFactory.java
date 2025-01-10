@@ -27,7 +27,7 @@ public class MergedPreferenceScreenDataFactory {
     private static Set<SearchablePreference> getPreferences(final Set<PreferenceScreenWithHostClass> preferenceScreens) {
         return preferenceScreens
                 .stream()
-                .flatMap(preferenceScreenWithHostClassPOJO -> preferenceScreenWithHostClassPOJO.preferenceScreen().children().stream())
+                .flatMap(preferenceScreenWithHostClass -> preferenceScreenWithHostClass.preferenceScreen().children().stream())
                 .collect(Collectors.toSet());
     }
 }
