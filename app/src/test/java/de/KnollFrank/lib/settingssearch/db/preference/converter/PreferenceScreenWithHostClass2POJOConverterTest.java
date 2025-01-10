@@ -74,8 +74,8 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                 getPreferenceScreen(preferenceFragment, activity),
                                 preferenceFragment);
                 final int id = 4711;
-                final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
-                        new Preference2SearchablePreferencePOJOConverter(
+                final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
+                        new Preference2SearchablePreferenceConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
@@ -85,7 +85,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                 // When
                 final PreferenceScreenWithHostClass pojo =
                         PreferenceScreenWithHostClass2POJOConverter
-                                .convert2POJO(entity, id, preference2SearchablePreferencePOJOConverter)
+                                .convert2POJO(entity, id, preference2SearchablePreferenceConverter)
                                 .preferenceScreenWithHostClass();
 
                 // Then

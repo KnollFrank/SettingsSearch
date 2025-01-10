@@ -57,8 +57,8 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
 
     private static SearchablePreference convertPreference2POJO(final Preference preference,
                                                                final PreferenceFragmentCompat hostOfPreference) {
-        final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
-                new Preference2SearchablePreferencePOJOConverter(
+        final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
+                new Preference2SearchablePreferenceConverter(
                         (_preference, _hostOfPreference) ->
                                 preference.equals(_preference) ?
                                         Optional.of(Either.ofRight(preference.getIcon())) :
@@ -67,7 +67,7 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
                                 _preference -> Optional.empty(),
                                 (_preference, _hostOfPreference) -> Optional.empty()),
                         new IdGenerator());
-        return preference2SearchablePreferencePOJOConverter
+        return preference2SearchablePreferenceConverter
                 .convert2POJO(preference, hostOfPreference)
                 .searchablePreference();
     }

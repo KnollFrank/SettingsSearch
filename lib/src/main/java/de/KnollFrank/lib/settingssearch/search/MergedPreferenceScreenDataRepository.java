@@ -16,7 +16,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataFileDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
@@ -110,7 +110,7 @@ public class MergedPreferenceScreenDataRepository {
                         progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                     }
                 },
-                new Preference2SearchablePreferencePOJOConverter(
+                new Preference2SearchablePreferenceConverter(
                         new IconProvider(searchDatabaseConfig.iconResourceIdProvider()),
                         new SearchableInfoAndDialogInfoProvider(
                                 searchDatabaseConfig.searchableInfoProvider(),

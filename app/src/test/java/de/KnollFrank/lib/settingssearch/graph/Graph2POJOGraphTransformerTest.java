@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassPOJOWithMap;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassWithMap;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 
@@ -30,7 +30,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
@@ -52,8 +52,8 @@ public class Graph2POJOGraphTransformerTest {
                 final Fragments fragments = getFragments(preferenceFragment, activity);
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
                         PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, fragments);
-                final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
-                        new Preference2SearchablePreferencePOJOConverter(
+                final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
+                        new Preference2SearchablePreferenceConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
@@ -61,10 +61,10 @@ public class Graph2POJOGraphTransformerTest {
                                 new IdGenerator());
 
                 // When
-                final Graph<PreferenceScreenWithHostClassPOJOWithMap, SearchablePreferenceEdge> pojoGraph =
+                final Graph<PreferenceScreenWithHostClassWithMap, SearchablePreferenceEdge> pojoGraph =
                         Graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                 entityGraph,
-                                preference2SearchablePreferencePOJOConverter);
+                                preference2SearchablePreferenceConverter);
 
                 // Then
                 assertThat(removeMapFromPojoNodes(pojoGraph), is(createPojoGraph(preferenceFragment.getClass())));

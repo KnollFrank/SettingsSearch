@@ -7,7 +7,7 @@ import com.google.common.collect.BiMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
-public record SearchablePreferenceScreenPOJOWithMap(
+public record SearchablePreferenceScreenWithMap(
         SearchablePreferenceScreen searchablePreferenceScreen,
         BiMap<SearchablePreference, Preference> pojoEntityMap) {
 }
