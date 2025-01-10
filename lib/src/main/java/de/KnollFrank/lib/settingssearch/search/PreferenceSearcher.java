@@ -5,16 +5,16 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 
 class PreferenceSearcher {
 
     // FK-TODO: SQL-Datenbank verwenden? (siehe Branch precompute-MergedPreferenceScreen-SQLite)
-    private final Set<SearchablePreferencePOJO> preferences;
+    private final Set<SearchablePreference> preferences;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
 
-    public PreferenceSearcher(final Set<SearchablePreferencePOJO> preferences,
+    public PreferenceSearcher(final Set<SearchablePreference> preferences,
                               final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         this.preferences = preferences;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;

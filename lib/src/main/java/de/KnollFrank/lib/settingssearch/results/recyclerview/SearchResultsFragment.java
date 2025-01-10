@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.IShowPreferenceScreenAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
@@ -43,7 +43,7 @@ public class SearchResultsFragment extends Fragment {
         configure(recyclerView);
     }
 
-    public void setSearchResults(final List<SearchablePreferencePOJO> searchResults) {
+    public void setSearchResults(final List<SearchablePreference> searchResults) {
         getSearchResultsRecyclerViewAdapter().setItems(searchResults);
     }
 

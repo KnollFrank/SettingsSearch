@@ -6,19 +6,19 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferencePOJOs {
 
-    public static Set<SearchablePreferencePOJO> getPreferencesRecursively(final SearchablePreferencePOJO preference) {
+    public static Set<SearchablePreference> getPreferencesRecursively(final SearchablePreference preference) {
         return ImmutableSet
-                .<SearchablePreferencePOJO>builder()
+                .<SearchablePreference>builder()
                 .add(preference)
                 .addAll(getPreferencesRecursively(preference.getChildren()))
                 .build();
     }
 
-    public static Set<SearchablePreferencePOJO> getPreferencesRecursively(final Collection<SearchablePreferencePOJO> preferences) {
+    public static Set<SearchablePreference> getPreferencesRecursively(final Collection<SearchablePreference> preferences) {
         return Sets.union(
                 preferences
                         .stream()

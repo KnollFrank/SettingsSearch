@@ -21,7 +21,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -37,7 +37,7 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
                 final Preference preference = createPreferenceWithIcon(activity, icon);
 
                 // When
-                final SearchablePreferencePOJO pojo =
+                final SearchablePreference pojo =
                         convertPreference2POJO(
                                 preference,
                                 createSomePreferenceFragment(activity));
@@ -55,8 +55,8 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
         return preference;
     }
 
-    private static SearchablePreferencePOJO convertPreference2POJO(final Preference preference,
-                                                                   final PreferenceFragmentCompat hostOfPreference) {
+    private static SearchablePreference convertPreference2POJO(final Preference preference,
+                                                               final PreferenceFragmentCompat hostOfPreference) {
         final Preference2SearchablePreferencePOJOConverter preference2SearchablePreferencePOJOConverter =
                 new Preference2SearchablePreferencePOJOConverter(
                         (_preference, _hostOfPreference) ->
@@ -69,7 +69,7 @@ public class Preference2POJO2PreferenceConverterIntegrationTest {
                         new IdGenerator());
         return preference2SearchablePreferencePOJOConverter
                 .convert2POJO(preference, hostOfPreference)
-                .searchablePreferencePOJO();
+                .searchablePreference();
     }
 
     private static boolean equals(final Drawable drawable1, final Drawable drawable2) {

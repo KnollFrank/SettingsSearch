@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class PreferencePathConverter {
 
@@ -13,12 +13,12 @@ class PreferencePathConverter {
         return preferencePath
                 .preferences()
                 .stream()
-                .map(SearchablePreferencePOJO::getId)
+                .map(SearchablePreference::getId)
                 .collect(Collectors.toList());
     }
 
     public static PreferencePath removeIds(final List<Integer> ids,
-                                           final Map<Integer, SearchablePreferencePOJO> preferenceById) {
+                                           final Map<Integer, SearchablePreference> preferenceById) {
         return new PreferencePath(
                 ids
                         .stream()

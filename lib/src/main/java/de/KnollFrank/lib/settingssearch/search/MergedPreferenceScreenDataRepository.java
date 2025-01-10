@@ -20,7 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataFileDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -54,13 +54,13 @@ public class MergedPreferenceScreenDataRepository {
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
     }
 
-    public Set<SearchablePreferencePOJO> persistOrLoadPreferences(final Locale locale) {
+    public Set<SearchablePreference> persistOrLoadPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
             final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
             // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
             if (!exists(dataFiles)) {
-                final Set<SearchablePreferencePOJO> preferences = computePreferences();
+                final Set<SearchablePreference> preferences = computePreferences();
                 progressUpdateListener.onProgressUpdate("persisting search database");
                 MergedPreferenceScreenDataFileDAO.persist(preferences, dataFiles);
             }
@@ -68,7 +68,7 @@ public class MergedPreferenceScreenDataRepository {
         }
     }
 
-    private Set<SearchablePreferencePOJO> computePreferences() {
+    private Set<SearchablePreference> computePreferences() {
         final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()

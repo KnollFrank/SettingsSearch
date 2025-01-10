@@ -11,13 +11,13 @@ import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.common.graph.BreadthFirstGraphVisitor;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 
 public class PreferencePathByPojoPreferenceProvider {
 
-    public static Map<SearchablePreferencePOJO, PreferencePath> getPreferencePathByPojoPreference(
+    public static Map<SearchablePreference, PreferencePath> getPreferencePathByPojoPreference(
             final Graph<SearchablePreferenceScreenPOJO, SearchablePreferencePOJOEdge> pojoGraph) {
         return getPreferencePathByPreference(getPreferencePathByPreferenceScreen(pojoGraph));
     }
@@ -46,7 +46,7 @@ public class PreferencePathByPojoPreferenceProvider {
                     private PreferencePath getPreferencePathOfPreferenceScreen(final SearchablePreferenceScreenPOJO preferenceScreen,
                                                                                final SearchablePreferenceScreenPOJO parentPreferenceScreen) {
                         final PreferencePath parentPreferencePath = preferencePathByPreferenceScreen.get(parentPreferenceScreen);
-                        final SearchablePreferencePOJO preference =
+                        final SearchablePreference preference =
                                 preferenceScreenGraph
                                         .getEdge(parentPreferenceScreen, preferenceScreen)
                                         .preference;
@@ -57,9 +57,9 @@ public class PreferencePathByPojoPreferenceProvider {
         return preferencePathByPreferenceScreen;
     }
 
-    private static Map<SearchablePreferencePOJO, PreferencePath> getPreferencePathByPreference(
+    private static Map<SearchablePreference, PreferencePath> getPreferencePathByPreference(
             final Map<SearchablePreferenceScreenPOJO, PreferencePath> preferencePathByPreferenceScreen) {
-        final Builder<SearchablePreferencePOJO, PreferencePath> preferencePathByPreferenceBuilder = ImmutableMap.builder();
+        final Builder<SearchablePreference, PreferencePath> preferencePathByPreferenceBuilder = ImmutableMap.builder();
         preferencePathByPreferenceScreen.forEach(
                 (preferenceScreen, preferencePath) ->
                         PreferencePOJOs

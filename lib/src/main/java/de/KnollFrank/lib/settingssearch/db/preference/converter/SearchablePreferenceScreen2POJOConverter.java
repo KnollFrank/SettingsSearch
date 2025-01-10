@@ -22,7 +22,7 @@ class SearchablePreferenceScreen2POJOConverter {
                 new SearchablePreferenceScreenPOJO(
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getTitle())),
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getSummary())),
-                        searchablePreferencePOJOsWithMap.searchablePreferencePOJOs()),
+                        searchablePreferencePOJOsWithMap.searchablePreferences()),
                 searchablePreferencePOJOsWithMap.pojoEntityMap());
     }
 

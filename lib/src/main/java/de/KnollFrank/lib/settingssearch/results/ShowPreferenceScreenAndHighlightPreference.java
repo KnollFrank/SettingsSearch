@@ -10,7 +10,7 @@ import org.threeten.bp.Duration;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 
@@ -32,7 +32,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
     }
 
     @Override
-    public void showPreferenceScreenAndHighlightPreference(final SearchablePreferencePOJO preference) {
+    public void showPreferenceScreenAndHighlightPreference(final SearchablePreference preference) {
         showPreferenceScreenAndHighlightPreference(
                 preferencePathNavigator.navigatePreferencePath(preference.getPreferencePath()),
                 preference.getKey());

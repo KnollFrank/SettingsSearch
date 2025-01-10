@@ -14,18 +14,18 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.settingssearch.R;
 
 public class POJOTestFactory {
 
     private static final IdGenerator idGenerator = new IdGenerator();
 
-    public static SearchablePreferencePOJO createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreferencePOJO(
             final String title,
             final Class<? extends PreferenceFragmentCompat> host) {
-        final SearchablePreferencePOJO searchablePreferencePOJO =
-                new SearchablePreferencePOJO(
+        final SearchablePreference searchablePreference =
+                new SearchablePreference(
                         idGenerator.nextId(),
                         Optional.of(title),
                         Optional.empty(),
@@ -38,13 +38,13 @@ public class POJOTestFactory {
                         Optional.empty(),
                         new Bundle(),
                         List.of());
-        searchablePreferencePOJO.setHost(host);
-        return searchablePreferencePOJO;
+        searchablePreference.setHost(host);
+        return searchablePreference;
     }
 
-    public static SearchablePreferencePOJO createSomeSearchablePreferencePOJO(final Bundle extras,
-                                                                              final Resources resources) {
-        return new SearchablePreferencePOJO(
+    public static SearchablePreference createSomeSearchablePreferencePOJO(final Bundle extras,
+                                                                          final Resources resources) {
+        return new SearchablePreference(
                 1,
                 Optional.of("some key"),
                 Optional.of(Either.ofRight(drawable2String(resources.getDrawable(R.drawable.smiley, null)))),
@@ -57,7 +57,7 @@ public class POJOTestFactory {
                 Optional.of("some searchableInfo"),
                 extras,
                 List.of(
-                        new SearchablePreferencePOJO(
+                        new SearchablePreference(
                                 2,
                                 Optional.of("some key 2"),
                                 Optional.empty(),
@@ -72,7 +72,7 @@ public class POJOTestFactory {
                                 List.of())));
     }
 
-    public static SearchablePreferencePOJO createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreferencePOJO(
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
@@ -86,15 +86,15 @@ public class POJOTestFactory {
                 iconResourceIdOrIconPixelData);
     }
 
-    public static SearchablePreferencePOJO createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreferencePOJO(
             final int id,
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
-        final SearchablePreferencePOJO searchablePreferencePOJO =
-                new SearchablePreferencePOJO(
+        final SearchablePreference searchablePreference =
+                new SearchablePreference(
                         id,
                         Optional.of("some key"),
                         iconResourceIdOrIconPixelData,
@@ -107,9 +107,9 @@ public class POJOTestFactory {
                         searchableInfo,
                         extras,
                         List.of());
-        searchablePreferencePOJO.setPreferencePath(new PreferencePath(List.of(searchablePreferencePOJO)));
-        searchablePreferencePOJO.setHost(TestPreferenceFragment.class);
-        return searchablePreferencePOJO;
+        searchablePreference.setPreferencePath(new PreferencePath(List.of(searchablePreference)));
+        searchablePreference.setHost(TestPreferenceFragment.class);
+        return searchablePreference;
     }
 
     public static Bundle createBundle(final String key, final String value) {
@@ -118,7 +118,7 @@ public class POJOTestFactory {
         return bundle;
     }
 
-    public static SearchablePreferencePOJO copy(final SearchablePreferencePOJO preference) {
+    public static SearchablePreference copy(final SearchablePreference preference) {
         return createSearchablePreferencePOJO(
                 preference.getTitle().orElseThrow(),
                 preference.getHost());

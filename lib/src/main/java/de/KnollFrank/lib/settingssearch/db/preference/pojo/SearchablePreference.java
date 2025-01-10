@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
-public final class SearchablePreferencePOJO {
+public final class SearchablePreference {
 
     private final int id;
     private final String key;
@@ -40,13 +40,13 @@ public final class SearchablePreferencePOJO {
     @Exclude
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
     private final Bundle extras;
-    private final List<SearchablePreferencePOJO> children;
+    private final List<SearchablePreference> children;
     @Exclude
     private PreferencePath preferencePath;
     @Exclude
     private Class<? extends PreferenceFragmentCompat> host;
 
-    public SearchablePreferencePOJO(
+    public SearchablePreference(
             final int id,
             final Optional<String> key,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
@@ -58,7 +58,7 @@ public final class SearchablePreferencePOJO {
             final boolean visible,
             final Optional<String> searchableInfo,
             final Bundle extras,
-            final List<SearchablePreferencePOJO> children) {
+            final List<SearchablePreference> children) {
         this.id = id;
         this.key = key.orElse(null);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData.orElse(null);
@@ -77,7 +77,7 @@ public final class SearchablePreferencePOJO {
         return id;
     }
 
-    public List<SearchablePreferencePOJO> getChildren() {
+    public List<SearchablePreference> getChildren() {
         return children;
     }
 
@@ -181,7 +181,7 @@ public final class SearchablePreferencePOJO {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreferencePOJO that = (SearchablePreferencePOJO) o;
+        final SearchablePreference that = (SearchablePreference) o;
         return id == that.id;
     }
 

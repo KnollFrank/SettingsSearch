@@ -40,7 +40,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -106,7 +106,7 @@ public class PreferenceSearcherTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
                         return Optional.of(keyOfPreference).equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost());
                     }
                 };
@@ -139,7 +139,7 @@ public class PreferenceSearcherTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
                         return !(Optional.of(keyOfPreference).equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost()));
                     }
                 };

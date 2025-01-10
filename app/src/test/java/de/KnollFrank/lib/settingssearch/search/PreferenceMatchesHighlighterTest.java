@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -28,7 +28,7 @@ public class PreferenceMatchesHighlighterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(context -> {
                 // Given
-                final SearchablePreferencePOJO preference =
+                final SearchablePreference preference =
                         POJOTestFactory.createSearchablePreferencePOJO(
                                 Optional.of("title, title"),
                                 Optional.empty(),
@@ -64,7 +64,7 @@ public class PreferenceMatchesHighlighterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(context -> {
                 // Given
-                final SearchablePreferencePOJO preference =
+                final SearchablePreference preference =
                         POJOTestFactory.createSearchablePreferencePOJO(
                                 Optional.empty(),
                                 Optional.of("summary, summary"),
@@ -101,7 +101,7 @@ public class PreferenceMatchesHighlighterTest {
             scenario.onActivity(context -> {
                 // Given
                 final String _searchableInfo = "info, info";
-                final SearchablePreferencePOJO preference =
+                final SearchablePreference preference =
                         POJOTestFactory.createSearchablePreferencePOJO(
                                 Optional.empty(),
                                 Optional.empty(),

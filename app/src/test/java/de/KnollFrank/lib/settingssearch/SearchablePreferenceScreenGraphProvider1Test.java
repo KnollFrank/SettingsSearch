@@ -30,7 +30,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -82,17 +82,17 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 // When
                 final Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> pojoGraph =
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
-                final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference =
+                final Map<SearchablePreference, PreferencePath> preferencePathByPreference =
                         PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
                                 HostClassFromPojoNodesRemover.removeHostClassFromNodes(pojoGraph));
 
                 // Then
-                final SearchablePreferencePOJO preferenceOfFragment2PointingToFragment3 =
+                final SearchablePreference preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3.class,
                                 Fragment3.class,
                                 pojoGraph.vertexSet());
-                final SearchablePreferencePOJO preferenceOfFragment1PointingToFragment2 =
+                final SearchablePreference preferenceOfFragment1PointingToFragment2 =
                         getPreference(
                                 Fragment1ConnectedToFragment2AndFragment4.class,
                                 Fragment2ConnectedToFragment3.class,
@@ -130,7 +130,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                         new IdGenerator()));
     }
 
-    private static SearchablePreferencePOJO getPreference(
+    private static SearchablePreference getPreference(
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
             final Class<? extends PreferenceFragmentCompat> fragmentPointedTo,
             final Set<PreferenceScreenWithHostClassPOJO> preferenceScreenWithHostSet) {
@@ -140,9 +140,9 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                         hostOfPreference.equals(_hostOfPreference) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
-    private static SearchablePreferencePOJO getPreference(
+    private static SearchablePreference getPreference(
             final Set<PreferenceScreenWithHostClassPOJO> preferenceScreenWithHostSet,
-            final BiPredicate<Class<? extends PreferenceFragmentCompat>, SearchablePreferencePOJO> predicate) {
+            final BiPredicate<Class<? extends PreferenceFragmentCompat>, SearchablePreference> predicate) {
         return preferenceScreenWithHostSet
                 .stream()
                 .flatMap(

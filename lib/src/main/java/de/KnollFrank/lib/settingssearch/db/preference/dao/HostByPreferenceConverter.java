@@ -7,22 +7,22 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class HostByPreferenceConverter {
 
-    public static Map<Integer, Class<? extends PreferenceFragmentCompat>> addIds(final Set<SearchablePreferencePOJO> preferences) {
+    public static Map<Integer, Class<? extends PreferenceFragmentCompat>> addIds(final Set<SearchablePreference> preferences) {
         return preferences
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                SearchablePreferencePOJO::getId,
-                                SearchablePreferencePOJO::getHost));
+                                SearchablePreference::getId,
+                                SearchablePreference::getHost));
     }
 
-    public static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> removeIds(
+    public static Map<SearchablePreference, Class<? extends PreferenceFragmentCompat>> removeIds(
             final Map<Integer, Class<? extends PreferenceFragmentCompat>> hostByPreferenceId,
-            final Map<Integer, SearchablePreferencePOJO> preferenceById) {
+            final Map<Integer, SearchablePreference> preferenceById) {
         return hostByPreferenceId
                 .entrySet()
                 .stream()

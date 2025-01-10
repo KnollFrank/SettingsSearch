@@ -8,20 +8,20 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataWithIds;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsAndHostsSetter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class MergedPreferenceScreenDataConverter {
 
-    public static MergedPreferenceScreenDataWithIds addIds(final Set<SearchablePreferencePOJO> preferences) {
-        final Set<SearchablePreferencePOJO> preferencesRecursively = PreferencePOJOs.getPreferencesRecursively(preferences);
+    public static MergedPreferenceScreenDataWithIds addIds(final Set<SearchablePreference> preferences) {
+        final Set<SearchablePreference> preferencesRecursively = PreferencePOJOs.getPreferencesRecursively(preferences);
         return new MergedPreferenceScreenDataWithIds(
                 preferences,
                 PreferencePathByPreferenceConverter.addIds(preferencesRecursively),
                 HostByPreferenceConverter.addIds(preferencesRecursively));
     }
 
-    public static Set<SearchablePreferencePOJO> removeIds(final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds) {
-        final Map<Integer, SearchablePreferencePOJO> preferenceById = getPreferenceById(mergedPreferenceScreenDataWithIds.preferences());
+    public static Set<SearchablePreference> removeIds(final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds) {
+        final Map<Integer, SearchablePreference> preferenceById = getPreferenceById(mergedPreferenceScreenDataWithIds.preferences());
         final PreferencePathsAndHostsSetter preferencePathsAndHostsSetter =
                 new PreferencePathsAndHostsSetter(
                         PreferencePathByPreferenceConverter.removeIds(
@@ -34,13 +34,13 @@ class MergedPreferenceScreenDataConverter {
         return mergedPreferenceScreenDataWithIds.preferences();
     }
 
-    private static Map<Integer, SearchablePreferencePOJO> getPreferenceById(final Set<SearchablePreferencePOJO> preferences) {
+    private static Map<Integer, SearchablePreference> getPreferenceById(final Set<SearchablePreference> preferences) {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferences)
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                SearchablePreferencePOJO::getId,
+                                SearchablePreference::getId,
                                 Function.identity()));
     }
 }

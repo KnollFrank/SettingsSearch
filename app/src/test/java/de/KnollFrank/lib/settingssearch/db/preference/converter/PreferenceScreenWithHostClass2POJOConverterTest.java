@@ -26,7 +26,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -96,7 +96,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                         "screen title",
                                         "screen summary",
                                         List.of(
-                                                new SearchablePreferencePOJO(
+                                                new SearchablePreference(
                                                         1,
                                                         Optional.of("parentKey"),
                                                         Optional.empty(),
@@ -109,7 +109,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                         Optional.of("some searchable info"),
                                                         new Bundle(),
                                                         List.of(
-                                                                new SearchablePreferencePOJO(
+                                                                new SearchablePreference(
                                                                         2,
                                                                         Optional.empty(),
                                                                         Optional.empty(),
@@ -122,7 +122,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         Optional.of("some searchable info of first child"),
                                                                         new Bundle(),
                                                                         List.of()),
-                                                                new SearchablePreferencePOJO(
+                                                                new SearchablePreference(
                                                                         3,
                                                                         Optional.empty(),
                                                                         Optional.empty(),

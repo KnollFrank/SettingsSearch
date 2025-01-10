@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferencePOJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassPOJOWithMap;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 
 public class Graph2POJOGraphTransformer {
@@ -50,7 +50,7 @@ public class Graph2POJOGraphTransformer {
                                 transformedParentNode));
             }
 
-            private static SearchablePreferencePOJO getTransformedPreference(
+            private static SearchablePreference getTransformedPreference(
                     final Preference preference,
                     final PreferenceScreenWithHostClassPOJOWithMap transformedParentNode) {
                 return transformedParentNode

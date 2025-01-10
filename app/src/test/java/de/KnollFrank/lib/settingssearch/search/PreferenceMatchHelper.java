@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class PreferenceMatchHelper {
 
@@ -26,7 +26,7 @@ class PreferenceMatchHelper {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
-                .map(SearchablePreferencePOJO::getKey)
+                .map(SearchablePreference::getKey)
                 .flatMap(Optional::stream);
     }
 }

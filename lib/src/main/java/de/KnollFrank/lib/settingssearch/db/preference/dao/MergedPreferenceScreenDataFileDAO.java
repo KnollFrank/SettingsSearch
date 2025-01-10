@@ -5,12 +5,12 @@ import static de.KnollFrank.lib.settingssearch.common.IOUtils.getFileOutputStrea
 
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataFiles;
 
 public class MergedPreferenceScreenDataFileDAO {
 
-    public static void persist(final Set<SearchablePreferencePOJO> preferences,
+    public static void persist(final Set<SearchablePreference> preferences,
                                final MergedPreferenceScreenDataFiles sink) {
         MergedPreferenceScreenDataDAO.persist(
                 preferences,
@@ -19,7 +19,7 @@ public class MergedPreferenceScreenDataFileDAO {
                 getFileOutputStream(sink.hostByPreference()));
     }
 
-    public static Set<SearchablePreferencePOJO> load(final MergedPreferenceScreenDataFiles source) {
+    public static Set<SearchablePreference> load(final MergedPreferenceScreenDataFiles source) {
         return MergedPreferenceScreenDataDAO.load(
                 getFileInputStream(source.preferences()),
                 getFileInputStream(source.preferencePathByPreference()),

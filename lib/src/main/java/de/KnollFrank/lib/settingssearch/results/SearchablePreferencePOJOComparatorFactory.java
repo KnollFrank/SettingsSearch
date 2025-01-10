@@ -5,30 +5,30 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class SearchablePreferencePOJOComparatorFactory {
 
-    public static Comparator<SearchablePreferencePOJO> lexicographicalComparator() {
+    public static Comparator<SearchablePreference> lexicographicalComparator() {
         return SearchablePreferencePOJOComparatorFactory
                 .title()
                 .thenComparing(summary())
                 .thenComparing(searchableInfo());
     }
 
-    private static Comparator<SearchablePreferencePOJO> title() {
-        return comparing(SearchablePreferencePOJO::getTitle);
+    private static Comparator<SearchablePreference> title() {
+        return comparing(SearchablePreference::getTitle);
     }
 
-    private static Comparator<SearchablePreferencePOJO> summary() {
-        return comparing(SearchablePreferencePOJO::getSummary);
+    private static Comparator<SearchablePreference> summary() {
+        return comparing(SearchablePreference::getSummary);
     }
 
-    private static Comparator<SearchablePreferencePOJO> searchableInfo() {
-        return comparing(SearchablePreferencePOJO::getSearchableInfo);
+    private static Comparator<SearchablePreference> searchableInfo() {
+        return comparing(SearchablePreference::getSearchableInfo);
     }
 
-    private static Comparator<SearchablePreferencePOJO> comparing(final Function<SearchablePreferencePOJO, Optional<String>> keyExtractor) {
+    private static Comparator<SearchablePreference> comparing(final Function<SearchablePreference, Optional<String>> keyExtractor) {
         return Comparator.comparing(
                 keyExtractor,
                 ComparatorFactory.emptiesLast(String.CASE_INSENSITIVE_ORDER));

@@ -11,7 +11,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Lists;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferencePathNavigator {
 
@@ -28,7 +28,7 @@ public class PreferencePathNavigator {
         return navigatePreferences(preferencePath.preferences(), Optional.empty());
     }
 
-    private PreferenceFragmentCompat navigatePreferences(final List<SearchablePreferencePOJO> preferences,
+    private PreferenceFragmentCompat navigatePreferences(final List<SearchablePreference> preferences,
                                                          final Optional<PreferenceWithHost> src) {
         return preferences.isEmpty() ?
                 src.orElseThrow().host() :
@@ -37,7 +37,7 @@ public class PreferencePathNavigator {
                         Optional.of(getPreferenceWithHost(Lists.head(preferences), src)));
     }
 
-    private PreferenceWithHost getPreferenceWithHost(final SearchablePreferencePOJO preference,
+    private PreferenceWithHost getPreferenceWithHost(final SearchablePreference preference,
                                                      final Optional<PreferenceWithHost> src) {
         final PreferenceFragmentCompat hostOfPreference = instantiateAndInitializePreferenceFragment(preference.getHost(), src);
         return new PreferenceWithHost(

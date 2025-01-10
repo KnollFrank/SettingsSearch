@@ -6,13 +6,13 @@ import com.google.common.collect.BiMap;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferenceScreenWithHostClass2POJOConverter {
 
     public record PreferenceScreenWithHostClassPOJOWithMap(
             PreferenceScreenWithHostClassPOJO preferenceScreenWithHostClass,
-            BiMap<SearchablePreferencePOJO, Preference> pojoEntityMap) {
+            BiMap<SearchablePreference, Preference> pojoEntityMap) {
     }
 
     public static PreferenceScreenWithHostClassPOJOWithMap convert2POJO(final PreferenceScreenWithHost preferenceScreenWithHost,

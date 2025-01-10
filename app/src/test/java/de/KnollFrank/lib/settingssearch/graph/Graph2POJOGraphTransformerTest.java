@@ -34,7 +34,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJOEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenPOJO;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -111,8 +111,8 @@ public class Graph2POJOGraphTransformerTest {
     }
 
     private static Graph<PreferenceScreenWithHostClassPOJO, SearchablePreferencePOJOEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
-        final SearchablePreferencePOJO preferenceConnectingSrc2Dst =
-                new SearchablePreferencePOJO(
+        final SearchablePreference preferenceConnectingSrc2Dst =
+                new SearchablePreference(
                         4,
                         Optional.empty(),
                         Optional.empty(),
@@ -134,7 +134,7 @@ public class Graph2POJOGraphTransformerTest {
                 .build();
     }
 
-    private static PreferenceScreenWithHostClassPOJO createSrc(final SearchablePreferencePOJO preferenceConnectingSrc2Dst,
+    private static PreferenceScreenWithHostClassPOJO createSrc(final SearchablePreference preferenceConnectingSrc2Dst,
                                                                final Class<? extends PreferenceFragmentCompat> host) {
         return new PreferenceScreenWithHostClassPOJO(
                 1,
@@ -142,7 +142,7 @@ public class Graph2POJOGraphTransformerTest {
                         "screen title",
                         "screen summary",
                         List.of(
-                                new SearchablePreferencePOJO(
+                                new SearchablePreference(
                                         1,
                                         Optional.of("parentKey"),
                                         Optional.empty(),
@@ -155,7 +155,7 @@ public class Graph2POJOGraphTransformerTest {
                                         Optional.empty(),
                                         new Bundle(),
                                         List.of(
-                                                new SearchablePreferencePOJO(
+                                                new SearchablePreference(
                                                         2,
                                                         Optional.empty(),
                                                         Optional.empty(),
@@ -168,7 +168,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         Optional.empty(),
                                                         new Bundle(),
                                                         List.of()),
-                                                new SearchablePreferencePOJO(
+                                                new SearchablePreference(
                                                         3,
                                                         Optional.empty(),
                                                         Optional.empty(),

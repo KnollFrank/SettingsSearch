@@ -29,7 +29,7 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsAndHostsSetter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -41,7 +41,7 @@ public class MergedPreferenceScreenDataTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final SearchablePreferencePOJO searchablePreferencePOJO1 =
+                final SearchablePreference searchablePreference1 =
                         createSearchablePreferencePOJO(
                                 1,
                                 Optional.of("some title 1"),
@@ -49,7 +49,7 @@ public class MergedPreferenceScreenDataTest {
                                 Optional.of("searchable info also has a title 1"),
                                 POJOTestFactory.createBundle("someKey1", "someValue1"),
                                 Optional.of(Either.ofLeft(4711)));
-                final SearchablePreferencePOJO searchablePreferencePOJO2 =
+                final SearchablePreference searchablePreference2 =
                         createSearchablePreferencePOJO(
                                 2,
                                 Optional.of("some title 2"),
@@ -60,19 +60,19 @@ public class MergedPreferenceScreenDataTest {
                 final PreferencePathsAndHostsSetter preferencePathsAndHostsSetter =
                         new PreferencePathsAndHostsSetter(
                                 ImmutableMap
-                                        .<SearchablePreferencePOJO, PreferencePath>builder()
-                                        .put(searchablePreferencePOJO1, new PreferencePath(List.of(searchablePreferencePOJO1)))
-                                        .put(searchablePreferencePOJO2, new PreferencePath(List.of(searchablePreferencePOJO1, searchablePreferencePOJO2)))
+                                        .<SearchablePreference, PreferencePath>builder()
+                                        .put(searchablePreference1, new PreferencePath(List.of(searchablePreference1)))
+                                        .put(searchablePreference2, new PreferencePath(List.of(searchablePreference1, searchablePreference2)))
                                         .build(),
                                 ImmutableMap
-                                        .<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>>builder()
-                                        .put(searchablePreferencePOJO1, PreferenceFragmentCompat.class)
-                                        .put(searchablePreferencePOJO2, PreferenceFragmentCompat.class)
+                                        .<SearchablePreference, Class<? extends PreferenceFragmentCompat>>builder()
+                                        .put(searchablePreference1, PreferenceFragmentCompat.class)
+                                        .put(searchablePreference2, PreferenceFragmentCompat.class)
                                         .build());
-                final Set<SearchablePreferencePOJO> data =
+                final Set<SearchablePreference> data =
                         Set.of(
-                                searchablePreferencePOJO1,
-                                searchablePreferencePOJO2);
+                                searchablePreference1,
+                                searchablePreference2);
                 preferencePathsAndHostsSetter.setPreferencePathsAndHosts(data);
                 final var preferences = new ByteArrayOutputStream();
                 final var preferencePathByPreference = new ByteArrayOutputStream();
@@ -84,7 +84,7 @@ public class MergedPreferenceScreenDataTest {
                         preferences,
                         preferencePathByPreference,
                         hostByPreference);
-                final Set<SearchablePreferencePOJO> dataActual =
+                final Set<SearchablePreference> dataActual =
                         MergedPreferenceScreenDataDAO.load(
                                 outputStream2InputStream(preferences),
                                 outputStream2InputStream(preferencePathByPreference),
@@ -104,7 +104,7 @@ public class MergedPreferenceScreenDataTest {
         return new ByteArrayInputStream(outputStream.toByteArray());
     }
 
-    private static void assertEquals(final SearchablePreferencePOJO actual, final SearchablePreferencePOJO expected) {
+    private static void assertEquals(final SearchablePreference actual, final SearchablePreference expected) {
         assertThat(actual.getId(), is(expected.getId()));
         assertThat(actual.getKey(), is(expected.getKey()));
         assertThat(actual.getIconResourceIdOrIconPixelData(), is(expected.getIconResourceIdOrIconPixelData()));
@@ -119,28 +119,28 @@ public class MergedPreferenceScreenDataTest {
         assertEquals(actual.getChildren(), expected.getChildren());
     }
 
-    private static void assertEquals(final List<SearchablePreferencePOJO> actuals, final List<SearchablePreferencePOJO> expecteds) {
+    private static void assertEquals(final List<SearchablePreference> actuals, final List<SearchablePreference> expecteds) {
         assertThat(actuals.size(), is(expecteds.size()));
         for (int i = 0; i < actuals.size(); i++) {
             assertEquals(actuals.get(i), expecteds.get(i));
         }
     }
 
-    private static Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference(final Set<SearchablePreferencePOJO> preferences) {
+    private static Map<SearchablePreference, PreferencePath> preferencePathByPreference(final Set<SearchablePreference> preferences) {
         return attributeByPreference(
                 preferences,
-                SearchablePreferencePOJO::getPreferencePath);
+                SearchablePreference::getPreferencePath);
     }
 
-    private static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference(final Set<SearchablePreferencePOJO> preferences) {
+    private static Map<SearchablePreference, Class<? extends PreferenceFragmentCompat>> hostByPreference(final Set<SearchablePreference> preferences) {
         return attributeByPreference(
                 preferences,
-                SearchablePreferencePOJO::getHost);
+                SearchablePreference::getHost);
     }
 
-    private static <T> Map<SearchablePreferencePOJO, T> attributeByPreference(
-            final Set<SearchablePreferencePOJO> preferences,
-            final Function<SearchablePreferencePOJO, T> getAttribute) {
+    private static <T> Map<SearchablePreference, T> attributeByPreference(
+            final Set<SearchablePreference> preferences,
+            final Function<SearchablePreference, T> getAttribute) {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferences)
                 .stream()

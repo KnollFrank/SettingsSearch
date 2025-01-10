@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 @FunctionalInterface
 public interface IShowPreferenceScreenAndHighlightPreference {
 
-    void showPreferenceScreenAndHighlightPreference(SearchablePreferencePOJO preference);
+    void showPreferenceScreenAndHighlightPreference(SearchablePreference preference);
 }

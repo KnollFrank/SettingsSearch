@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 public record MergedPreferenceScreenDataWithIds(
-        Set<SearchablePreferencePOJO> preferences,
+        Set<SearchablePreference> preferences,
         Map<Integer, List<Integer>> preferencePathIdsByPreferenceId,
         Map<Integer, Class<? extends PreferenceFragmentCompat>> hostByPreferenceId) {
 }

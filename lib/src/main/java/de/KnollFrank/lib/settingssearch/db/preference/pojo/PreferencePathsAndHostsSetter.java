@@ -10,25 +10,25 @@ import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 
 public class PreferencePathsAndHostsSetter {
 
-    private final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference;
-    private final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference;
+    private final Map<SearchablePreference, PreferencePath> preferencePathByPreference;
+    private final Map<SearchablePreference, Class<? extends PreferenceFragmentCompat>> hostByPreference;
 
-    public PreferencePathsAndHostsSetter(final Map<SearchablePreferencePOJO, PreferencePath> preferencePathByPreference,
-                                         final Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
+    public PreferencePathsAndHostsSetter(final Map<SearchablePreference, PreferencePath> preferencePathByPreference,
+                                         final Map<SearchablePreference, Class<? extends PreferenceFragmentCompat>> hostByPreference) {
         this.preferencePathByPreference = preferencePathByPreference;
         this.hostByPreference = hostByPreference;
     }
 
-    public void setPreferencePathsAndHosts(final Set<SearchablePreferencePOJO> preferences) {
+    public void setPreferencePathsAndHosts(final Set<SearchablePreference> preferences) {
         setPreferencePaths(preferences);
         setHosts(preferences);
     }
 
-    private void setPreferencePaths(final Set<SearchablePreferencePOJO> preferences) {
+    private void setPreferencePaths(final Set<SearchablePreference> preferences) {
         preferences.forEach(this::setPreferencePathIncludingChildren);
     }
 
-    private void setPreferencePathIncludingChildren(final SearchablePreferencePOJO preference) {
+    private void setPreferencePathIncludingChildren(final SearchablePreference preference) {
         PreferencePOJOs
                 .getPreferencesRecursively(preference)
                 .forEach(
@@ -36,11 +36,11 @@ public class PreferencePathsAndHostsSetter {
                                 _preference.setPreferencePath(preferencePathByPreference.get(_preference)));
     }
 
-    private void setHosts(final Set<SearchablePreferencePOJO> preferences) {
+    private void setHosts(final Set<SearchablePreference> preferences) {
         preferences.forEach(this::setHostIncludingChildren);
     }
 
-    private void setHostIncludingChildren(final SearchablePreferencePOJO preference) {
+    private void setHostIncludingChildren(final SearchablePreference preference) {
         PreferencePOJOs
                 .getPreferencesRecursively(preference)
                 .forEach(

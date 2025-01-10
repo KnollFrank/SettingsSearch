@@ -4,5 +4,5 @@ import java.util.List;
 
 public record SearchablePreferenceScreenPOJO(String title,
                                              String summary,
-                                             List<SearchablePreferencePOJO> children) {
+                                             List<SearchablePreference> children) {
 }

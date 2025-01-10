@@ -6,9 +6,9 @@ import java.util.Objects;
 
 public class SearchablePreferencePOJOEdge extends DefaultEdge {
 
-    public final SearchablePreferencePOJO preference;
+    public final SearchablePreference preference;
 
-    public SearchablePreferencePOJOEdge(final SearchablePreferencePOJO preference) {
+    public SearchablePreferencePOJOEdge(final SearchablePreference preference) {
         this.preference = preference;
     }
 

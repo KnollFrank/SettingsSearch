@@ -10,11 +10,11 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.PreferencePOJOs;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClassPOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class HostByPreferenceProvider {
 
-    public static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
+    public static Map<SearchablePreference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
             final Collection<PreferenceScreenWithHostClassPOJO> preferenceScreens) {
         return Maps.merge(
                 preferenceScreens
@@ -23,7 +23,7 @@ public class HostByPreferenceProvider {
                         .collect(Collectors.toList()));
     }
 
-    private static Map<SearchablePreferencePOJO, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
+    private static Map<SearchablePreference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
             final PreferenceScreenWithHostClassPOJO preferenceScreen) {
         return PreferencePOJOs
                 .getPreferencesRecursively(preferenceScreen.preferenceScreen().children())

@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferenceMatchesHighlighter {
 
@@ -57,7 +57,7 @@ public class PreferenceMatchesHighlighter {
         }
     }
 
-    private static void hideSearchableInfo(final SearchablePreferencePOJO preference) {
+    private static void hideSearchableInfo(final SearchablePreference preference) {
         preference.setHighlightedSearchableInfoProvider(Optional::empty);
     }
 
