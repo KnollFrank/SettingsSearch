@@ -15,6 +15,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.settingssearch.Matchers.childAtPosition;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItem;
@@ -82,7 +83,7 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndNotFindInvisiblePreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("invisible"), closeSoftKeyboard());
-        onView(searchResultsView()).check(matches(recyclerViewHasItemCount(is(0))));
+        onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
     }
 
     private static Matcher<View> searchButton() {

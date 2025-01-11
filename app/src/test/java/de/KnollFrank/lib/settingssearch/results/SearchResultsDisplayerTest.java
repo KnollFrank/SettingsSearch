@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItemCount;
@@ -102,7 +103,7 @@ public class SearchResultsDisplayerTest {
 
                 // Then
                 assertThat(
-                        recyclerViewHasItemCount(is(0)).matches(searchResultsFragment.getRecyclerView()),
+                        recyclerViewHasItemCount(equalTo(0)).matches(searchResultsFragment.getRecyclerView()),
                         is(true));
             });
         }
