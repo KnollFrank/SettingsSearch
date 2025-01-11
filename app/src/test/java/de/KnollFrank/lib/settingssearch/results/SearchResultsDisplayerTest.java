@@ -2,8 +2,8 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
+import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItemCount;
 
 import android.view.View;
@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.matcher.BoundedMatcher;
 
+import org.hamcrest.Description;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -28,7 +30,6 @@ import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragme
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
-import de.KnollFrank.lib.settingssearch.test.Matchers;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -64,12 +65,33 @@ public class SearchResultsDisplayerTest {
 
                 // Then
                 assertThat(
-                        Matchers.recyclerViewHasItem(
-                                searchResultsFragment.getRecyclerView(),
-                                (final PreferenceViewHolder viewHolder) -> getTitle(viewHolder).equals(title)),
-                        is(true));
+                        searchResultsFragment.getRecyclerView(),
+                        recyclerViewHasItem(withTitle(title)));
             });
         }
+    }
+
+    private static BoundedMatcher<PreferenceViewHolder, PreferenceViewHolder> withTitle(final String title) {
+        return new BoundedMatcher<>(PreferenceViewHolder.class) {
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("has title " + title);
+            }
+
+            @Override
+            protected boolean matchesSafely(final PreferenceViewHolder viewHolder) {
+                return getTitle(viewHolder).equals(title);
+            }
+
+            private static String getTitle(final PreferenceViewHolder viewHolder) {
+                return viewHolder
+                        .<TextView>findViewById(android.R.id.title)
+                        .orElseThrow()
+                        .getText()
+                        .toString();
+            }
+        };
     }
 
     @Test
@@ -107,14 +129,6 @@ public class SearchResultsDisplayerTest {
                         recyclerViewHasItemCount(equalTo(0)));
             });
         }
-    }
-
-    private static String getTitle(final PreferenceViewHolder viewHolder) {
-        return viewHolder
-                .<TextView>findViewById(android.R.id.title)
-                .orElseThrow()
-                .getText()
-                .toString();
     }
 
     private static SearchResultsFragment getInitializedSearchResultsFragment(final TestActivity activity) {

@@ -4,9 +4,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
-import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import androidx.test.espresso.matcher.BoundedMatcher;
 
 import org.hamcrest.Description;
@@ -28,17 +28,26 @@ class Matchers {
             }
 
             @Override
-            protected boolean matchesSafely(final RecyclerView view) {
-                final Adapter adapter = view.getAdapter();
+            protected boolean matchesSafely(final RecyclerView recyclerView) {
+                final Adapter adapter = recyclerView.getAdapter();
                 for (int position = 0; position < adapter.getItemCount(); position++) {
-                    final int type = adapter.getItemViewType(position);
-                    final ViewHolder holder = adapter.createViewHolder(view, type);
-                    adapter.onBindViewHolder(holder, position);
-                    if (matcher.matches(holder.itemView)) {
+                    if (matcher.matches(createAndBindViewHolder(recyclerView, adapter, position).itemView)) {
                         return true;
                     }
                 }
                 return false;
+            }
+
+            private static <VH extends RecyclerView.ViewHolder> @NonNull VH createAndBindViewHolder(
+                    final RecyclerView recyclerView,
+                    final Adapter<VH> adapter,
+                    final int position) {
+                final VH holder =
+                        adapter.createViewHolder(
+                                recyclerView,
+                                adapter.getItemViewType(position));
+                adapter.onBindViewHolder(holder, position);
+                return holder;
             }
         };
     }
