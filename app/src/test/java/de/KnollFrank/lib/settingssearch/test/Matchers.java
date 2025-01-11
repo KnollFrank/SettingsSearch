@@ -1,12 +1,34 @@
 package de.KnollFrank.lib.settingssearch.test;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+import androidx.test.espresso.matcher.BoundedMatcher;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 
 import java.util.function.Predicate;
 
 public class Matchers {
+
+    public static Matcher<View> recyclerViewHasItemCount(final Matcher<Integer> itemCountMatcher) {
+        return new BoundedMatcher<>(RecyclerView.class) {
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("recyclerView's itemCount ");
+                itemCountMatcher.describeTo(description);
+            }
+
+            @Override
+            protected boolean matchesSafely(final RecyclerView view) {
+                return itemCountMatcher.matches(view.getAdapter().getItemCount());
+            }
+        };
+    }
 
     public static <VH extends RecyclerView.ViewHolder> boolean recyclerViewHasItem(
             final RecyclerView recyclerView,

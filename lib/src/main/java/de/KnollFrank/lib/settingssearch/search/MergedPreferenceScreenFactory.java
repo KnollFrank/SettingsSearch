@@ -127,6 +127,8 @@ public class MergedPreferenceScreenFactory {
                                 preferencePathDisplayer,
                                 searchResultsFragmentUI),
                         context,
+                        // FK-TODO: let user define this filter
+                        searchResults -> searchResults,
                         searchResultsSorter));
     }
 }

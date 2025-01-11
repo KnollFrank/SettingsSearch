@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.results;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
+import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItemCount;
 
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
@@ -42,6 +44,7 @@ public class SearchResultsDisplayerTest {
                         SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                                 searchResultsFragment,
                                 activity,
+                                searchResults -> searchResults,
                                 new LexicographicalSearchResultsSorter());
 
                 // When
@@ -63,6 +66,43 @@ public class SearchResultsDisplayerTest {
                         Matchers.recyclerViewHasItem(
                                 searchResultsFragment.getRecyclerView(),
                                 (final PreferenceViewHolder viewHolder) -> getTitle(viewHolder).equals(title)),
+                        is(true));
+            });
+        }
+    }
+
+    @Test
+    public void shouldDisplayFilteredSearchResults() {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
+            scenario.onActivity(activity -> {
+                // Given
+                final SearchResultsFilter searchResultsFilterRemovingAllSearchResults = searchResults -> Collections.emptyList();
+
+                final SearchResultsFragment searchResultsFragment = getInitializedSearchResultsFragment(activity);
+                final SearchResultsDisplayer searchResultsDisplayer =
+                        SearchResultsDisplayerFactory.createSearchResultsDisplayer(
+                                searchResultsFragment,
+                                activity,
+                                searchResultsFilterRemovingAllSearchResults,
+                                new LexicographicalSearchResultsSorter());
+
+                // When
+                searchResultsDisplayer.displaySearchResults(
+                        Set.of(
+                                new PreferenceMatch(
+                                        POJOTestFactory.createSearchablePreferencePOJO(
+                                                Optional.of("Title, title part"),
+                                                Optional.of("some summary"),
+                                                Optional.of("searchable info also has a title"),
+                                                Optional.empty()),
+                                        Set.of(new IndexRange(0, 5)),
+                                        Set.of(),
+                                        Set.of()))
+                );
+
+                // Then
+                assertThat(
+                        recyclerViewHasItemCount(is(0)).matches(searchResultsFragment.getRecyclerView()),
                         is(true));
             });
         }
