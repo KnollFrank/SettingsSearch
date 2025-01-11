@@ -103,8 +103,8 @@ public class SearchResultsDisplayerTest {
 
                 // Then
                 assertThat(
-                        recyclerViewHasItemCount(equalTo(0)).matches(searchResultsFragment.getRecyclerView()),
-                        is(true));
+                        searchResultsFragment.getRecyclerView(),
+                        recyclerViewHasItemCount(equalTo(0)));
             });
         }
     }

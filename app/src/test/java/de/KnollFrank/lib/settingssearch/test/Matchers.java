@@ -10,6 +10,7 @@ import androidx.test.espresso.matcher.BoundedMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class Matchers {
@@ -25,7 +26,7 @@ public class Matchers {
 
             @Override
             protected boolean matchesSafely(final RecyclerView view) {
-                return itemCountMatcher.matches(view.getAdapter().getItemCount());
+                return itemCountMatcher.matches(Objects.requireNonNull(view.getAdapter()).getItemCount());
             }
         };
     }

@@ -13,6 +13,8 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+import java.util.Objects;
+
 class Matchers {
 
     // adapted from https://stackoverflow.com/a/53289078/12982352
@@ -52,7 +54,7 @@ class Matchers {
 
             @Override
             protected boolean matchesSafely(final RecyclerView view) {
-                return itemCountMatcher.matches(view.getAdapter().getItemCount());
+                return itemCountMatcher.matches(Objects.requireNonNull(view.getAdapter()).getItemCount());
             }
         };
     }
