@@ -81,6 +81,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                 onUiThreadRunner,
                                 this,
                                 searchConfig.searchResultsFragmentUI(),
+                                searchConfig.searchResultsFilter(),
                                 searchConfig.searchResultsSorter(),
                                 searchConfig.preferencePathDisplayer()),
                         onUiThreadRunner,

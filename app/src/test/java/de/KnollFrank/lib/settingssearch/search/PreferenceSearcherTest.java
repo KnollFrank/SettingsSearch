@@ -649,6 +649,7 @@ public class PreferenceSearcherTest {
                     }
                 },
                 fragmentActivity,
+                searchResults -> searchResults,
                 new SearchResultsByPreferencePathSorter());
     }
 

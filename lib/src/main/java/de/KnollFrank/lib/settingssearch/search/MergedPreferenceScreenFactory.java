@@ -20,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.results.ShowPreferenceScreenAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
@@ -38,6 +39,7 @@ public class MergedPreferenceScreenFactory {
     private final OnUiThreadRunner onUiThreadRunner;
     private final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
+    private final SearchResultsFilter searchResultsFilter;
     private final SearchResultsSorter searchResultsSorter;
     private final PreferencePathDisplayer preferencePathDisplayer;
 
@@ -51,6 +53,7 @@ public class MergedPreferenceScreenFactory {
             final OnUiThreadRunner onUiThreadRunner,
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
             final SearchResultsFragmentUI searchResultsFragmentUI,
+            final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
             final PreferencePathDisplayer preferencePathDisplayer) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
@@ -62,6 +65,7 @@ public class MergedPreferenceScreenFactory {
         this.onUiThreadRunner = onUiThreadRunner;
         this.mergedPreferenceScreenDataRepositoryFactory = mergedPreferenceScreenDataRepositoryFactory;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
+        this.searchResultsFilter = searchResultsFilter;
         this.searchResultsSorter = searchResultsSorter;
         this.preferencePathDisplayer = preferencePathDisplayer;
     }
@@ -98,6 +102,7 @@ public class MergedPreferenceScreenFactory {
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 context,
+                searchResultsFilter,
                 searchResultsSorter);
     }
 
@@ -111,6 +116,7 @@ public class MergedPreferenceScreenFactory {
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final Context context,
+            final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter) {
         return new MergedPreferenceScreen(
                 preferences,
@@ -127,8 +133,7 @@ public class MergedPreferenceScreenFactory {
                                 preferencePathDisplayer,
                                 searchResultsFragmentUI),
                         context,
-                        // FK-TODO: let user define this filter
-                        searchResults -> searchResults,
+                        searchResultsFilter,
                         searchResultsSorter));
     }
 }

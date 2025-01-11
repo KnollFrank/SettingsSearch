@@ -4,6 +4,7 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
@@ -19,6 +20,7 @@ public class SearchConfigBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferencePathDisplayer preferencePathDisplayer = new DefaultPreferencePathDisplayer();
+    private SearchResultsFilter searchResultsFilter = searchResults -> searchResults;
     private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
@@ -43,6 +45,11 @@ public class SearchConfigBuilder {
         return this;
     }
 
+    public SearchConfigBuilder withSearchResultsFilter(final SearchResultsFilter searchResultsFilter) {
+        this.searchResultsFilter = searchResultsFilter;
+        return this;
+    }
+
     public SearchConfigBuilder withSearchResultsSorter(final SearchResultsSorter searchResultsSorter) {
         this.searchResultsSorter = searchResultsSorter;
         return this;
@@ -64,6 +71,7 @@ public class SearchConfigBuilder {
                 showPreferencePathPredicate,
                 prepareShow,
                 preferencePathDisplayer,
+                searchResultsFilter,
                 searchResultsSorter,
                 searchPreferenceFragmentUI,
                 searchResultsFragmentUI);
