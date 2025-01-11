@@ -6,6 +6,8 @@ import android.widget.SearchView;
 import androidx.annotation.LayoutRes;
 import androidx.fragment.app.FragmentContainerView;
 
+import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
+
 public interface SearchPreferenceFragmentUI {
 
     @LayoutRes
@@ -16,4 +18,6 @@ public interface SearchPreferenceFragmentUI {
     FragmentContainerView getSearchResultsFragmentContainerView(View rootView);
 
     ProgressContainerUI getProgressContainerUI(View rootView);
+
+    void onSearchReady(View rootView, SearchForQueryAndDisplayResultsCommand searchForQueryAndDisplayResultsCommand);
 }

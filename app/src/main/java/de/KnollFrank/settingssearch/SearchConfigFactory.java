@@ -1,6 +1,7 @@
 package de.KnollFrank.settingssearch;
 
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -10,8 +11,14 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import de.KnollFrank.lib.settingssearch.client.SearchConfig;
 import de.KnollFrank.lib.settingssearch.client.SearchConfigBuilder;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
+import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
@@ -23,7 +30,9 @@ class SearchConfigFactory {
     static final int SEARCH_RESULTS_VIEW_ID = R.id.searchResultsCustom;
 
     public static SearchConfig createSearchConfig() {
+        final IgnoreSearchResultsFilter ignoreSearchResultsFilter = new IgnoreSearchResultsFilter();
         return new SearchConfigBuilder()
+                .withSearchResultsFilter(ignoreSearchResultsFilter)
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {
 
@@ -57,6 +66,22 @@ class SearchConfigFactory {
                                     }
                                 };
                             }
+
+                            @Override
+                            public void onSearchReady(final View rootView, final SearchForQueryAndDisplayResultsCommand searchForQueryAndDisplayResultsCommand) {
+                                configureCheckbox(
+                                        rootView.findViewById(R.id.ignoreSearchResultsCheckBox),
+                                        searchForQueryAndDisplayResultsCommand);
+                            }
+
+                            private void configureCheckbox(final CheckBox ignoreSearchResultsCheckBox, final SearchForQueryAndDisplayResultsCommand searchForQueryAndDisplayResultsCommand) {
+                                ignoreSearchResultsCheckBox.setChecked(ignoreSearchResultsFilter.isIgnoreSearchResults());
+                                ignoreSearchResultsCheckBox.setOnCheckedChangeListener(
+                                        (_checkBox, isChecked) -> {
+                                            ignoreSearchResultsFilter.setIgnoreSearchResults(isChecked);
+                                            searchForQueryAndDisplayResultsCommand.searchForQueryAndDisplayResults();
+                                        });
+                            }
                         })
                 .withSearchResultsFragmentUI(
                         new SearchResultsFragmentUI() {
@@ -72,5 +97,23 @@ class SearchConfigFactory {
                             }
                         })
                 .build();
+    }
+
+    private static class IgnoreSearchResultsFilter implements SearchResultsFilter {
+
+        private boolean ignoreSearchResults = false;
+
+        @Override
+        public Collection<SearchablePreference> filter(final Collection<SearchablePreference> searchResults) {
+            return ignoreSearchResults ? Collections.emptyList() : searchResults;
+        }
+
+        public boolean isIgnoreSearchResults() {
+            return ignoreSearchResults;
+        }
+
+        public void setIgnoreSearchResults(final boolean ignoreSearchResults) {
+            this.ignoreSearchResults = ignoreSearchResults;
+        }
     }
 }

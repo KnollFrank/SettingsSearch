@@ -136,16 +136,21 @@ public class SearchPreferenceFragment extends Fragment {
 
     private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {
         final SearchView searchView = searchPreferenceFragmentUIBinding.getSearchView();
-        SearchViewConfigurer.configureSearchView(
-                searchView,
-                searchConfiguration.queryHint(),
+        final SearchAndDisplay searchAndDisplay =
                 new SearchAndDisplay(
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
                                 includePreferenceInSearchResultsPredicate),
-                        mergedPreferenceScreen.searchResultsDisplayer()));
+                        mergedPreferenceScreen.searchResultsDisplayer());
+        SearchViewConfigurer.configureSearchView(
+                searchView,
+                searchConfiguration.queryHint(),
+                searchAndDisplay);
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
+        searchPreferenceFragmentUI.onSearchReady(
+                getView(),
+                new SearchForQueryAndDisplayResultsCommand(searchAndDisplay, searchView));
     }
 
     private void selectSearchView(final SearchView searchView) {

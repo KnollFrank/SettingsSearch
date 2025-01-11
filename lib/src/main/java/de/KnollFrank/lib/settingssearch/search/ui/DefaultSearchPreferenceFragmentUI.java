@@ -8,12 +8,17 @@ import androidx.annotation.LayoutRes;
 import androidx.fragment.app.FragmentContainerView;
 
 import de.KnollFrank.lib.settingssearch.R;
+import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
 
 public class DefaultSearchPreferenceFragmentUI implements SearchPreferenceFragmentUI {
 
     @Override
     public @LayoutRes int getRootViewId() {
         return R.layout.searchpreference_fragment;
+    }
+
+    @Override
+    public void onSearchReady(final View rootView, final SearchForQueryAndDisplayResultsCommand searchForQueryAndDisplayResultsCommand) {
     }
 
     @Override
