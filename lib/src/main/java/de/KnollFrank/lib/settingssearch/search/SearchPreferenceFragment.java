@@ -33,6 +33,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUIBinding;
 
+// FK-TODO: let users of this library extends this class for their custom UI instead of using SearchPreferenceFragmentUI?
 public class SearchPreferenceFragment extends Fragment {
 
     private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
