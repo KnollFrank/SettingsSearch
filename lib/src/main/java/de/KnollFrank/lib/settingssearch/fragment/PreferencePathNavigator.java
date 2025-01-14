@@ -41,7 +41,7 @@ public class PreferencePathNavigator {
                                                      final Optional<PreferenceWithHost> src) {
         final PreferenceFragmentCompat hostOfPreference = instantiateAndInitializePreferenceFragment(preference.getHost(), src);
         return new PreferenceWithHost(
-                getPreferenceByKey(hostOfPreference, preference.getKey().orElseThrow()),
+                getPreference(hostOfPreference, preference.getKey().orElseThrow()),
                 hostOfPreference);
     }
 
@@ -54,11 +54,11 @@ public class PreferencePathNavigator {
                 context);
     }
 
-    private static Preference getPreferenceByKey(final PreferenceFragmentCompat preferenceFragment,
-                                                 final String key) {
-        final Preference preference = preferenceFragment.findPreference(key);
+    private static Preference getPreference(final PreferenceFragmentCompat preferenceFragment,
+                                            final String keyOfPreference) {
+        final Preference preference = preferenceFragment.findPreference(keyOfPreference);
         if (preference == null) {
-            throw new IllegalArgumentException("can not find preference with key " + key + " within preferenceFragment " + preferenceFragment);
+            throw new IllegalArgumentException("can not find preference with key " + keyOfPreference + " within preferenceFragment " + preferenceFragment);
         }
         return preference;
     }
