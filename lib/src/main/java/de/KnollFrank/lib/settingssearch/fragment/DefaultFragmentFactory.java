@@ -15,10 +15,10 @@ public class DefaultFragmentFactory implements FragmentFactory {
 
     @Override
     public Fragment instantiate(final String fragmentClassName, Optional<PreferenceWithHost> src, final Context context) {
-        return Fragment.instantiate(context, fragmentClassName, getExtrasOfPreference(src));
+        return Fragment.instantiate(context, fragmentClassName, peekExtrasOfPreference(src));
     }
 
-    private static @Nullable Bundle getExtrasOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
+    private static @Nullable Bundle peekExtrasOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {
         return preferenceWithHost
                 .map(PreferenceWithHost::preference)
                 .map(Preference::peekExtras)
