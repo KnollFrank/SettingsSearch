@@ -16,21 +16,23 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         final Context context = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
-        final Bundle arguments = requireArguments();
-        if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS)) {
-            screen.addPreference(
-                    createPreference(
-                            "keyOfPreferenceOfConnectedFragment1",
-                            TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS,
-                            arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS),
-                            context));
-        }
-        if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS)) {
-            screen.addPreference(
-                    createPreference("keyOfPreferenceOfConnectedFragment2",
-                            TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS,
-                            arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS),
-                            context));
+        final Bundle arguments = getArguments();
+        if (arguments != null) {
+            if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS)) {
+                screen.addPreference(
+                        createPreference(
+                                "keyOfPreferenceOfConnectedFragment1",
+                                TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS,
+                                arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS),
+                                context));
+            }
+            if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS)) {
+                screen.addPreference(
+                        createPreference("keyOfPreferenceOfConnectedFragment2",
+                                TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS,
+                                arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS),
+                                context));
+            }
         }
         setPreferenceScreen(screen);
     }
