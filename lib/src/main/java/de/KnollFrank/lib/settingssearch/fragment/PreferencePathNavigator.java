@@ -54,11 +54,11 @@ public class PreferencePathNavigator {
                 context);
     }
 
-    private static Preference getPreference(final PreferenceFragmentCompat preferenceFragment,
+    private static Preference getPreference(final PreferenceFragmentCompat hostOfPreference,
                                             final String keyOfPreference) {
-        final Preference preference = preferenceFragment.findPreference(keyOfPreference);
+        final Preference preference = hostOfPreference.findPreference(keyOfPreference);
         if (preference == null) {
-            throw new IllegalArgumentException("can not find preference with key " + keyOfPreference + " within preferenceFragment " + preferenceFragment);
+            throw new IllegalArgumentException("can not find preference with key " + keyOfPreference + " within preferenceFragment " + hostOfPreference);
         }
         return preference;
     }
