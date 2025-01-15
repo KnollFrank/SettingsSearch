@@ -88,19 +88,30 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFind_ListPreference_showDialog() {
-        shouldSearchAndFind_showDialog("this is the dialog title");
+        shouldSearchAndFind_showDialog(
+                "this is the dialog title",
+                dialogTitle());
     }
 
     @Test
     public void shouldSearchAndFind_MultiSelectListPreference_showDialog() {
-        shouldSearchAndFind_showDialog("dialog title of a multi select list preference");
+        shouldSearchAndFind_showDialog(
+                "dialog title of a multi select list preference",
+                dialogTitle());
     }
 
-    private static void shouldSearchAndFind_showDialog(final String dialogTitle) {
+    @Test
+    public void shouldSearchAndFind_CustomDialogPreference_showDialog() {
+        shouldSearchAndFind_showDialog(
+                "some text in a custom dialog",
+                customDialogContent());
+    }
+
+    private static void shouldSearchAndFind_showDialog(final String searchQuery, final Matcher<View> dialogMatcher) {
         onView(searchButton()).perform(click());
-        onView(searchView()).perform(replaceText(dialogTitle), closeSoftKeyboard());
+        onView(searchView()).perform(replaceText(searchQuery), closeSoftKeyboard());
         onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
-        onView(dialogTitle()).check(matches(withText(dialogTitle)));
+        onView(dialogMatcher).check(matches(withText(searchQuery)));
     }
 
     private static Matcher<View> searchButton() {
@@ -137,6 +148,13 @@ public class PreferenceSearchExampleTest {
     private static Matcher<View> dialogTitle() {
         return allOf(
                 withId(com.google.android.material.R.id.alertTitle),
+                isDisplayed());
+    }
+
+    private static Matcher<View> customDialogContent() {
+        return allOf(
+                withId(R.id.textView),
+                withParent(withParent(withId(android.R.id.content))),
                 isDisplayed());
     }
 
