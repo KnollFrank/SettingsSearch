@@ -84,26 +84,30 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFind_ListPreference_showDialog() {
-        searchThenClickFirstSearchResult("this is the dialog title");
-        onView(dialogTitle()).check(matches(withText("this is the dialog title")));
+        final String searchQuery = "this is the dialog title";
+        searchThenClickFirstSearchResult(searchQuery);
+        onView(dialogTitle()).check(matches(withText(searchQuery)));
     }
 
     @Test
     public void shouldSearchAndFind_MultiSelectListPreference_showDialog() {
-        searchThenClickFirstSearchResult("dialog title of a multi select list preference");
-        onView(dialogTitle()).check(matches(withText("dialog title of a multi select list preference")));
+        final String searchQuery = "dialog title of a multi select list preference";
+        searchThenClickFirstSearchResult(searchQuery);
+        onView(dialogTitle()).check(matches(withText(searchQuery)));
     }
 
     @Test
     public void shouldSearchAndFind_CustomDialogPreference_showDialog() {
-        searchThenClickFirstSearchResult("some text in a custom dialog");
-        onView(customDialogContent()).check(matches(withText("some text in a custom dialog")));
+        final String searchQuery = "some text in a custom dialog";
+        searchThenClickFirstSearchResult(searchQuery);
+        onView(customDialogContent()).check(matches(withText(searchQuery)));
     }
 
     @Test
     public void shouldSearchAndFind_DropDownPreference_showDialog() {
-        searchThenClickFirstSearchResult("im Protocols title");
-        onView(dialogTitle()).check(matches(withText("im Protocols title")));
+        final String searchQuery = "im Protocols title";
+        searchThenClickFirstSearchResult(searchQuery);
+        onView(dialogTitle()).check(matches(withText(searchQuery)));
     }
 
     @Test
@@ -116,6 +120,13 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFind_ReversedListPreference_showDialog() {
         searchThenClickFirstSearchResult("title of ReversedListPreference");
         onView(dialogTitle()).check(matches(withText("title of ReversedListPreference")));
+    }
+
+    @Test
+    public void shouldSearchAndFind_EditTextPreference_showDialog() {
+        final String searchQuery = "Edit text";
+        searchThenClickFirstSearchResult(searchQuery);
+        onView(dialogTitle()).check(matches(withText(searchQuery)));
     }
 
     private static void searchThenClickFirstSearchResult(final String searchQuery) {
