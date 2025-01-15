@@ -80,6 +80,15 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFindListPreference_showDialog() {
+        final String dialogTitle = "this is the dialog title";
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(dialogTitle), closeSoftKeyboard());
+        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
+        onView(dialogTitle()).check(matches(withText(dialogTitle)));
+    }
+
+    @Test
     public void shouldSearchAndNotFindInvisiblePreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("invisible"), closeSoftKeyboard());
@@ -114,6 +123,12 @@ public class PreferenceSearchExampleTest {
     private static Matcher<View> searchResultsView() {
         return allOf(
                 withId(SearchConfigFactory.SEARCH_RESULTS_VIEW_ID),
+                isDisplayed());
+    }
+
+    private static Matcher<View> dialogTitle() {
+        return allOf(
+                withId(com.google.android.material.R.id.alertTitle),
                 isDisplayed());
     }
 
