@@ -52,9 +52,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
                                     highlightPreference(
                                             _fragmentOfPreferenceScreen,
                                             _keyOfPreference2Highlight);
-                                    showDialog(
-                                            _fragmentOfPreferenceScreen,
-                                            _keyOfPreference2Highlight);
+                                    showDialog(_fragmentOfPreferenceScreen.findPreference(_keyOfPreference2Highlight));
                                 }),
                 true,
                 fragmentContainerViewId,
@@ -70,8 +68,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
                 Duration.ofSeconds(1));
     }
 
-    private static void showDialog(final PreferenceFragmentCompat preferenceFragment, final String keyOfPreference) {
-        final Preference preference = preferenceFragment.findPreference(keyOfPreference);
+    private static void showDialog(final Preference preference) {
         if (preference instanceof DialogPreference dialogPreference) {
             dialogPreference.getPreferenceManager().showDialog(dialogPreference);
         } else if (preference.getOnPreferenceClickListener() != null) {
