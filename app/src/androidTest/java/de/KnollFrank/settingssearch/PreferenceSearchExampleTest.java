@@ -90,28 +90,41 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFind_ListPreference_showDialog() {
         shouldSearchAndFind_showDialog(
                 "this is the dialog title",
-                dialogTitle());
+                dialogTitle(),
+                "this is the dialog title");
     }
 
     @Test
     public void shouldSearchAndFind_MultiSelectListPreference_showDialog() {
         shouldSearchAndFind_showDialog(
                 "dialog title of a multi select list preference",
-                dialogTitle());
+                dialogTitle(),
+                "dialog title of a multi select list preference");
     }
 
     @Test
     public void shouldSearchAndFind_CustomDialogPreference_showDialog() {
         shouldSearchAndFind_showDialog(
                 "some text in a custom dialog",
-                customDialogContent());
+                customDialogContent(),
+                "some text in a custom dialog");
     }
 
-    private static void shouldSearchAndFind_showDialog(final String searchQuery, final Matcher<View> dialogMatcher) {
+    @Test
+    public void shouldSearchAndFind_CustomDialogPreference_PreferenceWithOnPreferenceClickListener_showDialog() {
+        shouldSearchAndFind_showDialog(
+                "some summary for PreferenceWithOnPreferenceClickListener",
+                customDialogContent(),
+                "some text in a custom dialog");
+    }
+
+    private static void shouldSearchAndFind_showDialog(final String searchQuery,
+                                                       final Matcher<View> dialogMatcher,
+                                                       final String textWithinDialog) {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(searchQuery), closeSoftKeyboard());
         onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
-        onView(dialogMatcher).check(matches(withText(searchQuery)));
+        onView(dialogMatcher).check(matches(withText(textWithinDialog)));
     }
 
     private static Matcher<View> searchButton() {
