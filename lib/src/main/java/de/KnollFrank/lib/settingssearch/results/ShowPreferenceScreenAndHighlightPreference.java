@@ -69,7 +69,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
     }
 
     private static void showDialog(final Preference preference) {
-        if (preference instanceof DialogPreference dialogPreference) {
+        if (preference instanceof final DialogPreference dialogPreference) {
             dialogPreference.getPreferenceManager().showDialog(dialogPreference);
         } else if (preference.getOnPreferenceClickListener() != null) {
             preference.performClick();
