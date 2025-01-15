@@ -4,6 +4,7 @@ import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.DialogPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.threeten.bp.Duration;
@@ -46,10 +47,14 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
                 fragmentOfPreferenceScreen,
                 _fragmentOfPreferenceScreen ->
                         keyOfPreference2Highlight.ifPresent(
-                                _keyOfPreference2Highlight ->
-                                        highlightPreference(
-                                                _fragmentOfPreferenceScreen,
-                                                _keyOfPreference2Highlight)),
+                                _keyOfPreference2Highlight -> {
+                                    highlightPreference(
+                                            _fragmentOfPreferenceScreen,
+                                            _keyOfPreference2Highlight);
+                                    if (_fragmentOfPreferenceScreen.findPreference(_keyOfPreference2Highlight) instanceof DialogPreference dialogPreference) {
+                                        dialogPreference.getPreferenceManager().showDialog(dialogPreference);
+                                    }
+                                }),
                 true,
                 fragmentContainerViewId,
                 fragmentManager);
