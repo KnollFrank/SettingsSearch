@@ -111,6 +111,14 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFind_DropDownPreference_showDialog() {
+        shouldSearchAndFind_showDialog(
+                "im Protocols title",
+                dialogTitle(),
+                "im Protocols title");
+    }
+
+    @Test
     public void shouldSearchAndFind_CustomDialogPreference_PreferenceWithOnPreferenceClickListener_showDialog() {
         shouldSearchAndFind_showDialog(
                 "some summary for PreferenceWithOnPreferenceClickListener",
