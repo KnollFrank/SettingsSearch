@@ -10,9 +10,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class PreferenceMatcher {
 
-    public static Optional<PreferenceMatch> getPreferenceMatch(
-            final SearchablePreference haystack,
-            final String needle) {
+    public static Optional<PreferenceMatch> getPreferenceMatch(final SearchablePreference haystack,
+                                                               final String needle) {
         final Set<IndexRange> titleMatches = getMatches(haystack.getTitle(), needle);
         final Set<IndexRange> summaryMatches = getMatches(haystack.getSummary(), needle);
         final Set<IndexRange> searchableInfoMatches = getMatches(haystack.getSearchableInfo(), needle);
