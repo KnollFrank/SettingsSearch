@@ -126,6 +126,14 @@ public class PreferenceSearchExampleTest {
                 "some text in a custom dialog");
     }
 
+    @Test
+    public void shouldSearchAndFind_ReversedListPreference_showDialog() {
+        shouldSearchAndFind_showDialog(
+                "title of ReversedListPreference",
+                dialogTitle(),
+                "title of ReversedListPreference");
+    }
+
     private static void shouldSearchAndFind_showDialog(final String searchQuery,
                                                        final Matcher<View> dialogMatcher,
                                                        final String textWithinDialog) {
