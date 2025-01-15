@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import static de.KnollFrank.lib.settingssearch.search.PreferenceMatcher.getPreferenceMatch;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,7 +27,7 @@ class PreferenceSearcher {
                 .getPreferencesRecursively(preferences)
                 .stream()
                 .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
-                .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))
+                .map(searchablePreference -> getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::streamOfPresentElements)
                 .collect(Collectors.toSet());
     }
