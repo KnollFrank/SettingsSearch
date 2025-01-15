@@ -53,18 +53,14 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult_srcIsPreferenceWithExtras() {
-        onView(searchButton()).perform(click());
-        onView(searchView()).perform(replaceText(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS), closeSoftKeyboard());
-        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
+        searchThenClickFirstSearchResult(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS);
         final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: " + PrefsFragmentFirst.SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS;
         onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
     }
 
     @Test
     public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult_srcIsPreferenceWithoutExtras() {
-        onView(searchButton()).perform(click());
-        onView(searchView()).perform(replaceText(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS), closeSoftKeyboard());
-        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
+        searchThenClickFirstSearchResult(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS);
         final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: " + PrefsFragmentFirst.SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS;
         onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
     }
@@ -88,59 +84,44 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFind_ListPreference_showDialog() {
-        shouldSearchAndFind_showDialog(
-                "this is the dialog title",
-                dialogTitle(),
-                "this is the dialog title");
+        searchThenClickFirstSearchResult("this is the dialog title");
+        onView(dialogTitle()).check(matches(withText("this is the dialog title")));
     }
 
     @Test
     public void shouldSearchAndFind_MultiSelectListPreference_showDialog() {
-        shouldSearchAndFind_showDialog(
-                "dialog title of a multi select list preference",
-                dialogTitle(),
-                "dialog title of a multi select list preference");
+        searchThenClickFirstSearchResult("dialog title of a multi select list preference");
+        onView(dialogTitle()).check(matches(withText("dialog title of a multi select list preference")));
     }
 
     @Test
     public void shouldSearchAndFind_CustomDialogPreference_showDialog() {
-        shouldSearchAndFind_showDialog(
-                "some text in a custom dialog",
-                customDialogContent(),
-                "some text in a custom dialog");
+        searchThenClickFirstSearchResult("some text in a custom dialog");
+        onView(customDialogContent()).check(matches(withText("some text in a custom dialog")));
     }
 
     @Test
     public void shouldSearchAndFind_DropDownPreference_showDialog() {
-        shouldSearchAndFind_showDialog(
-                "im Protocols title",
-                dialogTitle(),
-                "im Protocols title");
+        searchThenClickFirstSearchResult("im Protocols title");
+        onView(dialogTitle()).check(matches(withText("im Protocols title")));
     }
 
     @Test
     public void shouldSearchAndFind_CustomDialogPreference_PreferenceWithOnPreferenceClickListener_showDialog() {
-        shouldSearchAndFind_showDialog(
-                "some summary for PreferenceWithOnPreferenceClickListener",
-                customDialogContent(),
-                "some text in a custom dialog");
+        searchThenClickFirstSearchResult("some summary for PreferenceWithOnPreferenceClickListener");
+        onView(customDialogContent()).check(matches(withText("some text in a custom dialog")));
     }
 
     @Test
     public void shouldSearchAndFind_ReversedListPreference_showDialog() {
-        shouldSearchAndFind_showDialog(
-                "title of ReversedListPreference",
-                dialogTitle(),
-                "title of ReversedListPreference");
+        searchThenClickFirstSearchResult("title of ReversedListPreference");
+        onView(dialogTitle()).check(matches(withText("title of ReversedListPreference")));
     }
 
-    private static void shouldSearchAndFind_showDialog(final String searchQuery,
-                                                       final Matcher<View> dialogMatcher,
-                                                       final String textWithinDialog) {
+    private static void searchThenClickFirstSearchResult(final String searchQuery) {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(searchQuery), closeSoftKeyboard());
         onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
-        onView(dialogMatcher).check(matches(withText(textWithinDialog)));
     }
 
     private static Matcher<View> searchButton() {
