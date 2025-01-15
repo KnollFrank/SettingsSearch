@@ -80,19 +80,27 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
-    public void shouldSearchAndFindListPreference_showDialog() {
-        final String dialogTitle = "this is the dialog title";
-        onView(searchButton()).perform(click());
-        onView(searchView()).perform(replaceText(dialogTitle), closeSoftKeyboard());
-        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
-        onView(dialogTitle()).check(matches(withText(dialogTitle)));
-    }
-
-    @Test
     public void shouldSearchAndNotFindInvisiblePreference() {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText("invisible"), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
+    }
+
+    @Test
+    public void shouldSearchAndFind_ListPreference_showDialog() {
+        shouldSearchAndFind_showDialog("this is the dialog title");
+    }
+
+    @Test
+    public void shouldSearchAndFind_MultiSelectListPreference_showDialog() {
+        shouldSearchAndFind_showDialog("dialog title of a multi select list preference");
+    }
+
+    private static void shouldSearchAndFind_showDialog(final String dialogTitle) {
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(dialogTitle), closeSoftKeyboard());
+        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
+        onView(dialogTitle()).check(matches(withText(dialogTitle)));
     }
 
     private static Matcher<View> searchButton() {
