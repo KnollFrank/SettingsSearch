@@ -10,8 +10,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.threeten.bp.Duration;
 
-import java.util.Optional;
-
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -37,23 +35,27 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
     public void showPreferenceScreenAndHighlightPreference(final SearchablePreference preference) {
         showPreferenceScreenAndHighlightPreference(
                 preferencePathNavigator.navigatePreferencePath(preference.getPreferencePath()),
-                preference.getKey());
+                preference);
     }
 
     private void showPreferenceScreenAndHighlightPreference(
             final PreferenceFragmentCompat fragmentOfPreferenceScreen,
-            final Optional<String> keyOfPreference2Highlight) {
+            final SearchablePreference preference2Highlight) {
         prepareShow.prepareShow(fragmentOfPreferenceScreen);
         showFragment(
                 fragmentOfPreferenceScreen,
                 _fragmentOfPreferenceScreen ->
-                        keyOfPreference2Highlight.ifPresent(
-                                _keyOfPreference2Highlight -> {
-                                    highlightPreference(
-                                            _fragmentOfPreferenceScreen,
-                                            _keyOfPreference2Highlight);
-                                    showDialog(_fragmentOfPreferenceScreen.findPreference(_keyOfPreference2Highlight));
-                                }),
+                        preference2Highlight
+                                .getKey()
+                                .ifPresent(
+                                        keyOfPreference2Highlight -> {
+                                            highlightPreference(
+                                                    _fragmentOfPreferenceScreen,
+                                                    keyOfPreference2Highlight);
+                                            showDialog(
+                                                    _fragmentOfPreferenceScreen.findPreference(keyOfPreference2Highlight),
+                                                    preference2Highlight);
+                                        }),
                 true,
                 fragmentContainerViewId,
                 fragmentManager);
@@ -68,7 +70,10 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
                 Duration.ofSeconds(1));
     }
 
-    private static void showDialog(final Preference preference) {
+    private static void showDialog(final Preference preference, final SearchablePreference searchablePreference) {
+        if (!searchablePreference.hasPreferenceMatchWithinSearchableInfo()) {
+            return;
+        }
         if (preference instanceof final DialogPreference dialogPreference) {
             dialogPreference.getPreferenceManager().showDialog(dialogPreference);
         } else if (preference.getOnPreferenceClickListener() != null) {

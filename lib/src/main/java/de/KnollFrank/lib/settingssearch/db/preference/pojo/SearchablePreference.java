@@ -145,6 +145,10 @@ public final class SearchablePreference {
         return highlightedSearchableInfoProvider.get();
     }
 
+    public boolean hasPreferenceMatchWithinSearchableInfo() {
+        return getHighlightedSearchableInfo().isPresent();
+    }
+
     public @LayoutRes int getWidgetLayoutResId() {
         return widgetLayoutResId;
     }

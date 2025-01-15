@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search.provider;
 
 import androidx.preference.DropDownPreference;
+import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
@@ -29,6 +30,9 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
         }
         if (hasClass(preference, MultiSelectListPreference.class)) {
             return Optional.of(getMultiSelectListPreferenceSearchableInfo((MultiSelectListPreference) preference));
+        }
+        if (hasClass(preference, EditTextPreference.class)) {
+            return Optional.of(getEditTextPreferenceSearchableInfo((EditTextPreference) preference));
         }
         return Optional.empty();
     }
@@ -65,6 +69,12 @@ public class BuiltinSearchableInfoProvider implements SearchableInfoProvider {
                 concat(
                         Optional.ofNullable(multiSelectListPreference.getDialogTitle()),
                         Optional.ofNullable(multiSelectListPreference.getEntries())));
+    }
+
+    private static String getEditTextPreferenceSearchableInfo(final EditTextPreference editTextPreference) {
+        return Optionals
+                .streamOfPresentElements(Optional.ofNullable(editTextPreference.getDialogTitle()))
+                .collect(Collectors.joining(", "));
     }
 
     private static List<CharSequence> concat(final Optional<CharSequence> dialogTitle,

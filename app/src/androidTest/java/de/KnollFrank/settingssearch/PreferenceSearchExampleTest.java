@@ -4,6 +4,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
@@ -53,14 +54,14 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult_srcIsPreferenceWithExtras() {
-        searchThenClickFirstSearchResult(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS);
+        searchForQueryThenClickSearchResultAtPosition(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS, 0);
         final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: " + PrefsFragmentFirst.SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS;
         onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
     }
 
     @Test
     public void shouldFullyInstantiatePreferenceFragmentOfClickedSearchResult_srcIsPreferenceWithoutExtras() {
-        searchThenClickFirstSearchResult(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS);
+        searchForQueryThenClickSearchResultAtPosition(PreferenceFragmentWithSinglePreference.TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS, 0);
         final String summaryOfPreferenceOfFullyInstantiatedPreferenceFragment = "copied summary: " + PrefsFragmentFirst.SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS;
         onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
     }
@@ -84,55 +85,62 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFind_ListPreference_showDialog() {
-        final String searchQuery = "this is the dialog title";
-        searchThenClickFirstSearchResult(searchQuery);
-        onView(dialogTitle()).check(matches(withText(searchQuery)));
+        final String query = "this is the dialog title";
+        searchForQueryThenClickSearchResultAtPosition(query, 0);
+        onView(dialogTitle()).check(matches(withText(query)));
     }
 
     @Test
-    public void shouldSearchAndFind_MultiSelectListPreference_showDialog() {
-        final String searchQuery = "dialog title of a multi select list preference";
-        searchThenClickFirstSearchResult(searchQuery);
-        onView(dialogTitle()).check(matches(withText(searchQuery)));
+    public void shouldSearchAndFind_MultiSelectListPreference_queryInSearchableInfo_showDialog() {
+        final String queryInSearchableInfo = "dialog title of a multi select list preference";
+        searchForQueryThenClickSearchResultAtPosition(queryInSearchableInfo, 0);
+        onView(dialogTitle()).check(matches(withText(queryInSearchableInfo)));
+    }
+
+    @Test
+    public void shouldSearchAndFind_MultiSelectListPreference_queryNotInSearchableInfo_doNotShowDialog() {
+        final String queryNotInSearchableInfo = "This allows to select multiple entries from a list";
+        searchForQueryThenClickSearchResultAtPosition(queryNotInSearchableInfo, 0);
+        onView(dialogTitle()).check(doesNotExist());
     }
 
     @Test
     public void shouldSearchAndFind_CustomDialogPreference_showDialog() {
-        final String searchQuery = "some text in a custom dialog";
-        searchThenClickFirstSearchResult(searchQuery);
-        onView(customDialogContent()).check(matches(withText(searchQuery)));
+        final String query = "some text in a custom dialog";
+        searchForQueryThenClickSearchResultAtPosition(query, 0);
+        onView(customDialogContent()).check(matches(withText(query)));
     }
 
     @Test
     public void shouldSearchAndFind_DropDownPreference_showDialog() {
-        final String searchQuery = "im Protocols title";
-        searchThenClickFirstSearchResult(searchQuery);
-        onView(dialogTitle()).check(matches(withText(searchQuery)));
+        final String query = "Windows Live";
+        searchForQueryThenClickSearchResultAtPosition(query, 0);
+        onView(dialogTitle()).check(matches(withText("im Protocols title")));
     }
 
     @Test
     public void shouldSearchAndFind_CustomDialogPreference_PreferenceWithOnPreferenceClickListener_showDialog() {
-        searchThenClickFirstSearchResult("some summary for PreferenceWithOnPreferenceClickListener");
+        searchForQueryThenClickSearchResultAtPosition("some text in a custom dialog", 2);
         onView(customDialogContent()).check(matches(withText("some text in a custom dialog")));
     }
 
     @Test
     public void shouldSearchAndFind_ReversedListPreference_showDialog() {
-        searchThenClickFirstSearchResult("title of ReversedListPreference");
+        searchForQueryThenClickSearchResultAtPosition("swodniW", 0);
         onView(dialogTitle()).check(matches(withText("title of ReversedListPreference")));
     }
 
     @Test
     public void shouldSearchAndFind_EditTextPreference_showDialog() {
-        final String searchQuery = "Edit text";
-        searchThenClickFirstSearchResult(searchQuery);
-        onView(dialogTitle()).check(matches(withText(searchQuery)));
+        final String query = "this is the edit text dialog title";
+        searchForQueryThenClickSearchResultAtPosition(query, 0);
+        onView(dialogTitle()).check(matches(withText(query)));
     }
 
-    private static void searchThenClickFirstSearchResult(final String searchQuery) {
+    private static void searchForQueryThenClickSearchResultAtPosition(final String query, final int position) {
         onView(searchButton()).perform(click());
-        onView(searchView()).perform(replaceText(searchQuery), closeSoftKeyboard());
-        onView(searchResultsView()).perform(actionOnItemAtPosition(0, click()));
+        onView(searchView()).perform(replaceText(query), closeSoftKeyboard());
+        onView(searchResultsView()).perform(actionOnItemAtPosition(position, click()));
     }
 
     private static Matcher<View> searchButton() {

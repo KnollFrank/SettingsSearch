@@ -70,7 +70,8 @@
     <EditTextPreference
         android:key="edittext"
         android:summary="This is an edit text preference"
-        android:title="Edit text" />
+        android:title="Edit text"
+        android:dialogTitle="this is the edit text dialog title"/>
 
     <SwitchPreference
         android:key="switch"
