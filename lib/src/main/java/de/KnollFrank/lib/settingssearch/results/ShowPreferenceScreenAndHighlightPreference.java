@@ -72,7 +72,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
         if (preference instanceof final DialogPreference dialogPreference) {
             dialogPreference.getPreferenceManager().showDialog(dialogPreference);
         } else if (preference.getOnPreferenceClickListener() != null) {
-            preference.performClick();
+            preference.getOnPreferenceClickListener().onPreferenceClick(preference);
         }
     }
 }
