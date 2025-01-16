@@ -19,7 +19,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
     private SearchDatabaseConfig searchDatabaseConfig = new SearchDatabaseConfigBuilder().build();
-    private SearchConfig searchConfig = new SearchConfigBuilder().build();
+    private SearchConfig searchConfig;
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
@@ -32,6 +32,7 @@ public class SearchPreferenceFragmentsBuilder {
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
+        this.searchConfig = new SearchConfigBuilder(context).build();
     }
 
     public SearchPreferenceFragmentsBuilder withSearchDatabaseConfig(final SearchDatabaseConfig searchDatabaseConfig) {

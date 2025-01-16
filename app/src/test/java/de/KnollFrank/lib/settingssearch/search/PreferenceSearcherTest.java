@@ -649,7 +649,7 @@ public class PreferenceSearcherTest {
                         return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                     }
                 },
-                new DefaultMarkupFactory(),
+                new DefaultMarkupFactory(fragmentActivity),
                 fragmentActivity,
                 searchResults -> searchResults,
                 new SearchResultsByPreferencePathSorter());

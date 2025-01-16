@@ -14,7 +14,7 @@ public class SearchResultsDisplayerFactory {
             final SearchResultsSorter searchResultsSorter) {
         return new SearchResultsDisplayer(
                 searchResultsFragment,
-                () -> markupFactory.createMarkups(context),
+                markupFactory::createMarkups,
                 searchResultsFilter,
                 searchResultsSorter);
     }

@@ -35,7 +35,7 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.empty(),
                                 Optional.empty(),
                                 Optional.empty());
-                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory().createMarkups(context);
+                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory(context).createMarkups();
                 final Set<PreferenceMatch> preferenceMatches =
                         Set.of(
                                 new PreferenceMatch(
@@ -71,7 +71,7 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.of("summary, summary"),
                                 Optional.empty(),
                                 Optional.empty());
-                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory().createMarkups(context);
+                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory(context).createMarkups();
                 final Set<PreferenceMatch> preferenceMatches =
                         Set.of(
                                 new PreferenceMatch(
@@ -108,7 +108,7 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.empty(),
                                 Optional.of(_searchableInfo),
                                 Optional.empty());
-                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory().createMarkups(context);
+                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory(context).createMarkups();
                 final Set<PreferenceMatch> preferenceMatches =
                         Set.of(
                                 new PreferenceMatch(

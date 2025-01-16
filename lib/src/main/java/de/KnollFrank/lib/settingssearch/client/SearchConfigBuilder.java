@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import android.content.Context;
+
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -26,7 +28,11 @@ public class SearchConfigBuilder {
     private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
-    private MarkupFactory markupFactory = new DefaultMarkupFactory();
+    private MarkupFactory markupFactory;
+
+    public SearchConfigBuilder(final Context context) {
+        this.markupFactory = new DefaultMarkupFactory(context);
+    }
 
     public SearchConfigBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;

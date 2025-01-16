@@ -24,7 +24,7 @@ public class SearchPreferenceFragmentsFactory {
                         fragmentManager,
                         activity)
                 .withSearchDatabaseConfig(SearchDatabaseConfigFactory.createSearchDatabaseConfig())
-                .withSearchConfig(SearchConfigFactory.createSearchConfig())
+                .withSearchConfig(SearchConfigFactory.createSearchConfig(activity))
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .build();
     }

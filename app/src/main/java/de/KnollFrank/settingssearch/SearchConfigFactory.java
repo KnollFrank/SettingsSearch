@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SearchView;
@@ -29,9 +30,9 @@ class SearchConfigFactory {
     @IdRes
     static final int SEARCH_RESULTS_VIEW_ID = R.id.searchResultsCustom;
 
-    public static SearchConfig createSearchConfig() {
+    public static SearchConfig createSearchConfig(final Context context) {
         final IgnoreSearchResultsFilter ignoreSearchResultsFilter = new IgnoreSearchResultsFilter();
-        return new SearchConfigBuilder()
+        return new SearchConfigBuilder(context)
                 .withSearchResultsFilter(ignoreSearchResultsFilter)
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {

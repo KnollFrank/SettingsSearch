@@ -15,18 +15,24 @@ import de.KnollFrank.lib.settingssearch.R;
 
 public class DefaultMarkupFactory implements MarkupFactory {
 
+    private final Context context;
+
+    public DefaultMarkupFactory(final Context context) {
+        this.context = context;
+    }
+
     @Override
-    public List<Object> createMarkups(final Context context) {
+    public List<Object> createMarkups() {
         final ImmutableList.Builder<Object> markupsBuilder = ImmutableList.builder();
         markupsBuilder.add(new TextAppearanceSpan(context, R.style.SearchPreferenceResultTextAppearance));
-        DefaultMarkupFactory
-                .getBackgroundColor(context)
+        this
+                .getBackgroundColor()
                 .map(BackgroundColorSpan::new)
                 .ifPresent(markupsBuilder::add);
         return markupsBuilder.build();
     }
 
-    private static Optional<Integer> getBackgroundColor(final Context context) {
+    private Optional<Integer> getBackgroundColor() {
         try (final TypedArray typedArray =
                      context.obtainStyledAttributes(
                              R.style.SearchPreferenceResultBackgroundColor,
