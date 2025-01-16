@@ -46,7 +46,6 @@ public class SearchResultsDisplayerTest {
                         SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                                 searchResultsFragment,
                                 new DefaultMarkupFactory(activity),
-                                activity,
                                 searchResults -> searchResults,
                                 new LexicographicalSearchResultsSorter());
 
@@ -107,7 +106,6 @@ public class SearchResultsDisplayerTest {
                         SearchResultsDisplayerFactory.createSearchResultsDisplayer(
                                 searchResultsFragment,
                                 new DefaultMarkupFactory(activity),
-                                activity,
                                 searchResultsFilterRemovingAllSearchResults,
                                 new LexicographicalSearchResultsSorter());
 
