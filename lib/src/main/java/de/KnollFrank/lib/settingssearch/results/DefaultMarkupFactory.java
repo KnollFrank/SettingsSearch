@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.search;
+package de.KnollFrank.lib.settingssearch.results;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,12 +13,13 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.R;
 
-public class MarkupFactory {
+public class DefaultMarkupFactory implements MarkupFactory {
 
-    public static List<Object> createMarkups(final Context context) {
+    @Override
+    public List<Object> createMarkups(final Context context) {
         final ImmutableList.Builder<Object> markupsBuilder = ImmutableList.builder();
         markupsBuilder.add(new TextAppearanceSpan(context, R.style.SearchPreferenceResultTextAppearance));
-        MarkupFactory
+        DefaultMarkupFactory
                 .getBackgroundColor(context)
                 .map(BackgroundColorSpan::new)
                 .ifPresent(markupsBuilder::add);

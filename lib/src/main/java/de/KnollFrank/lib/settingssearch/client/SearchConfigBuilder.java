@@ -3,6 +3,8 @@ package de.KnollFrank.lib.settingssearch.client;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
+import de.KnollFrank.lib.settingssearch.results.DefaultMarkupFactory;
+import de.KnollFrank.lib.settingssearch.results.MarkupFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
@@ -24,6 +26,7 @@ public class SearchConfigBuilder {
     private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
+    private MarkupFactory markupFactory = new DefaultMarkupFactory();
 
     public SearchConfigBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
@@ -65,6 +68,11 @@ public class SearchConfigBuilder {
         return this;
     }
 
+    public SearchConfigBuilder withMarkupFactory(final MarkupFactory markupFactory) {
+        this.markupFactory = markupFactory;
+        return this;
+    }
+
     public SearchConfig build() {
         return new SearchConfig(
                 includePreferenceInSearchResultsPredicate,
@@ -74,6 +82,7 @@ public class SearchConfigBuilder {
                 searchResultsFilter,
                 searchResultsSorter,
                 searchPreferenceFragmentUI,
-                searchResultsFragmentUI);
+                searchResultsFragmentUI,
+                markupFactory);
     }
 }
