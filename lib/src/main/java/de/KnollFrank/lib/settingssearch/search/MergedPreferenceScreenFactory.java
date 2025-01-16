@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.results.MarkupFactory;
+import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
@@ -35,7 +35,7 @@ public class MergedPreferenceScreenFactory {
     private final PrepareShow prepareShow;
     private final @IdRes int fragmentContainerViewId;
     private final FragmentFactory fragmentFactory;
-    private final MarkupFactory markupFactory;
+    private final MarkupsFactory markupsFactory;
     private final Context context;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
@@ -50,7 +50,7 @@ public class MergedPreferenceScreenFactory {
             final PrepareShow prepareShow,
             final @IdRes int fragmentContainerViewId,
             final FragmentFactory fragmentFactory,
-            final MarkupFactory markupFactory,
+            final MarkupsFactory markupsFactory,
             final Context context,
             final Locale locale,
             final OnUiThreadRunner onUiThreadRunner,
@@ -63,7 +63,7 @@ public class MergedPreferenceScreenFactory {
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.fragmentFactory = fragmentFactory;
-        this.markupFactory = markupFactory;
+        this.markupsFactory = markupsFactory;
         this.context = context;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
@@ -105,7 +105,7 @@ public class MergedPreferenceScreenFactory {
                         .persistOrLoadPreferences(locale),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
-                markupFactory,
+                markupsFactory,
                 context,
                 searchResultsFilter,
                 searchResultsSorter);
@@ -120,7 +120,7 @@ public class MergedPreferenceScreenFactory {
             final Set<SearchablePreference> preferences,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
-            final MarkupFactory markupFactory,
+            final MarkupsFactory markupsFactory,
             final Context context,
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter) {
@@ -138,7 +138,7 @@ public class MergedPreferenceScreenFactory {
                                 showPreferencePathPredicate,
                                 preferencePathDisplayer,
                                 searchResultsFragmentUI),
-                        markupFactory,
+                        markupsFactory,
                         searchResultsFilter,
                         searchResultsSorter));
     }

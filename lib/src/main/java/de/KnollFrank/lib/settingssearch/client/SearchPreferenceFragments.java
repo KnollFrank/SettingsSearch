@@ -76,7 +76,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                 searchConfig.prepareShow(),
                                 searchConfiguration.fragmentContainerViewId(),
                                 searchDatabaseConfig.fragmentFactory(),
-                                searchConfig.markupFactory(),
+                                searchConfig.markupsFactory(),
                                 context,
                                 locale,
                                 onUiThreadRunner,

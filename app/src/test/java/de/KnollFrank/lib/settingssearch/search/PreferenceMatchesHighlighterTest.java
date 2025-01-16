@@ -11,14 +11,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.results.DefaultMarkupFactory;
+import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
+import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -35,7 +34,7 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.empty(),
                                 Optional.empty(),
                                 Optional.empty());
-                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory(context).createMarkups();
+                final MarkupsFactory markupsFactory = new DefaultMarkupsFactory(context);
                 final Set<PreferenceMatch> preferenceMatches =
                         Set.of(
                                 new PreferenceMatch(
@@ -53,7 +52,7 @@ public class PreferenceMatchesHighlighterTest {
 
                 // Then
                 final Spannable title = (Spannable) preference.getHighlightedTitle().orElseThrow();
-                final int markupsSize = markupsFactory.get().size();
+                final int markupsSize = markupsFactory.createMarkups().size();
                 assertThat(title.getSpans(0, 5, Object.class), arrayWithSize(markupsSize));
                 assertThat(title.getSpans(7, 12, Object.class), arrayWithSize(markupsSize));
             });
@@ -71,7 +70,7 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.of("summary, summary"),
                                 Optional.empty(),
                                 Optional.empty());
-                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory(context).createMarkups();
+                final MarkupsFactory markupsFactory = new DefaultMarkupsFactory(context);
                 final Set<PreferenceMatch> preferenceMatches =
                         Set.of(
                                 new PreferenceMatch(
@@ -89,7 +88,7 @@ public class PreferenceMatchesHighlighterTest {
 
                 // Then
                 final Spannable summary = (Spannable) preference.getHighlightedSummary().orElseThrow();
-                final int markupsSize = markupsFactory.get().size();
+                final int markupsSize = markupsFactory.createMarkups().size();
                 assertThat(summary.getSpans(0, 7, Object.class), arrayWithSize(markupsSize));
                 assertThat(summary.getSpans(9, 16, Object.class), arrayWithSize(markupsSize));
             });
@@ -108,7 +107,7 @@ public class PreferenceMatchesHighlighterTest {
                                 Optional.empty(),
                                 Optional.of(_searchableInfo),
                                 Optional.empty());
-                final Supplier<List<Object>> markupsFactory = () -> new DefaultMarkupFactory(context).createMarkups();
+                final MarkupsFactory markupsFactory = new DefaultMarkupsFactory(context);
                 final Set<PreferenceMatch> preferenceMatches =
                         Set.of(
                                 new PreferenceMatch(
@@ -126,7 +125,7 @@ public class PreferenceMatchesHighlighterTest {
 
                 // Then
                 final Spannable searchableInfo = (Spannable) preference.getHighlightedSearchableInfo().orElseThrow();
-                final int markupsSize = markupsFactory.get().size();
+                final int markupsSize = markupsFactory.createMarkups().size();
                 assertThat(searchableInfo.getSpans(0, 4, Object.class), arrayWithSize(markupsSize));
                 assertThat(searchableInfo.getSpans(6, 10, Object.class), arrayWithSize(markupsSize));
             });

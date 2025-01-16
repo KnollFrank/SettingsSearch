@@ -6,12 +6,12 @@ public class SearchResultsDisplayerFactory {
 
     public static SearchResultsDisplayer createSearchResultsDisplayer(
             final SearchResultsFragment searchResultsFragment,
-            final MarkupFactory markupFactory,
+            final MarkupsFactory markupsFactory,
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter) {
         return new SearchResultsDisplayer(
                 searchResultsFragment,
-                markupFactory::createMarkups,
+                markupsFactory,
                 searchResultsFilter,
                 searchResultsSorter);
     }

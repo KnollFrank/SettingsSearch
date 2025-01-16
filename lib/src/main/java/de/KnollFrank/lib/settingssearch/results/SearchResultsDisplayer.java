@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -12,14 +11,13 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 
 public class SearchResultsDisplayer {
 
-    // FK-TODO: remove Supplier
-    private final Supplier<List<Object>> markupsFactory;
+    private final MarkupsFactory markupsFactory;
     private final SearchResultsFragment searchResultsFragment;
     private final SearchResultsFilter searchResultsFilter;
     private final SearchResultsSorter searchResultsSorter;
 
     protected SearchResultsDisplayer(final SearchResultsFragment searchResultsFragment,
-                                     final Supplier<List<Object>> markupsFactory,
+                                     final MarkupsFactory markupsFactory,
                                      final SearchResultsFilter searchResultsFilter,
                                      final SearchResultsSorter searchResultsSorter) {
         this.searchResultsFragment = searchResultsFragment;

@@ -13,11 +13,11 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.R;
 
-public class DefaultMarkupFactory implements MarkupFactory {
+public class DefaultMarkupsFactory implements MarkupsFactory {
 
     private final Context context;
 
-    public DefaultMarkupFactory(final Context context) {
+    public DefaultMarkupsFactory(final Context context) {
         this.context = context;
     }
 

@@ -5,8 +5,8 @@ import android.content.Context;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.results.DefaultMarkupFactory;
-import de.KnollFrank.lib.settingssearch.results.MarkupFactory;
+import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
+import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
@@ -28,10 +28,10 @@ public class SearchConfigBuilder {
     private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
-    private MarkupFactory markupFactory;
+    private MarkupsFactory markupsFactory;
 
     public SearchConfigBuilder(final Context context) {
-        this.markupFactory = new DefaultMarkupFactory(context);
+        this.markupsFactory = new DefaultMarkupsFactory(context);
     }
 
     public SearchConfigBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
@@ -74,8 +74,8 @@ public class SearchConfigBuilder {
         return this;
     }
 
-    public SearchConfigBuilder withMarkupFactory(final MarkupFactory markupFactory) {
-        this.markupFactory = markupFactory;
+    public SearchConfigBuilder withMarkupsFactory(final MarkupsFactory markupsFactory) {
+        this.markupsFactory = markupsFactory;
         return this;
     }
 
@@ -89,6 +89,6 @@ public class SearchConfigBuilder {
                 searchResultsSorter,
                 searchPreferenceFragmentUI,
                 searchResultsFragmentUI,
-                markupFactory);
+                markupsFactory);
     }
 }

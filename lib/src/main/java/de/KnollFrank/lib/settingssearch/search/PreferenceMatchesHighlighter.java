@@ -6,19 +6,19 @@ import android.text.Spannable;
 import android.text.SpannableString;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 
 public class PreferenceMatchesHighlighter {
 
-    private final Supplier<List<Object>> markupsFactory;
+    private final MarkupsFactory markupsFactory;
 
-    public PreferenceMatchesHighlighter(final Supplier<List<Object>> markupsFactory) {
+    public PreferenceMatchesHighlighter(final MarkupsFactory markupsFactory) {
         this.markupsFactory = markupsFactory;
     }
 
@@ -81,7 +81,7 @@ public class PreferenceMatchesHighlighter {
     }
 
     private void highlight(final Spannable spannable, final IndexRange indexRange) {
-        for (final Object markup : markupsFactory.get()) {
+        for (final Object markup : markupsFactory.createMarkups()) {
             spannable.setSpan(
                     markup,
                     indexRange.startIndexInclusive(),
