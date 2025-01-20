@@ -13,18 +13,18 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 public class SearchableInfoAndDialogInfoProvider {
 
     private final SearchableInfoProvider searchableInfoProvider;
-    private final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider;
+    private final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider;
 
     public SearchableInfoAndDialogInfoProvider(final SearchableInfoProvider searchableInfoProvider,
-                                               final ISearchableDialogInfoOfProvider searchableInfoByPreferenceProvider) {
+                                               final ISearchableDialogInfoOfProvider searchableDialogInfoOfProvider) {
         this.searchableInfoProvider = searchableInfoProvider;
-        this.searchableInfoByPreferenceProvider = searchableInfoByPreferenceProvider;
+        this.searchableDialogInfoOfProvider = searchableDialogInfoOfProvider;
     }
 
     public Optional<String> getSearchableInfo(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
         return join(
                 searchableInfoProvider.getSearchableInfo(preference),
-                searchableInfoByPreferenceProvider.getSearchableDialogInfoOfPreference(preference, hostOfPreference),
+                searchableDialogInfoOfProvider.getSearchableDialogInfoOfPreference(preference, hostOfPreference),
                 "\n");
     }
 
