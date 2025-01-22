@@ -110,7 +110,11 @@ public class PreferenceScreenGraphProvider {
 
     private Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragment(final Optional<Intent> intent) {
         return intent
-                .map(_intent -> _intent.getComponent().getClassName())
+                .map(PreferenceScreenGraphProvider::getClassName)
                 .flatMap(rootPreferenceFragmentOfActivityProvider::getRootPreferenceFragmentOfActivity);
+    }
+
+    private static String getClassName(final Intent intent) {
+        return intent.getComponent().getClassName();
     }
 }
