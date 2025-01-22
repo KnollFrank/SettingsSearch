@@ -77,6 +77,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
         if (preference instanceof final DialogPreference dialogPreference) {
             dialogPreference.getPreferenceManager().showDialog(dialogPreference);
         } else if (preference.getOnPreferenceClickListener() != null) {
+            // FK-TODO: or use "preference.performClick();" instead?
             preference.getOnPreferenceClickListener().onPreferenceClick(preference);
         }
     }
