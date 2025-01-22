@@ -35,7 +35,7 @@
         android:key="checkbox"
         android:summary="This is a DisabledAppearanceCheckboxPreference"
         android:title="Checkbox" />
-    
+
     <PreferenceCategory
         android:key="key of PreferenceCategory"
         android:title="This is a preference category">
@@ -68,10 +68,10 @@
         android:title="@string/app_name" />
 
     <EditTextPreference
+        android:dialogTitle="this is the edit text dialog title"
         android:key="edittext"
         android:summary="This is an edit text preference"
-        android:title="Edit text"
-        android:dialogTitle="this is the edit text dialog title"/>
+        android:title="Edit text" />
 
     <SwitchPreference
         android:key="switch"
@@ -144,4 +144,9 @@
         android:key="fardown"
         android:summary="A preference that is very far down on the screen, so it has to be scrolled to"
         android:title="Far down" />
+
+    <Preference
+        android:key="preferenceWithIntent"
+        android:persistent="false"
+        android:title="Preference with Intent" />
 </PreferenceScreen>

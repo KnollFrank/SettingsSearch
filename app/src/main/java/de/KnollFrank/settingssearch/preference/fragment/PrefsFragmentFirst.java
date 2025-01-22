@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,6 +14,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.stream.Stream;
 
 import de.KnollFrank.settingssearch.R;
+import de.KnollFrank.settingssearch.SettingsActivity;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 
 public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPreferenceClickListener {
@@ -31,6 +33,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference1());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
+        getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(new Intent(getContext(), SettingsActivity.class));
         setOnPreferenceClickListeners();
     }
 
