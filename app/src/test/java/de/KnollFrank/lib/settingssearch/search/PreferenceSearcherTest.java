@@ -460,6 +460,23 @@ public class PreferenceSearcherTest {
     }
 
     @Test
+    public void shouldSearchAndFindPreferenceFromAnotherActivity() {
+        final String keyword = "Your signature";
+        final String keyOfPreferenceFromSettingsActivity = "signature";
+        testSearch(
+                new PrefsFragmentFirst(),
+                (preference, hostOfPreference) -> true,
+                preference -> true,
+                keyword,
+                (preference, hostOfPreference) -> Optional.empty(),
+                new PreferenceDialogAndSearchableInfoProvider(),
+                preferenceMatches ->
+                        assertThat(
+                                getKeySet(preferenceMatches),
+                                hasItem(keyOfPreferenceFromSettingsActivity)));
+    }
+
+    @Test
     public void shouldSearchAndFindMultiSelectListPreference() {
         final String keyword = "entry of some MultiSelectListPreference";
         final String keyOfPreference = "keyOfSomeMultiSelectListPreference";
