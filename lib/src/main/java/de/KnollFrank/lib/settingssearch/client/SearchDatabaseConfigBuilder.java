@@ -8,6 +8,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
+import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
@@ -20,6 +21,7 @@ public class SearchDatabaseConfigBuilder {
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
+    private RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider = classNameOfActivity -> Optional.empty();
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
@@ -49,6 +51,12 @@ public class SearchDatabaseConfigBuilder {
         return this;
     }
 
+
+    public SearchDatabaseConfigBuilder withRootPreferenceFragmentOfActivityProvider(final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider) {
+        this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
+        return this;
+    }
+
     public SearchDatabaseConfigBuilder withPreferenceScreenGraphAvailableListener(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         return this;
@@ -66,6 +74,7 @@ public class SearchDatabaseConfigBuilder {
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
+                rootPreferenceFragmentOfActivityProvider,
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate);
     }

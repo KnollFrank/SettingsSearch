@@ -52,12 +52,15 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
+import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
+import de.KnollFrank.settingssearch.SettingsActivity;
+import de.KnollFrank.settingssearch.SettingsActivity.SettingsFragment;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
@@ -632,6 +635,15 @@ public class PreferenceSearcherTest {
                                         new PreferenceVisibleAndSearchablePredicate(
                                                 preferenceSearchablePredicate))),
                         preferenceFragmentConnected2PreferenceProvider,
+                        new RootPreferenceFragmentOfActivityProvider() {
+
+                            @Override
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
+                                return classNameOfActivity.equals(SettingsActivity.class.getName()) ?
+                                        Optional.of(SettingsFragment.class) :
+                                        Optional.empty();
+                            }
+                        },
                         preferenceScreenGraph -> {
                         },
                         preferenceScreenWithHost -> {

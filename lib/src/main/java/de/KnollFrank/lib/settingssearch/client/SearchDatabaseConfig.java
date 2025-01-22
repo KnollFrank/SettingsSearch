@@ -5,6 +5,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
+import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
@@ -13,6 +14,7 @@ public record SearchDatabaseConfig(FragmentFactory fragmentFactory,
                                    SearchableInfoProvider searchableInfoProvider,
                                    PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                    PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
+                                   RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                                    PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                    PreferenceSearchablePredicate preferenceSearchablePredicate) {
 }

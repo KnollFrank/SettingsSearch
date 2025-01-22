@@ -102,6 +102,7 @@ public class MergedPreferenceScreenDataRepository {
                                 new PreferenceVisibleAndSearchablePredicate(
                                         searchDatabaseConfig.preferenceSearchablePredicate()))),
                 searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider(),
+                searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider(),
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener(),
                 new PreferenceScreenGraphListener() {
 
