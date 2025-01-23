@@ -42,7 +42,7 @@ public class DefaultFragmentInitializer implements FragmentInitializer, Preferen
                     this
                             .fragmentManager
                             .beginTransaction()
-                            .add(this.containerViewId, fragment)
+                            .add(containerViewId, fragment)
                             .commitNow();
                     return null;
                 });
