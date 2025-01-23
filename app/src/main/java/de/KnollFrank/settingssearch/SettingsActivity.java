@@ -1,8 +1,5 @@
 package de.KnollFrank.settingssearch;
 
-import static de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator.INDEX_WITHIN_PREFERENCE_PATH;
-import static de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator.PREFERENCE_PATH;
-
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.fragment.data.PreferencePathNavigatorData;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
@@ -52,14 +50,18 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        getPreferencePathIds().ifPresent(this::showPreferenceScreenAndHighlightPreference);
+        this
+                .getPreferencePathNavigatorData()
+                .ifPresent(this::showPreferenceScreenAndHighlightPreference);
     }
 
-    private Optional<List<Integer>> getPreferencePathIds() {
-        return Optional.ofNullable(getIntent().getIntegerArrayListExtra(PREFERENCE_PATH));
+    private Optional<PreferencePathNavigatorData> getPreferencePathNavigatorData() {
+        return Optional
+                .ofNullable(getIntent().getExtras())
+                .map(PreferencePathNavigatorData::fromBundle);
     }
 
-    private void showPreferenceScreenAndHighlightPreference(final List<Integer> preferencePathIds) {
+    private void showPreferenceScreenAndHighlightPreference(final PreferencePathNavigatorData preferencePathNavigatorData) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 findViewById(R.id.settings_root),
                 DUMMY_FRAGMENT_CONTAINER_VIEW);
@@ -76,13 +78,13 @@ public class SettingsActivity extends AppCompatActivity {
         final PreferencePath preferencePath =
                 new PreferencePath(
                         convertIds2Preferences(
-                                preferencePathIds,
+                                preferencePathNavigatorData.preferencePathIds(),
                                 mergedPreferenceScreen.preferences()));
         final SearchablePreference searchablePreference = preferencePath.getPreference().orElseThrow();
         correctPreferencePath(
                 searchablePreference,
                 // FK-FIXME: INDEX_WITHIN_PREFERENCE_PATH ist falsch, falls über mehrere Activities hinweg navigiert wird.
-                getIntent().getIntExtra(INDEX_WITHIN_PREFERENCE_PATH, -1));
+                preferencePathNavigatorData.indexWithinPreferencePath());
         mergedPreferenceScreen
                 .searchResultsDisplayer()
                 .getSearchResultsFragment()

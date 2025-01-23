@@ -6,7 +6,6 @@ import android.content.Intent;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,11 +15,9 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.fragment.data.PreferencePathNavigatorData;
 
 public class PreferencePathNavigator {
-
-    public static final String PREFERENCE_PATH = "preferencePath";
-    public static final String INDEX_WITHIN_PREFERENCE_PATH = "indexWithinPreferencePath";
 
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final Context context;
@@ -72,9 +69,11 @@ public class PreferencePathNavigator {
                 new Intent(
                         context,
                         Utils.getClass(classNameOfReferencedActivity));
-        // FK-TODO: introduce record for PREFERENCE_PATH and INDEX_WITHIN_PREFERENCE_PATH and make this two constants private
-        intent.putIntegerArrayListExtra(PREFERENCE_PATH, new ArrayList<>(getPreferencePathIds(preferencePath)));
-        intent.putExtra(INDEX_WITHIN_PREFERENCE_PATH, indexWithinPreferencePath);
+        final PreferencePathNavigatorData preferencePathNavigatorData =
+                new PreferencePathNavigatorData(
+                        getPreferencePathIds(preferencePath),
+                        indexWithinPreferencePath);
+        intent.putExtras(preferencePathNavigatorData.toBundle());
         return intent;
     }
 
