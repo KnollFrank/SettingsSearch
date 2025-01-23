@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.results;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,7 +28,8 @@ public class SearchResultsDisplayer {
 
     public void displaySearchResults(final Set<PreferenceMatch> preferenceMatches) {
         new PreferenceMatchesHighlighter(markupsFactory).highlight(preferenceMatches);
-        searchResultsFragment.setSearchResults(filterThenSort(getPreferences(preferenceMatches)));
+        searchResultsFragment.setSearchResults(
+                searchResultsSorter.sort(filter(getPreferences(preferenceMatches))));
     }
 
     public SearchResultsFragment getSearchResultsFragment() {
@@ -43,11 +43,7 @@ public class SearchResultsDisplayer {
                 .collect(Collectors.toSet());
     }
 
-    private List<SearchablePreference> filterThenSort(final Set<SearchablePreference> preferences) {
-        return searchResultsSorter.sort(filter(preferences));
-    }
-
-    private Collection<SearchablePreference> filter(final Set<SearchablePreference> preferences) {
+    private Collection<SearchablePreference> filter(final Collection<SearchablePreference> preferences) {
         return preferences
                 .stream()
                 .filter(searchResultsFilter::includePreferenceInSearchResults)
