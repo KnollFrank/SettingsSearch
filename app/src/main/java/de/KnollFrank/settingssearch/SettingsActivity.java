@@ -106,7 +106,9 @@ public class SettingsActivity extends AppCompatActivity {
         return new PreferencePath(preferences.subList(indexWithinPreferencePath, preferences.size()));
     }
 
-    private static List<SearchablePreference> convertIds2Preferences(final List<Integer> preferencePathIds, final Set<SearchablePreference> preferences) {
+    private static List<SearchablePreference> convertIds2Preferences(
+            final List<Integer> preferencePathIds,
+            final Set<SearchablePreference> preferences) {
         return preferencePathIds
                 .stream()
                 .map(getSearchablePreferenceById(preferences)::get)
