@@ -67,6 +67,13 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFindPreferenceFromAnotherActivity() {
+        final String query = "Your signature";
+        searchForQueryThenClickSearchResultAtPosition(query, 0);
+        onView(titleOfPreference(query)).check(matches(withText(query)));
+    }
+
+    @Test
     public void shouldSearchAndFindListPreference() {
         final String entryOfSomeListPreference = "Home";
         onView(searchButton()).perform(click());
@@ -189,6 +196,14 @@ public class PreferenceSearchExampleTest {
 
     private static Matcher<View> hasSearchResultWithSubstring(final String substring) {
         return recyclerViewHasItem(hasDescendant(withSubstring(substring)));
+    }
+
+    private static Matcher<View> titleOfPreference(final String title) {
+        return allOf(
+                withId(android.R.id.title),
+                withText(title),
+                withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout.class))),
+                isDisplayed());
     }
 
     private static Matcher<View> summaryOfPreference() {
