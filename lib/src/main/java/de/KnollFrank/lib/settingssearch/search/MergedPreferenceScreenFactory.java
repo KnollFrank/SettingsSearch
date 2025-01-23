@@ -20,7 +20,7 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
-import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayerFactory;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.results.ShowPreferenceScreenAndHighlightPreference;
@@ -126,7 +126,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsSorter searchResultsSorter) {
         return new MergedPreferenceScreen(
                 preferences,
-                SearchResultsDisplayerFactory.createSearchResultsDisplayer(
+                new SearchResultsDisplayer(
                         new SearchResultsFragment(
                                 new ShowPreferenceScreenAndHighlightPreference(
                                         new PreferencePathNavigator(

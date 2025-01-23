@@ -16,10 +16,10 @@ public class SearchResultsDisplayer {
     private final SearchResultsFilter searchResultsFilter;
     private final SearchResultsSorter searchResultsSorter;
 
-    protected SearchResultsDisplayer(final SearchResultsFragment searchResultsFragment,
-                                     final MarkupsFactory markupsFactory,
-                                     final SearchResultsFilter searchResultsFilter,
-                                     final SearchResultsSorter searchResultsSorter) {
+    public SearchResultsDisplayer(final SearchResultsFragment searchResultsFragment,
+                                  final MarkupsFactory markupsFactory,
+                                  final SearchResultsFilter searchResultsFilter,
+                                  final SearchResultsSorter searchResultsSorter) {
         this.searchResultsFragment = searchResultsFragment;
         this.markupsFactory = markupsFactory;
         this.searchResultsFilter = searchResultsFilter;

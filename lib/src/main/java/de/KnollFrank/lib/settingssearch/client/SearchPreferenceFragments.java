@@ -71,20 +71,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 new SearchPreferenceFragment(
                         searchConfiguration,
                         searchConfig.includePreferenceInSearchResultsPredicate(),
-                        new MergedPreferenceScreenFactory(
-                                searchConfig.showPreferencePathPredicate(),
-                                searchConfig.prepareShow(),
-                                searchConfiguration.fragmentContainerViewId(),
-                                searchDatabaseConfig.fragmentFactory(),
-                                searchConfig.markupsFactory(),
-                                context,
-                                locale,
-                                onUiThreadRunner,
-                                this,
-                                searchConfig.searchResultsFragmentUI(),
-                                searchConfig.searchResultsFilter(),
-                                searchConfig.searchResultsSorter(),
-                                searchConfig.preferencePathDisplayer()),
+                        getMergedPreferenceScreenFactory(),
                         onUiThreadRunner,
                         createSearchDatabaseTaskSupplier,
                         searchConfig.searchPreferenceFragmentUI()),
@@ -93,6 +80,23 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 true,
                 searchConfiguration.fragmentContainerViewId(),
                 fragmentManager);
+    }
+
+    public MergedPreferenceScreenFactory getMergedPreferenceScreenFactory() {
+        return new MergedPreferenceScreenFactory(
+                searchConfig.showPreferencePathPredicate(),
+                searchConfig.prepareShow(),
+                searchConfiguration.fragmentContainerViewId(),
+                searchDatabaseConfig.fragmentFactory(),
+                searchConfig.markupsFactory(),
+                context,
+                locale,
+                onUiThreadRunner,
+                this,
+                searchConfig.searchResultsFragmentUI(),
+                searchConfig.searchResultsFilter(),
+                searchConfig.searchResultsSorter(),
+                searchConfig.preferencePathDisplayer());
     }
 
     public void rebuildSearchDatabase() {

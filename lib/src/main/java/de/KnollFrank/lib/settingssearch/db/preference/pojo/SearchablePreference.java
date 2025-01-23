@@ -35,6 +35,7 @@ public final class SearchablePreference {
     private Supplier<Optional<CharSequence>> highlightedTitleProvider;
     private final @LayoutRes int widgetLayoutResId;
     private final String fragment;
+    private final String classNameOfReferencedActivity;
     private final boolean visible;
     private final String searchableInfo;
     @Exclude
@@ -55,6 +56,7 @@ public final class SearchablePreference {
             final Optional<String> title,
             final @LayoutRes int widgetLayoutResId,
             final Optional<String> fragment,
+            final Optional<String> classNameOfReferencedActivity,
             final boolean visible,
             final Optional<String> searchableInfo,
             final Bundle extras,
@@ -67,6 +69,7 @@ public final class SearchablePreference {
         this.title = title.orElse(null);
         this.widgetLayoutResId = widgetLayoutResId;
         this.fragment = fragment.orElse(null);
+        this.classNameOfReferencedActivity = classNameOfReferencedActivity.orElse(null);
         this.visible = visible;
         this.searchableInfo = searchableInfo.orElse(null);
         this.extras = extras;
@@ -155,6 +158,10 @@ public final class SearchablePreference {
 
     public Optional<String> getFragment() {
         return Optional.ofNullable(fragment);
+    }
+
+    public Optional<String> getClassNameOfReferencedActivity() {
+        return Optional.ofNullable(classNameOfReferencedActivity);
     }
 
     public boolean isVisible() {

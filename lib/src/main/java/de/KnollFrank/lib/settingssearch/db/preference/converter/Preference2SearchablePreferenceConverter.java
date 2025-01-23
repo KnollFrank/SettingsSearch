@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.Intents;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
@@ -60,6 +61,7 @@ public class Preference2SearchablePreferenceConverter {
                         toString(preference.getTitle()),
                         preference.getWidgetLayoutResource(),
                         Optional.ofNullable(preference.getFragment()),
+                        getClassNameOfReferencedActivity(preference),
                         preference.isVisible(),
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
                         preference.getExtras(),
@@ -125,5 +127,11 @@ public class Preference2SearchablePreferenceConverter {
         return Optional
                 .ofNullable(charSequence)
                 .map(CharSequence::toString);
+    }
+
+    private static Optional<String> getClassNameOfReferencedActivity(final Preference preference) {
+        return Optional
+                .ofNullable(preference.getIntent())
+                .map(Intents::getClassName);
     }
 }

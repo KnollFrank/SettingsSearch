@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchResultsFragment extends Fragment {
 
-    private final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
+    public final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final SearchResultsFragmentUI searchResultsFragmentUI;

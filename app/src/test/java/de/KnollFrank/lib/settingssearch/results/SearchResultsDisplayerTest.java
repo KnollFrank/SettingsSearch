@@ -43,7 +43,7 @@ public class SearchResultsDisplayerTest {
                 final String title = "Title, title part";
                 final SearchResultsFragment searchResultsFragment = getInitializedSearchResultsFragment(activity);
                 final SearchResultsDisplayer searchResultsDisplayer =
-                        SearchResultsDisplayerFactory.createSearchResultsDisplayer(
+                        new SearchResultsDisplayer(
                                 searchResultsFragment,
                                 new DefaultMarkupsFactory(activity),
                                 searchResults -> searchResults,
@@ -103,7 +103,7 @@ public class SearchResultsDisplayerTest {
 
                 final SearchResultsFragment searchResultsFragment = getInitializedSearchResultsFragment(activity);
                 final SearchResultsDisplayer searchResultsDisplayer =
-                        SearchResultsDisplayerFactory.createSearchResultsDisplayer(
+                        new SearchResultsDisplayer(
                                 searchResultsFragment,
                                 new DefaultMarkupsFactory(activity),
                                 searchResultsFilterRemovingAllSearchResults,

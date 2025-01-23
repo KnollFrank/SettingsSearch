@@ -33,9 +33,13 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
 
     @Override
     public void showPreferenceScreenAndHighlightPreference(final SearchablePreference preference) {
-        showPreferenceScreenAndHighlightPreference(
-                preferencePathNavigator.navigatePreferencePath(preference.getPreferencePath()),
-                preference);
+        preferencePathNavigator
+                .navigatePreferencePath(preference.getPreferencePath())
+                .ifPresent(
+                        fragmentOfPreferenceScreen ->
+                                showPreferenceScreenAndHighlightPreference(
+                                        fragmentOfPreferenceScreen,
+                                        preference));
     }
 
     private void showPreferenceScreenAndHighlightPreference(
