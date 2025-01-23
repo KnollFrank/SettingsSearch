@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
@@ -46,7 +45,7 @@ public class SearchResultsDisplayerTest {
                         new SearchResultsDisplayer(
                                 searchResultsFragment,
                                 new DefaultMarkupsFactory(activity),
-                                searchResults -> searchResults,
+                                preference -> true,
                                 new LexicographicalSearchResultsSorter());
 
                 // When
@@ -99,7 +98,7 @@ public class SearchResultsDisplayerTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final SearchResultsFilter searchResultsFilterRemovingAllSearchResults = searchResults -> Collections.emptyList();
+                final SearchResultsFilter searchResultsFilterRemovingAllSearchResults = preference -> false;
 
                 final SearchResultsFragment searchResultsFragment = getInitializedSearchResultsFragment(activity);
                 final SearchResultsDisplayer searchResultsDisplayer =

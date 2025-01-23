@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.results;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,6 +44,13 @@ public class SearchResultsDisplayer {
     }
 
     private List<SearchablePreference> filterThenSort(final Set<SearchablePreference> preferences) {
-        return searchResultsSorter.sort(searchResultsFilter.filter(preferences));
+        return searchResultsSorter.sort(filter(preferences));
+    }
+
+    private Collection<SearchablePreference> filter(final Set<SearchablePreference> preferences) {
+        return preferences
+                .stream()
+                .filter(searchResultsFilter::includePreferenceInSearchResults)
+                .collect(Collectors.toList());
     }
 }

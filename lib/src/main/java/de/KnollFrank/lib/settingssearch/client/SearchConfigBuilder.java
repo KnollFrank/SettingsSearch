@@ -24,7 +24,7 @@ public class SearchConfigBuilder {
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferencePathDisplayer preferencePathDisplayer = new DefaultPreferencePathDisplayer();
-    private SearchResultsFilter searchResultsFilter = searchResults -> searchResults;
+    private SearchResultsFilter searchResultsFilter = preference -> true;
     private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();

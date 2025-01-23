@@ -12,9 +12,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import de.KnollFrank.lib.settingssearch.client.SearchConfig;
 import de.KnollFrank.lib.settingssearch.client.SearchConfigBuilder;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -105,8 +102,8 @@ class SearchConfigFactory {
         private boolean ignoreSearchResults = false;
 
         @Override
-        public Collection<SearchablePreference> filter(final Collection<SearchablePreference> searchResults) {
-            return ignoreSearchResults ? Collections.emptyList() : searchResults;
+        public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
+            return !ignoreSearchResults;
         }
 
         public boolean isIgnoreSearchResults() {

@@ -680,7 +680,7 @@ public class PreferenceSearcherTest {
                 },
                 new DefaultMarkupsFactory(fragmentActivity),
                 fragmentActivity,
-                searchResults -> searchResults,
+                preference -> true,
                 new SearchResultsByPreferencePathSorter());
     }
 
