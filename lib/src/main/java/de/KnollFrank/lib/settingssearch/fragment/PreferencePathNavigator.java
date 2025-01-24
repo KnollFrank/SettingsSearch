@@ -15,7 +15,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.fragment.data.PreferencePathNavigatorData;
 
 public class PreferencePathNavigator {
 
@@ -80,7 +79,7 @@ public class PreferencePathNavigator {
                         Utils.getClass(classNameOfReferencedActivity));
         final PreferencePathNavigatorData preferencePathNavigatorData =
                 new PreferencePathNavigatorData(
-                        getPreferencePathIds(preferencePath),
+                        preferencePath.getPreference().getId(),
                         indexWithinPreferencePath);
         intent.putExtras(preferencePathNavigatorData.toBundle());
         return intent;

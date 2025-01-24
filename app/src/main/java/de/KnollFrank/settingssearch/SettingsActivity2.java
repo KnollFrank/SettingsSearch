@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch;
 
+import static de.KnollFrank.settingssearch.SettingsActivity.getPreferenceFromId;
+
 import android.os.Bundle;
 import android.view.View;
 
@@ -8,20 +10,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
-import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.fragment.data.PreferencePathNavigatorData;
+import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigatorData;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
@@ -76,36 +70,15 @@ public class SettingsActivity2 extends AppCompatActivity {
                                 progress -> {
                                 },
                                 DUMMY_FRAGMENT_CONTAINER_VIEW);
-        final PreferencePath preferencePath =
-                new PreferencePath(
-                        convertIds2Preferences(
-                                preferencePathNavigatorData.preferencePathIds(),
-                                mergedPreferenceScreen.preferences()));
-        final SearchablePreference searchablePreference = preferencePath.getPreference().orElseThrow();
         mergedPreferenceScreen
                 .searchResultsDisplayer()
                 .getSearchResultsFragment()
                 .showPreferenceScreenAndHighlightPreference
-                .showPreferenceScreenAndHighlightPreference(searchablePreference, preferencePathNavigatorData.indexWithinPreferencePath());
-    }
-
-    private static List<SearchablePreference> convertIds2Preferences(
-            final List<Integer> preferencePathIds,
-            final Set<SearchablePreference> preferences) {
-        return preferencePathIds
-                .stream()
-                .map(getSearchablePreferenceById(preferences)::get)
-                .collect(Collectors.toList());
-    }
-
-    private static Map<Integer, SearchablePreference> getSearchablePreferenceById(final Set<SearchablePreference> preferences) {
-        return SearchablePreferences
-                .getPreferencesRecursively(preferences)
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                SearchablePreference::getId,
-                                Function.identity()));
+                .showPreferenceScreenAndHighlightPreference(
+                        getPreferenceFromId(
+                                preferencePathNavigatorData.idOfSearchablePreference(),
+                                mergedPreferenceScreen.preferences()),
+                        preferencePathNavigatorData.indexWithinPreferencePath());
     }
 
     private SearchPreferenceFragments createSearchPreferenceFragments() {

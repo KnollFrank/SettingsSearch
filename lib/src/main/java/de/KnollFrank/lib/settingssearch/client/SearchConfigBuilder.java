@@ -20,7 +20,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 public class SearchConfigBuilder {
 
     private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = preference -> true;
-    private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> preferencePath.getPreference().isPresent();
+    private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> true;
     private PrepareShow prepareShow = preferenceFragment -> {
     };
     private PreferencePathDisplayer preferencePathDisplayer = new DefaultPreferencePathDisplayer();
