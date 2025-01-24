@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch;
 
+import android.view.ViewGroup;
+
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -14,17 +16,28 @@ import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigatorData;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 class ContinueWithPreferencePathNavigation {
 
     private final FragmentActivity activity;
+    private final ViewGroup parent;
     private final @IdRes int fragmentContainerViewId;
 
-    public ContinueWithPreferencePathNavigation(final FragmentActivity activity,
-                                                final @IdRes int fragmentContainerViewId) {
-        this.fragmentContainerViewId = fragmentContainerViewId;
+    private ContinueWithPreferencePathNavigation(final FragmentActivity activity,
+                                                 final ViewGroup parent,
+                                                 final @IdRes int fragmentContainerViewId) {
         this.activity = activity;
+        this.parent = parent;
+        this.fragmentContainerViewId = fragmentContainerViewId;
+    }
+
+    public static void continueWithPreferencePathNavigation(final FragmentActivity activity,
+                                                            final ViewGroup parent,
+                                                            final @IdRes int fragmentContainerViewId) {
+        final var continueWithPreferencePathNavigation = new ContinueWithPreferencePathNavigation(activity, parent, fragmentContainerViewId);
+        continueWithPreferencePathNavigation.continueWithPreferencePathNavigation();
     }
 
     public void continueWithPreferencePathNavigation() {
@@ -40,6 +53,9 @@ class ContinueWithPreferencePathNavigation {
     }
 
     private void showPreferenceScreenAndHighlightPreference(final PreferencePathNavigatorData preferencePathNavigatorData) {
+        FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
+                parent,
+                fragmentContainerViewId);
         final SearchPreferenceFragments searchPreferenceFragments =
                 createSearchPreferenceFragments(
                         mergedPreferenceScreen ->

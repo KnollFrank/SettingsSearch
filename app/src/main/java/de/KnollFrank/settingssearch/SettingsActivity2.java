@@ -1,6 +1,9 @@
 package de.KnollFrank.settingssearch;
 
+import static de.KnollFrank.settingssearch.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
+
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.ActionBar;
@@ -10,7 +13,7 @@ import androidx.preference.PreferenceFragmentCompat;
 // FK-FIXME: search for signature2, click search result, press back button multiple times => stays at SettingsActivity2 but should go back.
 public class SettingsActivity2 extends AppCompatActivity {
 
-    private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.settings;
+    private static final @IdRes int fragmentContainerViewId = View.generateViewId();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -20,7 +23,7 @@ public class SettingsActivity2 extends AppCompatActivity {
             this
                     .getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(FRAGMENT_CONTAINER_VIEW_ID, new SettingsFragment2())
+                    .replace(R.id.settings, new SettingsFragment2())
                     .commit();
         }
         final ActionBar actionBar = getSupportActionBar();
@@ -32,11 +35,10 @@ public class SettingsActivity2 extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        final var continueWithPreferencePathNavigation =
-                new ContinueWithPreferencePathNavigation(
-                        this,
-                        FRAGMENT_CONTAINER_VIEW_ID);
-        continueWithPreferencePathNavigation.continueWithPreferencePathNavigation();
+        continueWithPreferencePathNavigation(
+                this,
+                findViewById(R.id.settings_root),
+                fragmentContainerViewId);
     }
 
     public static class SettingsFragment2 extends PreferenceFragmentCompat {
