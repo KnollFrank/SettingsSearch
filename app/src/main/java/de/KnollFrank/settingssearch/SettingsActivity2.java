@@ -36,7 +36,7 @@ public class SettingsActivity2 extends AppCompatActivity {
                 new ContinueWithPreferencePathNavigation(
                         this,
                         FRAGMENT_CONTAINER_VIEW_ID);
-        continueWithPreferencePathNavigation.onStart();
+        continueWithPreferencePathNavigation.continueWithPreferencePathNavigation();
     }
 
     public static class SettingsFragment2 extends PreferenceFragmentCompat {

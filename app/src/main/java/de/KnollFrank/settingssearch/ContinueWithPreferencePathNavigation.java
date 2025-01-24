@@ -27,7 +27,7 @@ class ContinueWithPreferencePathNavigation {
         this.activity = activity;
     }
 
-    public void onStart() {
+    public void continueWithPreferencePathNavigation() {
         this
                 .getPreferencePathNavigatorData()
                 .ifPresent(this::showPreferenceScreenAndHighlightPreference);
@@ -71,8 +71,8 @@ class ContinueWithPreferencePathNavigation {
                 rootPreferenceFragment);
     }
 
-    public static SearchablePreference getPreferenceFromId(final int id,
-                                                           final Set<SearchablePreference> preferences) {
+    private static SearchablePreference getPreferenceFromId(final int id,
+                                                            final Set<SearchablePreference> preferences) {
         return SearchablePreferences
                 .getPreferencesRecursively(preferences)
                 .stream()
