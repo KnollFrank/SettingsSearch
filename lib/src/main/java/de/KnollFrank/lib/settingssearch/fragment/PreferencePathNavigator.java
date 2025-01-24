@@ -6,9 +6,7 @@ import android.content.Intent;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
@@ -83,14 +81,6 @@ public class PreferencePathNavigator {
                         indexWithinPreferencePath);
         intent.putExtras(preferencePathNavigatorData.toBundle());
         return intent;
-    }
-
-    private static List<Integer> getPreferencePathIds(final PreferencePath preferencePath) {
-        return preferencePath
-                .preferences()
-                .stream()
-                .map(SearchablePreference::getId)
-                .collect(Collectors.toList());
     }
 
     private PreferenceWithHost getPreferenceWithHost(final SearchablePreference preference,
