@@ -80,6 +80,7 @@ public class PreferencePathNavigator {
                         preferencePath.getPreference().getId(),
                         indexWithinPreferencePath);
         intent.putExtras(preferencePathNavigatorData.toBundle());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
     }
 

@@ -59,16 +59,30 @@ class ContinueWithPreferencePathNavigation {
         final SearchPreferenceFragments searchPreferenceFragments =
                 createSearchPreferenceFragments(
                         mergedPreferenceScreen ->
-                                mergedPreferenceScreen
-                                        .searchResultsDisplayer()
-                                        .getSearchResultsFragment()
-                                        .showPreferenceScreenAndHighlightPreference
-                                        .showPreferenceScreenAndHighlightPreference(
-                                                getPreferenceFromId(
-                                                        preferencePathNavigatorData.idOfSearchablePreference(),
-                                                        mergedPreferenceScreen.preferences()),
-                                                preferencePathNavigatorData.indexWithinPreferencePath()));
+                                showPreferenceScreenAndHighlightPreferenceOnce(
+                                        preferencePathNavigatorData,
+                                        mergedPreferenceScreen));
         searchPreferenceFragments.showSearchPreferenceFragment();
+    }
+
+    private boolean showPreferenceScreenAndHighlightPreferenceAlreadyExecuted = false;
+
+    private void showPreferenceScreenAndHighlightPreferenceOnce(
+            final PreferencePathNavigatorData preferencePathNavigatorData,
+            final MergedPreferenceScreen mergedPreferenceScreen) {
+        if (showPreferenceScreenAndHighlightPreferenceAlreadyExecuted) {
+            return;
+        }
+        showPreferenceScreenAndHighlightPreferenceAlreadyExecuted = true;
+        mergedPreferenceScreen
+                .searchResultsDisplayer()
+                .getSearchResultsFragment()
+                .showPreferenceScreenAndHighlightPreference
+                .showPreferenceScreenAndHighlightPreference(
+                        getPreferenceFromId(
+                                preferencePathNavigatorData.idOfSearchablePreference(),
+                                mergedPreferenceScreen.preferences()),
+                        preferencePathNavigatorData.indexWithinPreferencePath());
     }
 
     private SearchPreferenceFragments createSearchPreferenceFragments(final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
