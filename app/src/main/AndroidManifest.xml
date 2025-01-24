@@ -24,6 +24,11 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".SettingsActivity2"
+            android:exported="true"
+            android:label="SettingsActivity2"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".test.TestActivity"
             android:exported="true"
             android:label="TestActivity"

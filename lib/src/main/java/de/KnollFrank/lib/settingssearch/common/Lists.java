@@ -18,20 +18,14 @@ public class Lists {
                 .collect(Collectors.toList());
     }
 
+    public static <T> Optional<T> getElementAtIndex(final List<T> ts, final int index) {
+        return 0 <= index && index < ts.size() ?
+                Optional.of(ts.get(index)) :
+                Optional.empty();
+    }
+
     public static <T> Optional<T> getLastElement(final List<T> ts) {
-        if (ts.isEmpty()) {
-            return Optional.empty();
-        }
-        final T lastElement = ts.get(ts.size() - 1);
-        return Optional.of(lastElement);
-    }
-
-    public static <T> T head(final List<T> ts) {
-        return ts.get(0);
-    }
-
-    public static <T> List<T> tail(final List<T> ts) {
-        return ts.subList(1, ts.size());
+        return getElementAtIndex(ts, ts.size() - 1);
     }
 
     public static <T> List<T> reverse(final List<T> ts) {

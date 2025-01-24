@@ -66,7 +66,7 @@ public class SearchResultsFragment extends Fragment {
                         layoutManager.getOrientation()));
         final SearchResultsRecyclerViewAdapter searchResultsRecyclerViewAdapter =
                 new SearchResultsRecyclerViewAdapter(
-                        showPreferenceScreenAndHighlightPreference::showPreferenceScreenAndHighlightPreference,
+                        preference -> showPreferenceScreenAndHighlightPreference.showPreferenceScreenAndHighlightPreference(preference, 0),
                         showPreferencePathPredicate,
                         preferencePathDisplayer);
         recyclerView.setAdapter(searchResultsRecyclerViewAdapter);

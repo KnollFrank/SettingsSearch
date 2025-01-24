@@ -24,6 +24,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2Pre
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.settingssearch.SettingsActivity.SettingsFragment;
+import de.KnollFrank.settingssearch.SettingsActivity2.SettingsFragment2;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
@@ -51,9 +52,13 @@ class SearchDatabaseConfigFactory {
 
                             @Override
                             public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
-                                return classNameOfActivity.equals(SettingsActivity.class.getName()) ?
-                                        Optional.of(SettingsFragment.class) :
-                                        Optional.empty();
+                                if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
+                                    return Optional.of(SettingsFragment.class);
+                                }
+                                if (classNameOfActivity.equals(SettingsActivity2.class.getName())) {
+                                    return Optional.of(SettingsFragment2.class);
+                                }
+                                return Optional.empty();
                             }
                         })
                 .withFragmentFactory(

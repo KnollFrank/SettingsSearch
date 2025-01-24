@@ -9,6 +9,7 @@
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
+    <string name="signature_title2">Your signature2</string>
     <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->

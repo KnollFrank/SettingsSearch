@@ -61,6 +61,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoPro
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.settingssearch.SettingsActivity;
 import de.KnollFrank.settingssearch.SettingsActivity.SettingsFragment;
+import de.KnollFrank.settingssearch.SettingsActivity2;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
@@ -480,6 +481,23 @@ public class PreferenceSearcherTest {
     }
 
     @Test
+    public void shouldSearchAndFindPreferenceFromTwoActivitiesApart() {
+        final String keyword = "Your signature2";
+        final String keyOfPreferenceFromSettingsActivity = "signature2";
+        testSearch(
+                new PrefsFragmentFirst(),
+                (preference, hostOfPreference) -> true,
+                preference -> true,
+                keyword,
+                (preference, hostOfPreference) -> Optional.empty(),
+                new PreferenceDialogAndSearchableInfoProvider(),
+                preferenceMatches ->
+                        assertThat(
+                                getKeySet(preferenceMatches),
+                                hasItem(keyOfPreferenceFromSettingsActivity)));
+    }
+
+    @Test
     public void shouldSearchAndFindMultiSelectListPreference() {
         final String keyword = "entry of some MultiSelectListPreference";
         final String keyOfPreference = "keyOfSomeMultiSelectListPreference";
@@ -639,9 +657,13 @@ public class PreferenceSearcherTest {
 
                             @Override
                             public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
-                                return classNameOfActivity.equals(SettingsActivity.class.getName()) ?
-                                        Optional.of(SettingsFragment.class) :
-                                        Optional.empty();
+                                if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
+                                    return Optional.of(SettingsFragment.class);
+                                }
+                                if (classNameOfActivity.equals(SettingsActivity2.class.getName())) {
+                                    return Optional.of(SettingsActivity2.SettingsFragment2.class);
+                                }
+                                return Optional.empty();
                             }
                         },
                         preferenceScreenGraph -> {

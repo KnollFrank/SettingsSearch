@@ -74,6 +74,13 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFindPreferenceFromTwoActivitiesApart() {
+        final String query = "Your signature2";
+        searchForQueryThenClickSearchResultAtPosition(query, 0);
+        onView(titleOfPreference(query)).check(matches(withText(query)));
+    }
+
+    @Test
     public void shouldSearchAndFindListPreference() {
         final String entryOfSomeListPreference = "Home";
         onView(searchButton()).perform(click());

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import java.util.List;
 
+// FK-TODO: es reicht, die id der SearchablePreference zu speichern, statt preferencePathIds, da in der DB der PreferencePath zu dieser SearchablePreference hinterlegt ist.
 public record PreferencePathNavigatorData(List<Integer> preferencePathIds,
                                           int indexWithinPreferencePath) {
 

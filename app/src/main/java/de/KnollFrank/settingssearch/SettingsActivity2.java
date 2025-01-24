@@ -1,6 +1,5 @@
 package de.KnollFrank.settingssearch;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -26,7 +25,8 @@ import de.KnollFrank.lib.settingssearch.fragment.data.PreferencePathNavigatorDat
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
-public class SettingsActivity extends AppCompatActivity {
+// FK-FIXME: search for signature2, click search result, press back button multiple times => stays at SettingsActivity2 but should go back.
+public class SettingsActivity2 extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.settings;
     private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
@@ -34,12 +34,12 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.settings_activity2);
         if (savedInstanceState == null) {
             this
                     .getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(FRAGMENT_CONTAINER_VIEW_ID, new SettingsFragment())
+                    .replace(FRAGMENT_CONTAINER_VIEW_ID, new SettingsFragment2())
                     .commit();
         }
         final ActionBar actionBar = getSupportActionBar();
@@ -51,7 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // FK-TODO: DRY with SettingsActivity2
         this
                 .getPreferencePathNavigatorData()
                 .ifPresent(this::showPreferenceScreenAndHighlightPreference);
@@ -82,13 +81,12 @@ public class SettingsActivity extends AppCompatActivity {
                         convertIds2Preferences(
                                 preferencePathNavigatorData.preferencePathIds(),
                                 mergedPreferenceScreen.preferences()));
+        final SearchablePreference searchablePreference = preferencePath.getPreference().orElseThrow();
         mergedPreferenceScreen
                 .searchResultsDisplayer()
                 .getSearchResultsFragment()
                 .showPreferenceScreenAndHighlightPreference
-                .showPreferenceScreenAndHighlightPreference(
-                        preferencePath.getPreference().orElseThrow(),
-                        preferencePathNavigatorData.indexWithinPreferencePath());
+                .showPreferenceScreenAndHighlightPreference(searchablePreference, preferencePathNavigatorData.indexWithinPreferencePath());
     }
 
     private static List<SearchablePreference> convertIds2Preferences(
@@ -125,12 +123,11 @@ public class SettingsActivity extends AppCompatActivity {
                 rootPreferenceFragment);
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat {
+    public static class SettingsFragment2 extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(new Intent(getContext(), SettingsActivity2.class));
+            setPreferencesFromResource(R.xml.root_preferences2, rootKey);
         }
     }
 }

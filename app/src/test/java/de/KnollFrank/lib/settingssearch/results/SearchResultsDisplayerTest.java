@@ -133,7 +133,7 @@ public class SearchResultsDisplayerTest {
     private static SearchResultsFragment getInitializedSearchResultsFragment(final TestActivity activity) {
         final SearchResultsFragment searchResultsFragment =
                 new SearchResultsFragment(
-                        preference -> {
+                        (preference, startNavigationAtIndexWithinPreferencePath) -> {
                         },
                         preferencePath -> true,
                         new DefaultPreferencePathDisplayer(),
