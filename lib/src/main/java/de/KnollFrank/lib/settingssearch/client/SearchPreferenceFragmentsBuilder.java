@@ -6,8 +6,10 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 
@@ -21,6 +23,8 @@ public class SearchPreferenceFragmentsBuilder {
     private SearchDatabaseConfig searchDatabaseConfig = new SearchDatabaseConfigBuilder().build();
     private SearchConfig searchConfig;
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
+    private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
+    };
 
     protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
@@ -50,6 +54,11 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
+    public SearchPreferenceFragmentsBuilder withOnMergedPreferenceScreenAvailable(final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
+        this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
+        return this;
+    }
+
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
                 searchConfiguration,
@@ -59,6 +68,7 @@ public class SearchPreferenceFragmentsBuilder {
                 locale,
                 onUiThreadRunner,
                 context,
-                createSearchDatabaseTaskSupplier);
+                createSearchDatabaseTaskSupplier,
+                onMergedPreferenceScreenAvailable);
     }
 }

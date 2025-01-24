@@ -65,7 +65,9 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                         getClass()),
                 getParentFragmentManager(),
                 requireActivity(),
-                Optional::empty);
+                Optional::empty,
+                mergedPreferenceScreen -> {
+                });
     }
 
     private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {

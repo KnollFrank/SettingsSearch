@@ -9,8 +9,10 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
@@ -36,6 +38,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
+    private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
@@ -55,7 +58,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final Context context,
-                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
+                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
+                                        final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
         this.searchConfiguration = searchConfiguration;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
@@ -64,6 +68,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
+        this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
     }
 
     public void showSearchPreferenceFragment() {
@@ -74,7 +79,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                         getMergedPreferenceScreenFactory(),
                         onUiThreadRunner,
                         createSearchDatabaseTaskSupplier,
-                        searchConfig.searchPreferenceFragmentUI()),
+                        searchConfig.searchPreferenceFragmentUI(),
+                        onMergedPreferenceScreenAvailable),
                 searchPreferenceFragment -> {
                 },
                 true,
