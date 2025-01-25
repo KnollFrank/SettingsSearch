@@ -1,42 +1,50 @@
-package de.KnollFrank.settingssearch;
+package de.KnollFrank.lib.settingssearch.fragment;
 
 import android.view.ViewGroup;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigatorData;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
-import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
-class ContinueWithPreferencePathNavigation {
+public class ContinueWithPreferencePathNavigation {
 
     private final FragmentActivity activity;
     private final ViewGroup parent;
     private final @IdRes int fragmentContainerViewId;
+    private final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments;
 
-    private ContinueWithPreferencePathNavigation(final FragmentActivity activity,
-                                                 final ViewGroup parent,
-                                                 final @IdRes int fragmentContainerViewId) {
+    private ContinueWithPreferencePathNavigation(
+            final FragmentActivity activity,
+            final ViewGroup parent,
+            final @IdRes int fragmentContainerViewId,
+            final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments) {
         this.activity = activity;
         this.parent = parent;
         this.fragmentContainerViewId = fragmentContainerViewId;
+        this.createSearchPreferenceFragments = createSearchPreferenceFragments;
     }
 
-    public static void continueWithPreferencePathNavigation(final FragmentActivity activity,
-                                                            final ViewGroup parent,
-                                                            final @IdRes int fragmentContainerViewId) {
-        final var continueWithPreferencePathNavigation = new ContinueWithPreferencePathNavigation(activity, parent, fragmentContainerViewId);
+    public static void continueWithPreferencePathNavigation(
+            final FragmentActivity activity,
+            final ViewGroup parent,
+            final @IdRes int fragmentContainerViewId,
+            final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments) {
+        final var continueWithPreferencePathNavigation =
+                new ContinueWithPreferencePathNavigation(
+                        activity,
+                        parent,
+                        fragmentContainerViewId,
+                        createSearchPreferenceFragments);
         continueWithPreferencePathNavigation.continueWithPreferencePathNavigation();
     }
 
@@ -57,7 +65,7 @@ class ContinueWithPreferencePathNavigation {
                 parent,
                 fragmentContainerViewId);
         final SearchPreferenceFragments searchPreferenceFragments =
-                createSearchPreferenceFragments(
+                createSearchPreferenceFragments.apply(
                         mergedPreferenceScreen ->
                                 showPreferenceScreenAndHighlightPreferenceOnce(
                                         preferencePathNavigatorData,
@@ -83,22 +91,6 @@ class ContinueWithPreferencePathNavigation {
                                 preferencePathNavigatorData.idOfSearchablePreference(),
                                 mergedPreferenceScreen.preferences()),
                         preferencePathNavigatorData.indexWithinPreferencePath());
-    }
-
-    private SearchPreferenceFragments createSearchPreferenceFragments(final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
-        return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
-                createSearchConfiguration(PrefsFragmentFirst.class),
-                activity.getSupportFragmentManager(),
-                activity,
-                Optional::empty,
-                onMergedPreferenceScreenAvailable);
-    }
-
-    private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
-        return new SearchConfiguration(
-                fragmentContainerViewId,
-                Optional.empty(),
-                rootPreferenceFragment);
     }
 
     private static SearchablePreference getPreferenceFromId(final int id,

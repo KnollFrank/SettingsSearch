@@ -1,6 +1,7 @@
 package de.KnollFrank.settingssearch;
 
-import static de.KnollFrank.settingssearch.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
+import static de.KnollFrank.lib.settingssearch.fragment.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
+import static de.KnollFrank.settingssearch.SettingsActivity.createSearchPreferenceFragments;
 
 import android.os.Bundle;
 import android.view.View;
@@ -38,7 +39,12 @@ public class SettingsActivity2 extends AppCompatActivity {
         continueWithPreferencePathNavigation(
                 this,
                 findViewById(R.id.settings_root),
-                fragmentContainerViewId);
+                fragmentContainerViewId,
+                mergedPreferenceScreen ->
+                        createSearchPreferenceFragments(
+                                this,
+                                mergedPreferenceScreen,
+                                fragmentContainerViewId));
     }
 
     public static class SettingsFragment2 extends PreferenceFragmentCompat {

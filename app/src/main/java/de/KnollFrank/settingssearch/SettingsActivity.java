@@ -1,6 +1,6 @@
 package de.KnollFrank.settingssearch;
 
-import static de.KnollFrank.settingssearch.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
+import static de.KnollFrank.lib.settingssearch.fragment.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,16 @@ import android.view.View;
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
+import java.util.Optional;
+import java.util.function.Consumer;
+
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
+import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -38,7 +47,31 @@ public class SettingsActivity extends AppCompatActivity {
         continueWithPreferencePathNavigation(
                 this,
                 findViewById(R.id.settings_root),
-                fragmentContainerViewId);
+                fragmentContainerViewId,
+                mergedPreferenceScreen ->
+                        createSearchPreferenceFragments(
+                                this,
+                                mergedPreferenceScreen,
+                                fragmentContainerViewId));
+    }
+
+    static SearchPreferenceFragments createSearchPreferenceFragments(
+            final FragmentActivity activity,
+            final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
+            final @IdRes int fragmentContainerViewId) {
+        return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
+                createSearchConfiguration(fragmentContainerViewId),
+                activity.getSupportFragmentManager(),
+                activity,
+                Optional::empty,
+                onMergedPreferenceScreenAvailable);
+    }
+
+    private static SearchConfiguration createSearchConfiguration(final @IdRes int fragmentContainerViewId) {
+        return new SearchConfiguration(
+                fragmentContainerViewId,
+                Optional.empty(),
+                PrefsFragmentFirst.class);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
