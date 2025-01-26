@@ -28,16 +28,16 @@ public class Preferences {
     private static Iterator<Preference> getImmediateChildrenIterator(final PreferenceGroup preferenceGroup) {
         return new Iterator<>() {
 
-            private int i = 0;
+            private int index = 0;
 
             @Override
             public boolean hasNext() {
-                return i < preferenceGroup.getPreferenceCount();
+                return index < preferenceGroup.getPreferenceCount();
             }
 
             @Override
             public Preference next() {
-                return preferenceGroup.getPreference(i++);
+                return preferenceGroup.getPreference(index++);
             }
         };
     }
