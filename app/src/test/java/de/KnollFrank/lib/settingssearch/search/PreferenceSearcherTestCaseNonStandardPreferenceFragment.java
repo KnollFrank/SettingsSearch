@@ -34,7 +34,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                         return new Fragment2PreferenceFragmentConverter() {
 
                             @Override
-                            public Optional<PreferenceFragmentCompat> convert(final Fragment fragment) {
+                            public Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
                                 return fragment instanceof final NonStandardPreferenceFragment nonPreferenceFragment ?
                                         Optional.of(
                                                 (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(

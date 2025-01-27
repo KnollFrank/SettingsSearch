@@ -112,7 +112,7 @@ class SearchDatabaseConfigFactory {
                                 return new Fragment2PreferenceFragmentConverter() {
 
                                     @Override
-                                    public Optional<PreferenceFragmentCompat> convert(final Fragment fragment) {
+                                    public Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
                                         return fragment instanceof final ItemFragment itemFragment ?
                                                 Optional.of(
                                                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(

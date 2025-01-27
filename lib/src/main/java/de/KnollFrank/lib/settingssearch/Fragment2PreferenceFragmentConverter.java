@@ -8,6 +8,5 @@ import java.util.Optional;
 @FunctionalInterface
 public interface Fragment2PreferenceFragmentConverter {
 
-    // FK-TODO: rename convert() to asSearchablePreferenceFragment()
-    Optional<PreferenceFragmentCompat> convert(Fragment fragment);
+    Optional<PreferenceFragmentCompat> asPreferenceFragment(Fragment fragment);
 }
