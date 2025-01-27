@@ -29,6 +29,9 @@ android {
     testOptions {
         unitTests.includeAndroidResources = true
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -44,6 +47,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-io
     implementation 'org.jgrapht:jgrapht-io:1.5.2'
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.test:core:1.6.1'

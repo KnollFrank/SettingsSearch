@@ -149,4 +149,10 @@
         android:key="preferenceWithIntent"
         android:persistent="false"
         android:title="Preference with Intent" />
+
+    <Preference
+        android:fragment="de.KnollFrank.settingssearch.preference.fragment.ItemFragment"
+        android:key="preferenceWithFragment"
+        android:persistent="false"
+        android:title="Preference with Fragment" />
 </PreferenceScreen>
