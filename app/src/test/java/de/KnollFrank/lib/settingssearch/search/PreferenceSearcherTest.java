@@ -9,6 +9,7 @@ import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getK
 import android.content.Context;
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.ListPreference;
@@ -584,7 +585,12 @@ public class PreferenceSearcherTest {
         PreferenceSearcherTestCaseTwoNonStandardConnectedFragments.shouldSearchAndFindPreferenceOfNonStandardConnectedFragment();
     }
 
-    static void testSearch(final PreferenceFragmentCompat preferenceFragment,
+    @Test
+    public void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment() {
+        PreferenceSearcherTestCaseNonStandardPreferenceFragment.shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment();
+    }
+
+    static void testSearch(final Fragment preferenceFragment,
                            final PreferenceSearchablePredicate preferenceSearchablePredicate,
                            final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                            final String keyword,
@@ -616,7 +622,7 @@ public class PreferenceSearcherTest {
         }
     }
 
-    private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat preferenceFragment) {
+    private static FragmentFactory createFragmentFactoryReturning(final Fragment preferenceFragment) {
         final FragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
         return (fragmentClassName, src, context) ->
                 preferenceFragment.getClass().getName().equals(fragmentClassName) ?
@@ -625,7 +631,7 @@ public class PreferenceSearcherTest {
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
-            final PreferenceFragmentCompat preferenceFragment,
+            final Fragment preferenceFragment,
             final PreferenceSearchablePredicate preferenceSearchablePredicate,
             final FragmentActivity fragmentActivity,
             final FragmentFactory fragmentFactory,
