@@ -11,7 +11,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-// FK-FIXME: search for signature2, click search result, press back button multiple times => stays at SettingsActivity2 but should go back.
+// FK-FIXME: search for signature2, click search result, then you must press the back button MULTIPLE TIMES in order to go back. Expected: press back button ONCE in order to go back.
 public class SettingsActivity2 extends AppCompatActivity {
 
     private static final @IdRes int fragmentContainerViewId = View.generateViewId();
