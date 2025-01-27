@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.MoreCollectors;
 
 import org.hamcrest.MatcherAssert;
@@ -162,7 +161,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
             PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment(
                     this,
                     "first screen",
-                    ImmutableList.of(
+                    List.of(
                             Fragment2ConnectedToFragment3.class,
                             Fragment4.class));
         }
@@ -175,7 +174,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
             PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment(
                     this,
                     "second screen",
-                    ImmutableList.of(Fragment3.class));
+                    List.of(Fragment3.class));
         }
     }
 
@@ -186,7 +185,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
             PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment(
                     this,
                     "third screen",
-                    ImmutableList.of(Fragment4.class));
+                    List.of(Fragment4.class));
         }
     }
 
@@ -197,7 +196,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
             PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment(
                     this,
                     "fourth screen",
-                    ImmutableList.of());
+                    List.of());
         }
     }
 }

@@ -13,13 +13,11 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.List;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
@@ -53,7 +51,7 @@ public class SearchablePreferenceScreenGraphProvider2Test {
         // Then
         assertThat(
                 preferenceScreens,
-                is(ImmutableSet.of(getPreferenceScreenByName(preferenceScreens, "first screen"))));
+                is(Set.of(getPreferenceScreenByName(preferenceScreens, "first screen"))));
     }
 
     public static class FragmentConnectedToNonPreferenceFragment extends PreferenceFragmentCompat {
@@ -63,7 +61,7 @@ public class SearchablePreferenceScreenGraphProvider2Test {
             configureConnectedPreferencesOfFragment(
                     this,
                     "first screen",
-                    ImmutableList.of(NonPreferenceFragment.class));
+                    List.of(NonPreferenceFragment.class));
         }
     }
 
