@@ -18,27 +18,27 @@ public class PlaceholderContent {
         }
     }
 
-    private static void addItem(PlaceholderItem item) {
+    private static void addItem(final PlaceholderItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id(), item);
     }
 
-    private static PlaceholderItem createPlaceholderItem(int position) {
+    private static PlaceholderItem createPlaceholderItem(final int position) {
         return new PlaceholderItem(
                 String.valueOf(position),
                 "Item " + position,
-                makeDetails(position));
+                makeSummary(position));
     }
 
-    private static String makeDetails(int position) {
+    private static String makeSummary(final int position) {
         return "Details about Item: " + position;
     }
 
-    public record PlaceholderItem(String id, String content, String details) {
+    public record PlaceholderItem(String id, String title, String summary) {
 
         @Override
         public String toString() {
-            return content;
+            return title;
         }
     }
 }
