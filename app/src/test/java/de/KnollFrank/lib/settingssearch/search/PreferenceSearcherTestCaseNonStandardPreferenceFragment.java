@@ -14,7 +14,9 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
+import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
 
@@ -25,13 +27,22 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
         testSearch(
                 // Given a NonStandardPreferenceFragment
                 new NonStandardPreferenceFragment(),
-                new Fragment2PreferenceFragmentConverter() {
+                new Fragment2PreferenceFragmentConverterFactory() {
 
                     @Override
-                    public Optional<PreferenceFragmentCompat> convert(final Fragment fragment) {
-                        return fragment instanceof final NonStandardPreferenceFragment nonPreferenceFragment ?
-                                Optional.of(nonPreferenceFragment.asPreferenceFragment()) :
-                                Optional.empty();
+                    public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final Fragments fragments) {
+                        return new Fragment2PreferenceFragmentConverter() {
+
+                            @Override
+                            public Optional<PreferenceFragmentCompat> convert(final Fragment fragment) {
+                                return fragment instanceof final NonStandardPreferenceFragment nonPreferenceFragment ?
+                                        Optional.of(
+                                                (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                                        nonPreferenceFragment.asPreferenceFragment().getClass().getName(),
+                                                        Optional.empty())) :
+                                        Optional.empty();
+                            }
+                        };
                     }
                 },
                 // When searching for TITLE_OF_PREFERENCE
@@ -48,7 +59,6 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
         public PreferenceFragmentCompat asPreferenceFragment() {
             return new PreferenceFragment();
         }
-
     }
 
     public static class PreferenceFragment extends PreferenceFragmentTemplate {
@@ -64,7 +74,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     }
 
     private static void testSearch(final Fragment nonPreferenceFragment,
-                                   final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
+                                   final Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         PreferenceSearcherTest.testSearch(
@@ -74,6 +84,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
+                fragment2PreferenceFragmentConverterFactory,
                 checkPreferenceMatches);
     }
 }

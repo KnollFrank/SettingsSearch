@@ -18,7 +18,10 @@ public class PojoGraphTestFactory {
             final Fragments fragments) {
         final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
                 new PreferenceScreenGraphProvider(
-                        new PreferenceScreenWithHostProvider(fragments, PreferenceFragmentCompat::getPreferenceScreen),
+                        new PreferenceScreenWithHostProvider(
+                                fragments,
+                                PreferenceFragmentCompat::getPreferenceScreen,
+                                fragment -> Optional.empty()),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         preferenceScreenWithHost -> {

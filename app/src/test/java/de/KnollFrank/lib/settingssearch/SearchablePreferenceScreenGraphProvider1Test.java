@@ -116,7 +116,8 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 rootPreferenceFragmentClassName,
                 new PreferenceScreenWithHostProvider(
                         FragmentsFactory.createFragments(activity),
-                        PreferenceFragmentCompat::getPreferenceScreen),
+                        PreferenceFragmentCompat::getPreferenceScreen,
+                        fragment -> Optional.empty()),
                 (preference, hostOfPreference) -> Optional.empty(),
                 classNameOfActivity -> Optional.empty(),
                 preferenceScreenGraph -> {

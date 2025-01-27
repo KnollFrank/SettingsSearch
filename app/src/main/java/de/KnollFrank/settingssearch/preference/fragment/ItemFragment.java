@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.stream.Collectors;
 
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
@@ -42,9 +46,7 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater,
-                             final ViewGroup container,
-                             final Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         if (view instanceof final RecyclerView recyclerView) {
             final Context context = recyclerView.getContext();
@@ -55,5 +57,31 @@ public class ItemFragment extends Fragment {
             recyclerView.setAdapter(new ItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
         }
         return view;
+    }
+
+    public PreferenceFragmentCompat asPreferenceFragment() {
+        return new PreferenceFragment();
+    }
+
+    // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.
+    public static class PreferenceFragment extends PreferenceFragmentTemplate {
+
+        public PreferenceFragment() {
+            super(context ->
+                    PlaceholderContent
+                            .ITEMS
+                            .stream()
+                            .map(placeholderItem -> asPreference(placeholderItem, context))
+                            .collect(Collectors.toList()));
+        }
+
+        private static Preference asPreference(final PlaceholderContent.PlaceholderItem placeholderItem,
+                                               final Context context) {
+            final Preference preference = new Preference(context);
+            preference.setKey(placeholderItem.key());
+            preference.setTitle(placeholderItem.title());
+            preference.setSummary(placeholderItem.summary());
+            return preference;
+        }
     }
 }

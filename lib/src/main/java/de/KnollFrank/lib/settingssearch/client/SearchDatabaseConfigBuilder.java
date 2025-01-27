@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.client;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -25,6 +26,7 @@ public class SearchDatabaseConfigBuilder {
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
+    private Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory = fragments -> fragment -> Optional.empty();
 
     public SearchDatabaseConfigBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
         this.fragmentFactory = fragmentFactory;
@@ -67,6 +69,11 @@ public class SearchDatabaseConfigBuilder {
         return this;
     }
 
+    public SearchDatabaseConfigBuilder withFragment2PreferenceFragmentConverterFactory(final Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory) {
+        this.fragment2PreferenceFragmentConverterFactory = fragment2PreferenceFragmentConverterFactory;
+        return this;
+    }
+
     public SearchDatabaseConfig build() {
         return new SearchDatabaseConfig(
                 fragmentFactory,
@@ -76,6 +83,7 @@ public class SearchDatabaseConfigBuilder {
                 preferenceFragmentConnected2PreferenceProvider,
                 rootPreferenceFragmentOfActivityProvider,
                 preferenceScreenGraphAvailableListener,
-                preferenceSearchablePredicate);
+                preferenceSearchablePredicate,
+                fragment2PreferenceFragmentConverterFactory);
     }
 }

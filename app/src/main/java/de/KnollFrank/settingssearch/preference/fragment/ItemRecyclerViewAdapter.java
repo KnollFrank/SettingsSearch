@@ -27,7 +27,7 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.item = items.get(position);
-        holder.idView.setText(items.get(position).id());
+        holder.keyView.setText(items.get(position).key());
         holder.titleView.setText(items.get(position).title());
         holder.summaryView.setText(items.get(position).summary());
     }
@@ -39,14 +39,14 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public final TextView idView;
+        public final TextView keyView;
         public final TextView titleView;
         public final TextView summaryView;
         public PlaceholderItem item;
 
         public ViewHolder(final FragmentItemBinding binding) {
             super(binding.getRoot());
-            idView = binding.itemNumber;
+            keyView = binding.key;
             titleView = binding.title;
             summaryView = binding.summary;
         }

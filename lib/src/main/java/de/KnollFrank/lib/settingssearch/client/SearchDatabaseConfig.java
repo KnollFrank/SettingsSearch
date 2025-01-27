@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -16,5 +17,6 @@ public record SearchDatabaseConfig(FragmentFactory fragmentFactory,
                                    PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                                    RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                                    PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                                   PreferenceSearchablePredicate preferenceSearchablePredicate) {
+                                   PreferenceSearchablePredicate preferenceSearchablePredicate,
+                                   Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory) {
 }

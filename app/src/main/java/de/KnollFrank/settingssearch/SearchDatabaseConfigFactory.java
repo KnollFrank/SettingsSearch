@@ -11,6 +11,8 @@ import org.jgrapht.Graph;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
+import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
@@ -18,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -28,6 +31,7 @@ import de.KnollFrank.settingssearch.SettingsActivity2.SettingsFragment2;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
+import de.KnollFrank.settingssearch.preference.fragment.ItemFragment;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
@@ -100,6 +104,26 @@ class SearchDatabaseConfigFactory {
                                 Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
                             }
                         })
+                .withFragment2PreferenceFragmentConverterFactory(
+                        new Fragment2PreferenceFragmentConverterFactory() {
+
+                            @Override
+                            public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final Fragments fragments) {
+                                return new Fragment2PreferenceFragmentConverter() {
+
+                                    @Override
+                                    public Optional<PreferenceFragmentCompat> convert(final Fragment fragment) {
+                                        return fragment instanceof final ItemFragment itemFragment ?
+                                                Optional.of(
+                                                        (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                                                itemFragment.asPreferenceFragment().getClass().getName(),
+                                                                Optional.empty())) :
+                                                Optional.empty();
+                                    }
+                                };
+                            }
+                        }
+                )
                 .build();
     }
 }

@@ -89,6 +89,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
+                fragments -> fragment -> Optional.empty(),
                 checkPreferenceMatches);
     }
 }

@@ -20,7 +20,7 @@ public class PlaceholderContent {
 
     private static void addItem(final PlaceholderItem item) {
         ITEMS.add(item);
-        ITEM_MAP.put(item.id(), item);
+        ITEM_MAP.put(item.key(), item);
     }
 
     private static PlaceholderItem createPlaceholderItem(final int position) {
@@ -34,7 +34,7 @@ public class PlaceholderContent {
         return "Details about Item: " + position;
     }
 
-    public record PlaceholderItem(String id, String title, String summary) {
+    public record PlaceholderItem(String key, String title, String summary) {
 
         @Override
         public String toString() {
