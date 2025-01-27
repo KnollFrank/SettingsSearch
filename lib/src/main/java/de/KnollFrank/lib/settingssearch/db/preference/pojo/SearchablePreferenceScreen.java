@@ -4,5 +4,5 @@ import java.util.List;
 
 public record SearchablePreferenceScreen(String title,
                                          String summary,
-                                         List<SearchablePreference> children) {
+                                         List<SearchablePreference> preferences) {
 }

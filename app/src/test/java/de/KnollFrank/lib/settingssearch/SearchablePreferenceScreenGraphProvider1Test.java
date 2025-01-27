@@ -149,7 +149,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 .flatMap(
                         preferenceScreenWithHost ->
                                 SearchablePreferences
-                                        .getPreferencesRecursively(preferenceScreenWithHost.preferenceScreen().children())
+                                        .getPreferencesRecursively(preferenceScreenWithHost.preferenceScreen().preferences())
                                         .stream()
                                         .filter(preference -> predicate.test(preferenceScreenWithHost.host(), preference)))
                 .collect(MoreCollectors.onlyElement());

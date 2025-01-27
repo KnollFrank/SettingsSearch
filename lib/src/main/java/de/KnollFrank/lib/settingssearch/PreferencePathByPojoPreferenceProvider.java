@@ -63,7 +63,7 @@ public class PreferencePathByPojoPreferenceProvider {
         preferencePathByPreferenceScreen.forEach(
                 (preferenceScreen, preferencePath) ->
                         SearchablePreferences
-                                .getPreferencesRecursively(preferenceScreen.children())
+                                .getPreferencesRecursively(preferenceScreen.preferences())
                                 .forEach(
                                         searchablePreference ->
                                                 preferencePathByPreferenceBuilder.put(

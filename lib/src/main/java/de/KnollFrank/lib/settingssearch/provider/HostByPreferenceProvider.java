@@ -26,7 +26,7 @@ public class HostByPreferenceProvider {
     private static Map<SearchablePreference, Class<? extends PreferenceFragmentCompat>> getHostByPreference(
             final PreferenceScreenWithHostClass preferenceScreen) {
         return SearchablePreferences
-                .getPreferencesRecursively(preferenceScreen.preferenceScreen().children())
+                .getPreferencesRecursively(preferenceScreen.preferenceScreen().preferences())
                 .stream()
                 .collect(
                         Collectors.toMap(
