@@ -617,7 +617,7 @@ public class PreferenceSearcherTest {
     }
 
     private static FragmentFactory createFragmentFactoryReturning(final PreferenceFragmentCompat preferenceFragment) {
-        final DefaultFragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
+        final FragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
         return (fragmentClassName, src, context) ->
                 preferenceFragment.getClass().getName().equals(fragmentClassName) ?
                         preferenceFragment :
