@@ -40,31 +40,6 @@ class SearchDatabaseConfigFactory {
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
         return new SearchDatabaseConfigBuilder()
-                .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
-                .withPreferenceFragmentConnected2PreferenceProvider(
-                        new PreferenceFragmentConnected2PreferenceProvider() {
-
-                            @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-                                return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
-                                        Optional.of(PrefsFragmentSecond.class) :
-                                        Optional.empty();
-                            }
-                        })
-                .withRootPreferenceFragmentOfActivityProvider(
-                        new RootPreferenceFragmentOfActivityProvider() {
-
-                            @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
-                                if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
-                                    return Optional.of(SettingsFragment.class);
-                                }
-                                if (classNameOfActivity.equals(SettingsActivity2.class.getName())) {
-                                    return Optional.of(SettingsFragment2.class);
-                                }
-                                return Optional.empty();
-                            }
-                        })
                 .withFragmentFactory(
                         new FragmentFactory() {
 
@@ -81,6 +56,32 @@ class SearchDatabaseConfigFactory {
                                             PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference()));
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClassName, src, context);
+                            }
+                        })
+                .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
+                .withPreferenceFragmentConnected2PreferenceProvider(
+                        new PreferenceFragmentConnected2PreferenceProvider() {
+
+                            @Override
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+                                return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
+                                        Optional.of(PrefsFragmentSecond.class) :
+                                        Optional.empty();
+                            }
+                        })
+                .withRootPreferenceFragmentOfActivityProvider(
+                        new RootPreferenceFragmentOfActivityProvider() {
+
+                            // FK-TODO: Rückgabewert sollte ein Optional<Class<? extends Fragment>> sein, das nach Bedarf mit dem Fragment2PreferenceFragmentConverter in ein PreferenceFragmentCompat umgewandelt wird.
+                            @Override
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
+                                if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
+                                    return Optional.of(SettingsFragment.class);
+                                }
+                                if (classNameOfActivity.equals(SettingsActivity2.class.getName())) {
+                                    return Optional.of(SettingsFragment2.class);
+                                }
+                                return Optional.empty();
                             }
                         })
                 .withPreferenceDialogAndSearchableInfoProvider(
