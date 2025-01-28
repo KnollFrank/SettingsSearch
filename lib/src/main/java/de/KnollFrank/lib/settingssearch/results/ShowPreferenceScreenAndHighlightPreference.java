@@ -32,7 +32,6 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
         this.fragmentManager = fragmentManager;
     }
 
-    // FK-TODO: replace the two params with PreferencePathPointer
     @Override
     public void showPreferenceScreenAndHighlightPreference(final SearchablePreference preference,
                                                            final int startNavigationAtIndexWithinPreferencePath) {
