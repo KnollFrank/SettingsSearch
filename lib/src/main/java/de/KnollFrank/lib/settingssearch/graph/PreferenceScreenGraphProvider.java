@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
@@ -28,16 +29,19 @@ public class PreferenceScreenGraphProvider {
     private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
     private final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
+    private final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
     private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                          final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
-                                         final PreferenceScreenGraphListener preferenceScreenGraphListener) {
+                                         final PreferenceScreenGraphListener preferenceScreenGraphListener,
+                                         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.preferenceScreenGraphListener = preferenceScreenGraphListener;
+        this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final String rootPreferenceFragmentClassName) {
@@ -112,6 +116,11 @@ public class PreferenceScreenGraphProvider {
     private Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragment(final Optional<Intent> intent) {
         return intent
                 .map(Intents::getClassName)
-                .flatMap(rootPreferenceFragmentOfActivityProvider::getRootPreferenceFragmentOfActivity);
+                .flatMap(rootPreferenceFragmentOfActivityProvider::getRootPreferenceFragmentOfActivity)
+                .flatMap(
+                        rootPreferenceFragmentOfActivity ->
+                                PreferenceFragmentCompat.class.isAssignableFrom(rootPreferenceFragmentOfActivity) ?
+                                        Optional.of(rootPreferenceFragmentOfActivity.asSubclass(PreferenceFragmentCompat.class)) :
+                                        fragment2PreferenceFragmentConverter.asPreferenceFragment(rootPreferenceFragmentOfActivity));
     }
 }

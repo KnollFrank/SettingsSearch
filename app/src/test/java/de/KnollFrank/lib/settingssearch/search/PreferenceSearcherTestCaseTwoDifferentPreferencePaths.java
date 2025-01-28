@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.search;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeyList;
+import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.createFragment2PreferenceFragmentConverterFactory;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -89,7 +90,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragments -> fragment -> Optional.empty(),
+                createFragment2PreferenceFragmentConverterFactory(),
                 checkPreferenceMatches);
     }
 }

@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import org.jgrapht.Graph;
 
+import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
@@ -21,6 +22,7 @@ public class SearchablePreferenceScreenGraphProvider {
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
     private final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter;
+    private final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
 
     public SearchablePreferenceScreenGraphProvider(final String rootPreferenceFragmentClassName,
                                                    final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
@@ -28,7 +30,8 @@ public class SearchablePreferenceScreenGraphProvider {
                                                    final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                                                    final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                                    final PreferenceScreenGraphListener preferenceScreenGraphListener,
-                                                   final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
+                                                   final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
+                                                   final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
         this.rootPreferenceFragmentClassName = rootPreferenceFragmentClassName;
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
@@ -36,6 +39,7 @@ public class SearchablePreferenceScreenGraphProvider {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.preferenceScreenGraphListener = preferenceScreenGraphListener;
         this.preference2SearchablePreferenceConverter = preference2SearchablePreferenceConverter;
+        this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
     }
 
     public Graph<PreferenceScreenWithHostClass, SearchablePreferenceEdge> getSearchablePreferenceScreenGraph() {
@@ -50,7 +54,8 @@ public class SearchablePreferenceScreenGraphProvider {
                         preferenceScreenWithHostProvider,
                         preferenceFragmentConnected2PreferenceProvider,
                         rootPreferenceFragmentOfActivityProvider,
-                        preferenceScreenGraphListener);
+                        preferenceScreenGraphListener,
+                        fragment2PreferenceFragmentConverter);
         return preferenceScreenGraphProvider.getPreferenceScreenGraph(rootPreferenceFragmentClassName);
     }
 

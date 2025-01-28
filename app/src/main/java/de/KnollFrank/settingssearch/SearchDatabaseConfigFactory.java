@@ -72,9 +72,8 @@ class SearchDatabaseConfigFactory {
                 .withRootPreferenceFragmentOfActivityProvider(
                         new RootPreferenceFragmentOfActivityProvider() {
 
-                            // FK-TODO: Rückgabewert sollte ein Optional<Class<? extends Fragment>> sein, das nach Bedarf mit dem Fragment2PreferenceFragmentConverter in ein PreferenceFragmentCompat umgewandelt wird.
                             @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
+                            public Optional<Class<? extends Fragment>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
                                 if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
                                     return Optional.of(SettingsFragment.class);
                                 }
@@ -119,6 +118,14 @@ class SearchDatabaseConfigFactory {
                                                         (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
                                                                 itemFragment.asPreferenceFragment().getClass().getName(),
                                                                 Optional.empty())) :
+                                                Optional.empty();
+                                    }
+
+                                    // FK-TODO: dieser Code soll aufgerufen werden mit folgendem Beispiel: eine Preference mit Intent ruft SettingsActivity auf, die über obigen RootPreferenceFragmentOfActivityProvider ein Fragment zurückgibt (und kein PreferenceFragmentCompat)
+                                    @Override
+                                    public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
+                                        return ItemFragment.class.isAssignableFrom(fragment) ?
+                                                Optional.of(ItemFragment.PreferenceFragment.class) :
                                                 Optional.empty();
                                     }
                                 };

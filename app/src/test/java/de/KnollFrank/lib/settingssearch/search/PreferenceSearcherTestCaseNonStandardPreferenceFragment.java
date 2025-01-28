@@ -42,6 +42,13 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                                                         Optional.empty())) :
                                         Optional.empty();
                             }
+
+                            @Override
+                            public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
+                                return NonStandardPreferenceFragment.class.isAssignableFrom(fragment) ?
+                                        Optional.of(PreferenceFragment.class) :
+                                        Optional.empty();
+                            }
                         };
                     }
                 },
