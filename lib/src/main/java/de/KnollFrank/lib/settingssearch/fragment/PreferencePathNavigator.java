@@ -24,29 +24,38 @@ public class PreferencePathNavigator {
     }
 
     public Optional<PreferenceFragmentCompat> navigatePreferencePath(final PreferencePathPointer preferencePathPointer) {
-        return navigatePreferences(Optional.empty(), Optional.of(preferencePathPointer));
+        return navigatePreferences(Optional.empty(), preferencePathPointer);
     }
 
-    private Optional<PreferenceFragmentCompat> navigatePreferences(final Optional<PreferenceWithHost> src,
-                                                                   final Optional<PreferencePathPointer> preferencePathPointer) {
-        if (preferencePathPointer.isEmpty()) {
-            return Optional.of(src.orElseThrow().host());
+    private Optional<PreferenceFragmentCompat> navigatePreferences(
+            final Optional<PreferenceWithHost> src,
+            final PreferencePathPointer preferencePathPointer) {
+        return preferencePathPointer.dereference().getClassNameOfReferencedActivity().isPresent() ?
+                maybeContinueNavigationInAnotherActivity(src, preferencePathPointer) :
+                navigatePreferences(
+                        getPreferenceWithHost(preferencePathPointer.dereference(), src),
+                        preferencePathPointer.next());
+    }
+
+    private Optional<PreferenceFragmentCompat> maybeContinueNavigationInAnotherActivity(
+            final Optional<PreferenceWithHost> src,
+            final PreferencePathPointer preferencePathPointer) {
+        final Optional<PreferencePathPointer> nextPreferencePathPointer = preferencePathPointer.next();
+        if (nextPreferencePathPointer.isPresent()) {
+            continueNavigationInAnotherActivity(
+                    preferencePathPointer.dereference().getClassNameOfReferencedActivity().orElseThrow(),
+                    nextPreferencePathPointer.get());
+            return Optional.empty();
         }
-        final PreferencePathPointer _preferencePathPointer = preferencePathPointer.get();
-        final SearchablePreference actualPreference = _preferencePathPointer.dereference();
-        if (actualPreference.getClassNameOfReferencedActivity().isPresent()) {
-            final Optional<PreferencePathPointer> nextPreferencePathPointer = _preferencePathPointer.next();
-            if (nextPreferencePathPointer.isPresent()) {
-                continueNavigationInAnotherActivity(
-                        actualPreference.getClassNameOfReferencedActivity().get(),
-                        nextPreferencePathPointer.get());
-                return Optional.empty();
-            }
-            return Optional.of(getPreferenceWithHost(actualPreference, src).host());
-        }
-        return navigatePreferences(
-                Optional.of(getPreferenceWithHost(actualPreference, src)),
-                _preferencePathPointer.next());
+        return Optional.of(getPreferenceWithHost(preferencePathPointer.dereference(), src).host());
+    }
+
+    private Optional<PreferenceFragmentCompat> navigatePreferences(
+            final PreferenceWithHost src,
+            final Optional<PreferencePathPointer> preferencePathPointer) {
+        return preferencePathPointer.isEmpty() ?
+                Optional.of(src.host()) :
+                navigatePreferences(Optional.of(src), preferencePathPointer.get());
     }
 
     private void continueNavigationInAnotherActivity(final String classNameOfReferencedActivity,
