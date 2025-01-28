@@ -33,29 +33,40 @@ public class PreferencePathNavigator {
                 startNavigationAtIndexWithinPreferencePath);
     }
 
-    private Optional<PreferenceFragmentCompat> navigatePreferences(
-            final Optional<PreferenceWithHost> src,
-            final PreferencePath preferencePath,
-            final int indexWithinPreferencePath) {
-        final Optional<SearchablePreference> preferenceOption =
+    private Optional<PreferenceFragmentCompat> navigatePreferences(final Optional<PreferenceWithHost> src,
+                                                                   final PreferencePath preferencePath,
+                                                                   final int indexWithinPreferencePath) {
+        final Optional<SearchablePreference> actualPreferenceOption =
                 Lists.getElementAtIndex(
                         preferencePath.preferences(),
                         indexWithinPreferencePath);
-        if (preferenceOption.isEmpty()) {
+        if (actualPreferenceOption.isEmpty()) {
             return Optional.of(src.orElseThrow().host());
         }
-        final SearchablePreference preference = preferenceOption.get();
-        if (preference.getClassNameOfReferencedActivity().isPresent()) {
-            continueNavigationInAnotherActivity(
-                    preference.getClassNameOfReferencedActivity().get(),
-                    preferencePath,
-                    indexWithinPreferencePath + 1);
-            return Optional.empty();
+        final SearchablePreference actualPreference = actualPreferenceOption.get();
+        if (actualPreference.getClassNameOfReferencedActivity().isPresent()) {
+            if (continueNavigationInAnotherActivity(preferencePath, indexWithinPreferencePath)) {
+                continueNavigationInAnotherActivity(
+                        actualPreference.getClassNameOfReferencedActivity().get(),
+                        preferencePath,
+                        indexWithinPreferencePath + 1);
+                return Optional.empty();
+            }
+            return Optional.of(getPreferenceWithHost(actualPreference, src).host());
         }
         return navigatePreferences(
-                Optional.of(getPreferenceWithHost(preference, src)),
+                Optional.of(getPreferenceWithHost(actualPreference, src)),
                 preferencePath,
                 indexWithinPreferencePath + 1);
+    }
+
+    private static boolean continueNavigationInAnotherActivity(final PreferencePath preferencePath,
+                                                               final int indexWithinPreferencePath) {
+        final Optional<SearchablePreference> firstPreferenceOfAnotherActivity =
+                Lists.getElementAtIndex(
+                        preferencePath.preferences(),
+                        indexWithinPreferencePath + 1);
+        return firstPreferenceOfAnotherActivity.isPresent();
     }
 
     private void continueNavigationInAnotherActivity(final String classNameOfReferencedActivity,

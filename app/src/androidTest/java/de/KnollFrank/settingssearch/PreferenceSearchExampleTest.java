@@ -81,6 +81,13 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFindPreferenceReferencingAnotherActivity() {
+        final String query = "Preference with Intent";
+        searchForQueryThenClickSearchResultAtPosition(query, 0);
+        onView(titleOfPreference(query)).check(matches(withText(query)));
+    }
+
+    @Test
     public void shouldSearchAndFindListPreference() {
         final String entryOfSomeListPreference = "Home";
         onView(searchButton()).perform(click());
