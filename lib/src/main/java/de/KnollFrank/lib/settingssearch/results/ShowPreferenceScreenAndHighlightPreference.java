@@ -12,6 +12,7 @@ import org.threeten.bp.Duration;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
+import de.KnollFrank.lib.settingssearch.fragment.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 
 public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferenceScreenAndHighlightPreference {
@@ -31,11 +32,15 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
         this.fragmentManager = fragmentManager;
     }
 
+    // FK-TODO: replace the two params with PreferencePathPointer
     @Override
     public void showPreferenceScreenAndHighlightPreference(final SearchablePreference preference,
                                                            final int startNavigationAtIndexWithinPreferencePath) {
         preferencePathNavigator
-                .navigatePreferencePath(preference.getPreferencePath(), startNavigationAtIndexWithinPreferencePath)
+                .navigatePreferencePath(
+                        new PreferencePathPointer(
+                                preference.getPreferencePath(),
+                                startNavigationAtIndexWithinPreferencePath))
                 .ifPresent(
                         fragmentOfPreferenceScreen ->
                                 showPreferenceScreenAndHighlightPreference(

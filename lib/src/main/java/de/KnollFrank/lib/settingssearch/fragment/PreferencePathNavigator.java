@@ -8,9 +8,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
@@ -25,71 +23,50 @@ public class PreferencePathNavigator {
         this.context = context;
     }
 
-    public Optional<PreferenceFragmentCompat> navigatePreferencePath(final PreferencePath preferencePath,
-                                                                     final int startNavigationAtIndexWithinPreferencePath) {
-        return navigatePreferences(
-                Optional.empty(),
-                preferencePath,
-                startNavigationAtIndexWithinPreferencePath);
+    public Optional<PreferenceFragmentCompat> navigatePreferencePath(final PreferencePathPointer preferencePathPointer) {
+        return navigatePreferences(Optional.empty(), Optional.of(preferencePathPointer));
     }
 
     private Optional<PreferenceFragmentCompat> navigatePreferences(final Optional<PreferenceWithHost> src,
-                                                                   final PreferencePath preferencePath,
-                                                                   final int indexWithinPreferencePath) {
-        final Optional<SearchablePreference> actualPreferenceOption =
-                Lists.getElementAtIndex(
-                        preferencePath.preferences(),
-                        indexWithinPreferencePath);
-        if (actualPreferenceOption.isEmpty()) {
+                                                                   final Optional<PreferencePathPointer> preferencePathPointer) {
+        if (preferencePathPointer.isEmpty()) {
             return Optional.of(src.orElseThrow().host());
         }
-        final SearchablePreference actualPreference = actualPreferenceOption.get();
+        final PreferencePathPointer _preferencePathPointer = preferencePathPointer.get();
+        final SearchablePreference actualPreference = _preferencePathPointer.dereference();
         if (actualPreference.getClassNameOfReferencedActivity().isPresent()) {
-            if (continueNavigationInAnotherActivity(preferencePath, indexWithinPreferencePath)) {
+            final Optional<PreferencePathPointer> nextPreferencePathPointer = _preferencePathPointer.next();
+            if (nextPreferencePathPointer.isPresent()) {
                 continueNavigationInAnotherActivity(
                         actualPreference.getClassNameOfReferencedActivity().get(),
-                        preferencePath,
-                        indexWithinPreferencePath + 1);
+                        nextPreferencePathPointer.get());
                 return Optional.empty();
             }
             return Optional.of(getPreferenceWithHost(actualPreference, src).host());
         }
         return navigatePreferences(
                 Optional.of(getPreferenceWithHost(actualPreference, src)),
-                preferencePath,
-                indexWithinPreferencePath + 1);
-    }
-
-    private static boolean continueNavigationInAnotherActivity(final PreferencePath preferencePath,
-                                                               final int indexWithinPreferencePath) {
-        final Optional<SearchablePreference> firstPreferenceOfAnotherActivity =
-                Lists.getElementAtIndex(
-                        preferencePath.preferences(),
-                        indexWithinPreferencePath + 1);
-        return firstPreferenceOfAnotherActivity.isPresent();
+                _preferencePathPointer.next());
     }
 
     private void continueNavigationInAnotherActivity(final String classNameOfReferencedActivity,
-                                                     final PreferencePath preferencePath,
-                                                     final int indexWithinPreferencePath) {
+                                                     final PreferencePathPointer preferencePathPointer) {
         context.startActivity(
                 createIntent(
                         classNameOfReferencedActivity,
-                        preferencePath,
-                        indexWithinPreferencePath));
+                        preferencePathPointer));
     }
 
     private Intent createIntent(final String classNameOfReferencedActivity,
-                                final PreferencePath preferencePath,
-                                final int indexWithinPreferencePath) {
+                                final PreferencePathPointer preferencePathPointer) {
         final Intent intent =
                 new Intent(
                         context,
                         Utils.getClass(classNameOfReferencedActivity));
         final PreferencePathNavigatorData preferencePathNavigatorData =
                 new PreferencePathNavigatorData(
-                        preferencePath.getPreference().getId(),
-                        indexWithinPreferencePath);
+                        preferencePathPointer.preferencePath().getPreference().getId(),
+                        preferencePathPointer.indexWithinPreferencePath());
         intent.putExtras(preferencePathNavigatorData.toBundle());
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
