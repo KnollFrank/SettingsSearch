@@ -32,6 +32,7 @@ import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment;
+import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
@@ -80,6 +81,9 @@ class SearchDatabaseConfigFactory {
                                 if (classNameOfActivity.equals(SettingsActivity2.class.getName())) {
                                     return Optional.of(SettingsFragment2.class);
                                 }
+                                if (classNameOfActivity.equals(SettingsActivity3.class.getName())) {
+                                    return Optional.of(ItemFragment3.class);
+                                }
                                 return Optional.empty();
                             }
                         })
@@ -113,20 +117,30 @@ class SearchDatabaseConfigFactory {
 
                                     @Override
                                     public Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
-                                        return fragment instanceof final ItemFragment itemFragment ?
-                                                Optional.of(
-                                                        (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                                                                itemFragment.asPreferenceFragment().getClass().getName(),
-                                                                Optional.empty())) :
-                                                Optional.empty();
+                                        if (fragment instanceof final ItemFragment itemFragment) {
+                                            return Optional.of(
+                                                    (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                                            itemFragment.asPreferenceFragment().getClass().getName(),
+                                                            Optional.empty()));
+                                        }
+                                        if (fragment instanceof final ItemFragment3 itemFragment3) {
+                                            return Optional.of(
+                                                    (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                                            itemFragment3.asPreferenceFragment().getClass().getName(),
+                                                            Optional.empty()));
+                                        }
+                                        return Optional.empty();
                                     }
 
-                                    // FK-TODO: dieser Code soll aufgerufen werden mit folgendem Beispiel: eine Preference mit Intent ruft SettingsActivity auf, die über obigen RootPreferenceFragmentOfActivityProvider ein Fragment zurückgibt (und kein PreferenceFragmentCompat)
                                     @Override
                                     public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
-                                        return ItemFragment.class.isAssignableFrom(fragment) ?
-                                                Optional.of(ItemFragment.PreferenceFragment.class) :
-                                                Optional.empty();
+                                        if (ItemFragment.class.isAssignableFrom(fragment)) {
+                                            return Optional.of(ItemFragment.PreferenceFragment.class);
+                                        }
+                                        if (ItemFragment3.class.isAssignableFrom(fragment)) {
+                                            return Optional.of(ItemFragment3.PreferenceFragment3.class);
+                                        }
+                                        return Optional.empty();
                                     }
                                 };
                             }

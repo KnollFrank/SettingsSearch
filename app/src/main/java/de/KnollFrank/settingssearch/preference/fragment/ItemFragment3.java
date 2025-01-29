@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,19 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.settingssearch.R;
-import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
+import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent3;
 
-public class ItemFragment extends Fragment {
+public class ItemFragment3 extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
 
-    public ItemFragment() {
+    public ItemFragment3() {
     }
 
     @SuppressWarnings("unused")
-    public static ItemFragment newInstance(final int columnCount) {
-        final ItemFragment fragment = new ItemFragment();
+    public static ItemFragment3 newInstance(final int columnCount) {
+        final ItemFragment3 fragment = new ItemFragment3();
         {
             final Bundle args = new Bundle();
             args.putInt(ARG_COLUMN_COUNT, columnCount);
@@ -54,34 +53,24 @@ public class ItemFragment extends Fragment {
                     mColumnCount <= 1 ?
                             new LinearLayoutManager(context) :
                             new GridLayoutManager(context, mColumnCount));
-            recyclerView.setAdapter(new ItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            recyclerView.setAdapter(new ItemRecyclerViewAdapter(PlaceholderContent3.ITEMS));
         }
         return view;
     }
 
     public PreferenceFragmentCompat asPreferenceFragment() {
-        return new PreferenceFragment();
+        return new PreferenceFragment3();
     }
 
-    // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.
-    public static class PreferenceFragment extends PreferenceFragmentTemplate {
+    public static class PreferenceFragment3 extends PreferenceFragmentTemplate {
 
-        public PreferenceFragment() {
+        public PreferenceFragment3() {
             super(context ->
-                    PlaceholderContent
+                    PlaceholderContent3
                             .ITEMS
                             .stream()
-                            .map(placeholderItem -> asPreference(placeholderItem, context))
+                            .map(placeholderItem -> ItemFragment.PreferenceFragment.asPreference(placeholderItem, context))
                             .collect(Collectors.toList()));
-        }
-
-        public static Preference asPreference(final PlaceholderContent.PlaceholderItem placeholderItem,
-                                              final Context context) {
-            final Preference preference = new Preference(context);
-            preference.setKey(placeholderItem.key());
-            preference.setTitle(placeholderItem.title());
-            preference.setSummary(placeholderItem.summary());
-            return preference;
         }
     }
 }

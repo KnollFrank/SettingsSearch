@@ -151,6 +151,11 @@
         android:title="Preference with Intent" />
 
     <Preference
+        android:key="preferenceWithIntent3"
+        android:persistent="false"
+        android:title="Preference with Intent 3" />
+
+    <Preference
         android:fragment="de.KnollFrank.settingssearch.preference.fragment.ItemFragment"
         android:key="preferenceWithFragment"
         android:persistent="false"

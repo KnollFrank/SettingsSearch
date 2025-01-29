@@ -81,6 +81,22 @@ public class PreferenceSearchExampleTest {
     }
 
     @Test
+    public void shouldSearchAndFindPreferenceFromAnotherActivityInFragment1() {
+        final String query = "item 1";
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(query), closeSoftKeyboard());
+        onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(query)));
+    }
+
+    @Test
+    public void shouldSearchAndFindPreferenceFromAnotherActivityInFragment2() {
+        final String query = "item3 1";
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(query), closeSoftKeyboard());
+        onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(query)));
+    }
+
+    @Test
     public void shouldSearchAndFindPreferenceReferencingAnotherActivity() {
         final String query = "Preference with Intent";
         searchForQueryThenClickSearchResultAtPosition(query, 0);

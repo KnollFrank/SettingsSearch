@@ -29,6 +29,11 @@
             android:label="SettingsActivity2"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".SettingsActivity3"
+            android:exported="true"
+            android:label="SettingsActivity3"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".test.TestActivity"
             android:exported="true"
             android:label="TestActivity"
