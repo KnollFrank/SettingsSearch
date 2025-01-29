@@ -82,7 +82,7 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFindPreferenceFromAnotherActivityInFragment1() {
-        final String query = "item 1";
+        final String query = "Item 1";
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(query), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(query)));
@@ -90,7 +90,7 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFindPreferenceFromAnotherActivityInFragment2() {
-        final String query = "item3 1";
+        final String query = "Item3 1";
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(query), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(query)));
