@@ -70,6 +70,7 @@ class SearchDatabaseConfigFactory {
                                         Optional.empty();
                             }
                         })
+                // FK-TODO: combine withRootPreferenceFragmentOfActivityProvider() and withFragment2PreferenceFragmentConverterFactory()?
                 .withRootPreferenceFragmentOfActivityProvider(
                         new RootPreferenceFragmentOfActivityProvider() {
 
@@ -85,27 +86,6 @@ class SearchDatabaseConfigFactory {
                                     return Optional.of(ItemFragment3.class);
                                 }
                                 return Optional.empty();
-                            }
-                        })
-                .withPreferenceDialogAndSearchableInfoProvider(
-                        new PreferenceDialogAndSearchableInfoProvider() {
-
-                            @Override
-                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-                                return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
-                                        Optional.of(
-                                                new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(
-                                                        new CustomDialogFragment(),
-                                                        CustomDialogFragment::getSearchableInfo)) :
-                                        Optional.empty();
-                            }
-                        })
-                .withPreferenceScreenGraphAvailableListener(
-                        new PreferenceScreenGraphAvailableListener() {
-
-                            @Override
-                            public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-                                Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
                             }
                         })
                 .withFragment2PreferenceFragmentConverterFactory(
@@ -143,6 +123,27 @@ class SearchDatabaseConfigFactory {
                                         return Optional.empty();
                                     }
                                 };
+                            }
+                        })
+                .withPreferenceDialogAndSearchableInfoProvider(
+                        new PreferenceDialogAndSearchableInfoProvider() {
+
+                            @Override
+                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+                                return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
+                                        Optional.of(
+                                                new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(
+                                                        new CustomDialogFragment(),
+                                                        CustomDialogFragment::getSearchableInfo)) :
+                                        Optional.empty();
+                            }
+                        })
+                .withPreferenceScreenGraphAvailableListener(
+                        new PreferenceScreenGraphAvailableListener() {
+
+                            @Override
+                            public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+                                Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
                             }
                         })
                 .build();
