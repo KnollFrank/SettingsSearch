@@ -59,17 +59,6 @@ class SearchDatabaseConfigFactory {
                                 return new DefaultFragmentFactory().instantiate(fragmentClassName, src, context);
                             }
                         })
-                .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
-                .withPreferenceFragmentConnected2PreferenceProvider(
-                        new PreferenceFragmentConnected2PreferenceProvider() {
-
-                            @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-                                return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
-                                        Optional.of(PrefsFragmentSecond.class) :
-                                        Optional.empty();
-                            }
-                        })
                 // FK-TODO: combine withRootPreferenceFragmentOfActivityProvider() and withFragment2PreferenceFragmentConverterFactory()?
                 .withRootPreferenceFragmentOfActivityProvider(
                         new RootPreferenceFragmentOfActivityProvider() {
@@ -123,6 +112,17 @@ class SearchDatabaseConfigFactory {
                                         return Optional.empty();
                                     }
                                 };
+                            }
+                        })
+                .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
+                .withPreferenceFragmentConnected2PreferenceProvider(
+                        new PreferenceFragmentConnected2PreferenceProvider() {
+
+                            @Override
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+                                return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
+                                        Optional.of(PrefsFragmentSecond.class) :
+                                        Optional.empty();
                             }
                         })
                 .withPreferenceDialogAndSearchableInfoProvider(
