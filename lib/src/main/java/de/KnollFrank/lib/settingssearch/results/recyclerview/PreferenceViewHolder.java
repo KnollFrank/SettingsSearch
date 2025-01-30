@@ -20,7 +20,7 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
 
     @Nullable
     private final Drawable background;
-    private ColorStateList titleTextColors;
+    private final ColorStateList titleTextColors;
     private final SparseArray<View> cachedViews = new SparseArray<>(4);
 
     public PreferenceViewHolder(@NonNull View itemView) {
@@ -33,9 +33,7 @@ public class PreferenceViewHolder extends RecyclerView.ViewHolder {
         cachedViews.put(androidx.preference.R.id.icon_frame, itemView.findViewById(androidx.preference.R.id.icon_frame));
         cachedViews.put(AndroidResources.ANDROID_R_ICON_FRAME, itemView.findViewById(AndroidResources.ANDROID_R_ICON_FRAME));
         background = itemView.getBackground();
-        if (titleView != null) {
-            titleTextColors = titleView.getTextColors();
-        }
+        titleTextColors = titleView != null ? titleView.getTextColors() : null;
     }
 
     public <T extends View> Optional<T> findViewById(@IdRes int id) {
