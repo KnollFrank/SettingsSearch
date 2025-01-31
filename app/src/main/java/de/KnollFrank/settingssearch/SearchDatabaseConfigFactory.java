@@ -47,7 +47,8 @@ class SearchDatabaseConfigFactory {
                             @Override
                             public Fragment instantiate(final String fragmentClassName,
                                                         final Optional<PreferenceWithHost> src,
-                                                        final Context context) {
+                                                        final Context context,
+                                                        final Fragments fragments) {
                                 if (PreferenceFragmentWithSinglePreference.class.getName().equals(fragmentClassName) &&
                                         src.isPresent() &&
                                         PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.get().preference().getKey())) {
@@ -56,7 +57,12 @@ class SearchDatabaseConfigFactory {
                                             fragmentClassName,
                                             PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference()));
                                 }
-                                return new DefaultFragmentFactory().instantiate(fragmentClassName, src, context);
+                                if (ItemFragment3.PreferenceFragment3.class.getName().equals(fragmentClassName)) {
+                                    final ItemFragment3.PreferenceFragment3 preferenceFragment3 = (ItemFragment3.PreferenceFragment3) new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
+                                    preferenceFragment3.setFragments(fragments);
+                                    return preferenceFragment3;
+                                }
+                                return new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
                             }
                         })
                 // FK-TODO: combine withRootPreferenceFragmentOfActivityProvider() and withFragment2PreferenceFragmentConverterFactory()?
@@ -64,7 +70,7 @@ class SearchDatabaseConfigFactory {
                         new RootPreferenceFragmentOfActivityProvider() {
 
                             @Override
-                            public Optional<Class<? extends Fragment>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
                                 if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
                                     return Optional.of(SettingsFragment.class);
                                 }
@@ -72,11 +78,12 @@ class SearchDatabaseConfigFactory {
                                     return Optional.of(SettingsFragment2.class);
                                 }
                                 if (classNameOfActivity.equals(SettingsActivity3.class.getName())) {
-                                    return Optional.of(ItemFragment3.class);
+                                    return Optional.of(ItemFragment3.PreferenceFragment3.class);
                                 }
                                 return Optional.empty();
                             }
                         })
+                // FK-TODO: remove?
                 .withFragment2PreferenceFragmentConverterFactory(
                         new Fragment2PreferenceFragmentConverterFactory() {
 

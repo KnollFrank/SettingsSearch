@@ -167,10 +167,10 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
 
     private static FragmentFactory createFragmentFactoryReturning(final Fragment fragment) {
         final DefaultFragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
-        return (fragmentClassName, src, context) ->
+        return (fragmentClassName, src, context, fragments) ->
                 fragment.getClass().getName().equals(fragmentClassName) ?
                         fragment :
-                        defaultFragmentFactory.instantiate(fragmentClassName, src, context);
+                        defaultFragmentFactory.instantiate(fragmentClassName, src, context, fragments);
     }
 
     public static Fragment initializeFragment(final Fragment fragment, final Fragments fragments) {

@@ -648,10 +648,10 @@ public class PreferenceSearcherTest {
 
     private static FragmentFactory createFragmentFactoryReturning(final Fragment preferenceFragment) {
         final FragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
-        return (fragmentClassName, src, context) ->
+        return (fragmentClassName, src, context, fragments) ->
                 preferenceFragment.getClass().getName().equals(fragmentClassName) ?
                         preferenceFragment :
-                        defaultFragmentFactory.instantiate(fragmentClassName, src, context);
+                        defaultFragmentFactory.instantiate(fragmentClassName, src, context, fragments);
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(
@@ -689,7 +689,7 @@ public class PreferenceSearcherTest {
                         new RootPreferenceFragmentOfActivityProvider() {
 
                             @Override
-                            public Optional<Class<? extends Fragment>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
                                 if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
                                     return Optional.of(SettingsFragment.class);
                                 }
@@ -737,7 +737,8 @@ public class PreferenceSearcherTest {
                 new DefaultMarkupsFactory(fragmentActivity),
                 fragmentActivity,
                 preference -> true,
-                new SearchResultsByPreferencePathSorter());
+                new SearchResultsByPreferencePathSorter(),
+                fragments);
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

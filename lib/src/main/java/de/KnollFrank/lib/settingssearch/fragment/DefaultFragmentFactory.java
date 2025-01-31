@@ -14,7 +14,10 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 public class DefaultFragmentFactory implements FragmentFactory {
 
     @Override
-    public Fragment instantiate(final String fragmentClassName, Optional<PreferenceWithHost> src, final Context context) {
+    public Fragment instantiate(final String fragmentClassName,
+                                final Optional<PreferenceWithHost> src,
+                                final Context context,
+                                final Fragments fragments) {
         return Fragment.instantiate(context, fragmentClassName, peekExtrasOfPreference(src));
     }
 

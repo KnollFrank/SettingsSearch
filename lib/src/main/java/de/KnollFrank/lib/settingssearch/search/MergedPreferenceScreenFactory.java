@@ -108,7 +108,8 @@ public class MergedPreferenceScreenFactory {
                 markupsFactory,
                 context,
                 searchResultsFilter,
-                searchResultsSorter);
+                searchResultsSorter,
+                fragments);
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
@@ -123,7 +124,8 @@ public class MergedPreferenceScreenFactory {
             final MarkupsFactory markupsFactory,
             final Context context,
             final SearchResultsFilter searchResultsFilter,
-            final SearchResultsSorter searchResultsSorter) {
+            final SearchResultsSorter searchResultsSorter,
+            final Fragments fragments) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(
@@ -131,7 +133,8 @@ public class MergedPreferenceScreenFactory {
                                 new ShowPreferenceScreenAndHighlightPreference(
                                         new PreferencePathNavigator(
                                                 fragmentFactoryAndInitializer,
-                                                context),
+                                                context,
+                                                fragments),
                                         fragmentContainerViewId,
                                         prepareShow,
                                         fragmentManager),

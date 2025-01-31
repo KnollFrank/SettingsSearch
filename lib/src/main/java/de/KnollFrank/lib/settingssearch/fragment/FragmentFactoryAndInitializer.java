@@ -21,15 +21,17 @@ public class FragmentFactoryAndInitializer {
 
     public Fragment instantiateAndInitializeFragment(final String fragmentClassName,
                                                      final Optional<PreferenceWithHost> src,
-                                                     final Context context) {
-        final Fragment fragment = instantiateFragment(fragmentClassName, src, context);
+                                                     final Context context,
+                                                     final Fragments fragments) {
+        final Fragment fragment = instantiateFragment(fragmentClassName, src, context, fragments);
         fragmentInitializer.initialize(fragment);
         return fragment;
     }
 
     public Fragment instantiateFragment(final String fragmentClassName,
                                         final Optional<PreferenceWithHost> src,
-                                        final Context context) {
-        return fragmentFactory.instantiate(fragmentClassName, src, context);
+                                        final Context context,
+                                        final Fragments fragments) {
+        return fragmentFactory.instantiate(fragmentClassName, src, context, fragments);
     }
 }

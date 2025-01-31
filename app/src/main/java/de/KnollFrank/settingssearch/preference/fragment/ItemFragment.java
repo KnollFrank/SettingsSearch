@@ -64,6 +64,7 @@ public class ItemFragment extends Fragment {
     }
 
     // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.
+    // FK-TODO: handle items analogous to PreferenceFragment3
     public static class PreferenceFragment extends PreferenceFragmentTemplate {
 
         public PreferenceFragment() {

@@ -7,14 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.settingssearch.R;
+import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent3;
 
 public class ItemFragment3 extends Fragment {
@@ -53,24 +59,50 @@ public class ItemFragment3 extends Fragment {
                     mColumnCount <= 1 ?
                             new LinearLayoutManager(context) :
                             new GridLayoutManager(context, mColumnCount));
-            recyclerView.setAdapter(new ItemRecyclerViewAdapter(PlaceholderContent3.ITEMS));
+            recyclerView.setAdapter(new ItemRecyclerViewAdapter(getItems()));
         }
         return view;
     }
 
+    public List<PlaceholderContent.PlaceholderItem> getItems() {
+        return PlaceholderContent3.ITEMS;
+    }
+
+    // FK-TODO: remove?
     public PreferenceFragmentCompat asPreferenceFragment() {
         return new PreferenceFragment3();
     }
 
-    public static class PreferenceFragment3 extends PreferenceFragmentTemplate {
+    public static class PreferenceFragment3 extends PreferenceFragmentCompat {
 
-        public PreferenceFragment3() {
-            super(context ->
-                    PlaceholderContent3
-                            .ITEMS
-                            .stream()
-                            .map(placeholderItem -> ItemFragment.PreferenceFragment.asPreference(placeholderItem, context))
-                            .collect(Collectors.toList()));
+        private List<PlaceholderContent.PlaceholderItem> items;
+
+        // FK-TODO: rename to beforeOnCreate()
+        public void setFragments(final Fragments fragments) {
+            items = getItems(fragments);
+        }
+
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            final Context context = getPreferenceManager().getContext();
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            screen.setTitle("screen title");
+            screen.setSummary("screen summary");
+            final List<Preference> preferences = asPreferences(items, context);
+            preferences.forEach(screen::addPreference);
+            setPreferenceScreen(screen);
+        }
+
+        private List<PlaceholderContent.PlaceholderItem> getItems(final Fragments fragments) {
+            final ItemFragment3 itemFragment3 = (ItemFragment3) fragments.instantiateAndInitializeFragment(ItemFragment3.class.getName(), Optional.empty());
+            return itemFragment3.getItems();
+        }
+
+        private static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items, final Context context) {
+            return items
+                    .stream()
+                    .map(placeholderItem -> ItemFragment.PreferenceFragment.asPreference(placeholderItem, context))
+                    .collect(Collectors.toList());
         }
     }
 }
