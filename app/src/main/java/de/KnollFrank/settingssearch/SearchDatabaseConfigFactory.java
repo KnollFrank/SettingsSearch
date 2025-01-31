@@ -32,7 +32,6 @@ import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 import de.KnollFrank.settingssearch.preference.custom.ReversedListPreferenceSearchableInfoProvider;
 import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment;
-import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
@@ -64,15 +63,12 @@ class SearchDatabaseConfigFactory {
                         new RootPreferenceFragmentOfActivityProvider() {
 
                             @Override
-                            public Optional<Class<? extends Fragment>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
                                 if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
                                     return Optional.of(SettingsFragment.class);
                                 }
                                 if (classNameOfActivity.equals(SettingsActivity2.class.getName())) {
                                     return Optional.of(SettingsFragment2.class);
-                                }
-                                if (classNameOfActivity.equals(SettingsActivity3.class.getName())) {
-                                    return Optional.of(ItemFragment3.class);
                                 }
                                 return Optional.empty();
                             }
@@ -92,12 +88,6 @@ class SearchDatabaseConfigFactory {
                                                             itemFragment.asPreferenceFragment().getClass().getName(),
                                                             Optional.empty()));
                                         }
-                                        if (fragment instanceof final ItemFragment3 itemFragment3) {
-                                            return Optional.of(
-                                                    (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                                                            itemFragment3.asPreferenceFragment().getClass().getName(),
-                                                            Optional.empty()));
-                                        }
                                         return Optional.empty();
                                     }
 
@@ -105,9 +95,6 @@ class SearchDatabaseConfigFactory {
                                     public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
                                         if (ItemFragment.class.isAssignableFrom(fragment)) {
                                             return Optional.of(ItemFragment.PreferenceFragment.class);
-                                        }
-                                        if (ItemFragment3.class.isAssignableFrom(fragment)) {
-                                            return Optional.of(ItemFragment3.PreferenceFragment3.class);
                                         }
                                         return Optional.empty();
                                     }
