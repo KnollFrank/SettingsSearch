@@ -57,6 +57,11 @@ class SearchDatabaseConfigFactory {
                                             fragmentClassName,
                                             PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference()));
                                 }
+                                if (ItemFragment.PreferenceFragment.class.getName().equals(fragmentClassName)) {
+                                    final ItemFragment.PreferenceFragment preferenceFragment = (ItemFragment.PreferenceFragment) new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
+                                    preferenceFragment.setFragments(fragments);
+                                    return preferenceFragment;
+                                }
                                 if (ItemFragment3.PreferenceFragment3.class.getName().equals(fragmentClassName)) {
                                     final ItemFragment3.PreferenceFragment3 preferenceFragment3 = (ItemFragment3.PreferenceFragment3) new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
                                     preferenceFragment3.setFragments(fragments);

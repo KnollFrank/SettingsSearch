@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 
@@ -54,9 +58,13 @@ public class ItemFragment extends Fragment {
                     mColumnCount <= 1 ?
                             new LinearLayoutManager(context) :
                             new GridLayoutManager(context, mColumnCount));
-            recyclerView.setAdapter(new ItemRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            recyclerView.setAdapter(new ItemRecyclerViewAdapter(getItems()));
         }
         return view;
+    }
+
+    public List<PlaceholderContent.PlaceholderItem> getItems() {
+        return PlaceholderContent.ITEMS;
     }
 
     public PreferenceFragmentCompat asPreferenceFragment() {
@@ -64,20 +72,41 @@ public class ItemFragment extends Fragment {
     }
 
     // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.
-    // FK-TODO: handle items analogous to PreferenceFragment3
-    public static class PreferenceFragment extends PreferenceFragmentTemplate {
+    public static class PreferenceFragment extends PreferenceFragmentCompat {
 
-        public PreferenceFragment() {
-            super(context ->
-                    PlaceholderContent
-                            .ITEMS
-                            .stream()
-                            .map(placeholderItem -> asPreference(placeholderItem, context))
-                            .collect(Collectors.toList()));
+        private List<PlaceholderContent.PlaceholderItem> items;
+
+        // FK-TODO: rename to beforeOnCreate()
+        public void setFragments(final Fragments fragments) {
+            items = getItems(fragments);
         }
 
-        public static Preference asPreference(final PlaceholderContent.PlaceholderItem placeholderItem,
-                                              final Context context) {
+        @Override
+        public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            final Context context = getPreferenceManager().getContext();
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            screen.setTitle("screen title");
+            screen.setSummary("screen summary");
+            PreferenceFragment
+                    .asPreferences(items, context)
+                    .forEach(screen::addPreference);
+            setPreferenceScreen(screen);
+        }
+
+        private List<PlaceholderContent.PlaceholderItem> getItems(final Fragments fragments) {
+            final ItemFragment itemFragment = (ItemFragment) fragments.instantiateAndInitializeFragment(ItemFragment.class.getName(), Optional.empty());
+            return itemFragment.getItems();
+        }
+
+        public static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items, final Context context) {
+            return items
+                    .stream()
+                    .map(placeholderItem -> asPreference(placeholderItem, context))
+                    .collect(Collectors.toList());
+        }
+
+        private static Preference asPreference(final PlaceholderContent.PlaceholderItem placeholderItem,
+                                               final Context context) {
             final Preference preference = new Preference(context);
             preference.setKey(placeholderItem.key());
             preference.setTitle(placeholderItem.title());

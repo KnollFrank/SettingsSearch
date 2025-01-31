@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.settingssearch.R;
@@ -88,21 +86,16 @@ public class ItemFragment3 extends Fragment {
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
             screen.setTitle("screen title");
             screen.setSummary("screen summary");
-            final List<Preference> preferences = asPreferences(items, context);
-            preferences.forEach(screen::addPreference);
+            ItemFragment
+                    .PreferenceFragment
+                    .asPreferences(items, context)
+                    .forEach(screen::addPreference);
             setPreferenceScreen(screen);
         }
 
         private List<PlaceholderContent.PlaceholderItem> getItems(final Fragments fragments) {
             final ItemFragment3 itemFragment3 = (ItemFragment3) fragments.instantiateAndInitializeFragment(ItemFragment3.class.getName(), Optional.empty());
             return itemFragment3.getItems();
-        }
-
-        private static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items, final Context context) {
-            return items
-                    .stream()
-                    .map(placeholderItem -> ItemFragment.PreferenceFragment.asPreference(placeholderItem, context))
-                    .collect(Collectors.toList());
         }
     }
 }
