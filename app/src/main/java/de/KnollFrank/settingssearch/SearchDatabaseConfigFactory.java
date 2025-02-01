@@ -76,13 +76,13 @@ class SearchDatabaseConfigFactory {
 
                             @Override
                             public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
-                                if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
+                                if (SettingsActivity.class.getName().equals(classNameOfActivity)) {
                                     return Optional.of(SettingsFragment.class);
                                 }
-                                if (classNameOfActivity.equals(SettingsActivity2.class.getName())) {
+                                if (SettingsActivity2.class.getName().equals(classNameOfActivity)) {
                                     return Optional.of(SettingsFragment2.class);
                                 }
-                                if (classNameOfActivity.equals(SettingsActivity3.class.getName())) {
+                                if (SettingsActivity3.class.getName().equals(classNameOfActivity)) {
                                     return Optional.of(ItemFragment3.PreferenceFragment3.class);
                                 }
                                 return Optional.empty();
