@@ -76,8 +76,7 @@ public class ItemFragment extends Fragment {
 
         private List<PlaceholderContent.PlaceholderItem> items;
 
-        // FK-TODO: rename to beforeOnCreate()
-        public void setFragments(final Fragments fragments) {
+        public void beforeOnCreate(final Fragments fragments) {
             items = getItems(fragments);
         }
 

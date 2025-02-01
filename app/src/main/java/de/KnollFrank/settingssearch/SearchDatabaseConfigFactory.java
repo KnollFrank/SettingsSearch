@@ -59,12 +59,12 @@ class SearchDatabaseConfigFactory {
                                 }
                                 if (ItemFragment.PreferenceFragment.class.getName().equals(fragmentClassName)) {
                                     final ItemFragment.PreferenceFragment preferenceFragment = (ItemFragment.PreferenceFragment) new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
-                                    preferenceFragment.setFragments(fragments);
+                                    preferenceFragment.beforeOnCreate(fragments);
                                     return preferenceFragment;
                                 }
                                 if (ItemFragment3.PreferenceFragment3.class.getName().equals(fragmentClassName)) {
                                     final ItemFragment3.PreferenceFragment3 preferenceFragment3 = (ItemFragment3.PreferenceFragment3) new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
-                                    preferenceFragment3.setFragments(fragments);
+                                    preferenceFragment3.beforeOnCreate(fragments);
                                     return preferenceFragment3;
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
