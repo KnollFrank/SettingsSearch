@@ -38,11 +38,6 @@ public class SearchDatabaseConfigBuilder {
                         public Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
                             return Optional.empty();
                         }
-
-                        @Override
-                        public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
-                            return Optional.empty();
-                        }
                     };
 
     public SearchDatabaseConfigBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {

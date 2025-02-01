@@ -710,8 +710,7 @@ public class PreferenceSearcherTest {
                                         new SearchableDialogInfoOfProvider(
                                                 fragmentInitializer,
                                                 preferenceDialogAndSearchableInfoProvider)),
-                                new IdGenerator()),
-                        fragment2PreferenceFragmentConverter);
+                                new IdGenerator()));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 TestActivity.FRAGMENT_CONTAINER_VIEW,
                 _preferenceFragment -> {
@@ -760,11 +759,6 @@ public class PreferenceSearcherTest {
 
                     @Override
                     public Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
-                        return Optional.empty();
-                    }
-
-                    @Override
-                    public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
                         return Optional.empty();
                     }
                 };

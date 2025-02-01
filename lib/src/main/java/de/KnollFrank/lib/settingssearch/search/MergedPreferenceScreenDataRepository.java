@@ -123,7 +123,6 @@ public class MergedPreferenceScreenDataRepository {
                                 new SearchableDialogInfoOfProvider(
                                         preferenceDialogs,
                                         searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider())),
-                        new IdGenerator()),
-                fragment2PreferenceFragmentConverter);
+                        new IdGenerator()));
     }
 }

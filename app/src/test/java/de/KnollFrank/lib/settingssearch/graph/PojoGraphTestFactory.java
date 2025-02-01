@@ -30,8 +30,7 @@ public class PojoGraphTestFactory {
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         preferenceScreenWithHost -> {
-                        },
-                        fragment2PreferenceFragmentConverter);
+                        });
         return preferenceScreenGraphProvider.getPreferenceScreenGraph(preferenceFragment.getClass().getName());
     }
 }

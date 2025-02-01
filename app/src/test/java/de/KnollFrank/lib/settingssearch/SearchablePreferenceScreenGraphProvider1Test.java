@@ -134,8 +134,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                         new SearchableInfoAndDialogInfoProvider(
                                 preference -> Optional.empty(),
                                 (preference, hostOfPreference) -> Optional.empty()),
-                        new IdGenerator()),
-                fragment2PreferenceFragmentConverter);
+                        new IdGenerator()));
     }
 
     private static SearchablePreference getPreference(

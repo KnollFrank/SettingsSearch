@@ -112,17 +112,6 @@ class SearchDatabaseConfigFactory {
                                         }
                                         return Optional.empty();
                                     }
-
-                                    @Override
-                                    public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
-                                        if (ItemFragment.class.isAssignableFrom(fragment)) {
-                                            return Optional.of(ItemFragment.PreferenceFragment.class);
-                                        }
-                                        if (ItemFragment3.class.isAssignableFrom(fragment)) {
-                                            return Optional.of(ItemFragment3.PreferenceFragment3.class);
-                                        }
-                                        return Optional.empty();
-                                    }
                                 };
                             }
                         })
