@@ -12,5 +12,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 public interface FragmentFactory {
 
     // instantiate fragmentClassName, where fragmentClassName.equals(src.get().preference.getFragment()) if src.isPresent()
+    // FK-TODO: Rückgabetyp sollte immer PreferenceFragmentCompat sein?
     Fragment instantiate(String fragmentClassName, Optional<PreferenceWithHost> src, Context context, Fragments fragments);
 }
