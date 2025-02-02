@@ -37,7 +37,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                             public Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
                                 return fragment instanceof final NonStandardPreferenceFragment nonPreferenceFragment ?
                                         Optional.of(
-                                                (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                                fragments.instantiateAndInitializeFragment(
                                                         nonPreferenceFragment.asPreferenceFragment().getClass(),
                                                         Optional.empty())) :
                                         Optional.empty();

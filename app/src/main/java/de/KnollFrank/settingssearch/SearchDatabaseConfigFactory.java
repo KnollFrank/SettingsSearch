@@ -84,7 +84,6 @@ class SearchDatabaseConfigFactory {
                                 return Optional.empty();
                             }
                         })
-                // FK-TODO: remove?
                 .withFragment2PreferenceFragmentConverterFactory(
                         new Fragment2PreferenceFragmentConverterFactory() {
 
@@ -102,7 +101,7 @@ class SearchDatabaseConfigFactory {
                                         }
                                         if (fragment instanceof final ItemFragment3 itemFragment3) {
                                             return Optional.of(
-                                                    (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                                    fragments.instantiateAndInitializeFragment(
                                                             itemFragment3.asPreferenceFragment().getClass(),
                                                             Optional.empty()));
                                         }
