@@ -649,7 +649,7 @@ public class PreferenceSearcherTest {
     private static FragmentFactory createFragmentFactoryReturning(final Fragment preferenceFragment) {
         final FragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
         return (fragmentClassName, src, context, fragments) ->
-                preferenceFragment.getClass().getName().equals(fragmentClassName) ?
+                preferenceFragment.getClass().equals(fragmentClassName) ?
                         preferenceFragment :
                         defaultFragmentFactory.instantiate(fragmentClassName, src, context, fragments);
     }
@@ -678,7 +678,7 @@ public class PreferenceSearcherTest {
         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverterFactory.createFragment2PreferenceFragmentConverter(fragments);
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 new SearchablePreferenceScreenGraphProvider(
-                        preferenceFragment.getClass().getName(),
+                        preferenceFragment.getClass(),
                         new PreferenceScreenWithHostProvider(
                                 fragments,
                                 new SearchablePreferenceScreenProvider(
@@ -710,7 +710,8 @@ public class PreferenceSearcherTest {
                                         new SearchableDialogInfoOfProvider(
                                                 fragmentInitializer,
                                                 preferenceDialogAndSearchableInfoProvider)),
-                                new IdGenerator()));
+                                new IdGenerator()),
+                        fragmentActivity);
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 TestActivity.FRAGMENT_CONTAINER_VIEW,
                 _preferenceFragment -> {

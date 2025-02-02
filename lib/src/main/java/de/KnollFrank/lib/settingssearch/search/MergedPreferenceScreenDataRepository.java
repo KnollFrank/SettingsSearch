@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import android.content.Context;
+
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
@@ -40,6 +42,7 @@ public class MergedPreferenceScreenDataRepository {
     private final ProgressUpdateListener progressUpdateListener;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
     private final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
+    private final Context context;
 
     public MergedPreferenceScreenDataRepository(
             final Fragments fragments,
@@ -48,7 +51,8 @@ public class MergedPreferenceScreenDataRepository {
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
             final ProgressUpdateListener progressUpdateListener,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO,
-            final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
+            final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
+            final Context context) {
         this.fragments = fragments;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
@@ -56,6 +60,7 @@ public class MergedPreferenceScreenDataRepository {
         this.progressUpdateListener = progressUpdateListener;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
         this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
+        this.context = context;
     }
 
     public Set<SearchablePreference> persistOrLoadPreferences(final Locale locale) {
@@ -99,7 +104,7 @@ public class MergedPreferenceScreenDataRepository {
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
         return new SearchablePreferenceScreenGraphProvider(
-                rootPreferenceFragment.getName(),
+                rootPreferenceFragment,
                 new PreferenceScreenWithHostProvider(
                         fragments,
                         new SearchablePreferenceScreenProvider(
@@ -123,6 +128,7 @@ public class MergedPreferenceScreenDataRepository {
                                 new SearchableDialogInfoOfProvider(
                                         preferenceDialogs,
                                         searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider())),
-                        new IdGenerator()));
+                        new IdGenerator()),
+                context);
     }
 }

@@ -20,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentHelper;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -45,29 +46,26 @@ class SearchDatabaseConfigFactory {
                         new FragmentFactory() {
 
                             @Override
-                            public Fragment instantiate(final String fragmentClassName,
+                            public Fragment instantiate(final Class<? extends Fragment> fragmentClass,
                                                         final Optional<PreferenceWithHost> src,
                                                         final Context context,
                                                         final Fragments fragments) {
-                                if (PreferenceFragmentWithSinglePreference.class.getName().equals(fragmentClassName) &&
+                                if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
                                         src.isPresent() &&
                                         PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.get().preference().getKey())) {
-                                    return Fragment.instantiate(
-                                            context,
-                                            fragmentClassName,
-                                            PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference()));
+                                    return FragmentHelper.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference())));
                                 }
-                                if (ItemFragment.PreferenceFragment.class.getName().equals(fragmentClassName)) {
-                                    final ItemFragment.PreferenceFragment preferenceFragment = (ItemFragment.PreferenceFragment) new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
+                                if (ItemFragment.PreferenceFragment.class.equals(fragmentClass)) {
+                                    final ItemFragment.PreferenceFragment preferenceFragment = (ItemFragment.PreferenceFragment) new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                                     preferenceFragment.beforeOnCreate(fragments);
                                     return preferenceFragment;
                                 }
-                                if (ItemFragment3.PreferenceFragment3.class.getName().equals(fragmentClassName)) {
-                                    final ItemFragment3.PreferenceFragment3 preferenceFragment3 = (ItemFragment3.PreferenceFragment3) new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
+                                if (ItemFragment3.PreferenceFragment3.class.equals(fragmentClass)) {
+                                    final ItemFragment3.PreferenceFragment3 preferenceFragment3 = (ItemFragment3.PreferenceFragment3) new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                                     preferenceFragment3.beforeOnCreate(fragments);
                                     return preferenceFragment3;
                                 }
-                                return new DefaultFragmentFactory().instantiate(fragmentClassName, src, context, fragments);
+                                return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                             }
                         })
                 // FK-TODO: combine withRootPreferenceFragmentOfActivityProvider() and withFragment2PreferenceFragmentConverterFactory()?
@@ -101,13 +99,13 @@ class SearchDatabaseConfigFactory {
                                         if (fragment instanceof final ItemFragment itemFragment) {
                                             return Optional.of(
                                                     (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                                                            itemFragment.asPreferenceFragment().getClass().getName(),
+                                                            itemFragment.asPreferenceFragment().getClass(),
                                                             Optional.empty()));
                                         }
                                         if (fragment instanceof final ItemFragment3 itemFragment3) {
                                             return Optional.of(
                                                     (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
-                                                            itemFragment3.asPreferenceFragment().getClass().getName(),
+                                                            itemFragment3.asPreferenceFragment().getClass(),
                                                             Optional.empty()));
                                         }
                                         return Optional.empty();

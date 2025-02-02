@@ -140,7 +140,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfiguration.rootPreferenceFragment(),
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context),
-                createFragment2PreferenceFragmentConverter(fragments));
+                createFragment2PreferenceFragmentConverter(fragments),
+                context);
     }
 
     private Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final Fragments fragments) {

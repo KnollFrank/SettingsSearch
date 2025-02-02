@@ -93,7 +93,7 @@ public class ItemFragment extends Fragment {
         }
 
         private List<PlaceholderContent.PlaceholderItem> getItems(final Fragments fragments) {
-            final ItemFragment itemFragment = (ItemFragment) fragments.instantiateAndInitializeFragment(ItemFragment.class.getName(), Optional.empty());
+            final ItemFragment itemFragment = (ItemFragment) fragments.instantiateAndInitializeFragment(ItemFragment.class, Optional.empty());
             return itemFragment.getItems();
         }
 

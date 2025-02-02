@@ -1,0 +1,49 @@
+package de.KnollFrank.lib.settingssearch.fragment;
+
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentFactory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
+
+public class FragmentHelper {
+
+    public static Class<? extends Fragment> loadFragmentClass(final String fragmentClassName, final Context context) {
+        return FragmentFactory.loadFragmentClass(context.getClassLoader(), fragmentClassName);
+    }
+
+    // adapted from androidx.fragment.app.Fragment.instantiate()
+    // FK-TODO: setzte die Punkte in der @deprecated-Warnung von androidx.fragment.app.Fragment.instantiate() um.
+    public static Fragment instantiateFragmentClass(final Class<? extends Fragment> fragmentClass,
+                                                    final Optional<Bundle> arguments) {
+        try {
+            return _instantiateFragmentClass(fragmentClass, arguments);
+        } catch (final InstantiationException | IllegalAccessException e) {
+            throw new Fragment.InstantiationException("Unable to instantiate fragment " + fragmentClass
+                    + ": make sure class name exists, is public, and has an"
+                    + " empty constructor that is public", e);
+        } catch (final NoSuchMethodException e) {
+            throw new Fragment.InstantiationException("Unable to instantiate fragment " + fragmentClass
+                    + ": could not find Fragment constructor", e);
+        } catch (final InvocationTargetException e) {
+            throw new Fragment.InstantiationException("Unable to instantiate fragment " + fragmentClass
+                    + ": calling Fragment constructor caused an exception", e);
+        }
+    }
+
+    private static Fragment _instantiateFragmentClass(
+            final Class<? extends Fragment> fragmentClass,
+            final Optional<Bundle> arguments)
+            throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+        final Fragment fragment = fragmentClass.getConstructor().newInstance();
+        arguments.ifPresent(
+                _arguments -> {
+                    _arguments.setClassLoader(fragment.getClass().getClassLoader());
+                    fragment.setArguments(_arguments);
+                });
+        return fragment;
+    }
+}

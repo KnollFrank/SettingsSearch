@@ -21,13 +21,13 @@ public class FragmentFactoryAndInitializerWithCache {
         this.delegate = delegate;
     }
 
-    public Fragment instantiateAndInitializeFragment(final String fragmentClassName,
+    public Fragment instantiateAndInitializeFragment(final Class<? extends Fragment> fragmentClass,
                                                      final Optional<PreferenceWithHost> src,
                                                      final Context context,
                                                      final Fragments fragments) {
-        final Arguments arguments = ArgumentsFactory.createArguments(fragmentClassName, src);
+        final Arguments arguments = ArgumentsFactory.createArguments(fragmentClass, src);
         if (!fragmentByArguments.containsKey(arguments)) {
-            final Fragment fragment = delegate.instantiateAndInitializeFragment(fragmentClassName, src, context, fragments);
+            final Fragment fragment = delegate.instantiateAndInitializeFragment(fragmentClass, src, context, fragments);
             fragmentByArguments.put(arguments, fragment);
         }
         return fragmentByArguments.get(arguments);

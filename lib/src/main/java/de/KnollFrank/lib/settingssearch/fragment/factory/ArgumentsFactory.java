@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.fragment.factory;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -9,10 +10,10 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 
 class ArgumentsFactory {
 
-	public static Arguments createArguments(final String fragmentClassName,
+	public static Arguments createArguments(final Class<? extends Fragment> fragmentClass,
 											final Optional<PreferenceWithHost> preferenceWithHost) {
 		return new Arguments(
-				fragmentClassName,
+				fragmentClass,
 				getKeyOfPreference(preferenceWithHost),
 				getHostOfPreference(preferenceWithHost));
 	}

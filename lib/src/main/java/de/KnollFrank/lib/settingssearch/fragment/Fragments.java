@@ -27,9 +27,9 @@ public class Fragments {
     }
 
     // FK-TODO: extract and use interface IFragments
-    public Fragment instantiateAndInitializeFragment(final String fragmentClassName,
+    public Fragment instantiateAndInitializeFragment(final Class<? extends Fragment> fragmentClass,
                                                      final Optional<PreferenceWithHost> src) {
-        return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(fragmentClassName, src, context, this);
+        return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(fragmentClass, src, context, this);
     }
 
     public static <T extends Fragment> void showFragment(final T fragment,

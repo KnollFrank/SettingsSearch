@@ -51,7 +51,7 @@ public class Graph2POJOGraphTransformerTest {
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
                 final Fragments fragments = getFragments(preferenceFragment, activity);
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
-                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, fragments);
+                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, fragments, activity);
                 final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
                         new Preference2SearchablePreferenceConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),

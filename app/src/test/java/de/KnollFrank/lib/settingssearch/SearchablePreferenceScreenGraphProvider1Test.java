@@ -7,6 +7,7 @@ import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.cre
 
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
@@ -46,10 +47,9 @@ public class SearchablePreferenceScreenGraphProvider1Test {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final String rootPreferenceFragmentClassName = Fragment1ConnectedToFragment2AndFragment4.class.getName();
                 final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                         createSearchablePreferenceScreenGraphProvider(
-                                rootPreferenceFragmentClassName,
+                                Fragment1ConnectedToFragment2AndFragment4.class,
                                 activity);
 
                 // When
@@ -75,10 +75,9 @@ public class SearchablePreferenceScreenGraphProvider1Test {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final String rootPreferenceFragmentClassName = Fragment1ConnectedToFragment2AndFragment4.class.getName();
                 final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                         createSearchablePreferenceScreenGraphProvider(
-                                rootPreferenceFragmentClassName,
+                                Fragment1ConnectedToFragment2AndFragment4.class,
                                 activity);
 
                 // When
@@ -112,13 +111,13 @@ public class SearchablePreferenceScreenGraphProvider1Test {
     }
 
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
-            final String rootPreferenceFragmentClassName,
+            final Class<? extends Fragment> rootPreferenceFragmentClass,
             final FragmentActivity activity) {
         final Fragments fragments = FragmentsFactory.createFragments(activity);
         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter =
                 createFragment2PreferenceFragmentConverterFactory().createFragment2PreferenceFragmentConverter(fragments);
         return new SearchablePreferenceScreenGraphProvider(
-                rootPreferenceFragmentClassName,
+                rootPreferenceFragmentClass,
                 new PreferenceScreenWithHostProvider(
                         fragments,
                         PreferenceFragmentCompat::getPreferenceScreen,
@@ -134,7 +133,8 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                         new SearchableInfoAndDialogInfoProvider(
                                 preference -> Optional.empty(),
                                 (preference, hostOfPreference) -> Optional.empty()),
-                        new IdGenerator()));
+                        new IdGenerator()),
+                activity);
     }
 
     private static SearchablePreference getPreference(

@@ -1,7 +1,9 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import android.content.Context;
 import android.content.Intent;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -19,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Intents;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentHelper;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
@@ -28,24 +31,27 @@ public class PreferenceScreenGraphProvider {
     private final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider;
     private final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
+    private final Context context;
     private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                          final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
-                                         final PreferenceScreenGraphListener preferenceScreenGraphListener) {
+                                         final PreferenceScreenGraphListener preferenceScreenGraphListener,
+                                         final Context context) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.preferenceScreenGraphListener = preferenceScreenGraphListener;
+        this.context = context;
     }
 
-    public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final String rootPreferenceFragmentClassName) {
+    public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final Class<? extends Fragment> rootPreferenceFragmentClass) {
         preferenceScreenGraph = PreferenceScreenGraphFactory.createEmptyPreferenceScreenGraph(preferenceScreenGraphListener);
         buildPreferenceScreenGraph(
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
-                                rootPreferenceFragmentClassName,
+                                rootPreferenceFragmentClass,
                                 Optional.empty())
                         .orElseThrow());
         return preferenceScreenGraph;
@@ -96,17 +102,17 @@ public class PreferenceScreenGraphProvider {
                                                 Optional.of(new PreferenceWithHost(preference, host))));
     }
 
-    private Optional<String> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {
+    private Optional<Class<? extends Fragment>> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {
+        return PreferenceScreenGraphProvider
+                .loadFragmentClass(preference, context)
+                .or(() -> getRootPreferenceFragment(Optional.ofNullable(preference.getIntent())))
+                .or(() -> preferenceFragmentConnected2PreferenceProvider.getPreferenceFragmentConnected2Preference(preference, host));
+    }
+
+    private static Optional<Class<? extends Fragment>> loadFragmentClass(final Preference preference, final Context context) {
         return Optional
                 .ofNullable(preference.getFragment())
-                .or(() ->
-                        this
-                                .getRootPreferenceFragment(Optional.ofNullable(preference.getIntent()))
-                                .map(Class::getName))
-                .or(() ->
-                        preferenceFragmentConnected2PreferenceProvider
-                                .getPreferenceFragmentConnected2Preference(preference, host)
-                                .map(Class::getName));
+                .map(fragmentClassName -> FragmentHelper.loadFragmentClass(fragmentClassName, context));
     }
 
     private Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragment(final Optional<Intent> intent) {

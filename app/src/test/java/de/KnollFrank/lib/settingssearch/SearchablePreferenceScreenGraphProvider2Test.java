@@ -36,10 +36,9 @@ public class SearchablePreferenceScreenGraphProvider2Test {
 
     private static void shouldIgnoreNonPreferenceFragments(final FragmentActivity activity) {
         // Given
-        final String rootPreferenceFragmentClassName = FragmentConnectedToNonPreferenceFragment.class.getName();
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 createSearchablePreferenceScreenGraphProvider(
-                        rootPreferenceFragmentClassName,
+                        FragmentConnectedToNonPreferenceFragment.class,
                         activity);
 
         // When

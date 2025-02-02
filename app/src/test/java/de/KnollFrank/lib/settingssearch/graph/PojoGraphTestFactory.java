@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.createFragment2PreferenceFragmentConverterFactory;
 
+import android.content.Context;
+
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
@@ -18,7 +20,8 @@ public class PojoGraphTestFactory {
 
     public static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(
             final PreferenceFragmentCompat preferenceFragment,
-            final Fragments fragments) {
+            final Fragments fragments,
+            final Context context) {
         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter =
                 createFragment2PreferenceFragmentConverterFactory().createFragment2PreferenceFragmentConverter(fragments);
         final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
@@ -30,7 +33,8 @@ public class PojoGraphTestFactory {
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         preferenceScreenWithHost -> {
-                        });
-        return preferenceScreenGraphProvider.getPreferenceScreenGraph(preferenceFragment.getClass().getName());
+                        },
+                        context);
+        return preferenceScreenGraphProvider.getPreferenceScreenGraph(preferenceFragment.getClass());
     }
 }

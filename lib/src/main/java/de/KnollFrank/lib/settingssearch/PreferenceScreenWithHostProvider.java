@@ -22,15 +22,17 @@ public class PreferenceScreenWithHostProvider {
     }
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenWithHostOfFragment(
-            final String fragment,
+            final Class<? extends Fragment> fragmentClass,
             final Optional<PreferenceWithHost> src) {
         return this
-                .getPreferenceFragment(fragment, src)
+                .getPreferenceFragment(fragmentClass, src)
                 .map(this::getPreferenceScreenWithHost);
     }
 
-    private Optional<PreferenceFragmentCompat> getPreferenceFragment(final String fragment, final Optional<PreferenceWithHost> src) {
-        final Fragment _fragment = fragments.instantiateAndInitializeFragment(fragment, src);
+    private Optional<PreferenceFragmentCompat> getPreferenceFragment(
+            final Class<? extends Fragment> fragmentClass,
+            final Optional<PreferenceWithHost> src) {
+        final Fragment _fragment = fragments.instantiateAndInitializeFragment(fragmentClass, src);
         return _fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(preferenceFragment) :
                 fragment2PreferenceFragmentConverter.asPreferenceFragment(_fragment);
