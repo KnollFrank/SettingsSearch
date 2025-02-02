@@ -17,8 +17,8 @@ public class FragmentHelper {
 
     // adapted from androidx.fragment.app.Fragment.instantiate()
     // FK-TODO: setzte die Punkte in der @deprecated-Warnung von androidx.fragment.app.Fragment.instantiate() um.
-    public static Fragment instantiateFragmentClass(final Class<? extends Fragment> fragmentClass,
-                                                    final Optional<Bundle> arguments) {
+    public static <T extends Fragment> T instantiateFragmentClass(final Class<T> fragmentClass,
+                                                                  final Optional<Bundle> arguments) {
         try {
             return _instantiateFragmentClass(fragmentClass, arguments);
         } catch (final InstantiationException | IllegalAccessException e) {
@@ -34,11 +34,10 @@ public class FragmentHelper {
         }
     }
 
-    private static Fragment _instantiateFragmentClass(
-            final Class<? extends Fragment> fragmentClass,
-            final Optional<Bundle> arguments)
+    private static <T extends Fragment> T _instantiateFragmentClass(final Class<T> fragmentClass,
+                                                                    final Optional<Bundle> arguments)
             throws IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
-        final Fragment fragment = fragmentClass.getConstructor().newInstance();
+        final T fragment = fragmentClass.getConstructor().newInstance();
         arguments.ifPresent(
                 _arguments -> {
                     _arguments.setClassLoader(fragment.getClass().getClassLoader());
