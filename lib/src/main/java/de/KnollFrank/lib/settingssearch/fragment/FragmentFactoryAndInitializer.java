@@ -28,10 +28,10 @@ public class FragmentFactoryAndInitializer {
         return fragment;
     }
 
-    public Fragment instantiateFragment(final Class<? extends Fragment> fragmentClass,
-                                        final Optional<PreferenceWithHost> src,
-                                        final Context context,
-                                        final Fragments fragments) {
+    private Fragment instantiateFragment(final Class<? extends Fragment> fragmentClass,
+                                         final Optional<PreferenceWithHost> src,
+                                         final Context context,
+                                         final Fragments fragments) {
         return fragmentFactory.instantiate(fragmentClass, src, context, fragments);
     }
 }

@@ -13,7 +13,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 public class DefaultFragmentFactory implements FragmentFactory {
 
     @Override
-    // FK-TODO: ersetze Class<? extends Fragment> durch Class<? extends PreferenceFragmentCompat>?
     public Fragment instantiate(final Class<? extends Fragment> fragmentClass,
                                 final Optional<PreferenceWithHost> src,
                                 final Context context,
