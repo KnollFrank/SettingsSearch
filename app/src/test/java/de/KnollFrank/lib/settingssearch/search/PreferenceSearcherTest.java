@@ -35,6 +35,7 @@ import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -648,10 +649,15 @@ public class PreferenceSearcherTest {
 
     private static FragmentFactory createFragmentFactoryReturning(final Fragment preferenceFragment) {
         final FragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
-        return (fragmentClassName, src, context, fragments) ->
-                preferenceFragment.getClass().equals(fragmentClassName) ?
-                        preferenceFragment :
+        return new FragmentFactory() {
+
+            @Override
+            public <T extends Fragment> T instantiate(final Class<T> fragmentClassName, final Optional<PreferenceWithHost> src, final Context context, final Fragments fragments) {
+                return preferenceFragment.getClass().equals(fragmentClassName) ?
+                        (T) preferenceFragment :
                         defaultFragmentFactory.instantiate(fragmentClassName, src, context, fragments);
+            }
+        };
     }
 
     private static MergedPreferenceScreen getMergedPreferenceScreen(

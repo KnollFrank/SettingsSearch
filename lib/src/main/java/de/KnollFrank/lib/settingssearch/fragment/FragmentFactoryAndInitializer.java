@@ -19,19 +19,19 @@ public class FragmentFactoryAndInitializer {
         this.fragmentInitializer = fragmentInitializer;
     }
 
-    public Fragment instantiateAndInitializeFragment(final Class<? extends Fragment> fragmentClass,
-                                                     final Optional<PreferenceWithHost> src,
-                                                     final Context context,
-                                                     final Fragments fragments) {
-        final Fragment fragment = instantiateFragment(fragmentClass, src, context, fragments);
+    public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
+                                                                   final Optional<PreferenceWithHost> src,
+                                                                   final Context context,
+                                                                   final Fragments fragments) {
+        final T fragment = instantiateFragment(fragmentClass, src, context, fragments);
         fragmentInitializer.initialize(fragment);
         return fragment;
     }
 
-    private Fragment instantiateFragment(final Class<? extends Fragment> fragmentClass,
-                                         final Optional<PreferenceWithHost> src,
-                                         final Context context,
-                                         final Fragments fragments) {
+    private <T extends Fragment> T instantiateFragment(final Class<T> fragmentClass,
+                                                       final Optional<PreferenceWithHost> src,
+                                                       final Context context,
+                                                       final Fragments fragments) {
         return fragmentFactory.instantiate(fragmentClass, src, context, fragments);
     }
 }

@@ -46,10 +46,7 @@ class SearchDatabaseConfigFactory {
                         new FragmentFactory() {
 
                             @Override
-                            public Fragment instantiate(final Class<? extends Fragment> fragmentClass,
-                                                        final Optional<PreferenceWithHost> src,
-                                                        final Context context,
-                                                        final Fragments fragments) {
+                            public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final Fragments fragments) {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
                                         src.isPresent() &&
                                         PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.get().preference().getKey())) {
@@ -58,12 +55,12 @@ class SearchDatabaseConfigFactory {
                                 if (ItemFragment.PreferenceFragment.class.equals(fragmentClass)) {
                                     final ItemFragment.PreferenceFragment preferenceFragment = (ItemFragment.PreferenceFragment) new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                                     preferenceFragment.beforeOnCreate(fragments);
-                                    return preferenceFragment;
+                                    return (T) preferenceFragment;
                                 }
                                 if (ItemFragment3.PreferenceFragment3.class.equals(fragmentClass)) {
                                     final ItemFragment3.PreferenceFragment3 preferenceFragment3 = (ItemFragment3.PreferenceFragment3) new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                                     preferenceFragment3.beforeOnCreate(fragments);
-                                    return preferenceFragment3;
+                                    return (T) preferenceFragment3;
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                             }
@@ -95,10 +92,10 @@ class SearchDatabaseConfigFactory {
                                 return new Fragment2PreferenceFragmentConverter() {
 
                                     @Override
-                                    public Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
+                                    public Optional<? extends PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
                                         if (fragment instanceof final ItemFragment itemFragment) {
                                             return Optional.of(
-                                                    (PreferenceFragmentCompat) fragments.instantiateAndInitializeFragment(
+                                                    fragments.instantiateAndInitializeFragment(
                                                             itemFragment.asPreferenceFragment().getClass(),
                                                             Optional.empty()));
                                         }

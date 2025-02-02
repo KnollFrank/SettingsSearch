@@ -95,7 +95,7 @@ public class PreferencePathNavigator {
     private PreferenceFragmentCompat instantiateAndInitializePreferenceFragment(
             final Class<? extends PreferenceFragmentCompat> preferenceFragment,
             final Optional<PreferenceWithHost> src) {
-        return (PreferenceFragmentCompat) fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
+        return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
                 preferenceFragment,
                 src,
                 context,

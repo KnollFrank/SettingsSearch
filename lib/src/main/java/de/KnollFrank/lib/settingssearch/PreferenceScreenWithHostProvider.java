@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 
@@ -35,7 +36,10 @@ public class PreferenceScreenWithHostProvider {
         final Fragment _fragment = fragments.instantiateAndInitializeFragment(fragmentClass, src);
         return _fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(preferenceFragment) :
-                fragment2PreferenceFragmentConverter.asPreferenceFragment(_fragment);
+                fragment2PreferenceFragmentConverter
+                        .asPreferenceFragment(_fragment)
+                        // FK-TODO: refactor in order to prevent the following line
+                        .map(Function.identity());
     }
 
     private PreferenceScreenWithHost getPreferenceScreenWithHost(final PreferenceFragmentCompat preferenceFragment) {

@@ -23,6 +23,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
@@ -167,10 +168,18 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
 
     private static FragmentFactory createFragmentFactoryReturning(final Fragment fragment) {
         final DefaultFragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
-        return (fragmentClassName, src, context, fragments) ->
-                fragment.getClass().equals(fragmentClassName) ?
-                        fragment :
+        return new FragmentFactory() {
+
+            @Override
+            public <T extends Fragment> T instantiate(final Class<T> fragmentClassName,
+                                                      final Optional<PreferenceWithHost> src,
+                                                      final Context context,
+                                                      final Fragments fragments) {
+                return fragment.getClass().equals(fragmentClassName) ?
+                        (T) fragment :
                         defaultFragmentFactory.instantiate(fragmentClassName, src, context, fragments);
+            }
+        };
     }
 
     public static Fragment initializeFragment(final Fragment fragment, final Fragments fragments) {
