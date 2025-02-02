@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -18,9 +19,9 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfigBuilder;
+import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentHelper;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -50,7 +51,7 @@ class SearchDatabaseConfigFactory {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
                                         src.isPresent() &&
                                         PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.get().preference().getKey())) {
-                                    return FragmentHelper.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference())));
+                                    return Classes.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference())));
                                 }
                                 if (ItemFragment.PreferenceFragment.class.equals(fragmentClass)) {
                                     final ItemFragment.PreferenceFragment preferenceFragment = (ItemFragment.PreferenceFragment) new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
@@ -70,14 +71,14 @@ class SearchDatabaseConfigFactory {
                         new RootPreferenceFragmentOfActivityProvider() {
 
                             @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
-                                if (SettingsActivity.class.getName().equals(classNameOfActivity)) {
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
+                                if (SettingsActivity.class.equals(activityClass)) {
                                     return Optional.of(SettingsFragment.class);
                                 }
-                                if (SettingsActivity2.class.getName().equals(classNameOfActivity)) {
+                                if (SettingsActivity2.class.equals(activityClass)) {
                                     return Optional.of(SettingsFragment2.class);
                                 }
-                                if (SettingsActivity3.class.getName().equals(classNameOfActivity)) {
+                                if (SettingsActivity3.class.equals(activityClass)) {
                                     return Optional.of(ItemFragment3.PreferenceFragment3.class);
                                 }
                                 return Optional.empty();

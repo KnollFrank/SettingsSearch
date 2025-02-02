@@ -9,6 +9,7 @@ import androidx.preference.Preference;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.common.Classes;
 
 public class DefaultFragmentFactory implements FragmentFactory {
 
@@ -17,7 +18,7 @@ public class DefaultFragmentFactory implements FragmentFactory {
                                               final Optional<PreferenceWithHost> src,
                                               final Context context,
                                               final Fragments fragments) {
-        return FragmentHelper.instantiateFragmentClass(fragmentClass, peekExtrasOfPreference(src));
+        return Classes.instantiateFragmentClass(fragmentClass, peekExtrasOfPreference(src));
     }
 
     private static Optional<Bundle> peekExtrasOfPreference(final Optional<PreferenceWithHost> preferenceWithHost) {

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.fragment;
+package de.KnollFrank.lib.settingssearch.common;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,7 +9,15 @@ import androidx.fragment.app.FragmentFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
-public class FragmentHelper {
+public class Classes {
+
+    public static Class<?> loadClass(final String className, final Context context) {
+        try {
+            return context.getClassLoader().loadClass(className);
+        } catch (final ClassNotFoundException e) {
+            throw new IllegalArgumentException("ClassNotFoundException " + className, e);
+        }
+    }
 
     public static Class<? extends Fragment> loadFragmentClass(final String fragmentClassName, final Context context) {
         return FragmentFactory.loadFragmentClass(context.getClassLoader(), fragmentClassName);

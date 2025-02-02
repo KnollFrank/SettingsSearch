@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -18,10 +19,10 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.Intents;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentHelper;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
@@ -112,12 +113,20 @@ public class PreferenceScreenGraphProvider {
     private static Optional<Class<? extends Fragment>> loadFragmentClass(final Preference preference, final Context context) {
         return Optional
                 .ofNullable(preference.getFragment())
-                .map(fragmentClassName -> FragmentHelper.loadFragmentClass(fragmentClassName, context));
+                .map(fragmentClassName -> Classes.loadFragmentClass(fragmentClassName, context));
     }
 
     private Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragment(final Optional<Intent> intent) {
         return intent
                 .map(Intents::getClassName)
+                .flatMap(this::asActivityClass)
                 .flatMap(rootPreferenceFragmentOfActivityProvider::getRootPreferenceFragmentOfActivity);
+    }
+
+    private Optional<Class<? extends Activity>> asActivityClass(final String className) {
+        final Class<?> clazz = Classes.loadClass(className, context);
+        return Activity.class.isAssignableFrom(clazz) ?
+                Optional.of((Class<? extends Activity>) clazz) :
+                Optional.empty();
     }
 }

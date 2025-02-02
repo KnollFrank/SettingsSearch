@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
@@ -695,11 +696,11 @@ public class PreferenceSearcherTest {
                         new RootPreferenceFragmentOfActivityProvider() {
 
                             @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final String classNameOfActivity) {
-                                if (classNameOfActivity.equals(SettingsActivity.class.getName())) {
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
+                                if (SettingsActivity.class.equals(activityClass)) {
                                     return Optional.of(SettingsFragment.class);
                                 }
-                                if (classNameOfActivity.equals(SettingsActivity2.class.getName())) {
+                                if (SettingsActivity2.class.equals(activityClass)) {
                                     return Optional.of(SettingsActivity2.SettingsFragment2.class);
                                 }
                                 return Optional.empty();
