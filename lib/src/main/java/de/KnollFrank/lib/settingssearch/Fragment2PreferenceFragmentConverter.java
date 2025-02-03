@@ -8,5 +8,5 @@ import java.util.Optional;
 @FunctionalInterface
 public interface Fragment2PreferenceFragmentConverter {
 
-    Optional<? extends PreferenceFragmentCompat> asPreferenceFragment(Fragment fragment);
+    Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(Class<? extends Fragment> fragment);
 }

@@ -35,7 +35,9 @@ public class PreferenceScreenWithHostProvider {
         final Fragment _fragment = fragments.instantiateAndInitializeFragment(fragmentClass, src);
         return _fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(preferenceFragment) :
-                fragment2PreferenceFragmentConverter.asPreferenceFragment(_fragment);
+                fragment2PreferenceFragmentConverter
+                        .asPreferenceFragment(_fragment.getClass())
+                        .map(preferenceFragment -> fragments.instantiateAndInitializeFragment(preferenceFragment, Optional.empty()));
     }
 
     private PreferenceScreenWithHost getPreferenceScreenWithHost(final PreferenceFragmentCompat preferenceFragment) {

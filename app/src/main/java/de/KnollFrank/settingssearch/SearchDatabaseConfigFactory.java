@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.collect.ImmutableMap;
+
 import org.jgrapht.Graph;
 
+import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
@@ -20,6 +23,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.common.Classes;
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.IFragments;
@@ -85,27 +89,23 @@ class SearchDatabaseConfigFactory {
                             }
                         })
                 .withFragment2PreferenceFragmentConverterFactory(
+                        // FK-TODO: remove Fragment2PreferenceFragmentConverterFactory, retain Fragment2PreferenceFragmentConverter
                         new Fragment2PreferenceFragmentConverterFactory() {
 
                             @Override
                             public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final IFragments fragments) {
                                 return new Fragment2PreferenceFragmentConverter() {
 
+                                    private final Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> preferenceFragmentByFragment =
+                                            ImmutableMap
+                                                    .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
+                                                    .put(ItemFragment.class, ItemFragment.PreferenceFragment.class)
+                                                    .put(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class)
+                                                    .build();
+
                                     @Override
-                                    public Optional<? extends PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
-                                        if (fragment instanceof final ItemFragment itemFragment) {
-                                            return Optional.of(
-                                                    fragments.instantiateAndInitializeFragment(
-                                                            itemFragment.asPreferenceFragment().getClass(),
-                                                            Optional.empty()));
-                                        }
-                                        if (fragment instanceof final ItemFragment3 itemFragment3) {
-                                            return Optional.of(
-                                                    fragments.instantiateAndInitializeFragment(
-                                                            itemFragment3.asPreferenceFragment().getClass(),
-                                                            Optional.empty()));
-                                        }
-                                        return Optional.empty();
+                                    public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
+                                        return Maps.get(preferenceFragmentByFragment, fragment);
                                     }
                                 };
                             }

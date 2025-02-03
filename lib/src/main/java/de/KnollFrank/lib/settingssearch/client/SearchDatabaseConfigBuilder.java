@@ -35,7 +35,7 @@ public class SearchDatabaseConfigBuilder {
                     new Fragment2PreferenceFragmentConverter() {
 
                         @Override
-                        public Optional<PreferenceFragmentCompat> asPreferenceFragment(final Fragment fragment) {
+                        public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
                             return Optional.empty();
                         }
                     };
