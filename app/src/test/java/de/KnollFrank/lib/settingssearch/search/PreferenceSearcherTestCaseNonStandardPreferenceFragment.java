@@ -6,7 +6,6 @@ import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getK
 
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +13,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
 
@@ -27,21 +24,10 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
         testSearch(
                 // Given a NonStandardPreferenceFragment
                 new NonStandardPreferenceFragment(),
-                new Fragment2PreferenceFragmentConverterFactory() {
-
-                    @Override
-                    public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final IFragments fragments) {
-                        return new Fragment2PreferenceFragmentConverter() {
-
-                            @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
-                                return NonStandardPreferenceFragment.class.equals(fragment) ?
-                                        Optional.of(PreferenceFragment.class) :
-                                        Optional.empty();
-                            }
-                        };
-                    }
-                },
+                fragment ->
+                        NonStandardPreferenceFragment.class.equals(fragment) ?
+                                Optional.of(PreferenceFragment.class) :
+                                Optional.empty(),
                 // When searching for TITLE_OF_PREFERENCE
                 TITLE_OF_PREFERENCE,
                 // Then the preference of NonStandardPreferenceFragment is found
@@ -67,7 +53,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     }
 
     private static void testSearch(final Fragment nonPreferenceFragment,
-                                   final Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory,
+                                   final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         PreferenceSearcherTest.testSearch(
@@ -77,7 +63,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment2PreferenceFragmentConverterFactory,
+                fragment2PreferenceFragmentConverter,
                 checkPreferenceMatches);
     }
 }

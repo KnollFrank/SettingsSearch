@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
@@ -88,26 +87,19 @@ class SearchDatabaseConfigFactory {
                                 return Optional.empty();
                             }
                         })
-                .withFragment2PreferenceFragmentConverterFactory(
-                        // FK-TODO: remove Fragment2PreferenceFragmentConverterFactory, retain Fragment2PreferenceFragmentConverter
-                        new Fragment2PreferenceFragmentConverterFactory() {
+                .withFragment2PreferenceFragmentConverter(
+                        new Fragment2PreferenceFragmentConverter() {
+
+                            private final Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> preferenceFragmentByFragment =
+                                    ImmutableMap
+                                            .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
+                                            .put(ItemFragment.class, ItemFragment.PreferenceFragment.class)
+                                            .put(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class)
+                                            .build();
 
                             @Override
-                            public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final IFragments fragments) {
-                                return new Fragment2PreferenceFragmentConverter() {
-
-                                    private final Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> preferenceFragmentByFragment =
-                                            ImmutableMap
-                                                    .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
-                                                    .put(ItemFragment.class, ItemFragment.PreferenceFragment.class)
-                                                    .put(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class)
-                                                    .build();
-
-                                    @Override
-                                    public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
-                                        return Maps.get(preferenceFragmentByFragment, fragment);
-                                    }
-                                };
+                            public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
+                                return Maps.get(preferenceFragmentByFragment, fragment);
                             }
                         })
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())

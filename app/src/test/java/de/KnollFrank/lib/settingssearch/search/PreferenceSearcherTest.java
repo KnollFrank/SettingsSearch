@@ -33,7 +33,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
@@ -95,7 +94,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -129,7 +128,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -163,7 +162,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -187,7 +186,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -216,7 +215,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -240,7 +239,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -264,7 +263,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -291,7 +290,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -319,7 +318,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -345,7 +344,7 @@ public class PreferenceSearcherTest {
                 summaryOff,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -371,7 +370,7 @@ public class PreferenceSearcherTest {
                 summaryOn,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -398,7 +397,7 @@ public class PreferenceSearcherTest {
                 ReversedListPreference.getReverse(keyword).toString(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -423,7 +422,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -459,7 +458,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -477,7 +476,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -495,7 +494,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -513,7 +512,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -540,7 +539,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -568,7 +567,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -593,7 +592,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                createFragment2PreferenceFragmentConverterFactory(),
+                fragment -> Optional.empty(),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -621,7 +620,7 @@ public class PreferenceSearcherTest {
                            final String keyword,
                            final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                           final Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory,
+                           final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
@@ -634,7 +633,7 @@ public class PreferenceSearcherTest {
                                 createFragmentFactoryReturning(preferenceFragment),
                                 preferenceFragmentConnected2PreferenceProvider,
                                 preferenceDialogAndSearchableInfoProvider,
-                                fragment2PreferenceFragmentConverterFactory);
+                                fragment2PreferenceFragmentConverter);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
@@ -669,7 +668,7 @@ public class PreferenceSearcherTest {
             final FragmentFactory fragmentFactory,
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory) {
+            final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
         final DefaultFragmentInitializer fragmentInitializer =
                 new DefaultFragmentInitializer(
                         fragmentActivity.getSupportFragmentManager(),
@@ -683,7 +682,6 @@ public class PreferenceSearcherTest {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         fragmentActivity);
-        final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverterFactory.createFragment2PreferenceFragmentConverter(fragments);
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 new SearchablePreferenceScreenGraphProvider(
                         preferenceFragment.getClass(),
@@ -760,16 +758,5 @@ public class PreferenceSearcherTest {
                                     CustomDialogFragment::getSearchableInfo)) :
                     Optional.empty();
         }
-    }
-
-    public static Fragment2PreferenceFragmentConverterFactory createFragment2PreferenceFragmentConverterFactory() {
-        return fragments ->
-                new Fragment2PreferenceFragmentConverter() {
-
-                    @Override
-                    public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
-                        return Optional.empty();
-                    }
-                };
     }
 }

@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
-import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.createFragment2PreferenceFragmentConverterFactory;
 
 import android.os.Bundle;
 
@@ -114,14 +113,12 @@ public class SearchablePreferenceScreenGraphProvider1Test {
             final Class<? extends Fragment> rootPreferenceFragmentClass,
             final FragmentActivity activity) {
         final IFragments fragments = FragmentsFactory.createFragments(activity);
-        final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter =
-                createFragment2PreferenceFragmentConverterFactory().createFragment2PreferenceFragmentConverter(fragments);
         return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragmentClass,
                 new PreferenceScreenWithHostProvider(
                         fragments,
                         PreferenceFragmentCompat::getPreferenceScreen,
-                        fragment2PreferenceFragmentConverter),
+                        fragment -> Optional.empty()),
                 (preference, hostOfPreference) -> Optional.empty(),
                 classNameOfActivity -> Optional.empty(),
                 preferenceScreenGraph -> {

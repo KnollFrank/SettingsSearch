@@ -1,12 +1,8 @@
 package de.KnollFrank.lib.settingssearch.client;
 
-import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
-
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -30,15 +26,7 @@ public class SearchDatabaseConfigBuilder {
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
-    private Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory =
-            fragments ->
-                    new Fragment2PreferenceFragmentConverter() {
-
-                        @Override
-                        public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
-                            return Optional.empty();
-                        }
-                    };
+    private Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter = fragment -> Optional.empty();
 
     public SearchDatabaseConfigBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
         this.fragmentFactory = fragmentFactory;
@@ -81,8 +69,8 @@ public class SearchDatabaseConfigBuilder {
         return this;
     }
 
-    public SearchDatabaseConfigBuilder withFragment2PreferenceFragmentConverterFactory(final Fragment2PreferenceFragmentConverterFactory fragment2PreferenceFragmentConverterFactory) {
-        this.fragment2PreferenceFragmentConverterFactory = fragment2PreferenceFragmentConverterFactory;
+    public SearchDatabaseConfigBuilder withFragment2PreferenceFragmentConverter(final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
+        this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
         return this;
     }
 
@@ -96,6 +84,6 @@ public class SearchDatabaseConfigBuilder {
                 rootPreferenceFragmentOfActivityProvider,
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
-                fragment2PreferenceFragmentConverterFactory);
+                fragment2PreferenceFragmentConverter);
     }
 }

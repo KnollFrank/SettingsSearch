@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
@@ -141,13 +140,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfiguration.rootPreferenceFragment(),
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context),
-                createFragment2PreferenceFragmentConverter(fragments),
+                searchDatabaseConfig.fragment2PreferenceFragmentConverter(),
                 context);
-    }
-
-    private Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final IFragments fragments) {
-        return searchDatabaseConfig
-                .fragment2PreferenceFragmentConverterFactory()
-                .createFragment2PreferenceFragmentConverter(fragments);
     }
 }

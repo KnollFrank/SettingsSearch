@@ -7,7 +7,6 @@ import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getK
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
@@ -17,7 +16,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 
@@ -83,14 +81,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 keyword,
                 preferenceFragmentConnected2PreferenceProvider,
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragments ->
-                        new Fragment2PreferenceFragmentConverter() {
-
-                            @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
-                                return Optional.empty();
-                            }
-                        },
+                fragment -> Optional.empty(),
                 checkPreferenceMatches);
     }
 }
