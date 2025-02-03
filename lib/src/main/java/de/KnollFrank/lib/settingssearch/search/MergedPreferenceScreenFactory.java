@@ -15,6 +15,7 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -86,7 +87,7 @@ public class MergedPreferenceScreenFactory {
                         onUiThreadRunner);
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(fragmentFactory, preferenceDialogs);
-        final Fragments fragments =
+        final IFragments fragments =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         context);
@@ -125,7 +126,7 @@ public class MergedPreferenceScreenFactory {
             final Context context,
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
-            final Fragments fragments) {
+            final IFragments fragments) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(

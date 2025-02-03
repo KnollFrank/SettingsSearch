@@ -14,13 +14,13 @@ import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 
 public class PojoGraphTestFactory {
 
     public static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(
             final PreferenceFragmentCompat preferenceFragment,
-            final Fragments fragments,
+            final IFragments fragments,
             final Context context) {
         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter =
                 createFragment2PreferenceFragmentConverterFactory().createFragment2PreferenceFragmentConverter(fragments);

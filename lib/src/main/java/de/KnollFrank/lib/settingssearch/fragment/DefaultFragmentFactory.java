@@ -17,7 +17,7 @@ public class DefaultFragmentFactory implements FragmentFactory {
     public <T extends Fragment> T instantiate(final Class<T> fragmentClass,
                                               final Optional<PreferenceWithHost> src,
                                               final Context context,
-                                              final Fragments fragments) {
+                                              final IFragments fragments) {
         return Classes.instantiateFragmentClass(fragmentClass, peekExtrasOfPreference(src));
     }
 

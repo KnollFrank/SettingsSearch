@@ -22,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -47,7 +47,7 @@ class SearchDatabaseConfigFactory {
                         new FragmentFactory() {
 
                             @Override
-                            public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final Fragments fragments) {
+                            public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
                                         src.isPresent() &&
                                         PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.get().preference().getKey())) {
@@ -88,7 +88,7 @@ class SearchDatabaseConfigFactory {
                         new Fragment2PreferenceFragmentConverterFactory() {
 
                             @Override
-                            public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final Fragments fragments) {
+                            public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final IFragments fragments) {
                                 return new Fragment2PreferenceFragmentConverter() {
 
                                     @Override

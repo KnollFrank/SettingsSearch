@@ -16,11 +16,11 @@ public class PreferencePathNavigator {
 
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final Context context;
-    private final Fragments fragments;
+    private final IFragments fragments;
 
     public PreferencePathNavigator(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                    final Context context,
-                                   final Fragments fragments) {
+                                   final IFragments fragments) {
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.context = context;
         this.fragments = fragments;

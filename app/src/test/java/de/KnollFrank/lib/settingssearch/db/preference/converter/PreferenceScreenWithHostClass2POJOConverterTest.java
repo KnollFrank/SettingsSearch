@@ -34,6 +34,7 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -154,7 +155,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
         return initializeFragment(preferenceFragment, getFragments(preferenceFragment, activity));
     }
 
-    public static Fragments getFragments(final Fragment fragment, final FragmentActivity activity) {
+    public static IFragments getFragments(final Fragment fragment, final FragmentActivity activity) {
         return new Fragments(
                 new FragmentFactoryAndInitializerWithCache(
                         new FragmentFactoryAndInitializer(
@@ -174,7 +175,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
             public <T extends Fragment> T instantiate(final Class<T> fragmentClassName,
                                                       final Optional<PreferenceWithHost> src,
                                                       final Context context,
-                                                      final Fragments fragments) {
+                                                      final IFragments fragments) {
                 return fragment.getClass().equals(fragmentClassName) ?
                         (T) fragment :
                         defaultFragmentFactory.instantiate(fragmentClassName, src, context, fragments);
@@ -182,7 +183,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
         };
     }
 
-    public static Fragment initializeFragment(final Fragment fragment, final Fragments fragments) {
+    public static Fragment initializeFragment(final Fragment fragment, final IFragments fragments) {
         return fragments.instantiateAndInitializeFragment(
                 fragment.getClass(),
                 Optional.empty());

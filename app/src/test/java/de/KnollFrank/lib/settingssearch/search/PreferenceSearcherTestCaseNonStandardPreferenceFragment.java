@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
 
@@ -30,7 +30,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 new Fragment2PreferenceFragmentConverterFactory() {
 
                     @Override
-                    public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final Fragments fragments) {
+                    public Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final IFragments fragments) {
                         return new Fragment2PreferenceFragmentConverter() {
 
                             @Override

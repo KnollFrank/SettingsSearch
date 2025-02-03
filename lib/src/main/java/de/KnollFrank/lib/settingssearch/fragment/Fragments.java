@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 
-public class Fragments {
+public class Fragments implements IFragments {
 
     private final FragmentFactoryAndInitializerWithCache fragmentFactoryAndInitializer;
     private final Context context;
@@ -26,7 +26,7 @@ public class Fragments {
         this.context = context;
     }
 
-    // FK-TODO: extract and use interface IFragments
+    @Override
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
                                                                    final Optional<PreferenceWithHost> src) {
         return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(fragmentClass, src, context, this);

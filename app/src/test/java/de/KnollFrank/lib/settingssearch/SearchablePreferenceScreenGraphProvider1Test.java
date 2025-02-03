@@ -34,7 +34,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -113,7 +113,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
             final Class<? extends Fragment> rootPreferenceFragmentClass,
             final FragmentActivity activity) {
-        final Fragments fragments = FragmentsFactory.createFragments(activity);
+        final IFragments fragments = FragmentsFactory.createFragments(activity);
         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter =
                 createFragment2PreferenceFragmentConverterFactory().createFragment2PreferenceFragmentConverter(fragments);
         return new SearchablePreferenceScreenGraphProvider(

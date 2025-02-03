@@ -21,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
@@ -132,7 +133,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
             final DefaultFragmentInitializer preferenceDialogs,
             final Context context,
             final ProgressUpdateListener progressUpdateListener,
-            final Fragments fragments) {
+            final IFragments fragments) {
         return new MergedPreferenceScreenDataRepository(
                 fragments,
                 preferenceDialogs,
@@ -144,7 +145,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 context);
     }
 
-    private Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final Fragments fragments) {
+    private Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final IFragments fragments) {
         return searchDatabaseConfig
                 .fragment2PreferenceFragmentConverterFactory()
                 .createFragment2PreferenceFragmentConverter(fragments);

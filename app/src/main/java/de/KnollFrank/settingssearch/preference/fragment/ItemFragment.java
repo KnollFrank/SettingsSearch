@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 
@@ -76,7 +76,7 @@ public class ItemFragment extends Fragment {
 
         private List<PlaceholderContent.PlaceholderItem> items;
 
-        public void beforeOnCreate(final Fragments fragments) {
+        public void beforeOnCreate(final IFragments fragments) {
             items = getItems(fragments);
         }
 
@@ -92,7 +92,7 @@ public class ItemFragment extends Fragment {
             setPreferenceScreen(screen);
         }
 
-        private List<PlaceholderContent.PlaceholderItem> getItems(final Fragments fragments) {
+        private List<PlaceholderContent.PlaceholderItem> getItems(final IFragments fragments) {
             final ItemFragment itemFragment = fragments.instantiateAndInitializeFragment(ItemFragment.class, Optional.empty());
             return itemFragment.getItems();
         }

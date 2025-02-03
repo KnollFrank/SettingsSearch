@@ -5,15 +5,15 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 
 public class PreferenceScreenWithHostProvider {
 
-    private final Fragments fragments;
+    private final IFragments fragments;
     private final PreferenceScreenProvider preferenceScreenProvider;
     private final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
 
-    public PreferenceScreenWithHostProvider(final Fragments fragments,
+    public PreferenceScreenWithHostProvider(final IFragments fragments,
                                             final PreferenceScreenProvider preferenceScreenProvider,
                                             final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
         this.fragments = fragments;

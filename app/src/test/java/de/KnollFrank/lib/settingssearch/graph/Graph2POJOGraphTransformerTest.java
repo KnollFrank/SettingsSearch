@@ -37,7 +37,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithH
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -49,7 +49,7 @@ public class Graph2POJOGraphTransformerTest {
             scenario.onActivity(activity -> {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
-                final Fragments fragments = getFragments(preferenceFragment, activity);
+                final IFragments fragments = getFragments(preferenceFragment, activity);
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
                         PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, fragments, activity);
                 final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
