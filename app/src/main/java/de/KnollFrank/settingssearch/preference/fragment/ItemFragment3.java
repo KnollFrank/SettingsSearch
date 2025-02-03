@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent3;
@@ -70,8 +68,8 @@ public class ItemFragment3 extends Fragment {
 
         private List<PlaceholderContent.PlaceholderItem> items;
 
-        public void beforeOnCreate(final IFragments fragments) {
-            items = getItems(fragments);
+        public void beforeOnCreate(final ItemFragment3 itemFragment3) {
+            items = itemFragment3.getItems();
         }
 
         @Override
@@ -85,11 +83,6 @@ public class ItemFragment3 extends Fragment {
                     .asPreferences(items, context)
                     .forEach(screen::addPreference);
             setPreferenceScreen(screen);
-        }
-
-        private List<PlaceholderContent.PlaceholderItem> getItems(final IFragments fragments) {
-            final ItemFragment3 itemFragment3 = fragments.instantiateAndInitializeFragment(ItemFragment3.class, Optional.empty());
-            return itemFragment3.getItems();
         }
     }
 }

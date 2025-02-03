@@ -57,13 +57,15 @@ class SearchDatabaseConfigFactory {
                                     return Classes.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference())));
                                 }
                                 if (ItemFragment.PreferenceFragment.class.equals(fragmentClass)) {
-                                    final ItemFragment.PreferenceFragment preferenceFragment = (ItemFragment.PreferenceFragment) new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
-                                    preferenceFragment.beforeOnCreate(fragments);
+                                    final ItemFragment.PreferenceFragment preferenceFragment = new DefaultFragmentFactory().instantiate(ItemFragment.PreferenceFragment.class, src, context, fragments);
+                                    final ItemFragment itemFragment = fragments.instantiateAndInitializeFragment(ItemFragment.class, Optional.empty());
+                                    preferenceFragment.beforeOnCreate(itemFragment);
                                     return (T) preferenceFragment;
                                 }
                                 if (ItemFragment3.PreferenceFragment3.class.equals(fragmentClass)) {
-                                    final ItemFragment3.PreferenceFragment3 preferenceFragment3 = (ItemFragment3.PreferenceFragment3) new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
-                                    preferenceFragment3.beforeOnCreate(fragments);
+                                    final ItemFragment3.PreferenceFragment3 preferenceFragment3 = new DefaultFragmentFactory().instantiate(ItemFragment3.PreferenceFragment3.class, src, context, fragments);
+                                    final ItemFragment3 itemFragment3 = fragments.instantiateAndInitializeFragment(ItemFragment3.class, Optional.empty());
+                                    preferenceFragment3.beforeOnCreate(itemFragment3);
                                     return (T) preferenceFragment3;
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
