@@ -46,10 +46,14 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 class SearchDatabaseConfigFactory {
 
     public record ActivitySearchDatabaseConfig<T extends Activity, U extends PreferenceFragmentCompat, V extends PreferenceFragmentCompat>(
-            Class<T> activityClass,
-            Class<U> rootPreferenceFragmentClassOfActivityClass,
+            ActivityWithRootPreferenceFragmentConnection<T, U> activityWithRootPreferenceFragmentConnection,
             Optional<FragmentWithPreferenceFragmentConnection<V>> fragmentWithPreferenceFragmentConnection,
             Optional<BiConsumer<V, IFragments>> initializePreferenceFragment) {
+    }
+
+    public record ActivityWithRootPreferenceFragmentConnection<T extends Activity, U extends PreferenceFragmentCompat>(
+            Class<T> activityClass,
+            Class<U> rootPreferenceFragmentClassOfActivityClass) {
     }
 
     public record FragmentWithPreferenceFragmentConnection<T extends PreferenceFragmentCompat>(
@@ -60,8 +64,7 @@ class SearchDatabaseConfigFactory {
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
         final var activitySearchDatabaseConfig =
                 new ActivitySearchDatabaseConfig<SettingsActivity, SettingsFragment, ItemFragment.PreferenceFragment>(
-                        SettingsActivity.class,
-                        SettingsFragment.class,
+                        new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity.class, SettingsFragment.class),
                         Optional.of(new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class)),
                         Optional.of(
                                 (preferenceFragment, fragments) -> {
@@ -70,14 +73,12 @@ class SearchDatabaseConfigFactory {
                                 }));
         final var activitySearchDatabaseConfig2 =
                 new ActivitySearchDatabaseConfig<SettingsActivity2, SettingsFragment2, PreferenceFragmentCompat>(
-                        SettingsActivity2.class,
-                        SettingsFragment2.class,
+                        new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity2.class, SettingsFragment2.class),
                         Optional.empty(),
                         Optional.empty());
         final var activitySearchDatabaseConfig3 =
                 new ActivitySearchDatabaseConfig<SettingsActivity3, ItemFragment3.PreferenceFragment3, ItemFragment3.PreferenceFragment3>(
-                        SettingsActivity3.class,
-                        ItemFragment3.PreferenceFragment3.class,
+                        new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class),
                         Optional.of(new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class)),
                         Optional.of(
                                 (preferenceFragment, fragments) -> {
@@ -114,14 +115,14 @@ class SearchDatabaseConfigFactory {
 
                             @Override
                             public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
-                                if (activitySearchDatabaseConfig.activityClass().equals(activityClass)) {
-                                    return Optional.of(activitySearchDatabaseConfig.rootPreferenceFragmentClassOfActivityClass());
+                                if (activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().activityClass().equals(activityClass)) {
+                                    return Optional.of(activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass());
                                 }
-                                if (activitySearchDatabaseConfig2.activityClass().equals(activityClass)) {
-                                    return Optional.of(activitySearchDatabaseConfig2.rootPreferenceFragmentClassOfActivityClass());
+                                if (activitySearchDatabaseConfig2.activityWithRootPreferenceFragmentConnection().activityClass().equals(activityClass)) {
+                                    return Optional.of(activitySearchDatabaseConfig2.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass());
                                 }
-                                if (activitySearchDatabaseConfig3.activityClass().equals(activityClass)) {
-                                    return Optional.of(activitySearchDatabaseConfig3.rootPreferenceFragmentClassOfActivityClass());
+                                if (activitySearchDatabaseConfig3.activityWithRootPreferenceFragmentConnection().activityClass().equals(activityClass)) {
+                                    return Optional.of(activitySearchDatabaseConfig3.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass());
                                 }
                                 return Optional.empty();
                             }
