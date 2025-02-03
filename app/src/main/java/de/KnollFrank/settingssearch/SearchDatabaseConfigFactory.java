@@ -48,20 +48,27 @@ class SearchDatabaseConfigFactory {
     public record ActivitySearchDatabaseConfig<T extends Activity, U extends PreferenceFragmentCompat, W extends Fragment>(
             Class<T> activityClass,
             Class<U> rootPreferenceFragmentClassOfActivityClass,
-            Class<W> fragmentClass,
-            BiConsumer<U, IFragments> initializePreferenceFragment) {
+            Optional<Class<W>> fragmentClass,
+            Optional<BiConsumer<U, IFragments>> initializePreferenceFragment) {
     }
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
+        final ActivitySearchDatabaseConfig<SettingsActivity2, SettingsFragment2, Fragment> activitySearchDatabaseConfig2 =
+                new ActivitySearchDatabaseConfig<>(
+                        SettingsActivity2.class,
+                        SettingsFragment2.class,
+                        Optional.empty(),
+                        Optional.empty());
         final ActivitySearchDatabaseConfig<SettingsActivity3, ItemFragment3.PreferenceFragment3, ItemFragment3> activitySearchDatabaseConfig3 =
                 new ActivitySearchDatabaseConfig<>(
                         SettingsActivity3.class,
                         ItemFragment3.PreferenceFragment3.class,
-                        ItemFragment3.class,
-                        (rootPreferenceFragmentOfActivity, fragments) -> {
-                            final ItemFragment3 itemFragment3 = fragments.instantiateAndInitializeFragment(ItemFragment3.class, Optional.empty());
-                            rootPreferenceFragmentOfActivity.beforeOnCreate(itemFragment3);
-                        });
+                        Optional.of(ItemFragment3.class),
+                        Optional.of(
+                                (rootPreferenceFragmentOfActivity, fragments) -> {
+                                    final ItemFragment3 itemFragment3 = fragments.instantiateAndInitializeFragment(ItemFragment3.class, Optional.empty());
+                                    rootPreferenceFragmentOfActivity.beforeOnCreate(itemFragment3);
+                                }));
         return new SearchDatabaseConfigBuilder()
                 .withFragmentFactory(
                         new FragmentFactory() {
@@ -81,7 +88,7 @@ class SearchDatabaseConfigFactory {
                                 }
                                 if (activitySearchDatabaseConfig3.rootPreferenceFragmentClassOfActivityClass().equals(fragmentClass)) {
                                     final ItemFragment3.PreferenceFragment3 instantiate = new DefaultFragmentFactory().instantiate(activitySearchDatabaseConfig3.rootPreferenceFragmentClassOfActivityClass(), src, context, fragments);
-                                    activitySearchDatabaseConfig3.initializePreferenceFragment().accept(instantiate, fragments);
+                                    activitySearchDatabaseConfig3.initializePreferenceFragment().orElseThrow().accept(instantiate, fragments);
                                     return (T) instantiate;
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
@@ -96,8 +103,8 @@ class SearchDatabaseConfigFactory {
                                 if (SettingsActivity.class.equals(activityClass)) {
                                     return Optional.of(SettingsFragment.class);
                                 }
-                                if (SettingsActivity2.class.equals(activityClass)) {
-                                    return Optional.of(SettingsFragment2.class);
+                                if (activitySearchDatabaseConfig2.activityClass().equals(activityClass)) {
+                                    return Optional.of(activitySearchDatabaseConfig2.rootPreferenceFragmentClassOfActivityClass());
                                 }
                                 if (activitySearchDatabaseConfig3.activityClass().equals(activityClass)) {
                                     return Optional.of(activitySearchDatabaseConfig3.rootPreferenceFragmentClassOfActivityClass());
@@ -112,7 +119,7 @@ class SearchDatabaseConfigFactory {
                                     ImmutableMap
                                             .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
                                             .put(ItemFragment.class, ItemFragment.PreferenceFragment.class)
-                                            .put(activitySearchDatabaseConfig3.fragmentClass(), activitySearchDatabaseConfig3.rootPreferenceFragmentClassOfActivityClass())
+                                            .put(activitySearchDatabaseConfig3.fragmentClass().orElseThrow(), activitySearchDatabaseConfig3.rootPreferenceFragmentClassOfActivityClass())
                                             .build();
 
                             @Override
