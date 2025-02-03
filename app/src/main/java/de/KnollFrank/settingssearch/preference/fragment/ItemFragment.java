@@ -67,10 +67,6 @@ public class ItemFragment extends Fragment {
         return PlaceholderContent.ITEMS;
     }
 
-    public PreferenceFragmentCompat asPreferenceFragment() {
-        return new PreferenceFragment();
-    }
-
     // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.
     public static class PreferenceFragment extends PreferenceFragmentCompat {
 

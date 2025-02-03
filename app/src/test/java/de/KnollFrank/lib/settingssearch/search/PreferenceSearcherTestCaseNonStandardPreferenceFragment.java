@@ -52,10 +52,6 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     }
 
     public static class NonStandardPreferenceFragment extends Fragment {
-
-        public PreferenceFragmentCompat asPreferenceFragment() {
-            return new PreferenceFragment();
-        }
     }
 
     public static class PreferenceFragment extends PreferenceFragmentTemplate {

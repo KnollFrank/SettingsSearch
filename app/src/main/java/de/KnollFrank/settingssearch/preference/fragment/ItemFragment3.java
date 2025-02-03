@@ -66,11 +66,6 @@ public class ItemFragment3 extends Fragment {
         return PlaceholderContent3.ITEMS;
     }
 
-    // FK-TODO: remove?
-    public PreferenceFragmentCompat asPreferenceFragment() {
-        return new PreferenceFragment3();
-    }
-
     public static class PreferenceFragment3 extends PreferenceFragmentCompat {
 
         private List<PlaceholderContent.PlaceholderItem> items;
