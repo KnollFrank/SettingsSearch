@@ -104,7 +104,7 @@ public class SearchDatabaseConfigBuilder {
                 for (final ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat> activitySearchDatabaseConfig : activitySearchDatabaseConfigs) {
                     if (activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().isPresent()) {
                         final var pair = activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow();
-                        if (pair.fragmentWithPreferenceFragmentConnection().preferenceFragment().equals(fragmentClass)) {
+                        if (pair.canCreatePreferenceFragmentHavingClass(fragmentClass)) {
                             return (T) pair.createPreferenceFragment(src, context, fragments);
                         }
                     }

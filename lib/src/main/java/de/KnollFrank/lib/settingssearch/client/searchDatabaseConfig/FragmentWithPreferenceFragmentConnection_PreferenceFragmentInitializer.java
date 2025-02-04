@@ -23,6 +23,10 @@ public final class FragmentWithPreferenceFragmentConnection_PreferenceFragmentIn
         this.preferenceFragmentInitializer = preferenceFragmentInitializer;
     }
 
+    public boolean canCreatePreferenceFragmentHavingClass(final Class<? extends Fragment> clazz) {
+        return fragmentWithPreferenceFragmentConnection().preferenceFragment().equals(clazz);
+    }
+
     public P createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
         final P preferenceFragment = _createPreferenceFragment(src, context, fragments);
         preferenceFragmentInitializer.initializePreferenceFragmentWithFragment(preferenceFragment, getFragment(fragments));
