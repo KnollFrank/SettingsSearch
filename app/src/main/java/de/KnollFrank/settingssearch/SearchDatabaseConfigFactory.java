@@ -44,24 +44,24 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
 class SearchDatabaseConfigFactory {
 
-    public record FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<F extends Fragment, P2 extends PreferenceFragmentCompat>(
-            FragmentWithPreferenceFragmentConnection<F, P2> fragmentWithPreferenceFragmentConnection,
-            PreferenceFragmentInitializer<P2, F> preferenceFragmentInitializer) {
-    }
-
     public record ActivitySearchDatabaseConfig<A extends Activity, F extends Fragment, P1 extends PreferenceFragmentCompat, P2 extends PreferenceFragmentCompat>(
             ActivityWithRootPreferenceFragmentConnection<A, P1> activityWithRootPreferenceFragmentConnection,
             Optional<FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<F, P2>> fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer) {
+    }
 
-        public P2 createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
-            final P2 preferenceFragment = _createPreferenceFragment(src, context, fragments);
+    public record FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<F extends Fragment, P extends PreferenceFragmentCompat>(
+            FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection,
+            PreferenceFragmentInitializer<P, F> preferenceFragmentInitializer) {
+
+        public P createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
+            final P preferenceFragment = _createPreferenceFragment(src, context, fragments);
             initializePreferenceFragmentWithFragment(preferenceFragment, getFragment(fragments));
             return preferenceFragment;
         }
 
-        private P2 _createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
+        private P _createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
             return new DefaultFragmentFactory().instantiate(
-                    fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().fragmentWithPreferenceFragmentConnection().preferenceFragment(),
+                    fragmentWithPreferenceFragmentConnection().preferenceFragment(),
                     src,
                     context,
                     fragments);
@@ -69,13 +69,12 @@ class SearchDatabaseConfigFactory {
 
         private F getFragment(final IFragments fragments) {
             return fragments.instantiateAndInitializeFragment(
-                    fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().fragmentWithPreferenceFragmentConnection().fragment(),
+                    fragmentWithPreferenceFragmentConnection().fragment(),
                     Optional.empty());
         }
 
-        private void initializePreferenceFragmentWithFragment(final P2 preferenceFragment, final F fragment) {
-            fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer()
-                    .orElseThrow()
+        private void initializePreferenceFragmentWithFragment(final P preferenceFragment, final F fragment) {
+            this
                     .preferenceFragmentInitializer()
                     .initializePreferenceFragmentWithFragment(
                             preferenceFragment,
@@ -130,10 +129,10 @@ class SearchDatabaseConfigFactory {
                                     return Classes.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference())));
                                 }
                                 if (activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().fragmentWithPreferenceFragmentConnection().preferenceFragment().equals(fragmentClass)) {
-                                    return (T) activitySearchDatabaseConfig.createPreferenceFragment(src, context, fragments);
+                                    return (T) activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().createPreferenceFragment(src, context, fragments);
                                 }
                                 if (activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().fragmentWithPreferenceFragmentConnection().preferenceFragment().equals(fragmentClass)) {
-                                    return (T) activitySearchDatabaseConfig3.createPreferenceFragment(src, context, fragments);
+                                    return (T) activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().createPreferenceFragment(src, context, fragments);
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                             }
