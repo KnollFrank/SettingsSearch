@@ -78,9 +78,9 @@ public class SearchDatabaseConfigBuilder {
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
-                ActivitySearchDatabaseConfigs.createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs),
+                RootPreferenceFragmentOfActivityProviderFactory.createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs),
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
-                ActivitySearchDatabaseConfigs.createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs));
+                Fragment2PreferenceFragmentConverterFactory.createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs));
     }
 }
