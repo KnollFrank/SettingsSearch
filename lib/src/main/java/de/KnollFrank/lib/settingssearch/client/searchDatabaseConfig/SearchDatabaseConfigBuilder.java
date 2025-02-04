@@ -113,9 +113,10 @@ public class SearchDatabaseConfigBuilder {
                         .map(ActivitySearchDatabaseConfig::preferenceFragmentFactory)
                         .filter(Optional::isPresent)
                         .map(Optional::get)
-                        .filter(preferenceFragmentFactory -> preferenceFragmentFactory.canCreatePreferenceFragmentHavingClass(fragmentClass))
-                        .findFirst()
-                        .map(preferenceFragmentFactory -> (T) preferenceFragmentFactory.createPreferenceFragment(src, context, fragments));
+                        .map(preferenceFragmentFactory -> preferenceFragmentFactory.createPreferenceFragmentForClass(fragmentClass, src, context, fragments))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .findFirst();
             }
         };
     }
