@@ -25,7 +25,7 @@ class Fragment2PreferenceFragmentConverterFactory {
                 .map(ActivitySearchDatabaseConfig::preferenceFragmentFactory)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .map(fragmentWithPreferenceFragmentConnectionPreferenceFragmentInitializer -> fragmentWithPreferenceFragmentConnectionPreferenceFragmentInitializer.fragmentWithPreferenceFragmentConnection)
+                .map(preferenceFragmentFactory -> preferenceFragmentFactory.fragmentWithPreferenceFragmentConnection)
                 .collect(
                         Collectors.toMap(
                                 FragmentWithPreferenceFragmentConnection::fragment,
