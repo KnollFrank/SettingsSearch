@@ -141,18 +141,23 @@ class SearchDatabaseConfigFactory {
                 .withRootPreferenceFragmentOfActivityProvider(
                         new RootPreferenceFragmentOfActivityProvider() {
 
+                            private final Map<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>> rootPreferenceFragmentByActivity =
+                                    ImmutableMap
+                                            .<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>>builder()
+                                            .put(
+                                                    activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().activityClass(),
+                                                    activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass())
+                                            .put(
+                                                    activitySearchDatabaseConfig2.activityWithRootPreferenceFragmentConnection().activityClass(),
+                                                    activitySearchDatabaseConfig2.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass())
+                                            .put(
+                                                    activitySearchDatabaseConfig3.activityWithRootPreferenceFragmentConnection().activityClass(),
+                                                    activitySearchDatabaseConfig3.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass())
+                                            .build();
+
                             @Override
                             public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
-                                if (activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().activityClass().equals(activityClass)) {
-                                    return Optional.of(activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass());
-                                }
-                                if (activitySearchDatabaseConfig2.activityWithRootPreferenceFragmentConnection().activityClass().equals(activityClass)) {
-                                    return Optional.of(activitySearchDatabaseConfig2.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass());
-                                }
-                                if (activitySearchDatabaseConfig3.activityWithRootPreferenceFragmentConnection().activityClass().equals(activityClass)) {
-                                    return Optional.of(activitySearchDatabaseConfig3.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass());
-                                }
-                                return Optional.empty();
+                                return Maps.get(rootPreferenceFragmentByActivity, activityClass);
                             }
                         })
                 .withFragment2PreferenceFragmentConverter(
