@@ -10,6 +10,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 

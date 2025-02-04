@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
-import de.KnollFrank.lib.settingssearch.client.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;

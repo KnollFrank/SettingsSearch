@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.client;
+package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
 import android.app.Activity;
 import android.content.Context;
@@ -38,9 +38,9 @@ public class SearchDatabaseConfigBuilder {
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
-    private List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs = List.of();
+    private List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs = List.of();
 
-    public SearchDatabaseConfigBuilder withActivitySearchDatabaseConfigs(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+    public SearchDatabaseConfigBuilder withActivitySearchDatabaseConfigs(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
         this.activitySearchDatabaseConfigs = activitySearchDatabaseConfigs;
         return this;
     }
@@ -94,13 +94,14 @@ public class SearchDatabaseConfigBuilder {
                 createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs));
     }
 
-    private static FragmentFactory createFragmentFactory(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs,
+    private static FragmentFactory createFragmentFactory(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs,
                                                          final FragmentFactory delegate) {
         return new FragmentFactory() {
 
             @Override
             public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
-                for (final SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat> activitySearchDatabaseConfig : activitySearchDatabaseConfigs) {
+                // FK-TODO: refactor
+                for (final ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat> activitySearchDatabaseConfig : activitySearchDatabaseConfigs) {
                     if (activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().isPresent()) {
                         final var pair = activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow();
                         if (pair.fragmentWithPreferenceFragmentConnection().preferenceFragment().equals(fragmentClass)) {
@@ -113,7 +114,7 @@ public class SearchDatabaseConfigBuilder {
         };
     }
 
-    private static Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+    private static Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
         return new Fragment2PreferenceFragmentConverter() {
 
             private final Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> preferenceFragmentByFragment = getPreferenceFragmentByFragmentMap(activitySearchDatabaseConfigs);
@@ -123,22 +124,22 @@ public class SearchDatabaseConfigBuilder {
                 return Maps.get(preferenceFragmentByFragment, fragment);
             }
 
-            private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+            private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
                 return activitySearchDatabaseConfigs
                         .stream()
-                        .map(SearchDatabaseConfig.ActivitySearchDatabaseConfig::fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer)
+                        .map(ActivitySearchDatabaseConfig::fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer)
                         .filter(Optional::isPresent)
                         .map(Optional::get)
-                        .map(SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer::fragmentWithPreferenceFragmentConnection)
+                        .map(FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer::fragmentWithPreferenceFragmentConnection)
                         .collect(
                                 Collectors.toMap(
-                                        SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection::fragment,
-                                        SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection::preferenceFragment));
+                                        FragmentWithPreferenceFragmentConnection::fragment,
+                                        FragmentWithPreferenceFragmentConnection::preferenceFragment));
             }
         };
     }
 
-    private static RootPreferenceFragmentOfActivityProvider createRootPreferenceFragmentOfActivityProvider(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+    private static RootPreferenceFragmentOfActivityProvider createRootPreferenceFragmentOfActivityProvider(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
         return new RootPreferenceFragmentOfActivityProvider() {
 
             private final Map<? extends Class<? extends AppCompatActivity>, ? extends Class<? extends PreferenceFragmentCompat>> rootPreferenceFragmentByActivity = getRootPreferenceFragmentByActivityMap(activitySearchDatabaseConfigs);
@@ -148,13 +149,13 @@ public class SearchDatabaseConfigBuilder {
                 return Optional.ofNullable(rootPreferenceFragmentByActivity.get(activityClass));
             }
 
-            private static Map<? extends Class<? extends AppCompatActivity>, ? extends Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentByActivityMap(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+            private static Map<? extends Class<? extends AppCompatActivity>, ? extends Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentByActivityMap(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
                 return activitySearchDatabaseConfigs
                         .stream()
                         .collect(
                                 Collectors.toMap(
-                                        activitySearchDatabaseConfig -> activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().activityClass(),
-                                        activitySearchDatabaseConfig -> activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass()));
+                                        activitySearchDatabaseConfig -> activitySearchDatabaseConfig.activityWithRootPreferenceFragment().activityClass(),
+                                        activitySearchDatabaseConfig -> activitySearchDatabaseConfig.activityWithRootPreferenceFragment().rootPreferenceFragmentClass()));
             }
         };
     }
