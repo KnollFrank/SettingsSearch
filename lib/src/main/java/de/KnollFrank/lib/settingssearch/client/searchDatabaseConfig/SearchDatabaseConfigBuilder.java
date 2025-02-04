@@ -72,16 +72,15 @@ public class SearchDatabaseConfigBuilder {
     }
 
     public SearchDatabaseConfig build() {
-        final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(this.activitySearchDatabaseConfigs);
         return new SearchDatabaseConfig(
-                activitySearchDatabaseConfigs.createFragmentFactory(fragmentFactory),
+                FragmentFactoryFactory.createFragmentFactory(activitySearchDatabaseConfigs, fragmentFactory),
                 iconResourceIdProvider,
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
-                activitySearchDatabaseConfigs.createRootPreferenceFragmentOfActivityProvider(),
+                ActivitySearchDatabaseConfigs.createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs),
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
-                activitySearchDatabaseConfigs.createFragment2PreferenceFragmentConverter());
+                ActivitySearchDatabaseConfigs.createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs));
     }
 }
