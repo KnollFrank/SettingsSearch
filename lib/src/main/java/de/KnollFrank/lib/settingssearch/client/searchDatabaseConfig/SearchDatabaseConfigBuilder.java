@@ -137,7 +137,7 @@ public class SearchDatabaseConfigBuilder {
                         .map(ActivitySearchDatabaseConfig::fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer)
                         .filter(Optional::isPresent)
                         .map(Optional::get)
-                        .map(FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer::fragmentWithPreferenceFragmentConnection)
+                        .map(fragmentWithPreferenceFragmentConnectionPreferenceFragmentInitializer -> fragmentWithPreferenceFragmentConnectionPreferenceFragmentInitializer.fragmentWithPreferenceFragmentConnection)
                         .collect(
                                 Collectors.toMap(
                                         FragmentWithPreferenceFragmentConnection::fragment,
