@@ -110,12 +110,12 @@ public class SearchDatabaseConfigBuilder {
             private <T extends Fragment> Optional<T> createPreferenceFragment(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
                 return activitySearchDatabaseConfigs
                         .stream()
-                        .map(ActivitySearchDatabaseConfig::fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer)
+                        .map(ActivitySearchDatabaseConfig::preferenceFragmentFactory)
                         .filter(Optional::isPresent)
                         .map(Optional::get)
-                        .filter(fragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer -> fragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer.canCreatePreferenceFragmentHavingClass(fragmentClass))
+                        .filter(preferenceFragmentFactory -> preferenceFragmentFactory.canCreatePreferenceFragmentHavingClass(fragmentClass))
                         .findFirst()
-                        .map(fragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer -> (T) fragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer.createPreferenceFragment(src, context, fragments));
+                        .map(preferenceFragmentFactory -> (T) preferenceFragmentFactory.createPreferenceFragment(src, context, fragments));
             }
         };
     }
@@ -134,7 +134,7 @@ public class SearchDatabaseConfigBuilder {
             private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
                 return activitySearchDatabaseConfigs
                         .stream()
-                        .map(ActivitySearchDatabaseConfig::fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer)
+                        .map(ActivitySearchDatabaseConfig::preferenceFragmentFactory)
                         .filter(Optional::isPresent)
                         .map(Optional::get)
                         .map(fragmentWithPreferenceFragmentConnectionPreferenceFragmentInitializer -> fragmentWithPreferenceFragmentConnectionPreferenceFragmentInitializer.fragmentWithPreferenceFragmentConnection)

@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityWithRootPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentWithPreferenceFragmentConnection;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.common.Classes;
@@ -62,18 +62,32 @@ class SearchDatabaseConfigFactory {
                                 new ActivitySearchDatabaseConfig<>(
                                         new ActivityWithRootPreferenceFragment<>(SettingsActivity.class, SettingsFragment.class),
                                         Optional.of(
-                                                new FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
-                                                        new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
-                                                        ItemFragment.PreferenceFragment::beforeOnCreate))),
+                                                new PreferenceFragmentFactory<>(
+                                                        new FragmentWithPreferenceFragmentConnection<>(
+                                                                ItemFragment.class,
+                                                                ItemFragment.PreferenceFragment.class)) {
+
+                                                    @Override
+                                                    protected void initializePreferenceFragmentWithFragment(final ItemFragment.PreferenceFragment preferenceFragment, final ItemFragment fragment) {
+                                                        preferenceFragment.beforeOnCreate(fragment);
+                                                    }
+                                                })),
                                 new ActivitySearchDatabaseConfig<>(
                                         new ActivityWithRootPreferenceFragment<>(SettingsActivity2.class, SettingsFragment2.class),
                                         Optional.empty()),
                                 new ActivitySearchDatabaseConfig<>(
                                         new ActivityWithRootPreferenceFragment<>(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class),
                                         Optional.of(
-                                                new FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
-                                                        new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class),
-                                                        ItemFragment3.PreferenceFragment3::beforeOnCreate)))))
+                                                new PreferenceFragmentFactory<>(
+                                                        new FragmentWithPreferenceFragmentConnection<>(
+                                                                ItemFragment3.class,
+                                                                ItemFragment3.PreferenceFragment3.class)) {
+
+                                                    @Override
+                                                    protected void initializePreferenceFragmentWithFragment(final ItemFragment3.PreferenceFragment3 preferenceFragment, final ItemFragment3 fragment) {
+                                                        preferenceFragment.beforeOnCreate(fragment);
+                                                    }
+                                                }))))
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceFragmentConnected2PreferenceProvider(
                         new PreferenceFragmentConnected2PreferenceProvider() {

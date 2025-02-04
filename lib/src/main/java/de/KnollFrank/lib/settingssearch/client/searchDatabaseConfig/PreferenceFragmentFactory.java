@@ -11,16 +11,12 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 
-public class FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<F extends Fragment, P extends PreferenceFragmentCompat> {
+public abstract class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceFragmentCompat> {
 
     public final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection;
-    private final PreferenceFragmentInitializer<P, F> preferenceFragmentInitializer;
 
-    public FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer(
-            final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection,
-            final PreferenceFragmentInitializer<P, F> preferenceFragmentInitializer) {
+    public PreferenceFragmentFactory(final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection) {
         this.fragmentWithPreferenceFragmentConnection = fragmentWithPreferenceFragmentConnection;
-        this.preferenceFragmentInitializer = preferenceFragmentInitializer;
     }
 
     public boolean canCreatePreferenceFragmentHavingClass(final Class<? extends Fragment> clazz) {
@@ -29,9 +25,11 @@ public class FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitiali
 
     public P createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
         final P preferenceFragment = _createPreferenceFragment(src, context, fragments);
-        preferenceFragmentInitializer.initializePreferenceFragmentWithFragment(preferenceFragment, getFragment(fragments));
+        initializePreferenceFragmentWithFragment(preferenceFragment, getFragment(fragments));
         return preferenceFragment;
     }
+
+    protected abstract void initializePreferenceFragmentWithFragment(P preferenceFragment, F fragment);
 
     private P _createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
         return new DefaultFragmentFactory().instantiate(
