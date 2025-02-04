@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.common.collect.ImmutableMap;
-
 import org.jgrapht.Graph;
 
 import java.util.List;
@@ -170,20 +168,24 @@ class SearchDatabaseConfigFactory {
                 .withFragment2PreferenceFragmentConverter(
                         new Fragment2PreferenceFragmentConverter() {
 
-                            private final Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> preferenceFragmentByFragment =
-                                    ImmutableMap
-                                            .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
-                                            .put(
-                                                    activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().fragmentWithPreferenceFragmentConnection().fragment(),
-                                                    activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().fragmentWithPreferenceFragmentConnection().preferenceFragment())
-                                            .put(
-                                                    activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().fragmentWithPreferenceFragmentConnection().fragment(),
-                                                    activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().fragmentWithPreferenceFragmentConnection().preferenceFragment())
-                                            .build();
+                            private final Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> preferenceFragmentByFragment = getPreferenceFragmentByFragmentMap(activitySearchDatabaseConfigs);
 
                             @Override
                             public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
                                 return Maps.get(preferenceFragmentByFragment, fragment);
+                            }
+
+                            private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+                                return activitySearchDatabaseConfigs
+                                        .stream()
+                                        .map(ActivitySearchDatabaseConfig::fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer)
+                                        .filter(Optional::isPresent)
+                                        .map(Optional::get)
+                                        .map(FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer::fragmentWithPreferenceFragmentConnection)
+                                        .collect(
+                                                Collectors.toMap(
+                                                        FragmentWithPreferenceFragmentConnection::fragment,
+                                                        FragmentWithPreferenceFragmentConnection::preferenceFragment));
                             }
                         })
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
