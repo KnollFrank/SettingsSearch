@@ -3,7 +3,6 @@ package de.KnollFrank.settingssearch;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -40,23 +39,6 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 class SearchDatabaseConfigFactory {
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
-        final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs =
-                List.of(
-                        new SearchDatabaseConfig.ActivitySearchDatabaseConfig<>(
-                                new SearchDatabaseConfig.ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity.class, SettingsFragment.class),
-                                Optional.of(
-                                        new SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
-                                                new SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
-                                                ItemFragment.PreferenceFragment::beforeOnCreate))),
-                        new SearchDatabaseConfig.ActivitySearchDatabaseConfig<>(
-                                new SearchDatabaseConfig.ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity2.class, SettingsFragment2.class),
-                                Optional.empty()),
-                        new SearchDatabaseConfig.ActivitySearchDatabaseConfig<>(
-                                new SearchDatabaseConfig.ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class),
-                                Optional.of(
-                                        new SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
-                                                new SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class),
-                                                ItemFragment3.PreferenceFragment3::beforeOnCreate))));
         return new SearchDatabaseConfigBuilder()
                 .withFragmentFactory(
                         new FragmentFactory() {
@@ -71,7 +53,23 @@ class SearchDatabaseConfigFactory {
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                             }
                         })
-                .withActivitySearchDatabaseConfigs(activitySearchDatabaseConfigs)
+                .withActivitySearchDatabaseConfigs(
+                        List.of(
+                                new SearchDatabaseConfig.ActivitySearchDatabaseConfig<>(
+                                        new SearchDatabaseConfig.ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity.class, SettingsFragment.class),
+                                        Optional.of(
+                                                new SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
+                                                        new SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
+                                                        ItemFragment.PreferenceFragment::beforeOnCreate))),
+                                new SearchDatabaseConfig.ActivitySearchDatabaseConfig<>(
+                                        new SearchDatabaseConfig.ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity2.class, SettingsFragment2.class),
+                                        Optional.empty()),
+                                new SearchDatabaseConfig.ActivitySearchDatabaseConfig<>(
+                                        new SearchDatabaseConfig.ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class),
+                                        Optional.of(
+                                                new SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
+                                                        new SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class),
+                                                        ItemFragment3.PreferenceFragment3::beforeOnCreate)))))
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceFragmentConnected2PreferenceProvider(
                         new PreferenceFragmentConnected2PreferenceProvider() {
