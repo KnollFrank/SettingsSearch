@@ -94,26 +94,33 @@ public class SearchDatabaseConfigBuilder {
                 createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs));
     }
 
-    private static FragmentFactory createFragmentFactory(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs,
-                                                         final FragmentFactory delegate) {
+    // FK-TODO: move to new class ActivitySearchDatabaseConfigs
+    private static FragmentFactory createFragmentFactory(
+            final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs,
+            final FragmentFactory delegate) {
         return new FragmentFactory() {
 
             @Override
             public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
-                // FK-TODO: refactor
-                for (final ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat> activitySearchDatabaseConfig : activitySearchDatabaseConfigs) {
-                    if (activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().isPresent()) {
-                        final var pair = activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow();
-                        if (pair.canCreatePreferenceFragmentHavingClass(fragmentClass)) {
-                            return (T) pair.createPreferenceFragment(src, context, fragments);
-                        }
-                    }
-                }
-                return delegate.instantiate(fragmentClass, src, context, fragments);
+                return this
+                        .createPreferenceFragment(fragmentClass, src, context, fragments)
+                        .orElseGet(() -> delegate.instantiate(fragmentClass, src, context, fragments));
+            }
+
+            private <T extends Fragment> Optional<T> createPreferenceFragment(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
+                return activitySearchDatabaseConfigs
+                        .stream()
+                        .map(ActivitySearchDatabaseConfig::fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .filter(fragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer -> fragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer.canCreatePreferenceFragmentHavingClass(fragmentClass))
+                        .findFirst()
+                        .map(fragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer -> (T) fragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer.createPreferenceFragment(src, context, fragments));
             }
         };
     }
 
+    // FK-TODO: move to new class ActivitySearchDatabaseConfigs
     private static Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
         return new Fragment2PreferenceFragmentConverter() {
 
@@ -139,6 +146,7 @@ public class SearchDatabaseConfigBuilder {
         };
     }
 
+    // FK-TODO: move to new class ActivitySearchDatabaseConfigs
     private static RootPreferenceFragmentOfActivityProvider createRootPreferenceFragmentOfActivityProvider(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
         return new RootPreferenceFragmentOfActivityProvider() {
 

@@ -11,8 +11,9 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 
-public final class FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<F extends Fragment, P extends PreferenceFragmentCompat> {
+public class FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<F extends Fragment, P extends PreferenceFragmentCompat> {
 
+    // FK-TODO: inline FragmentWithPreferenceFragmentConnection
     private final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection;
     private final PreferenceFragmentInitializer<P, F> preferenceFragmentInitializer;
 
