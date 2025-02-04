@@ -3,6 +3,7 @@ package de.KnollFrank.settingssearch;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.util.Pair;
 
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
@@ -46,8 +47,7 @@ class SearchDatabaseConfigFactory {
 
     public record ActivitySearchDatabaseConfig<A extends Activity, F extends Fragment, P1 extends PreferenceFragmentCompat, P2 extends PreferenceFragmentCompat>(
             ActivityWithRootPreferenceFragmentConnection<A, P1> activityWithRootPreferenceFragmentConnection,
-            Optional<FragmentWithPreferenceFragmentConnection<F, P2>> fragmentWithPreferenceFragmentConnection,
-            Optional<PreferenceFragmentInitializer<P2, F>> preferenceFragmentInitializer) {
+            Optional<Pair<FragmentWithPreferenceFragmentConnection<F, P2>, PreferenceFragmentInitializer<P2, F>>> fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer) {
 
         public P2 createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
             final P2 preferenceFragment = _createPreferenceFragment(src, context, fragments);
@@ -57,7 +57,7 @@ class SearchDatabaseConfigFactory {
 
         private P2 _createPreferenceFragment(final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
             return new DefaultFragmentFactory().instantiate(
-                    fragmentWithPreferenceFragmentConnection().orElseThrow().preferenceFragment(),
+                    fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().first.preferenceFragment(),
                     src,
                     context,
                     fragments);
@@ -65,13 +65,14 @@ class SearchDatabaseConfigFactory {
 
         private F getFragment(final IFragments fragments) {
             return fragments.instantiateAndInitializeFragment(
-                    fragmentWithPreferenceFragmentConnection().orElseThrow().fragment,
+                    fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().first.fragment(),
                     Optional.empty());
         }
 
         private void initializePreferenceFragmentWithFragment(final P2 preferenceFragment, final F fragment) {
-            preferenceFragmentInitializer()
+            fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer()
                     .orElseThrow()
+                    .second
                     .initializePreferenceFragmentWithFragment(
                             preferenceFragment,
                             fragment);
@@ -98,18 +99,21 @@ class SearchDatabaseConfigFactory {
         final var activitySearchDatabaseConfig =
                 new ActivitySearchDatabaseConfig<SettingsActivity, ItemFragment, SettingsFragment, ItemFragment.PreferenceFragment>(
                         new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity.class, SettingsFragment.class),
-                        Optional.of(new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class)),
-                        Optional.of(ItemFragment.PreferenceFragment::beforeOnCreate));
+                        Optional.of(
+                                Pair.create(
+                                        new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
+                                        ItemFragment.PreferenceFragment::beforeOnCreate)));
         final var activitySearchDatabaseConfig2 =
                 new ActivitySearchDatabaseConfig<SettingsActivity2, Fragment, SettingsFragment2, PreferenceFragmentCompat>(
                         new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity2.class, SettingsFragment2.class),
-                        Optional.empty(),
                         Optional.empty());
         final var activitySearchDatabaseConfig3 =
                 new ActivitySearchDatabaseConfig<SettingsActivity3, ItemFragment3, ItemFragment3.PreferenceFragment3, ItemFragment3.PreferenceFragment3>(
                         new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class),
-                        Optional.of(new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class)),
-                        Optional.of(ItemFragment3.PreferenceFragment3::beforeOnCreate));
+                        Optional.of(
+                                Pair.create(
+                                        new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class),
+                                        ItemFragment3.PreferenceFragment3::beforeOnCreate)));
         return new SearchDatabaseConfigBuilder()
                 .withFragmentFactory(
                         new FragmentFactory() {
@@ -121,10 +125,10 @@ class SearchDatabaseConfigFactory {
                                         PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.get().preference().getKey())) {
                                     return Classes.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference())));
                                 }
-                                if (activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection().orElseThrow().preferenceFragment().equals(fragmentClass)) {
+                                if (activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().first.preferenceFragment().equals(fragmentClass)) {
                                     return (T) activitySearchDatabaseConfig.createPreferenceFragment(src, context, fragments);
                                 }
-                                if (activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection().orElseThrow().preferenceFragment().equals(fragmentClass)) {
+                                if (activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().first.preferenceFragment().equals(fragmentClass)) {
                                     return (T) activitySearchDatabaseConfig3.createPreferenceFragment(src, context, fragments);
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
@@ -154,8 +158,8 @@ class SearchDatabaseConfigFactory {
                             private final Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> preferenceFragmentByFragment =
                                     ImmutableMap
                                             .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
-                                            .put(activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection().orElseThrow().fragment(), activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection().orElseThrow().preferenceFragment())
-                                            .put(activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection().orElseThrow().fragment(), activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection().orElseThrow().preferenceFragment())
+                                            .put(activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().first.fragment(), activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().first.preferenceFragment())
+                                            .put(activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().first.fragment(), activitySearchDatabaseConfig3.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow().first.preferenceFragment())
                                             .build();
 
                             @Override
