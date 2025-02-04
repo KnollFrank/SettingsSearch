@@ -1,10 +1,23 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import android.app.Activity;
+import android.content.Context;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceFragmentCompat;
+
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
+import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.IFragments;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
@@ -22,11 +35,15 @@ public class SearchDatabaseConfigBuilder {
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
-    private RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider = classNameOfActivity -> Optional.empty();
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
-    private Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter = fragment -> Optional.empty();
+    private List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs = List.of();
+
+    public SearchDatabaseConfigBuilder withActivitySearchDatabaseConfigs(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+        this.activitySearchDatabaseConfigs = activitySearchDatabaseConfigs;
+        return this;
+    }
 
     public SearchDatabaseConfigBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
         this.fragmentFactory = fragmentFactory;
@@ -54,11 +71,6 @@ public class SearchDatabaseConfigBuilder {
     }
 
 
-    public SearchDatabaseConfigBuilder withRootPreferenceFragmentOfActivityProvider(final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider) {
-        this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
-        return this;
-    }
-
     public SearchDatabaseConfigBuilder withPreferenceScreenGraphAvailableListener(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         return this;
@@ -69,21 +81,81 @@ public class SearchDatabaseConfigBuilder {
         return this;
     }
 
-    public SearchDatabaseConfigBuilder withFragment2PreferenceFragmentConverter(final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
-        this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
-        return this;
-    }
-
     public SearchDatabaseConfig build() {
         return new SearchDatabaseConfig(
-                fragmentFactory,
+                createFragmentFactory(activitySearchDatabaseConfigs, fragmentFactory),
                 iconResourceIdProvider,
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
-                rootPreferenceFragmentOfActivityProvider,
+                createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs),
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
-                fragment2PreferenceFragmentConverter);
+                createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs));
+    }
+
+    private static FragmentFactory createFragmentFactory(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs,
+                                                         final FragmentFactory delegate) {
+        return new FragmentFactory() {
+
+            @Override
+            public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
+                for (final SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat> activitySearchDatabaseConfig : activitySearchDatabaseConfigs) {
+                    if (activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().isPresent()) {
+                        final var pair = activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow();
+                        if (pair.fragmentWithPreferenceFragmentConnection().preferenceFragment().equals(fragmentClass)) {
+                            return (T) pair.createPreferenceFragment(src, context, fragments);
+                        }
+                    }
+                }
+                return delegate.instantiate(fragmentClass, src, context, fragments);
+            }
+        };
+    }
+
+    private static Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+        return new Fragment2PreferenceFragmentConverter() {
+
+            private final Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> preferenceFragmentByFragment = getPreferenceFragmentByFragmentMap(activitySearchDatabaseConfigs);
+
+            @Override
+            public Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(final Class<? extends Fragment> fragment) {
+                return Maps.get(preferenceFragmentByFragment, fragment);
+            }
+
+            private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+                return activitySearchDatabaseConfigs
+                        .stream()
+                        .map(SearchDatabaseConfig.ActivitySearchDatabaseConfig::fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .map(SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer::fragmentWithPreferenceFragmentConnection)
+                        .collect(
+                                Collectors.toMap(
+                                        SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection::fragment,
+                                        SearchDatabaseConfig.FragmentWithPreferenceFragmentConnection::preferenceFragment));
+            }
+        };
+    }
+
+    private static RootPreferenceFragmentOfActivityProvider createRootPreferenceFragmentOfActivityProvider(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+        return new RootPreferenceFragmentOfActivityProvider() {
+
+            private final Map<? extends Class<? extends AppCompatActivity>, ? extends Class<? extends PreferenceFragmentCompat>> rootPreferenceFragmentByActivity = getRootPreferenceFragmentByActivityMap(activitySearchDatabaseConfigs);
+
+            @Override
+            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
+                return Optional.ofNullable(rootPreferenceFragmentByActivity.get(activityClass));
+            }
+
+            private static Map<? extends Class<? extends AppCompatActivity>, ? extends Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentByActivityMap(final List<SearchDatabaseConfig.ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+                return activitySearchDatabaseConfigs
+                        .stream()
+                        .collect(
+                                Collectors.toMap(
+                                        activitySearchDatabaseConfig -> activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().activityClass(),
+                                        activitySearchDatabaseConfig -> activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass()));
+            }
+        };
     }
 }
