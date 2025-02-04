@@ -155,8 +155,8 @@ class SearchDatabaseConfigFactory {
                                         .stream()
                                         .collect(
                                                 Collectors.toMap(
-                                                        _activitySearchDatabaseConfig -> _activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().activityClass(),
-                                                        _activitySearchDatabaseConfig -> _activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass()));
+                                                        activitySearchDatabaseConfig -> activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().activityClass(),
+                                                        activitySearchDatabaseConfig -> activitySearchDatabaseConfig.activityWithRootPreferenceFragmentConnection().rootPreferenceFragmentClassOfActivityClass()));
                             }
                         })
                 .withFragment2PreferenceFragmentConverter(
