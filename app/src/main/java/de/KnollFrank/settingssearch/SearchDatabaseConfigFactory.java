@@ -123,11 +123,6 @@ class SearchDatabaseConfigFactory {
 
                             @Override
                             public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
-                                if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
-                                        src.isPresent() &&
-                                        PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.get().preference().getKey())) {
-                                    return Classes.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference())));
-                                }
                                 for (final ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat> activitySearchDatabaseConfig : activitySearchDatabaseConfigs) {
                                     if (activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().isPresent()) {
                                         final var pair = activitySearchDatabaseConfig.fragmentWithPreferenceFragmentConnection_preferenceFragmentInitializer().orElseThrow();
@@ -135,6 +130,11 @@ class SearchDatabaseConfigFactory {
                                             return (T) pair.createPreferenceFragment(src, context, fragments);
                                         }
                                     }
+                                }
+                                if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
+                                        src.isPresent() &&
+                                        PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.get().preference().getKey())) {
+                                    return Classes.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.get().preference())));
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, fragments);
                             }
