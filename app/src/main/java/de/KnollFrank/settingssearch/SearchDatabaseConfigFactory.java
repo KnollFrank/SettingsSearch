@@ -100,29 +100,23 @@ class SearchDatabaseConfigFactory {
     }
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
-        final var activitySearchDatabaseConfig =
-                new ActivitySearchDatabaseConfig<SettingsActivity, ItemFragment, SettingsFragment, ItemFragment.PreferenceFragment>(
-                        new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity.class, SettingsFragment.class),
-                        Optional.of(
-                                new FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
-                                        new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
-                                        ItemFragment.PreferenceFragment::beforeOnCreate)));
-        final var activitySearchDatabaseConfig2 =
-                new ActivitySearchDatabaseConfig<SettingsActivity2, Fragment, SettingsFragment2, PreferenceFragmentCompat>(
-                        new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity2.class, SettingsFragment2.class),
-                        Optional.empty());
-        final var activitySearchDatabaseConfig3 =
-                new ActivitySearchDatabaseConfig<SettingsActivity3, ItemFragment3, ItemFragment3.PreferenceFragment3, ItemFragment3.PreferenceFragment3>(
-                        new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class),
-                        Optional.of(
-                                new FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
-                                        new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class),
-                                        ItemFragment3.PreferenceFragment3::beforeOnCreate)));
         final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs =
                 List.of(
-                        activitySearchDatabaseConfig,
-                        activitySearchDatabaseConfig2,
-                        activitySearchDatabaseConfig3);
+                        new ActivitySearchDatabaseConfig<>(
+                                new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity.class, SettingsFragment.class),
+                                Optional.of(
+                                        new FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
+                                                new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
+                                                ItemFragment.PreferenceFragment::beforeOnCreate))),
+                        new ActivitySearchDatabaseConfig<>(
+                                new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity2.class, SettingsFragment2.class),
+                                Optional.empty()),
+                        new ActivitySearchDatabaseConfig<>(
+                                new ActivityWithRootPreferenceFragmentConnection<>(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class),
+                                Optional.of(
+                                        new FragmentWithPreferenceFragmentConnection_PreferenceFragmentInitializer<>(
+                                                new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class),
+                                                ItemFragment3.PreferenceFragment3::beforeOnCreate))));
         return new SearchDatabaseConfigBuilder()
                 .withFragmentFactory(
                         new FragmentFactory() {
