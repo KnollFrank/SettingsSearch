@@ -19,9 +19,9 @@ public class Classes {
         }
     }
 
-    public static <T> Optional<Class<? extends T>> asSubclass(final String className,
-                                                              final Class<T> clazz,
-                                                              final Context context) {
+    public static <T> Optional<Class<? extends T>> classNameAsSubclassOfClazz(final String className,
+                                                                              final Class<T> clazz,
+                                                                              final Context context) {
         final Class<?> loadedClass = loadClass(className, context);
         return clazz.isAssignableFrom(loadedClass) ?
                 Optional.of((Class<? extends T>) loadedClass) :

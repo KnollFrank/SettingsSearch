@@ -169,7 +169,7 @@ public final class SearchablePreference {
     public Optional<Class<? extends Activity>> getClassOfReferencedActivity(final Context context) {
         return this
                 .getClassNameOfReferencedActivity()
-                .flatMap(classNameOfReferencedActivity -> Classes.asSubclass(classNameOfReferencedActivity, Activity.class, context));
+                .flatMap(classNameOfReferencedActivity -> Classes.classNameAsSubclassOfClazz(classNameOfReferencedActivity, Activity.class, context));
     }
 
     public boolean isVisible() {

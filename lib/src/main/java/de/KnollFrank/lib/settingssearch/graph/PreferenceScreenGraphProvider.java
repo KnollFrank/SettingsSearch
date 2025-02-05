@@ -124,6 +124,6 @@ public class PreferenceScreenGraphProvider {
     }
 
     private Optional<Class<? extends Activity>> asActivityClass(final String className) {
-        return Classes.asSubclass(className, Activity.class, context);
+        return Classes.classNameAsSubclassOfClazz(className, Activity.class, context);
     }
 }
