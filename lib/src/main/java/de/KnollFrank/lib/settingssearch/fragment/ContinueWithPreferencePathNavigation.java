@@ -45,7 +45,7 @@ public class ContinueWithPreferencePathNavigation {
         continueWithPreferencePathNavigation.continueWithPreferencePathNavigation();
     }
 
-    public void continueWithPreferencePathNavigation() {
+    private void continueWithPreferencePathNavigation() {
         this
                 .getPreferencePathNavigatorData()
                 .ifPresent(this::showPreferenceScreenAndHighlightPreference);
