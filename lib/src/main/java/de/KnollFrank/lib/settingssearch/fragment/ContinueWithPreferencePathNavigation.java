@@ -98,7 +98,7 @@ public class ContinueWithPreferencePathNavigation {
         return SearchablePreferences
                 .getPreferencesRecursively(preferences)
                 .stream()
-                .filter(_preference -> _preference.getId() == id)
+                .filter(preference -> preference.getId() == id)
                 .findFirst()
                 .orElseThrow();
     }
