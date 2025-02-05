@@ -15,17 +15,17 @@ import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 
-public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferenceScreenAndHighlightPreference {
+public class NavigatePreferencePathAndHighlightPreference implements INavigatePreferencePathAndHighlightPreference {
 
     private final PreferencePathNavigator preferencePathNavigator;
     private final @IdRes int fragmentContainerViewId;
     private final PrepareShow prepareShow;
     private final FragmentManager fragmentManager;
 
-    public ShowPreferenceScreenAndHighlightPreference(final PreferencePathNavigator preferencePathNavigator,
-                                                      final @IdRes int fragmentContainerViewId,
-                                                      final PrepareShow prepareShow,
-                                                      final FragmentManager fragmentManager) {
+    public NavigatePreferencePathAndHighlightPreference(final PreferencePathNavigator preferencePathNavigator,
+                                                        final @IdRes int fragmentContainerViewId,
+                                                        final PrepareShow prepareShow,
+                                                        final FragmentManager fragmentManager) {
         this.preferencePathNavigator = preferencePathNavigator;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.prepareShow = prepareShow;
@@ -33,18 +33,14 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
     }
 
     @Override
-    public void showPreferenceScreenAndHighlightPreference(final SearchablePreference preference,
-                                                           final int startNavigationAtIndexWithinPreferencePath) {
+    public void navigatePreferencePathAndHighlightPreference(final PreferencePathPointer preferencePathPointer) {
         preferencePathNavigator
-                .navigatePreferencePath(
-                        PreferencePathPointer.of(
-                                preference.getPreferencePath(),
-                                startNavigationAtIndexWithinPreferencePath))
+                .navigatePreferencePath(preferencePathPointer)
                 .ifPresent(
                         fragmentOfPreferenceScreen ->
                                 showPreferenceScreenAndHighlightPreference(
                                         fragmentOfPreferenceScreen,
-                                        preference));
+                                        preferencePathPointer.preferencePath.getPreference()));
     }
 
     private void showPreferenceScreenAndHighlightPreference(

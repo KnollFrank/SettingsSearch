@@ -13,24 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.fragment.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.results.IShowPreferenceScreenAndHighlightPreference;
+import de.KnollFrank.lib.settingssearch.results.INavigatePreferencePathAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchResultsFragment extends Fragment {
 
-    public final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference;
+    public final INavigatePreferencePathAndHighlightPreference navigatePreferencePathAndHighlightPreference;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
     private RecyclerView recyclerView;
 
-    public SearchResultsFragment(final IShowPreferenceScreenAndHighlightPreference showPreferenceScreenAndHighlightPreference,
+    public SearchResultsFragment(final INavigatePreferencePathAndHighlightPreference navigatePreferencePathAndHighlightPreference,
                                  final ShowPreferencePathPredicate showPreferencePathPredicate,
                                  final PreferencePathDisplayer preferencePathDisplayer,
                                  final SearchResultsFragmentUI searchResultsFragmentUI) {
         super(searchResultsFragmentUI.getRootViewId());
-        this.showPreferenceScreenAndHighlightPreference = showPreferenceScreenAndHighlightPreference;
+        this.navigatePreferencePathAndHighlightPreference = navigatePreferencePathAndHighlightPreference;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.preferencePathDisplayer = preferencePathDisplayer;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
@@ -66,7 +67,11 @@ public class SearchResultsFragment extends Fragment {
                         layoutManager.getOrientation()));
         final SearchResultsRecyclerViewAdapter searchResultsRecyclerViewAdapter =
                 new SearchResultsRecyclerViewAdapter(
-                        preference -> showPreferenceScreenAndHighlightPreference.showPreferenceScreenAndHighlightPreference(preference, 0),
+                        preference ->
+                                navigatePreferencePathAndHighlightPreference.navigatePreferencePathAndHighlightPreference(
+                                        PreferencePathPointer.of(
+                                                preference.getPreferencePath(),
+                                                0)),
                         showPreferencePathPredicate,
                         preferencePathDisplayer);
         recyclerView.setAdapter(searchResultsRecyclerViewAdapter);

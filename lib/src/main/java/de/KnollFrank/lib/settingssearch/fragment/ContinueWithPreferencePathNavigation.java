@@ -6,14 +6,11 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
-import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 
 public class ContinueWithPreferencePathNavigation {
@@ -85,21 +82,10 @@ public class ContinueWithPreferencePathNavigation {
         mergedPreferenceScreen
                 .searchResultsDisplayer()
                 .getSearchResultsFragment()
-                .showPreferenceScreenAndHighlightPreference
-                .showPreferenceScreenAndHighlightPreference(
-                        getPreferenceFromId(
-                                preferencePathNavigatorData.idOfSearchablePreference(),
-                                mergedPreferenceScreen.preferences()),
-                        preferencePathNavigatorData.indexWithinPreferencePath());
-    }
-
-    private static SearchablePreference getPreferenceFromId(final int id,
-                                                            final Set<SearchablePreference> preferences) {
-        return SearchablePreferences
-                .getPreferencesRecursively(preferences)
-                .stream()
-                .filter(preference -> preference.getId() == id)
-                .findFirst()
-                .orElseThrow();
+                .navigatePreferencePathAndHighlightPreference
+                .navigatePreferencePathAndHighlightPreference(
+                        PreferencePathPointerFactory.createPreferencePathPointer(
+                                preferencePathNavigatorData,
+                                mergedPreferenceScreen.preferences()));
     }
 }

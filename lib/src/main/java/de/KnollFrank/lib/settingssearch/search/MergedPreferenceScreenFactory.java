@@ -21,10 +21,10 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
+import de.KnollFrank.lib.settingssearch.results.NavigatePreferencePathAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
-import de.KnollFrank.lib.settingssearch.results.ShowPreferenceScreenAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
@@ -131,7 +131,7 @@ public class MergedPreferenceScreenFactory {
                 preferences,
                 new SearchResultsDisplayer(
                         new SearchResultsFragment(
-                                new ShowPreferenceScreenAndHighlightPreference(
+                                new NavigatePreferencePathAndHighlightPreference(
                                         new PreferencePathNavigator(
                                                 fragmentFactoryAndInitializer,
                                                 context,
