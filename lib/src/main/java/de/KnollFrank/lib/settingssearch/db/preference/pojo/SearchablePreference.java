@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
 
@@ -162,6 +164,12 @@ public final class SearchablePreference {
 
     public Optional<String> getClassNameOfReferencedActivity() {
         return Optional.ofNullable(classNameOfReferencedActivity);
+    }
+
+    public Optional<Class<? extends Activity>> getClassOfReferencedActivity(final Context context) {
+        return this
+                .getClassNameOfReferencedActivity()
+                .flatMap(classNameOfReferencedActivity -> Classes.asSubclass(classNameOfReferencedActivity, Activity.class, context));
     }
 
     public boolean isVisible() {
