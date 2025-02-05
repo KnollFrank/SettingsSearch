@@ -58,10 +58,7 @@ public class PreferencePathPointer {
             final PreferencePath preferencePath,
             final int indexWithinPreferencePath) {
         return Lists.getElementAtIndex(preferencePath.preferences(), indexWithinPreferencePath).isPresent() ?
-                Optional.of(
-                        new PreferencePathPointer(
-                                preferencePath,
-                                indexWithinPreferencePath)) :
+                Optional.of(new PreferencePathPointer(preferencePath, indexWithinPreferencePath)) :
                 Optional.empty();
     }
 }
