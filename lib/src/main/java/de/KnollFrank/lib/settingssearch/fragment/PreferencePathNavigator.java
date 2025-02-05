@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.common.Utils;
+import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferencePathNavigator {
@@ -74,7 +74,7 @@ public class PreferencePathNavigator {
         final Intent intent =
                 new Intent(
                         context,
-                        Utils.getClass(classNameOfReferencedActivity));
+                        Classes.getClass(classNameOfReferencedActivity));
         final PreferencePathNavigatorData preferencePathNavigatorData =
                 new PreferencePathNavigatorData(
                         preferencePathPointer.preferencePath().getPreference().getId(),

@@ -25,6 +25,6 @@ public class Bundles {
     }
 
     public <T> Class<? extends T> getClass(final String key) {
-        return Utils.getClass(this.bundle.getString(key));
+        return Classes.getClass(this.bundle.getString(key));
     }
 }

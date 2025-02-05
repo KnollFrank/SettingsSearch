@@ -9,14 +9,6 @@ import java.util.function.Supplier;
 
 public class Utils {
 
-    public static <T> Class<? extends T> getClass(final String className) {
-        try {
-            return (Class<? extends T>) Class.forName(className);
-        } catch (final ClassNotFoundException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     public static <T> Supplier<T> memoize(final Supplier<T> supplier) {
         return Suppliers.memoize(supplier::get)::get;
     }
