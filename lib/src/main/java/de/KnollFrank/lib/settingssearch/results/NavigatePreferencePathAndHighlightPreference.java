@@ -50,17 +50,10 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
         showFragment(
                 fragmentOfPreferenceScreen,
                 _fragmentOfPreferenceScreen ->
-                        preference2Highlight
-                                .getKey()
-                                .ifPresent(
-                                        keyOfPreference2Highlight -> {
-                                            highlightPreference(
-                                                    _fragmentOfPreferenceScreen,
-                                                    keyOfPreference2Highlight);
-                                            showDialog(
-                                                    _fragmentOfPreferenceScreen.findPreference(keyOfPreference2Highlight),
-                                                    preference2Highlight);
-                                        }),
+                        preference2Highlight.getKey().ifPresent(keyOfPreference2Highlight -> {
+                            highlightPreference(_fragmentOfPreferenceScreen, keyOfPreference2Highlight);
+                            showDialog(_fragmentOfPreferenceScreen.findPreference(keyOfPreference2Highlight), preference2Highlight);
+                        }),
                 true,
                 fragmentContainerViewId,
                 fragmentManager);
