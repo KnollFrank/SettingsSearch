@@ -37,7 +37,7 @@ public class ShowPreferenceScreenAndHighlightPreference implements IShowPreferen
                                                            final int startNavigationAtIndexWithinPreferencePath) {
         preferencePathNavigator
                 .navigatePreferencePath(
-                        new PreferencePathPointer(
+                        PreferencePathPointer.of(
                                 preference.getPreferencePath(),
                                 startNavigationAtIndexWithinPreferencePath))
                 .ifPresent(

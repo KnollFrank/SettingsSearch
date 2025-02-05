@@ -74,8 +74,8 @@ public class PreferencePathNavigator {
         final Intent intent = new Intent(context, activity);
         final PreferencePathNavigatorData preferencePathNavigatorData =
                 new PreferencePathNavigatorData(
-                        preferencePathPointer.preferencePath().getPreference().getId(),
-                        preferencePathPointer.indexWithinPreferencePath());
+                        preferencePathPointer.preferencePath.getPreference().getId(),
+                        preferencePathPointer.indexWithinPreferencePath);
         intent.putExtras(preferencePathNavigatorData.toBundle());
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
