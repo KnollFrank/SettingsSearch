@@ -61,6 +61,7 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
 
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment,
                                             final String keyOfPreference2Highlight) {
+        // FK-TODO: siehe Implementierung von scrollToPreference() und ziehe den Code für den RecyclerView heraus.
         preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
         PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
                 keyOfPreference2Highlight,

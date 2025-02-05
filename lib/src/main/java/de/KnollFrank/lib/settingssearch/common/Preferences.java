@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.common;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
 
 import com.google.common.collect.ImmutableList;
@@ -40,5 +41,14 @@ public class Preferences {
                 return preferenceGroup.getPreference(index++);
             }
         };
+    }
+
+    public static Preference findPreferenceOrElseThrow(final PreferenceFragmentCompat hostOfPreference,
+                                                       final String keyOfPreference) {
+        final Preference preference = hostOfPreference.findPreference(keyOfPreference);
+        if (preference == null) {
+            throw new IllegalArgumentException("can not find preference with key " + keyOfPreference + " within preferenceFragment " + hostOfPreference);
+        }
+        return preference;
     }
 }

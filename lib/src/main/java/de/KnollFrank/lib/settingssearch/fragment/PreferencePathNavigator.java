@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferencePathNavigator {
@@ -85,7 +85,7 @@ public class PreferencePathNavigator {
                                                      final Optional<PreferenceWithHost> src) {
         final PreferenceFragmentCompat hostOfPreference = instantiateAndInitializePreferenceFragment(preference.getHost(), src);
         return new PreferenceWithHost(
-                getPreference(hostOfPreference, preference.getKey().orElseThrow()),
+                Preferences.findPreferenceOrElseThrow(hostOfPreference, preference.getKey().orElseThrow()),
                 hostOfPreference);
     }
 
@@ -97,14 +97,5 @@ public class PreferencePathNavigator {
                 src,
                 context,
                 fragments);
-    }
-
-    private static Preference getPreference(final PreferenceFragmentCompat hostOfPreference,
-                                            final String keyOfPreference) {
-        final Preference preference = hostOfPreference.findPreference(keyOfPreference);
-        if (preference == null) {
-            throw new IllegalArgumentException("can not find preference with key " + keyOfPreference + " within preferenceFragment " + hostOfPreference);
-        }
-        return preference;
     }
 }
