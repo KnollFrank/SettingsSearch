@@ -124,9 +124,6 @@ public class PreferenceScreenGraphProvider {
     }
 
     private Optional<Class<? extends Activity>> asActivityClass(final String className) {
-        final Class<?> clazz = Classes.loadClass(className, context);
-        return Activity.class.isAssignableFrom(clazz) ?
-                Optional.of((Class<? extends Activity>) clazz) :
-                Optional.empty();
+        return Classes.asSubclass(className, Activity.class, context);
     }
 }

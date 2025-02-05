@@ -19,6 +19,15 @@ public class Classes {
         }
     }
 
+    public static <T> Optional<Class<? extends T>> asSubclass(final String className,
+                                                              final Class<T> clazz,
+                                                              final Context context) {
+        final Class<?> loadedClass = loadClass(className, context);
+        return clazz.isAssignableFrom(loadedClass) ?
+                Optional.of((Class<? extends T>) loadedClass) :
+                Optional.empty();
+    }
+
     public static Class<?> loadClass(final String className, final Context context) {
         try {
             return context.getClassLoader().loadClass(className);
