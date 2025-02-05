@@ -48,10 +48,10 @@ public class SettingsActivity extends AppCompatActivity {
                 this,
                 findViewById(R.id.settings_root),
                 fragmentContainerViewId,
-                mergedPreferenceScreenConsumer ->
+                onMergedPreferenceScreenAvailable ->
                         createSearchPreferenceFragments(
                                 this,
-                                mergedPreferenceScreenConsumer,
+                                onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId));
     }
 
