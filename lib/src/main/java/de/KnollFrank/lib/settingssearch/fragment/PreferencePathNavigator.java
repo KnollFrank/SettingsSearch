@@ -72,11 +72,11 @@ public class PreferencePathNavigator {
     private Intent createIntent(final Class<? extends Activity> activity,
                                 final PreferencePathPointer preferencePathPointer) {
         final Intent intent = new Intent(context, activity);
-        final PreferencePathNavigatorData preferencePathNavigatorData =
-                new PreferencePathNavigatorData(
-                        preferencePathPointer.preferencePath.getPreference().getId(),
-                        preferencePathPointer.indexWithinPreferencePath);
-        intent.putExtras(PreferencePathNavigatorDataConverter.toBundle(preferencePathNavigatorData));
+        intent.putExtras(
+                PreferencePathNavigatorDataConverter.toBundle(
+                        new PreferencePathNavigatorData(
+                                preferencePathPointer.preferencePath.getPreference().getId(),
+                                preferencePathPointer.indexWithinPreferencePath)));
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
     }
