@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent3;
@@ -64,11 +65,12 @@ public class ItemFragment3 extends Fragment {
         return PlaceholderContent3.ITEMS;
     }
 
-    public static class PreferenceFragment3 extends PreferenceFragmentCompat {
+    public static class PreferenceFragment3 extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment3> {
 
         private List<PlaceholderContent.PlaceholderItem> items;
 
-        public void beforeOnCreate(final ItemFragment3 itemFragment3) {
+        @Override
+        public void initializePreferenceFragmentWithFragmentBeforeOnCreate(final ItemFragment3 itemFragment3) {
             items = itemFragment3.getItems();
         }
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 
@@ -66,11 +67,12 @@ public class ItemFragment extends Fragment {
     }
 
     // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.
-    public static class PreferenceFragment extends PreferenceFragmentCompat {
+    public static class PreferenceFragment extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment> {
 
         private List<PlaceholderContent.PlaceholderItem> items;
 
-        public void beforeOnCreate(final ItemFragment itemFragment) {
+        @Override
+        public void initializePreferenceFragmentWithFragmentBeforeOnCreate(final ItemFragment itemFragment) {
             items = itemFragment.getItems();
         }
 

@@ -11,9 +11,9 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
-public abstract class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceFragmentCompat> {
+public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceFragmentCompat & InitializePreferenceFragmentWithFragmentBeforeOnCreate<F>> {
 
-    public final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection;
+    private final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection;
 
     public PreferenceFragmentFactory(final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection) {
         this.fragmentWithPreferenceFragmentConnection = fragmentWithPreferenceFragmentConnection;
@@ -29,8 +29,6 @@ public abstract class PreferenceFragmentFactory<F extends Fragment, P extends Pr
                 Optional.empty();
     }
 
-    protected abstract void initializePreferenceFragmentWithFragment(P preferenceFragment, F fragment);
-
     private boolean canCreatePreferenceFragmentHavingClass(final Class<? extends Fragment> clazz) {
         return fragmentWithPreferenceFragmentConnection.preferenceFragment().equals(clazz);
     }
@@ -40,7 +38,7 @@ public abstract class PreferenceFragmentFactory<F extends Fragment, P extends Pr
             final Context context,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         final P preferenceFragment = createPreferenceFragment(src, context, instantiateAndInitializeFragment);
-        initializePreferenceFragmentWithFragment(preferenceFragment, getFragment(instantiateAndInitializeFragment));
+        preferenceFragment.initializePreferenceFragmentWithFragmentBeforeOnCreate(getFragment(instantiateAndInitializeFragment));
         return preferenceFragment;
     }
 

@@ -18,9 +18,8 @@ class Fragment2PreferenceFragmentConverterFactory {
 
     private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs) {
         return activitySearchDatabaseConfigs
-                .preferenceFragmentFactories()
+                .fragmentWithPreferenceFragmentConnections()
                 .stream()
-                .map(preferenceFragmentFactory -> preferenceFragmentFactory.fragmentWithPreferenceFragmentConnection)
                 .collect(
                         Collectors.toMap(
                                 FragmentWithPreferenceFragmentConnection::fragment,

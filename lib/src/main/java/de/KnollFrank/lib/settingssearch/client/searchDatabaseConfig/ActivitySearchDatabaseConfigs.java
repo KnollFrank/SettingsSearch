@@ -9,5 +9,5 @@ import java.util.Set;
 
 public record ActivitySearchDatabaseConfigs(
         Set<ActivityWithRootPreferenceFragment<? extends Activity, ? extends PreferenceFragmentCompat>> activityWithRootPreferenceFragments,
-        Set<PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> preferenceFragmentFactories) {
+        Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
 }

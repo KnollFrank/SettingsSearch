@@ -69,14 +69,12 @@ public class SearchDatabaseConfigBuilder {
 
     public SearchDatabaseConfig build() {
         return new SearchDatabaseConfig(
-                new de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentFactory(
-                        activitySearchDatabaseConfigs.preferenceFragmentFactories(),
-                        fragmentFactory),
+                FragmentFactoryFactory.createFragmentFactory(activitySearchDatabaseConfigs.fragmentWithPreferenceFragmentConnections(), fragmentFactory),
                 iconResourceIdProvider,
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
-                RootPreferenceFragmentOfActivityProviderFactory.createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs),
+                RootPreferenceFragmentOfActivityProviderFactory.createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs.activityWithRootPreferenceFragments()),
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
                 Fragment2PreferenceFragmentConverterFactory.createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs));
