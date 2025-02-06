@@ -5,18 +5,18 @@ import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 class FragmentFactory implements de.KnollFrank.lib.settingssearch.fragment.FragmentFactory {
 
-    private final List<? extends PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> preferenceFragmentFactories;
+    private final Set<PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> preferenceFragmentFactories;
     private final de.KnollFrank.lib.settingssearch.fragment.FragmentFactory delegate;
 
-    public FragmentFactory(final List<? extends PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> preferenceFragmentFactories,
+    public FragmentFactory(final Set<PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> preferenceFragmentFactories,
                            final de.KnollFrank.lib.settingssearch.fragment.FragmentFactory delegate) {
         this.preferenceFragmentFactories = preferenceFragmentFactories;
         this.delegate = delegate;

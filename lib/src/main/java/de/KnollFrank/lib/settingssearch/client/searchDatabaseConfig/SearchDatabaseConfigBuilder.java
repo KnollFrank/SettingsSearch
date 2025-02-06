@@ -1,11 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
-
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -28,9 +24,9 @@ public class SearchDatabaseConfigBuilder {
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
-    private List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs = List.of();
+    private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Set.of(), Set.of());
 
-    public SearchDatabaseConfigBuilder withActivitySearchDatabaseConfigs(final List<ActivitySearchDatabaseConfig<? extends AppCompatActivity, ? extends Fragment, ? extends PreferenceFragmentCompat, ? extends PreferenceFragmentCompat>> activitySearchDatabaseConfigs) {
+    public SearchDatabaseConfigBuilder withActivitySearchDatabaseConfigs(final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs) {
         this.activitySearchDatabaseConfigs = activitySearchDatabaseConfigs;
         return this;
     }
@@ -73,7 +69,9 @@ public class SearchDatabaseConfigBuilder {
 
     public SearchDatabaseConfig build() {
         return new SearchDatabaseConfig(
-                FragmentFactoryFactory.createFragmentFactory(activitySearchDatabaseConfigs, fragmentFactory),
+                new de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentFactory(
+                        activitySearchDatabaseConfigs.preferenceFragmentFactories(),
+                        fragmentFactory),
                 iconResourceIdProvider,
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
