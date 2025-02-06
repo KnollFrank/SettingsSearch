@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -87,7 +87,7 @@ public class MergedPreferenceScreenFactory {
                         onUiThreadRunner);
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(fragmentFactory, preferenceDialogs);
-        final IFragments fragments =
+        final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         context);
@@ -102,7 +102,7 @@ public class MergedPreferenceScreenFactory {
                                 preferenceDialogs,
                                 context,
                                 progressUpdateListener,
-                                fragments)
+                                instantiateAndInitializeFragment)
                         .persistOrLoadPreferences(locale),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
@@ -110,7 +110,7 @@ public class MergedPreferenceScreenFactory {
                 context,
                 searchResultsFilter,
                 searchResultsSorter,
-                fragments);
+                instantiateAndInitializeFragment);
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
@@ -126,7 +126,7 @@ public class MergedPreferenceScreenFactory {
             final Context context,
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
-            final IFragments fragments) {
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(
@@ -135,7 +135,7 @@ public class MergedPreferenceScreenFactory {
                                         new PreferencePathNavigator(
                                                 fragmentFactoryAndInitializer,
                                                 context,
-                                                fragments),
+                                                instantiateAndInitializeFragment),
                                         fragmentContainerViewId,
                                         prepareShow,
                                         fragmentManager),

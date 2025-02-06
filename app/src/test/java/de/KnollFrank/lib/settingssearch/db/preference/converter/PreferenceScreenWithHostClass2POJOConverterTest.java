@@ -34,7 +34,7 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -152,10 +152,11 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
 
     public static Fragment initializeFragment(final Fragment preferenceFragment,
                                               final FragmentActivity activity) {
-        return initializeFragment(preferenceFragment, getFragments(preferenceFragment, activity));
+        return initializeFragment(preferenceFragment, getInstantiateAndInitializeFragment(preferenceFragment, activity));
     }
 
-    public static IFragments getFragments(final Fragment fragment, final FragmentActivity activity) {
+    public static InstantiateAndInitializeFragment getInstantiateAndInitializeFragment(final Fragment fragment,
+                                                                                       final FragmentActivity activity) {
         return new Fragments(
                 new FragmentFactoryAndInitializerWithCache(
                         new FragmentFactoryAndInitializer(
@@ -175,16 +176,16 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
             public <T extends Fragment> T instantiate(final Class<T> fragmentClassName,
                                                       final Optional<PreferenceWithHost> src,
                                                       final Context context,
-                                                      final IFragments fragments) {
+                                                      final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                 return fragment.getClass().equals(fragmentClassName) ?
                         (T) fragment :
-                        defaultFragmentFactory.instantiate(fragmentClassName, src, context, fragments);
+                        defaultFragmentFactory.instantiate(fragmentClassName, src, context, instantiateAndInitializeFragment);
             }
         };
     }
 
-    public static Fragment initializeFragment(final Fragment fragment, final IFragments fragments) {
-        return fragments.instantiateAndInitializeFragment(
+    public static Fragment initializeFragment(final Fragment fragment, final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+        return instantiateAndInitializeFragment.instantiateAndInitializeFragment(
                 fragment.getClass(),
                 Optional.empty());
     }

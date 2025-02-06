@@ -26,7 +26,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithH
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
@@ -35,7 +35,7 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class MergedPreferenceScreenDataRepository {
 
-    private final IFragments fragments;
+    private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
     private final DefaultFragmentInitializer preferenceDialogs;
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
@@ -45,7 +45,7 @@ public class MergedPreferenceScreenDataRepository {
     private final Context context;
 
     public MergedPreferenceScreenDataRepository(
-            final IFragments fragments,
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final DefaultFragmentInitializer preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
@@ -53,7 +53,7 @@ public class MergedPreferenceScreenDataRepository {
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO,
             final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
             final Context context) {
-        this.fragments = fragments;
+        this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.rootPreferenceFragment = rootPreferenceFragment;
@@ -106,7 +106,7 @@ public class MergedPreferenceScreenDataRepository {
         return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragment,
                 new PreferenceScreenWithHostProvider(
-                        fragments,
+                        instantiateAndInitializeFragment,
                         new SearchablePreferenceScreenProvider(
                                 new PreferenceVisibleAndSearchablePredicate(
                                         searchDatabaseConfig.preferenceSearchablePredicate())),

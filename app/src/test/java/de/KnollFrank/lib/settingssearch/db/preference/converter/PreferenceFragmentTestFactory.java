@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
 
 import androidx.preference.PreferenceFragmentCompat;
@@ -14,6 +14,6 @@ public class PreferenceFragmentTestFactory {
         final PreferenceFragmentCompat preferenceFragment = new TestPreferenceFragment();
         return (PreferenceFragmentCompat) initializeFragment(
                 preferenceFragment,
-                getFragments(preferenceFragment, activity));
+                getInstantiateAndInitializeFragment(preferenceFragment, activity));
     }
 }

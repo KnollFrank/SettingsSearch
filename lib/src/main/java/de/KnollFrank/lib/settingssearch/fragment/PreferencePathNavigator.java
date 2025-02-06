@@ -16,14 +16,14 @@ public class PreferencePathNavigator {
 
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final Context context;
-    private final IFragments fragments;
+    private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
 
     public PreferencePathNavigator(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                    final Context context,
-                                   final IFragments fragments) {
+                                   final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.context = context;
-        this.fragments = fragments;
+        this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
     }
 
     public Optional<PreferenceFragmentCompat> navigatePreferencePath(final PreferencePathPointer preferencePathPointer) {
@@ -96,6 +96,6 @@ public class PreferencePathNavigator {
                 preferenceFragment,
                 src,
                 context,
-                fragments);
+                instantiateAndInitializeFragment);
     }
 }

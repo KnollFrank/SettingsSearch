@@ -22,8 +22,8 @@ public class FragmentFactoryAndInitializer {
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
                                                                    final Optional<PreferenceWithHost> src,
                                                                    final Context context,
-                                                                   final IFragments fragments) {
-        final T fragment = instantiateFragment(fragmentClass, src, context, fragments);
+                                                                   final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+        final T fragment = instantiateFragment(fragmentClass, src, context, instantiateAndInitializeFragment);
         fragmentInitializer.initialize(fragment);
         return fragment;
     }
@@ -31,7 +31,7 @@ public class FragmentFactoryAndInitializer {
     private <T extends Fragment> T instantiateFragment(final Class<T> fragmentClass,
                                                        final Optional<PreferenceWithHost> src,
                                                        final Context context,
-                                                       final IFragments fragments) {
-        return fragmentFactory.instantiate(fragmentClass, src, context, fragments);
+                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+        return fragmentFactory.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
     }
 }

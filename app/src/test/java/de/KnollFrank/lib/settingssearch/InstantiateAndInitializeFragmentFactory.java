@@ -7,13 +7,13 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
-class FragmentsFactory {
+class InstantiateAndInitializeFragmentFactory {
 
-    public static IFragments createFragments(final FragmentActivity activity) {
+    public static InstantiateAndInitializeFragment createInstantiateAndInitializeFragment(final FragmentActivity activity) {
         return new Fragments(
                 new FragmentFactoryAndInitializerWithCache(
                         new FragmentFactoryAndInitializer(

@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 
-public class Fragments implements IFragments {
+public class Fragments implements InstantiateAndInitializeFragment {
 
     private final FragmentFactoryAndInitializerWithCache fragmentFactoryAndInitializer;
     private final Context context;

@@ -50,7 +50,7 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -653,10 +653,13 @@ public class PreferenceSearcherTest {
         return new FragmentFactory() {
 
             @Override
-            public <T extends Fragment> T instantiate(final Class<T> fragmentClassName, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
+            public <T extends Fragment> T instantiate(final Class<T> fragmentClassName,
+                                                      final Optional<PreferenceWithHost> src,
+                                                      final Context context,
+                                                      final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                 return preferenceFragment.getClass().equals(fragmentClassName) ?
                         (T) preferenceFragment :
-                        defaultFragmentFactory.instantiate(fragmentClassName, src, context, fragments);
+                        defaultFragmentFactory.instantiate(fragmentClassName, src, context, instantiateAndInitializeFragment);
             }
         };
     }
@@ -678,7 +681,7 @@ public class PreferenceSearcherTest {
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
                         fragmentInitializer);
-        final IFragments fragments =
+        final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         fragmentActivity);
@@ -686,7 +689,7 @@ public class PreferenceSearcherTest {
                 new SearchablePreferenceScreenGraphProvider(
                         preferenceFragment.getClass(),
                         new PreferenceScreenWithHostProvider(
-                                fragments,
+                                instantiateAndInitializeFragment,
                                 new SearchablePreferenceScreenProvider(
                                         new PreferenceVisibleAndSearchablePredicate(
                                                 preferenceSearchablePredicate)),
@@ -744,7 +747,7 @@ public class PreferenceSearcherTest {
                 fragmentActivity,
                 preference -> true,
                 new SearchResultsByPreferencePathSorter(),
-                fragments);
+                instantiateAndInitializeFragment);
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

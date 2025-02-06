@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 class FragmentFactory implements de.KnollFrank.lib.settingssearch.fragment.FragmentFactory {
 
@@ -23,16 +23,16 @@ class FragmentFactory implements de.KnollFrank.lib.settingssearch.fragment.Fragm
     }
 
     @Override
-    public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
+    public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return this
-                .createPreferenceFragment(fragmentClass, src, context, fragments)
-                .orElseGet(() -> delegate.instantiate(fragmentClass, src, context, fragments));
+                .createPreferenceFragment(fragmentClass, src, context, instantiateAndInitializeFragment)
+                .orElseGet(() -> delegate.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment));
     }
 
-    private <T extends Fragment> Optional<T> createPreferenceFragment(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final IFragments fragments) {
+    private <T extends Fragment> Optional<T> createPreferenceFragment(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return preferenceFragmentFactories
                 .stream()
-                .map(preferenceFragmentFactory -> preferenceFragmentFactory.createPreferenceFragmentForClass(fragmentClass, src, context, fragments))
+                .map(preferenceFragmentFactory -> preferenceFragmentFactory.createPreferenceFragmentForClass(fragmentClass, src, context, instantiateAndInitializeFragment))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findFirst();

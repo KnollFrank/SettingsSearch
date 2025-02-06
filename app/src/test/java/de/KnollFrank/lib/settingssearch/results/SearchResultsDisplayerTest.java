@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getFragments;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItemCount;
 
@@ -151,7 +151,7 @@ public class SearchResultsDisplayerTest {
                         });
         PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment(
                 searchResultsFragment,
-                getFragments(searchResultsFragment, activity));
+                getInstantiateAndInitializeFragment(searchResultsFragment, activity));
         return searchResultsFragment;
     }
 }

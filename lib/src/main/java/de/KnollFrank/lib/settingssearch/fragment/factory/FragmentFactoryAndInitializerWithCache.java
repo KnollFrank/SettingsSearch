@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 public class FragmentFactoryAndInitializerWithCache {
 
@@ -24,10 +24,10 @@ public class FragmentFactoryAndInitializerWithCache {
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
                                                                    final Optional<PreferenceWithHost> src,
                                                                    final Context context,
-                                                                   final IFragments fragments) {
+                                                                   final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         final Arguments arguments = ArgumentsFactory.createArguments(fragmentClass, src);
         if (!fragmentByArguments.containsKey(arguments)) {
-            final T fragment = delegate.instantiateAndInitializeFragment(fragmentClass, src, context, fragments);
+            final T fragment = delegate.instantiateAndInitializeFragment(fragmentClass, src, context, instantiateAndInitializeFragment);
             fragmentByArguments.put(arguments, fragment);
         }
         return (T) fragmentByArguments.get(arguments);

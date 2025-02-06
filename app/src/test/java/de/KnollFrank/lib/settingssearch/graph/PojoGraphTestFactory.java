@@ -11,18 +11,18 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.fragment.IFragments;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 public class PojoGraphTestFactory {
 
     public static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(
             final PreferenceFragmentCompat preferenceFragment,
-            final IFragments fragments,
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
         final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
                 new PreferenceScreenGraphProvider(
                         new PreferenceScreenWithHostProvider(
-                                fragments,
+                                instantiateAndInitializeFragment,
                                 PreferenceFragmentCompat::getPreferenceScreen,
                                 fragment -> Optional.empty()),
                         (preference, hostOfPreference) -> Optional.empty(),
