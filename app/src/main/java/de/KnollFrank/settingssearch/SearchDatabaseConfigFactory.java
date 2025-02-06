@@ -1,11 +1,14 @@
 package de.KnollFrank.settingssearch;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.google.common.collect.ImmutableMap;
 
 import org.jgrapht.Graph;
 
@@ -16,7 +19,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivityWithRootPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentWithPreferenceFragmentConnection;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfigBuilder;
@@ -58,10 +60,12 @@ class SearchDatabaseConfigFactory {
                         })
                 .withActivitySearchDatabaseConfigs(
                         new ActivitySearchDatabaseConfigs(
-                                Set.of(
-                                        new ActivityWithRootPreferenceFragment<>(SettingsActivity.class, SettingsFragment.class),
-                                        new ActivityWithRootPreferenceFragment<>(SettingsActivity2.class, SettingsFragment2.class),
-                                        new ActivityWithRootPreferenceFragment<>(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class)),
+                                ImmutableMap
+                                        .<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>>builder()
+                                        .put(SettingsActivity.class, SettingsFragment.class)
+                                        .put(SettingsActivity2.class, SettingsFragment2.class)
+                                        .put(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class)
+                                        .build(),
                                 Set.of(
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class))))

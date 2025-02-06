@@ -1,5 +1,10 @@
 package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
+import android.app.Activity;
+
+import androidx.preference.PreferenceFragmentCompat;
+
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -9,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableIn
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
+import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
@@ -24,7 +30,7 @@ public class SearchDatabaseConfigBuilder {
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
-    private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Set.of(), Set.of());
+    private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
 
     public SearchDatabaseConfigBuilder withActivitySearchDatabaseConfigs(final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs) {
         this.activitySearchDatabaseConfigs = activitySearchDatabaseConfigs;
@@ -74,7 +80,13 @@ public class SearchDatabaseConfigBuilder {
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
-                RootPreferenceFragmentOfActivityProviderFactory.createRootPreferenceFragmentOfActivityProvider(activitySearchDatabaseConfigs.activityWithRootPreferenceFragments()),
+                new RootPreferenceFragmentOfActivityProvider() {
+
+                    @Override
+                    public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
+                        return Optional.ofNullable(activitySearchDatabaseConfigs.rootPreferenceFragmentByActivity().get(activityClass));
+                    }
+                },
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
                 Fragment2PreferenceFragmentConverterFactory.createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs));
