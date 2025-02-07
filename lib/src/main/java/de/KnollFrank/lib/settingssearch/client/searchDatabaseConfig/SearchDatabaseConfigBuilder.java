@@ -17,14 +17,12 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
-import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchDatabaseConfigBuilder {
 
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
-    private IconResourceIdProvider iconResourceIdProvider = new ReflectionIconResourceIdProvider();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -46,13 +44,6 @@ public class SearchDatabaseConfigBuilder {
     @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
         this.fragmentFactory = fragmentFactory;
-        return this;
-    }
-
-    // FK-TODO: remove method
-    @SuppressWarnings("unused")
-    private SearchDatabaseConfigBuilder withIconResourceIdProvider(final IconResourceIdProvider iconResourceIdProvider) {
-        this.iconResourceIdProvider = iconResourceIdProvider;
         return this;
     }
 
@@ -90,7 +81,7 @@ public class SearchDatabaseConfigBuilder {
     public SearchDatabaseConfig build() {
         return new SearchDatabaseConfig(
                 FragmentFactoryFactory.createFragmentFactory(activitySearchDatabaseConfigs.fragmentWithPreferenceFragmentConnections(), fragmentFactory),
-                iconResourceIdProvider,
+                new ReflectionIconResourceIdProvider(),
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
