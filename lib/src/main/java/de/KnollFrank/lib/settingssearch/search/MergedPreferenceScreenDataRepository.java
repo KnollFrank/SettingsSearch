@@ -99,16 +99,16 @@ public class MergedPreferenceScreenDataRepository {
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
         return new SearchablePreferenceScreenGraphProvider(
-                searchDatabaseConfig.rootPreferenceFragment(),
+                searchDatabaseConfig.rootPreferenceFragment,
                 new PreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
                         new SearchablePreferenceScreenProvider(
                                 new PreferenceVisibleAndSearchablePredicate(
-                                        searchDatabaseConfig.preferenceSearchablePredicate())),
+                                        searchDatabaseConfig.preferenceSearchablePredicate)),
                         fragment2PreferenceFragmentConverter),
-                searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider(),
-                searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider(),
-                searchDatabaseConfig.preferenceScreenGraphAvailableListener(),
+                searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
+                searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
+                searchDatabaseConfig.preferenceScreenGraphAvailableListener,
                 new PreferenceScreenGraphListener() {
 
                     @Override
@@ -117,12 +117,12 @@ public class MergedPreferenceScreenDataRepository {
                     }
                 },
                 new Preference2SearchablePreferenceConverter(
-                        new IconProvider(searchDatabaseConfig.iconResourceIdProvider()),
+                        new IconProvider(searchDatabaseConfig.iconResourceIdProvider),
                         new SearchableInfoAndDialogInfoProvider(
-                                searchDatabaseConfig.searchableInfoProvider(),
+                                searchDatabaseConfig.searchableInfoProvider,
                                 new SearchableDialogInfoOfProvider(
                                         preferenceDialogs,
-                                        searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider())),
+                                        searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider)),
                         new IdGenerator()),
                 context);
     }

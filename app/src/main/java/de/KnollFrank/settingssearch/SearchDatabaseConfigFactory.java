@@ -21,7 +21,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentWithPreferenceFragmentConnection;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -44,7 +43,8 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 class SearchDatabaseConfigFactory {
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
-        return new SearchDatabaseConfigBuilder(PrefsFragmentFirst.class)
+        return SearchDatabaseConfig
+                .builder(PrefsFragmentFirst.class)
                 .withFragmentFactory(
                         new FragmentFactory() {
 

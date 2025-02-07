@@ -13,7 +13,6 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfig;
-import de.KnollFrank.lib.settingssearch.client.SearchConfigBuilder;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
@@ -30,7 +29,8 @@ class SearchConfigFactory {
     public static SearchConfig createSearchConfig(final @IdRes int fragmentContainerViewId,
                                                   final Context context) {
         final IgnoreSearchResultsFilter ignoreSearchResultsFilter = new IgnoreSearchResultsFilter();
-        return new SearchConfigBuilder(fragmentContainerViewId, context)
+        return SearchConfig
+                .builder(fragmentContainerViewId, context)
                 .withSearchResultsFilter(ignoreSearchResultsFilter)
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {

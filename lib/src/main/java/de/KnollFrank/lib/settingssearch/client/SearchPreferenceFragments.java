@@ -75,35 +75,35 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     public void showSearchPreferenceFragment() {
         showFragment(
                 new SearchPreferenceFragment(
-                        searchConfig.queryHint(),
-                        searchConfig.includePreferenceInSearchResultsPredicate(),
+                        searchConfig.queryHint,
+                        searchConfig.includePreferenceInSearchResultsPredicate,
                         getMergedPreferenceScreenFactory(),
                         onUiThreadRunner,
                         createSearchDatabaseTaskSupplier,
-                        searchConfig.searchPreferenceFragmentUI(),
+                        searchConfig.searchPreferenceFragmentUI,
                         onMergedPreferenceScreenAvailable),
                 searchPreferenceFragment -> {
                 },
                 true,
-                searchConfig.fragmentContainerViewId(),
+                searchConfig.fragmentContainerViewId,
                 fragmentManager);
     }
 
     public MergedPreferenceScreenFactory getMergedPreferenceScreenFactory() {
         return new MergedPreferenceScreenFactory(
-                searchConfig.showPreferencePathPredicate(),
-                searchConfig.prepareShow(),
-                searchConfig.fragmentContainerViewId(),
-                searchDatabaseConfig.fragmentFactory(),
-                searchConfig.markupsFactory(),
+                searchConfig.showPreferencePathPredicate,
+                searchConfig.prepareShow,
+                searchConfig.fragmentContainerViewId,
+                searchDatabaseConfig.fragmentFactory,
+                searchConfig.markupsFactory,
                 context,
                 locale,
                 onUiThreadRunner,
                 this,
-                searchConfig.searchResultsFragmentUI(),
-                searchConfig.searchResultsFilter(),
-                searchConfig.searchResultsSorter(),
-                searchConfig.preferencePathDisplayer());
+                searchConfig.searchResultsFragmentUI,
+                searchConfig.searchResultsFilter,
+                searchConfig.searchResultsSorter,
+                searchConfig.preferencePathDisplayer);
     }
 
     public void rebuildSearchDatabase() {
@@ -122,7 +122,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(
                                 new FragmentFactoryAndInitializer(
-                                        searchDatabaseConfig.fragmentFactory(),
+                                        searchDatabaseConfig.fragmentFactory,
                                         preferenceDialogs)),
                         context));
     }
@@ -139,7 +139,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchDatabaseConfig,
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context),
-                searchDatabaseConfig.fragment2PreferenceFragmentConverter(),
+                searchDatabaseConfig.fragment2PreferenceFragmentConverter,
                 context);
     }
 }

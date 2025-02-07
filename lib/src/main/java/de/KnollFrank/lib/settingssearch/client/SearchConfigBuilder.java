@@ -36,7 +36,7 @@ public class SearchConfigBuilder {
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
     private MarkupsFactory markupsFactory;
 
-    public SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
+    SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.markupsFactory = new DefaultMarkupsFactory(context);
     }
