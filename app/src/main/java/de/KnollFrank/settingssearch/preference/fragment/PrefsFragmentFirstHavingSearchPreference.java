@@ -9,7 +9,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.settingssearch.R;
@@ -60,7 +59,6 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 getId(),
-                new SearchConfiguration(Optional.empty()),
                 getParentFragmentManager(),
                 requireActivity(),
                 Optional::empty,
@@ -71,7 +69,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
     private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {
         final SearchPreference searchPreference = new SearchPreference(getContext());
         searchPreference.setOrder(-1);
-        searchPreferenceFragments.searchConfiguration.queryHint().ifPresent(searchPreference::setQueryHint);
+        searchPreferenceFragments.searchConfig.queryHint().ifPresent(searchPreference::setQueryHint);
         searchPreference.setOnPreferenceClickListener(
                 preference -> {
                     searchPreferenceFragments.showSearchPreferenceFragment();

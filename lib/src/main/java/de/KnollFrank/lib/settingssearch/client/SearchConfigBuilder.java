@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.IdRes;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -22,6 +24,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 public class SearchConfigBuilder {
 
     private final @IdRes int fragmentContainerViewId;
+    private Optional<String> queryHint = Optional.empty();
     private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = preference -> true;
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> true;
     private PrepareShow prepareShow = preferenceFragment -> {
@@ -36,6 +39,12 @@ public class SearchConfigBuilder {
     public SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.markupsFactory = new DefaultMarkupsFactory(context);
+    }
+
+    @SuppressWarnings("unused")
+    public SearchConfigBuilder withQueryHint(final String queryHint) {
+        this.queryHint = Optional.of(queryHint);
+        return this;
     }
 
     @SuppressWarnings("unused")
@@ -95,6 +104,7 @@ public class SearchConfigBuilder {
     public SearchConfig build() {
         return new SearchConfig(
                 fragmentContainerViewId,
+                queryHint,
                 includePreferenceInSearchResultsPredicate,
                 showPreferencePathPredicate,
                 prepareShow,

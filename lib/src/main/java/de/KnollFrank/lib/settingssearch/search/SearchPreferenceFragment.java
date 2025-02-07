@@ -18,7 +18,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.common.Keyboard;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListenersAndProgressContainer;
@@ -38,7 +37,7 @@ public class SearchPreferenceFragment extends Fragment {
 
     private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
-    private final SearchConfiguration searchConfiguration;
+    private final Optional<String> queryHint;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
@@ -48,14 +47,14 @@ public class SearchPreferenceFragment extends Fragment {
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask;
 
-    public SearchPreferenceFragment(final SearchConfiguration searchConfiguration,
+    public SearchPreferenceFragment(final Optional<String> queryHint,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
                                     final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
                                     final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
                                     final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
-        this.searchConfiguration = searchConfiguration;
+        this.queryHint = queryHint;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.onUiThreadRunner = onUiThreadRunner;
@@ -148,10 +147,7 @@ public class SearchPreferenceFragment extends Fragment {
                                 mergedPreferenceScreen.preferences(),
                                 includePreferenceInSearchResultsPredicate),
                         mergedPreferenceScreen.searchResultsDisplayer());
-        SearchViewConfigurer.configureSearchView(
-                searchView,
-                searchConfiguration.queryHint(),
-                searchAndDisplay);
+        SearchViewConfigurer.configureSearchView(searchView, queryHint, searchAndDisplay);
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
         searchPreferenceFragmentUI.onSearchReady(

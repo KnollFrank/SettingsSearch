@@ -32,9 +32,8 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepositoryFactory {
 
-    public final SearchConfiguration searchConfiguration;
+    public final SearchConfig searchConfig;
     private final SearchDatabaseConfig searchDatabaseConfig;
-    private final SearchConfig searchConfig;
     private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
@@ -44,21 +43,18 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchDatabaseConfig searchDatabaseConfig,
                                                            final SearchConfig searchConfig,
-                                                           final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
                                                            final Activity activity) {
         return new SearchPreferenceFragmentsBuilder(
                 searchDatabaseConfig,
                 searchConfig,
-                searchConfiguration,
                 fragmentManager,
                 Utils.geCurrentLocale(activity.getResources()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
                 activity);
     }
 
-    protected SearchPreferenceFragments(final SearchConfiguration searchConfiguration,
-                                        final SearchDatabaseConfig searchDatabaseConfig,
+    protected SearchPreferenceFragments(final SearchDatabaseConfig searchDatabaseConfig,
                                         final SearchConfig searchConfig,
                                         final FragmentManager fragmentManager,
                                         final Locale locale,
@@ -66,7 +62,6 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final Context context,
                                         final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
                                         final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
-        this.searchConfiguration = searchConfiguration;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
         this.fragmentManager = fragmentManager;
@@ -80,7 +75,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     public void showSearchPreferenceFragment() {
         showFragment(
                 new SearchPreferenceFragment(
-                        searchConfiguration,
+                        searchConfig.queryHint(),
                         searchConfig.includePreferenceInSearchResultsPredicate(),
                         getMergedPreferenceScreenFactory(),
                         onUiThreadRunner,

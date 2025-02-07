@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.CreateSearchDatabaseTaskProvider;
-import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
@@ -75,15 +74,10 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 FRAGMENT_CONTAINER_VIEW_ID,
-                createSearchConfiguration(),
                 getSupportFragmentManager(),
                 this,
                 () -> createSearchDatabaseTask,
                 mergedPreferenceScreen -> {
                 });
-    }
-
-    private SearchConfiguration createSearchConfiguration() {
-        return new SearchConfiguration(Optional.empty());
     }
 }

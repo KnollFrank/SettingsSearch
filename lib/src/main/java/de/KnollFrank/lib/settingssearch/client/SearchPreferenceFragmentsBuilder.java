@@ -17,7 +17,6 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 public class SearchPreferenceFragmentsBuilder {
 
     private final SearchDatabaseConfig searchDatabaseConfig;
-    private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
@@ -29,14 +28,12 @@ public class SearchPreferenceFragmentsBuilder {
 
     protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig searchDatabaseConfig,
                                                final SearchConfig searchConfig,
-                                               final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
                                                final Context context) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
-        this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
@@ -55,7 +52,6 @@ public class SearchPreferenceFragmentsBuilder {
 
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
-                searchConfiguration,
                 searchDatabaseConfig,
                 searchConfig,
                 fragmentManager,
