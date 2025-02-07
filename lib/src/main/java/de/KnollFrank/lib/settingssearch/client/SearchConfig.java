@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import androidx.annotation.IdRes;
+
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -12,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 // FK-TODO: Suchergebnisse gruppierbar machen
 public record SearchConfig(
+        @IdRes int fragmentContainerViewId,
         IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
         ShowPreferencePathPredicate showPreferencePathPredicate,
         PrepareShow prepareShow,

@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.client;
 
 import android.content.Context;
 
+import androidx.annotation.IdRes;
+
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -19,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
 public class SearchConfigBuilder {
 
+    private final @IdRes int fragmentContainerViewId;
     private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = preference -> true;
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> true;
     private PrepareShow prepareShow = preferenceFragment -> {
@@ -30,50 +33,60 @@ public class SearchConfigBuilder {
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
     private MarkupsFactory markupsFactory;
 
-    public SearchConfigBuilder(final Context context) {
+    public SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
+        this.fragmentContainerViewId = fragmentContainerViewId;
         this.markupsFactory = new DefaultMarkupsFactory(context);
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withShowPreferencePathPredicate(final ShowPreferencePathPredicate showPreferencePathPredicate) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withPrepareShow(final PrepareShow prepareShow) {
         this.prepareShow = prepareShow;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withPreferencePathDisplayer(final PreferencePathDisplayer preferencePathDisplayer) {
         this.preferencePathDisplayer = preferencePathDisplayer;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withSearchResultsFilter(final SearchResultsFilter searchResultsFilter) {
         this.searchResultsFilter = searchResultsFilter;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withSearchResultsSorter(final SearchResultsSorter searchResultsSorter) {
         this.searchResultsSorter = searchResultsSorter;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withSearchPreferenceFragmentUI(final SearchPreferenceFragmentUI searchPreferenceFragmentUI) {
         this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withSearchResultsFragmentUI(final SearchResultsFragmentUI searchResultsFragmentUI) {
         this.searchResultsFragmentUI = searchResultsFragmentUI;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchConfigBuilder withMarkupsFactory(final MarkupsFactory markupsFactory) {
         this.markupsFactory = markupsFactory;
         return this;
@@ -81,6 +94,7 @@ public class SearchConfigBuilder {
 
     public SearchConfig build() {
         return new SearchConfig(
+                fragmentContainerViewId,
                 includePreferenceInSearchResultsPredicate,
                 showPreferencePathPredicate,
                 prepareShow,

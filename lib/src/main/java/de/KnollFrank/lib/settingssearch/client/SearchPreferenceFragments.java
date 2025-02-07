@@ -43,11 +43,13 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchDatabaseConfig searchDatabaseConfig,
+                                                           final SearchConfig searchConfig,
                                                            final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
                                                            final Activity activity) {
         return new SearchPreferenceFragmentsBuilder(
                 searchDatabaseConfig,
+                searchConfig,
                 searchConfiguration,
                 fragmentManager,
                 Utils.geCurrentLocale(activity.getResources()),
@@ -88,7 +90,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchPreferenceFragment -> {
                 },
                 true,
-                searchConfiguration.fragmentContainerViewId(),
+                searchConfig.fragmentContainerViewId(),
                 fragmentManager);
     }
 
@@ -96,7 +98,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         return new MergedPreferenceScreenFactory(
                 searchConfig.showPreferencePathPredicate(),
                 searchConfig.prepareShow(),
-                searchConfiguration.fragmentContainerViewId(),
+                searchConfig.fragmentContainerViewId(),
                 searchDatabaseConfig.fragmentFactory(),
                 searchConfig.markupsFactory(),
                 context,

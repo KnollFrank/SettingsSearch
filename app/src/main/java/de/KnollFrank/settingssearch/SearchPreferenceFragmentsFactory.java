@@ -2,6 +2,7 @@ package de.KnollFrank.settingssearch;
 
 import android.app.Activity;
 
+import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 public class SearchPreferenceFragmentsFactory {
 
     public static SearchPreferenceFragments createSearchPreferenceFragments(
+            final @IdRes int fragmentContainerViewId,
             final SearchConfiguration searchConfiguration,
             final FragmentManager fragmentManager,
             final Activity activity,
@@ -24,10 +26,10 @@ public class SearchPreferenceFragmentsFactory {
         return SearchPreferenceFragments
                 .builder(
                         SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
+                        SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
                         searchConfiguration,
                         fragmentManager,
                         activity)
-                .withSearchConfig(SearchConfigFactory.createSearchConfig(activity))
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withOnMergedPreferenceScreenAvailable(onMergedPreferenceScreenAvailable)
                 .build();

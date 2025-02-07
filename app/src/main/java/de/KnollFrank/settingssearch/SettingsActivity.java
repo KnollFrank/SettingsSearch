@@ -59,15 +59,12 @@ public class SettingsActivity extends AppCompatActivity {
             final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
             final @IdRes int fragmentContainerViewId) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
-                createSearchConfiguration(fragmentContainerViewId),
+                fragmentContainerViewId,
+                new SearchConfiguration(Optional.empty()),
                 activity.getSupportFragmentManager(),
                 activity,
                 Optional::empty,
                 onMergedPreferenceScreenAvailable);
-    }
-
-    private static SearchConfiguration createSearchConfiguration(final @IdRes int fragmentContainerViewId) {
-        return new SearchConfiguration(fragmentContainerViewId, Optional.empty());
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {

@@ -74,6 +74,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
 
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
+                FRAGMENT_CONTAINER_VIEW_ID,
                 createSearchConfiguration(),
                 getSupportFragmentManager(),
                 this,
@@ -83,8 +84,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
     }
 
     private SearchConfiguration createSearchConfiguration() {
-        return new SearchConfiguration(
-                FRAGMENT_CONTAINER_VIEW_ID,
-                Optional.empty());
+        return new SearchConfiguration(Optional.empty());
     }
 }

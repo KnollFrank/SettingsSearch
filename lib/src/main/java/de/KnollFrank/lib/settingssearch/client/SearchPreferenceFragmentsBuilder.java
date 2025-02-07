@@ -22,29 +22,25 @@ public class SearchPreferenceFragmentsBuilder {
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
-    private SearchConfig searchConfig;
+    private final SearchConfig searchConfig;
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
 
     protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig searchDatabaseConfig,
+                                               final SearchConfig searchConfig,
                                                final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
                                                final Context context) {
         this.searchDatabaseConfig = searchDatabaseConfig;
+        this.searchConfig = searchConfig;
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
-        this.searchConfig = new SearchConfigBuilder(context).build();
-    }
-
-    public SearchPreferenceFragmentsBuilder withSearchConfig(final SearchConfig searchConfig) {
-        this.searchConfig = searchConfig;
-        return this;
     }
 
     public SearchPreferenceFragmentsBuilder withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
