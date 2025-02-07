@@ -42,10 +42,12 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
 
-    public static SearchPreferenceFragmentsBuilder builder(final SearchConfiguration searchConfiguration,
+    public static SearchPreferenceFragmentsBuilder builder(final SearchDatabaseConfig searchDatabaseConfig,
+                                                           final SearchConfiguration searchConfiguration,
                                                            final FragmentManager fragmentManager,
                                                            final Activity activity) {
         return new SearchPreferenceFragmentsBuilder(
+                searchDatabaseConfig,
                 searchConfiguration,
                 fragmentManager,
                 Utils.geCurrentLocale(activity.getResources()),
@@ -138,7 +140,6 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 instantiateAndInitializeFragment,
                 preferenceDialogs,
                 searchDatabaseConfig,
-                searchConfiguration.rootPreferenceFragment(),
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context),
                 searchDatabaseConfig.fragment2PreferenceFragmentConverter(),

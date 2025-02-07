@@ -8,7 +8,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
@@ -75,7 +74,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
 
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
-                createSearchConfiguration(PrefsFragmentFirst.class),
+                createSearchConfiguration(),
                 getSupportFragmentManager(),
                 this,
                 () -> createSearchDatabaseTask,
@@ -83,10 +82,9 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 });
     }
 
-    private SearchConfiguration createSearchConfiguration(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
+    private SearchConfiguration createSearchConfiguration() {
         return new SearchConfiguration(
                 FRAGMENT_CONTAINER_VIEW_ID,
-                Optional.empty(),
-                rootPreferenceFragment);
+                Optional.empty());
     }
 }

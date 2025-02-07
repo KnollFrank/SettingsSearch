@@ -22,6 +22,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 
 public class SearchDatabaseConfigBuilder {
 
+    private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private IconResourceIdProvider iconResourceIdProvider = new ReflectionIconResourceIdProvider();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
@@ -32,42 +33,55 @@ public class SearchDatabaseConfigBuilder {
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
 
+    public SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
+        this.rootPreferenceFragment = rootPreferenceFragment;
+    }
+
+    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withActivitySearchDatabaseConfigs(final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs) {
         this.activitySearchDatabaseConfigs = activitySearchDatabaseConfigs;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withFragmentFactory(final FragmentFactory fragmentFactory) {
         this.fragmentFactory = fragmentFactory;
         return this;
     }
 
+    // FK-TODO: remove method
+    @SuppressWarnings("unused")
     private SearchDatabaseConfigBuilder withIconResourceIdProvider(final IconResourceIdProvider iconResourceIdProvider) {
         this.iconResourceIdProvider = iconResourceIdProvider;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withSearchableInfoProvider(final SearchableInfoProvider searchableInfoProvider) {
         this.searchableInfoProvider = searchableInfoProvider;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withPreferenceDialogAndSearchableInfoProvider(final PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider) {
         this.preferenceDialogAndSearchableInfoProvider = preferenceDialogAndSearchableInfoProvider;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withPreferenceFragmentConnected2PreferenceProvider(final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider) {
         this.preferenceFragmentConnected2PreferenceProvider = preferenceFragmentConnected2PreferenceProvider;
         return this;
     }
 
 
+    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withPreferenceScreenGraphAvailableListener(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withPreferenceSearchablePredicate(final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         return this;
@@ -80,6 +94,7 @@ public class SearchDatabaseConfigBuilder {
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
                 preferenceFragmentConnected2PreferenceProvider,
+                rootPreferenceFragment,
                 new RootPreferenceFragmentOfActivityProvider() {
 
                     @Override

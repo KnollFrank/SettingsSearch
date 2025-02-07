@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
+import androidx.preference.PreferenceFragmentCompat;
+
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -15,6 +17,7 @@ public record SearchDatabaseConfig(FragmentFactory fragmentFactory,
                                    SearchableInfoProvider searchableInfoProvider,
                                    PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                                    PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
+                                   Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
                                    RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                                    PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                    PreferenceSearchablePredicate preferenceSearchablePredicate,

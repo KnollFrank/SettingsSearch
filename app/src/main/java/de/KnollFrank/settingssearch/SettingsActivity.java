@@ -18,7 +18,6 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchConfiguration;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
-import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -68,10 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private static SearchConfiguration createSearchConfiguration(final @IdRes int fragmentContainerViewId) {
-        return new SearchConfiguration(
-                fragmentContainerViewId,
-                Optional.empty(),
-                PrefsFragmentFirst.class);
+        return new SearchConfiguration(fragmentContainerViewId, Optional.empty());
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {

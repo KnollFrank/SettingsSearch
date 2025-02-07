@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
 
-import androidx.preference.PreferenceFragmentCompat;
-
 import org.jgrapht.Graph;
 
 import java.io.File;
@@ -38,7 +36,6 @@ public class MergedPreferenceScreenDataRepository {
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
     private final DefaultFragmentInitializer preferenceDialogs;
     private final SearchDatabaseConfig searchDatabaseConfig;
-    private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
     private final ProgressUpdateListener progressUpdateListener;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
     private final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
@@ -48,7 +45,6 @@ public class MergedPreferenceScreenDataRepository {
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final DefaultFragmentInitializer preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
-            final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
             final ProgressUpdateListener progressUpdateListener,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO,
             final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
@@ -56,7 +52,6 @@ public class MergedPreferenceScreenDataRepository {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
-        this.rootPreferenceFragment = rootPreferenceFragment;
         this.progressUpdateListener = progressUpdateListener;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
         this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
@@ -104,7 +99,7 @@ public class MergedPreferenceScreenDataRepository {
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
         return new SearchablePreferenceScreenGraphProvider(
-                rootPreferenceFragment,
+                searchDatabaseConfig.rootPreferenceFragment(),
                 new PreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
                         new SearchablePreferenceScreenProvider(

@@ -61,8 +61,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 new SearchConfiguration(
                         getId(),
-                        Optional.empty(),
-                        getClass()),
+                        Optional.empty()),
                 getParentFragmentManager(),
                 requireActivity(),
                 Optional::empty,

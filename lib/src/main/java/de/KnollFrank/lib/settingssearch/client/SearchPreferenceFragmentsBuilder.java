@@ -11,39 +11,35 @@ import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfigBuilder;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 
 public class SearchPreferenceFragmentsBuilder {
 
+    private final SearchDatabaseConfig searchDatabaseConfig;
     private final SearchConfiguration searchConfiguration;
     private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Context context;
-    private SearchDatabaseConfig searchDatabaseConfig = new SearchDatabaseConfigBuilder().build();
     private SearchConfig searchConfig;
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
 
-    protected SearchPreferenceFragmentsBuilder(final SearchConfiguration searchConfiguration,
+    protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig searchDatabaseConfig,
+                                               final SearchConfiguration searchConfiguration,
                                                final FragmentManager fragmentManager,
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
                                                final Context context) {
+        this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfiguration = searchConfiguration;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.context = context;
         this.searchConfig = new SearchConfigBuilder(context).build();
-    }
-
-    public SearchPreferenceFragmentsBuilder withSearchDatabaseConfig(final SearchDatabaseConfig searchDatabaseConfig) {
-        this.searchDatabaseConfig = searchDatabaseConfig;
-        return this;
     }
 
     public SearchPreferenceFragmentsBuilder withSearchConfig(final SearchConfig searchConfig) {

@@ -44,7 +44,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 class SearchDatabaseConfigFactory {
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
-        return new SearchDatabaseConfigBuilder()
+        return new SearchDatabaseConfigBuilder(PrefsFragmentFirst.class)
                 .withFragmentFactory(
                         new FragmentFactory() {
 
