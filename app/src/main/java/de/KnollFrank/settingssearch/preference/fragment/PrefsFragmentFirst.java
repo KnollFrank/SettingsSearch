@@ -34,7 +34,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference1());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
-        getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(new Intent(getContext(), SettingsActivity.class));
+        {
+            final Intent intent = new Intent(getContext(), SettingsActivity.class);
+            intent.putExtra(SettingsActivity.SETTINGS_ACTIVITY_MANDATORY_DUMMY_KEY, "some mandatory dummy value");
+            getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(intent);
+        }
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
         setOnPreferenceClickListeners();
     }

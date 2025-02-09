@@ -54,7 +54,7 @@ public class ContinueWithPreferencePathNavigation {
     private Optional<PreferencePathNavigatorData> getPreferencePathNavigatorData() {
         return Optional
                 .ofNullable(activity.getIntent().getExtras())
-                .map(PreferencePathNavigatorDataConverter::fromBundle);
+                .flatMap(PreferencePathNavigatorDataConverter::fromBundle);
     }
 
     private void showPreferenceScreenAndHighlightPreference(final PreferencePathNavigatorData preferencePathNavigatorData) {

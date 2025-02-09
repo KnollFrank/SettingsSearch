@@ -21,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final @IdRes int fragmentContainerViewId = View.generateViewId();
+    public static final String SETTINGS_ACTIVITY_MANDATORY_DUMMY_KEY = "SettingsActivity.mandatoryDummyKey";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -42,6 +43,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        if (!getIntent().getExtras().containsKey(SETTINGS_ACTIVITY_MANDATORY_DUMMY_KEY)) {
+            throw new IllegalStateException();
+        }
         continueWithPreferencePathNavigation(
                 this,
                 findViewById(R.id.settings_root),

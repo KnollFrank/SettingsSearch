@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.common;
 import android.os.Bundle;
 
 import java.util.Optional;
+import java.util.OptionalInt;
 
 public class Bundles {
 
@@ -18,6 +19,12 @@ public class Bundles {
 
     public Optional<String> getOptionalString(final String key) {
         return Optional.ofNullable(this.bundle.getString(key));
+    }
+
+    public OptionalInt getOptionalInt(final String key) {
+        return bundle.containsKey(key) ?
+                OptionalInt.of(bundle.getInt(key)) :
+                OptionalInt.empty();
     }
 
     public <T> void putClass(final String key, final Class<? extends T> value) {

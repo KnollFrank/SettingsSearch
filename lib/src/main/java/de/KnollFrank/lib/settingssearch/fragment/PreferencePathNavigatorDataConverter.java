@@ -2,6 +2,11 @@ package de.KnollFrank.lib.settingssearch.fragment;
 
 import android.os.Bundle;
 
+import java.util.Optional;
+import java.util.OptionalInt;
+
+import de.KnollFrank.lib.settingssearch.common.Bundles;
+
 class PreferencePathNavigatorDataConverter {
 
     private static final String ID_OF_SEARCHABLE_PREFERENCE = PreferencePathNavigatorData.class.getPackage().getName() + ".idOfSearchablePreference";
@@ -14,9 +19,15 @@ class PreferencePathNavigatorDataConverter {
         return bundle;
     }
 
-    public static PreferencePathNavigatorData fromBundle(final Bundle bundle) {
-        return new PreferencePathNavigatorData(
-                bundle.getInt(ID_OF_SEARCHABLE_PREFERENCE),
-                bundle.getInt(INDEX_WITHIN_PREFERENCE_PATH));
+    public static Optional<PreferencePathNavigatorData> fromBundle(final Bundle bundle) {
+        final Bundles bundles = new Bundles(bundle);
+        final OptionalInt idOfSearchablePreference = bundles.getOptionalInt(ID_OF_SEARCHABLE_PREFERENCE);
+        final OptionalInt indexWithinPreferencePath = bundles.getOptionalInt(INDEX_WITHIN_PREFERENCE_PATH);
+        return idOfSearchablePreference.isPresent() && indexWithinPreferencePath.isPresent() ?
+                Optional.of(
+                        new PreferencePathNavigatorData(
+                                idOfSearchablePreference.orElseThrow(),
+                                indexWithinPreferencePath.orElseThrow())) :
+                Optional.empty();
     }
 }
