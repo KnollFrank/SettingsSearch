@@ -10,7 +10,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
+import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
@@ -31,7 +31,7 @@ public class SearchDatabaseConfigBuilder {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
-    private ExtrasForActivityFactory extrasForActivityFactory = activity -> Optional.empty();
+    private ActivityInitializerProvider activityInitializerProvider = activity -> Optional.empty();
 
     SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
         this.rootPreferenceFragment = rootPreferenceFragment;
@@ -81,8 +81,8 @@ public class SearchDatabaseConfigBuilder {
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withExtrasForActivityProvider(final ExtrasForActivityFactory extrasForActivityFactory) {
-        this.extrasForActivityFactory = extrasForActivityFactory;
+    public SearchDatabaseConfigBuilder withActivityInitializerProvider(final ActivityInitializerProvider activityInitializerProvider) {
+        this.activityInitializerProvider = activityInitializerProvider;
         return this;
     }
 
@@ -104,6 +104,6 @@ public class SearchDatabaseConfigBuilder {
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
                 Fragment2PreferenceFragmentConverterFactory.createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs),
-                extrasForActivityFactory);
+                activityInitializerProvider);
     }
 }

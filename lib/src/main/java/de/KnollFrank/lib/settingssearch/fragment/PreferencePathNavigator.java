@@ -13,23 +13,24 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Bundles;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
+import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
+import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
 
 public class PreferencePathNavigator {
 
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final Context context;
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
-    private final ExtrasForActivityFactory extrasForActivityFactory;
+    private final ActivityInitializerProvider activityInitializerProvider;
 
     public PreferencePathNavigator(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                    final Context context,
                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-                                   final ExtrasForActivityFactory extrasForActivityFactory) {
+                                   final ActivityInitializerProvider activityInitializerProvider) {
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.context = context;
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
-        this.extrasForActivityFactory = extrasForActivityFactory;
+        this.activityInitializerProvider = activityInitializerProvider;
     }
 
     public Optional<PreferenceFragmentCompat> navigatePreferencePath(final PreferencePathPointer preferencePathPointer) {
@@ -72,26 +73,36 @@ public class PreferencePathNavigator {
 
     private void continueNavigationInActivity(final Class<? extends Activity> activity,
                                               final PreferencePathPointer preferencePathPointer) {
+        beforeStartActivity(activity);
+        startActivity(activity, preferencePathPointer);
+    }
+
+    private void beforeStartActivity(final Class<? extends Activity> activity) {
+        activityInitializerProvider
+                .getActivityInitializerForActivity(activity)
+                .ifPresent(ActivityInitializer::beforeStartActivity);
+    }
+
+    private void startActivity(final Class<? extends Activity> activity,
+                               final PreferencePathPointer preferencePathPointer) {
         context.startActivity(createIntent(activity, preferencePathPointer));
     }
 
     private Intent createIntent(final Class<? extends Activity> activity,
                                 final PreferencePathPointer preferencePathPointer) {
         final Intent intent = new Intent(context, activity);
-        intent.putExtras(getExtras(activity, preferencePathPointer));
+        intent.putExtras(
+                Bundles.merge(
+                        activityInitializerProvider
+                                .getActivityInitializerForActivity(activity)
+                                .flatMap(ActivityInitializer::createExtras)
+                                .orElseGet(Bundle::new),
+                        PreferencePathNavigatorDataConverter.toBundle(
+                                new PreferencePathNavigatorData(
+                                        preferencePathPointer.preferencePath.getPreference().getId(),
+                                        preferencePathPointer.indexWithinPreferencePath))));
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
-    }
-
-    private Bundle getExtras(final Class<? extends Activity> activity, final PreferencePathPointer preferencePathPointer) {
-        return Bundles.merge(
-                extrasForActivityFactory
-                        .createExtrasForActivity(activity)
-                        .orElseGet(Bundle::new),
-                PreferencePathNavigatorDataConverter.toBundle(
-                        new PreferencePathNavigatorData(
-                                preferencePathPointer.preferencePath.getPreference().getId(),
-                                preferencePathPointer.indexWithinPreferencePath)));
     }
 
     private PreferenceWithHost getPreferenceWithHost(final SearchablePreference preference,

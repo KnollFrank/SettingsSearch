@@ -26,7 +26,8 @@ import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
-import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
+import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
+import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -71,13 +72,25 @@ class SearchDatabaseConfigFactory {
                                 Set.of(
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class))))
-                .withExtrasForActivityProvider(
-                        new ExtrasForActivityFactory() {
+                .withActivityInitializerProvider(
+                        new ActivityInitializerProvider() {
 
                             @Override
-                            public Optional<Bundle> createExtrasForActivity(final Class<? extends Activity> activity) {
+                            public Optional<ActivityInitializer> getActivityInitializerForActivity(final Class<? extends Activity> activity) {
                                 return SettingsActivity.class.equals(activity) ?
-                                        Optional.of(PrefsFragmentFirst.createExtrasForSettingsActivity()) :
+                                        Optional.of(
+                                                new ActivityInitializer() {
+
+                                                    @Override
+                                                    public void beforeStartActivity() {
+                                                        Log.i(this.getClass().getSimpleName(), "starting activity " + activity);
+                                                    }
+
+                                                    @Override
+                                                    public Optional<Bundle> createExtras() {
+                                                        return Optional.of(PrefsFragmentFirst.createExtrasForSettingsActivity());
+                                                    }
+                                                }) :
                                         Optional.empty();
                             }
                         })
