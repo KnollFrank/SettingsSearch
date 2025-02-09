@@ -2,18 +2,14 @@ package de.KnollFrank.lib.settingssearch.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.common.Bundles;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
 
 public class PreferencePathNavigator {
@@ -44,13 +40,21 @@ public class PreferencePathNavigator {
                         .dereference()
                         .getClassOfReferencedActivity(context);
         return activity.isPresent() ?
-                continueNavigationInActivity(
-                        activity.orElseThrow(),
-                        preferencePathPointer,
-                        src) :
+                continueNavigationInActivity(activity.orElseThrow(), preferencePathPointer, src) :
                 navigatePreferences(
                         preferencePathPointer.next(),
                         getPreferenceWithHost(preferencePathPointer.dereference(), src));
+    }
+
+    private Optional<PreferenceFragmentCompat> continueNavigationInActivity(final Class<? extends Activity> activity,
+                                                                            final PreferencePathPointer preferencePathPointer,
+                                                                            final Optional<PreferenceWithHost> src) {
+        final ContinueNavigationInActivity continueNavigationInActivity =
+                new ContinueNavigationInActivity(
+                        context,
+                        activityInitializerProvider,
+                        this::getPreferenceWithHost);
+        return continueNavigationInActivity.continueNavigationInActivity(activity, preferencePathPointer, src);
     }
 
     private Optional<PreferenceFragmentCompat> navigatePreferences(final Optional<PreferencePathPointer> preferencePathPointer,
@@ -60,51 +64,7 @@ public class PreferencePathNavigator {
                 navigatePreferences(preferencePathPointer.get(), Optional.of(src));
     }
 
-    private Optional<PreferenceFragmentCompat> continueNavigationInActivity(final Class<? extends Activity> activity,
-                                                                            final PreferencePathPointer preferencePathPointer,
-                                                                            final Optional<PreferenceWithHost> src) {
-        final Optional<PreferencePathPointer> nextPreferencePathPointer = preferencePathPointer.next();
-        if (nextPreferencePathPointer.isPresent()) {
-            continueNavigationInActivity(activity, nextPreferencePathPointer.get());
-            return Optional.empty();
-        }
-        return Optional.of(getPreferenceWithHost(preferencePathPointer.dereference(), src).host());
-    }
-
-    private void continueNavigationInActivity(final Class<? extends Activity> activity,
-                                              final PreferencePathPointer preferencePathPointer) {
-        beforeStartActivity(activity);
-        startActivity(activity, preferencePathPointer);
-    }
-
-    private void beforeStartActivity(final Class<? extends Activity> activity) {
-        activityInitializerProvider
-                .getActivityInitializerForActivity(activity)
-                .ifPresent(ActivityInitializer::beforeStartActivity);
-    }
-
-    private void startActivity(final Class<? extends Activity> activity,
-                               final PreferencePathPointer preferencePathPointer) {
-        context.startActivity(createIntent(activity, preferencePathPointer));
-    }
-
-    private Intent createIntent(final Class<? extends Activity> activity,
-                                final PreferencePathPointer preferencePathPointer) {
-        final Intent intent = new Intent(context, activity);
-        intent.putExtras(
-                Bundles.merge(
-                        activityInitializerProvider
-                                .getActivityInitializerForActivity(activity)
-                                .flatMap(ActivityInitializer::createExtras)
-                                .orElseGet(Bundle::new),
-                        PreferencePathNavigatorDataConverter.toBundle(
-                                new PreferencePathNavigatorData(
-                                        preferencePathPointer.preferencePath.getPreference().getId(),
-                                        preferencePathPointer.indexWithinPreferencePath))));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        return intent;
-    }
-
+    // FK-TODO: move this method and dependent methods into new class
     private PreferenceWithHost getPreferenceWithHost(final SearchablePreference preference,
                                                      final Optional<PreferenceWithHost> src) {
         final PreferenceFragmentCompat hostOfPreference = instantiateAndInitializePreferenceFragment(preference.getHost(), src);
