@@ -1,6 +1,6 @@
 package de.KnollFrank.settingssearch;
 
-import static de.KnollFrank.lib.settingssearch.fragment.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
+import static de.KnollFrank.lib.settingssearch.fragment.navigation.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
 
 import android.content.Intent;
 import android.os.Bundle;

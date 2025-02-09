@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.fragment;
+package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
 import java.util.Objects;
 import java.util.Optional;

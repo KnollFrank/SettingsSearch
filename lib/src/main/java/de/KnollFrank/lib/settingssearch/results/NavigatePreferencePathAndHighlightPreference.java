@@ -11,8 +11,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import org.threeten.bp.Duration;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
-import de.KnollFrank.lib.settingssearch.fragment.PreferencePathPointer;
+import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
+import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 
 public class NavigatePreferencePathAndHighlightPreference implements INavigatePreferencePathAndHighlightPreference {

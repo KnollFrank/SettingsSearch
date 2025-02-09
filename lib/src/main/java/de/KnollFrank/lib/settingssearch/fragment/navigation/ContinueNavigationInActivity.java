@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.fragment;
+package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,11 +8,9 @@ import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
-import java.util.function.BiFunction;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Bundles;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
 
@@ -20,14 +18,14 @@ class ContinueNavigationInActivity {
 
     private final Context context;
     private final ActivityInitializerProvider activityInitializerProvider;
-    private final BiFunction<SearchablePreference, Optional<PreferenceWithHost>, PreferenceWithHost> getPreferenceWithHost;
+    private final PreferenceWithHostProvider preferenceWithHostProvider;
 
     public ContinueNavigationInActivity(final Context context,
                                         final ActivityInitializerProvider activityInitializerProvider,
-                                        final BiFunction<SearchablePreference, Optional<PreferenceWithHost>, PreferenceWithHost> getPreferenceWithHost) {
+                                        final PreferenceWithHostProvider preferenceWithHostProvider) {
         this.context = context;
         this.activityInitializerProvider = activityInitializerProvider;
-        this.getPreferenceWithHost = getPreferenceWithHost;
+        this.preferenceWithHostProvider = preferenceWithHostProvider;
     }
 
     public Optional<PreferenceFragmentCompat> continueNavigationInActivity(final Class<? extends Activity> activity,
@@ -38,7 +36,10 @@ class ContinueNavigationInActivity {
             continueNavigationInActivity(activity, nextPreferencePathPointer.get());
             return Optional.empty();
         }
-        return Optional.of(getPreferenceWithHost.apply(preferencePathPointer.dereference(), src).host());
+        return Optional.of(
+                preferenceWithHostProvider
+                        .getPreferenceWithHost(preferencePathPointer.dereference(), src)
+                        .host());
     }
 
     private void continueNavigationInActivity(final Class<? extends Activity> activity,
