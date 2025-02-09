@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Bundles;
-import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
 
 class ContinueNavigationInActivity {
@@ -32,41 +31,46 @@ class ContinueNavigationInActivity {
                                                                            final PreferencePathPointer preferencePathPointer,
                                                                            final Optional<PreferenceWithHost> src) {
         final Optional<PreferencePathPointer> nextPreferencePathPointer = preferencePathPointer.next();
-        if (nextPreferencePathPointer.isPresent()) {
-            continueNavigationInActivity(activity, nextPreferencePathPointer.get());
-            return Optional.empty();
-        }
-        return Optional.of(
+        final PreferenceFragmentCompat host =
                 preferenceWithHostProvider
                         .getPreferenceWithHost(preferencePathPointer.dereference(), src)
-                        .host());
+                        .host();
+        if (nextPreferencePathPointer.isPresent()) {
+            continueNavigationInActivity(activity, host, nextPreferencePathPointer.get());
+            return Optional.empty();
+        }
+        return Optional.of(host);
     }
 
     private void continueNavigationInActivity(final Class<? extends Activity> activity,
+                                              final PreferenceFragmentCompat src,
                                               final PreferencePathPointer preferencePathPointer) {
-        beforeStartActivity(activity);
-        startActivity(activity, preferencePathPointer);
+        beforeStartActivity(activity, src);
+        startActivity(activity, src, preferencePathPointer);
     }
 
-    private void beforeStartActivity(final Class<? extends Activity> activity) {
+    private void beforeStartActivity(final Class<? extends Activity> activity,
+                                     final PreferenceFragmentCompat src) {
         activityInitializerProvider
                 .getActivityInitializerForActivity(activity)
-                .ifPresent(ActivityInitializer::beforeStartActivity);
+                .ifPresent(activityInitializer -> activityInitializer.beforeStartActivity(src));
     }
 
     private void startActivity(final Class<? extends Activity> activity,
+                               final PreferenceFragmentCompat src,
                                final PreferencePathPointer preferencePathPointer) {
-        context.startActivity(createIntent(activity, preferencePathPointer));
+        context.startActivity(createIntent(activity, src, preferencePathPointer));
     }
 
     private Intent createIntent(final Class<? extends Activity> activity,
+                                final PreferenceFragmentCompat src,
                                 final PreferencePathPointer preferencePathPointer) {
         final Intent intent = new Intent(context, activity);
         intent.putExtras(
                 Bundles.merge(
                         activityInitializerProvider
                                 .getActivityInitializerForActivity(activity)
-                                .flatMap(ActivityInitializer::createExtras)
+                                .flatMap(activityInitializer -> activityInitializer.createExtras(src))
                                 .orElseGet(Bundle::new),
                         PreferencePathNavigatorDataConverter.toBundle(
                                 new PreferencePathNavigatorData(

@@ -82,12 +82,12 @@ class SearchDatabaseConfigFactory {
                                                 new ActivityInitializer() {
 
                                                     @Override
-                                                    public void beforeStartActivity() {
+                                                    public void beforeStartActivity(final PreferenceFragmentCompat src) {
                                                         Log.i(this.getClass().getSimpleName(), "starting activity " + activity);
                                                     }
 
                                                     @Override
-                                                    public Optional<Bundle> createExtras() {
+                                                    public Optional<Bundle> createExtras(final PreferenceFragmentCompat src) {
                                                         return Optional.of(PrefsFragmentFirst.createExtrasForSettingsActivity());
                                                     }
                                                 }) :
