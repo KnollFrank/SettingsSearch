@@ -11,19 +11,23 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
 
 public class PreferencePathNavigator {
 
     private final FragmentFactoryAndInitializer fragmentFactoryAndInitializer;
     private final Context context;
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
+    private final ExtrasForActivityFactory extrasForActivityFactory;
 
     public PreferencePathNavigator(final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
                                    final Context context,
-                                   final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+                                   final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
+                                   final ExtrasForActivityFactory extrasForActivityFactory) {
         this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
         this.context = context;
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
+        this.extrasForActivityFactory = extrasForActivityFactory;
     }
 
     public Optional<PreferenceFragmentCompat> navigatePreferencePath(final PreferencePathPointer preferencePathPointer) {
@@ -72,6 +76,9 @@ public class PreferencePathNavigator {
     private Intent createIntent(final Class<? extends Activity> activity,
                                 final PreferencePathPointer preferencePathPointer) {
         final Intent intent = new Intent(context, activity);
+        extrasForActivityFactory
+                .createExtrasForActivity(activity)
+                .ifPresent(intent::putExtras);
         intent.putExtras(
                 PreferencePathNavigatorDataConverter.toBundle(
                         new PreferencePathNavigatorData(

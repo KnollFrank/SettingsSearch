@@ -103,7 +103,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.searchResultsFragmentUI,
                 searchConfig.searchResultsFilter,
                 searchConfig.searchResultsSorter,
-                searchConfig.preferencePathDisplayer);
+                searchConfig.preferencePathDisplayer,
+                searchConfig.extrasForActivityFactory);
     }
 
     public void rebuildSearchDatabase() {

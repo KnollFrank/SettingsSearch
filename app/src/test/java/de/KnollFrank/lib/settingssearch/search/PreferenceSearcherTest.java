@@ -747,7 +747,8 @@ public class PreferenceSearcherTest {
                 fragmentActivity,
                 preference -> true,
                 new SearchResultsByPreferencePathSorter(),
-                instantiateAndInitializeFragment);
+                instantiateAndInitializeFragment,
+                activity -> Optional.empty());
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

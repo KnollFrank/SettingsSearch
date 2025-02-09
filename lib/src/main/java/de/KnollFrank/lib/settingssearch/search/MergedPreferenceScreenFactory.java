@@ -18,6 +18,7 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
@@ -45,6 +46,7 @@ public class MergedPreferenceScreenFactory {
     private final SearchResultsFilter searchResultsFilter;
     private final SearchResultsSorter searchResultsSorter;
     private final PreferencePathDisplayer preferencePathDisplayer;
+    private final ExtrasForActivityFactory extrasForActivityFactory;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -59,7 +61,8 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
-            final PreferencePathDisplayer preferencePathDisplayer) {
+            final PreferencePathDisplayer preferencePathDisplayer,
+            final ExtrasForActivityFactory extrasForActivityFactory) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
@@ -73,6 +76,7 @@ public class MergedPreferenceScreenFactory {
         this.searchResultsFilter = searchResultsFilter;
         this.searchResultsSorter = searchResultsSorter;
         this.preferencePathDisplayer = preferencePathDisplayer;
+        this.extrasForActivityFactory = extrasForActivityFactory;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
@@ -110,7 +114,8 @@ public class MergedPreferenceScreenFactory {
                 context,
                 searchResultsFilter,
                 searchResultsSorter,
-                instantiateAndInitializeFragment);
+                instantiateAndInitializeFragment,
+                extrasForActivityFactory);
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
@@ -126,7 +131,8 @@ public class MergedPreferenceScreenFactory {
             final Context context,
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
-            final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
+            final ExtrasForActivityFactory extrasForActivityFactory) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(
@@ -135,7 +141,8 @@ public class MergedPreferenceScreenFactory {
                                         new PreferencePathNavigator(
                                                 fragmentFactoryAndInitializer,
                                                 context,
-                                                instantiateAndInitializeFragment),
+                                                instantiateAndInitializeFragment,
+                                                extrasForActivityFactory),
                                         fragmentContainerViewId,
                                         prepareShow,
                                         fragmentManager),

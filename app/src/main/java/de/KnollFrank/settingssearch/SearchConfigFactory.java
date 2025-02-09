@@ -1,6 +1,8 @@
 package de.KnollFrank.settingssearch;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SearchView;
@@ -12,13 +14,17 @@ import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.settingssearch.client.SearchConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
+import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 class SearchConfigFactory {
 
@@ -95,6 +101,17 @@ class SearchConfigFactory {
                                 return rootView.findViewById(SEARCH_RESULTS_VIEW_ID);
                             }
                         })
+                .withExtrasForActivityProvider(
+                        new ExtrasForActivityFactory() {
+
+                            @Override
+                            public Optional<Bundle> createExtrasForActivity(final Class<? extends Activity> activity) {
+                                return SettingsActivity.class.equals(activity) ?
+                                        Optional.of(PrefsFragmentFirst.createExtrasForSettingsActivity()) :
+                                        Optional.empty();
+                            }
+                        }
+                )
                 .build();
     }
 

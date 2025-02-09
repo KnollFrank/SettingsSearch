@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -34,13 +35,21 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference1());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
-        {
-            final Intent intent = new Intent(getContext(), SettingsActivity.class);
-            intent.putExtra(SettingsActivity.SETTINGS_ACTIVITY_MANDATORY_DUMMY_KEY, "some mandatory dummy value");
-            getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(intent);
-        }
+        getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
         setOnPreferenceClickListeners();
+    }
+
+    private Intent createIntent(final Class<? extends Activity> activityClass, final Bundle extras) {
+        final Intent intent = new Intent(getContext(), activityClass);
+        intent.putExtras(extras);
+        return intent;
+    }
+
+    public static Bundle createExtrasForSettingsActivity() {
+        final Bundle bundle = new Bundle();
+        bundle.putString(SettingsActivity.SETTINGS_ACTIVITY_MANDATORY_DUMMY_KEY, "some mandatory dummy value");
+        return bundle;
     }
 
     @Override
@@ -77,7 +86,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         return arguments;
     }
 
-    private @NonNull Preference createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference1() {
+    private Preference createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference1() {
         final Preference preference = new Preference(requireContext());
         preference.setFragment(PreferenceFragmentWithSinglePreference.class.getName());
         preference.setTitle("preference with extras from src to dst");
@@ -88,7 +97,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         return preference;
     }
 
-    private @NonNull Preference createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference() {
+    private Preference createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference() {
         final Preference preference = new Preference(requireContext());
         preference.setFragment(PreferenceFragmentWithSinglePreference.class.getName());
         preference.setTitle("preference without extras from src to dst");
