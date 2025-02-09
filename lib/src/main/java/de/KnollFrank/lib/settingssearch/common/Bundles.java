@@ -13,6 +13,13 @@ public class Bundles {
         this.bundle = bundle;
     }
 
+    public static Bundle merge(final Bundle bundle1, final Bundle bundle2) {
+        final Bundle bundle = new Bundle();
+        bundle.putAll(bundle1);
+        bundle.putAll(bundle2);
+        return bundle;
+    }
+
     public void putOptionalString(final String key, final Optional<String> value) {
         value.ifPresent(_value -> bundle.putString(key, _value));
     }

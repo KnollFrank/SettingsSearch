@@ -3,12 +3,14 @@ package de.KnollFrank.lib.settingssearch.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.common.Bundles;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
@@ -76,16 +78,20 @@ public class PreferencePathNavigator {
     private Intent createIntent(final Class<? extends Activity> activity,
                                 final PreferencePathPointer preferencePathPointer) {
         final Intent intent = new Intent(context, activity);
-        extrasForActivityFactory
-                .createExtrasForActivity(activity)
-                .ifPresent(intent::putExtras);
-        intent.putExtras(
+        intent.putExtras(getExtras(activity, preferencePathPointer));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        return intent;
+    }
+
+    private Bundle getExtras(final Class<? extends Activity> activity, final PreferencePathPointer preferencePathPointer) {
+        return Bundles.merge(
+                extrasForActivityFactory
+                        .createExtrasForActivity(activity)
+                        .orElseGet(Bundle::new),
                 PreferencePathNavigatorDataConverter.toBundle(
                         new PreferencePathNavigatorData(
                                 preferencePathPointer.preferencePath.getPreference().getId(),
                                 preferencePathPointer.indexWithinPreferencePath)));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        return intent;
     }
 
     private PreferenceWithHost getPreferenceWithHost(final SearchablePreference preference,
