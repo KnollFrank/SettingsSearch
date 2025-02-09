@@ -2,6 +2,7 @@ package de.KnollFrank.settingssearch;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,7 @@ import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -69,6 +71,16 @@ class SearchDatabaseConfigFactory {
                                 Set.of(
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class))))
+                .withExtrasForActivityProvider(
+                        new ExtrasForActivityFactory() {
+
+                            @Override
+                            public Optional<Bundle> createExtrasForActivity(final Class<? extends Activity> activity) {
+                                return SettingsActivity.class.equals(activity) ?
+                                        Optional.of(PrefsFragmentFirst.createExtrasForSettingsActivity()) :
+                                        Optional.empty();
+                            }
+                        })
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceFragmentConnected2PreferenceProvider(
                         new PreferenceFragmentConnected2PreferenceProvider() {

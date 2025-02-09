@@ -6,7 +6,6 @@ import androidx.annotation.IdRes;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -32,8 +31,6 @@ public class SearchConfig {
     public final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
     public final SearchResultsFragmentUI searchResultsFragmentUI;
     public final MarkupsFactory markupsFactory;
-    // FK-TODO: move to SearchDatabaseConfig
-    public final ExtrasForActivityFactory extrasForActivityFactory;
 
     SearchConfig(final @IdRes int fragmentContainerViewId,
                  final Optional<String> queryHint,
@@ -45,8 +42,7 @@ public class SearchConfig {
                  final SearchResultsSorter searchResultsSorter,
                  final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
                  final SearchResultsFragmentUI searchResultsFragmentUI,
-                 final MarkupsFactory markupsFactory,
-                 final ExtrasForActivityFactory extrasForActivityFactory) {
+                 final MarkupsFactory markupsFactory) {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.queryHint = queryHint;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
@@ -58,7 +54,6 @@ public class SearchConfig {
         this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
         this.markupsFactory = markupsFactory;
-        this.extrasForActivityFactory = extrasForActivityFactory;
     }
 
     public static SearchConfigBuilder builder(final @IdRes int fragmentContainerViewId, final Context context) {

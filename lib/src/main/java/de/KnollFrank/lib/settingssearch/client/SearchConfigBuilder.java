@@ -6,7 +6,6 @@ import androidx.annotation.IdRes;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -36,7 +35,6 @@ public class SearchConfigBuilder {
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
     private MarkupsFactory markupsFactory;
-    private ExtrasForActivityFactory extrasForActivityFactory = activity -> Optional.empty();
 
     SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
         this.fragmentContainerViewId = fragmentContainerViewId;
@@ -103,12 +101,6 @@ public class SearchConfigBuilder {
         return this;
     }
 
-    @SuppressWarnings("unused")
-    public SearchConfigBuilder withExtrasForActivityProvider(final ExtrasForActivityFactory extrasForActivityFactory) {
-        this.extrasForActivityFactory = extrasForActivityFactory;
-        return this;
-    }
-
     public SearchConfig build() {
         return new SearchConfig(
                 fragmentContainerViewId,
@@ -121,7 +113,6 @@ public class SearchConfigBuilder {
                 searchResultsSorter,
                 searchPreferenceFragmentUI,
                 searchResultsFragmentUI,
-                markupsFactory,
-                extrasForActivityFactory);
+                markupsFactory);
     }
 }

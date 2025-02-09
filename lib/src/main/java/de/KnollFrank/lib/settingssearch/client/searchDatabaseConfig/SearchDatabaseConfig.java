@@ -4,6 +4,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.provider.ExtrasForActivityFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
@@ -24,6 +25,7 @@ public class SearchDatabaseConfig {
     public final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     public final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
+    public final ExtrasForActivityFactory extrasForActivityFactory;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,
                          final IconResourceIdProvider iconResourceIdProvider,
@@ -34,7 +36,8 @@ public class SearchDatabaseConfig {
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                          final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
-                         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
+                         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
+                         final ExtrasForActivityFactory extrasForActivityFactory) {
         this.fragmentFactory = fragmentFactory;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -45,6 +48,7 @@ public class SearchDatabaseConfig {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
+        this.extrasForActivityFactory = extrasForActivityFactory;
     }
 
     public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
