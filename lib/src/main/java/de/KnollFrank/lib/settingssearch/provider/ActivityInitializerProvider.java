@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import java.util.Optional;
 
+// FK-TODO: ersetzte dieses Interface durch eine Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity
 @FunctionalInterface
 public interface ActivityInitializerProvider {
 
