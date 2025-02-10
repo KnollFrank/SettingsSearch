@@ -26,7 +26,6 @@ class PreferenceWithHostProvider {
         this.context = context;
     }
 
-    // FK-TODO: move this method and dependent methods into new class
     public PreferenceWithHost getPreferenceWithHost(final SearchablePreference preference,
                                                     final Optional<PreferenceWithHost> src) {
         final PreferenceFragmentCompat hostOfPreference = instantiateAndInitializePreferenceFragment(preference.getHost(), src);
