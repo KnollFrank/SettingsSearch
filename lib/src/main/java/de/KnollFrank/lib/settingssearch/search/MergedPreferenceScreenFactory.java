@@ -49,7 +49,7 @@ public class MergedPreferenceScreenFactory {
     private final SearchResultsFilter searchResultsFilter;
     private final SearchResultsSorter searchResultsSorter;
     private final PreferencePathDisplayer preferencePathDisplayer;
-    private final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity;
+    private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -65,7 +65,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
             final PreferencePathDisplayer preferencePathDisplayer,
-            final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity) {
+            final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
@@ -135,7 +135,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-            final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity) {
+            final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(

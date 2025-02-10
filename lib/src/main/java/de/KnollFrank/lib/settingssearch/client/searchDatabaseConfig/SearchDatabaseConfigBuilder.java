@@ -31,7 +31,7 @@ public class SearchDatabaseConfigBuilder {
     };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
-    private Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity = Map.of();
+    private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
 
     SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
         this.rootPreferenceFragment = rootPreferenceFragment;
@@ -81,7 +81,7 @@ public class SearchDatabaseConfigBuilder {
     }
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withActivityInitializerByActivity(final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity) {
+    public SearchDatabaseConfigBuilder withActivityInitializerByActivity(final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
         this.activityInitializerByActivity = activityInitializerByActivity;
         return this;
     }

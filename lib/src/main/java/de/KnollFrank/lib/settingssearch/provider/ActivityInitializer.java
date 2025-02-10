@@ -6,9 +6,9 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-public interface ActivityInitializer {
+public interface ActivityInitializer<T extends PreferenceFragmentCompat> {
 
-    void beforeStartActivity(PreferenceFragmentCompat src);
+    void beforeStartActivity(T src);
 
-    Optional<Bundle> createExtras(PreferenceFragmentCompat src);
+    Optional<Bundle> createExtras(T src);
 }

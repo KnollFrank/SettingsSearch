@@ -15,7 +15,7 @@ public class PreferencePathNavigatorFactory {
             final Context context,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-            final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity) {
+            final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
         final PreferenceWithHostProvider preferenceWithHostProvider =
                 new PreferenceWithHostProvider(
                         fragmentFactoryAndInitializer,

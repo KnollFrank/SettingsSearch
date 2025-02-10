@@ -18,11 +18,11 @@ import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 class ContinueNavigationInActivity {
 
     private final Context context;
-    private final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity;
+    private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     private final PreferenceWithHostProvider preferenceWithHostProvider;
 
     public ContinueNavigationInActivity(final Context context,
-                                        final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity,
+                                        final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
                                         final PreferenceWithHostProvider preferenceWithHostProvider) {
         this.context = context;
         this.activityInitializerByActivity = activityInitializerByActivity;
@@ -51,11 +51,12 @@ class ContinueNavigationInActivity {
         startActivity(activity, src, preferencePathPointer);
     }
 
-    private void beforeStartActivity(final Class<? extends Activity> activity,
-                                     final PreferenceFragmentCompat src) {
+    private <T extends PreferenceFragmentCompat> void beforeStartActivity(
+            final Class<? extends Activity> activity,
+            final T src) {
         Maps
                 .get(activityInitializerByActivity, activity)
-                .ifPresent(activityInitializer -> activityInitializer.beforeStartActivity(src));
+                .ifPresent(activityInitializer -> ((ActivityInitializer<T>) activityInitializer).beforeStartActivity(src));
     }
 
     private void startActivity(final Class<? extends Activity> activity,
@@ -64,15 +65,16 @@ class ContinueNavigationInActivity {
         context.startActivity(createIntent(activity, src, preferencePathPointer));
     }
 
-    private Intent createIntent(final Class<? extends Activity> activity,
-                                final PreferenceFragmentCompat src,
-                                final PreferencePathPointer preferencePathPointer) {
+    private <T extends PreferenceFragmentCompat> Intent createIntent(
+            final Class<? extends Activity> activity,
+            final T src,
+            final PreferencePathPointer preferencePathPointer) {
         final Intent intent = new Intent(context, activity);
         intent.putExtras(
                 Bundles.merge(
                         Maps
                                 .get(activityInitializerByActivity, activity)
-                                .flatMap(activityInitializer -> activityInitializer.createExtras(src))
+                                .flatMap(activityInitializer -> ((ActivityInitializer<T>) activityInitializer).createExtras(src))
                                 .orElseGet(Bundle::new),
                         PreferencePathNavigatorDataConverter.toBundle(
                                 new PreferencePathNavigatorData(

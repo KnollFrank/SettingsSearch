@@ -73,17 +73,18 @@ class SearchDatabaseConfigFactory {
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class))))
                 .withActivityInitializerByActivity(
                         ImmutableMap
-                                .<Class<? extends Activity>, ActivityInitializer>builder()
+                                .<Class<? extends Activity>, ActivityInitializer<?>>builder()
                                 .put(
                                         SettingsActivity.class,
-                                        new ActivityInitializer() {
+                                        new ActivityInitializer<PrefsFragmentFirst>() {
 
                                             @Override
-                                            public void beforeStartActivity(final PreferenceFragmentCompat src) {
+                                            public void beforeStartActivity(final PrefsFragmentFirst src) {
+                                                Log.i(this.getClass().getSimpleName(), "beforeStartActivity called");
                                             }
 
                                             @Override
-                                            public Optional<Bundle> createExtras(final PreferenceFragmentCompat src) {
+                                            public Optional<Bundle> createExtras(final PrefsFragmentFirst src) {
                                                 return Optional.of(PrefsFragmentFirst.createExtrasForSettingsActivity());
                                             }
                                         })
