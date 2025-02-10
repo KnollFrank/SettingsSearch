@@ -36,12 +36,13 @@ public class Fragments implements InstantiateAndInitializeFragment {
                                                          final Consumer<T> onFragmentShown,
                                                          final boolean addToBackStack,
                                                          final @IdRes int containerViewId,
+                                                         final Optional<String> tag,
                                                          final FragmentManager fragmentManager) {
         final FragmentTransaction fragmentTransaction =
                 fragmentManager
                         .beginTransaction()
                         .setReorderingAllowed(true)
-                        .replace(containerViewId, fragment);
+                        .replace(containerViewId, fragment, tag.orElse(null));
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(null);
         }

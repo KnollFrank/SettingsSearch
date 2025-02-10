@@ -10,6 +10,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.threeten.bp.Duration;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
@@ -56,6 +58,7 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
                         }),
                 true,
                 fragmentContainerViewId,
+                Optional.empty(),
                 fragmentManager);
     }
 

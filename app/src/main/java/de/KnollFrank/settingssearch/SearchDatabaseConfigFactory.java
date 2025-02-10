@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -19,6 +20,7 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentWithPreferenceFragmentConnection;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
@@ -45,7 +47,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
 class SearchDatabaseConfigFactory {
 
-    public static SearchDatabaseConfig createSearchDatabaseConfig() {
+    public static SearchDatabaseConfig createSearchDatabaseConfig(final FragmentManager fragmentManager) {
         return SearchDatabaseConfig
                 .builder(PrefsFragmentFirst.class)
                 .withFragmentFactory(
@@ -84,6 +86,7 @@ class SearchDatabaseConfigFactory {
                                                     @Override
                                                     public void beforeStartActivity(final PreferenceFragmentCompat src) {
                                                         Log.i(this.getClass().getSimpleName(), "starting activity " + activity);
+                                                        SearchPreferenceFragments.hideSearchPreferenceFragment(fragmentManager);
                                                     }
 
                                                     @Override

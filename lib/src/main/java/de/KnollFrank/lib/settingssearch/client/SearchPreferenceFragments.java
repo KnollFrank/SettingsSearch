@@ -86,7 +86,20 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 },
                 true,
                 searchConfig.fragmentContainerViewId,
+                Optional.of(getSearchPreferenceFragmentTag()),
                 fragmentManager);
+    }
+
+    public static void hideSearchPreferenceFragment(final FragmentManager fragmentManager) {
+        Optional
+                .ofNullable(fragmentManager.findFragmentByTag(getSearchPreferenceFragmentTag()))
+                .ifPresent(
+                        searchPreferenceFragment ->
+                                fragmentManager
+                                        .beginTransaction()
+                                        .setReorderingAllowed(true)
+                                        .remove(searchPreferenceFragment)
+                                        .commit());
     }
 
     public MergedPreferenceScreenFactory getMergedPreferenceScreenFactory() {
@@ -142,5 +155,9 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 new SearchDatabaseDirectoryIO(context),
                 searchDatabaseConfig.fragment2PreferenceFragmentConverter,
                 context);
+    }
+
+    private static String getSearchPreferenceFragmentTag() {
+        return SearchPreferenceFragment.class.getSimpleName();
     }
 }

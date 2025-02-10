@@ -136,6 +136,7 @@ public class SearchPreferenceFragment extends Fragment {
                 onFragmentStarted,
                 false,
                 searchPreferenceFragmentUIBinding.getSearchResultsFragmentContainerView().getId(),
+                Optional.empty(),
                 getChildFragmentManager());
     }
 

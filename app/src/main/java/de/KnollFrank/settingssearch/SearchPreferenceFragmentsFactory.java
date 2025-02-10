@@ -23,7 +23,7 @@ public class SearchPreferenceFragmentsFactory {
             final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
         return SearchPreferenceFragments
                 .builder(
-                        SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
+                        SearchDatabaseConfigFactory.createSearchDatabaseConfig(fragmentManager),
                         SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
                         fragmentManager,
                         activity)
