@@ -5,7 +5,6 @@ import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 import android.app.Activity;
 import android.content.Context;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
@@ -94,13 +93,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     public static void hideSearchPreferenceFragment(final FragmentManager fragmentManager) {
         SearchPreferenceFragments
                 .findSearchPreferenceFragment(fragmentManager)
-                .ifPresent(
-                        searchPreferenceFragment ->
-                                fragmentManager
-                                        .beginTransaction()
-                                        .setReorderingAllowed(true)
-                                        .remove(searchPreferenceFragment)
-                                        .commit());
+                .ifPresent(searchPreferenceFragment -> Fragments.hideFragment(searchPreferenceFragment, fragmentManager));
     }
 
     public MergedPreferenceScreenFactory getMergedPreferenceScreenFactory() {
@@ -158,8 +151,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 context);
     }
 
-    private static Optional<Fragment> findSearchPreferenceFragment(final FragmentManager fragmentManager) {
-        return Optional.ofNullable(fragmentManager.findFragmentByTag(getSearchPreferenceFragmentTag()));
+    private static Optional<SearchPreferenceFragment> findSearchPreferenceFragment(final FragmentManager fragmentManager) {
+        return Optional.ofNullable((SearchPreferenceFragment) fragmentManager.findFragmentByTag(getSearchPreferenceFragmentTag()));
     }
 
     private static String getSearchPreferenceFragmentTag() {

@@ -50,6 +50,16 @@ public class Fragments implements InstantiateAndInitializeFragment {
         fragmentTransaction.commit();
     }
 
+    public static void hideFragment(final Fragment fragment,
+                                    final FragmentManager fragmentManager) {
+        fragmentManager
+                .beginTransaction()
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .remove(fragment)
+                .commit();
+    }
+
     private static <T extends Fragment> void executeOnceOnFragmentResumed(
             final T fragment,
             final Consumer<T> onFragmentResumed,
