@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -748,7 +749,7 @@ public class PreferenceSearcherTest {
                 preference -> true,
                 new SearchResultsByPreferencePathSorter(),
                 instantiateAndInitializeFragment,
-                activity -> Optional.empty());
+                Map.of());
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

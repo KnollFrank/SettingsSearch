@@ -2,12 +2,14 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigatorFactory.createPreferencePathNavigator;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
@@ -19,7 +21,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
+import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
@@ -47,7 +49,7 @@ public class MergedPreferenceScreenFactory {
     private final SearchResultsFilter searchResultsFilter;
     private final SearchResultsSorter searchResultsSorter;
     private final PreferencePathDisplayer preferencePathDisplayer;
-    private final ActivityInitializerProvider activityInitializerProvider;
+    private final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -63,7 +65,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
             final PreferencePathDisplayer preferencePathDisplayer,
-            final ActivityInitializerProvider activityInitializerProvider) {
+            final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
@@ -77,7 +79,7 @@ public class MergedPreferenceScreenFactory {
         this.searchResultsFilter = searchResultsFilter;
         this.searchResultsSorter = searchResultsSorter;
         this.preferencePathDisplayer = preferencePathDisplayer;
-        this.activityInitializerProvider = activityInitializerProvider;
+        this.activityInitializerByActivity = activityInitializerByActivity;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
@@ -116,7 +118,7 @@ public class MergedPreferenceScreenFactory {
                 searchResultsFilter,
                 searchResultsSorter,
                 instantiateAndInitializeFragment,
-                activityInitializerProvider);
+                activityInitializerByActivity);
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
@@ -133,7 +135,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-            final ActivityInitializerProvider activityInitializerProvider) {
+            final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(
@@ -143,7 +145,7 @@ public class MergedPreferenceScreenFactory {
                                                 context,
                                                 fragmentFactoryAndInitializer,
                                                 instantiateAndInitializeFragment,
-                                                activityInitializerProvider),
+                                                activityInitializerByActivity),
                                         fragmentContainerViewId,
                                         prepareShow,
                                         fragmentManager),

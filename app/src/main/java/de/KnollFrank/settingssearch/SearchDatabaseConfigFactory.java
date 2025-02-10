@@ -27,7 +27,6 @@ import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
-import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -72,28 +71,23 @@ class SearchDatabaseConfigFactory {
                                 Set.of(
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
                                         new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class))))
-                .withActivityInitializerProvider(
-                        new ActivityInitializerProvider() {
+                .withActivityInitializerByActivity(
+                        ImmutableMap
+                                .<Class<? extends Activity>, ActivityInitializer>builder()
+                                .put(
+                                        SettingsActivity.class,
+                                        new ActivityInitializer() {
 
-                            @Override
-                            public Optional<ActivityInitializer> getActivityInitializerForActivity(final Class<? extends Activity> activity) {
-                                return SettingsActivity.class.equals(activity) ?
-                                        Optional.of(
-                                                new ActivityInitializer() {
+                                            @Override
+                                            public void beforeStartActivity(final PreferenceFragmentCompat src) {
+                                            }
 
-                                                    @Override
-                                                    public void beforeStartActivity(final PreferenceFragmentCompat src) {
-                                                        Log.i(this.getClass().getSimpleName(), "starting activity " + activity);
-                                                    }
-
-                                                    @Override
-                                                    public Optional<Bundle> createExtras(final PreferenceFragmentCompat src) {
-                                                        return Optional.of(PrefsFragmentFirst.createExtrasForSettingsActivity());
-                                                    }
-                                                }) :
-                                        Optional.empty();
-                            }
-                        })
+                                            @Override
+                                            public Optional<Bundle> createExtras(final PreferenceFragmentCompat src) {
+                                                return Optional.of(PrefsFragmentFirst.createExtrasForSettingsActivity());
+                                            }
+                                        })
+                                .build())
                 .withSearchableInfoProvider(new ReversedListPreferenceSearchableInfoProvider())
                 .withPreferenceFragmentConnected2PreferenceProvider(
                         new PreferenceFragmentConnected2PreferenceProvider() {

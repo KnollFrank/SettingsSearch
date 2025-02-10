@@ -7,23 +7,25 @@ import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Map;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Bundles;
-import de.KnollFrank.lib.settingssearch.provider.ActivityInitializerProvider;
+import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 
 class ContinueNavigationInActivity {
 
     private final Context context;
-    private final ActivityInitializerProvider activityInitializerProvider;
+    private final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity;
     private final PreferenceWithHostProvider preferenceWithHostProvider;
 
     public ContinueNavigationInActivity(final Context context,
-                                        final ActivityInitializerProvider activityInitializerProvider,
+                                        final Map<Class<? extends Activity>, ActivityInitializer> activityInitializerByActivity,
                                         final PreferenceWithHostProvider preferenceWithHostProvider) {
         this.context = context;
-        this.activityInitializerProvider = activityInitializerProvider;
+        this.activityInitializerByActivity = activityInitializerByActivity;
         this.preferenceWithHostProvider = preferenceWithHostProvider;
     }
 
@@ -51,8 +53,8 @@ class ContinueNavigationInActivity {
 
     private void beforeStartActivity(final Class<? extends Activity> activity,
                                      final PreferenceFragmentCompat src) {
-        activityInitializerProvider
-                .getActivityInitializerForActivity(activity)
+        Maps
+                .get(activityInitializerByActivity, activity)
                 .ifPresent(activityInitializer -> activityInitializer.beforeStartActivity(src));
     }
 
@@ -68,8 +70,8 @@ class ContinueNavigationInActivity {
         final Intent intent = new Intent(context, activity);
         intent.putExtras(
                 Bundles.merge(
-                        activityInitializerProvider
-                                .getActivityInitializerForActivity(activity)
+                        Maps
+                                .get(activityInitializerByActivity, activity)
                                 .flatMap(activityInitializer -> activityInitializer.createExtras(src))
                                 .orElseGet(Bundle::new),
                         PreferencePathNavigatorDataConverter.toBundle(
