@@ -35,8 +35,9 @@ public class PreferencePathNavigatorFactory {
                         context,
                         activityInitializerByActivity,
                         preferenceWithHostProvider),
-                getFragmentsConnected2PreferenceFragments(fragmentWithPreferenceFragmentConnections),
-                instantiateAndInitializeFragment);
+                new ConnectedFragmentProvider(
+                        getFragmentsConnected2PreferenceFragments(fragmentWithPreferenceFragmentConnections),
+                        instantiateAndInitializeFragment));
     }
 
     private static Map<Class<? extends PreferenceFragmentCompat>, Class<? extends Fragment>> getFragmentsConnected2PreferenceFragments(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
