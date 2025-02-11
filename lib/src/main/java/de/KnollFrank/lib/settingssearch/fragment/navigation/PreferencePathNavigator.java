@@ -47,6 +47,6 @@ public class PreferencePathNavigator {
                                                                    final PreferenceWithHost src) {
         return preferencePathPointer.isEmpty() ?
                 Optional.of(src.host()) :
-                navigatePreferences(preferencePathPointer.get(), Optional.of(src));
+                navigatePreferences(preferencePathPointer.orElseThrow(), Optional.of(src));
     }
 }
