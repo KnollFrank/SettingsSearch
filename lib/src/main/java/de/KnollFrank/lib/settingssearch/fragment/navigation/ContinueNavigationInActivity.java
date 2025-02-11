@@ -72,15 +72,23 @@ class ContinueNavigationInActivity {
         final Intent intent = new Intent(context, activity);
         intent.putExtras(
                 Bundles.merge(
-                        Maps
-                                .get(activityInitializerByActivity, activity)
-                                .flatMap(activityInitializer -> ((ActivityInitializer<T>) activityInitializer).createExtras(src))
-                                .orElseGet(Bundle::new),
-                        PreferencePathNavigatorDataConverter.toBundle(
-                                new PreferencePathNavigatorData(
-                                        preferencePathPointer.preferencePath.getPreference().getId(),
-                                        preferencePathPointer.indexWithinPreferencePath))));
+                        createExtras4Activity(activity, src),
+                        getPreferencePathNavigatorData(preferencePathPointer)));
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
+    }
+
+    private <T extends PreferenceFragmentCompat> Bundle createExtras4Activity(final Class<? extends Activity> activity, final T src) {
+        return Maps
+                .get(activityInitializerByActivity, activity)
+                .flatMap(activityInitializer -> ((ActivityInitializer<T>) activityInitializer).createExtras(src))
+                .orElseGet(Bundle::new);
+    }
+
+    private static Bundle getPreferencePathNavigatorData(final PreferencePathPointer preferencePathPointer) {
+        return PreferencePathNavigatorDataConverter.toBundle(
+                new PreferencePathNavigatorData(
+                        preferencePathPointer.preferencePath.getPreference().getId(),
+                        preferencePathPointer.indexWithinPreferencePath));
     }
 }
