@@ -104,6 +104,7 @@ public class SearchDatabaseConfigBuilder {
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
                 Fragment2PreferenceFragmentConverterFactory.createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs),
-                activityInitializerByActivity);
+                activityInitializerByActivity,
+                activitySearchDatabaseConfigs);
     }
 }

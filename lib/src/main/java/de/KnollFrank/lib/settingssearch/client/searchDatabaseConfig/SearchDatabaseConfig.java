@@ -30,6 +30,7 @@ public class SearchDatabaseConfig {
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     public final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
+    public final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,
                          final IconResourceIdProvider iconResourceIdProvider,
@@ -41,7 +42,8 @@ public class SearchDatabaseConfig {
                          final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
-                         final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
+                         final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
+                         final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs) {
         this.fragmentFactory = fragmentFactory;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -53,6 +55,7 @@ public class SearchDatabaseConfig {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
         this.activityInitializerByActivity = activityInitializerByActivity;
+        this.activitySearchDatabaseConfigs = activitySearchDatabaseConfigs;
     }
 
     public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {

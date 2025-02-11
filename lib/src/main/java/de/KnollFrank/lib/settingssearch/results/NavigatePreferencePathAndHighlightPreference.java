@@ -39,10 +39,23 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
         preferencePathNavigator
                 .navigatePreferencePath(preferencePathPointer)
                 .ifPresent(
-                        fragmentOfPreferenceScreen ->
+                        fragmentOfPreferenceScreen -> {
+                            if (fragmentOfPreferenceScreen instanceof PreferenceFragmentCompat _fragmentOfPreferenceScreen) {
                                 showPreferenceScreenAndHighlightPreference(
+                                        _fragmentOfPreferenceScreen,
+                                        preferencePathPointer.preferencePath.getPreference());
+                            } else {
+                                showFragment(
                                         fragmentOfPreferenceScreen,
-                                        preferencePathPointer.preferencePath.getPreference()));
+                                        _fragmentOfPreferenceScreen -> {
+                                            // FK-TODO: highlightPreference()
+                                        },
+                                        true,
+                                        fragmentContainerViewId,
+                                        Optional.empty(),
+                                        fragmentManager);
+                            }
+                        });
     }
 
     private void showPreferenceScreenAndHighlightPreference(
