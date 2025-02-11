@@ -6,6 +6,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
 
+import de.KnollFrank.lib.settingssearch.ConnectedFragmentProvider;
 import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
@@ -30,7 +31,7 @@ public class SearchDatabaseConfig {
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     public final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
-    public final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs;
+    public final ConnectedFragmentProvider connectedFragmentProvider;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,
                          final IconResourceIdProvider iconResourceIdProvider,
@@ -43,7 +44,7 @@ public class SearchDatabaseConfig {
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
                          final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-                         final ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs) {
+                         final ConnectedFragmentProvider connectedFragmentProvider) {
         this.fragmentFactory = fragmentFactory;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -55,7 +56,7 @@ public class SearchDatabaseConfig {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
         this.activityInitializerByActivity = activityInitializerByActivity;
-        this.activitySearchDatabaseConfigs = activitySearchDatabaseConfigs;
+        this.connectedFragmentProvider = connectedFragmentProvider;
     }
 
     public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {

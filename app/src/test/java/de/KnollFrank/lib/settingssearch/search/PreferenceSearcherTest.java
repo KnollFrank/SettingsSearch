@@ -750,7 +750,7 @@ public class PreferenceSearcherTest {
                 new SearchResultsByPreferencePathSorter(),
                 instantiateAndInitializeFragment,
                 Map.of(),
-                Set.of());
+                _preferenceFragment -> Optional.empty());
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

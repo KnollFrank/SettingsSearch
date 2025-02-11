@@ -6,16 +6,14 @@ import android.app.Activity;
 import android.content.Context;
 
 import androidx.annotation.IdRes;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.ConnectedFragmentProvider;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentWithPreferenceFragmentConnection;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -53,7 +51,7 @@ public class MergedPreferenceScreenFactory {
     private final SearchResultsSorter searchResultsSorter;
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
-    private final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections;
+    private final ConnectedFragmentProvider connectedFragmentProvider;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -70,7 +68,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsSorter searchResultsSorter,
             final PreferencePathDisplayer preferencePathDisplayer,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
+            final ConnectedFragmentProvider connectedFragmentProvider) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentContainerViewId = fragmentContainerViewId;
@@ -85,7 +83,7 @@ public class MergedPreferenceScreenFactory {
         this.searchResultsSorter = searchResultsSorter;
         this.preferencePathDisplayer = preferencePathDisplayer;
         this.activityInitializerByActivity = activityInitializerByActivity;
-        this.fragmentWithPreferenceFragmentConnections = fragmentWithPreferenceFragmentConnections;
+        this.connectedFragmentProvider = connectedFragmentProvider;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
@@ -125,7 +123,7 @@ public class MergedPreferenceScreenFactory {
                 searchResultsSorter,
                 instantiateAndInitializeFragment,
                 activityInitializerByActivity,
-                fragmentWithPreferenceFragmentConnections);
+                connectedFragmentProvider);
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
@@ -143,7 +141,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsSorter searchResultsSorter,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
+            final ConnectedFragmentProvider connectedFragmentProvider) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(
@@ -154,7 +152,7 @@ public class MergedPreferenceScreenFactory {
                                                 fragmentFactoryAndInitializer,
                                                 instantiateAndInitializeFragment,
                                                 activityInitializerByActivity,
-                                                fragmentWithPreferenceFragmentConnections),
+                                                connectedFragmentProvider),
                                         fragmentContainerViewId,
                                         prepareShow,
                                         fragmentManager),

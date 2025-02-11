@@ -112,8 +112,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.searchResultsSorter,
                 searchConfig.preferencePathDisplayer,
                 searchDatabaseConfig.activityInitializerByActivity,
-                // FK-TODO: oder nur fragmentWithPreferenceFragmentConnections in searchDatabaseConfig speichern?
-                searchDatabaseConfig.activitySearchDatabaseConfigs.fragmentWithPreferenceFragmentConnections());
+                searchDatabaseConfig.connectedFragmentProvider);
     }
 
     public void rebuildSearchDatabase() {
