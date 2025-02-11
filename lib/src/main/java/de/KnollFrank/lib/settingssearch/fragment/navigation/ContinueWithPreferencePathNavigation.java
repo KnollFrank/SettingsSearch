@@ -20,22 +20,20 @@ public class ContinueWithPreferencePathNavigation {
     private final @IdRes int fragmentContainerViewId;
     private final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments;
 
-    private ContinueWithPreferencePathNavigation(
-            final FragmentActivity activity,
-            final ViewGroup parent,
-            final @IdRes int fragmentContainerViewId,
-            final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments) {
+    private ContinueWithPreferencePathNavigation(final FragmentActivity activity,
+                                                 final ViewGroup parent,
+                                                 final @IdRes int fragmentContainerViewId,
+                                                 final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments) {
         this.activity = activity;
         this.parent = parent;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.createSearchPreferenceFragments = createSearchPreferenceFragments;
     }
 
-    public static void continueWithPreferencePathNavigation(
-            final FragmentActivity activity,
-            final ViewGroup parent,
-            final @IdRes int fragmentContainerViewId,
-            final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments) {
+    public static void continueWithPreferencePathNavigation(final FragmentActivity activity,
+                                                            final ViewGroup parent,
+                                                            final @IdRes int fragmentContainerViewId,
+                                                            final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments) {
         final var continueWithPreferencePathNavigation =
                 new ContinueWithPreferencePathNavigation(
                         activity,
@@ -72,9 +70,8 @@ public class ContinueWithPreferencePathNavigation {
 
     private boolean showPreferenceScreenAndHighlightPreferenceAlreadyExecuted = false;
 
-    private void showPreferenceScreenAndHighlightPreferenceOnce(
-            final PreferencePathNavigatorData preferencePathNavigatorData,
-            final MergedPreferenceScreen mergedPreferenceScreen) {
+    private void showPreferenceScreenAndHighlightPreferenceOnce(final PreferencePathNavigatorData preferencePathNavigatorData,
+                                                                final MergedPreferenceScreen mergedPreferenceScreen) {
         if (showPreferenceScreenAndHighlightPreferenceAlreadyExecuted) {
             return;
         }

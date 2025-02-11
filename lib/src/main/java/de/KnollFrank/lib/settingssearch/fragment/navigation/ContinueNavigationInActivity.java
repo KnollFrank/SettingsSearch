@@ -51,9 +51,8 @@ class ContinueNavigationInActivity {
         startActivity(activity, src, preferencePathPointer);
     }
 
-    private <T extends PreferenceFragmentCompat> void beforeStartActivity(
-            final Class<? extends Activity> activity,
-            final T src) {
+    private <T extends PreferenceFragmentCompat> void beforeStartActivity(final Class<? extends Activity> activity,
+                                                                          final T src) {
         Maps
                 .get(activityInitializerByActivity, activity)
                 .ifPresent(activityInitializer -> ((ActivityInitializer<T>) activityInitializer).beforeStartActivity(src));
@@ -65,10 +64,9 @@ class ContinueNavigationInActivity {
         context.startActivity(createIntent(activity, src, preferencePathPointer));
     }
 
-    private <T extends PreferenceFragmentCompat> Intent createIntent(
-            final Class<? extends Activity> activity,
-            final T src,
-            final PreferencePathPointer preferencePathPointer) {
+    private <T extends PreferenceFragmentCompat> Intent createIntent(final Class<? extends Activity> activity,
+                                                                     final T src,
+                                                                     final PreferencePathPointer preferencePathPointer) {
         final Intent intent = new Intent(context, activity);
         intent.putExtras(
                 Bundles.merge(
@@ -78,7 +76,8 @@ class ContinueNavigationInActivity {
         return intent;
     }
 
-    private <T extends PreferenceFragmentCompat> Bundle createExtras4Activity(final Class<? extends Activity> activity, final T src) {
+    private <T extends PreferenceFragmentCompat> Bundle createExtras4Activity(final Class<? extends Activity> activity,
+                                                                              final T src) {
         return Maps
                 .get(activityInitializerByActivity, activity)
                 .flatMap(activityInitializer -> ((ActivityInitializer<T>) activityInitializer).createExtras(src))
