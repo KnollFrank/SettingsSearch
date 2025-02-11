@@ -11,6 +11,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 @FunctionalInterface
 public interface FragmentFactory {
 
-    // instantiate fragmentClass, where fragmentClass.getName().equals(src.get().preference.getFragment()) if src.isPresent()
+    // instantiate fragmentClass, where fragmentClass.getName().equals(src.orElseThrow().preference.getFragment()) if src.isPresent()
     <T extends Fragment> T instantiate(Class<T> fragmentClass, Optional<PreferenceWithHost> src, Context context, InstantiateAndInitializeFragment instantiateAndInitializeFragment);
 }

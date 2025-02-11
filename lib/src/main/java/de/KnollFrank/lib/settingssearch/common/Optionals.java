@@ -13,7 +13,7 @@ public class Optionals {
         return Arrays
                 .stream(elements)
                 .filter(Optional::isPresent)
-                .map(Optional::get);
+                .map(Optional::orElseThrow);
     }
 
     public static <T> List<T> asList(final Optional<T[]> elements) {

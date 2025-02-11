@@ -38,7 +38,7 @@ class ContinueNavigationInActivity {
                         .getPreferenceWithHost(preferencePathPointer.dereference(), src)
                         .host();
         if (nextPreferencePathPointer.isPresent()) {
-            continueNavigationInActivity(activity, host, nextPreferencePathPointer.get());
+            continueNavigationInActivity(activity, host, nextPreferencePathPointer.orElseThrow());
             return Optional.empty();
         }
         return Optional.of(host);

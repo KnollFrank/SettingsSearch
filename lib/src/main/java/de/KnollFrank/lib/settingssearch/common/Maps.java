@@ -44,7 +44,7 @@ public class Maps {
                 .collect(
                         Collectors.toMap(
                                 Entry::getKey,
-                                entry -> entry.getValue().get()));
+                                entry -> entry.getValue().orElseThrow()));
     }
 
     private static <K, V> Stream<Entry<K, V>> getEntryStream(final Collection<? extends Map<K, V>> maps) {

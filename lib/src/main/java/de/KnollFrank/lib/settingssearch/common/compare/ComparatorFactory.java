@@ -35,7 +35,7 @@ public class ComparatorFactory {
                 } else if (optional2.isEmpty()) {
                     return ARG2_LAST;
                 } else {
-                    return comparator.compare(optional1.get(), optional2.get());
+                    return comparator.compare(optional1.orElseThrow(), optional2.orElseThrow());
                 }
             }
         };

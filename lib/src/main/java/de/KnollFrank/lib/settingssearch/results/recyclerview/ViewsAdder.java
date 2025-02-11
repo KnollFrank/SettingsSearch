@@ -18,10 +18,10 @@ class ViewsAdder {
         final Optional<View> summaryView = holder.findViewById(android.R.id.summary);
         if (summaryView.isPresent()) {
             ViewAdder.replaceViewWithViews(
-                    summaryView.get(),
+                    summaryView.orElseThrow(),
                     ImmutableList
                             .<View>builder()
-                            .add(summaryView.get())
+                            .add(summaryView.orElseThrow())
                             .addAll(views)
                             .build(),
                     context);

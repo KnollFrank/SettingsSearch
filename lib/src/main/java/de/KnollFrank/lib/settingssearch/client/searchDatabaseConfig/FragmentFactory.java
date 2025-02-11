@@ -34,7 +34,7 @@ class FragmentFactory implements de.KnollFrank.lib.settingssearch.fragment.Fragm
                 .stream()
                 .map(preferenceFragmentFactory -> preferenceFragmentFactory.createPreferenceFragmentForClass(fragmentClass, src, context, instantiateAndInitializeFragment))
                 .filter(Optional::isPresent)
-                .map(Optional::get)
+                .map(Optional::orElseThrow)
                 .findFirst();
     }
 }
