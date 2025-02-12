@@ -1,13 +1,20 @@
 package de.KnollFrank.settingssearch;
 
-import android.os.Bundle;
+import static de.KnollFrank.lib.settingssearch.fragment.navigation.ContinueWithPreferencePathNavigation.continueWithPreferencePathNavigation;
+import static de.KnollFrank.settingssearch.SettingsActivity.createSearchPreferenceFragments;
 
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 
 public class SettingsActivity3 extends AppCompatActivity {
+
+    private static final @IdRes int fragmentContainerViewId = View.generateViewId();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -24,5 +31,19 @@ public class SettingsActivity3 extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        continueWithPreferencePathNavigation(
+                this,
+                findViewById(R.id.settings_root),
+                fragmentContainerViewId,
+                onMergedPreferenceScreenAvailable ->
+                        createSearchPreferenceFragments(
+                                this,
+                                onMergedPreferenceScreenAvailable,
+                                fragmentContainerViewId));
     }
 }
