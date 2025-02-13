@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.results;
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import androidx.annotation.IdRes;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
@@ -40,27 +41,21 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
                 .navigatePreferencePath(preferencePathPointer)
                 .ifPresent(
                         fragmentOfPreferenceScreen -> {
+                            // FK-TODO: refactor
                             if (fragmentOfPreferenceScreen instanceof PreferenceFragmentCompat _fragmentOfPreferenceScreen) {
                                 showPreferenceScreenAndHighlightPreference(
                                         _fragmentOfPreferenceScreen,
                                         preferencePathPointer.preferencePath.getPreference());
                             } else {
-                                showFragment(
+                                showSettingsFragmentAndHighlightSetting(
                                         fragmentOfPreferenceScreen,
-                                        _fragmentOfPreferenceScreen -> {
-                                            // FK-TODO: highlightPreference()
-                                        },
-                                        true,
-                                        fragmentContainerViewId,
-                                        Optional.empty(),
-                                        fragmentManager);
+                                        preferencePathPointer.preferencePath.getPreference());
                             }
                         });
     }
 
-    private void showPreferenceScreenAndHighlightPreference(
-            final PreferenceFragmentCompat fragmentOfPreferenceScreen,
-            final SearchablePreference preference2Highlight) {
+    private void showPreferenceScreenAndHighlightPreference(final PreferenceFragmentCompat fragmentOfPreferenceScreen,
+                                                            final SearchablePreference preference2Highlight) {
         prepareShow.prepareShow(fragmentOfPreferenceScreen);
         showFragment(
                 fragmentOfPreferenceScreen,
@@ -75,14 +70,48 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
                 fragmentManager);
     }
 
+    private void showSettingsFragmentAndHighlightSetting(final Fragment settingsFragment,
+                                                         final SearchablePreference setting2Highlight) {
+        prepareShow.prepareShow(settingsFragment);
+        showFragment(
+                settingsFragment,
+                _settingsFragment ->
+                        setting2Highlight.getKey().ifPresent(keyOfSetting2Highlight -> {
+                            if (_settingsFragment instanceof final SettingsFragment __settingsFragment) {
+                                highlightSetting(__settingsFragment, keyOfSetting2Highlight);
+                            }
+                            // showDialog(_settingsFragment.findPreference(keyOfSetting2Highlight), setting2Highlight);
+                        }),
+                true,
+                fragmentContainerViewId,
+                Optional.empty(),
+                fragmentManager);
+    }
+
     private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment,
                                             final String keyOfPreference2Highlight) {
-        // FK-TODO: siehe Implementierung von scrollToPreference() und ziehe den Code für den RecyclerView heraus.
         preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
         PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
                 keyOfPreference2Highlight,
                 preferenceFragment,
                 Duration.ofSeconds(1));
+    }
+
+    private static void highlightSetting(final SettingsFragment settingsFragment,
+                                         final String keyOfSetting2Highlight) {
+        scrollToSetting(settingsFragment, keyOfSetting2Highlight);
+        SettingHighlighter.highlightSettingOfSettingsFragment(
+                keyOfSetting2Highlight,
+                settingsFragment,
+                Duration.ofSeconds(1));
+    }
+
+    private static void scrollToSetting(final SettingsFragment settingsFragment, final String key) {
+        settingsFragment
+                .getSettingAdapterPosition(key)
+                .ifPresent(
+                        settingAdapterPosition ->
+                                settingsFragment.getRecyclerView().scrollToPosition(settingAdapterPosition));
     }
 
     private static void showDialog(final Preference preference, final SearchablePreference searchablePreference) {

@@ -724,7 +724,7 @@ public class PreferenceSearcherTest {
                         fragmentActivity);
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 TestActivity.FRAGMENT_CONTAINER_VIEW,
-                _preferenceFragment -> {
+                fragment -> {
                 },
                 preferencePath -> true,
                 new DefaultPreferencePathDisplayer(),

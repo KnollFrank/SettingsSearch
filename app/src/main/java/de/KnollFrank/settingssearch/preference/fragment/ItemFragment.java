@@ -14,14 +14,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.collect.Iterables;
+
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
+import de.KnollFrank.lib.settingssearch.results.SettingsFragment;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 
-public class ItemFragment extends Fragment {
+public class ItemFragment extends Fragment implements SettingsFragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
@@ -64,6 +68,27 @@ public class ItemFragment extends Fragment {
 
     public List<PlaceholderContent.PlaceholderItem> getItems() {
         return PlaceholderContent.ITEMS;
+    }
+
+    @Override
+    public RecyclerView getRecyclerView() {
+        return (RecyclerView) getView();
+    }
+
+    @Override
+    public OptionalInt getSettingAdapterPosition(final String key) {
+        return getSettingAdapterPosition(getItems(), key);
+    }
+
+    public static OptionalInt getSettingAdapterPosition(final List<PlaceholderContent.PlaceholderItem> items,
+                                                        final String key) {
+        final int settingAdapterPosition =
+                Iterables.indexOf(
+                        items,
+                        placeholderItem -> placeholderItem.key().equals(key));
+        return settingAdapterPosition != RecyclerView.NO_POSITION ?
+                OptionalInt.of(settingAdapterPosition) :
+                OptionalInt.empty();
     }
 
     // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.

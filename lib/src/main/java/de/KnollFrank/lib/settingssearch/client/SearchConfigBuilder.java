@@ -27,7 +27,7 @@ public class SearchConfigBuilder {
     private Optional<String> queryHint = Optional.empty();
     private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = preference -> true;
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> true;
-    private PrepareShow prepareShow = preferenceFragment -> {
+    private PrepareShow prepareShow = fragment -> {
     };
     private PreferencePathDisplayer preferencePathDisplayer = new DefaultPreferencePathDisplayer();
     private SearchResultsFilter searchResultsFilter = preference -> true;

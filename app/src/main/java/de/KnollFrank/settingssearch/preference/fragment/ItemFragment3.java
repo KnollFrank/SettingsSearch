@@ -14,13 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
+import de.KnollFrank.lib.settingssearch.results.SettingsFragment;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent3;
 
-public class ItemFragment3 extends Fragment {
+public class ItemFragment3 extends Fragment implements SettingsFragment  {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
@@ -63,6 +65,16 @@ public class ItemFragment3 extends Fragment {
 
     public List<PlaceholderContent.PlaceholderItem> getItems() {
         return PlaceholderContent3.ITEMS;
+    }
+
+    @Override
+    public RecyclerView getRecyclerView() {
+        return (RecyclerView) getView();
+    }
+
+    @Override
+    public OptionalInt getSettingAdapterPosition(final String key) {
+        return ItemFragment.getSettingAdapterPosition(getItems(), key);
     }
 
     public static class PreferenceFragment3 extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment3> {

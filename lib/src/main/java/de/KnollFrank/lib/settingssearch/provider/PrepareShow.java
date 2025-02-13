@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
-import androidx.preference.PreferenceFragmentCompat;
+import androidx.fragment.app.Fragment;
 
 @FunctionalInterface
 public interface PrepareShow {
 
-    void prepareShow(PreferenceFragmentCompat preferenceFragment);
+    void prepareShow(Fragment fragment);
 }
