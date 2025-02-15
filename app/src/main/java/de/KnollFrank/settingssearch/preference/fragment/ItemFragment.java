@@ -81,6 +81,7 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
 
     public static OptionalInt getSettingAdapterPosition(final List<PlaceholderContent.PlaceholderItem> items,
                                                         final Setting setting) {
+        // FK-TODO: introduce method Iterables.indexOf() which returns an OptionalInt
         final int settingAdapterPosition =
                 Iterables.indexOf(
                         items,

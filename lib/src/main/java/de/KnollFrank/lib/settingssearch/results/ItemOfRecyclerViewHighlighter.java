@@ -29,27 +29,20 @@ public class ItemOfRecyclerViewHighlighter implements SettingHighlighter {
     public void highlightSetting(final Fragment settingsFragment, final Setting setting) {
         highlightItemOfRecyclerView(
                 positionOfSettingProvider.getPositionOfSetting(setting),
-                recyclerView,
                 Duration.ofSeconds(1));
     }
 
-    private static void highlightItemOfRecyclerView(final OptionalInt itemPosition,
-                                                    final RecyclerView recyclerView,
-                                                    final Duration highlightDuration) {
+    private void highlightItemOfRecyclerView(final OptionalInt itemPosition, final Duration highlightDuration) {
         itemPosition.ifPresentOrElse(
-                _itemPosition -> highlightItemOfRecyclerView(_itemPosition, recyclerView, highlightDuration),
+                _itemPosition -> highlightItemOfRecyclerView(_itemPosition, highlightDuration),
                 () -> Log.e("doHighlight", "Setting not found on given screen"));
     }
 
-    private static void highlightItemOfRecyclerView(final int itemPosition,
-                                                    final RecyclerView recyclerView,
-                                                    final Duration highlightDuration) {
-        new Handler().post(() -> _highlightItemOfRecyclerView(itemPosition, recyclerView, highlightDuration));
+    private void highlightItemOfRecyclerView(final int itemPosition, final Duration highlightDuration) {
+        new Handler().post(() -> _highlightItemOfRecyclerView(itemPosition, highlightDuration));
     }
 
-    private static void _highlightItemOfRecyclerView(final int itemPosition,
-                                                     final RecyclerView recyclerView,
-                                                     final Duration highlightDuration) {
+    private void _highlightItemOfRecyclerView(final int itemPosition, final Duration highlightDuration) {
         recyclerView.scrollToPosition(itemPosition);
         recyclerView.postDelayed(
                 () -> {
