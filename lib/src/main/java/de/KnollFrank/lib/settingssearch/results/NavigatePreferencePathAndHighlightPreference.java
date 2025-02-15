@@ -40,34 +40,10 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
         preferencePathNavigator
                 .navigatePreferencePath(preferencePathPointer)
                 .ifPresent(
-                        fragmentOfPreferenceScreen -> {
-                            // FK-TODO: refactor
-                            if (fragmentOfPreferenceScreen instanceof PreferenceFragmentCompat _fragmentOfPreferenceScreen) {
-                                showPreferenceScreenAndHighlightPreference(
-                                        _fragmentOfPreferenceScreen,
-                                        preferencePathPointer.preferencePath.getPreference());
-                            } else {
+                        fragmentOfPreferenceScreen ->
                                 showSettingsFragmentAndHighlightSetting(
                                         fragmentOfPreferenceScreen,
-                                        preferencePathPointer.preferencePath.getPreference());
-                            }
-                        });
-    }
-
-    private void showPreferenceScreenAndHighlightPreference(final PreferenceFragmentCompat fragmentOfPreferenceScreen,
-                                                            final SearchablePreference preference2Highlight) {
-        prepareShow.prepareShow(fragmentOfPreferenceScreen);
-        showFragment(
-                fragmentOfPreferenceScreen,
-                _fragmentOfPreferenceScreen ->
-                        preference2Highlight.getKey().ifPresent(keyOfPreference2Highlight -> {
-                            highlightPreference(_fragmentOfPreferenceScreen, keyOfPreference2Highlight);
-                            showDialog(_fragmentOfPreferenceScreen.findPreference(keyOfPreference2Highlight), preference2Highlight);
-                        }),
-                true,
-                fragmentContainerViewId,
-                Optional.empty(),
-                fragmentManager);
+                                        preferencePathPointer.preferencePath.getPreference()));
     }
 
     private void showSettingsFragmentAndHighlightSetting(final Fragment settingsFragment,
@@ -76,11 +52,15 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
         showFragment(
                 settingsFragment,
                 _settingsFragment ->
-                        setting2Highlight.getKey().ifPresent(keyOfSetting2Highlight -> {
-                            if (_settingsFragment instanceof final SettingsFragment __settingsFragment) {
-                                highlightSetting(__settingsFragment, keyOfSetting2Highlight);
+                        // FK-TODO: refactor
+                        setting2Highlight.getKey().ifPresent(keyOfPreference2Highlight -> {
+                            if (_settingsFragment instanceof final PreferenceFragmentCompat fragmentOfPreferenceScreen) {
+                                highlightPreference(fragmentOfPreferenceScreen, keyOfPreference2Highlight);
+                                showDialog(fragmentOfPreferenceScreen.findPreference(keyOfPreference2Highlight), setting2Highlight);
+                            } else if (_settingsFragment instanceof final SettingsFragment __settingsFragment) {
+                                highlightSetting(__settingsFragment, keyOfPreference2Highlight);
+                                // showDialog(_settingsFragment.findPreference(keyOfSetting2Highlight), setting2Highlight);
                             }
-                            // showDialog(_settingsFragment.findPreference(keyOfSetting2Highlight), setting2Highlight);
                         }),
                 true,
                 fragmentContainerViewId,
