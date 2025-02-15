@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.ColorInt;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.threeten.bp.Duration;
@@ -13,12 +14,28 @@ import java.util.OptionalInt;
 
 import de.KnollFrank.lib.settingssearch.common.Attributes;
 
-// FK-TODO: DRY with PreferenceHighlighter
-class ItemOfRecyclerViewHighlighter {
+public class ItemOfRecyclerViewHighlighter implements SettingHighlighter {
 
-    public static void highlightItemOfRecyclerView(final OptionalInt itemPosition,
-                                                   final RecyclerView recyclerView,
-                                                   final Duration highlightDuration) {
+    private final RecyclerView recyclerView;
+    private final PositionOfSettingProvider positionOfSettingProvider;
+
+    public ItemOfRecyclerViewHighlighter(final RecyclerView recyclerView,
+                                         final PositionOfSettingProvider positionOfSettingProvider) {
+        this.recyclerView = recyclerView;
+        this.positionOfSettingProvider = positionOfSettingProvider;
+    }
+
+    @Override
+    public void highlightSetting(final Fragment settingsFragment, final String keyOfSetting2Highlight) {
+        highlightItemOfRecyclerView(
+                positionOfSettingProvider.getPositionOfSetting(keyOfSetting2Highlight),
+                recyclerView,
+                Duration.ofSeconds(1));
+    }
+
+    private static void highlightItemOfRecyclerView(final OptionalInt itemPosition,
+                                                    final RecyclerView recyclerView,
+                                                    final Duration highlightDuration) {
         itemPosition.ifPresentOrElse(
                 _itemPosition -> highlightItemOfRecyclerView(_itemPosition, recyclerView, highlightDuration),
                 () -> Log.e("doHighlight", "Setting not found on given screen"));

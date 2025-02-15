@@ -9,8 +9,6 @@ import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.threeten.bp.Duration;
-
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -51,38 +49,36 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
         prepareShow.prepareShow(settingsFragment);
         showFragment(
                 settingsFragment,
-                _settingsFragment ->
-                        // FK-TODO: refactor
-                        setting2Highlight.getKey().ifPresent(keyOfPreference2Highlight -> {
-                            if (_settingsFragment instanceof final PreferenceFragmentCompat fragmentOfPreferenceScreen) {
-                                highlightPreference(fragmentOfPreferenceScreen, keyOfPreference2Highlight);
-                                showDialog(fragmentOfPreferenceScreen.findPreference(keyOfPreference2Highlight), setting2Highlight);
-                            } else if (_settingsFragment instanceof final SettingsFragment __settingsFragment) {
-                                highlightSetting(__settingsFragment, keyOfPreference2Highlight);
-                                // showDialog(_settingsFragment.findPreference(keyOfSetting2Highlight), setting2Highlight);
-                            }
-                        }),
+                _settingsFragment -> highlightSetting(_settingsFragment, setting2Highlight),
                 true,
                 fragmentContainerViewId,
                 Optional.empty(),
                 fragmentManager);
     }
 
-    private static void highlightPreference(final PreferenceFragmentCompat preferenceFragment,
-                                            final String keyOfPreference2Highlight) {
-        preferenceFragment.scrollToPreference(keyOfPreference2Highlight);
-        PreferenceHighlighter.highlightPreferenceOfPreferenceFragment(
-                keyOfPreference2Highlight,
-                preferenceFragment,
-                Duration.ofSeconds(1));
+    private static void highlightSetting(final Fragment settingsFragment,
+                                         final SearchablePreference setting2Highlight) {
+        // FK-TODO: refactor
+        setting2Highlight.getKey().ifPresent(keyOfPreference2Highlight -> {
+            if (settingsFragment instanceof final PreferenceFragmentCompat fragmentOfPreferenceScreen) {
+                highlightPreference(fragmentOfPreferenceScreen, setting2Highlight, keyOfPreference2Highlight);
+            } else if (settingsFragment instanceof final SettingHighlighterProvider settingHighlighterProvider) {
+                highlightSetting(settingsFragment, keyOfPreference2Highlight, settingHighlighterProvider);
+            }
+        });
     }
 
-    private static void highlightSetting(final SettingsFragment settingsFragment,
-                                         final String keyOfSetting2Highlight) {
-        ItemOfRecyclerViewHighlighter.highlightItemOfRecyclerView(
-                settingsFragment.getPositionOfSetting(keyOfSetting2Highlight),
-                settingsFragment.getRecyclerView(),
-                Duration.ofSeconds(1));
+    private static void highlightPreference(final PreferenceFragmentCompat fragmentOfPreferenceScreen,
+                                            final SearchablePreference setting2Highlight,
+                                            final String keyOfPreference2Highlight) {
+        fragmentOfPreferenceScreen.scrollToPreference(keyOfPreference2Highlight);
+        new PreferenceHighlighter().highlightSetting(fragmentOfPreferenceScreen, keyOfPreference2Highlight);
+        showDialog(fragmentOfPreferenceScreen.findPreference(keyOfPreference2Highlight), setting2Highlight);
+    }
+
+    private static void highlightSetting(final Fragment settingsFragment, final String keyOfPreference2Highlight, final SettingHighlighterProvider settingHighlighterProvider) {
+        settingHighlighterProvider.getSettingHighlighter().highlightSetting(settingsFragment, keyOfPreference2Highlight);
+        // showDialog(_settingsFragment.findPreference(keyOfSetting2Highlight), setting2Highlight);
     }
 
     private static void showDialog(final Preference preference, final SearchablePreference searchablePreference) {

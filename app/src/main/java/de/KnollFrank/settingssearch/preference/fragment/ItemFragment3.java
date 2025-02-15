@@ -17,12 +17,15 @@ import java.util.List;
 import java.util.OptionalInt;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
-import de.KnollFrank.lib.settingssearch.results.SettingsFragment;
+import de.KnollFrank.lib.settingssearch.results.ItemOfRecyclerViewHighlighter;
+import de.KnollFrank.lib.settingssearch.results.PositionOfSettingProvider;
+import de.KnollFrank.lib.settingssearch.results.SettingHighlighter;
+import de.KnollFrank.lib.settingssearch.results.SettingHighlighterProvider;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent3;
 
-public class ItemFragment3 extends Fragment implements SettingsFragment  {
+public class ItemFragment3 extends Fragment implements SettingHighlighterProvider, PositionOfSettingProvider {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
@@ -68,13 +71,13 @@ public class ItemFragment3 extends Fragment implements SettingsFragment  {
     }
 
     @Override
-    public RecyclerView getRecyclerView() {
-        return (RecyclerView) getView();
+    public OptionalInt getPositionOfSetting(final String keyOfSetting) {
+        return ItemFragment.getSettingAdapterPosition(getItems(), keyOfSetting);
     }
 
     @Override
-    public OptionalInt getPositionOfSetting(final String keyOfSetting) {
-        return ItemFragment.getSettingAdapterPosition(getItems(), keyOfSetting);
+    public SettingHighlighter getSettingHighlighter() {
+        return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this);
     }
 
     public static class PreferenceFragment3 extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment3> {

@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -20,29 +21,34 @@ import java.util.OptionalInt;
 import de.KnollFrank.lib.settingssearch.R;
 import de.KnollFrank.lib.settingssearch.common.Attributes;
 
-class PreferenceHighlighter {
+public class PreferenceHighlighter implements SettingHighlighter {
 
-    public static void highlightPreferenceOfPreferenceFragment(
-            final String keyOfPreference,
-            final PreferenceFragmentCompat preferenceFragment,
-            final Duration highlightDuration) {
+    @Override
+    public void highlightSetting(final Fragment settingsFragment, final String keyOfSetting2Highlight) {
+        highlightPreferenceOfPreferenceFragment(
+                keyOfSetting2Highlight,
+                (PreferenceFragmentCompat) settingsFragment,
+                Duration.ofSeconds(1));
+    }
+
+    private static void highlightPreferenceOfPreferenceFragment(final String keyOfPreference,
+                                                                final PreferenceFragmentCompat preferenceFragment,
+                                                                final Duration highlightDuration) {
         highlightPreferenceOfPreferenceFragment(
                 Objects.<Preference>requireNonNull(preferenceFragment.findPreference(keyOfPreference)),
                 preferenceFragment,
                 highlightDuration);
     }
 
-    private static void highlightPreferenceOfPreferenceFragment(
-            final Preference preference,
-            final PreferenceFragmentCompat preferenceFragment,
-            final Duration highlightDuration) {
+    private static void highlightPreferenceOfPreferenceFragment(final Preference preference,
+                                                                final PreferenceFragmentCompat preferenceFragment,
+                                                                final Duration highlightDuration) {
         new Handler().post(() -> doHighlightPreferenceOfPreferenceFragment(preference, preferenceFragment, highlightDuration));
     }
 
-    private static void doHighlightPreferenceOfPreferenceFragment(
-            final Preference preference,
-            final PreferenceFragmentCompat preferenceFragment,
-            final Duration highlightDuration) {
+    private static void doHighlightPreferenceOfPreferenceFragment(final Preference preference,
+                                                                  final PreferenceFragmentCompat preferenceFragment,
+                                                                  final Duration highlightDuration) {
         if (preference == null) {
             Log.e("doHighlight", "Preference not found on given screen");
             return;
@@ -62,7 +68,8 @@ class PreferenceHighlighter {
         }
     }
 
-    private static OptionalInt getPreferenceAdapterPosition(final Preference preference, final RecyclerView.Adapter<?> adapter) {
+    private static OptionalInt getPreferenceAdapterPosition(final Preference preference,
+                                                            final RecyclerView.Adapter<?> adapter) {
         if (adapter instanceof final PreferenceGroup.PreferencePositionCallback preferencePosition) {
             final int position = preferencePosition.getPreferenceAdapterPosition(preference);
             if (position != RecyclerView.NO_POSITION) {

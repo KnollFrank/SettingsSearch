@@ -21,11 +21,14 @@ import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
-import de.KnollFrank.lib.settingssearch.results.SettingsFragment;
+import de.KnollFrank.lib.settingssearch.results.ItemOfRecyclerViewHighlighter;
+import de.KnollFrank.lib.settingssearch.results.PositionOfSettingProvider;
+import de.KnollFrank.lib.settingssearch.results.SettingHighlighter;
+import de.KnollFrank.lib.settingssearch.results.SettingHighlighterProvider;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 
-public class ItemFragment extends Fragment implements SettingsFragment {
+public class ItemFragment extends Fragment implements SettingHighlighterProvider, PositionOfSettingProvider {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
@@ -71,11 +74,6 @@ public class ItemFragment extends Fragment implements SettingsFragment {
     }
 
     @Override
-    public RecyclerView getRecyclerView() {
-        return (RecyclerView) getView();
-    }
-
-    @Override
     public OptionalInt getPositionOfSetting(final String keyOfSetting) {
         return getSettingAdapterPosition(getItems(), keyOfSetting);
     }
@@ -89,6 +87,11 @@ public class ItemFragment extends Fragment implements SettingsFragment {
         return settingAdapterPosition != RecyclerView.NO_POSITION ?
                 OptionalInt.of(settingAdapterPosition) :
                 OptionalInt.empty();
+    }
+
+    @Override
+    public SettingHighlighter getSettingHighlighter() {
+        return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this);
     }
 
     // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.
