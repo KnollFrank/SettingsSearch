@@ -100,10 +100,9 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     private static void highlightSetting(final SettingsFragment settingsFragment,
                                          final String keyOfSetting2Highlight) {
         scrollToSetting(settingsFragment, keyOfSetting2Highlight);
-        SettingHighlighter.highlightSettingOfSettingsFragment(
-                keyOfSetting2Highlight,
-                settingsFragment,
-                Duration.ofSeconds(1));
+        RecyclerViewHighlighter.highlightSettingOfSettingsFragment(
+                settingsFragment.getRecyclerView(),
+                settingsFragment.getPositionOfSetting(keyOfSetting2Highlight), Duration.ofSeconds(1));
     }
 
     private static void scrollToSetting(final SettingsFragment settingsFragment, final String key) {

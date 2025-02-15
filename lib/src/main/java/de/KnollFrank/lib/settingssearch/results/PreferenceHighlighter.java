@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.threeten.bp.Duration;
 
+import java.util.Objects;
 import java.util.OptionalInt;
 
 import de.KnollFrank.lib.settingssearch.R;
@@ -26,7 +27,7 @@ class PreferenceHighlighter {
             final PreferenceFragmentCompat preferenceFragment,
             final Duration highlightDuration) {
         highlightPreferenceOfPreferenceFragment(
-                preferenceFragment.findPreference(keyOfPreference),
+                Objects.<Preference>requireNonNull(preferenceFragment.findPreference(keyOfPreference)),
                 preferenceFragment,
                 highlightDuration);
     }
