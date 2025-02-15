@@ -8,5 +8,5 @@ public interface SettingsFragment {
 
     RecyclerView getRecyclerView();
 
-    OptionalInt getSettingAdapterPosition(String key);
+    OptionalInt getPositionOfSetting(String keyOfSetting);
 }

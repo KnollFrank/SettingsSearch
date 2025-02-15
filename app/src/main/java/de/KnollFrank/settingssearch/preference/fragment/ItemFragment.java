@@ -76,8 +76,8 @@ public class ItemFragment extends Fragment implements SettingsFragment {
     }
 
     @Override
-    public OptionalInt getSettingAdapterPosition(final String key) {
-        return getSettingAdapterPosition(getItems(), key);
+    public OptionalInt getPositionOfSetting(final String keyOfSetting) {
+        return getSettingAdapterPosition(getItems(), keyOfSetting);
     }
 
     public static OptionalInt getSettingAdapterPosition(final List<PlaceholderContent.PlaceholderItem> items,

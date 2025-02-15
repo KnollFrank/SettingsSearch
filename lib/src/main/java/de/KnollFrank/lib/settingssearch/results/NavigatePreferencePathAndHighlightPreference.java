@@ -108,10 +108,10 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
 
     private static void scrollToSetting(final SettingsFragment settingsFragment, final String key) {
         settingsFragment
-                .getSettingAdapterPosition(key)
+                .getPositionOfSetting(key)
                 .ifPresent(
-                        settingAdapterPosition ->
-                                settingsFragment.getRecyclerView().scrollToPosition(settingAdapterPosition));
+                        positionOfSetting ->
+                                settingsFragment.getRecyclerView().scrollToPosition(positionOfSetting));
     }
 
     private static void showDialog(final Preference preference, final SearchablePreference searchablePreference) {

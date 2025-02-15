@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.threeten.bp.Duration;
 
-import java.util.OptionalInt;
-
 import de.KnollFrank.lib.settingssearch.common.Attributes;
 
 // FK-TODO: DRY with PreferenceHighlighter
@@ -21,14 +19,15 @@ class SettingHighlighter {
             final String keyOfSetting,
             final SettingsFragment settingsFragment,
             final Duration highlightDuration) {
-        final OptionalInt settingAdapterPosition = settingsFragment.getSettingAdapterPosition(keyOfSetting);
-        settingAdapterPosition.ifPresentOrElse(
-                _settingAdapterPosition ->
-                        highlightSettingOfSettingsFragment(
-                                _settingAdapterPosition,
-                                settingsFragment,
-                                highlightDuration),
-                () -> Log.e("doHighlight", "Setting not found on given screen"));
+        settingsFragment
+                .getPositionOfSetting(keyOfSetting)
+                .ifPresentOrElse(
+                        positionOfSetting ->
+                                highlightSettingOfSettingsFragment(
+                                        positionOfSetting,
+                                        settingsFragment,
+                                        highlightDuration),
+                        () -> Log.e("doHighlight", "Setting not found on given screen"));
     }
 
     private static void highlightSettingOfSettingsFragment(

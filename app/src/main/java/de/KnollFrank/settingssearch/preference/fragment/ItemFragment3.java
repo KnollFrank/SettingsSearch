@@ -73,8 +73,8 @@ public class ItemFragment3 extends Fragment implements SettingsFragment  {
     }
 
     @Override
-    public OptionalInt getSettingAdapterPosition(final String key) {
-        return ItemFragment.getSettingAdapterPosition(getItems(), key);
+    public OptionalInt getPositionOfSetting(final String keyOfSetting) {
+        return ItemFragment.getSettingAdapterPosition(getItems(), keyOfSetting);
     }
 
     public static class PreferenceFragment3 extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment3> {
