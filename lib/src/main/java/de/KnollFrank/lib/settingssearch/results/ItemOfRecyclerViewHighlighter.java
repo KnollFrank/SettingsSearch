@@ -20,11 +20,7 @@ class ItemOfRecyclerViewHighlighter {
                                                    final OptionalInt itemPosition,
                                                    final Duration highlightDuration) {
         itemPosition.ifPresentOrElse(
-                _itemPosition ->
-                        highlightItemOfRecyclerView(
-                                recyclerView,
-                                _itemPosition,
-                                highlightDuration),
+                _itemPosition -> highlightItemOfRecyclerView(recyclerView, _itemPosition, highlightDuration),
                 () -> Log.e("doHighlight", "Setting not found on given screen"));
     }
 
