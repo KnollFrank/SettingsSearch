@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.common.collect.Iterables;
 
+import org.threeten.bp.Duration;
+
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
@@ -93,7 +95,7 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
 
     @Override
     public SettingHighlighter getSettingHighlighter() {
-        return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this);
+        return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this, Duration.ofSeconds(1));
     }
 
     // FK-TODO: Klick auf ein Suchergebnis aus PreferenceFragment zeigt aktuell dasselbe PreferenceFragment an, es muß aber das original ItemFragment angezeigt werden.

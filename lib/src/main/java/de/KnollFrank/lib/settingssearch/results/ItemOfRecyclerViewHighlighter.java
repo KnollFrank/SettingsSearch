@@ -18,31 +18,32 @@ public class ItemOfRecyclerViewHighlighter implements SettingHighlighter {
 
     private final RecyclerView recyclerView;
     private final PositionOfSettingProvider positionOfSettingProvider;
+    private final Duration highlightDuration;
 
     public ItemOfRecyclerViewHighlighter(final RecyclerView recyclerView,
-                                         final PositionOfSettingProvider positionOfSettingProvider) {
+                                         final PositionOfSettingProvider positionOfSettingProvider,
+                                         final Duration highlightDuration) {
         this.recyclerView = recyclerView;
         this.positionOfSettingProvider = positionOfSettingProvider;
+        this.highlightDuration = highlightDuration;
     }
 
     @Override
     public void highlightSetting(final Fragment settingsFragment, final Setting setting) {
-        highlightItemOfRecyclerView(
-                positionOfSettingProvider.getPositionOfSetting(setting),
-                Duration.ofSeconds(1));
+        highlightItem(positionOfSettingProvider.getPositionOfSetting(setting));
     }
 
-    private void highlightItemOfRecyclerView(final OptionalInt itemPosition, final Duration highlightDuration) {
+    private void highlightItem(final OptionalInt itemPosition) {
         itemPosition.ifPresentOrElse(
-                _itemPosition -> highlightItemOfRecyclerView(_itemPosition, highlightDuration),
+                this::highlightItem,
                 () -> Log.e("doHighlight", "Setting not found on given screen"));
     }
 
-    private void highlightItemOfRecyclerView(final int itemPosition, final Duration highlightDuration) {
-        new Handler().post(() -> _highlightItemOfRecyclerView(itemPosition, highlightDuration));
+    private void highlightItem(final int itemPosition) {
+        new Handler().post(() -> _highlightItem(itemPosition));
     }
 
-    private void _highlightItemOfRecyclerView(final int itemPosition, final Duration highlightDuration) {
+    private void _highlightItem(final int itemPosition) {
         recyclerView.scrollToPosition(itemPosition);
         recyclerView.postDelayed(
                 () -> {

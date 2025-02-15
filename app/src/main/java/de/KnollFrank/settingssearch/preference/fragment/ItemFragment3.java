@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.threeten.bp.Duration;
+
 import java.util.List;
 import java.util.OptionalInt;
 
@@ -78,7 +80,7 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
 
     @Override
     public SettingHighlighter getSettingHighlighter() {
-        return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this);
+        return new ItemOfRecyclerViewHighlighter((RecyclerView) getView(), this, Duration.ofSeconds(1));
     }
 
     public static class PreferenceFragment3 extends PreferenceFragmentCompat implements InitializePreferenceFragmentWithFragmentBeforeOnCreate<ItemFragment3> {
