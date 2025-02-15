@@ -99,18 +99,10 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
 
     private static void highlightSetting(final SettingsFragment settingsFragment,
                                          final String keyOfSetting2Highlight) {
-        scrollToSetting(settingsFragment, keyOfSetting2Highlight);
         ItemOfRecyclerViewHighlighter.highlightItemOfRecyclerView(
                 settingsFragment.getRecyclerView(),
-                settingsFragment.getPositionOfSetting(keyOfSetting2Highlight), Duration.ofSeconds(1));
-    }
-
-    private static void scrollToSetting(final SettingsFragment settingsFragment, final String key) {
-        settingsFragment
-                .getPositionOfSetting(key)
-                .ifPresent(
-                        positionOfSetting ->
-                                settingsFragment.getRecyclerView().scrollToPosition(positionOfSetting));
+                settingsFragment.getPositionOfSetting(keyOfSetting2Highlight),
+                Duration.ofSeconds(1));
     }
 
     private static void showDialog(final Preference preference, final SearchablePreference searchablePreference) {
