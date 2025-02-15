@@ -14,33 +14,33 @@ import java.util.OptionalInt;
 import de.KnollFrank.lib.settingssearch.common.Attributes;
 
 // FK-TODO: DRY with PreferenceHighlighter
-class RecyclerViewHighlighter {
+class ItemOfRecyclerViewHighlighter {
 
-    public static void highlightSettingOfSettingsFragment(final RecyclerView recyclerView,
-                                                          final OptionalInt positionOfSetting,
-                                                          final Duration highlightDuration) {
-        positionOfSetting.ifPresentOrElse(
-                _positionOfSetting ->
-                        highlightSettingOfSettingsFragment(
+    public static void highlightItemOfRecyclerView(final RecyclerView recyclerView,
+                                                   final OptionalInt itemPosition,
+                                                   final Duration highlightDuration) {
+        itemPosition.ifPresentOrElse(
+                _itemPosition ->
+                        highlightItemOfRecyclerView(
                                 recyclerView,
-                                _positionOfSetting,
+                                _itemPosition,
                                 highlightDuration),
                 () -> Log.e("doHighlight", "Setting not found on given screen"));
     }
 
-    private static void highlightSettingOfSettingsFragment(final RecyclerView recyclerView,
-                                                           final int positionOfSetting,
-                                                           final Duration highlightDuration) {
-        new Handler().post(() -> highlightSetting(recyclerView, positionOfSetting, highlightDuration));
+    private static void highlightItemOfRecyclerView(final RecyclerView recyclerView,
+                                                    final int itemPosition,
+                                                    final Duration highlightDuration) {
+        new Handler().post(() -> _highlightItemOfRecyclerView(recyclerView, itemPosition, highlightDuration));
     }
 
-    private static void highlightSetting(final RecyclerView recyclerView,
-                                         final int positionOfSetting,
-                                         final Duration highlightDuration) {
-        recyclerView.scrollToPosition(positionOfSetting);
+    private static void _highlightItemOfRecyclerView(final RecyclerView recyclerView,
+                                                     final int itemPosition,
+                                                     final Duration highlightDuration) {
+        recyclerView.scrollToPosition(itemPosition);
         recyclerView.postDelayed(
                 () -> {
-                    final RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(positionOfSetting);
+                    final RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(itemPosition);
                     if (holder != null) {
                         final Drawable oldBackground = holder.itemView.getBackground();
                         final @ColorInt int color = Attributes.getColorFromAttr(recyclerView.getContext(), android.R.attr.textColorPrimary);
