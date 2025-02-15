@@ -51,6 +51,7 @@ public final class SearchablePreference {
 
     public SearchablePreference(
             final int id,
+            // FK-TODO: replace with "final String key" and non-null check:
             final Optional<String> key,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final @LayoutRes int layoutResId,

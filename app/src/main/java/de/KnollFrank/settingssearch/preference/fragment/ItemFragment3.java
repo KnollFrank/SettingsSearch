@@ -19,6 +19,7 @@ import java.util.OptionalInt;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
 import de.KnollFrank.lib.settingssearch.results.ItemOfRecyclerViewHighlighter;
 import de.KnollFrank.lib.settingssearch.results.PositionOfSettingProvider;
+import de.KnollFrank.lib.settingssearch.results.Setting;
 import de.KnollFrank.lib.settingssearch.results.SettingHighlighter;
 import de.KnollFrank.lib.settingssearch.results.SettingHighlighterProvider;
 import de.KnollFrank.settingssearch.R;
@@ -71,8 +72,8 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
     }
 
     @Override
-    public OptionalInt getPositionOfSetting(final String keyOfSetting) {
-        return ItemFragment.getSettingAdapterPosition(getItems(), keyOfSetting);
+    public OptionalInt getPositionOfSetting(final Setting setting) {
+        return ItemFragment.getSettingAdapterPosition(getItems(), setting);
     }
 
     @Override

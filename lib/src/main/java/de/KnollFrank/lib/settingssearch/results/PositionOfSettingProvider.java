@@ -4,5 +4,5 @@ import java.util.OptionalInt;
 
 public interface PositionOfSettingProvider {
 
-    OptionalInt getPositionOfSetting(final String keyOfSetting);
+    OptionalInt getPositionOfSetting(final Setting setting);
 }

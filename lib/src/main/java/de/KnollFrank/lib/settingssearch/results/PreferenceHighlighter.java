@@ -24,9 +24,9 @@ import de.KnollFrank.lib.settingssearch.common.Attributes;
 public class PreferenceHighlighter implements SettingHighlighter {
 
     @Override
-    public void highlightSetting(final Fragment settingsFragment, final String keyOfSetting2Highlight) {
+    public void highlightSetting(final Fragment settingsFragment, final Setting setting) {
         highlightPreferenceOfPreferenceFragment(
-                keyOfSetting2Highlight,
+                setting.getKey(),
                 (PreferenceFragmentCompat) settingsFragment,
                 Duration.ofSeconds(1));
     }

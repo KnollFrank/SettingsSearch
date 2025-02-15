@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
 import de.KnollFrank.lib.settingssearch.results.ItemOfRecyclerViewHighlighter;
 import de.KnollFrank.lib.settingssearch.results.PositionOfSettingProvider;
+import de.KnollFrank.lib.settingssearch.results.Setting;
 import de.KnollFrank.lib.settingssearch.results.SettingHighlighter;
 import de.KnollFrank.lib.settingssearch.results.SettingHighlighterProvider;
 import de.KnollFrank.settingssearch.R;
@@ -74,16 +75,16 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
     }
 
     @Override
-    public OptionalInt getPositionOfSetting(final String keyOfSetting) {
-        return getSettingAdapterPosition(getItems(), keyOfSetting);
+    public OptionalInt getPositionOfSetting(final Setting setting) {
+        return getSettingAdapterPosition(getItems(), setting);
     }
 
     public static OptionalInt getSettingAdapterPosition(final List<PlaceholderContent.PlaceholderItem> items,
-                                                        final String key) {
+                                                        final Setting setting) {
         final int settingAdapterPosition =
                 Iterables.indexOf(
                         items,
-                        placeholderItem -> placeholderItem.key().equals(key));
+                        placeholderItem -> placeholderItem.key().equals(setting.getKey()));
         return settingAdapterPosition != RecyclerView.NO_POSITION ?
                 OptionalInt.of(settingAdapterPosition) :
                 OptionalInt.empty();

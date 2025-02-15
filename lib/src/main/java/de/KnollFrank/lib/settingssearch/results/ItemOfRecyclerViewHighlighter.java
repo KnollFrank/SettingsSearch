@@ -26,9 +26,9 @@ public class ItemOfRecyclerViewHighlighter implements SettingHighlighter {
     }
 
     @Override
-    public void highlightSetting(final Fragment settingsFragment, final String keyOfSetting2Highlight) {
+    public void highlightSetting(final Fragment settingsFragment, final Setting setting) {
         highlightItemOfRecyclerView(
-                positionOfSettingProvider.getPositionOfSetting(keyOfSetting2Highlight),
+                positionOfSettingProvider.getPositionOfSetting(setting),
                 recyclerView,
                 Duration.ofSeconds(1));
     }

@@ -59,30 +59,45 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     private static void highlightSetting(final Fragment settingsFragment,
                                          final SearchablePreference setting2Highlight) {
         // FK-TODO: refactor
-        setting2Highlight.getKey().ifPresent(keyOfPreference2Highlight -> {
-            if (settingsFragment instanceof final PreferenceFragmentCompat fragmentOfPreferenceScreen) {
-                highlightPreference(fragmentOfPreferenceScreen, setting2Highlight, keyOfPreference2Highlight);
-            } else if (settingsFragment instanceof final SettingHighlighterProvider settingHighlighterProvider) {
-                highlightSetting(settingsFragment, keyOfPreference2Highlight, settingHighlighterProvider);
-            }
-        });
+        setting2Highlight
+                .getKey()
+                .map(keyOfPreference2Highlight ->
+                        new Setting() {
+
+                            @Override
+                            public String getKey() {
+                                return keyOfPreference2Highlight;
+                            }
+                        })
+                .ifPresent(_setting2Highlight -> {
+                    if (settingsFragment instanceof final PreferenceFragmentCompat fragmentOfPreferenceScreen) {
+                        highlightPreference(fragmentOfPreferenceScreen, _setting2Highlight, setting2Highlight.hasPreferenceMatchWithinSearchableInfo());
+                    } else if (settingsFragment instanceof final SettingHighlighterProvider settingHighlighterProvider) {
+                        highlightSetting(
+                                settingsFragment,
+                                _setting2Highlight,
+                                settingHighlighterProvider);
+                    }
+                });
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat fragmentOfPreferenceScreen,
-                                            final SearchablePreference setting2Highlight,
-                                            final String keyOfPreference2Highlight) {
-        fragmentOfPreferenceScreen.scrollToPreference(keyOfPreference2Highlight);
-        new PreferenceHighlighter().highlightSetting(fragmentOfPreferenceScreen, keyOfPreference2Highlight);
-        showDialog(fragmentOfPreferenceScreen.findPreference(keyOfPreference2Highlight), setting2Highlight);
+                                            final Setting setting,
+                                            final boolean hasPreferenceMatchWithinSearchableInfo) {
+        fragmentOfPreferenceScreen.scrollToPreference(setting.getKey());
+        new PreferenceHighlighter().highlightSetting(fragmentOfPreferenceScreen, setting);
+        showDialog(fragmentOfPreferenceScreen.findPreference(setting.getKey()), hasPreferenceMatchWithinSearchableInfo);
     }
 
-    private static void highlightSetting(final Fragment settingsFragment, final String keyOfPreference2Highlight, final SettingHighlighterProvider settingHighlighterProvider) {
-        settingHighlighterProvider.getSettingHighlighter().highlightSetting(settingsFragment, keyOfPreference2Highlight);
+    private static void highlightSetting(final Fragment settingsFragment,
+                                         final Setting setting2Highlight,
+                                         final SettingHighlighterProvider settingHighlighterProvider) {
+        settingHighlighterProvider.getSettingHighlighter().highlightSetting(settingsFragment, setting2Highlight);
         // showDialog(_settingsFragment.findPreference(keyOfSetting2Highlight), setting2Highlight);
     }
 
-    private static void showDialog(final Preference preference, final SearchablePreference searchablePreference) {
-        if (!searchablePreference.hasPreferenceMatchWithinSearchableInfo()) {
+    private static void showDialog(final Preference preference, final boolean hasPreferenceMatchWithinSearchableInfo) {
+        if (!hasPreferenceMatchWithinSearchableInfo) {
             return;
         }
         if (preference instanceof final DialogPreference dialogPreference) {
