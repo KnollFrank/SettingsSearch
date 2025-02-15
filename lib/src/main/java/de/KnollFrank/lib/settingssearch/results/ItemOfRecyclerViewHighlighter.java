@@ -16,22 +16,22 @@ import de.KnollFrank.lib.settingssearch.common.Attributes;
 // FK-TODO: DRY with PreferenceHighlighter
 class ItemOfRecyclerViewHighlighter {
 
-    public static void highlightItemOfRecyclerView(final RecyclerView recyclerView,
-                                                   final OptionalInt itemPosition,
+    public static void highlightItemOfRecyclerView(final OptionalInt itemPosition,
+                                                   final RecyclerView recyclerView,
                                                    final Duration highlightDuration) {
         itemPosition.ifPresentOrElse(
-                _itemPosition -> highlightItemOfRecyclerView(recyclerView, _itemPosition, highlightDuration),
+                _itemPosition -> highlightItemOfRecyclerView(_itemPosition, recyclerView, highlightDuration),
                 () -> Log.e("doHighlight", "Setting not found on given screen"));
     }
 
-    private static void highlightItemOfRecyclerView(final RecyclerView recyclerView,
-                                                    final int itemPosition,
+    private static void highlightItemOfRecyclerView(final int itemPosition,
+                                                    final RecyclerView recyclerView,
                                                     final Duration highlightDuration) {
-        new Handler().post(() -> _highlightItemOfRecyclerView(recyclerView, itemPosition, highlightDuration));
+        new Handler().post(() -> _highlightItemOfRecyclerView(itemPosition, recyclerView, highlightDuration));
     }
 
-    private static void _highlightItemOfRecyclerView(final RecyclerView recyclerView,
-                                                     final int itemPosition,
+    private static void _highlightItemOfRecyclerView(final int itemPosition,
+                                                     final RecyclerView recyclerView,
                                                      final Duration highlightDuration) {
         recyclerView.scrollToPosition(itemPosition);
         recyclerView.postDelayed(
