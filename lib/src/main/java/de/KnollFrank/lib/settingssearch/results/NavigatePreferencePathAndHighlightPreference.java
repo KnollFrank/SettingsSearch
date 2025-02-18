@@ -49,7 +49,7 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
         prepareShow.prepareShow(settingsFragment);
         showFragment(
                 settingsFragment,
-                _settingsFragment -> highlightSetting(_settingsFragment, setting2Highlight),
+                _settingsFragment -> highlightSetting(_settingsFragment, asSetting(setting2Highlight)),
                 true,
                 fragmentContainerViewId,
                 Optional.empty(),
@@ -57,40 +57,40 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     }
 
     private static void highlightSetting(final Fragment settingsFragment,
-                                         final SearchablePreference setting2Highlight) {
-        // FK-TODO: refactor
+                                         final Setting setting) {
         if (settingsFragment instanceof final PreferenceFragmentCompat fragmentOfPreferenceScreen) {
-            highlightPreference(fragmentOfPreferenceScreen, asSetting(setting2Highlight), setting2Highlight.hasPreferenceMatchWithinSearchableInfo());
+            highlightPreference(fragmentOfPreferenceScreen, setting);
         } else if (settingsFragment instanceof final SettingHighlighterProvider settingHighlighterProvider) {
-            highlightSetting(
-                    settingsFragment,
-                    asSetting(setting2Highlight),
-                    settingHighlighterProvider);
+            highlightSetting(settingsFragment, setting, settingHighlighterProvider.getSettingHighlighter());
         }
     }
 
-    private static Setting asSetting(final SearchablePreference searchablePreference) {
+    private static Setting asSetting(final SearchablePreference preference) {
         return new Setting() {
 
             @Override
             public String getKey() {
-                return searchablePreference.getKey();
+                return preference.getKey();
+            }
+
+            @Override
+            public boolean hasPreferenceMatchWithinSearchableInfo() {
+                return preference.hasPreferenceMatchWithinSearchableInfo();
             }
         };
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat fragmentOfPreferenceScreen,
-                                            final Setting setting,
-                                            final boolean hasPreferenceMatchWithinSearchableInfo) {
+                                            final Setting setting) {
         fragmentOfPreferenceScreen.scrollToPreference(setting.getKey());
         new PreferenceHighlighter().highlightSetting(fragmentOfPreferenceScreen, setting);
-        showDialog(fragmentOfPreferenceScreen.findPreference(setting.getKey()), hasPreferenceMatchWithinSearchableInfo);
+        showDialog(fragmentOfPreferenceScreen.findPreference(setting.getKey()), setting.hasPreferenceMatchWithinSearchableInfo());
     }
 
     private static void highlightSetting(final Fragment settingsFragment,
                                          final Setting setting2Highlight,
-                                         final SettingHighlighterProvider settingHighlighterProvider) {
-        settingHighlighterProvider.getSettingHighlighter().highlightSetting(settingsFragment, setting2Highlight);
+                                         final SettingHighlighter settingHighlighter) {
+        settingHighlighter.highlightSetting(settingsFragment, setting2Highlight);
         // showDialog(_settingsFragment.findPreference(keyOfSetting2Highlight), setting2Highlight);
     }
 
