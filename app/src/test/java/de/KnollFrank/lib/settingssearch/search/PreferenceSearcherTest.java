@@ -119,7 +119,7 @@ public class PreferenceSearcherTest {
 
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                        return Optional.of(keyOfPreference).equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost());
+                        return keyOfPreference.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost());
                     }
                 };
         testSearch(
@@ -153,7 +153,7 @@ public class PreferenceSearcherTest {
 
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                        return !(Optional.of(keyOfPreference).equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost()));
+                        return !(keyOfPreference.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost()));
                     }
                 };
         testSearch(

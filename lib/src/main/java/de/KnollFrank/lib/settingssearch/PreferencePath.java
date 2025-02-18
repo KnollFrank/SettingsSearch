@@ -14,9 +14,6 @@ public record PreferencePath(List<SearchablePreference> preferences) {
     }
 
     public PreferencePath append(final SearchablePreference preference) {
-        if (preference.getKey().isEmpty()) {
-            throw new IllegalArgumentException("preference must have a key: " + preference);
-        }
         return new PreferencePath(
                 ImmutableList
                         .<SearchablePreference>builder()

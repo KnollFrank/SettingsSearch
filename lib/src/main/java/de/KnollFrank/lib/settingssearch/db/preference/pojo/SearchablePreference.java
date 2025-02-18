@@ -51,8 +51,7 @@ public final class SearchablePreference {
 
     public SearchablePreference(
             final int id,
-            // FK-TODO: replace with "final String key" and non-null check:
-            final Optional<String> key,
+            final String key,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final @LayoutRes int layoutResId,
             final Optional<String> summary,
@@ -65,7 +64,7 @@ public final class SearchablePreference {
             final Bundle extras,
             final List<SearchablePreference> children) {
         this.id = id;
-        this.key = key.orElse(null);
+        this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData.orElse(null);
         this.layoutResId = layoutResId;
         this.summary = summary.orElse(null);
@@ -87,8 +86,8 @@ public final class SearchablePreference {
         return children;
     }
 
-    public Optional<String> getKey() {
-        return Optional.ofNullable(key);
+    public String getKey() {
+        return key;
     }
 
     public Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData() {

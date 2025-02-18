@@ -54,7 +54,7 @@ public class Preference2SearchablePreferenceConverter {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         id,
-                        Optional.ofNullable(preference.getKey()),
+                        preference.getKey(),
                         getIconResourceIdOrIconPixelData(preference, hostOfPreference),
                         preference.getLayoutResource(),
                         toString(preference.getSummary()),

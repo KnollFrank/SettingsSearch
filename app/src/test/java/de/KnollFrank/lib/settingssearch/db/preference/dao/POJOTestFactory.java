@@ -27,7 +27,7 @@ public class POJOTestFactory {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         idGenerator.nextId(),
-                        Optional.of(title),
+                        title,
                         Optional.empty(),
                         0,
                         Optional.empty(),
@@ -47,7 +47,7 @@ public class POJOTestFactory {
                                                                           final Resources resources) {
         return new SearchablePreference(
                 1,
-                Optional.of("some key"),
+                "some key",
                 Optional.of(Either.ofRight(drawable2String(resources.getDrawable(R.drawable.smiley, null)))),
                 4712,
                 Optional.of("some summary"),
@@ -61,7 +61,7 @@ public class POJOTestFactory {
                 List.of(
                         new SearchablePreference(
                                 2,
-                                Optional.of("some key 2"),
+                                "some key 2",
                                 Optional.empty(),
                                 4715,
                                 Optional.of("some summary 2"),
@@ -99,7 +99,7 @@ public class POJOTestFactory {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         id,
-                        Optional.of("some key"),
+                        "some key",
                         iconResourceIdOrIconPixelData,
                         androidx.preference.R.layout.preference,
                         summary,

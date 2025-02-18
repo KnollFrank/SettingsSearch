@@ -51,6 +51,7 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
 
     private static Preference createPreferenceWithIcon(final Context context, final Drawable icon) {
         final Preference preference = new Preference(context);
+        preference.setKey("some key");
         preference.setIcon(icon);
         return preference;
     }

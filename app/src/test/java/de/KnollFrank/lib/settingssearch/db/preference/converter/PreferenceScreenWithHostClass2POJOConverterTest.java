@@ -66,6 +66,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
 
                             private static Preference createChild(final Context context) {
                                 final Preference preference = new Preference(context);
+                                preference.setKey("some key");
                                 preference.setLayoutResource(16);
                                 return preference;
                             }
@@ -100,7 +101,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                         List.of(
                                                 new SearchablePreference(
                                                         1,
-                                                        Optional.of("parentKey"),
+                                                        "parentKey",
                                                         Optional.empty(),
                                                         15,
                                                         Optional.empty(),
@@ -114,7 +115,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                         List.of(
                                                                 new SearchablePreference(
                                                                         2,
-                                                                        Optional.empty(),
+                                                                        "some child key 1",
                                                                         Optional.empty(),
                                                                         16,
                                                                         Optional.empty(),
@@ -128,7 +129,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         List.of()),
                                                                 new SearchablePreference(
                                                                         3,
-                                                                        Optional.empty(),
+                                                                        "some child key 2",
                                                                         Optional.empty(),
                                                                         16,
                                                                         Optional.empty(),

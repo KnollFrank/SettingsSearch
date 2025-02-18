@@ -59,26 +59,24 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     private static void highlightSetting(final Fragment settingsFragment,
                                          final SearchablePreference setting2Highlight) {
         // FK-TODO: refactor
-        setting2Highlight
-                .getKey()
-                .map(keyOfPreference2Highlight ->
-                        new Setting() {
+        if (settingsFragment instanceof final PreferenceFragmentCompat fragmentOfPreferenceScreen) {
+            highlightPreference(fragmentOfPreferenceScreen, asSetting(setting2Highlight), setting2Highlight.hasPreferenceMatchWithinSearchableInfo());
+        } else if (settingsFragment instanceof final SettingHighlighterProvider settingHighlighterProvider) {
+            highlightSetting(
+                    settingsFragment,
+                    asSetting(setting2Highlight),
+                    settingHighlighterProvider);
+        }
+    }
 
-                            @Override
-                            public String getKey() {
-                                return keyOfPreference2Highlight;
-                            }
-                        })
-                .ifPresent(_setting2Highlight -> {
-                    if (settingsFragment instanceof final PreferenceFragmentCompat fragmentOfPreferenceScreen) {
-                        highlightPreference(fragmentOfPreferenceScreen, _setting2Highlight, setting2Highlight.hasPreferenceMatchWithinSearchableInfo());
-                    } else if (settingsFragment instanceof final SettingHighlighterProvider settingHighlighterProvider) {
-                        highlightSetting(
-                                settingsFragment,
-                                _setting2Highlight,
-                                settingHighlighterProvider);
-                    }
-                });
+    private static Setting asSetting(final SearchablePreference searchablePreference) {
+        return new Setting() {
+
+            @Override
+            public String getKey() {
+                return searchablePreference.getKey();
+            }
+        };
     }
 
     private static void highlightPreference(final PreferenceFragmentCompat fragmentOfPreferenceScreen,

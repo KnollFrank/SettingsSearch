@@ -96,6 +96,7 @@ public class Graph2POJOGraphTransformerTest {
 
             private static Preference createChild(final Context context) {
                 final Preference child = new Preference(context);
+                child.setKey("some child key");
                 child.setLayoutResource(16);
                 return child;
             }
@@ -105,6 +106,7 @@ public class Graph2POJOGraphTransformerTest {
                 final Preference preference = new Preference(context);
                 preference.setFragment(fragment.getName());
                 preference.setTitle("preference connected to " + fragment.getSimpleName());
+                preference.setKey("some key");
                 return preference;
             }
         };
@@ -114,7 +116,7 @@ public class Graph2POJOGraphTransformerTest {
         final SearchablePreference preferenceConnectingSrc2Dst =
                 new SearchablePreference(
                         4,
-                        Optional.empty(),
+                        "some key",
                         Optional.empty(),
                         2131427444,
                         Optional.empty(),
@@ -145,7 +147,7 @@ public class Graph2POJOGraphTransformerTest {
                         List.of(
                                 new SearchablePreference(
                                         1,
-                                        Optional.of("parentKey"),
+                                        "parentKey",
                                         Optional.empty(),
                                         15,
                                         Optional.empty(),
@@ -159,7 +161,7 @@ public class Graph2POJOGraphTransformerTest {
                                         List.of(
                                                 new SearchablePreference(
                                                         2,
-                                                        Optional.empty(),
+                                                        "some child key 1",
                                                         Optional.empty(),
                                                         16,
                                                         Optional.empty(),
@@ -173,7 +175,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         List.of()),
                                                 new SearchablePreference(
                                                         3,
-                                                        Optional.empty(),
+                                                        "some child key 2",
                                                         Optional.empty(),
                                                         16,
                                                         Optional.empty(),
