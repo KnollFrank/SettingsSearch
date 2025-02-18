@@ -8,16 +8,15 @@ import com.google.common.collect.ImmutableList;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class Preferences {
 
     public static Preference findPreferenceOrElseThrow(final PreferenceFragmentCompat hostOfPreference,
                                                        final String keyOfPreference) {
-        final Preference preference = hostOfPreference.findPreference(keyOfPreference);
-        if (preference == null) {
-            throw new IllegalArgumentException("can not find preference with key " + keyOfPreference + " within preferenceFragment " + hostOfPreference);
-        }
-        return preference;
+        return Objects.requireNonNull(
+                hostOfPreference.findPreference(keyOfPreference),
+                () -> "can not find preference with key " + keyOfPreference + " within preferenceFragment " + hostOfPreference);
     }
 
     public static List<Preference> getChildrenRecursively(final PreferenceGroup preferenceGroup) {
