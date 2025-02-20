@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.common.collect.Iterables;
-
 import org.threeten.bp.Duration;
 
 import java.util.List;
@@ -29,6 +27,7 @@ import de.KnollFrank.lib.settingssearch.results.Setting;
 import de.KnollFrank.lib.settingssearch.results.SettingHighlighter;
 import de.KnollFrank.lib.settingssearch.results.SettingHighlighterProvider;
 import de.KnollFrank.settingssearch.R;
+import de.KnollFrank.settingssearch.preference.custom.Iterables;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 
 public class ItemFragment extends Fragment implements SettingHighlighterProvider, PositionOfSettingProvider {
@@ -78,19 +77,9 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
 
     @Override
     public OptionalInt getPositionOfSetting(final Setting setting) {
-        return getSettingAdapterPosition(getItems(), setting);
-    }
-
-    public static OptionalInt getSettingAdapterPosition(final List<PlaceholderContent.PlaceholderItem> items,
-                                                        final Setting setting) {
-        // FK-TODO: introduce method Iterables.indexOf() which returns an OptionalInt
-        final int settingAdapterPosition =
-                Iterables.indexOf(
-                        items,
-                        placeholderItem -> placeholderItem.key().equals(setting.getKey()));
-        return settingAdapterPosition != RecyclerView.NO_POSITION ?
-                OptionalInt.of(settingAdapterPosition) :
-                OptionalInt.empty();
+        return Iterables.indexOf(
+                getItems(),
+                placeholderItem -> placeholderItem.key().equals(setting.getKey()));
     }
 
     @Override

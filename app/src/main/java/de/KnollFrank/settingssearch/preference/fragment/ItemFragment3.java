@@ -25,6 +25,7 @@ import de.KnollFrank.lib.settingssearch.results.Setting;
 import de.KnollFrank.lib.settingssearch.results.SettingHighlighter;
 import de.KnollFrank.lib.settingssearch.results.SettingHighlighterProvider;
 import de.KnollFrank.settingssearch.R;
+import de.KnollFrank.settingssearch.preference.custom.Iterables;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent;
 import de.KnollFrank.settingssearch.preference.fragment.placeholder.PlaceholderContent3;
 
@@ -75,7 +76,9 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
 
     @Override
     public OptionalInt getPositionOfSetting(final Setting setting) {
-        return ItemFragment.getSettingAdapterPosition(getItems(), setting);
+        return Iterables.indexOf(
+                getItems(),
+                placeholderItem -> placeholderItem.key().equals(setting.getKey()));
     }
 
     @Override
