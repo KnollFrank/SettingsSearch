@@ -35,16 +35,16 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.preference:preference:1.2.1'
     // https://mvnrepository.com/artifact/com.google.guava/guava
-    implementation 'com.google.guava:guava:33.3.1-android'
+    implementation 'com.google.guava:guava:33.4.0-android'
     // FK-TODO: remove threetenbp dependency and use java.time package instead?
     // https://mvnrepository.com/artifact/org.threeten/threetenbp
-    implementation 'org.threeten:threetenbp:1.6.9'
+    implementation 'org.threeten:threetenbp:1.7.0'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core
     implementation 'org.jgrapht:jgrapht-core:1.5.2'
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'com.google.code.gson:gson:2.12.1'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    implementation 'commons-codec:commons-codec:1.17.1'
+    implementation 'commons-codec:commons-codec:1.18.0'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     // https://mvnrepository.com/artifact/com.codepoetics/ambivalence
