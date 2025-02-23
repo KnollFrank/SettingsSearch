@@ -1,10 +1,13 @@
 package de.KnollFrank.lib.settingssearch.common;
 
+import static de.KnollFrank.lib.settingssearch.common.IndexSearchResultConverter.minusOne2Empty;
+
 import com.google.common.collect.ImmutableList;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.OptionalInt;
 
 public class Strings {
 
@@ -20,24 +23,28 @@ public class Strings {
         }
         return new Iterator<>() {
 
-            private int nextIndex = getNextIndex(0);
+            private OptionalInt nextIndex = getNextIndex(0);
 
             @Override
             public boolean hasNext() {
-                return nextIndex != -1;
+                return nextIndex.isPresent();
             }
 
             @Override
             public Integer next() {
-                final int actualIndex = nextIndex;
-                nextIndex = getNextIndex(nextIndex + 1);
+                final int actualIndex = nextIndex.orElseThrow();
+                nextIndex = getNextIndex(actualIndex + 1);
                 return actualIndex;
             }
 
-            private int getNextIndex(final int fromIndex) {
+            private OptionalInt getNextIndex(final int fromIndex) {
                 // FK-TODO: Suche nicht nur mit indexOf(), sondern ähnlich zur Suche in AndroidStudio, z.B. Strg-Alt-T, dann "mergedscreen" eingeben, es wird dann sogar MergedPreferenceScreen gefunden und die passenden Teile gehighlightet.
-                return haystack.indexOf(needle, fromIndex);
+                return indexOf(haystack, needle, fromIndex);
             }
         };
+    }
+
+    public static OptionalInt indexOf(final String haystack, final String needle, final int fromIndex) {
+        return minusOne2Empty(haystack.indexOf(needle, fromIndex));
     }
 }
