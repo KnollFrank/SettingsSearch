@@ -30,6 +30,7 @@ import de.KnollFrank.lib.settingssearch.results.NavigatePreferencePathAndHighlig
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
+import de.KnollFrank.lib.settingssearch.results.ShowSettingsFragmentAndHighlightSetting;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
@@ -153,9 +154,10 @@ public class MergedPreferenceScreenFactory {
                                                 instantiateAndInitializeFragment,
                                                 activityInitializerByActivity,
                                                 connectedFragmentProvider),
-                                        fragmentContainerViewId,
                                         prepareShow,
-                                        fragmentManager),
+                                        new ShowSettingsFragmentAndHighlightSetting(
+                                                fragmentContainerViewId,
+                                                fragmentManager)),
                                 showPreferencePathPredicate,
                                 preferencePathDisplayer,
                                 searchResultsFragmentUI),
