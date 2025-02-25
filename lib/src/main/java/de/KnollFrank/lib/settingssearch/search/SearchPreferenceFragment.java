@@ -123,7 +123,6 @@ public class SearchPreferenceFragment extends Fragment {
 
     private MergedPreferenceScreen getMergedPreferenceScreen(final ProgressUpdateListener progressUpdateListener) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
-                requireActivity().getSupportFragmentManager(),
                 getChildFragmentManager(),
                 progressUpdateListener,
                 DUMMY_FRAGMENT_CONTAINER_VIEW);

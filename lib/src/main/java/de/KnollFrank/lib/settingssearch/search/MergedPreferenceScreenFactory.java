@@ -24,7 +24,6 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
-import de.KnollFrank.lib.settingssearch.results.DefaultShowSettingsFragmentAndHighlightSetting;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.NavigatePreferencePathAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
@@ -40,7 +39,6 @@ public class MergedPreferenceScreenFactory {
 
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
-    private final @IdRes int fragmentContainerViewId;
     private final FragmentFactory fragmentFactory;
     private final MarkupsFactory markupsFactory;
     private final Activity activity;
@@ -53,11 +51,11 @@ public class MergedPreferenceScreenFactory {
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     private final ConnectedFragmentProvider connectedFragmentProvider;
+    private final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PrepareShow prepareShow,
-            final @IdRes int fragmentContainerViewId,
             final FragmentFactory fragmentFactory,
             final MarkupsFactory markupsFactory,
             final Activity activity,
@@ -69,10 +67,10 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsSorter searchResultsSorter,
             final PreferencePathDisplayer preferencePathDisplayer,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final ConnectedFragmentProvider connectedFragmentProvider) {
+            final ConnectedFragmentProvider connectedFragmentProvider,
+            final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
-        this.fragmentContainerViewId = fragmentContainerViewId;
         this.fragmentFactory = fragmentFactory;
         this.markupsFactory = markupsFactory;
         this.activity = activity;
@@ -85,10 +83,10 @@ public class MergedPreferenceScreenFactory {
         this.preferencePathDisplayer = preferencePathDisplayer;
         this.activityInitializerByActivity = activityInitializerByActivity;
         this.connectedFragmentProvider = connectedFragmentProvider;
+        this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
-            final FragmentManager fragmentManager,
             final FragmentManager childFragmentManager,
             final ProgressUpdateListener progressUpdateListener,
             final @IdRes int containerViewId) {
@@ -122,9 +120,7 @@ public class MergedPreferenceScreenFactory {
                 instantiateAndInitializeFragment,
                 activityInitializerByActivity,
                 connectedFragmentProvider,
-                new DefaultShowSettingsFragmentAndHighlightSetting(
-                        fragmentContainerViewId,
-                        fragmentManager),
+                showSettingsFragmentAndHighlightSetting,
                 activity);
     }
 
