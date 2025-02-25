@@ -1,8 +1,6 @@
 package de.KnollFrank.lib.settingssearch.client;
 
-import android.app.Activity;
-
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -17,10 +15,9 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 public class SearchPreferenceFragmentsBuilder {
 
     private final SearchDatabaseConfig searchDatabaseConfig;
-    private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Activity activity;
+    private final FragmentActivity activity;
     private final SearchConfig searchConfig;
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
@@ -28,13 +25,11 @@ public class SearchPreferenceFragmentsBuilder {
 
     protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig searchDatabaseConfig,
                                                final SearchConfig searchConfig,
-                                               final FragmentManager fragmentManager,
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
-                                               final Activity activity) {
+                                               final FragmentActivity activity) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
-        this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.activity = activity;
@@ -54,7 +49,6 @@ public class SearchPreferenceFragmentsBuilder {
         return new SearchPreferenceFragments(
                 searchDatabaseConfig,
                 searchConfig,
-                fragmentManager,
                 locale,
                 onUiThreadRunner,
                 activity,

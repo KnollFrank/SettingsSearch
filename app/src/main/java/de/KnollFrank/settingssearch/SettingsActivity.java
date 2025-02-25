@@ -63,7 +63,6 @@ public class SettingsActivity extends AppCompatActivity {
             final @IdRes int fragmentContainerViewId) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 fragmentContainerViewId,
-                activity.getSupportFragmentManager(),
                 activity,
                 Optional::empty,
                 onMergedPreferenceScreenAvailable);

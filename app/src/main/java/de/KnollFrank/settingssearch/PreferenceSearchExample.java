@@ -74,7 +74,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private SearchPreferenceFragments createSearchPreferenceFragments() {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 FRAGMENT_CONTAINER_VIEW_ID,
-                getSupportFragmentManager(),
                 this,
                 () -> createSearchDatabaseTask,
                 mergedPreferenceScreen -> {

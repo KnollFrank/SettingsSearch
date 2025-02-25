@@ -1,9 +1,7 @@
 package de.KnollFrank.settingssearch;
 
-import android.app.Activity;
-
 import androidx.annotation.IdRes;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -17,15 +15,13 @@ public class SearchPreferenceFragmentsFactory {
 
     public static SearchPreferenceFragments createSearchPreferenceFragments(
             final @IdRes int fragmentContainerViewId,
-            final FragmentManager fragmentManager,
-            final Activity activity,
+            final FragmentActivity activity,
             final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
             final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
         return SearchPreferenceFragments
                 .builder(
                         SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                         SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
-                        fragmentManager,
                         activity)
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withOnMergedPreferenceScreenAvailable(onMergedPreferenceScreenAvailable)

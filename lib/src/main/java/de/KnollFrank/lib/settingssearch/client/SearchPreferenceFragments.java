@@ -2,9 +2,9 @@ package de.KnollFrank.lib.settingssearch.client;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
-import android.app.Activity;
 import android.content.Context;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
@@ -35,21 +35,18 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
 
     public final SearchConfig searchConfig;
     private final SearchDatabaseConfig searchDatabaseConfig;
-    private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Activity activity;
+    private final FragmentActivity activity;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchDatabaseConfig searchDatabaseConfig,
                                                            final SearchConfig searchConfig,
-                                                           final FragmentManager fragmentManager,
-                                                           final Activity activity) {
+                                                           final FragmentActivity activity) {
         return new SearchPreferenceFragmentsBuilder(
                 searchDatabaseConfig,
                 searchConfig,
-                fragmentManager,
                 Utils.geCurrentLocale(activity.getResources()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
                 activity);
@@ -57,15 +54,13 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
 
     protected SearchPreferenceFragments(final SearchDatabaseConfig searchDatabaseConfig,
                                         final SearchConfig searchConfig,
-                                        final FragmentManager fragmentManager,
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
-                                        final Activity activity,
+                                        final FragmentActivity activity,
                                         final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
                                         final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
-        this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.activity = activity;
@@ -88,7 +83,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 true,
                 searchConfig.fragmentContainerViewId,
                 Optional.of(getSearchPreferenceFragmentTag()),
-                fragmentManager);
+                activity.getSupportFragmentManager());
     }
 
     public static void hideSearchPreferenceFragment(final FragmentManager fragmentManager) {
@@ -115,7 +110,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchDatabaseConfig.connectedFragmentProvider,
                 new DefaultShowSettingsFragmentAndHighlightSetting(
                         searchConfig.fragmentContainerViewId,
-                        fragmentManager));
+                        activity.getSupportFragmentManager()));
     }
 
     public void rebuildSearchDatabase() {
