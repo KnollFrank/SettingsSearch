@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.search;
 import static de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigatorFactory.createPreferencePathNavigator;
 
 import android.app.Activity;
-import android.content.Context;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
@@ -31,6 +30,7 @@ import de.KnollFrank.lib.settingssearch.results.NavigatePreferencePathAndHighlig
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
+import de.KnollFrank.lib.settingssearch.results.ShowSettingsFragmentAndHighlightSetting;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
@@ -43,7 +43,7 @@ public class MergedPreferenceScreenFactory {
     private final @IdRes int fragmentContainerViewId;
     private final FragmentFactory fragmentFactory;
     private final MarkupsFactory markupsFactory;
-    private final Context context;
+    private final Activity activity;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory;
@@ -60,7 +60,7 @@ public class MergedPreferenceScreenFactory {
             final @IdRes int fragmentContainerViewId,
             final FragmentFactory fragmentFactory,
             final MarkupsFactory markupsFactory,
-            final Context context,
+            final Activity activity,
             final Locale locale,
             final OnUiThreadRunner onUiThreadRunner,
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
@@ -75,7 +75,7 @@ public class MergedPreferenceScreenFactory {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.fragmentFactory = fragmentFactory;
         this.markupsFactory = markupsFactory;
-        this.context = context;
+        this.activity = activity;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.mergedPreferenceScreenDataRepositoryFactory = mergedPreferenceScreenDataRepositoryFactory;
@@ -102,62 +102,61 @@ public class MergedPreferenceScreenFactory {
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        context);
+                        activity);
         return createMergedPreferenceScreen(
-                fragmentContainerViewId,
                 prepareShow,
                 showPreferencePathPredicate,
                 preferencePathDisplayer,
-                fragmentManager,
                 mergedPreferenceScreenDataRepositoryFactory
                         .createMergedPreferenceScreenDataRepository(
                                 preferenceDialogs,
-                                context,
+                                activity,
                                 progressUpdateListener,
                                 instantiateAndInitializeFragment)
                         .persistOrLoadPreferences(locale),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 markupsFactory,
-                context,
                 searchResultsFilter,
                 searchResultsSorter,
                 instantiateAndInitializeFragment,
                 activityInitializerByActivity,
-                connectedFragmentProvider);
+                connectedFragmentProvider,
+                new DefaultShowSettingsFragmentAndHighlightSetting(
+                        fragmentContainerViewId,
+                        fragmentManager),
+                activity);
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
-            final @IdRes int fragmentContainerViewId,
             final PrepareShow prepareShow,
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PreferencePathDisplayer preferencePathDisplayer,
-            final FragmentManager fragmentManager,
             final Set<SearchablePreference> preferences,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final MarkupsFactory markupsFactory,
-            final Context context,
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final ConnectedFragmentProvider connectedFragmentProvider) {
+            final ConnectedFragmentProvider connectedFragmentProvider,
+            final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
+            final Activity activity) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(
                         new SearchResultsFragment(
                                 new NavigatePreferencePathAndHighlightPreference(
                                         createPreferencePathNavigator(
-                                                context,
+                                                activity,
                                                 fragmentFactoryAndInitializer,
                                                 instantiateAndInitializeFragment,
                                                 activityInitializerByActivity,
                                                 connectedFragmentProvider),
                                         prepareShow,
-                                        new DefaultShowSettingsFragmentAndHighlightSetting(
-                                                fragmentContainerViewId,
-                                                fragmentManager)),
+                                        showSettingsFragmentAndHighlightSetting,
+                                        activity),
                                 showPreferencePathPredicate,
                                 preferencePathDisplayer,
                                 searchResultsFragmentUI),

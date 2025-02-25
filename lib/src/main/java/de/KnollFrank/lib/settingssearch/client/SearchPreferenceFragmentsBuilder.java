@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.client;
 
-import android.content.Context;
+import android.app.Activity;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -20,7 +20,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Context context;
+    private final Activity activity;
     private final SearchConfig searchConfig;
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
@@ -31,13 +31,13 @@ public class SearchPreferenceFragmentsBuilder {
                                                final FragmentManager fragmentManager,
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
-                                               final Context context) {
+                                               final Activity activity) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
-        this.context = context;
+        this.activity = activity;
     }
 
     public SearchPreferenceFragmentsBuilder withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier) {
@@ -57,7 +57,7 @@ public class SearchPreferenceFragmentsBuilder {
                 fragmentManager,
                 locale,
                 onUiThreadRunner,
-                context,
+                activity,
                 createSearchDatabaseTaskSupplier,
                 onMergedPreferenceScreenAvailable);
     }

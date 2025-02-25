@@ -37,7 +37,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final FragmentManager fragmentManager;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Context context;
+    private final Activity activity;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
 
@@ -59,7 +59,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final FragmentManager fragmentManager,
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
-                                        final Context context,
+                                        final Activity activity,
                                         final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
                                         final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
         this.searchDatabaseConfig = searchDatabaseConfig;
@@ -67,7 +67,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         this.fragmentManager = fragmentManager;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
-        this.context = context;
+        this.activity = activity;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
     }
@@ -103,7 +103,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.fragmentContainerViewId,
                 searchDatabaseConfig.fragmentFactory,
                 searchConfig.markupsFactory,
-                context,
+                activity,
                 locale,
                 onUiThreadRunner,
                 this,
@@ -116,7 +116,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     }
 
     public void rebuildSearchDatabase() {
-        new SearchDatabaseDirectoryIO(context).removeSearchDatabaseDirectories4AllLocales();
+        new SearchDatabaseDirectoryIO(activity).removeSearchDatabaseDirectories4AllLocales();
     }
 
     @Override

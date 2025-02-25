@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
+import android.app.Activity;
+
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -25,7 +27,9 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
     }
 
     @Override
-    public void showSettingsFragmentAndHighlightSetting(final Fragment settingsFragment, final SearchablePreference setting2Highlight) {
+    public void showSettingsFragmentAndHighlightSetting(final Activity activity,
+                                                        final Fragment settingsFragment,
+                                                        final SearchablePreference setting2Highlight) {
         showFragment(
                 settingsFragment,
                 _settingsFragment -> highlightSetting(_settingsFragment, asSetting(setting2Highlight)),

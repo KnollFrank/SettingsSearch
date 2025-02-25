@@ -723,12 +723,10 @@ public class PreferenceSearcherTest {
                                 new IdGenerator()),
                         fragmentActivity);
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
-                TestActivity.FRAGMENT_CONTAINER_VIEW,
                 fragment -> {
                 },
                 preferencePath -> true,
                 new DefaultPreferencePathDisplayer(),
-                fragmentActivity.getSupportFragmentManager(),
                 MergedPreferenceScreenDataFactory.getPreferences(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),
                 fragmentFactoryAndInitializer,
@@ -745,12 +743,14 @@ public class PreferenceSearcherTest {
                     }
                 },
                 new DefaultMarkupsFactory(fragmentActivity),
-                fragmentActivity,
                 preference -> true,
                 new SearchResultsByPreferencePathSorter(),
                 instantiateAndInitializeFragment,
                 Map.of(),
-                _preferenceFragment -> Optional.empty());
+                _preferenceFragment -> Optional.empty(),
+                (activity, settingsFragment, setting2Highlight) -> {
+                },
+                fragmentActivity);
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {
