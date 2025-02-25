@@ -11,11 +11,11 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
 
     private final PreferencePathNavigator preferencePathNavigator;
     private final PrepareShow prepareShow;
-    private final IShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
+    private final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
 
     public NavigatePreferencePathAndHighlightPreference(final PreferencePathNavigator preferencePathNavigator,
                                                         final PrepareShow prepareShow,
-                                                        final IShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting) {
+                                                        final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting) {
         this.preferencePathNavigator = preferencePathNavigator;
         this.prepareShow = prepareShow;
         this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
