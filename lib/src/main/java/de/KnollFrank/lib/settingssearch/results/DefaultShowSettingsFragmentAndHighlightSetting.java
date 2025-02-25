@@ -2,11 +2,9 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
-import android.app.Activity;
-
 import androidx.annotation.IdRes;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.DialogPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -18,16 +16,13 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSettingsFragmentAndHighlightSetting {
 
     private final @IdRes int fragmentContainerViewId;
-    private final FragmentManager fragmentManager;
 
-    public DefaultShowSettingsFragmentAndHighlightSetting(final @IdRes int fragmentContainerViewId,
-                                                          final FragmentManager fragmentManager) {
+    public DefaultShowSettingsFragmentAndHighlightSetting(final @IdRes int fragmentContainerViewId) {
         this.fragmentContainerViewId = fragmentContainerViewId;
-        this.fragmentManager = fragmentManager;
     }
 
     @Override
-    public void showSettingsFragmentAndHighlightSetting(final Activity activity,
+    public void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity,
                                                         final Fragment settingsFragment,
                                                         final SearchablePreference setting2Highlight) {
         showFragment(
@@ -36,7 +31,7 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
                 true,
                 fragmentContainerViewId,
                 Optional.empty(),
-                fragmentManager);
+                activity.getSupportFragmentManager());
     }
 
     private static void highlightSetting(final Fragment settingsFragment, final Setting setting) {

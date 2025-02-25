@@ -1,13 +1,12 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import android.app.Activity;
-
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 @FunctionalInterface
 public interface ShowSettingsFragmentAndHighlightSetting {
 
-    void showSettingsFragmentAndHighlightSetting(final Activity activity, final Fragment settingsFragment, final SearchablePreference setting2Highlight);
+    void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity, final Fragment settingsFragment, final SearchablePreference setting2Highlight);
 }

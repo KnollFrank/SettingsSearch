@@ -5,6 +5,7 @@ import static de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePat
 import android.app.Activity;
 
 import androidx.annotation.IdRes;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import java.util.Locale;
@@ -41,7 +42,7 @@ public class MergedPreferenceScreenFactory {
     private final PrepareShow prepareShow;
     private final FragmentFactory fragmentFactory;
     private final MarkupsFactory markupsFactory;
-    private final Activity activity;
+    private final FragmentActivity activity;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory;
@@ -58,7 +59,7 @@ public class MergedPreferenceScreenFactory {
             final PrepareShow prepareShow,
             final FragmentFactory fragmentFactory,
             final MarkupsFactory markupsFactory,
-            final Activity activity,
+            final FragmentActivity activity,
             final Locale locale,
             final OnUiThreadRunner onUiThreadRunner,
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
@@ -138,7 +139,7 @@ public class MergedPreferenceScreenFactory {
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
             final ConnectedFragmentProvider connectedFragmentProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
-            final Activity activity) {
+            final FragmentActivity activity) {
         return new MergedPreferenceScreen(
                 preferences,
                 new SearchResultsDisplayer(

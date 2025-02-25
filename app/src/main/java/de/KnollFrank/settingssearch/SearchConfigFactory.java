@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.SearchView;
@@ -8,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,10 +27,10 @@ class SearchConfigFactory {
     static final int SEARCH_RESULTS_VIEW_ID = R.id.searchResultsCustom;
 
     public static SearchConfig createSearchConfig(final @IdRes int fragmentContainerViewId,
-                                                  final FragmentActivity activity) {
+                                                  final Context context) {
         final IgnoreSearchResultsFilter ignoreSearchResultsFilter = new IgnoreSearchResultsFilter();
         return SearchConfig
-                .builder(fragmentContainerViewId, activity)
+                .builder(fragmentContainerViewId, context)
                 .withSearchResultsFilter(ignoreSearchResultsFilter)
                 .withSearchPreferenceFragmentUI(
                         new SearchPreferenceFragmentUI() {

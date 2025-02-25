@@ -1,7 +1,8 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import android.content.Context;
+
 import androidx.annotation.IdRes;
-import androidx.fragment.app.FragmentActivity;
 
 import java.util.Optional;
 
@@ -59,7 +60,7 @@ public class SearchConfig {
         this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
     }
 
-    public static SearchConfigBuilder builder(final @IdRes int fragmentContainerViewId, final FragmentActivity activity) {
-        return new SearchConfigBuilder(fragmentContainerViewId, activity);
+    public static SearchConfigBuilder builder(final @IdRes int fragmentContainerViewId, final Context context) {
+        return new SearchConfigBuilder(fragmentContainerViewId, context);
     }
 }

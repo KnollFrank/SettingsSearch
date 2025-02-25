@@ -1,7 +1,8 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import android.content.Context;
+
 import androidx.annotation.IdRes;
-import androidx.fragment.app.FragmentActivity;
 
 import java.util.Optional;
 
@@ -38,13 +39,10 @@ public class SearchConfigBuilder {
     private MarkupsFactory markupsFactory;
     private ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
 
-    SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final FragmentActivity activity) {
+    SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
         this.fragmentContainerViewId = fragmentContainerViewId;
-        this.markupsFactory = new DefaultMarkupsFactory(activity);
-        this.showSettingsFragmentAndHighlightSetting =
-                new DefaultShowSettingsFragmentAndHighlightSetting(
-                        fragmentContainerViewId,
-                        activity.getSupportFragmentManager());
+        this.markupsFactory = new DefaultMarkupsFactory(context);
+        this.showSettingsFragmentAndHighlightSetting = new DefaultShowSettingsFragmentAndHighlightSetting(fragmentContainerViewId);
     }
 
     @SuppressWarnings("unused")
