@@ -1,8 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client;
 
-import android.content.Context;
-
 import androidx.annotation.IdRes;
+import androidx.fragment.app.FragmentActivity;
 
 import java.util.Optional;
 
@@ -10,10 +9,12 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
+import de.KnollFrank.lib.settingssearch.results.DefaultShowSettingsFragmentAndHighlightSetting;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
+import de.KnollFrank.lib.settingssearch.results.ShowSettingsFragmentAndHighlightSetting;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchPreferenceFragmentUI;
@@ -35,10 +36,15 @@ public class SearchConfigBuilder {
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
     private MarkupsFactory markupsFactory;
+    private ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
 
-    SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final Context context) {
+    SearchConfigBuilder(final @IdRes int fragmentContainerViewId, final FragmentActivity activity) {
         this.fragmentContainerViewId = fragmentContainerViewId;
-        this.markupsFactory = new DefaultMarkupsFactory(context);
+        this.markupsFactory = new DefaultMarkupsFactory(activity);
+        this.showSettingsFragmentAndHighlightSetting =
+                new DefaultShowSettingsFragmentAndHighlightSetting(
+                        fragmentContainerViewId,
+                        activity.getSupportFragmentManager());
     }
 
     @SuppressWarnings("unused")
@@ -101,6 +107,12 @@ public class SearchConfigBuilder {
         return this;
     }
 
+    @SuppressWarnings("unused")
+    public SearchConfigBuilder withShowSettingsFragmentAndHighlightSetting(final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting) {
+        this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
+        return this;
+    }
+
     public SearchConfig build() {
         return new SearchConfig(
                 fragmentContainerViewId,
@@ -113,6 +125,7 @@ public class SearchConfigBuilder {
                 searchResultsSorter,
                 searchPreferenceFragmentUI,
                 searchResultsFragmentUI,
-                markupsFactory);
+                markupsFactory,
+                showSettingsFragmentAndHighlightSetting);
     }
 }
