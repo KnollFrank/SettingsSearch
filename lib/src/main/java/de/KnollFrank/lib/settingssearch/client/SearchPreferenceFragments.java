@@ -23,7 +23,6 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.results.DefaultShowSettingsFragmentAndHighlightSetting;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
@@ -108,9 +107,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.preferencePathDisplayer,
                 searchDatabaseConfig.activityInitializerByActivity,
                 searchDatabaseConfig.connectedFragmentProvider,
-                new DefaultShowSettingsFragmentAndHighlightSetting(
-                        searchConfig.fragmentContainerViewId,
-                        activity.getSupportFragmentManager()));
+                searchConfig.showSettingsFragmentAndHighlightSetting);
     }
 
     public void rebuildSearchDatabase() {
