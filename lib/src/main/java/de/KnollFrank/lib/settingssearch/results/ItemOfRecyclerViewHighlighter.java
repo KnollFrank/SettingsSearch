@@ -2,15 +2,12 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.annotation.ColorInt;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.threeten.bp.Duration;
-
-import java.util.OptionalInt;
 
 import de.KnollFrank.lib.settingssearch.common.Attributes;
 
@@ -30,13 +27,7 @@ public class ItemOfRecyclerViewHighlighter implements SettingHighlighter {
 
     @Override
     public void highlightSetting(final Fragment settingsFragment, final Setting setting) {
-        highlightItem(positionOfSettingProvider.getPositionOfSetting(setting));
-    }
-
-    private void highlightItem(final OptionalInt itemPosition) {
-        itemPosition.ifPresentOrElse(
-                this::highlightItem,
-                () -> Log.e("doHighlight", "Setting not found on given screen"));
+        highlightItem(positionOfSettingProvider.getPositionOfSetting(setting).orElseThrow());
     }
 
     private void highlightItem(final int itemPosition) {

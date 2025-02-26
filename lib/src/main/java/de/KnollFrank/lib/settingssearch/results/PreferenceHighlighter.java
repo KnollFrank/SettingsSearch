@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.results;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.util.Log;
 
 import androidx.annotation.ColorInt;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -49,10 +48,6 @@ public class PreferenceHighlighter implements SettingHighlighter {
     private static void doHighlightPreferenceOfPreferenceFragment(final Preference preference,
                                                                   final PreferenceFragmentCompat preferenceFragment,
                                                                   final Duration highlightDuration) {
-        if (preference == null) {
-            Log.e("doHighlight", "Preference not found on given screen");
-            return;
-        }
         final OptionalInt preferenceAdapterPosition =
                 getPreferenceAdapterPosition(
                         preference,
