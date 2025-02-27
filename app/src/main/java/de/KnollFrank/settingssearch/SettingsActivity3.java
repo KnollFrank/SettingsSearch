@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 
+// FK-FIXME: suche nach "item3 20" und klicke auf das Suchergebnis, dann wird zwar zur Seite, die das Suchergebnis enthält, navigiert, aber es wird fälschlicherweise nicht zur Setting gescrollt.
 public class SettingsActivity3 extends AppCompatActivity {
 
     private static final @IdRes int fragmentContainerViewId = View.generateViewId();
