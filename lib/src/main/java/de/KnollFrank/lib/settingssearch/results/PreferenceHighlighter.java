@@ -48,19 +48,13 @@ public class PreferenceHighlighter implements SettingHighlighter {
     private static void doHighlightPreferenceOfPreferenceFragment(final Preference preference,
                                                                   final PreferenceFragmentCompat preferenceFragment,
                                                                   final Duration highlightDuration) {
-        final OptionalInt preferenceAdapterPosition =
-                getPreferenceAdapterPosition(
+        PreferenceHighlighter
+                .getPreferenceAdapterPosition(
                         preference,
-                        preferenceFragment.getListView().getAdapter());
-        if (preferenceAdapterPosition.isPresent()) {
-            highlightPreference(
-                    preference,
-                    preferenceFragment,
-                    highlightDuration,
-                    preferenceAdapterPosition.getAsInt());
-        } else {
-            highlightFallback(preference, preferenceFragment, highlightDuration);
-        }
+                        preferenceFragment.getListView().getAdapter())
+                .ifPresentOrElse(
+                        preferenceAdapterPosition -> highlightPreference(preference, preferenceFragment, highlightDuration, preferenceAdapterPosition),
+                        () -> highlightFallback(preference, preferenceFragment, highlightDuration));
     }
 
     private static OptionalInt getPreferenceAdapterPosition(final Preference preference,
@@ -78,23 +72,11 @@ public class PreferenceHighlighter implements SettingHighlighter {
                                             final PreferenceFragmentCompat preferenceFragment,
                                             final Duration highlightDuration,
                                             final int position) {
-        final RecyclerView recyclerView = preferenceFragment.getListView();
-        recyclerView.scrollToPosition(position);
-        recyclerView.postDelayed(
-                () -> {
-                    final RecyclerView.ViewHolder holder = recyclerView.findViewHolderForAdapterPosition(position);
-                    if (holder != null) {
-                        final Drawable oldBackground = holder.itemView.getBackground();
-                        final @ColorInt int color = Attributes.getColorFromAttr(preferenceFragment.getContext(), android.R.attr.textColorPrimary);
-                        holder.itemView.setBackgroundColor(color & 0xffffff | 0x33000000);
-                        new Handler().postDelayed(
-                                () -> holder.itemView.setBackgroundDrawable(oldBackground),
-                                highlightDuration.toMillis());
-                    } else {
-                        highlightFallback(preference, preferenceFragment, highlightDuration);
-                    }
-                },
-                200);
+        ViewAtPositionHighlighter.highlightViewAtPosition(
+                preferenceFragment.getListView(),
+                position,
+                highlightDuration,
+                () -> highlightFallback(preference, preferenceFragment, highlightDuration));
     }
 
     private static void highlightFallback(final Preference preference,
