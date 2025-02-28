@@ -13,14 +13,14 @@ import de.KnollFrank.lib.settingssearch.common.Attributes;
 public class ViewHighlighter {
 
     public static void highlightView(final View view, final Duration highlightDuration) {
-        final Drawable oldBackground = view.getBackground();
-        view.setBackgroundColor(getColor(view));
+        final Drawable background = view.getBackground();
+        view.setBackgroundColor(getHighlightColor(view));
         new Handler().postDelayed(
-                () -> view.setBackground(oldBackground),
+                () -> view.setBackground(background),
                 highlightDuration.toMillis());
     }
 
-    private static @ColorInt int getColor(final View view) {
+    private static @ColorInt int getHighlightColor(final View view) {
         return Attributes.getColorFromAttr(view.getContext(), android.R.attr.textColorPrimary) & 0xffffff | 0x33000000;
     }
 }
