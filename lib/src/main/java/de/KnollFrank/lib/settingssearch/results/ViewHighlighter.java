@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.results;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.View;
@@ -14,13 +15,13 @@ public class ViewHighlighter {
 
     public static void highlightView(final View view, final Duration highlightDuration) {
         final Drawable background = view.getBackground();
-        view.setBackgroundColor(getHighlightColor(view));
+        view.setBackgroundColor(getHighlightColor(view.getContext()));
         new Handler().postDelayed(
                 () -> view.setBackground(background),
                 highlightDuration.toMillis());
     }
 
-    private static @ColorInt int getHighlightColor(final View view) {
-        return Attributes.getColorFromAttr(view.getContext(), android.R.attr.textColorPrimary) & 0xffffff | 0x33000000;
+    private static @ColorInt int getHighlightColor(final Context context) {
+        return Attributes.getColorFromAttr(context, android.R.attr.textColorPrimary) & 0xffffff | 0x33000000;
     }
 }
