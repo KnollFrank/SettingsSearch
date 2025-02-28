@@ -14,10 +14,13 @@ public class ViewHighlighter {
 
     public static void highlightView(final View view, final Duration highlightDuration) {
         final Drawable oldBackground = view.getBackground();
-        final @ColorInt int color = Attributes.getColorFromAttr(view.getContext(), android.R.attr.textColorPrimary);
-        view.setBackgroundColor(color & 0xffffff | 0x33000000);
+        view.setBackgroundColor(getColor(view));
         new Handler().postDelayed(
                 () -> view.setBackground(oldBackground),
                 highlightDuration.toMillis());
+    }
+
+    private static @ColorInt int getColor(final View view) {
+        return Attributes.getColorFromAttr(view.getContext(), android.R.attr.textColorPrimary) & 0xffffff | 0x33000000;
     }
 }
