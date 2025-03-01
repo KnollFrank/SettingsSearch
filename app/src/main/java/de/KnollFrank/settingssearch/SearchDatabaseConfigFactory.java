@@ -20,7 +20,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentWithPreferenceFragmentConnection;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -69,8 +69,8 @@ class SearchDatabaseConfigFactory {
                                         .put(SettingsActivity3.class, ItemFragment3.PreferenceFragment3.class)
                                         .build(),
                                 Set.of(
-                                        new FragmentWithPreferenceFragmentConnection<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
-                                        new FragmentWithPreferenceFragmentConnection<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class))))
+                                        new FragmentAndProxy<>(ItemFragment.class, ItemFragment.PreferenceFragment.class),
+                                        new FragmentAndProxy<>(ItemFragment3.class, ItemFragment3.PreferenceFragment3.class))))
                 .withActivityInitializerByActivity(
                         ImmutableMap
                                 .<Class<? extends Activity>, ActivityInitializer<?>>builder()

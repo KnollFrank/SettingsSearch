@@ -10,10 +10,10 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 
 class ConnectedFragmentProviderFactory {
 
-    public static ConnectedFragmentProvider createConnectedFragmentProvider(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
+    public static ConnectedFragmentProvider createConnectedFragmentProvider(final Set<FragmentAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentAndProxies) {
         final var fragmentByPreferenceFragment =
                 ConnectedPreferenceFragmentProviderFactory
-                        .getPreferenceFragmentByFragmentBiMap(fragmentWithPreferenceFragmentConnections)
+                        .getPreferenceFragmentByFragmentBiMap(fragmentAndProxies)
                         .inverse();
         return preferenceFragment -> Maps.get(fragmentByPreferenceFragment, preferenceFragment);
     }

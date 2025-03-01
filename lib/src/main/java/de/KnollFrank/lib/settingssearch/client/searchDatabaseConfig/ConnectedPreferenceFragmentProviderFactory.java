@@ -13,26 +13,30 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.ConnectedPreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 
+// FK-TODO: rename to ProxyProviderFactory
 public class ConnectedPreferenceFragmentProviderFactory {
 
-    public static ConnectedPreferenceFragmentProvider createConnectedPreferenceFragmentProvider(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
-        final var preferenceFragmentByFragment = getPreferenceFragmentByFragmentBiMap(fragmentWithPreferenceFragmentConnections);
+    // FK-TODO: rename to createProxyProviderFactory()
+    public static ConnectedPreferenceFragmentProvider createConnectedPreferenceFragmentProvider(final Set<FragmentAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentAndProxies) {
+        final var preferenceFragmentByFragment = getPreferenceFragmentByFragmentBiMap(fragmentAndProxies);
         return fragment -> Maps.get(preferenceFragmentByFragment, fragment);
     }
 
-    static BiMap<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentBiMap(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
+    // FK-TODO: rename to getProxyByFragmentBiMap()
+    static BiMap<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentBiMap(final Set<FragmentAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentAndProxies) {
         return ImmutableBiMap
                 .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
-                .putAll(getPreferenceFragmentByFragmentMap(fragmentWithPreferenceFragmentConnections))
+                .putAll(getPreferenceFragmentByFragmentMap(fragmentAndProxies))
                 .build();
     }
 
-    private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
-        return fragmentWithPreferenceFragmentConnections
+    // FK-TODO: rename to getProxyByFragmentMap()
+    private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final Set<FragmentAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentAndProxies) {
+        return fragmentAndProxies
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                FragmentWithPreferenceFragmentConnection::fragment,
-                                FragmentWithPreferenceFragmentConnection::preferenceFragment));
+                                FragmentAndProxy::fragment,
+                                FragmentAndProxy::proxy));
     }
 }

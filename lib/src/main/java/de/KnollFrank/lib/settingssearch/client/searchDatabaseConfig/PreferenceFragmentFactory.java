@@ -13,10 +13,10 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 
 public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceFragmentCompat & InitializePreferenceFragmentWithFragmentBeforeOnCreate<F>> {
 
-    private final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection;
+    private final FragmentAndProxy<F, P> fragmentAndProxy;
 
-    public PreferenceFragmentFactory(final FragmentWithPreferenceFragmentConnection<F, P> fragmentWithPreferenceFragmentConnection) {
-        this.fragmentWithPreferenceFragmentConnection = fragmentWithPreferenceFragmentConnection;
+    public PreferenceFragmentFactory(final FragmentAndProxy<F, P> fragmentAndProxy) {
+        this.fragmentAndProxy = fragmentAndProxy;
     }
 
     public <T extends Fragment> Optional<T> createPreferenceFragmentForClass(
@@ -30,7 +30,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
     }
 
     private boolean canCreatePreferenceFragmentHavingClass(final Class<? extends Fragment> clazz) {
-        return fragmentWithPreferenceFragmentConnection.preferenceFragment().equals(clazz);
+        return fragmentAndProxy.proxy().equals(clazz);
     }
 
     private P createPreferenceFragmentAndInitializeWithFragment(
@@ -46,7 +46,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
                                        final Context context,
                                        final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return new DefaultFragmentFactory().instantiate(
-                fragmentWithPreferenceFragmentConnection.preferenceFragment(),
+                fragmentAndProxy.proxy(),
                 src,
                 context,
                 instantiateAndInitializeFragment);
@@ -54,7 +54,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
 
     private F getFragment(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return instantiateAndInitializeFragment.instantiateAndInitializeFragment(
-                fragmentWithPreferenceFragmentConnection.fragment(),
+                fragmentAndProxy.fragment(),
                 Optional.empty());
     }
 }
