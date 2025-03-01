@@ -18,10 +18,14 @@ public class PrincipalAndProxyProvider {
     }
 
     public Optional<Class<? extends Fragment>> getPrincipal(Class<? extends PreferenceFragmentCompat> proxy) {
-        return Maps.get(proxyByPrincipal.inverse(), proxy);
+        return Maps.get(principalByProxy(), proxy);
     }
 
     public Optional<Class<? extends PreferenceFragmentCompat>> getProxy(Class<? extends Fragment> principal) {
         return Maps.get(proxyByPrincipal, principal);
+    }
+
+    private BiMap<Class<? extends PreferenceFragmentCompat>, Class<? extends Fragment>> principalByProxy() {
+        return proxyByPrincipal.inverse();
     }
 }
