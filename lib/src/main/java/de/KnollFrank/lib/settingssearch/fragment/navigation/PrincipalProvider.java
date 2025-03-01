@@ -22,6 +22,6 @@ class PrincipalProvider {
     public Optional<Fragment> getPrincipal(final PreferenceFragmentCompat proxy) {
         return principalAndProxyProvider
                 .getPrincipal(proxy.getClass())
-                .map(fragment -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragment, Optional.empty()));
+                .map(principal -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(principal, Optional.empty()));
     }
 }
