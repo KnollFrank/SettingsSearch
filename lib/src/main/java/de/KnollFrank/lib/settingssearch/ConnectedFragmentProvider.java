@@ -5,6 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
+// FK-TODO: use the fact that ConnectedFragmentProvider is the inverse of Fragment2PreferenceFragmentConverter
 @FunctionalInterface
 public interface ConnectedFragmentProvider {
 
