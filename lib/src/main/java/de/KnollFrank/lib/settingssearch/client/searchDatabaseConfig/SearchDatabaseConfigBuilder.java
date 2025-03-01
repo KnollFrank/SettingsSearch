@@ -103,8 +103,8 @@ public class SearchDatabaseConfigBuilder {
                 },
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
-                ConnectedPreferenceFragmentProviderFactory.createConnectedPreferenceFragmentProvider(activitySearchDatabaseConfigs.fragmentWithPreferenceFragmentConnections()),
+                ConnectedFragmentAndPreferenceFragmentProviderProviderFactory.createConnectedPreferenceFragmentProvider(activitySearchDatabaseConfigs.fragmentWithPreferenceFragmentConnections()),
                 activityInitializerByActivity,
-                ConnectedFragmentProviderFactory.createConnectedFragmentProvider(activitySearchDatabaseConfigs.fragmentWithPreferenceFragmentConnections()));
+                ConnectedFragmentAndPreferenceFragmentProviderProviderFactory.createConnectedFragmentProvider(activitySearchDatabaseConfigs.fragmentWithPreferenceFragmentConnections()));
     }
 }
