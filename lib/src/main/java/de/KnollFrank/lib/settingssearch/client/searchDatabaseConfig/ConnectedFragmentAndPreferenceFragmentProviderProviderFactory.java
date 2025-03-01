@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableBiMap;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +27,10 @@ class ConnectedFragmentAndPreferenceFragmentProviderProviderFactory {
     }
 
     private static BiMap<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentBiMap(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
-        return HashBiMap.create(getPreferenceFragmentByFragmentMap(fragmentWithPreferenceFragmentConnections));
+        return ImmutableBiMap
+                .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
+                .putAll(getPreferenceFragmentByFragmentMap(fragmentWithPreferenceFragmentConnections))
+                .build();
     }
 
     private static Map<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentByFragmentMap(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
