@@ -105,6 +105,6 @@ public class SearchDatabaseConfigBuilder {
                 preferenceSearchablePredicate,
                 Fragment2PreferenceFragmentConverterFactory.createFragment2PreferenceFragmentConverter(activitySearchDatabaseConfigs),
                 activityInitializerByActivity,
-                ConnectedFragmentProviderFactory.createConnectedFragmentProvider(activitySearchDatabaseConfigs));
+                ConnectedFragmentProviderFactory.createConnectedFragmentProvider(activitySearchDatabaseConfigs.fragmentWithPreferenceFragmentConnections()));
     }
 }
