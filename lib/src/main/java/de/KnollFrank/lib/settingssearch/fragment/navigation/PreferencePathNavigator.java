@@ -15,20 +15,20 @@ public class PreferencePathNavigator {
     private final Context context;
     private final PreferenceWithHostProvider preferenceWithHostProvider;
     private final ContinueNavigationInActivity continueNavigationInActivity;
-    private final ConnectedFragmentProvider connectedFragmentProvider;
+    private final PrincipalProvider principalProvider;
 
     public PreferencePathNavigator(final Context context,
                                    final PreferenceWithHostProvider preferenceWithHostProvider,
                                    final ContinueNavigationInActivity continueNavigationInActivity,
-                                   final ConnectedFragmentProvider connectedFragmentProvider) {
+                                   final PrincipalProvider principalProvider) {
         this.context = context;
         this.preferenceWithHostProvider = preferenceWithHostProvider;
         this.continueNavigationInActivity = continueNavigationInActivity;
-        this.connectedFragmentProvider = connectedFragmentProvider;
+        this.principalProvider = principalProvider;
     }
 
     public Optional<? extends Fragment> navigatePreferencePath(final PreferencePathPointer preferencePathPointer) {
-        return tryGetConnectedFragment(navigatePreferences(preferencePathPointer, Optional.empty()));
+        return tryGetPrincipal(navigatePreferences(preferencePathPointer, Optional.empty()));
     }
 
     private Optional<PreferenceFragmentCompat> navigatePreferences(final PreferencePathPointer preferencePathPointer,
@@ -54,9 +54,9 @@ public class PreferencePathNavigator {
                 navigatePreferences(preferencePathPointer.orElseThrow(), Optional.of(src));
     }
 
-    private Optional<Fragment> tryGetConnectedFragment(final Optional<PreferenceFragmentCompat> preferenceFragment) {
+    private Optional<Fragment> tryGetPrincipal(final Optional<PreferenceFragmentCompat> preferenceFragment) {
         return preferenceFragment
-                .flatMap(connectedFragmentProvider::getConnectedFragment)
+                .flatMap(principalProvider::getPrincipal)
                 .or(() -> preferenceFragment);
     }
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import de.KnollFrank.lib.settingssearch.ConnectedPreferenceFragmentProvider;
+import de.KnollFrank.lib.settingssearch.ProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
@@ -53,7 +53,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     }
 
     private static void testSearch(final Fragment nonPreferenceFragment,
-                                   final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider,
+                                   final ProxyProvider proxyProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         PreferenceSearcherTest.testSearch(
@@ -63,7 +63,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                connectedPreferenceFragmentProvider,
+                proxyProvider,
                 checkPreferenceMatches);
     }
 }

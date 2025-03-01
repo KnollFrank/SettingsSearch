@@ -5,7 +5,7 @@ import android.content.Context;
 
 import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.ConnectedFragmentProvider;
+import de.KnollFrank.lib.settingssearch.PrincipalProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
@@ -17,7 +17,7 @@ public class PreferencePathNavigatorFactory {
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final ConnectedFragmentProvider connectedFragmentProvider) {
+            final PrincipalProvider principalProvider) {
         final PreferenceWithHostProvider preferenceWithHostProvider =
                 new PreferenceWithHostProvider(
                         fragmentFactoryAndInitializer,
@@ -30,8 +30,8 @@ public class PreferencePathNavigatorFactory {
                         context,
                         activityInitializerByActivity,
                         preferenceWithHostProvider),
-                new de.KnollFrank.lib.settingssearch.fragment.navigation.ConnectedFragmentProvider(
-                        connectedFragmentProvider,
+                new de.KnollFrank.lib.settingssearch.fragment.navigation.PrincipalProvider(
+                        principalProvider,
                         instantiateAndInitializeFragment));
     }
 }

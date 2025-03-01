@@ -88,7 +88,7 @@ public class SearchDatabaseConfigBuilder {
 
     public SearchDatabaseConfig build() {
         return new SearchDatabaseConfig(
-                FragmentFactoryFactory.createFragmentFactory(activitySearchDatabaseConfigs.fragmentAndProxies(), fragmentFactory),
+                FragmentFactoryFactory.createFragmentFactory(activitySearchDatabaseConfigs.principalAndProxies(), fragmentFactory),
                 new ReflectionIconResourceIdProvider(),
                 searchableInfoProvider.orElse(new BuiltinSearchableInfoProvider()),
                 preferenceDialogAndSearchableInfoProvider,
@@ -103,8 +103,8 @@ public class SearchDatabaseConfigBuilder {
                 },
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
-                ConnectedPreferenceFragmentProviderFactory.createConnectedPreferenceFragmentProvider(activitySearchDatabaseConfigs.fragmentAndProxies()),
+                ProxyProviderFactory.createProxyProviderFactory(activitySearchDatabaseConfigs.principalAndProxies()),
                 activityInitializerByActivity,
-                ConnectedFragmentProviderFactory.createConnectedFragmentProvider(activitySearchDatabaseConfigs.fragmentAndProxies()));
+                PrincipalProviderFactory.createPrincipalProvider(activitySearchDatabaseConfigs.principalAndProxies()));
     }
 }

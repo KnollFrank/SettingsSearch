@@ -11,15 +11,15 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 class FragmentFactoryFactory {
 
     public static FragmentFactory createFragmentFactory(
-            final Set<FragmentAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentAndProxies,
+            final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies,
             final FragmentFactory delegate) {
         return new de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.FragmentFactory(
-                createPreferenceFragmentFactories(fragmentAndProxies),
+                createPreferenceFragmentFactories(principalAndProxies),
                 delegate);
     }
 
-    private static Set<PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> createPreferenceFragmentFactories(final Set<FragmentAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentAndProxies) {
-        return fragmentAndProxies
+    private static Set<PreferenceFragmentFactory<? extends Fragment, ? extends PreferenceFragmentCompat>> createPreferenceFragmentFactories(final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
+        return principalAndProxies
                 .stream()
                 .map(PreferenceFragmentFactory::new)
                 .collect(Collectors.toSet());

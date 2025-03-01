@@ -10,5 +10,5 @@ import java.util.Set;
 
 public record ActivitySearchDatabaseConfigs(
         Map<Class<? extends Activity>, Class<? extends PreferenceFragmentCompat>> rootPreferenceFragmentByActivity,
-        Set<FragmentAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentAndProxies) {
+        Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
 }

@@ -6,8 +6,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.ConnectedFragmentProvider;
-import de.KnollFrank.lib.settingssearch.ConnectedPreferenceFragmentProvider;
+import de.KnollFrank.lib.settingssearch.PrincipalProvider;
+import de.KnollFrank.lib.settingssearch.ProxyProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -29,9 +29,9 @@ public class SearchDatabaseConfig {
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     public final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
-    public final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider;
+    public final ProxyProvider proxyProvider;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
-    public final ConnectedFragmentProvider connectedFragmentProvider;
+    public final PrincipalProvider principalProvider;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,
                          final IconResourceIdProvider iconResourceIdProvider,
@@ -42,9 +42,9 @@ public class SearchDatabaseConfig {
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                          final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
-                         final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider,
+                         final ProxyProvider proxyProvider,
                          final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-                         final ConnectedFragmentProvider connectedFragmentProvider) {
+                         final PrincipalProvider principalProvider) {
         this.fragmentFactory = fragmentFactory;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -54,9 +54,9 @@ public class SearchDatabaseConfig {
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
-        this.connectedPreferenceFragmentProvider = connectedPreferenceFragmentProvider;
+        this.proxyProvider = proxyProvider;
         this.activityInitializerByActivity = activityInitializerByActivity;
-        this.connectedFragmentProvider = connectedFragmentProvider;
+        this.principalProvider = principalProvider;
     }
 
     public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
