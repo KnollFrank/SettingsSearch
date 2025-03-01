@@ -5,21 +5,22 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 class PrincipalProvider {
 
-    private final de.KnollFrank.lib.settingssearch.PrincipalProvider principalProvider;
+    private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
 
-    public PrincipalProvider(final de.KnollFrank.lib.settingssearch.PrincipalProvider principalProvider,
+    public PrincipalProvider(final PrincipalAndProxyProvider principalAndProxyProvider,
                              final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        this.principalProvider = principalProvider;
+        this.principalAndProxyProvider = principalAndProxyProvider;
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
     }
 
     public Optional<Fragment> getPrincipal(final PreferenceFragmentCompat proxy) {
-        return principalProvider
+        return principalAndProxyProvider
                 .getPrincipal(proxy.getClass())
                 .map(fragment -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragment, Optional.empty()));
     }

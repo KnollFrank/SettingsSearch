@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.collect.ImmutableBiMap;
+
 import org.jgrapht.Graph;
 
 import java.util.Optional;
@@ -11,6 +13,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 public class PojoGraphTestFactory {
@@ -24,7 +27,7 @@ public class PojoGraphTestFactory {
                         new PreferenceScreenWithHostProvider(
                                 instantiateAndInitializeFragment,
                                 PreferenceFragmentCompat::getPreferenceScreen,
-                                fragment -> Optional.empty()),
+                                new PrincipalAndProxyProvider(ImmutableBiMap.of())),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         preferenceScreenWithHost -> {

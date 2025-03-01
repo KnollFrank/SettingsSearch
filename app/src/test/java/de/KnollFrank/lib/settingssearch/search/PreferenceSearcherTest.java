@@ -22,6 +22,8 @@ import androidx.preference.SwitchPreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
+import com.google.common.collect.ImmutableBiMap;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -36,7 +38,7 @@ import java.util.function.Function;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.ProxyProvider;
+import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -95,7 +97,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -129,7 +131,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -163,7 +165,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -187,7 +189,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -216,7 +218,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -240,7 +242,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -264,7 +266,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -291,7 +293,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -319,7 +321,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -345,7 +347,7 @@ public class PreferenceSearcherTest {
                 summaryOff,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -371,7 +373,7 @@ public class PreferenceSearcherTest {
                 summaryOn,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -398,7 +400,7 @@ public class PreferenceSearcherTest {
                 ReversedListPreference.getReverse(keyword).toString(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -423,7 +425,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -459,7 +461,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -477,7 +479,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -495,7 +497,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -513,7 +515,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PreferenceDialogAndSearchableInfoProvider(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -540,7 +542,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -568,7 +570,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -593,7 +595,7 @@ public class PreferenceSearcherTest {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
@@ -621,7 +623,7 @@ public class PreferenceSearcherTest {
                            final String keyword,
                            final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                           final ProxyProvider proxyProvider,
+                           final PrincipalAndProxyProvider principalAndProxyProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
@@ -634,7 +636,7 @@ public class PreferenceSearcherTest {
                                 createFragmentFactoryReturning(preferenceFragment),
                                 preferenceFragmentConnected2PreferenceProvider,
                                 preferenceDialogAndSearchableInfoProvider,
-                                proxyProvider);
+                                principalAndProxyProvider);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
@@ -672,7 +674,7 @@ public class PreferenceSearcherTest {
             final FragmentFactory fragmentFactory,
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final ProxyProvider proxyProvider) {
+            final PrincipalAndProxyProvider principalAndProxyProvider) {
         final DefaultFragmentInitializer fragmentInitializer =
                 new DefaultFragmentInitializer(
                         fragmentActivity.getSupportFragmentManager(),
@@ -694,7 +696,7 @@ public class PreferenceSearcherTest {
                                 new SearchablePreferenceScreenProvider(
                                         new PreferenceVisibleAndSearchablePredicate(
                                                 preferenceSearchablePredicate)),
-                                proxyProvider),
+                                principalAndProxyProvider),
                         preferenceFragmentConnected2PreferenceProvider,
                         new RootPreferenceFragmentOfActivityProvider() {
 
@@ -747,7 +749,7 @@ public class PreferenceSearcherTest {
                 new SearchResultsByPreferencePathSorter(),
                 instantiateAndInitializeFragment,
                 Map.of(),
-                proxy -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 (activity, settingsFragment, setting2Highlight) -> {
                 },
                 fragmentActivity);

@@ -106,7 +106,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.searchResultsSorter,
                 searchConfig.preferencePathDisplayer,
                 searchDatabaseConfig.activityInitializerByActivity,
-                searchDatabaseConfig.principalProvider,
+                searchDatabaseConfig.principalAndProxyProvider,
                 searchConfig.showSettingsFragmentAndHighlightSetting);
     }
 
@@ -143,7 +143,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchDatabaseConfig,
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context),
-                searchDatabaseConfig.proxyProvider,
+                searchDatabaseConfig.principalAndProxyProvider,
                 context);
     }
 

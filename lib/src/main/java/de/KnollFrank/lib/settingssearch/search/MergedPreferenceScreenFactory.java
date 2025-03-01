@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PrincipalProvider;
+import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -51,7 +51,7 @@ public class MergedPreferenceScreenFactory {
     private final SearchResultsSorter searchResultsSorter;
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
-    private final PrincipalProvider principalProvider;
+    private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
 
     public MergedPreferenceScreenFactory(
@@ -68,7 +68,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsSorter searchResultsSorter,
             final PreferencePathDisplayer preferencePathDisplayer,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final PrincipalProvider principalProvider,
+            final PrincipalAndProxyProvider principalAndProxyProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -83,7 +83,7 @@ public class MergedPreferenceScreenFactory {
         this.searchResultsSorter = searchResultsSorter;
         this.preferencePathDisplayer = preferencePathDisplayer;
         this.activityInitializerByActivity = activityInitializerByActivity;
-        this.principalProvider = principalProvider;
+        this.principalAndProxyProvider = principalAndProxyProvider;
         this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
     }
 
@@ -120,7 +120,7 @@ public class MergedPreferenceScreenFactory {
                 searchResultsSorter,
                 instantiateAndInitializeFragment,
                 activityInitializerByActivity,
-                principalProvider,
+                principalAndProxyProvider,
                 showSettingsFragmentAndHighlightSetting,
                 activity);
     }
@@ -137,7 +137,7 @@ public class MergedPreferenceScreenFactory {
             final SearchResultsSorter searchResultsSorter,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final PrincipalProvider principalProvider,
+            final PrincipalAndProxyProvider principalAndProxyProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
             final FragmentActivity activity) {
         return new MergedPreferenceScreen(
@@ -150,7 +150,7 @@ public class MergedPreferenceScreenFactory {
                                                 fragmentFactoryAndInitializer,
                                                 instantiateAndInitializeFragment,
                                                 activityInitializerByActivity,
-                                                principalProvider),
+                                                principalAndProxyProvider),
                                         prepareShow,
                                         showSettingsFragmentAndHighlightSetting,
                                         activity),

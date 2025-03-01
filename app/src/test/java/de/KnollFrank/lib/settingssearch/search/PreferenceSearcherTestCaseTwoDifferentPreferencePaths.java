@@ -12,11 +12,14 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import com.google.common.collect.ImmutableBiMap;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 
 class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
@@ -89,7 +92,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                fragment -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 checkPreferenceMatches);
     }
 }

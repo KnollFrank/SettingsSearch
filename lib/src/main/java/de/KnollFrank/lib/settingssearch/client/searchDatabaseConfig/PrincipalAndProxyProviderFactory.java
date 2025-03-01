@@ -10,17 +10,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.ProxyProvider;
-import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 
-public class ProxyProviderFactory {
+public class PrincipalAndProxyProviderFactory {
 
-    public static ProxyProvider createProxyProviderFactory(final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
-        final var proxyByPrincipal = getProxyByPrincipalBiMap(principalAndProxies);
-        return principal -> Maps.get(proxyByPrincipal, principal);
+    public static PrincipalAndProxyProvider createPrincipalAndProxyProvider(final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
+        return new PrincipalAndProxyProvider(getProxyByPrincipalBiMap(principalAndProxies));
     }
 
-    static BiMap<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getProxyByPrincipalBiMap(final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
+    private static BiMap<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>> getProxyByPrincipalBiMap(final Set<PrincipalAndProxy<? extends Fragment, ? extends PreferenceFragmentCompat>> principalAndProxies) {
         return ImmutableBiMap
                 .<Class<? extends Fragment>, Class<? extends PreferenceFragmentCompat>>builder()
                 .putAll(getProxyByPrincipalMap(principalAndProxies))

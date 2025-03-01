@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
+import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.MoreCollectors;
 
 import org.hamcrest.MatcherAssert;
@@ -118,7 +119,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 new PreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
                         PreferenceFragmentCompat::getPreferenceScreen,
-                        fragment -> Optional.empty()),
+                        new PrincipalAndProxyProvider(ImmutableBiMap.of())),
                 (preference, hostOfPreference) -> Optional.empty(),
                 classNameOfActivity -> Optional.empty(),
                 preferenceScreenGraph -> {

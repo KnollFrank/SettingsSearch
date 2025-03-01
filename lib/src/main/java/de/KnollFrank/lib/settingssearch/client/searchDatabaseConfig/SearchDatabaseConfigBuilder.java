@@ -103,8 +103,7 @@ public class SearchDatabaseConfigBuilder {
                 },
                 preferenceScreenGraphAvailableListener,
                 preferenceSearchablePredicate,
-                ProxyProviderFactory.createProxyProviderFactory(activitySearchDatabaseConfigs.principalAndProxies()),
-                activityInitializerByActivity,
-                PrincipalProviderFactory.createPrincipalProvider(activitySearchDatabaseConfigs.principalAndProxies()));
+                PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
+                activityInitializerByActivity);
     }
 }

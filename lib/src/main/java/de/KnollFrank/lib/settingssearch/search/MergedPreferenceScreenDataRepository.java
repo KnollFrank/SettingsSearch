@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.ProxyProvider;
+import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
@@ -38,7 +38,7 @@ public class MergedPreferenceScreenDataRepository {
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
-    private final ProxyProvider proxyProvider;
+    private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final Context context;
 
     public MergedPreferenceScreenDataRepository(
@@ -47,14 +47,14 @@ public class MergedPreferenceScreenDataRepository {
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO,
-            final ProxyProvider proxyProvider,
+            final PrincipalAndProxyProvider principalAndProxyProvider,
             final Context context) {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
-        this.proxyProvider = proxyProvider;
+        this.principalAndProxyProvider = principalAndProxyProvider;
         this.context = context;
     }
 
@@ -105,7 +105,7 @@ public class MergedPreferenceScreenDataRepository {
                         new SearchablePreferenceScreenProvider(
                                 new PreferenceVisibleAndSearchablePredicate(
                                         searchDatabaseConfig.preferenceSearchablePredicate)),
-                        proxyProvider),
+                        principalAndProxyProvider),
                 searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                 searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,

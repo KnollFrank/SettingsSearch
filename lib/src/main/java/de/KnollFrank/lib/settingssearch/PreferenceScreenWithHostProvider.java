@@ -11,14 +11,14 @@ public class PreferenceScreenWithHostProvider {
 
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
     private final PreferenceScreenProvider preferenceScreenProvider;
-    private final ProxyProvider proxyProvider;
+    private final PrincipalAndProxyProvider principalAndProxyProvider;
 
     public PreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
                                             final PreferenceScreenProvider preferenceScreenProvider,
-                                            final ProxyProvider proxyProvider) {
+                                            final PrincipalAndProxyProvider principalAndProxyProvider) {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.preferenceScreenProvider = preferenceScreenProvider;
-        this.proxyProvider = proxyProvider;
+        this.principalAndProxyProvider = principalAndProxyProvider;
     }
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenWithHostOfFragment(
@@ -35,7 +35,7 @@ public class PreferenceScreenWithHostProvider {
         final Fragment _fragment = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
         return _fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(preferenceFragment) :
-                proxyProvider
+                principalAndProxyProvider
                         .getProxy(_fragment.getClass())
                         .map(preferenceFragment -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(preferenceFragment, Optional.empty()));
     }

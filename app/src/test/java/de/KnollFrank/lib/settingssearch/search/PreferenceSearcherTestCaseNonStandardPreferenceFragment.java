@@ -7,12 +7,14 @@ import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getK
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 
+import com.google.common.collect.ImmutableBiMap;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import de.KnollFrank.lib.settingssearch.ProxyProvider;
+import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
@@ -24,10 +26,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
         testSearch(
                 // Given a NonStandardPreferenceFragment
                 new NonStandardPreferenceFragment(),
-                fragment ->
-                        NonStandardPreferenceFragment.class.equals(fragment) ?
-                                Optional.of(PreferenceFragment.class) :
-                                Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of(NonStandardPreferenceFragment.class, PreferenceFragment.class)),
                 // When searching for TITLE_OF_PREFERENCE
                 TITLE_OF_PREFERENCE,
                 // Then the preference of NonStandardPreferenceFragment is found
@@ -53,7 +52,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     }
 
     private static void testSearch(final Fragment nonPreferenceFragment,
-                                   final ProxyProvider proxyProvider,
+                                   final PrincipalAndProxyProvider principalAndProxyProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         PreferenceSearcherTest.testSearch(
@@ -63,7 +62,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
-                proxyProvider,
+                principalAndProxyProvider,
                 checkPreferenceMatches);
     }
 }
