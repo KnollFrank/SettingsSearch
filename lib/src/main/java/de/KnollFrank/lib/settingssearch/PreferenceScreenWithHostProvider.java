@@ -11,14 +11,14 @@ public class PreferenceScreenWithHostProvider {
 
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
     private final PreferenceScreenProvider preferenceScreenProvider;
-    private final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
+    private final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider;
 
     public PreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
                                             final PreferenceScreenProvider preferenceScreenProvider,
-                                            final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
+                                            final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider) {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.preferenceScreenProvider = preferenceScreenProvider;
-        this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
+        this.connectedPreferenceFragmentProvider = connectedPreferenceFragmentProvider;
     }
 
     public Optional<PreferenceScreenWithHost> getPreferenceScreenWithHostOfFragment(
@@ -35,8 +35,8 @@ public class PreferenceScreenWithHostProvider {
         final Fragment _fragment = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
         return _fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(preferenceFragment) :
-                fragment2PreferenceFragmentConverter
-                        .asPreferenceFragment(_fragment.getClass())
+                connectedPreferenceFragmentProvider
+                        .getConnectedPreferenceFragment(_fragment.getClass())
                         .map(preferenceFragment -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(preferenceFragment, Optional.empty()));
     }
 

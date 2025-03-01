@@ -6,7 +6,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Optional;
 
 @FunctionalInterface
-public interface Fragment2PreferenceFragmentConverter {
+public interface ConnectedPreferenceFragmentProvider {
 
-    Optional<Class<? extends PreferenceFragmentCompat>> asPreferenceFragment(Class<? extends Fragment> fragment);
+    Optional<Class<? extends PreferenceFragmentCompat>> getConnectedPreferenceFragment(Class<? extends Fragment> fragment);
 }

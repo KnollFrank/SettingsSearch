@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
+import de.KnollFrank.lib.settingssearch.ConnectedPreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
@@ -38,7 +38,7 @@ public class MergedPreferenceScreenDataRepository {
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
-    private final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
+    private final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider;
     private final Context context;
 
     public MergedPreferenceScreenDataRepository(
@@ -47,14 +47,14 @@ public class MergedPreferenceScreenDataRepository {
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO,
-            final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
+            final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider,
             final Context context) {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
-        this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
+        this.connectedPreferenceFragmentProvider = connectedPreferenceFragmentProvider;
         this.context = context;
     }
 
@@ -105,7 +105,7 @@ public class MergedPreferenceScreenDataRepository {
                         new SearchablePreferenceScreenProvider(
                                 new PreferenceVisibleAndSearchablePredicate(
                                         searchDatabaseConfig.preferenceSearchablePredicate)),
-                        fragment2PreferenceFragmentConverter),
+                        connectedPreferenceFragmentProvider),
                 searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                 searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,

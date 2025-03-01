@@ -143,7 +143,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchDatabaseConfig,
                 progressUpdateListener,
                 new SearchDatabaseDirectoryIO(context),
-                searchDatabaseConfig.fragment2PreferenceFragmentConverter,
+                searchDatabaseConfig.connectedPreferenceFragmentProvider,
                 context);
     }
 

@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
+import de.KnollFrank.lib.settingssearch.ConnectedPreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 
-class Fragment2PreferenceFragmentConverterFactory {
+class ConnectedPreferenceFragmentProviderFactory {
 
-    public static Fragment2PreferenceFragmentConverter createFragment2PreferenceFragmentConverter(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
+    public static ConnectedPreferenceFragmentProvider createConnectedPreferenceFragmentProvider(final Set<FragmentWithPreferenceFragmentConnection<? extends Fragment, ? extends PreferenceFragmentCompat>> fragmentWithPreferenceFragmentConnections) {
         final var preferenceFragmentByFragment = getPreferenceFragmentByFragmentMap(fragmentWithPreferenceFragmentConnections);
         return fragment -> Maps.get(preferenceFragmentByFragment, fragment);
     }

@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
+import de.KnollFrank.lib.settingssearch.ConnectedPreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
@@ -621,7 +621,7 @@ public class PreferenceSearcherTest {
                            final String keyword,
                            final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-                           final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
+                           final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
@@ -634,7 +634,7 @@ public class PreferenceSearcherTest {
                                 createFragmentFactoryReturning(preferenceFragment),
                                 preferenceFragmentConnected2PreferenceProvider,
                                 preferenceDialogAndSearchableInfoProvider,
-                                fragment2PreferenceFragmentConverter);
+                                connectedPreferenceFragmentProvider);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
@@ -672,7 +672,7 @@ public class PreferenceSearcherTest {
             final FragmentFactory fragmentFactory,
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter) {
+            final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider) {
         final DefaultFragmentInitializer fragmentInitializer =
                 new DefaultFragmentInitializer(
                         fragmentActivity.getSupportFragmentManager(),
@@ -694,7 +694,7 @@ public class PreferenceSearcherTest {
                                 new SearchablePreferenceScreenProvider(
                                         new PreferenceVisibleAndSearchablePredicate(
                                                 preferenceSearchablePredicate)),
-                                fragment2PreferenceFragmentConverter),
+                                connectedPreferenceFragmentProvider),
                         preferenceFragmentConnected2PreferenceProvider,
                         new RootPreferenceFragmentOfActivityProvider() {
 

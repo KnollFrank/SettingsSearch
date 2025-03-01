@@ -7,7 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.ConnectedFragmentProvider;
-import de.KnollFrank.lib.settingssearch.Fragment2PreferenceFragmentConverter;
+import de.KnollFrank.lib.settingssearch.ConnectedPreferenceFragmentProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -29,7 +29,7 @@ public class SearchDatabaseConfig {
     public final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     public final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
-    public final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter;
+    public final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     public final ConnectedFragmentProvider connectedFragmentProvider;
 
@@ -42,7 +42,7 @@ public class SearchDatabaseConfig {
                          final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
                          final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
-                         final Fragment2PreferenceFragmentConverter fragment2PreferenceFragmentConverter,
+                         final ConnectedPreferenceFragmentProvider connectedPreferenceFragmentProvider,
                          final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
                          final ConnectedFragmentProvider connectedFragmentProvider) {
         this.fragmentFactory = fragmentFactory;
@@ -54,7 +54,7 @@ public class SearchDatabaseConfig {
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
-        this.fragment2PreferenceFragmentConverter = fragment2PreferenceFragmentConverter;
+        this.connectedPreferenceFragmentProvider = connectedPreferenceFragmentProvider;
         this.activityInitializerByActivity = activityInitializerByActivity;
         this.connectedFragmentProvider = connectedFragmentProvider;
     }
