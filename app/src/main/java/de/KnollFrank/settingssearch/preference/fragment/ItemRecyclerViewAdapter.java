@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -19,17 +20,20 @@ public class ItemRecyclerViewAdapter extends RecyclerView.Adapter<ItemRecyclerVi
         this.items = items;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public ViewHolder onCreateViewHolder(final @NonNull ViewGroup parent, final int viewType) {
         return new ViewHolder(FragmentItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.item = items.get(position);
-        holder.keyView.setText(items.get(position).key());
-        holder.titleView.setText(items.get(position).title());
-        holder.summaryView.setText(items.get(position).summary());
+        final PlaceholderItem item = items.get(position);
+        holder.item = item;
+        holder.keyView.setText(item.key());
+        holder.titleView.setText(item.title());
+        holder.summaryView.setText(item.summary());
+        item.onClickListener().ifPresent(holder.itemView::setOnClickListener);
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PlaceholderContent3 {
 
@@ -27,7 +28,8 @@ public class PlaceholderContent3 {
         return new PlaceholderContent.PlaceholderItem(
                 String.valueOf(position),
                 "Item3 " + position,
-                makeSummary(position));
+                makeSummary(position),
+                Optional.empty());
     }
 
     private static String makeSummary(final int position) {
