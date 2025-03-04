@@ -37,6 +37,7 @@ public class PlaceholderContent {
                         "link to SettingsActivity3",
                         Optional.of(
                                 new View.OnClickListener() {
+
                                     @Override
                                     public void onClick(final View view) {
                                         view.getContext().startActivity(new Intent(view.getContext(), SettingsActivity3.class));
