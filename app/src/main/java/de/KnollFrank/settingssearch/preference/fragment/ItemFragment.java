@@ -108,7 +108,7 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
             setPreferenceScreen(screen);
         }
 
-        public static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items, final Context context) {
+        private static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items, final Context context) {
             return items
                     .stream()
                     .map(placeholderItem -> asPreference(placeholderItem, context))
@@ -121,6 +121,10 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
             preference.setKey(placeholderItem.key());
             preference.setTitle(placeholderItem.title());
             preference.setSummary(placeholderItem.summary());
+            if ("1".equals(placeholderItem.key())) {
+                // FK-TODO: die Verbindung zur Methode PlaceholderContent.createIntentForPosition1() und zum placeholderItem mit key == "1" ist zu unklar.
+                preference.setIntent(PlaceholderContent.createIntentForPosition1(context));
+            }
             return preference;
         }
     }

@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment.placeholder;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
@@ -35,12 +36,13 @@ public class PlaceholderContent {
                         String.valueOf(position),
                         "Item " + position,
                         "link to SettingsActivity3",
+                        // FK-FIXME: "item3 10" sollte über die Suchfunktion zwei mal gefunden werden, einmal "direkt", das andere mal über den Link des folgenden OnClickListeners, also über einen zweiten Path
                         Optional.of(
                                 new View.OnClickListener() {
 
                                     @Override
                                     public void onClick(final View view) {
-                                        view.getContext().startActivity(new Intent(view.getContext(), SettingsActivity3.class));
+                                        view.getContext().startActivity(createIntentForPosition1(view.getContext()));
                                     }
                                 })) :
                 new PlaceholderItem(
@@ -48,6 +50,10 @@ public class PlaceholderContent {
                         "Item " + position,
                         makeSummary(position),
                         Optional.empty());
+    }
+
+    public static Intent createIntentForPosition1(final Context context) {
+        return new Intent(context, SettingsActivity3.class);
     }
 
     private static String makeSummary(final int position) {

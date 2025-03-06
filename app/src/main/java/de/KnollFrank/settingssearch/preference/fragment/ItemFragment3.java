@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import org.threeten.bp.Duration;
 
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.InitializePreferenceFragmentWithFragmentBeforeOnCreate;
 import de.KnollFrank.lib.settingssearch.results.ItemOfRecyclerViewHighlighter;
@@ -101,11 +103,26 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
             screen.setTitle("screen title");
             screen.setSummary("screen summary");
-            ItemFragment
-                    .PreferenceFragment
+            PreferenceFragment3
                     .asPreferences(items, context)
                     .forEach(screen::addPreference);
             setPreferenceScreen(screen);
+        }
+
+        private static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items, final Context context) {
+            return items
+                    .stream()
+                    .map(placeholderItem -> asPreference(placeholderItem, context))
+                    .collect(Collectors.toList());
+        }
+
+        private static Preference asPreference(final PlaceholderContent.PlaceholderItem placeholderItem,
+                                               final Context context) {
+            final Preference preference = new Preference(context);
+            preference.setKey(placeholderItem.key());
+            preference.setTitle(placeholderItem.title());
+            preference.setSummary(placeholderItem.summary());
+            return preference;
         }
     }
 }
