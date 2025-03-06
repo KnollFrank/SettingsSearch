@@ -36,7 +36,7 @@ public class PlaceholderContent {
                         String.valueOf(position),
                         "Item " + position,
                         "link to SettingsActivity3",
-                        // FK-FIXME: "item3 10" sollte über die Suchfunktion zwei mal gefunden werden, einmal "direkt", das andere mal über den Link des folgenden OnClickListeners, also über einen zweiten Path
+                        // FK-TODO: schreibe einen Test für die folgende Situation: "item3 10" sollte über die Suchfunktion zwei mal gefunden werden, einmal "direkt", das andere mal über den Link des folgenden OnClickListeners, also über einen zweiten Path
                         Optional.of(
                                 new View.OnClickListener() {
 
