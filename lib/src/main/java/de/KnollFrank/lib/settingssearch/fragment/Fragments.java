@@ -38,16 +38,14 @@ public class Fragments implements InstantiateAndInitializeFragment {
                                                          final @IdRes int containerViewId,
                                                          final Optional<String> tag,
                                                          final FragmentManager fragmentManager) {
-        final FragmentTransaction fragmentTransaction =
-                fragmentManager
-                        .beginTransaction()
-                        .setReorderingAllowed(true)
-                        .replace(containerViewId, fragment, tag.orElse(null));
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setReorderingAllowed(true);
+        transaction.replace(containerViewId, fragment, tag.orElse(null));
         if (addToBackStack) {
-            fragmentTransaction.addToBackStack(null);
+            transaction.addToBackStack(null);
         }
         executeOnceOnFragmentResumed(fragment, onFragmentShown, fragmentManager);
-        fragmentTransaction.commit();
+        transaction.commit();
     }
 
     public static void hideFragment(final Fragment fragment,
