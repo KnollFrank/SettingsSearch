@@ -121,10 +121,10 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
             preference.setKey(placeholderItem.key());
             preference.setTitle(placeholderItem.title());
             preference.setSummary(placeholderItem.summary());
-            if ("1".equals(placeholderItem.key())) {
-                // FK-TODO: die Verbindung zur Methode PlaceholderContent.createIntentForPosition1() und zum placeholderItem mit key == "1" ist zu unklar.
-                preference.setIntent(PlaceholderContent.createIntentForPosition1(context));
-            }
+            placeholderItem
+                    .intentFactory()
+                    .map(intentFactory -> intentFactory.apply(context))
+                    .ifPresent(preference::setIntent);
             return preference;
         }
     }
