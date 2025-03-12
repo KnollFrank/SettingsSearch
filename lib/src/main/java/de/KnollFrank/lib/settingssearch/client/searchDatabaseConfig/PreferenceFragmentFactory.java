@@ -38,7 +38,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
             final Context context,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         final P preferenceFragment = createPreferenceFragment(src, context, instantiateAndInitializeFragment);
-        preferenceFragment.initializePreferenceFragmentWithFragmentBeforeOnCreate(getFragment(instantiateAndInitializeFragment));
+        preferenceFragment.initializePreferenceFragmentWithFragmentBeforeOnCreate(getFragment(instantiateAndInitializeFragment, src));
         return preferenceFragment;
     }
 
@@ -52,9 +52,10 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
                 instantiateAndInitializeFragment);
     }
 
-    private F getFragment(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+    private F getFragment(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
+                          final Optional<PreferenceWithHost> src) {
         return instantiateAndInitializeFragment.instantiateAndInitializeFragment(
                 principalAndProxy.principal(),
-                Optional.empty());
+                src);
     }
 }
