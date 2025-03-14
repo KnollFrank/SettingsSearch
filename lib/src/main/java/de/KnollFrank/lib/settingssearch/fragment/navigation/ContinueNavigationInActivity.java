@@ -29,19 +29,19 @@ class ContinueNavigationInActivity {
         this.preferenceWithHostProvider = preferenceWithHostProvider;
     }
 
-    public Optional<PreferenceFragmentCompat> continueNavigationInActivity(final Class<? extends Activity> activity,
-                                                                           final PreferencePathPointer preferencePathPointer,
-                                                                           final Optional<PreferenceWithHost> src) {
+    public Optional<PreferenceWithHost> continueNavigationInActivity(final Class<? extends Activity> activity,
+                                                                     final PreferencePathPointer preferencePathPointer,
+                                                                     final Optional<PreferenceWithHost> src) {
         final Optional<PreferencePathPointer> nextPreferencePathPointer = preferencePathPointer.next();
-        final PreferenceFragmentCompat host =
-                preferenceWithHostProvider
-                        .getPreferenceWithHost(preferencePathPointer.dereference(), src)
-                        .host();
+        final PreferenceWithHost preferenceWithHost =
+                preferenceWithHostProvider.getPreferenceWithHost(
+                        preferencePathPointer.dereference(),
+                        src);
         if (nextPreferencePathPointer.isPresent()) {
-            continueNavigationInActivity(activity, host, nextPreferencePathPointer.orElseThrow());
+            continueNavigationInActivity(activity, preferenceWithHost.host(), nextPreferencePathPointer.orElseThrow());
             return Optional.empty();
         }
-        return Optional.of(host);
+        return Optional.of(preferenceWithHost);
     }
 
     private void continueNavigationInActivity(final Class<? extends Activity> activity,

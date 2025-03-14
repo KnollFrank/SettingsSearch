@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
@@ -28,11 +27,11 @@ public class PreferencePathNavigator {
     }
 
     public Optional<? extends Fragment> navigatePreferencePath(final PreferencePathPointer preferencePathPointer) {
-        return tryGetPrincipal(navigatePreferences(preferencePathPointer, Optional.empty()));
+        return tryGetPrincipalOfHost(navigatePreferences(preferencePathPointer, Optional.empty()));
     }
 
-    private Optional<PreferenceFragmentCompat> navigatePreferences(final PreferencePathPointer preferencePathPointer,
-                                                                   final Optional<PreferenceWithHost> src) {
+    private Optional<PreferenceWithHost> navigatePreferences(final PreferencePathPointer preferencePathPointer,
+                                                             final Optional<PreferenceWithHost> src) {
         final Optional<Class<? extends Activity>> activity =
                 preferencePathPointer
                         .dereference()
@@ -47,16 +46,16 @@ public class PreferencePathNavigator {
                         preferenceWithHostProvider.getPreferenceWithHost(preferencePathPointer.dereference(), src));
     }
 
-    private Optional<PreferenceFragmentCompat> navigatePreferences(final Optional<PreferencePathPointer> preferencePathPointer,
-                                                                   final PreferenceWithHost src) {
+    private Optional<PreferenceWithHost> navigatePreferences(final Optional<PreferencePathPointer> preferencePathPointer,
+                                                             final PreferenceWithHost src) {
         return preferencePathPointer.isEmpty() ?
-                Optional.of(src.host()) :
+                Optional.of(src) :
                 navigatePreferences(preferencePathPointer.orElseThrow(), Optional.of(src));
     }
 
-    private Optional<Fragment> tryGetPrincipal(final Optional<PreferenceFragmentCompat> preferenceFragment) {
-        return preferenceFragment
-                .flatMap(principalProvider::getPrincipal)
-                .or(() -> preferenceFragment);
+    private Optional<Fragment> tryGetPrincipalOfHost(final Optional<PreferenceWithHost> preferenceWithHost) {
+        return preferenceWithHost
+                .flatMap(preferenceWithProxy -> principalProvider.getPrincipal(preferenceWithProxy.host(), preferenceWithHost))
+                .or(() -> preferenceWithHost.map(PreferenceWithHost::host));
     }
 }
