@@ -116,18 +116,16 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         });
-        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate =
-                new IncludePreferenceInSearchResultsPredicate() {
-
-                    @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                        return keyOfPreference.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost());
-                    }
-                };
         testSearch(
                 preferenceFragment,
                 (preference, hostOfPreference) -> true,
-                includePreferenceInSearchResultsPredicate,
+                new IncludePreferenceInSearchResultsPredicate() {
+
+                    @Override
+                    public boolean includePreferenceInSearchResults(final SearchablePreference preference1) {
+                        return keyOfPreference.equals(preference1.getKey()) && preferenceFragment.getClass().equals(preference1.getHost());
+                    }
+                },
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
@@ -150,18 +148,16 @@ public class PreferenceSearcherTest {
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         });
-        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate =
-                new IncludePreferenceInSearchResultsPredicate() {
-
-                    @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                        return !(keyOfPreference.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost()));
-                    }
-                };
         testSearch(
                 preferenceFragment,
                 (preference, hostOfPreference) -> true,
-                includePreferenceInSearchResultsPredicate,
+                new IncludePreferenceInSearchResultsPredicate() {
+
+                    @Override
+                    public boolean includePreferenceInSearchResults(final SearchablePreference preference1) {
+                        return !(keyOfPreference.equals(preference1.getKey()) && preferenceFragment.getClass().equals(preference1.getHost()));
+                    }
+                },
                 keyword,
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
