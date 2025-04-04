@@ -9,7 +9,6 @@ import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
-import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
@@ -20,7 +19,6 @@ public class CreateSearchDatabaseTaskProvider {
 
     public static AsyncTaskWithProgressUpdateListeners<?> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
-            final ComputePreferencesListener computePreferencesListener,
             final FragmentActivity activity) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
@@ -31,8 +29,7 @@ public class CreateSearchDatabaseTaskProvider {
                     createSearchDatabase(
                             mergedPreferenceScreenDataRepositoryFactory,
                             activity,
-                            progressUpdateListener,
-                            computePreferencesListener);
+                            progressUpdateListener);
                     return null;
                 },
                 _void -> {
@@ -42,8 +39,7 @@ public class CreateSearchDatabaseTaskProvider {
     private static void createSearchDatabase(
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
             final FragmentActivity activity,
-            final ProgressUpdateListener progressUpdateListener,
-            final ComputePreferencesListener computePreferencesListener) {
+            final ProgressUpdateListener progressUpdateListener) {
         mergedPreferenceScreenDataRepositoryFactory
                 .createMergedPreferenceScreenDataRepository(
                         new DefaultFragmentInitializer(
@@ -51,8 +47,7 @@ public class CreateSearchDatabaseTaskProvider {
                                 FRAGMENT_CONTAINER_VIEW_ID,
                                 OnUiThreadRunnerFactory.fromActivity(activity)),
                         activity,
-                        progressUpdateListener,
-                        computePreferencesListener)
+                        progressUpdateListener)
                 .persistOrLoadPreferences(Utils.geCurrentLocale(activity.getResources()));
     }
 }

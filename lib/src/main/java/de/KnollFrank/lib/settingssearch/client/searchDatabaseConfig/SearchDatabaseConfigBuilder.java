@@ -10,6 +10,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
+import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -29,6 +30,17 @@ public class SearchDatabaseConfigBuilder {
     private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
     };
+    private ComputePreferencesListener computePreferencesListener =
+            new ComputePreferencesListener() {
+
+                @Override
+                public void onStartComputePreferences() {
+                }
+
+                @Override
+                public void onFinishComputePreferences() {
+                }
+            };
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
@@ -75,6 +87,12 @@ public class SearchDatabaseConfigBuilder {
     }
 
     @SuppressWarnings("unused")
+    public SearchDatabaseConfigBuilder withComputePreferencesListener(final ComputePreferencesListener computePreferencesListener) {
+        this.computePreferencesListener = computePreferencesListener;
+        return this;
+    }
+
+    @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withPreferenceSearchablePredicate(final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         return this;
@@ -102,6 +120,7 @@ public class SearchDatabaseConfigBuilder {
                     }
                 },
                 preferenceScreenGraphAvailableListener,
+                computePreferencesListener,
                 preferenceSearchablePredicate,
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
                 activityInitializerByActivity);

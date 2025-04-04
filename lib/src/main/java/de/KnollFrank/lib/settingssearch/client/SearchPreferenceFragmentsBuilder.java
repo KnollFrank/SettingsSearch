@@ -11,7 +11,6 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 public class SearchPreferenceFragmentsBuilder {
 
@@ -23,17 +22,7 @@ public class SearchPreferenceFragmentsBuilder {
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
-    private ComputePreferencesListener computePreferencesListener =
-            new ComputePreferencesListener() {
 
-                @Override
-                public void onStartComputePreferences() {
-                }
-
-                @Override
-                public void onFinishComputePreferences() {
-                }
-            };
 
     protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig searchDatabaseConfig,
                                                final SearchConfig searchConfig,
@@ -57,11 +46,6 @@ public class SearchPreferenceFragmentsBuilder {
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withComputePreferencesListener(final ComputePreferencesListener computePreferencesListener) {
-        this.computePreferencesListener = computePreferencesListener;
-        return this;
-    }
-
     public SearchPreferenceFragments build() {
         return new SearchPreferenceFragments(
                 searchDatabaseConfig,
@@ -70,7 +54,6 @@ public class SearchPreferenceFragmentsBuilder {
                 onUiThreadRunner,
                 activity,
                 createSearchDatabaseTaskSupplier,
-                onMergedPreferenceScreenAvailable,
-                computePreferencesListener);
+                onMergedPreferenceScreenAvailable);
     }
 }

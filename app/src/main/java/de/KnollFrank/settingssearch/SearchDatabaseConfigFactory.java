@@ -26,6 +26,7 @@ import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
@@ -119,6 +120,19 @@ class SearchDatabaseConfigFactory {
                             @Override
                             public void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
                                 Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
+                            }
+                        })
+                .withComputePreferencesListener(
+                        new ComputePreferencesListener() {
+
+                            @Override
+                            public void onStartComputePreferences() {
+                                Log.i(this.getClass().getSimpleName(), "onStartComputePreferences");
+                            }
+
+                            @Override
+                            public void onFinishComputePreferences() {
+                                Log.i(this.getClass().getSimpleName(), "onFinishComputePreferences");
                             }
                         })
                 .build();
