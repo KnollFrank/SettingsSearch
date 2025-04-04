@@ -25,6 +25,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
@@ -37,6 +38,7 @@ public class MergedPreferenceScreenDataRepository {
     private final DefaultFragmentInitializer preferenceDialogs;
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
+    private final ComputePreferencesListener computePreferencesListener;
     private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final Context context;
@@ -46,6 +48,7 @@ public class MergedPreferenceScreenDataRepository {
             final DefaultFragmentInitializer preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
+            final ComputePreferencesListener computePreferencesListener,
             final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final Context context) {
@@ -53,6 +56,7 @@ public class MergedPreferenceScreenDataRepository {
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
+        this.computePreferencesListener = computePreferencesListener;
         this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.context = context;
@@ -116,6 +120,7 @@ public class MergedPreferenceScreenDataRepository {
                         progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                     }
                 },
+                computePreferencesListener,
                 new Preference2SearchablePreferenceConverter(
                         new IconProvider(searchDatabaseConfig.iconResourceIdProvider),
                         new SearchableInfoAndDialogInfoProvider(

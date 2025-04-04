@@ -4,6 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 
 import android.app.Activity;
@@ -55,6 +57,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
@@ -102,6 +105,31 @@ public class PreferenceSearcherTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)));
+    }
+
+    // FK-TODO: move method to a new test class
+    @Test
+    public void shouldInvokeComputePreferencesListener() {
+        final ComputePreferencesListener computePreferencesListener = mock(ComputePreferencesListener.class);
+        testSearch(
+                PreferenceFragmentFactory.fromSinglePreference(
+                        context -> {
+                            final CheckBoxPreference preference = new CheckBoxPreference(context);
+                            preference.setKey("fourthfile");
+                            preference.setTitle(String.format("Checkbox %s file", "fourth"));
+                            return preference;
+                        }),
+                (preference, hostOfPreference) -> true,
+                preference -> true,
+                "fourth",
+                (preference, hostOfPreference) -> Optional.empty(),
+                (preference, hostOfPreference) -> Optional.empty(),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()),
+                computePreferencesListener,
+                preferenceMatches -> {
+                });
+        verify(computePreferencesListener).onStartComputePreferences();
+        verify(computePreferencesListener).onFinishComputePreferences();
     }
 
     @Test
@@ -621,6 +649,36 @@ public class PreferenceSearcherTest {
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                            final PrincipalAndProxyProvider principalAndProxyProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
+        testSearch(
+                preferenceFragment,
+                preferenceSearchablePredicate,
+                includePreferenceInSearchResultsPredicate,
+                keyword,
+                preferenceFragmentConnected2PreferenceProvider,
+                preferenceDialogAndSearchableInfoProvider,
+                principalAndProxyProvider,
+                new ComputePreferencesListener() {
+
+                    @Override
+                    public void onStartComputePreferences() {
+                    }
+
+                    @Override
+                    public void onFinishComputePreferences() {
+                    }
+                },
+                checkPreferenceMatches);
+    }
+
+    private static void testSearch(final Fragment preferenceFragment,
+                                   final PreferenceSearchablePredicate preferenceSearchablePredicate,
+                                   final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
+                                   final String keyword,
+                                   final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
+                                   final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
+                                   final PrincipalAndProxyProvider principalAndProxyProvider,
+                                   final ComputePreferencesListener computePreferencesListener,
+                                   final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -632,7 +690,8 @@ public class PreferenceSearcherTest {
                                 createFragmentFactoryReturning(preferenceFragment),
                                 preferenceFragmentConnected2PreferenceProvider,
                                 preferenceDialogAndSearchableInfoProvider,
-                                principalAndProxyProvider);
+                                principalAndProxyProvider,
+                                computePreferencesListener);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
@@ -670,7 +729,8 @@ public class PreferenceSearcherTest {
             final FragmentFactory fragmentFactory,
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
-            final PrincipalAndProxyProvider principalAndProxyProvider) {
+            final PrincipalAndProxyProvider principalAndProxyProvider,
+            final ComputePreferencesListener computePreferencesListener) {
         final DefaultFragmentInitializer fragmentInitializer =
                 new DefaultFragmentInitializer(
                         fragmentActivity.getSupportFragmentManager(),
@@ -711,6 +771,7 @@ public class PreferenceSearcherTest {
                         },
                         preferenceScreenWithHost -> {
                         },
+                        computePreferencesListener,
                         new Preference2SearchablePreferenceConverter(
                                 new IconProvider(new ReflectionIconResourceIdProvider()),
                                 new SearchableInfoAndDialogInfoProvider(

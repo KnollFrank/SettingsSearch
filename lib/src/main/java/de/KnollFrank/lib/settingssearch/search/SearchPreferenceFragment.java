@@ -23,6 +23,7 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListenersAndProgressContainer;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
+import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -44,6 +45,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
     private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
+    private final ComputePreferencesListener computePreferencesListener;
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask;
 
@@ -53,7 +55,8 @@ public class SearchPreferenceFragment extends Fragment {
                                     final OnUiThreadRunner onUiThreadRunner,
                                     final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
                                     final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
-                                    final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
+                                    final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
+                                    final ComputePreferencesListener computePreferencesListener) {
         this.queryHint = queryHint;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
@@ -61,6 +64,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
+        this.computePreferencesListener = computePreferencesListener;
     }
 
     @Nullable
@@ -84,7 +88,10 @@ public class SearchPreferenceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final ProgressDisplayer progressDisplayer = createProgressDisplayer();
-        getMergedPreferenceScreenAndShowSearchResultsTask = createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer);
+        getMergedPreferenceScreenAndShowSearchResultsTask =
+                createGetMergedPreferenceScreenAndShowSearchResultsTask(
+                        progressDisplayer,
+                        computePreferencesListener);
         Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
                 createSearchDatabaseTaskSupplier.get(),
                 progressDisplayer,
@@ -105,10 +112,14 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask(
-            final ProgressUpdateListener progressUpdateListener) {
+            final ProgressUpdateListener progressUpdateListener,
+            final ComputePreferencesListener computePreferencesListener) {
         final var getMergedPreferenceScreenAndShowSearchResultsTask =
                 new AsyncTaskWithProgressUpdateListenersAndProgressContainer<>(
-                        this::getMergedPreferenceScreen,
+                        _progressUpdateListener ->
+                                getMergedPreferenceScreen(
+                                        _progressUpdateListener,
+                                        computePreferencesListener),
                         mergedPreferenceScreen -> {
                             showSearchResultsFragment(
                                     mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
@@ -121,10 +132,12 @@ public class SearchPreferenceFragment extends Fragment {
         return getMergedPreferenceScreenAndShowSearchResultsTask;
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(final ProgressUpdateListener progressUpdateListener) {
+    private MergedPreferenceScreen getMergedPreferenceScreen(final ProgressUpdateListener progressUpdateListener,
+                                                             final ComputePreferencesListener computePreferencesListener) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
                 progressUpdateListener,
+                computePreferencesListener,
                 DUMMY_FRAGMENT_CONTAINER_VIEW);
     }
 

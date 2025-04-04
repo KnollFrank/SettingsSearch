@@ -35,6 +35,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithH
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -125,6 +126,16 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 preferenceScreenGraph -> {
                 },
                 preferenceScreenWithHost -> {
+                },
+                new ComputePreferencesListener() {
+
+                    @Override
+                    public void onStartComputePreferences() {
+                    }
+
+                    @Override
+                    public void onFinishComputePreferences() {
+                    }
                 },
                 new Preference2SearchablePreferenceConverter(
                         (preference, hostOfPreference) -> Optional.empty(),
