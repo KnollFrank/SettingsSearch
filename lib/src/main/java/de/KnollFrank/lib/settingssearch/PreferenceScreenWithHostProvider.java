@@ -32,11 +32,11 @@ public class PreferenceScreenWithHostProvider {
     private Optional<? extends PreferenceFragmentCompat> getPreferenceFragment(
             final Class<? extends Fragment> fragmentClass,
             final Optional<PreferenceWithHost> src) {
-        final Fragment _fragment = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
-        return _fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
+        final Fragment fragment = instantiateAndInitializeFragment.instantiateAndInitializeFragment(fragmentClass, src);
+        return fragment instanceof final PreferenceFragmentCompat preferenceFragment ?
                 Optional.of(preferenceFragment) :
                 principalAndProxyProvider
-                        .getProxy(_fragment.getClass())
+                        .getProxy(fragment.getClass())
                         .map(preferenceFragment -> instantiateAndInitializeFragment.instantiateAndInitializeFragment(preferenceFragment, Optional.empty()));
     }
 
