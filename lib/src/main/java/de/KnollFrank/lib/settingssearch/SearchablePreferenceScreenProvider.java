@@ -25,7 +25,8 @@ public class SearchablePreferenceScreenProvider implements PreferenceScreenProvi
         return preferenceScreen;
     }
 
-    private void removeNonSearchablePreferencesFromPreferenceScreen(final PreferenceScreen preferenceScreen, final PreferenceFragmentCompat preferenceFragment) {
+    private void removeNonSearchablePreferencesFromPreferenceScreen(final PreferenceScreen preferenceScreen,
+                                                                    final PreferenceFragmentCompat preferenceFragment) {
         final Predicate<Preference> isPreferenceNonSearchable =
                 preference ->
                         !preferenceSearchablePredicate.isPreferenceSearchable(
