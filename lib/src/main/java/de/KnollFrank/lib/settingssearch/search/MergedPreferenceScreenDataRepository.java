@@ -62,8 +62,8 @@ public class MergedPreferenceScreenDataRepository {
         synchronized (LockingSupport.searchDatabaseLock) {
             final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
             final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
-            // FK-TODO: show progressBar only for computeAndPersistMergedPreferenceScreenData() and not for load()?
             if (!exists(dataFiles)) {
+                // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final Set<SearchablePreference> preferences = computePreferences();
                 progressUpdateListener.onProgressUpdate("persisting search database");
                 MergedPreferenceScreenDataFileDAO.persist(preferences, dataFiles);

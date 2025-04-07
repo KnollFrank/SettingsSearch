@@ -110,6 +110,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.showSettingsFragmentAndHighlightSetting);
     }
 
+    // FK-TODO: provide the possibility to only update parts of the search database (or graph) which need to be changed instead of deleting and rebuilding the whole database.
     public void rebuildSearchDatabase() {
         new SearchDatabaseDirectoryIO(activity).removeSearchDatabaseDirectories4AllLocales();
     }
