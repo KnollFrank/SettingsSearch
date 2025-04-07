@@ -23,15 +23,8 @@ public class FragmentFactoryAndInitializer {
                                                                    final Optional<PreferenceWithHost> src,
                                                                    final Context context,
                                                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        final T fragment = instantiateFragment(fragmentClass, src, context, instantiateAndInitializeFragment);
+        final T fragment = fragmentFactory.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
         fragmentInitializer.initialize(fragment);
         return fragment;
-    }
-
-    private <T extends Fragment> T instantiateFragment(final Class<T> fragmentClass,
-                                                       final Optional<PreferenceWithHost> src,
-                                                       final Context context,
-                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        return fragmentFactory.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
     }
 }
