@@ -30,7 +30,7 @@ public class PreferencePathNavigatorFactory {
                         context,
                         activityInitializerByActivity,
                         preferenceWithHostProvider),
-                new de.KnollFrank.lib.settingssearch.fragment.navigation.PrincipalProvider(
+                new PrincipalProvider(
                         principalAndProxyProvider,
                         instantiateAndInitializeFragment));
     }
