@@ -12,13 +12,15 @@ public class PreferencePathPointer {
     public final PreferencePath preferencePath;
     public final int indexWithinPreferencePath;
 
-    public static PreferencePathPointer of(final PreferencePath preferencePath, final int indexWithinPreferencePath) {
+    public static PreferencePathPointer of(final PreferencePath preferencePath,
+                                           final int indexWithinPreferencePath) {
         return PreferencePathPointer
                 .tryCreatePreferencePathPointer(preferencePath, indexWithinPreferencePath)
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-    private PreferencePathPointer(final PreferencePath preferencePath, final int indexWithinPreferencePath) {
+    private PreferencePathPointer(final PreferencePath preferencePath,
+                                  final int indexWithinPreferencePath) {
         this.preferencePath = preferencePath;
         this.indexWithinPreferencePath = indexWithinPreferencePath;
     }
