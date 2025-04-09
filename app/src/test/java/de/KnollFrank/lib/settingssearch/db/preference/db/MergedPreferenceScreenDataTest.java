@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.dao;
+package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsAndHostsSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.settingssearch.R;

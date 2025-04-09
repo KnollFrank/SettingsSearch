@@ -1,12 +1,11 @@
-package de.KnollFrank.lib.settingssearch.search;
+package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import java.io.File;
 import java.util.stream.Stream;
 
-// FK-TODO: make package private
-public record MergedPreferenceScreenDataFiles(File preferences,
-                                              File preferencePathByPreference,
-                                              File hostByPreference) {
+record MergedPreferenceScreenDataFiles(File preferences,
+                                       File preferencePathByPreference,
+                                       File hostByPreference) {
 
     public boolean exists() {
         return Stream

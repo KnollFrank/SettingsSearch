@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.dao;
+package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import static de.KnollFrank.lib.settingssearch.common.IOUtils.getFileInputStream;
 import static de.KnollFrank.lib.settingssearch.common.IOUtils.getFileOutputStream;
@@ -6,9 +6,9 @@ import static de.KnollFrank.lib.settingssearch.common.IOUtils.getFileOutputStrea
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataFiles;
 
-public class MergedPreferenceScreenDataFileDAO {
+// FK-TODO: move this class and dependent classes to a new subpackage
+class MergedPreferenceScreenDataFileDAO {
 
     public static void persist(final Set<SearchablePreference> preferences,
                                final MergedPreferenceScreenDataFiles sink) {

@@ -20,7 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.Database;
-import de.KnollFrank.lib.settingssearch.db.preference.db.FileDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.FileDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -63,9 +63,7 @@ public class MergedPreferenceScreenDataRepository {
     public SearchablePreferenceDAO persistOrLoadPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
-            // FK-TODO: hide dataFiles
-            final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
-            final Database database = new FileDatabase(dataFiles);
+            final Database database = FileDatabaseFactory.createFileDatabase(directory);
             final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(database);
             if (!database.isInitialized()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
@@ -84,13 +82,6 @@ public class MergedPreferenceScreenDataRepository {
                         .getSearchablePreferenceScreenGraph();
         progressUpdateListener.onProgressUpdate("preparing search database");
         return MergedPreferenceScreenDataFactory.getPreferences(searchablePreferenceScreenGraph);
-    }
-
-    private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataFiles(final File directory) {
-        return new MergedPreferenceScreenDataFiles(
-                new File(directory, "preferences.json"),
-                new File(directory, "preference_path_by_preference.json"),
-                new File(directory, "host_by_preference.json"));
     }
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {

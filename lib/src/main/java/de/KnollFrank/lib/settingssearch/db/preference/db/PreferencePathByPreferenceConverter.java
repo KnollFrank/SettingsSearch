@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.dao;
+package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import java.util.List;
 import java.util.Map;
