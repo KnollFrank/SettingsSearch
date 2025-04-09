@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 
 class PreferencePathPointerFactory {
 

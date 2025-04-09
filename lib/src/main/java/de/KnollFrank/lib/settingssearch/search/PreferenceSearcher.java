@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 
 class PreferenceSearcher {

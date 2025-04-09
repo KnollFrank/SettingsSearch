@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch;
+package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatcher.getPreferenceMatch;
 
