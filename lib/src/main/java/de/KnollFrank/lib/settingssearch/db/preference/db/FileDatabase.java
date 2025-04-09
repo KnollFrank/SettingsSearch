@@ -21,7 +21,7 @@ class FileDatabase implements Database {
     }
 
     @Override
-    public Set<SearchablePreference> load() {
+    public Set<SearchablePreference> loadAll() {
         if (cache.isEmpty()) {
             cache = Optional.of(MergedPreferenceScreenDataFileDAO.load(dataFiles));
         }

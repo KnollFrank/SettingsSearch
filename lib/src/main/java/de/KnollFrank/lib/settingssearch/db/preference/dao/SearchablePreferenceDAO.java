@@ -31,7 +31,7 @@ public class SearchablePreferenceDAO {
     public Set<PreferenceMatch> searchFor(final String needle,
                                           final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         return SearchablePreferences
-                .getPreferencesRecursively(database.load())
+                .getPreferencesRecursively(database.loadAll())
                 .stream()
                 .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
                 .map(searchablePreference -> getPreferenceMatch(searchablePreference, needle))
@@ -41,7 +41,7 @@ public class SearchablePreferenceDAO {
 
     public SearchablePreference getPreferenceFromId(final int id) {
         return SearchablePreferences
-                .getPreferencesRecursively(database.load())
+                .getPreferencesRecursively(database.loadAll())
                 .stream()
                 .filter(preference -> preference.getId() == id)
                 .findFirst()

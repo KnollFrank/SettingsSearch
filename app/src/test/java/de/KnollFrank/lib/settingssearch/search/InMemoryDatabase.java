@@ -16,7 +16,7 @@ class InMemoryDatabase implements Database {
     }
 
     @Override
-    public Set<SearchablePreference> load() {
+    public Set<SearchablePreference> loadAll() {
         return preferences.orElseThrow();
     }
 

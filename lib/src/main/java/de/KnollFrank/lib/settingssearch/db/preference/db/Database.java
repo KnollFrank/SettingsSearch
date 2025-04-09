@@ -8,7 +8,7 @@ public interface Database {
 
     void persist(Set<SearchablePreference> preferences);
 
-    Set<SearchablePreference> load();
+    Set<SearchablePreference> loadAll();
 
     boolean isInitialized();
 }
