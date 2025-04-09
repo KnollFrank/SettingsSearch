@@ -111,7 +111,7 @@ public class MergedPreferenceScreenFactory {
                                 activity,
                                 progressUpdateListener,
                                 instantiateAndInitializeFragment)
-                        .persistOrLoadPreferences(locale),
+                        .getSearchDatabaseFilledWithPreferences(locale),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 markupsFactory,

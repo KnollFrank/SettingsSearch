@@ -20,6 +20,10 @@ public class SearchablePreferenceDAO {
         this.database = database;
     }
 
+    public boolean isDatabaseInitialized() {
+        return database.isInitialized();
+    }
+
     public void persist(final Set<SearchablePreference> preferences) {
         database.persist(preferences);
     }

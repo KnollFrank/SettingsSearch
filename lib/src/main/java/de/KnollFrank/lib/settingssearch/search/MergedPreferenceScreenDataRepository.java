@@ -19,7 +19,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.db.Database;
 import de.KnollFrank.lib.settingssearch.db.preference.db.FileDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
@@ -60,12 +59,10 @@ public class MergedPreferenceScreenDataRepository {
         this.context = context;
     }
 
-    public SearchablePreferenceDAO persistOrLoadPreferences(final Locale locale) {
+    public SearchablePreferenceDAO getSearchDatabaseFilledWithPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
-            final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
-            final Database database = FileDatabaseFactory.createFileDatabase(directory);
-            final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(database);
-            if (!database.isInitialized()) {
+            final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO(locale);
+            if (!searchablePreferenceDAO.isDatabaseInitialized()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final Set<SearchablePreference> preferences = computePreferences();
                 progressUpdateListener.onProgressUpdate("persisting search database");
@@ -73,6 +70,11 @@ public class MergedPreferenceScreenDataRepository {
             }
             return searchablePreferenceDAO;
         }
+    }
+
+    private SearchablePreferenceDAO getSearchablePreferenceDAO(final Locale locale) {
+        final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
+        return new SearchablePreferenceDAO(FileDatabaseFactory.createFileDatabase(directory));
     }
 
     private Set<SearchablePreference> computePreferences() {
