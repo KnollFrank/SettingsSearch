@@ -7,22 +7,27 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.db.preference.db.Database;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 
 public class SearchablePreferenceDAO {
 
-    private final Set<SearchablePreference> preferences;
+    private final Database database;
 
-    public SearchablePreferenceDAO(final Set<SearchablePreference> preferences) {
-        this.preferences = preferences;
+    public SearchablePreferenceDAO(final Database database) {
+        this.database = database;
+    }
+
+    public void persist(final Set<SearchablePreference> preferences) {
+        database.persist(preferences);
     }
 
     public Set<PreferenceMatch> searchFor(final String needle,
                                           final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         return SearchablePreferences
-                .getPreferencesRecursively(preferences)
+                .getPreferencesRecursively(database.load())
                 .stream()
                 .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
                 .map(searchablePreference -> getPreferenceMatch(searchablePreference, needle))
@@ -32,7 +37,7 @@ public class SearchablePreferenceDAO {
 
     public SearchablePreference getPreferenceFromId(final int id) {
         return SearchablePreferences
-                .getPreferencesRecursively(preferences)
+                .getPreferencesRecursively(database.load())
                 .stream()
                 .filter(preference -> preference.getId() == id)
                 .findFirst()

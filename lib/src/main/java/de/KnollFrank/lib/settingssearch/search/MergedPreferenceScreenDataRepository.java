@@ -7,7 +7,6 @@ import org.jgrapht.Graph;
 import java.io.File;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
@@ -18,9 +17,10 @@ import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.MergedPreferenceScreenDataFileDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.Database;
+import de.KnollFrank.lib.settingssearch.db.preference.db.FileDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -63,14 +63,17 @@ public class MergedPreferenceScreenDataRepository {
     public SearchablePreferenceDAO persistOrLoadPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
+            // FK-TODO: hide dataFiles
             final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
-            if (!exists(dataFiles)) {
+            final Database database = new FileDatabase(dataFiles);
+            final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(database);
+            if (!database.isInitialized()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final Set<SearchablePreference> preferences = computePreferences();
                 progressUpdateListener.onProgressUpdate("persisting search database");
-                MergedPreferenceScreenDataFileDAO.persist(preferences, dataFiles);
+                searchablePreferenceDAO.persist(preferences);
             }
-            return new SearchablePreferenceDAO(MergedPreferenceScreenDataFileDAO.load(dataFiles));
+            return searchablePreferenceDAO;
         }
     }
 
@@ -88,15 +91,6 @@ public class MergedPreferenceScreenDataRepository {
                 new File(directory, "preferences.json"),
                 new File(directory, "preference_path_by_preference.json"),
                 new File(directory, "host_by_preference.json"));
-    }
-
-    private static boolean exists(final MergedPreferenceScreenDataFiles dataFiles) {
-        return Stream
-                .of(
-                        dataFiles.preferences(),
-                        dataFiles.preferencePathByPreference(),
-                        dataFiles.hostByPreference())
-                .allMatch(File::exists);
     }
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
