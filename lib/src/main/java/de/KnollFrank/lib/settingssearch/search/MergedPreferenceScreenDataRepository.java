@@ -63,10 +63,7 @@ public class MergedPreferenceScreenDataRepository {
         synchronized (LockingSupport.searchDatabaseLock) {
             final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO(locale);
             if (!searchablePreferenceDAO.isDatabaseInitialized()) {
-                // FK-TODO: show progressBar only for computePreferences() and not for load()?
-                final Set<SearchablePreference> preferences = computePreferences();
-                progressUpdateListener.onProgressUpdate("persisting search database");
-                searchablePreferenceDAO.persist(preferences);
+                computeAndPersistPreferences(searchablePreferenceDAO);
             }
             return searchablePreferenceDAO;
         }
@@ -75,6 +72,13 @@ public class MergedPreferenceScreenDataRepository {
     private SearchablePreferenceDAO getSearchablePreferenceDAO(final Locale locale) {
         final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
         return new SearchablePreferenceDAO(FileDatabaseFactory.createFileDatabase(directory));
+    }
+
+    private void computeAndPersistPreferences(final SearchablePreferenceDAO searchablePreferenceDAO) {
+        // FK-TODO: show progressBar only for computePreferences() and not for load()?
+        final Set<SearchablePreference> preferences = computePreferences();
+        progressUpdateListener.onProgressUpdate("persisting search database");
+        searchablePreferenceDAO.persist(preferences);
     }
 
     private Set<SearchablePreference> computePreferences() {
