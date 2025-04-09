@@ -39,6 +39,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -637,7 +638,7 @@ public class PreferenceSearcherTest {
                                 emptyComputePreferencesListener());
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
-                                mergedPreferenceScreen.preferences(),
+                                mergedPreferenceScreen.searchablePreferenceDAO(),
                                 includePreferenceInSearchResultsPredicate);
 
                 // When
@@ -742,8 +743,9 @@ public class PreferenceSearcherTest {
                 },
                 preferencePath -> true,
                 new DefaultPreferencePathDisplayer(),
-                MergedPreferenceScreenDataFactory.getPreferences(
-                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()),
+                new SearchablePreferenceDAO(
+                        MergedPreferenceScreenDataFactory.getPreferences(
+                                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph())),
                 fragmentFactoryAndInitializer,
                 new SearchResultsFragmentUI() {
 

@@ -144,7 +144,7 @@ public class SearchPreferenceFragment extends Fragment {
         final SearchAndDisplay searchAndDisplay =
                 new SearchAndDisplay(
                         new PreferenceSearcher(
-                                mergedPreferenceScreen.preferences(),
+                                mergedPreferenceScreen.searchablePreferenceDAO(),
                                 includePreferenceInSearchResultsPredicate),
                         mergedPreferenceScreen.searchResultsDisplayer());
         SearchViewConfigurer.configureSearchView(searchView, queryHint, searchAndDisplay);

@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
@@ -58,7 +59,7 @@ public class MergedPreferenceScreenDataRepository {
         this.context = context;
     }
 
-    public Set<SearchablePreference> persistOrLoadPreferences(final Locale locale) {
+    public SearchablePreferenceDAO persistOrLoadPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
             final MergedPreferenceScreenDataFiles dataFiles = getMergedPreferenceScreenDataFiles(directory);
@@ -68,7 +69,7 @@ public class MergedPreferenceScreenDataRepository {
                 progressUpdateListener.onProgressUpdate("persisting search database");
                 MergedPreferenceScreenDataFileDAO.persist(preferences, dataFiles);
             }
-            return MergedPreferenceScreenDataFileDAO.load(dataFiles);
+            return new SearchablePreferenceDAO(MergedPreferenceScreenDataFileDAO.load(dataFiles));
         }
     }
 

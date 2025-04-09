@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-class PreferenceMatcher {
+public class PreferenceMatcher {
 
     public static Optional<PreferenceMatch> getPreferenceMatch(final SearchablePreference haystack,
                                                                final String needle) {

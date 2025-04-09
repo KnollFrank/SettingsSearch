@@ -25,14 +25,4 @@ public class SearchablePreferences {
                         .map(SearchablePreferences::getPreferencesRecursively)
                         .collect(Collectors.toSet()));
     }
-
-    public static SearchablePreference getPreferenceFromId(final int id,
-                                                           final Set<SearchablePreference> preferences) {
-        return SearchablePreferences
-                .getPreferencesRecursively(preferences)
-                .stream()
-                .filter(preference -> preference.getId() == id)
-                .findFirst()
-                .orElseThrow();
-    }
 }
