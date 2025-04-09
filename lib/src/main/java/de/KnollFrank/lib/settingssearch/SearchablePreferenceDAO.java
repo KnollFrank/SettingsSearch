@@ -28,7 +28,6 @@ public class SearchablePreferenceDAO {
                 .map(searchablePreference -> getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::streamOfPresentElements)
                 .collect(Collectors.toSet());
-
     }
 
     public SearchablePreference getPreferenceFromId(final int id) {
@@ -38,6 +37,5 @@ public class SearchablePreferenceDAO {
                 .filter(preference -> preference.getId() == id)
                 .findFirst()
                 .orElseThrow();
-
     }
 }
