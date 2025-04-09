@@ -634,16 +634,7 @@ public class PreferenceSearcherTest {
                                 preferenceFragmentConnected2PreferenceProvider,
                                 preferenceDialogAndSearchableInfoProvider,
                                 principalAndProxyProvider,
-                                new ComputePreferencesListener() {
-
-                                    @Override
-                                    public void onStartComputePreferences() {
-                                    }
-
-                                    @Override
-                                    public void onFinishComputePreferences() {
-                                    }
-                                });
+                                emptyComputePreferencesListener());
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.preferences(),
@@ -670,6 +661,19 @@ public class PreferenceSearcherTest {
                 return preferenceFragment.getClass().equals(fragmentClassName) ?
                         (T) preferenceFragment :
                         defaultFragmentFactory.instantiate(fragmentClassName, src, context, instantiateAndInitializeFragment);
+            }
+        };
+    }
+
+    public static ComputePreferencesListener emptyComputePreferencesListener() {
+        return new ComputePreferencesListener() {
+
+            @Override
+            public void onStartComputePreferences() {
+            }
+
+            @Override
+            public void onFinishComputePreferences() {
             }
         };
     }

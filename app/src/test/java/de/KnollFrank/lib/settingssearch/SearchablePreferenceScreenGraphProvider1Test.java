@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
+import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emptyComputePreferencesListener;
 
 import android.os.Bundle;
 
@@ -35,7 +36,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithH
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
-import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -106,7 +106,6 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                                         List.of(
                                                 preferenceOfFragment1PointingToFragment2,
                                                 preferenceOfFragment2PointingToFragment3))));
-
             });
         }
     }
@@ -127,16 +126,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 },
                 preferenceScreenWithHost -> {
                 },
-                new ComputePreferencesListener() {
-
-                    @Override
-                    public void onStartComputePreferences() {
-                    }
-
-                    @Override
-                    public void onFinishComputePreferences() {
-                    }
-                },
+                emptyComputePreferencesListener(),
                 new Preference2SearchablePreferenceConverter(
                         (preference, hostOfPreference) -> Optional.empty(),
                         new SearchableInfoAndDialogInfoProvider(
