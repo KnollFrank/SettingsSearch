@@ -1,11 +1,21 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import java.io.File;
+import java.util.Locale;
+
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 
 public class FileDatabaseFactory {
 
-    public static Database createFileDatabase(final File directory) {
-        return new FileDatabase(getMergedPreferenceScreenDataFiles(directory));
+    private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
+
+    public FileDatabaseFactory(final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO) {
+        this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
+    }
+
+    public Database createFileDatabase(final Locale locale) {
+        final File directory4Locale = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
+        return new FileDatabase(getMergedPreferenceScreenDataFiles(directory4Locale));
     }
 
     private static MergedPreferenceScreenDataFiles getMergedPreferenceScreenDataFiles(final File directory) {

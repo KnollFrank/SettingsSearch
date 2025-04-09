@@ -4,7 +4,6 @@ import android.content.Context;
 
 import org.jgrapht.Graph;
 
-import java.io.File;
 import java.util.Locale;
 import java.util.Set;
 
@@ -38,7 +37,6 @@ public class MergedPreferenceScreenDataRepository {
     private final DefaultFragmentInitializer preferenceDialogs;
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
-    private final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final Context context;
 
@@ -47,14 +45,12 @@ public class MergedPreferenceScreenDataRepository {
             final DefaultFragmentInitializer preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
-            final SearchDatabaseDirectoryIO searchDatabaseDirectoryIO,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final Context context) {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
-        this.searchDatabaseDirectoryIO = searchDatabaseDirectoryIO;
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.context = context;
     }
@@ -70,8 +66,10 @@ public class MergedPreferenceScreenDataRepository {
     }
 
     private SearchablePreferenceDAO getSearchablePreferenceDAO(final Locale locale) {
-        final File directory = searchDatabaseDirectoryIO.getAndMakeSearchDatabaseDirectory4Locale(locale);
-        return new SearchablePreferenceDAO(FileDatabaseFactory.createFileDatabase(directory));
+        final FileDatabaseFactory fileDatabaseFactory =
+                new FileDatabaseFactory(
+                        new SearchDatabaseDirectoryIO(context));
+        return new SearchablePreferenceDAO(fileDatabaseFactory.createFileDatabase(locale));
     }
 
     private void computeAndPersistPreferences(final SearchablePreferenceDAO searchablePreferenceDAO) {
