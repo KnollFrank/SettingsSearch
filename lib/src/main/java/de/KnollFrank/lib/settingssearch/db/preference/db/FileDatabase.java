@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
+import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -7,6 +8,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 class FileDatabase implements Database {
 
     private final MergedPreferenceScreenDataFiles dataFiles;
+    private Optional<Set<SearchablePreference>> cache = Optional.empty();
 
     public FileDatabase(final MergedPreferenceScreenDataFiles dataFiles) {
         this.dataFiles = dataFiles;
@@ -15,12 +17,15 @@ class FileDatabase implements Database {
     @Override
     public void persist(final Set<SearchablePreference> preferences) {
         MergedPreferenceScreenDataFileDAO.persist(preferences, dataFiles);
+        cache = Optional.of(preferences);
     }
 
     @Override
     public Set<SearchablePreference> load() {
-        // FK-TODO: cache loaded preferences
-        return MergedPreferenceScreenDataFileDAO.load(dataFiles);
+        if (cache.isEmpty()) {
+            cache = Optional.of(MergedPreferenceScreenDataFileDAO.load(dataFiles));
+        }
+        return cache.orElseThrow();
     }
 
     @Override
