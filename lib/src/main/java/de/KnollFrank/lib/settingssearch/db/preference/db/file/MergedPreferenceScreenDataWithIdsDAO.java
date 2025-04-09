@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.JsonDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataWithIds;
 
 class MergedPreferenceScreenDataWithIdsDAO {
 
