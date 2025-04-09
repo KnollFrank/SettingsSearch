@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.db;
+package de.KnollFrank.lib.settingssearch.db.preference.db.file;
 
 import java.util.Map;
 import java.util.Set;
