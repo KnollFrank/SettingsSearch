@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.search;
+package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import android.content.Context;
 
