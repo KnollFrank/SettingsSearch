@@ -7,7 +7,7 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataWithIds;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-public class MergedPreferenceScreenDataDAO {
+class MergedPreferenceScreenDataDAO {
 
     public static void persist(final Set<SearchablePreference> searchablePreferences,
                                final OutputStream preferences,
