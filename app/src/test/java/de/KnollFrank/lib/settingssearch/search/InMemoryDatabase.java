@@ -1,12 +1,12 @@
-package de.KnollFrank.lib.settingssearch.db.preference.db;
+package de.KnollFrank.lib.settingssearch.search;
 
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.db.preference.db.Database;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-// FK-TODO: move to test folder
-public class InMemoryDatabase implements Database {
+class InMemoryDatabase implements Database {
 
     private Optional<Set<SearchablePreference>> preferences = Optional.empty();
 
