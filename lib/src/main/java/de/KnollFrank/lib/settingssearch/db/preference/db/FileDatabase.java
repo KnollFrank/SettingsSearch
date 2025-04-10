@@ -43,6 +43,8 @@ class FileDatabase implements Database {
 
     private static SearchablePreference getPreferenceById(final Set<SearchablePreference> preferences,
                                                           final int id) {
-        return SearchablePreferences.findPreferenceRecursivelyByPredicate(preferences, preference -> preference.getId() == id);
+        return SearchablePreferences.findPreferenceRecursivelyByPredicate(
+                preferences,
+                preference -> preference.getId() == id);
     }
 }
