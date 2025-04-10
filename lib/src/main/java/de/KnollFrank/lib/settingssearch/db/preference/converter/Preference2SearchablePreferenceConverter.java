@@ -57,8 +57,8 @@ public class Preference2SearchablePreferenceConverter {
                         preference.getKey(),
                         getIconResourceIdOrIconPixelData(preference, hostOfPreference),
                         preference.getLayoutResource(),
-                        toString(preference.getSummary()),
-                        toString(preference.getTitle()),
+                        toString(Optional.ofNullable(preference.getSummary())),
+                        toString(Optional.ofNullable(preference.getTitle())),
                         preference.getWidgetLayoutResource(),
                         Optional.ofNullable(preference.getFragment()),
                         getClassNameOfReferencedActivity(preference),
@@ -123,10 +123,8 @@ public class Preference2SearchablePreferenceConverter {
                         .collect(Collectors.toList()));
     }
 
-    private static Optional<String> toString(final CharSequence charSequence) {
-        return Optional
-                .ofNullable(charSequence)
-                .map(CharSequence::toString);
+    private static Optional<String> toString(final Optional<CharSequence> charSequence) {
+        return charSequence.map(CharSequence::toString);
     }
 
     private static Optional<String> getClassNameOfReferencedActivity(final Preference preference) {

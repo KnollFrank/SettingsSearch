@@ -11,9 +11,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
 
 import java.util.stream.Stream;
 
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SettingsActivity;
 import de.KnollFrank.settingssearch.SettingsActivity3;
@@ -37,7 +40,46 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
         getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
+        configureSummaryChangingPreference();
         setOnPreferenceClickListeners();
+    }
+
+    private void configureSummaryChangingPreference() {
+        final SwitchPreference summaryChangingPreference = getPreferenceScreen().findPreference("summaryChangingPreference");
+        summaryChangingPreference.setSummary(getSummary(summaryChangingPreference.isChecked()));
+        summaryChangingPreference.setOnPreferenceChangeListener(
+                new Preference.OnPreferenceChangeListener() {
+
+                    @Override
+                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
+                        setSummary(preference, getSummary((boolean) checked));
+                        return true;
+                    }
+
+                    private void setSummary(final Preference preference, final String summary) {
+                        preference.setSummary(summary);
+                        final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
+                        searchablePreferenceDAO.updateSummary(
+                                searchablePreferenceDAO
+                                        .getPreferenceByKeyAndHost(
+                                                preference.getKey(),
+                                                PrefsFragmentFirst.this.getClass())
+                                        .getId(),
+                                summary);
+                    }
+
+                    private SearchablePreferenceDAO getSearchablePreferenceDAO() {
+                        return ((PreferenceSearchExample) requireActivity())
+                                .getSearchablePreferenceDAO()
+                                .orElseThrow();
+                    }
+                });
+    }
+
+    private static String getSummary(final boolean checked) {
+        return checked ?
+                "summaryChangingPreference is ON" :
+                "summaryChangingPreference is OFF";
     }
 
     private Intent createIntent(final Class<? extends Activity> activityClass, final Bundle extras) {

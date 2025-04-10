@@ -8,6 +8,8 @@ public interface Database {
 
     void persist(Set<SearchablePreference> preferences);
 
+    void updateSummary(int idOfPreference, String newSummaryOfPreference);
+
     Set<SearchablePreference> loadAll();
 
     boolean isInitialized();

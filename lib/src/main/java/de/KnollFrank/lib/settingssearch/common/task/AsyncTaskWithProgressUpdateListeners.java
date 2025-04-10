@@ -4,19 +4,19 @@ import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
-public class AsyncTaskWithProgressUpdateListeners<V> extends AsyncTask<Void, String, V> {
+public class AsyncTaskWithProgressUpdateListeners<Params, Result> extends AsyncTask<Params, String, Result> {
 
-    private final Function<ProgressUpdateListener, V> doInBackground;
-    private final Consumer<V> onPostExecute;
+    private final BiFunction<Params, ProgressUpdateListener, Result> doInBackground;
+    private final Consumer<Result> onPostExecute;
     private final List<ProgressUpdateListener> progressUpdateListeners = new ArrayList<>();
 
-    public AsyncTaskWithProgressUpdateListeners(final Function<ProgressUpdateListener, V> doInBackground,
-                                                final Consumer<V> onPostExecute) {
+    public AsyncTaskWithProgressUpdateListeners(final BiFunction<Params, ProgressUpdateListener, Result> doInBackground,
+                                                final Consumer<Result> onPostExecute) {
         this.doInBackground = doInBackground;
         this.onPostExecute = onPostExecute;
     }
@@ -34,9 +34,11 @@ public class AsyncTaskWithProgressUpdateListeners<V> extends AsyncTask<Void, Str
     }
 
     @Override
-    protected V doInBackground(final Void... voids) {
+    protected Result doInBackground(final Params... params) {
         try {
-            return doInBackground.apply(this::publishProgress);
+            return doInBackground.apply(
+                    params.length > 0 ? params[0] : null,
+                    this::publishProgress);
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +54,7 @@ public class AsyncTaskWithProgressUpdateListeners<V> extends AsyncTask<Void, Str
     }
 
     @Override
-    protected void onPostExecute(final V result) {
+    protected void onPostExecute(final Result result) {
         onPostExecute.accept(result);
     }
 }

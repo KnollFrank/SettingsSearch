@@ -29,7 +29,7 @@ public final class SearchablePreference {
     @Exclude
     private Optional<Drawable> iconCache;
     private final @LayoutRes int layoutResId;
-    private final String summary;
+    private String summary;
     @Exclude
     private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
     private final String title;
@@ -103,6 +103,10 @@ public final class SearchablePreference {
 
     public @LayoutRes int getLayoutResId() {
         return layoutResId;
+    }
+
+    public void setSummary(final String summary) {
+        this.summary = summary;
     }
 
     public Optional<String> getSummary() {

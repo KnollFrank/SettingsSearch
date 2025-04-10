@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -24,5 +25,16 @@ public class SearchablePreferences {
                         .stream()
                         .map(SearchablePreferences::getPreferencesRecursively)
                         .collect(Collectors.toSet()));
+    }
+
+    public static SearchablePreference findPreferenceRecursivelyByPredicate(
+            final Set<SearchablePreference> preferences,
+            final Predicate<SearchablePreference> predicate) {
+        return SearchablePreferences
+                .getPreferencesRecursively(preferences)
+                .stream()
+                .filter(predicate)
+                .findFirst()
+                .orElseThrow();
     }
 }

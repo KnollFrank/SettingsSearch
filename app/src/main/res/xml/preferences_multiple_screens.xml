@@ -80,6 +80,11 @@
         android:summaryOn="switch is on"
         android:title="Switch preference" />
 
+    <SwitchPreference
+        android:key="summaryChangingPreference"
+        android:summary="summary before first click"
+        android:title="changes summary when clicked" />
+
     <ListPreference
         android:dialogTitle="this is the dialog title"
         android:entries="@android:array/emailAddressTypes"

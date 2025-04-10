@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -37,7 +38,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
-    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO>>> createSearchDatabaseTaskSupplier;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchDatabaseConfig searchDatabaseConfig,
@@ -56,7 +57,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final FragmentActivity activity,
-                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<?>>> createSearchDatabaseTaskSupplier,
+                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO>>> createSearchDatabaseTaskSupplier,
                                         final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
