@@ -32,7 +32,7 @@ class InMemoryDatabase implements Database {
     }
 
     private SearchablePreference getPreferenceById(final int id) {
-        return SearchablePreferences.findPreferenceRecursivelyByPredicate(
+        return SearchablePreferences.findUniquePreferenceRecursivelyByPredicate(
                 loadAll(),
                 preference -> preference.getId() == id);
     }

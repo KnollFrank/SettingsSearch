@@ -47,16 +47,16 @@ public class SearchablePreferenceDAO {
     }
 
     public SearchablePreference getPreferenceById(final int id) {
-        return findPreferenceRecursively(preference -> preference.getId() == id);
+        return findUniquePreferenceRecursivelyByPredicate(preference -> preference.getId() == id);
     }
 
     public SearchablePreference getPreferenceByKeyAndHost(final String key,
                                                           final Class<? extends PreferenceFragmentCompat> host) {
-        return findPreferenceRecursively(preference -> preference.getKey().equals(key) && preference.getHost().equals(host));
+        return findUniquePreferenceRecursivelyByPredicate(preference -> preference.getKey().equals(key) && preference.getHost().equals(host));
     }
 
-    private SearchablePreference findPreferenceRecursively(final Predicate<SearchablePreference> predicate) {
-        return SearchablePreferences.findPreferenceRecursivelyByPredicate(
+    private SearchablePreference findUniquePreferenceRecursivelyByPredicate(final Predicate<SearchablePreference> predicate) {
+        return SearchablePreferences.findUniquePreferenceRecursivelyByPredicate(
                 database.loadAll(),
                 predicate);
     }

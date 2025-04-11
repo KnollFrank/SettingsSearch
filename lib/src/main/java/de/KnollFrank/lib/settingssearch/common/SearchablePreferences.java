@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.common;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.MoreCollectors;
 
 import java.util.Collection;
 import java.util.Set;
@@ -27,14 +28,13 @@ public class SearchablePreferences {
                         .collect(Collectors.toSet()));
     }
 
-    public static SearchablePreference findPreferenceRecursivelyByPredicate(
+    public static SearchablePreference findUniquePreferenceRecursivelyByPredicate(
             final Set<SearchablePreference> preferences,
             final Predicate<SearchablePreference> predicate) {
         return SearchablePreferences
                 .getPreferencesRecursively(preferences)
                 .stream()
                 .filter(predicate)
-                .findFirst()
-                .orElseThrow();
+                .collect(MoreCollectors.onlyElement());
     }
 }
