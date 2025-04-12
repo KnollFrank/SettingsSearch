@@ -1,6 +1,9 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
+import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_FOURTH_FRAGMENT;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
 import java.util.stream.Stream;
@@ -35,7 +39,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
-        getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference1());
+        getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
         getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
@@ -116,19 +120,20 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         if (KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(preference.getKey())) {
             show(
                     PreferenceFragmentWithSinglePreference.class.getName(),
-                    createArguments4PreferenceWithoutExtras(preference));
+                    createArguments4PreferenceWithoutExtras(preference, requireContext()));
             return true;
         }
         return false;
     }
 
-    public static Bundle createArguments4PreferenceWithoutExtras(final @NonNull Preference preference) {
+    public static Bundle createArguments4PreferenceWithoutExtras(final @NonNull Preference preference, final Context context) {
         final Bundle arguments = new Bundle();
         arguments.putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, preference.getSummary().toString());
+        arguments.putBoolean(ADD_PREFERENCE_TO_FOURTH_FRAGMENT, PreferenceManager.getDefaultSharedPreferences(context).getBoolean("add_preference_to_fourth_fragment", false));
         return arguments;
     }
 
-    private Preference createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference1() {
+    private Preference createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference() {
         final Preference preference = new Preference(requireContext());
         preference.setFragment(PreferenceFragmentWithSinglePreference.class.getName());
         preference.setTitle("preference with extras from src to dst");
