@@ -165,8 +165,4 @@
         android:key="preferenceWithFragment"
         android:persistent="false"
         android:title="Preference with Fragment" />
-
-    <CheckBoxPreference
-        android:key="add_preference_to_fourth_fragment"
-        android:title="add preference to fourth fragment" />
 </PreferenceScreen>

@@ -1,6 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_FOURTH_FRAGMENT;
+import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
@@ -39,13 +40,21 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
-        getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
+        getPreferenceScreen().addPreference(createCheckBoxPreference());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
+        getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
         getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
         configureSummaryChangingPreference();
         setOnPreferenceClickListeners();
+    }
+
+    private CheckBoxPreference createCheckBoxPreference() {
+        final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(requireContext());
+        checkBoxPreference.setKey(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE);
+        checkBoxPreference.setTitle("add preference to P1");
+        return checkBoxPreference;
     }
 
     private void configureSummaryChangingPreference() {
@@ -129,7 +138,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     public static Bundle createArguments4PreferenceWithoutExtras(final @NonNull Preference preference, final Context context) {
         final Bundle arguments = new Bundle();
         arguments.putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, preference.getSummary().toString());
-        arguments.putBoolean(ADD_PREFERENCE_TO_FOURTH_FRAGMENT, PreferenceManager.getDefaultSharedPreferences(context).getBoolean("add_preference_to_fourth_fragment", false));
+        arguments.putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false));
         return arguments;
     }
 
@@ -147,7 +156,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     private Preference createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference() {
         final Preference preference = new Preference(requireContext());
         preference.setFragment(PreferenceFragmentWithSinglePreference.class.getName());
-        preference.setTitle("preference without extras from src to dst");
+        preference.setTitle("P1: preference without extras from src to dst");
         preference.setKey(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS);
         preference.setSummary(SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS);
         return preference;

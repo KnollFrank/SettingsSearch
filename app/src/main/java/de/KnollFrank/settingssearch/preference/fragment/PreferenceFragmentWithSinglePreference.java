@@ -11,7 +11,7 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
 
     public static final String TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS = "title of dst preference coming from src with extras";
     public static final String TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS = "title of dst preference coming from src without extras";
-    public static final String ADD_PREFERENCE_TO_FOURTH_FRAGMENT = "addPreferenceToFourthFragment";
+    public static final String ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE = "addPreferenceToPreferenceFragmentWithSinglePreference";
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -34,7 +34,7 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
                                 arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS),
                                 context));
             }
-            if (arguments.getBoolean(ADD_PREFERENCE_TO_FOURTH_FRAGMENT, false)) {
+            if (arguments.getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false)) {
                 final Preference preference = new Preference(context);
                 preference.setKey("additionalPreference");
                 preference.setTitle("some additional preference");
