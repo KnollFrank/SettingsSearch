@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -20,6 +21,7 @@ import androidx.preference.SwitchPreference;
 
 import java.util.stream.Stream;
 
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
@@ -54,6 +56,19 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(requireContext());
         checkBoxPreference.setKey(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE);
         checkBoxPreference.setTitle("add preference to P1");
+        checkBoxPreference.setOnPreferenceChangeListener(
+                new OnPreferenceChangeListener() {
+
+                    @Override
+                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object newValue) {
+                        rebuildSearchDatabase();
+                        return true;
+                    }
+
+                    private void rebuildSearchDatabase() {
+                        new SearchDatabaseDirectoryIO(requireContext()).removeSearchDatabaseDirectories4AllLocales();
+                    }
+                });
         return checkBoxPreference;
     }
 
