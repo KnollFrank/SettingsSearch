@@ -21,9 +21,11 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.settingssearch.Matchers.childAtPosition;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItemCount;
+import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.SOME_ADDITIONAL_PREFERENCE;
 
 import android.view.View;
 
+import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -172,6 +174,35 @@ public class PreferenceSearchExampleTest {
         final String query = "this is the edit text dialog title";
         searchForQueryThenClickSearchResultAtPosition(query, 0);
         onView(dialogTitle()).check(matches(withText(query)));
+    }
+
+    @Test
+    public void shouldSearchAndNotFindNonAddedPreference() {
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
+        onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
+    }
+
+    @Test
+    public void shouldSearchAndFindAddedPreference() {
+        clickAddPreferenceToP1CheckBox();
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
+        onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
+    }
+
+    private static void clickAddPreferenceToP1CheckBox() {
+        final int positionOfAddPreferenceToP1CheckBox = 26;
+        preferencesContainer().perform(actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
+    }
+
+    private static ViewInteraction preferencesContainer() {
+        return onView(
+                allOf(
+                        withId(androidx.preference.R.id.recycler_view),
+                        childAtPosition(
+                                withId(android.R.id.list_container),
+                                0)));
     }
 
     private static void searchForQueryThenClickSearchResultAtPosition(final String query, final int position) {

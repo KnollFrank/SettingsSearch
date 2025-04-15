@@ -40,7 +40,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
-        getPreferenceScreen().addPreference(createCheckBoxPreference());
+        getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
@@ -50,7 +50,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         setOnPreferenceClickListeners();
     }
 
-    private CheckBoxPreference createCheckBoxPreference() {
+    private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference() {
         final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(requireContext());
         checkBoxPreference.setKey(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE);
         checkBoxPreference.setTitle("add preference to P1");
