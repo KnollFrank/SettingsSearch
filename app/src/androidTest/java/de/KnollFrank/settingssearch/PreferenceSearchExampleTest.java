@@ -185,14 +185,15 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFindAddedPreference() {
-        clickAddPreferenceToP1CheckBox();
+        checkAddPreferenceToP1CheckBox();
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
     }
 
-    private static void clickAddPreferenceToP1CheckBox() {
+    private static void checkAddPreferenceToP1CheckBox() {
         final int positionOfAddPreferenceToP1CheckBox = 26;
+        // FK-FIXME: ensure checkbox is actually checked, i.e. only click it if PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false) == false
         preferencesContainer().perform(actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
     }
 
