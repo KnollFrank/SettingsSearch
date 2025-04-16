@@ -28,11 +28,19 @@ public class SearchablePreferenceDAO {
     }
 
     public void persist(final Set<SearchablePreference> preferences) {
-        database.persist(preferences);
+        database.initializeWith(preferences);
     }
 
     public void updateSummary(final int idOfPreference, final String newSummaryOfPreference) {
         database.updateSummary(idOfPreference, newSummaryOfPreference);
+    }
+
+    public void persistPreference(final SearchablePreference preference) {
+        database.persistPreference(preference);
+    }
+
+    public void removePreference(final int idOfPreference) {
+        database.removePreference(idOfPreference);
     }
 
     public Set<PreferenceMatch> searchFor(final String needle,

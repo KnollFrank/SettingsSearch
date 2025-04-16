@@ -6,11 +6,15 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public interface Database {
 
-    void persist(Set<SearchablePreference> preferences);
+    void initializeWith(Set<SearchablePreference> preferences);
 
-    void updateSummary(int idOfPreference, String newSummaryOfPreference);
+    boolean isInitialized();
 
     Set<SearchablePreference> loadAll();
 
-    boolean isInitialized();
+    void persistPreference(SearchablePreference preference);
+
+    void removePreference(int idOfPreference);
+
+    void updateSummary(int idOfPreference, String newSummaryOfPreference);
 }

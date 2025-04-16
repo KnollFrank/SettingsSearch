@@ -123,11 +123,13 @@ public class Preference2SearchablePreferenceConverter {
                         .collect(Collectors.toList()));
     }
 
-    private static Optional<String> toString(final Optional<CharSequence> charSequence) {
+    // FK-TODO: make private again
+    public static Optional<String> toString(final Optional<CharSequence> charSequence) {
         return charSequence.map(CharSequence::toString);
     }
 
-    private static Optional<String> getClassNameOfReferencedActivity(final Preference preference) {
+    // FK-TODO: make private again
+    public static Optional<String> getClassNameOfReferencedActivity(final Preference preference) {
         return Optional
                 .ofNullable(preference.getIntent())
                 .map(Intents::getClassName);

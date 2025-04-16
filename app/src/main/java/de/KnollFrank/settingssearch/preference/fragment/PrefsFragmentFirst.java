@@ -1,5 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
+import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADDITIONAL_PREFERENCE_KEY;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE;
 
 import android.app.Activity;
@@ -21,7 +22,6 @@ import androidx.preference.SwitchPreference;
 
 import java.util.stream.Stream;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
@@ -60,13 +60,33 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 new OnPreferenceChangeListener() {
 
                     @Override
-                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object newValue) {
-                        rebuildSearchDatabase();
+                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
+                        if ((boolean) checked) {
+                            addPreferenceToP1();
+                        } else {
+                            removePreferenceFromP1();
+                        }
                         return true;
                     }
 
-                    private void rebuildSearchDatabase() {
-                        new SearchDatabaseDirectoryIO(requireContext()).removeSearchDatabaseDirectories4AllLocales();
+                    private void addPreferenceToP1() {
+                        // FK-TODO: use Preference2SearchablePreferenceConverter.convert2POJO() + PreferencePathsAndHostsSetter for general case, which has yet to be enforced by new unit tests
+                        // FK-FIXME: pass next unused id in whole search database instead of -1
+                        getSearchablePreferenceDAO().persistPreference(
+                                PreferenceFragmentWithSinglePreference.createAdditionalSearchablePreference(
+                                        -1,
+                                        requireContext(),
+                                        getSearchablePreferenceDAO()));
+                    }
+
+                    private void removePreferenceFromP1() {
+                        final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
+                        searchablePreferenceDAO.removePreference(
+                                searchablePreferenceDAO
+                                        .getPreferenceByKeyAndHost(
+                                                ADDITIONAL_PREFERENCE_KEY,
+                                                PreferenceFragmentWithSinglePreference.class)
+                                        .getId());
                     }
                 });
         return checkBoxPreference;
@@ -95,13 +115,13 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         .getId(),
                                 summary);
                     }
-
-                    private SearchablePreferenceDAO getSearchablePreferenceDAO() {
-                        return ((PreferenceSearchExample) requireActivity())
-                                .getSearchablePreferenceDAO()
-                                .orElseThrow();
-                    }
                 });
+    }
+
+    private SearchablePreferenceDAO getSearchablePreferenceDAO() {
+        return ((PreferenceSearchExample) requireActivity())
+                .getSearchablePreferenceDAO()
+                .orElseThrow();
     }
 
     private static String getSummary(final boolean checked) {
