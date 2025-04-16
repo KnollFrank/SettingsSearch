@@ -21,10 +21,13 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.settingssearch.Matchers.childAtPosition;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItemCount;
+import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.SOME_ADDITIONAL_PREFERENCE;
 
+import android.content.SharedPreferences;
 import android.view.View;
 
+import androidx.preference.PreferenceManager;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -36,6 +39,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Objects;
+
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
@@ -44,8 +49,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 public class PreferenceSearchExampleTest {
 
     @Rule
-    public ActivityScenarioRule<PreferenceSearchExample> mActivityScenarioRule =
-            new ActivityScenarioRule<>(PreferenceSearchExample.class);
+    public ActivityScenarioRule<PreferenceSearchExample> activityScenarioRule = new ActivityScenarioRule<>(PreferenceSearchExample.class);
 
     @Test
     public void shouldSearchAndFindPreference() {
@@ -178,6 +182,7 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndNotFindNonAddedPreference() {
+        uncheckAddPreferenceToP1CheckBoxExplicitly();
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
@@ -185,16 +190,10 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFindAddedPreference() {
-        checkAddPreferenceToP1CheckBox();
+        checkAddPreferenceToP1CheckBoxExplicitly();
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
-    }
-
-    private static void checkAddPreferenceToP1CheckBox() {
-        final int positionOfAddPreferenceToP1CheckBox = 26;
-        // FK-FIXME: ensure checkbox is actually checked, i.e. only click it if PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false) == false
-        preferencesContainer().perform(actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
     }
 
     private static ViewInteraction preferencesContainer() {
@@ -273,5 +272,42 @@ public class PreferenceSearchExampleTest {
                 withId(android.R.id.summary),
                 withParent(withParent(IsInstanceOf.instanceOf(android.widget.LinearLayout.class))),
                 isDisplayed());
+    }
+
+    private void checkAddPreferenceToP1CheckBoxExplicitly() {
+        uncheckAddPreferenceToP1CheckBox();
+        checkAddPreferenceToP1CheckBox();
+    }
+
+    private void uncheckAddPreferenceToP1CheckBoxExplicitly() {
+        checkAddPreferenceToP1CheckBox();
+        uncheckAddPreferenceToP1CheckBox();
+    }
+
+    private void checkAddPreferenceToP1CheckBox() {
+        if (!isAddPreferenceToP1CheckBoxChecked()) {
+            clickAddPreferenceToP1CheckBox();
+        }
+    }
+
+    private void uncheckAddPreferenceToP1CheckBox() {
+        if (isAddPreferenceToP1CheckBoxChecked()) {
+            clickAddPreferenceToP1CheckBox();
+        }
+    }
+
+    private boolean isAddPreferenceToP1CheckBoxChecked() {
+        return getSharedPreferences().getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false);
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        final SharedPreferences[] sharedPreferencesHolder = new SharedPreferences[1];
+        activityScenarioRule.getScenario().onActivity(activity -> sharedPreferencesHolder[0] = PreferenceManager.getDefaultSharedPreferences(activity));
+        return Objects.requireNonNull(sharedPreferencesHolder[0]);
+    }
+
+    private static void clickAddPreferenceToP1CheckBox() {
+        final int positionOfAddPreferenceToP1CheckBox = 26;
+        preferencesContainer().perform(actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
     }
 }
