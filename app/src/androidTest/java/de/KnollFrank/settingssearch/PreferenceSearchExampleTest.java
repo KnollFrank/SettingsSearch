@@ -21,8 +21,8 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.settingssearch.Matchers.childAtPosition;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItemCount;
-import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.SOME_ADDITIONAL_PREFERENCE;
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY;
 
 import android.content.SharedPreferences;
 import android.view.View;
@@ -297,7 +297,7 @@ public class PreferenceSearchExampleTest {
     }
 
     private boolean isAddPreferenceToP1CheckBoxChecked() {
-        return getSharedPreferences().getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false);
+        return getSharedPreferences().getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, false);
     }
 
     private SharedPreferences getSharedPreferences() {
