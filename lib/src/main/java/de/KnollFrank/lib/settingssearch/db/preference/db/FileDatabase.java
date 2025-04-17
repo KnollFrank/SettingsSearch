@@ -66,16 +66,20 @@ class FileDatabase implements Database {
 
     @Override
     public int getUnusedId() {
-        return isInitialized() ? getMaxId() + 1 : 0;
+        return this
+                .getMaxId()
+                .map(id -> id + 1)
+                .orElse(0);
     }
 
-    private int getMaxId() {
-        return this
-                .loadAll()
-                .stream()
-                .map(SearchablePreference::getId)
-                .max(Integer::compareTo)
-                .orElseThrow();
+    private Optional<Integer> getMaxId() {
+        return isInitialized() ?
+                this
+                        .loadAll()
+                        .stream()
+                        .map(SearchablePreference::getId)
+                        .max(Integer::compareTo) :
+                Optional.empty();
     }
 
     private static SearchablePreference getPreferenceById(final Set<SearchablePreference> preferences,
