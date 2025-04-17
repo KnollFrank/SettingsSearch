@@ -79,8 +79,8 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
                         preference.isVisible(),
                         Optional.empty(),
                         preference.getExtras(),
+                        PreferenceFragmentWithSinglePreference.class,
                         List.of());
-        searchablePreference.setHost(PreferenceFragmentWithSinglePreference.class);
         searchablePreference.setPreferencePath(
                 new PreferencePath(
                         List.of(

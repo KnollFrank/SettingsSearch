@@ -1,8 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import static de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter.drawable2String;
-
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.preference.PreferenceFragmentCompat;
@@ -15,7 +12,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.settingssearch.R;
 
 public class POJOTestFactory {
 
@@ -24,55 +20,21 @@ public class POJOTestFactory {
     public static SearchablePreference createSearchablePreferencePOJO(
             final String title,
             final Class<? extends PreferenceFragmentCompat> host) {
-        final SearchablePreference searchablePreference =
-                new SearchablePreference(
-                        idGenerator.nextId(),
-                        title,
-                        Optional.empty(),
-                        0,
-                        Optional.empty(),
-                        Optional.of(title),
-                        0,
-                        Optional.empty(),
-                        Optional.empty(),
-                        true,
-                        Optional.empty(),
-                        new Bundle(),
-                        List.of());
-        searchablePreference.setHost(host);
-        return searchablePreference;
-    }
-
-    public static SearchablePreference createSomeSearchablePreferencePOJO(final Bundle extras,
-                                                                          final Resources resources) {
         return new SearchablePreference(
-                1,
-                "some key",
-                Optional.of(Either.ofRight(drawable2String(resources.getDrawable(R.drawable.smiley, null)))),
-                4712,
-                Optional.of("some summary"),
-                Optional.of("some title"),
-                4713,
-                Optional.of("some fragment"),
-                Optional.of("some searchableInfo"),
+                idGenerator.nextId(),
+                title,
+                Optional.empty(),
+                0,
+                Optional.empty(),
+                Optional.of(title),
+                0,
+                Optional.empty(),
+                Optional.empty(),
                 true,
                 Optional.empty(),
-                extras,
-                List.of(
-                        new SearchablePreference(
-                                2,
-                                "some key 2",
-                                Optional.empty(),
-                                4715,
-                                Optional.of("some summary 2"),
-                                Optional.of("some title 2"),
-                                4716,
-                                Optional.of("some fragment 2"),
-                                Optional.empty(),
-                                true,
-                                Optional.of("some searchableInfo 2"),
-                                new Bundle(),
-                                List.of())));
+                new Bundle(),
+                host,
+                List.of());
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -86,7 +48,8 @@ public class POJOTestFactory {
                 summary,
                 searchableInfo,
                 createBundle("someKey", "someValue"),
-                iconResourceIdOrIconPixelData);
+                iconResourceIdOrIconPixelData,
+                TestPreferenceFragment.class);
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -95,7 +58,8 @@ public class POJOTestFactory {
             final Optional<String> summary,
             final Optional<String> searchableInfo,
             final Bundle extras,
-            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+            final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         id,
@@ -110,9 +74,9 @@ public class POJOTestFactory {
                         true,
                         searchableInfo,
                         extras,
+                        host,
                         List.of());
         searchablePreference.setPreferencePath(new PreferencePath(List.of(searchablePreference)));
-        searchablePreference.setHost(TestPreferenceFragment.class);
         return searchablePreference;
     }
 

@@ -127,6 +127,7 @@ public class Graph2POJOGraphTransformerTest {
                         true,
                         Optional.empty(),
                         new Bundle(),
+                        host,
                         List.of());
         return DefaultDirectedGraph
                 .<PreferenceScreenWithHostClass, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
@@ -158,6 +159,7 @@ public class Graph2POJOGraphTransformerTest {
                                         true,
                                         Optional.empty(),
                                         new Bundle(),
+                                        host,
                                         List.of(
                                                 new SearchablePreference(
                                                         2,
@@ -172,6 +174,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         true,
                                                         Optional.empty(),
                                                         new Bundle(),
+                                                        host,
                                                         List.of()),
                                                 new SearchablePreference(
                                                         3,
@@ -186,6 +189,7 @@ public class Graph2POJOGraphTransformerTest {
                                                         true,
                                                         Optional.empty(),
                                                         new Bundle(),
+                                                        host,
                                                         List.of()))),
                                 preferenceConnectingSrc2Dst)),
                 host);

@@ -11,5 +11,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 record MergedPreferenceScreenDataWithIds(
         Set<SearchablePreference> preferences,
         Map<Integer, List<Integer>> preferencePathIdsByPreferenceId,
+        // FK-TODO: remove hostByPreferenceId?
         Map<Integer, Class<? extends PreferenceFragmentCompat>> hostByPreferenceId) {
 }

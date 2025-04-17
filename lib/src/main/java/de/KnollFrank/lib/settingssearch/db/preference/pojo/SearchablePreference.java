@@ -43,11 +43,10 @@ public final class SearchablePreference {
     @Exclude
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
     private final Bundle extras;
+    private final Class<? extends PreferenceFragmentCompat> host;
     private final List<SearchablePreference> children;
     @Exclude
     private PreferencePath preferencePath;
-    @Exclude
-    private Class<? extends PreferenceFragmentCompat> host;
 
     public SearchablePreference(
             final int id,
@@ -62,6 +61,7 @@ public final class SearchablePreference {
             final boolean visible,
             final Optional<String> searchableInfo,
             final Bundle extras,
+            final Class<? extends PreferenceFragmentCompat> host,
             final List<SearchablePreference> children) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
@@ -75,6 +75,7 @@ public final class SearchablePreference {
         this.visible = visible;
         this.searchableInfo = searchableInfo.orElse(null);
         this.extras = extras;
+        this.host = host;
         this.children = children;
     }
 
@@ -194,10 +195,6 @@ public final class SearchablePreference {
 
     public Class<? extends PreferenceFragmentCompat> getHost() {
         return host;
-    }
-
-    public void setHost(final Class<? extends PreferenceFragmentCompat> host) {
-        this.host = host;
     }
 
     @Override

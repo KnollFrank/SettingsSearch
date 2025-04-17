@@ -30,7 +30,7 @@ import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.file.MergedPreferenceScreenDataDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsAndHostsSetter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -50,7 +50,8 @@ public class MergedPreferenceScreenDataTest {
                                 Optional.of("some summary 1"),
                                 Optional.of("searchable info also has a title 1"),
                                 POJOTestFactory.createBundle("someKey1", "someValue1"),
-                                Optional.of(Either.ofLeft(4711)));
+                                Optional.of(Either.ofLeft(4711)),
+                                PreferenceFragmentCompat.class);
                 final SearchablePreference searchablePreference2 =
                         createSearchablePreferencePOJO(
                                 2,
@@ -58,24 +59,20 @@ public class MergedPreferenceScreenDataTest {
                                 Optional.of("some summary 2"),
                                 Optional.of("searchable info also has a title 2"),
                                 POJOTestFactory.createBundle("someKey2", "someValue2"),
-                                Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null)))));
-                final PreferencePathsAndHostsSetter preferencePathsAndHostsSetter =
-                        new PreferencePathsAndHostsSetter(
+                                Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null)))),
+                                PreferenceFragmentCompat.class);
+                final PreferencePathsSetter preferencePathsSetter =
+                        new PreferencePathsSetter(
                                 ImmutableMap
                                         .<SearchablePreference, PreferencePath>builder()
                                         .put(searchablePreference1, new PreferencePath(List.of(searchablePreference1)))
                                         .put(searchablePreference2, new PreferencePath(List.of(searchablePreference1, searchablePreference2)))
-                                        .build(),
-                                ImmutableMap
-                                        .<SearchablePreference, Class<? extends PreferenceFragmentCompat>>builder()
-                                        .put(searchablePreference1, PreferenceFragmentCompat.class)
-                                        .put(searchablePreference2, PreferenceFragmentCompat.class)
                                         .build());
                 final Set<SearchablePreference> data =
                         Set.of(
                                 searchablePreference1,
                                 searchablePreference2);
-                preferencePathsAndHostsSetter.setPreferencePathsAndHosts(data);
+                preferencePathsSetter.setPreferencePaths(data);
                 final var preferences = new ByteArrayOutputStream();
                 final var preferencePathByPreference = new ByteArrayOutputStream();
                 final var hostByPreference = new ByteArrayOutputStream();
