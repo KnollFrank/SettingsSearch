@@ -66,10 +66,7 @@ class FileDatabase implements Database {
 
     @Override
     public int getUnusedId() {
-        return this
-                .getMaxId()
-                .map(id -> id + 1)
-                .orElse(0);
+        return getMaxId().map(maxId -> maxId + 1).orElse(0);
     }
 
     private Optional<Integer> getMaxId() {
