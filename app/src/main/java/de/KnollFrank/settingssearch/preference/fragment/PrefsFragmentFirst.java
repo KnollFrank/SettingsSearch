@@ -71,7 +71,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private void addPreferenceToP1() {
-                        // FK-TODO: use Preference2SearchablePreferenceConverter.convert2POJO() + PreferencePathsAndHostsSetter for general case, which has yet to be enforced by new unit tests
+                        // FK-TODO: use Preference2SearchablePreferenceConverter.convert2POJO() + PreferencePathsSetter for general case, which has yet to be enforced by new unit tests
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
                         searchablePreferenceDAO.persistPreference(
                                 PreferenceFragmentWithSinglePreference.createAdditionalSearchablePreference(

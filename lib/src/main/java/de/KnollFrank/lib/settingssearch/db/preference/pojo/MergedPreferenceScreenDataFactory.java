@@ -11,7 +11,7 @@ import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 public class MergedPreferenceScreenDataFactory {
 
     public static Set<SearchablePreference> getPreferences(
-            final Graph<PreferenceScreenWithHostClass, SearchablePreferenceEdge> pojoGraph) {
+            final Graph<PreferenceScreenWithId, SearchablePreferenceEdge> pojoGraph) {
         final PreferencePathsSetter preferencePathsSetter =
                 new PreferencePathsSetter(
                         PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
@@ -21,7 +21,7 @@ public class MergedPreferenceScreenDataFactory {
         return preferences;
     }
 
-    private static Set<SearchablePreference> getPreferences(final Set<PreferenceScreenWithHostClass> preferenceScreens) {
+    private static Set<SearchablePreference> getPreferences(final Set<PreferenceScreenWithId> preferenceScreens) {
         return preferenceScreens
                 .stream()
                 .flatMap(preferenceScreenWithHostClass -> preferenceScreenWithHostClass.preferenceScreen().preferences().stream())

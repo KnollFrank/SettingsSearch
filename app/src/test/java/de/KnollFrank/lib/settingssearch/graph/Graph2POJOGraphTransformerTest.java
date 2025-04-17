@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassWithMap;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithId2POJOConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 
 import android.content.Context;
@@ -33,7 +33,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -112,7 +112,7 @@ public class Graph2POJOGraphTransformerTest {
         };
     }
 
-    private static Graph<PreferenceScreenWithHostClass, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+    private static Graph<PreferenceScreenWithId, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference preferenceConnectingSrc2Dst =
                 new SearchablePreference(
                         4,
@@ -130,7 +130,7 @@ public class Graph2POJOGraphTransformerTest {
                         host,
                         List.of());
         return DefaultDirectedGraph
-                .<PreferenceScreenWithHostClass, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                .<PreferenceScreenWithId, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                 .addEdge(
                         createSrc(preferenceConnectingSrc2Dst, host),
                         createDst(),
@@ -138,9 +138,9 @@ public class Graph2POJOGraphTransformerTest {
                 .build();
     }
 
-    private static PreferenceScreenWithHostClass createSrc(final SearchablePreference preferenceConnectingSrc2Dst,
-                                                           final Class<? extends PreferenceFragmentCompat> host) {
-        return new PreferenceScreenWithHostClass(
+    private static PreferenceScreenWithId createSrc(final SearchablePreference preferenceConnectingSrc2Dst,
+                                                    final Class<? extends PreferenceFragmentCompat> host) {
+        return new PreferenceScreenWithId(
                 1,
                 new SearchablePreferenceScreen(
                         "screen title",
@@ -191,14 +191,12 @@ public class Graph2POJOGraphTransformerTest {
                                                         new Bundle(),
                                                         host,
                                                         List.of()))),
-                                preferenceConnectingSrc2Dst)),
-                host);
+                                preferenceConnectingSrc2Dst)));
     }
 
-    private static PreferenceScreenWithHostClass createDst() {
-        return new PreferenceScreenWithHostClass(
+    private static PreferenceScreenWithId createDst() {
+        return new PreferenceScreenWithId(
                 2,
-                new SearchablePreferenceScreen(null, null, List.of()),
-                TestPreferenceFragment.class);
+                new SearchablePreferenceScreen(null, null, List.of()));
     }
 }

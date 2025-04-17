@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithId2POJOConverterTest.initializeFragment;
 
 import android.content.Context;
 

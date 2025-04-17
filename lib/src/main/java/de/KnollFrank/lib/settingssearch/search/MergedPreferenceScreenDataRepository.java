@@ -20,7 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirector
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.FileDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -80,7 +80,7 @@ public class MergedPreferenceScreenDataRepository {
     }
 
     private Set<SearchablePreference> computePreferences() {
-        final Graph<PreferenceScreenWithHostClass, SearchablePreferenceEdge> searchablePreferenceScreenGraph =
+        final Graph<PreferenceScreenWithId, SearchablePreferenceEdge> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenGraph();

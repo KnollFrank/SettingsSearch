@@ -26,7 +26,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -39,7 +39,7 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class PreferenceScreenWithHostClass2POJOConverterTest {
+public class PreferenceScreenWithId2POJOConverterTest {
 
     @Test
     public void shouldConvertPreferenceScreenWithHostClass2POJO() {
@@ -86,14 +86,14 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                 new IdGenerator());
 
                 // When
-                final PreferenceScreenWithHostClass pojo =
+                final PreferenceScreenWithId pojo =
                         PreferenceScreenWithHostClass2POJOConverter
                                 .convert2POJO(entity, id, preference2SearchablePreferenceConverter)
-                                .preferenceScreenWithHostClass();
+                                .preferenceScreenWithId();
 
                 // Then
                 assertThat(pojo, is(
-                        new PreferenceScreenWithHostClass(
+                        new PreferenceScreenWithId(
                                 id,
                                 new SearchablePreferenceScreen(
                                         "screen title",
@@ -143,8 +143,7 @@ public class PreferenceScreenWithHostClass2POJOConverterTest {
                                                                         Optional.of("some searchable info of second child"),
                                                                         new Bundle(),
                                                                         preferenceFragment.getClass(),
-                                                                        List.of()))))),
-                                preferenceFragment.getClass())));
+                                                                        List.of()))))))));
             });
         }
     }

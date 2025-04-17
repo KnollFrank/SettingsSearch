@@ -10,7 +10,7 @@ import androidx.preference.PreferenceScreen;
 import java.util.List;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 
 class PreferenceScreensProviderTestHelper {
 
@@ -28,8 +28,8 @@ class PreferenceScreensProviderTestHelper {
         fragment.setPreferenceScreen(screen);
     }
 
-    public static PreferenceScreenWithHostClass getPreferenceScreenByName(
-            final Set<PreferenceScreenWithHostClass> preferenceScreens,
+    public static PreferenceScreenWithId getPreferenceScreenByName(
+            final Set<PreferenceScreenWithId> preferenceScreens,
             final String name) {
         return preferenceScreens
                 .stream()

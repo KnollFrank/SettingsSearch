@@ -26,13 +26,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithHostClass;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -54,7 +54,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                                 activity);
 
                 // When
-                final Set<PreferenceScreenWithHostClass> preferenceScreens =
+                final Set<PreferenceScreenWithId> preferenceScreens =
                         searchablePreferenceScreenGraphProvider
                                 .getSearchablePreferenceScreenGraph()
                                 .vertexSet();
@@ -82,7 +82,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                                 activity);
 
                 // When
-                final Graph<PreferenceScreenWithHostClass, SearchablePreferenceEdge> pojoGraph =
+                final Graph<PreferenceScreenWithId, SearchablePreferenceEdge> pojoGraph =
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
                 final Map<SearchablePreference, PreferencePath> preferencePathByPreference =
                         PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
@@ -139,16 +139,15 @@ public class SearchablePreferenceScreenGraphProvider1Test {
     private static SearchablePreference getPreference(
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
             final Class<? extends PreferenceFragmentCompat> fragmentPointedTo,
-            final Set<PreferenceScreenWithHostClass> preferenceScreenWithHostSet) {
+            final Set<PreferenceScreenWithId> preferenceScreenWithHostSet) {
         return getPreference(
                 preferenceScreenWithHostSet,
-                (_hostOfPreference, preference) ->
-                        hostOfPreference.equals(_hostOfPreference) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
+                preference -> hostOfPreference.equals(preference.getHost()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
     private static SearchablePreference getPreference(
-            final Set<PreferenceScreenWithHostClass> preferenceScreenWithHostSet,
-            final BiPredicate<Class<? extends PreferenceFragmentCompat>, SearchablePreference> predicate) {
+            final Set<PreferenceScreenWithId> preferenceScreenWithHostSet,
+            final Predicate<SearchablePreference> predicate) {
         return preferenceScreenWithHostSet
                 .stream()
                 .flatMap(
@@ -156,7 +155,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                                 SearchablePreferences
                                         .getPreferencesRecursively(preferenceScreenWithHost.preferenceScreen().preferences())
                                         .stream()
-                                        .filter(preference -> predicate.test(preferenceScreenWithHost.host(), preference)))
+                                        .filter(predicate))
                 .collect(MoreCollectors.onlyElement());
     }
 

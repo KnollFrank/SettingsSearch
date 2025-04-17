@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest.getInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithId2POJOConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItemCount;
 
@@ -21,7 +21,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverterTest;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithId2POJOConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
@@ -149,7 +149,7 @@ public class SearchResultsDisplayerTest {
                                 return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                             }
                         });
-        PreferenceScreenWithHostClass2POJOConverterTest.initializeFragment(
+        PreferenceScreenWithId2POJOConverterTest.initializeFragment(
                 searchResultsFragment,
                 getInstantiateAndInitializeFragment(searchResultsFragment, activity));
         return searchResultsFragment;
