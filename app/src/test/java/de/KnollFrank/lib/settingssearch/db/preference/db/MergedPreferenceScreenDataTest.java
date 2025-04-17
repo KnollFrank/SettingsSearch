@@ -75,19 +75,16 @@ public class MergedPreferenceScreenDataTest {
                 preferencePathsSetter.setPreferencePaths(data);
                 final var preferences = new ByteArrayOutputStream();
                 final var preferencePathByPreference = new ByteArrayOutputStream();
-                final var hostByPreference = new ByteArrayOutputStream();
 
                 // When
                 MergedPreferenceScreenDataDAO.persist(
                         data,
                         preferences,
-                        preferencePathByPreference,
-                        hostByPreference);
+                        preferencePathByPreference);
                 final Set<SearchablePreference> dataActual =
                         MergedPreferenceScreenDataDAO.load(
                                 outputStream2InputStream(preferences),
-                                outputStream2InputStream(preferencePathByPreference),
-                                outputStream2InputStream(hostByPreference));
+                                outputStream2InputStream(preferencePathByPreference));
 
                 // Then
                 assertEquals(

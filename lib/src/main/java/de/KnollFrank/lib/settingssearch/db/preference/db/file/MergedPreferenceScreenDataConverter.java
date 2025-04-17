@@ -15,8 +15,7 @@ class MergedPreferenceScreenDataConverter {
         final Set<SearchablePreference> preferencesRecursively = SearchablePreferences.getPreferencesRecursively(preferences);
         return new MergedPreferenceScreenDataWithIds(
                 preferences,
-                PreferencePathByPreferenceConverter.addIds(preferencesRecursively),
-                HostByPreferenceConverter.addIds(preferencesRecursively));
+                PreferencePathByPreferenceConverter.addIds(preferencesRecursively));
     }
 
     public static Set<SearchablePreference> removeIds(final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds) {

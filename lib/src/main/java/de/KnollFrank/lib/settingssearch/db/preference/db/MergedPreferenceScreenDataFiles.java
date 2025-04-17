@@ -4,15 +4,11 @@ import java.io.File;
 import java.util.stream.Stream;
 
 record MergedPreferenceScreenDataFiles(File preferences,
-                                       File preferencePathByPreference,
-                                       File hostByPreference) {
+                                       File preferencePathByPreference) {
 
     public boolean exists() {
         return Stream
-                .of(
-                        preferences(),
-                        preferencePathByPreference(),
-                        hostByPreference())
+                .of(preferences(), preferencePathByPreference())
                 .allMatch(File::exists);
     }
 }

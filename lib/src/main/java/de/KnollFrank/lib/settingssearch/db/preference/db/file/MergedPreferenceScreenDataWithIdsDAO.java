@@ -11,16 +11,13 @@ class MergedPreferenceScreenDataWithIdsDAO {
 
     public static void persist(final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds,
                                final OutputStream preferences,
-                               final OutputStream preferencePathIdsByPreferenceId,
-                               final OutputStream hostByPreferenceId) {
+                               final OutputStream preferencePathIdsByPreferenceId) {
         JsonDAO.persist(mergedPreferenceScreenDataWithIds.preferences(), preferences);
         JsonDAO.persist(mergedPreferenceScreenDataWithIds.preferencePathIdsByPreferenceId(), preferencePathIdsByPreferenceId);
-        JsonDAO.persist(mergedPreferenceScreenDataWithIds.hostByPreferenceId(), hostByPreferenceId);
     }
 
     public static MergedPreferenceScreenDataWithIds load(final InputStream preferences,
-                                                         final InputStream preferencePathIdsByPreferenceId,
-                                                         final InputStream hostByPreferenceId) {
+                                                         final InputStream preferencePathIdsByPreferenceId) {
         return new MergedPreferenceScreenDataWithIds(
                 JsonDAO.load(
                         preferences,
@@ -28,10 +25,6 @@ class MergedPreferenceScreenDataWithIdsDAO {
                         }),
                 JsonDAO.load(
                         preferencePathIdsByPreferenceId,
-                        new TypeToken<>() {
-                        }),
-                JsonDAO.load(
-                        hostByPreferenceId,
                         new TypeToken<>() {
                         }));
     }

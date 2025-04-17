@@ -15,14 +15,12 @@ class MergedPreferenceScreenDataFileDAO {
         MergedPreferenceScreenDataDAO.persist(
                 preferences,
                 getFileOutputStream(sink.preferences()),
-                getFileOutputStream(sink.preferencePathByPreference()),
-                getFileOutputStream(sink.hostByPreference()));
+                getFileOutputStream(sink.preferencePathByPreference()));
     }
 
     public static Set<SearchablePreference> load(final MergedPreferenceScreenDataFiles source) {
         return MergedPreferenceScreenDataDAO.load(
                 getFileInputStream(source.preferences()),
-                getFileInputStream(source.preferencePathByPreference()),
-                getFileInputStream(source.hostByPreference()));
+                getFileInputStream(source.preferencePathByPreference()));
     }
 }
