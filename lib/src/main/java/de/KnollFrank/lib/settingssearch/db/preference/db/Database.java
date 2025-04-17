@@ -17,4 +17,6 @@ public interface Database {
     void removePreference(int idOfPreference);
 
     void updateSummary(int idOfPreference, String newSummaryOfPreference);
+
+    int getUnusedId();
 }

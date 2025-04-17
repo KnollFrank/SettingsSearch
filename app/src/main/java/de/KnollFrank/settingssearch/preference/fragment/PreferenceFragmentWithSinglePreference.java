@@ -62,13 +62,12 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
     }
 
     public static SearchablePreference createAdditionalSearchablePreference(
-            final int id,
             final Context context,
             final SearchablePreferenceDAO searchablePreferenceDAO) {
         final Preference preference = createAdditionalPreference(context);
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
-                        id,
+                        searchablePreferenceDAO.getUnusedId(),
                         preference.getKey(),
                         Optional.empty(),
                         preference.getLayoutResource(),

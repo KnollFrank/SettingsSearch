@@ -64,6 +64,20 @@ class FileDatabase implements Database {
         initializeWith(preferences);
     }
 
+    @Override
+    public int getUnusedId() {
+        return isInitialized() ? getMaxId() + 1 : 0;
+    }
+
+    private int getMaxId() {
+        return this
+                .loadAll()
+                .stream()
+                .map(SearchablePreference::getId)
+                .max(Integer::compareTo)
+                .orElseThrow();
+    }
+
     private static SearchablePreference getPreferenceById(final Set<SearchablePreference> preferences,
                                                           final int id) {
         return SearchablePreferences.findUniquePreferenceRecursivelyByPredicate(

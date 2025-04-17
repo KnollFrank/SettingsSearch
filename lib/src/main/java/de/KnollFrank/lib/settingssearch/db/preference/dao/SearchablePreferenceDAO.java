@@ -63,6 +63,10 @@ public class SearchablePreferenceDAO {
         return findUniquePreferenceRecursivelyByPredicate(preference -> preference.getKey().equals(key) && preference.getHost().equals(host));
     }
 
+    public int getUnusedId() {
+        return database.getUnusedId();
+    }
+
     private SearchablePreference findUniquePreferenceRecursivelyByPredicate(final Predicate<SearchablePreference> predicate) {
         return SearchablePreferences.findUniquePreferenceRecursivelyByPredicate(
                 database.loadAll(),

@@ -54,6 +54,20 @@ class InMemoryDatabase implements Database {
         getPreferenceById(idOfPreference).setSummary(newSummaryOfPreference);
     }
 
+    @Override
+    public int getUnusedId() {
+        return isInitialized() ? getMaxId() + 1 : 0;
+    }
+
+    private int getMaxId() {
+        return this
+                .loadAll()
+                .stream()
+                .map(SearchablePreference::getId)
+                .max(Integer::compareTo)
+                .orElseThrow();
+    }
+
     private SearchablePreference getPreferenceById(final int id) {
         return SearchablePreferences.findUniquePreferenceRecursivelyByPredicate(
                 loadAll(),

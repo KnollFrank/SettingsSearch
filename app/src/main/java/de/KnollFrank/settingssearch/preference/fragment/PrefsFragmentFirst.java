@@ -72,12 +72,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     private void addPreferenceToP1() {
                         // FK-TODO: use Preference2SearchablePreferenceConverter.convert2POJO() + PreferencePathsAndHostsSetter for general case, which has yet to be enforced by new unit tests
-                        // FK-FIXME: pass next unused id in whole search database instead of -1
-                        getSearchablePreferenceDAO().persistPreference(
+                        final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
+                        searchablePreferenceDAO.persistPreference(
                                 PreferenceFragmentWithSinglePreference.createAdditionalSearchablePreference(
-                                        -1,
                                         requireContext(),
-                                        getSearchablePreferenceDAO()));
+                                        searchablePreferenceDAO));
                     }
 
                     private void removePreferenceFromP1() {
