@@ -49,7 +49,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 public class PreferenceSearchExampleTest {
 
     @Rule
-    public ActivityScenarioRule<PreferenceSearchExample> activityScenarioRule = new ActivityScenarioRule<>(PreferenceSearchExample.class);
+    public final ActivityScenarioRule<PreferenceSearchExample> activityScenarioRule = new ActivityScenarioRule<>(PreferenceSearchExample.class);
 
     @Test
     public void shouldSearchAndFindPreference() {

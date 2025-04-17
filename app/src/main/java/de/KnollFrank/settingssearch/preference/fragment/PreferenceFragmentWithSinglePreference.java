@@ -84,7 +84,7 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
         searchablePreference.setPreferencePath(
                 new PreferencePath(
                         List.of(
-                                // FK-TODO: generalize because too much hard coded values
+                                // FK-TODO: generalize because too many hard coded values
                                 searchablePreferenceDAO.getPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class),
                                 searchablePreference)));
         return searchablePreference;
