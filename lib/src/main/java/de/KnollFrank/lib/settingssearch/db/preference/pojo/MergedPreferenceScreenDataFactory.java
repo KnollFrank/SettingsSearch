@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePathByPojoPreferenceProvider;
-import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 
 public class MergedPreferenceScreenDataFactory {
 
@@ -14,8 +13,7 @@ public class MergedPreferenceScreenDataFactory {
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
         final PreferencePathsSetter preferencePathsSetter =
                 new PreferencePathsSetter(
-                        PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
-                                HostClassFromPojoNodesRemover.removeHostClassFromNodes(pojoGraph)));
+                        PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(pojoGraph));
         final Set<SearchablePreference> preferences = getPreferences(pojoGraph.vertexSet());
         preferencePathsSetter.setPreferencePaths(preferences);
         return preferences;

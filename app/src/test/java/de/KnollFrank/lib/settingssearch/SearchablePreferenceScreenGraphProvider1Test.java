@@ -36,7 +36,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
-import de.KnollFrank.lib.settingssearch.graph.HostClassFromPojoNodesRemover;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -85,8 +84,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
                 final Map<SearchablePreference, PreferencePath> preferencePathByPreference =
-                        PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(
-                                HostClassFromPojoNodesRemover.removeHostClassFromNodes(pojoGraph));
+                        PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(pojoGraph);
 
                 // Then
                 final SearchablePreference preferenceOfFragment2PointingToFragment3 =
