@@ -11,11 +11,11 @@ public class MergedPreferenceScreenDataFactory {
 
     public static Set<SearchablePreference> getPreferences(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
-        final PreferencePathsSetter preferencePathsSetter =
-                new PreferencePathsSetter(
+        final PredecessorSetter predecessorSetter =
+                new PredecessorSetter(
                         PredecessorByPojoPreferenceProvider.getPredecessorByPojoPreference(pojoGraph));
         final Set<SearchablePreference> preferences = getPreferences(pojoGraph.vertexSet());
-        preferencePathsSetter.setPreferencePaths(preferences);
+        predecessorSetter.setPredecessors(preferences);
         return preferences;
     }
 

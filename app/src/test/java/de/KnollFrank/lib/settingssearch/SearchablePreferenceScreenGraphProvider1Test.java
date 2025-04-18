@@ -32,7 +32,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsSetter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PredecessorSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -84,8 +84,8 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
-                final PreferencePathsSetter preferencePathsSetter = new PreferencePathsSetter(PredecessorByPojoPreferenceProvider.getPredecessorByPojoPreference(pojoGraph));
-                preferencePathsSetter.setPreferencePaths(MergedPreferenceScreenDataFactory.getPreferences(pojoGraph.vertexSet()));
+                final PredecessorSetter predecessorSetter = new PredecessorSetter(PredecessorByPojoPreferenceProvider.getPredecessorByPojoPreference(pojoGraph));
+                predecessorSetter.setPredecessors(MergedPreferenceScreenDataFactory.getPreferences(pojoGraph.vertexSet()));
 
                 // Then
                 final SearchablePreference preferenceOfFragment2PointingToFragment3 =

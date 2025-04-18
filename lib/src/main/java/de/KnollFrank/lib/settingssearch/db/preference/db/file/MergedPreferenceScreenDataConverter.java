@@ -6,7 +6,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsSetter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PredecessorSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class MergedPreferenceScreenDataConverter {
@@ -20,12 +20,12 @@ class MergedPreferenceScreenDataConverter {
 
     public static Set<SearchablePreference> removeIds(final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds) {
         final Map<Integer, SearchablePreference> preferenceById = getPreferenceById(mergedPreferenceScreenDataWithIds.preferences());
-        final PreferencePathsSetter preferencePathsSetter =
-                new PreferencePathsSetter(
+        final PredecessorSetter predecessorSetter =
+                new PredecessorSetter(
                         PreferencePathByPreferenceConverter.removeIds(
                                 mergedPreferenceScreenDataWithIds.preferencePathIdsByPreferenceId(),
                                 preferenceById));
-        preferencePathsSetter.setPreferencePaths(mergedPreferenceScreenDataWithIds.preferences());
+        predecessorSetter.setPredecessors(mergedPreferenceScreenDataWithIds.preferences());
         return mergedPreferenceScreenDataWithIds.preferences();
     }
 
