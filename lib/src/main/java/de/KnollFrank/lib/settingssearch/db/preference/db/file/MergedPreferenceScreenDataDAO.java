@@ -10,13 +10,13 @@ public class MergedPreferenceScreenDataDAO {
 
     public static void persist(final Set<SearchablePreference> searchablePreferences,
                                final OutputStream preferences,
-                               final OutputStream preferencePathByPreference) {
+                               final OutputStream predecessorIdByPreferenceId) {
         final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds =
                 MergedPreferenceScreenDataConverter.addIds(searchablePreferences);
         MergedPreferenceScreenDataWithIdsDAO.persist(
                 mergedPreferenceScreenDataWithIds,
                 preferences,
-                preferencePathByPreference);
+                predecessorIdByPreferenceId);
     }
 
     public static Set<SearchablePreference> load(final InputStream preferences,

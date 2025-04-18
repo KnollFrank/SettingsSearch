@@ -66,17 +66,17 @@ public class MergedPreferenceScreenDataTest {
                                 searchablePreference1,
                                 searchablePreference2);
                 final var preferences = new ByteArrayOutputStream();
-                final var preferencePathByPreference = new ByteArrayOutputStream();
+                final var predecessorIdByPreferenceId = new ByteArrayOutputStream();
 
                 // When
                 MergedPreferenceScreenDataDAO.persist(
                         data,
                         preferences,
-                        preferencePathByPreference);
+                        predecessorIdByPreferenceId);
                 final Set<SearchablePreference> dataActual =
                         MergedPreferenceScreenDataDAO.load(
                                 outputStream2InputStream(preferences),
-                                outputStream2InputStream(preferencePathByPreference));
+                                outputStream2InputStream(predecessorIdByPreferenceId));
 
                 // Then
                 assertEquals(

@@ -11,20 +11,20 @@ class MergedPreferenceScreenDataWithIdsDAO {
 
     public static void persist(final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds,
                                final OutputStream preferences,
-                               final OutputStream preferencePathIdsByPreferenceId) {
+                               final OutputStream predecessorIdByPreferenceId) {
         JsonDAO.persist(mergedPreferenceScreenDataWithIds.preferences(), preferences);
-        JsonDAO.persist(mergedPreferenceScreenDataWithIds.preferencePathIdsByPreferenceId(), preferencePathIdsByPreferenceId);
+        JsonDAO.persist(mergedPreferenceScreenDataWithIds.predecessorIdByPreferenceId(), predecessorIdByPreferenceId);
     }
 
     public static MergedPreferenceScreenDataWithIds load(final InputStream preferences,
-                                                         final InputStream preferencePathIdsByPreferenceId) {
+                                                         final InputStream predecessorIdByPreferenceId) {
         return new MergedPreferenceScreenDataWithIds(
                 JsonDAO.load(
                         preferences,
                         new TypeToken<>() {
                         }),
                 JsonDAO.load(
-                        preferencePathIdsByPreferenceId,
+                        predecessorIdByPreferenceId,
                         new TypeToken<>() {
                         }));
     }

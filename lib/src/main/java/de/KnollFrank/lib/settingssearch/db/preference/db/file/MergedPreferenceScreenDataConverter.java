@@ -12,19 +12,17 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 class MergedPreferenceScreenDataConverter {
 
     public static MergedPreferenceScreenDataWithIds addIds(final Set<SearchablePreference> preferences) {
-        final Set<SearchablePreference> preferencesRecursively = SearchablePreferences.getPreferencesRecursively(preferences);
         return new MergedPreferenceScreenDataWithIds(
                 preferences,
-                PreferencePathByPreferenceConverter.addIds(preferencesRecursively));
+                PredecessorByPreferenceConverter.addIds(SearchablePreferences.getPreferencesRecursively(preferences)));
     }
 
     public static Set<SearchablePreference> removeIds(final MergedPreferenceScreenDataWithIds mergedPreferenceScreenDataWithIds) {
-        final Map<Integer, SearchablePreference> preferenceById = getPreferenceById(mergedPreferenceScreenDataWithIds.preferences());
         final PredecessorSetter predecessorSetter =
                 new PredecessorSetter(
-                        PreferencePathByPreferenceConverter.removeIds(
-                                mergedPreferenceScreenDataWithIds.preferencePathIdsByPreferenceId(),
-                                preferenceById));
+                        PredecessorByPreferenceConverter.removeIds(
+                                mergedPreferenceScreenDataWithIds.predecessorIdByPreferenceId(),
+                                getPreferenceById(mergedPreferenceScreenDataWithIds.preferences())));
         predecessorSetter.setPredecessors(mergedPreferenceScreenDataWithIds.preferences());
         return mergedPreferenceScreenDataWithIds.preferences();
     }
