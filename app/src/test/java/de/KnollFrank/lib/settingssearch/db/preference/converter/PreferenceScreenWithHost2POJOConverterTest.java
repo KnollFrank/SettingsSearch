@@ -38,10 +38,10 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class PreferenceScreenWithId2POJOConverterTest {
+public class PreferenceScreenWithHost2POJOConverterTest {
 
     @Test
-    public void shouldConvertPreferenceScreenWithHostClass2POJO() {
+    public void shouldConvertPreferenceScreenWithHost2POJO() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given

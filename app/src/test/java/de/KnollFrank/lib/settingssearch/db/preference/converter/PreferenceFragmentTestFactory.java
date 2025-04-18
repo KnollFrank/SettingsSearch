@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithId2POJOConverterTest.getInstantiateAndInitializeFragment;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithId2POJOConverterTest.initializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest.getInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest.initializeFragment;
 
 import androidx.preference.PreferenceFragmentCompat;
 
