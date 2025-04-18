@@ -143,6 +143,7 @@ public class Graph2POJOGraphTransformerTest {
         return new PreferenceScreenWithId(
                 1,
                 new SearchablePreferenceScreen(
+                        1,
                         "screen title",
                         "screen summary",
                         List.of(
@@ -197,6 +198,6 @@ public class Graph2POJOGraphTransformerTest {
     private static PreferenceScreenWithId createDst() {
         return new PreferenceScreenWithId(
                 2,
-                new SearchablePreferenceScreen(null, null, List.of()));
+                new SearchablePreferenceScreen(2, null, null, List.of()));
     }
 }

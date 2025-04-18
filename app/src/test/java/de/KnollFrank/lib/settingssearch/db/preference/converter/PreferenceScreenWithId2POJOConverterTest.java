@@ -92,10 +92,12 @@ public class PreferenceScreenWithId2POJOConverterTest {
                                 .preferenceScreenWithId();
 
                 // Then
+                // FK-FIXME: use explicit comparison when SearchablePreferenceScreen.equals() + hashCode() has changed
                 assertThat(pojo, is(
                         new PreferenceScreenWithId(
                                 id,
                                 new SearchablePreferenceScreen(
+                                        id,
                                         "screen title",
                                         "screen summary",
                                         List.of(

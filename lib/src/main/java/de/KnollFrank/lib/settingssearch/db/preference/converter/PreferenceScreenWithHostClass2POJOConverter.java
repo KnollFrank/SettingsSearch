@@ -20,6 +20,7 @@ public class PreferenceScreenWithHostClass2POJOConverter {
                                                                     final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
         final SearchablePreferenceScreenWithMap searchablePreferenceScreenWithMap =
                 SearchablePreferenceScreen2POJOConverter.convert2POJO(
+                        id,
                         preferenceScreenWithHost.preferenceScreen(),
                         preferenceScreenWithHost.host(),
                         preference2SearchablePreferenceConverter);

@@ -11,7 +11,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 class SearchablePreferenceScreen2POJOConverter {
 
-    public static SearchablePreferenceScreenWithMap convert2POJO(final PreferenceScreen preferenceScreen,
+    public static SearchablePreferenceScreenWithMap convert2POJO(final int id,
+                                                                 final PreferenceScreen preferenceScreen,
                                                                  final PreferenceFragmentCompat hostOfPreferenceScreen,
                                                                  final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
         final SearchablePreferencesWithMap searchablePreferencesWithMap =
@@ -20,6 +21,7 @@ class SearchablePreferenceScreen2POJOConverter {
                         hostOfPreferenceScreen);
         return new SearchablePreferenceScreenWithMap(
                 new SearchablePreferenceScreen(
+                        id,
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getTitle())),
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getSummary())),
                         searchablePreferencesWithMap.searchablePreferences()),
