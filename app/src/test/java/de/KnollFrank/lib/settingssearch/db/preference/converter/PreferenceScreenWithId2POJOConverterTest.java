@@ -86,7 +86,7 @@ public class PreferenceScreenWithId2POJOConverterTest {
 
                 // When
                 final SearchablePreferenceScreen pojo =
-                        PreferenceScreenWithHostClass2POJOConverter
+                        PreferenceScreenWithHost2POJOConverter
                                 .convert2POJO(entity, id, preference2SearchablePreferenceConverter)
                                 .searchablePreferenceScreen();
 

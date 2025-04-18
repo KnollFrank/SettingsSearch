@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassWithMap;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithId2POJOConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 
@@ -32,6 +31,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -60,7 +60,7 @@ public class Graph2POJOGraphTransformerTest {
                                 new IdGenerator());
 
                 // When
-                final Graph<PreferenceScreenWithHostClassWithMap, SearchablePreferenceEdge> pojoGraph =
+                final Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> pojoGraph =
                         Graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                 entityGraph,
                                 preference2SearchablePreferenceConverter);
