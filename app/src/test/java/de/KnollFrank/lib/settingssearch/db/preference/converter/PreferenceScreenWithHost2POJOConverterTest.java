@@ -91,7 +91,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 .searchablePreferenceScreen();
 
                 // Then
-                // FK-FIXME: use explicit comparison when SearchablePreferenceScreen.equals() + hashCode() has changed
+                // FK-FIXME: use MergedPreferenceScreenDataTest.assertEquals() because SearchablePreferenceScreen.equals() + hashCode() has changed
                 assertThat(pojo, is(
                         new SearchablePreferenceScreen(
                                 id,

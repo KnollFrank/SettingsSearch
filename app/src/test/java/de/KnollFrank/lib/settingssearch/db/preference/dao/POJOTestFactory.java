@@ -51,7 +51,8 @@ public class POJOTestFactory {
                 searchableInfo,
                 createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
-                TestPreferenceFragment.class);
+                TestPreferenceFragment.class,
+                new PreferencePath(List.of()));
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -61,7 +62,8 @@ public class POJOTestFactory {
             final Optional<String> searchableInfo,
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Class<? extends PreferenceFragmentCompat> host) {
+            final Class<? extends PreferenceFragmentCompat> host,
+            final PreferencePath preferencePath) {
         return new SearchablePreference(
                 id,
                 "some key",
@@ -77,7 +79,7 @@ public class POJOTestFactory {
                 extras,
                 host,
                 List.of(),
-                new PreferencePath(List.of()));
+                preferencePath);
     }
 
     public static Bundle createBundle(final String key, final String value) {
