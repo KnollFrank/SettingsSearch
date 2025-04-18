@@ -19,7 +19,8 @@ public class POJOTestFactory {
 
     public static SearchablePreference createSearchablePreferencePOJO(
             final String title,
-            final Class<? extends PreferenceFragmentCompat> host) {
+            final Class<? extends PreferenceFragmentCompat> host,
+            final PreferencePath preferencePathWithoutThisPreference) {
         return new SearchablePreference(
                 idGenerator.nextId(),
                 title,
@@ -34,7 +35,8 @@ public class POJOTestFactory {
                 Optional.empty(),
                 new Bundle(),
                 host,
-                List.of());
+                List.of(),
+                preferencePathWithoutThisPreference);
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -60,24 +62,22 @@ public class POJOTestFactory {
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final Class<? extends PreferenceFragmentCompat> host) {
-        final SearchablePreference searchablePreference =
-                new SearchablePreference(
-                        id,
-                        "some key",
-                        iconResourceIdOrIconPixelData,
-                        androidx.preference.R.layout.preference,
-                        summary,
-                        title,
-                        0,
-                        Optional.of("some fragment"),
-                        Optional.empty(),
-                        true,
-                        searchableInfo,
-                        extras,
-                        host,
-                        List.of());
-        searchablePreference.setPreferencePath(new PreferencePath(List.of(searchablePreference)));
-        return searchablePreference;
+        return new SearchablePreference(
+                id,
+                "some key",
+                iconResourceIdOrIconPixelData,
+                androidx.preference.R.layout.preference,
+                summary,
+                title,
+                0,
+                Optional.of("some fragment"),
+                Optional.empty(),
+                true,
+                searchableInfo,
+                extras,
+                host,
+                List.of(),
+                new PreferencePath(List.of()));
     }
 
     public static Bundle createBundle(final String key, final String value) {
@@ -86,9 +86,11 @@ public class POJOTestFactory {
         return bundle;
     }
 
-    public static SearchablePreference copy(final SearchablePreference preference) {
+    public static SearchablePreference copy(final SearchablePreference preference,
+                                            final PreferencePath preferencePathWithoutCopiedPreference) {
         return createSearchablePreferencePOJO(
                 preference.getTitle().orElseThrow(),
-                preference.getHost());
+                preference.getHost(),
+                preferencePathWithoutCopiedPreference);
     }
 }

@@ -65,29 +65,25 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
             final Context context,
             final SearchablePreferenceDAO searchablePreferenceDAO) {
         final Preference preference = createAdditionalPreference(context);
-        final SearchablePreference searchablePreference =
-                new SearchablePreference(
-                        searchablePreferenceDAO.getUnusedId(),
-                        preference.getKey(),
-                        Optional.empty(),
-                        preference.getLayoutResource(),
-                        Preference2SearchablePreferenceConverter.toString(Optional.ofNullable(preference.getSummary())),
-                        Preference2SearchablePreferenceConverter.toString(Optional.ofNullable(preference.getTitle())),
-                        preference.getWidgetLayoutResource(),
-                        Optional.ofNullable(preference.getFragment()),
-                        getClassNameOfReferencedActivity(preference),
-                        preference.isVisible(),
-                        Optional.empty(),
-                        preference.getExtras(),
-                        PreferenceFragmentWithSinglePreference.class,
-                        List.of());
-        searchablePreference.setPreferencePath(
+        return new SearchablePreference(
+                searchablePreferenceDAO.getUnusedId(),
+                preference.getKey(),
+                Optional.empty(),
+                preference.getLayoutResource(),
+                Preference2SearchablePreferenceConverter.toString(Optional.ofNullable(preference.getSummary())),
+                Preference2SearchablePreferenceConverter.toString(Optional.ofNullable(preference.getTitle())),
+                preference.getWidgetLayoutResource(),
+                Optional.ofNullable(preference.getFragment()),
+                getClassNameOfReferencedActivity(preference),
+                preference.isVisible(),
+                Optional.empty(),
+                preference.getExtras(),
+                PreferenceFragmentWithSinglePreference.class,
+                List.of(),
                 new PreferencePath(
                         List.of(
                                 // FK-TODO: generalize because too many hard coded values
-                                searchablePreferenceDAO.getPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class),
-                                searchablePreference)));
-        return searchablePreference;
+                                searchablePreferenceDAO.getPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class))));
     }
 
     private Preference createPreference(final String key,

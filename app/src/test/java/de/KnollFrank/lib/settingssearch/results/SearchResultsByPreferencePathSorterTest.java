@@ -26,26 +26,24 @@ public class SearchResultsByPreferencePathSorterTest {
         final SearchablePreference defaultSpeed =
                 createSearchablePreferencePOJO(
                         "default speed",
-                        TestPreferenceFragment.class);
-        defaultSpeed.setPreferencePath(new PreferencePath(List.of(defaultSpeed)));
+                        TestPreferenceFragment.class,
+                        new PreferencePath(List.of()));
 
         final SearchablePreference car =
                 createSearchablePreferencePOJO(
                         "car",
-                        SearchablePreferenceScreenGraphProvider1Test.Fragment3.class);
-        car.setPreferencePath(new PreferencePath(List.of(car)));
+                        SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
+                        new PreferencePath(List.of()));
 
-        final SearchablePreference defaultSpeedOfCar = copy(defaultSpeed);
-        defaultSpeedOfCar.setPreferencePath(new PreferencePath(List.of(car, defaultSpeedOfCar)));
+        final SearchablePreference defaultSpeedOfCar = copy(defaultSpeed, new PreferencePath(List.of(car)));
 
         final SearchablePreference walk =
                 createSearchablePreferencePOJO(
                         "walk",
-                        SearchablePreferenceScreenGraphProvider1Test.Fragment3.class);
-        walk.setPreferencePath(new PreferencePath(List.of(walk)));
+                        SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
+                        new PreferencePath(List.of()));
 
-        final SearchablePreference defaultSpeedOfWalk = copy(defaultSpeed);
-        defaultSpeedOfWalk.setPreferencePath(new PreferencePath(List.of(walk, defaultSpeedOfWalk)));
+        final SearchablePreference defaultSpeedOfWalk = copy(defaultSpeed, new PreferencePath(List.of(walk)));
 
         final Collection<SearchablePreference> searchResults =
                 List.of(
