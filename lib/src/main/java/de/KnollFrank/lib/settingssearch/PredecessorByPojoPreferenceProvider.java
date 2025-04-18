@@ -5,9 +5,15 @@ import com.google.common.collect.ImmutableMap.Builder;
 
 import org.jgrapht.Graph;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.common.graph.BreadthFirstGraphVisitor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -56,17 +62,44 @@ public class PredecessorByPojoPreferenceProvider {
 
     private static Map<SearchablePreference, Optional<SearchablePreference>> getPredecessorByPreference(
             final Map<SearchablePreferenceScreen, Optional<SearchablePreference>> predecessorByPreferenceScreen) {
-        final Builder<SearchablePreference, Optional<SearchablePreference>> predecessorByPreferenceBuilder = ImmutableMap.builder();
-        // FK-TODO: implement functionally using Collection.toMap() and Maps.merge()
-        predecessorByPreferenceScreen.forEach(
-                (preferenceScreen, predecessor) ->
-                        SearchablePreferences
-                                .getPreferencesRecursively(preferenceScreen.preferences())
-                                .forEach(
-                                        searchablePreference ->
-                                                predecessorByPreferenceBuilder.put(
-                                                        searchablePreference,
-                                                        predecessor)));
-        return predecessorByPreferenceBuilder.build();
+        return Maps.merge(
+                getPredecessorByPreferenceList(
+                        getPredecessorByPreferences(
+                                predecessorByPreferenceScreen)));
+    }
+
+    private static Map<Set<SearchablePreference>, Optional<SearchablePreference>> getPredecessorByPreferences(
+            final Map<SearchablePreferenceScreen, Optional<SearchablePreference>> predecessorByPreferenceScreen) {
+        return predecessorByPreferenceScreen
+                .entrySet()
+                .stream()
+                .filter(preferenceScreen_predecessor -> !preferenceScreen_predecessor.getKey().preferences().isEmpty())
+                .collect(
+                        Collectors.toMap(
+                                preferenceScreen_predecessor -> SearchablePreferences.getPreferencesRecursively(preferenceScreen_predecessor.getKey().preferences()),
+                                Entry::getValue));
+    }
+
+    private static List<Map<SearchablePreference, Optional<SearchablePreference>>> getPredecessorByPreferenceList(final Map<Set<SearchablePreference>, Optional<SearchablePreference>> predecessorByPreferences) {
+        return predecessorByPreferences
+                .entrySet()
+                .stream()
+                .map(
+                        preferences_predecessor ->
+                                getPredecessorByPreference(
+                                        preferences_predecessor.getKey(),
+                                        preferences_predecessor.getValue()))
+                .collect(Collectors.toList());
+    }
+
+    private static Map<SearchablePreference, Optional<SearchablePreference>> getPredecessorByPreference(
+            final Set<SearchablePreference> preferences,
+            final Optional<SearchablePreference> predecessor) {
+        return preferences
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                Function.identity(),
+                                preference -> predecessor));
     }
 }
