@@ -4,12 +4,12 @@ import org.jgrapht.Graph;
 
 import de.KnollFrank.lib.settingssearch.common.graph.NodesTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHostClass2POJOConverter.PreferenceScreenWithHostClassWithMap;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class MapFromPojoNodesRemover {
 
-    public static Graph<PreferenceScreenWithId, SearchablePreferenceEdge> removeMapFromPojoNodes(
+    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> removeMapFromPojoNodes(
             final Graph<PreferenceScreenWithHostClassWithMap, SearchablePreferenceEdge> pojoGraph) {
         return NodesTransformer.transformNodes(
                 pojoGraph,
@@ -18,7 +18,7 @@ public class MapFromPojoNodesRemover {
                 edge -> new SearchablePreferenceEdge(edge.preference));
     }
 
-    public static PreferenceScreenWithId removeMapFromPojoNode(final PreferenceScreenWithHostClassWithMap preferenceScreenWithHostClassWithMap) {
-        return preferenceScreenWithHostClassWithMap.preferenceScreenWithId();
+    public static SearchablePreferenceScreen removeMapFromPojoNode(final PreferenceScreenWithHostClassWithMap preferenceScreenWithHostClassWithMap) {
+        return preferenceScreenWithHostClassWithMap.searchablePreferenceScreen();
     }
 }

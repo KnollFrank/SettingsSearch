@@ -33,7 +33,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -112,7 +111,7 @@ public class Graph2POJOGraphTransformerTest {
         };
     }
 
-    private static Graph<PreferenceScreenWithId, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+    private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference preferenceConnectingSrc2Dst =
                 new SearchablePreference(
                         4,
@@ -130,7 +129,7 @@ public class Graph2POJOGraphTransformerTest {
                         host,
                         List.of());
         return DefaultDirectedGraph
-                .<PreferenceScreenWithId, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                 .addEdge(
                         createSrc(preferenceConnectingSrc2Dst, host),
                         createDst(),
@@ -138,66 +137,62 @@ public class Graph2POJOGraphTransformerTest {
                 .build();
     }
 
-    private static PreferenceScreenWithId createSrc(final SearchablePreference preferenceConnectingSrc2Dst,
-                                                    final Class<? extends PreferenceFragmentCompat> host) {
-        return new PreferenceScreenWithId(
+    private static SearchablePreferenceScreen createSrc(final SearchablePreference preferenceConnectingSrc2Dst,
+                                                        final Class<? extends PreferenceFragmentCompat> host) {
+        return new SearchablePreferenceScreen(
                 1,
-                new SearchablePreferenceScreen(
-                        1,
-                        "screen title",
-                        "screen summary",
-                        List.of(
-                                new SearchablePreference(
-                                        1,
-                                        "parentKey",
-                                        Optional.empty(),
-                                        15,
-                                        Optional.empty(),
-                                        Optional.empty(),
-                                        0,
-                                        Optional.empty(),
-                                        Optional.empty(),
-                                        true,
-                                        Optional.empty(),
-                                        new Bundle(),
-                                        host,
-                                        List.of(
-                                                new SearchablePreference(
-                                                        2,
-                                                        "some child key 1",
-                                                        Optional.empty(),
-                                                        16,
-                                                        Optional.empty(),
-                                                        Optional.empty(),
-                                                        0,
-                                                        Optional.empty(),
-                                                        Optional.empty(),
-                                                        true,
-                                                        Optional.empty(),
-                                                        new Bundle(),
-                                                        host,
-                                                        List.of()),
-                                                new SearchablePreference(
-                                                        3,
-                                                        "some child key 2",
-                                                        Optional.empty(),
-                                                        16,
-                                                        Optional.empty(),
-                                                        Optional.empty(),
-                                                        0,
-                                                        Optional.empty(),
-                                                        Optional.empty(),
-                                                        true,
-                                                        Optional.empty(),
-                                                        new Bundle(),
-                                                        host,
-                                                        List.of()))),
-                                preferenceConnectingSrc2Dst)));
+                "screen title",
+                "screen summary",
+                List.of(
+                        new SearchablePreference(
+                                1,
+                                "parentKey",
+                                Optional.empty(),
+                                15,
+                                Optional.empty(),
+                                Optional.empty(),
+                                0,
+                                Optional.empty(),
+                                Optional.empty(),
+                                true,
+                                Optional.empty(),
+                                new Bundle(),
+                                host,
+                                List.of(
+                                        new SearchablePreference(
+                                                2,
+                                                "some child key 1",
+                                                Optional.empty(),
+                                                16,
+                                                Optional.empty(),
+                                                Optional.empty(),
+                                                0,
+                                                Optional.empty(),
+                                                Optional.empty(),
+                                                true,
+                                                Optional.empty(),
+                                                new Bundle(),
+                                                host,
+                                                List.of()),
+                                        new SearchablePreference(
+                                                3,
+                                                "some child key 2",
+                                                Optional.empty(),
+                                                16,
+                                                Optional.empty(),
+                                                Optional.empty(),
+                                                0,
+                                                Optional.empty(),
+                                                Optional.empty(),
+                                                true,
+                                                Optional.empty(),
+                                                new Bundle(),
+                                                host,
+                                                List.of()))),
+                        preferenceConnectingSrc2Dst));
     }
 
-    private static PreferenceScreenWithId createDst() {
-        return new PreferenceScreenWithId(
-                2,
-                new SearchablePreferenceScreen(2, null, null, List.of()));
+    private static SearchablePreferenceScreen createDst() {
+        return new SearchablePreferenceScreen(2, null, null, List.of());
     }
 }

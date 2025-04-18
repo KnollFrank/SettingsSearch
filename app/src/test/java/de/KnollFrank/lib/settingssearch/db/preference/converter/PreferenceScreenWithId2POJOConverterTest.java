@@ -26,7 +26,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -86,66 +85,64 @@ public class PreferenceScreenWithId2POJOConverterTest {
                                 new IdGenerator());
 
                 // When
-                final PreferenceScreenWithId pojo =
+                final SearchablePreferenceScreen pojo =
                         PreferenceScreenWithHostClass2POJOConverter
                                 .convert2POJO(entity, id, preference2SearchablePreferenceConverter)
-                                .preferenceScreenWithId();
+                                .searchablePreferenceScreen();
 
                 // Then
                 // FK-FIXME: use explicit comparison when SearchablePreferenceScreen.equals() + hashCode() has changed
                 assertThat(pojo, is(
-                        new PreferenceScreenWithId(
+                        new SearchablePreferenceScreen(
                                 id,
-                                new SearchablePreferenceScreen(
-                                        id,
-                                        "screen title",
-                                        "screen summary",
-                                        List.of(
-                                                new SearchablePreference(
-                                                        1,
-                                                        "parentKey",
-                                                        Optional.empty(),
-                                                        15,
-                                                        Optional.empty(),
-                                                        Optional.empty(),
-                                                        0,
-                                                        Optional.empty(),
-                                                        Optional.empty(),
-                                                        true,
-                                                        Optional.of("some searchable info"),
-                                                        new Bundle(),
-                                                        preferenceFragment.getClass(),
-                                                        List.of(
-                                                                new SearchablePreference(
-                                                                        2,
-                                                                        "some child key 1",
-                                                                        Optional.empty(),
-                                                                        16,
-                                                                        Optional.empty(),
-                                                                        Optional.empty(),
-                                                                        0,
-                                                                        Optional.empty(),
-                                                                        Optional.empty(),
-                                                                        true,
-                                                                        Optional.of("some searchable info of first child"),
-                                                                        new Bundle(),
-                                                                        preferenceFragment.getClass(),
-                                                                        List.of()),
-                                                                new SearchablePreference(
-                                                                        3,
-                                                                        "some child key 2",
-                                                                        Optional.empty(),
-                                                                        16,
-                                                                        Optional.empty(),
-                                                                        Optional.empty(),
-                                                                        0,
-                                                                        Optional.empty(),
-                                                                        Optional.empty(),
-                                                                        true,
-                                                                        Optional.of("some searchable info of second child"),
-                                                                        new Bundle(),
-                                                                        preferenceFragment.getClass(),
-                                                                        List.of()))))))));
+                                "screen title",
+                                "screen summary",
+                                List.of(
+                                        new SearchablePreference(
+                                                1,
+                                                "parentKey",
+                                                Optional.empty(),
+                                                15,
+                                                Optional.empty(),
+                                                Optional.empty(),
+                                                0,
+                                                Optional.empty(),
+                                                Optional.empty(),
+                                                true,
+                                                Optional.of("some searchable info"),
+                                                new Bundle(),
+                                                preferenceFragment.getClass(),
+                                                List.of(
+                                                        new SearchablePreference(
+                                                                2,
+                                                                "some child key 1",
+                                                                Optional.empty(),
+                                                                16,
+                                                                Optional.empty(),
+                                                                Optional.empty(),
+                                                                0,
+                                                                Optional.empty(),
+                                                                Optional.empty(),
+                                                                true,
+                                                                Optional.of("some searchable info of first child"),
+                                                                new Bundle(),
+                                                                preferenceFragment.getClass(),
+                                                                List.of()),
+                                                        new SearchablePreference(
+                                                                3,
+                                                                "some child key 2",
+                                                                Optional.empty(),
+                                                                16,
+                                                                Optional.empty(),
+                                                                Optional.empty(),
+                                                                0,
+                                                                Optional.empty(),
+                                                                Optional.empty(),
+                                                                true,
+                                                                Optional.of("some searchable info of second child"),
+                                                                new Bundle(),
+                                                                preferenceFragment.getClass(),
+                                                                List.of())))))));
             });
         }
     }

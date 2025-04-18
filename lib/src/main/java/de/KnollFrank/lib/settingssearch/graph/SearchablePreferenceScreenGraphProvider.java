@@ -10,8 +10,8 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceScreenWithId;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
@@ -48,14 +48,14 @@ public class SearchablePreferenceScreenGraphProvider {
         this.context = context;
     }
 
-    public Graph<PreferenceScreenWithId, SearchablePreferenceEdge> getSearchablePreferenceScreenGraph() {
+    public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getSearchablePreferenceScreenGraph() {
         computePreferencesListener.onStartComputePreferences();
         final var searchablePreferenceScreenGraph = _getSearchablePreferenceScreenGraph();
         computePreferencesListener.onFinishComputePreferences();
         return searchablePreferenceScreenGraph;
     }
 
-    private Graph<PreferenceScreenWithId, SearchablePreferenceEdge> _getSearchablePreferenceScreenGraph() {
+    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> _getSearchablePreferenceScreenGraph() {
         final var preferenceScreenGraph = getPreferenceScreenGraph();
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
         return transformGraph2POJOGraph(preferenceScreenGraph);
@@ -72,7 +72,7 @@ public class SearchablePreferenceScreenGraphProvider {
         return preferenceScreenGraphProvider.getPreferenceScreenGraph(rootPreferenceFragmentClass);
     }
 
-    private Graph<PreferenceScreenWithId, SearchablePreferenceEdge> transformGraph2POJOGraph(
+    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
                 Graph2POJOGraphTransformer.transformGraph2POJOGraph(
