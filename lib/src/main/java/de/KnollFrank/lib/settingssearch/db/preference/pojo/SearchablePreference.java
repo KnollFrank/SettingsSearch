@@ -46,7 +46,7 @@ public final class SearchablePreference {
     private final Class<? extends PreferenceFragmentCompat> host;
     private final List<SearchablePreference> children;
     @Exclude
-    private PreferencePath preferencePath;
+    private Optional<SearchablePreference> predecessor;
 
     public SearchablePreference(
             final int id,
@@ -94,7 +94,7 @@ public final class SearchablePreference {
             final Bundle extras,
             final Class<? extends PreferenceFragmentCompat> host,
             final List<SearchablePreference> children,
-            final PreferencePath preferencePathWithoutThisPreference) {
+            final Optional<SearchablePreference> predecessor) {
         this(
                 id,
                 key,
@@ -110,7 +110,7 @@ public final class SearchablePreference {
                 extras,
                 host,
                 children);
-        this.preferencePath = preferencePathWithoutThisPreference.append(this);
+        this.predecessor = predecessor;
     }
 
     public int getId() {
@@ -219,12 +219,19 @@ public final class SearchablePreference {
         return extras;
     }
 
-    public void setPreferencePath(final PreferencePath preferencePath) {
-        this.preferencePath = preferencePath;
+    public PreferencePath getPreferencePath() {
+        return getPreferencePathOfPredecessor().append(this);
     }
 
-    public PreferencePath getPreferencePath() {
-        return preferencePath;
+    public void setPredecessor(final Optional<SearchablePreference> predecessor) {
+        this.predecessor = predecessor;
+    }
+
+    public Optional<SearchablePreference> getPredecessor() {
+        if (predecessor == null) {
+            predecessor = Optional.empty();
+        }
+        return predecessor;
     }
 
     public Class<? extends PreferenceFragmentCompat> getHost() {
@@ -270,5 +277,12 @@ public final class SearchablePreference {
                                         DrawableAndStringConverter.string2Drawable(
                                                 iconPixelData,
                                                 context.getResources())));
+    }
+
+    private PreferencePath getPreferencePathOfPredecessor() {
+        return this
+                .getPredecessor()
+                .map(SearchablePreference::getPreferencePath)
+                .orElseGet(() -> new PreferencePath(List.of()));
     }
 }

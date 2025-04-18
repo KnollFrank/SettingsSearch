@@ -9,7 +9,6 @@ import com.codepoetics.ambivalence.Either;
 import java.util.List;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
@@ -20,7 +19,7 @@ public class POJOTestFactory {
     public static SearchablePreference createSearchablePreferencePOJO(
             final String title,
             final Class<? extends PreferenceFragmentCompat> host,
-            final PreferencePath preferencePathWithoutThisPreference) {
+            final Optional<SearchablePreference> predecessor) {
         return new SearchablePreference(
                 idGenerator.nextId(),
                 title,
@@ -36,7 +35,7 @@ public class POJOTestFactory {
                 new Bundle(),
                 host,
                 List.of(),
-                preferencePathWithoutThisPreference);
+                predecessor);
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -52,7 +51,7 @@ public class POJOTestFactory {
                 createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
                 TestPreferenceFragment.class,
-                new PreferencePath(List.of()));
+                Optional.empty());
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -63,7 +62,7 @@ public class POJOTestFactory {
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final Class<? extends PreferenceFragmentCompat> host,
-            final PreferencePath preferencePath) {
+            final Optional<SearchablePreference> predecessor) {
         return new SearchablePreference(
                 id,
                 "some key",
@@ -79,7 +78,7 @@ public class POJOTestFactory {
                 extras,
                 host,
                 List.of(),
-                preferencePath);
+                predecessor);
     }
 
     public static Bundle createBundle(final String key, final String value) {
@@ -89,10 +88,10 @@ public class POJOTestFactory {
     }
 
     public static SearchablePreference copy(final SearchablePreference preference,
-                                            final PreferencePath preferencePathWithoutCopiedPreference) {
+                                            final Optional<SearchablePreference> predecessor) {
         return createSearchablePreferencePOJO(
                 preference.getTitle().orElseThrow(),
                 preference.getHost(),
-                preferencePathWithoutCopiedPreference);
+                predecessor);
     }
 }

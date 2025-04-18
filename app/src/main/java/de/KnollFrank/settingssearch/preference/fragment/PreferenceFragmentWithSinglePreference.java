@@ -13,7 +13,6 @@ import androidx.preference.PreferenceScreen;
 import java.util.List;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -80,10 +79,8 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
                 preference.getExtras(),
                 PreferenceFragmentWithSinglePreference.class,
                 List.of(),
-                new PreferencePath(
-                        List.of(
-                                // FK-TODO: generalize because too many hard coded values
-                                searchablePreferenceDAO.getPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class))));
+                // FK-TODO: generalize because too many hard coded values
+                Optional.of(searchablePreferenceDAO.getPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class)));
     }
 
     private Preference createPreference(final String key,

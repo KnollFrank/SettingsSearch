@@ -1,17 +1,18 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 
+// FK-TODO: rename to PredecessorSetter
 public class PreferencePathsSetter {
 
-    private final Map<SearchablePreference, PreferencePath> preferencePathByPreference;
+    private final Map<SearchablePreference, Optional<SearchablePreference>> predecessorByPreference;
 
-    public PreferencePathsSetter(final Map<SearchablePreference, PreferencePath> preferencePathByPreference) {
-        this.preferencePathByPreference = preferencePathByPreference;
+    public PreferencePathsSetter(final Map<SearchablePreference, Optional<SearchablePreference>> predecessorByPreference) {
+        this.predecessorByPreference = predecessorByPreference;
     }
 
     public void setPreferencePaths(final Set<SearchablePreference> preferences) {
@@ -21,8 +22,6 @@ public class PreferencePathsSetter {
     private void setPreferencePathIncludingChildren(final SearchablePreference preference) {
         SearchablePreferences
                 .getPreferencesRecursively(preference)
-                .forEach(
-                        _preference ->
-                                _preference.setPreferencePath(preferencePathByPreference.get(_preference)));
+                .forEach(_preference -> _preference.setPredecessor(predecessorByPreference.get(_preference)));
     }
 }

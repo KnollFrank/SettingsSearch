@@ -50,7 +50,7 @@ public class MergedPreferenceScreenDataTest {
                                 POJOTestFactory.createBundle("someKey1", "someValue1"),
                                 Optional.of(Either.ofLeft(4711)),
                                 PreferenceFragmentCompat.class,
-                                new PreferencePath(List.of()));
+                                Optional.empty());
                 final SearchablePreference searchablePreference2 =
                         createSearchablePreferencePOJO(
                                 2,
@@ -60,7 +60,7 @@ public class MergedPreferenceScreenDataTest {
                                 POJOTestFactory.createBundle("someKey2", "someValue2"),
                                 Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null)))),
                                 PreferenceFragmentCompat.class,
-                                new PreferencePath(List.of(searchablePreference1)));
+                                Optional.of(searchablePreference1));
                 final Set<SearchablePreference> data =
                         Set.of(
                                 searchablePreference1,

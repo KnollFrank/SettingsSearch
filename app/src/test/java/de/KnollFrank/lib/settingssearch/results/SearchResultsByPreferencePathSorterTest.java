@@ -11,8 +11,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -27,23 +27,23 @@ public class SearchResultsByPreferencePathSorterTest {
                 createSearchablePreferencePOJO(
                         "default speed",
                         TestPreferenceFragment.class,
-                        new PreferencePath(List.of()));
+                        Optional.empty());
 
         final SearchablePreference car =
                 createSearchablePreferencePOJO(
                         "car",
                         SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
-                        new PreferencePath(List.of()));
+                        Optional.empty());
 
-        final SearchablePreference defaultSpeedOfCar = copy(defaultSpeed, new PreferencePath(List.of(car)));
+        final SearchablePreference defaultSpeedOfCar = copy(defaultSpeed, Optional.of(car));
 
         final SearchablePreference walk =
                 createSearchablePreferencePOJO(
                         "walk",
                         SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
-                        new PreferencePath(List.of()));
+                        Optional.empty());
 
-        final SearchablePreference defaultSpeedOfWalk = copy(defaultSpeed, new PreferencePath(List.of(walk)));
+        final SearchablePreference defaultSpeedOfWalk = copy(defaultSpeed, Optional.of(walk));
 
         final Collection<SearchablePreference> searchResults =
                 List.of(

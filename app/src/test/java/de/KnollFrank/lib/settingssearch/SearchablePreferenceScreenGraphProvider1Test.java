@@ -23,7 +23,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -32,6 +31,8 @@ import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferencePathsSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -83,8 +84,8 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
-                final Map<SearchablePreference, PreferencePath> preferencePathByPreference =
-                        PreferencePathByPojoPreferenceProvider.getPreferencePathByPojoPreference(pojoGraph);
+                final PreferencePathsSetter preferencePathsSetter = new PreferencePathsSetter(PredecessorByPojoPreferenceProvider.getPredecessorByPojoPreference(pojoGraph));
+                preferencePathsSetter.setPreferencePaths(MergedPreferenceScreenDataFactory.getPreferences(pojoGraph.vertexSet()));
 
                 // Then
                 final SearchablePreference preferenceOfFragment2PointingToFragment3 =
@@ -98,7 +99,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                                 Fragment2ConnectedToFragment3.class,
                                 pojoGraph.vertexSet());
                 assertThat(
-                        preferencePathByPreference.get(preferenceOfFragment2PointingToFragment3),
+                        preferenceOfFragment2PointingToFragment3.getPreferencePath(),
                         is(
                                 new PreferencePath(
                                         List.of(
