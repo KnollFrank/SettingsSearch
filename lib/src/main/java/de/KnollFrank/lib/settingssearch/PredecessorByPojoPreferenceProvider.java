@@ -41,11 +41,11 @@ public class PredecessorByPojoPreferenceProvider {
                     }
 
                     @Override
-                    protected void visitInnerNode(final SearchablePreferenceScreen preferenceScreen,
+                    protected void visitInnerNode(final SearchablePreferenceScreen innerNode,
                                                   final SearchablePreferenceScreen parentPreferenceScreen) {
                         predecessorByPreferenceScreenBuilder.put(
-                                preferenceScreen,
-                                Optional.of(getPredecessorOfPreferenceScreen(preferenceScreen, parentPreferenceScreen)));
+                                innerNode,
+                                Optional.of(getPredecessorOfPreferenceScreen(innerNode, parentPreferenceScreen)));
                     }
 
                     private SearchablePreference getPredecessorOfPreferenceScreen(

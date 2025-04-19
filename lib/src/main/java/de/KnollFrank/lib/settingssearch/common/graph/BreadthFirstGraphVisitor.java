@@ -20,5 +20,5 @@ public abstract class BreadthFirstGraphVisitor<V, E> {
 
     protected abstract void visitRootNode(final V rootNode);
 
-    protected abstract void visitInnerNode(final V node, final V parentNode);
+    protected abstract void visitInnerNode(final V innerNode, final V parentNode);
 }

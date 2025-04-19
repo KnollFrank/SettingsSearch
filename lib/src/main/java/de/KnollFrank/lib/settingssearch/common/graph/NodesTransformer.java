@@ -23,13 +23,13 @@ public class NodesTransformer {
         return new GraphTransformer<>() {
 
             @Override
-            public W transformRootNode(final V node) {
-                return transformNode.apply(node);
+            public W transformRootNode(final V rootNode) {
+                return transformNode.apply(rootNode);
             }
 
             @Override
-            public W transformInnerNode(final V node, final NodeContext<E, W> nodeContext) {
-                return transformNode.apply(node);
+            public W transformInnerNode(final V innerNode, final ContextOfInnerNode<E, W> contextOfInnerNode) {
+                return transformNode.apply(innerNode);
             }
 
             @Override

@@ -6,7 +6,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer.NodeContext;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer.ContextOfInnerNode;
 
 public class GraphTransformerAlgorithm {
 
@@ -28,18 +28,18 @@ public class GraphTransformerAlgorithm {
                     }
 
                     @Override
-                    protected void visitInnerNode(final V1 node, final V1 parentNode) {
+                    protected void visitInnerNode(final V1 innerNode, final V1 parentNode) {
                         final V2 transformedParentNode = transformedNodeByNode.get(parentNode);
-                        final E1 edge = graph.getEdge(parentNode, node);
-                        final V2 transformedNode =
+                        final E1 edge = graph.getEdge(parentNode, innerNode);
+                        final V2 transformedInnerNode =
                                 graphTransformer.transformInnerNode(
-                                        node,
-                                        new NodeContext<>(edge, transformedParentNode));
-                        transformedNodeByNode.put(node, transformedNode);
-                        transformedGraph.addVertex(transformedNode);
+                                        innerNode,
+                                        new ContextOfInnerNode<>(edge, transformedParentNode));
+                        transformedNodeByNode.put(innerNode, transformedInnerNode);
+                        transformedGraph.addVertex(transformedInnerNode);
                         transformedGraph.addEdge(
                                 transformedParentNode,
-                                transformedNode,
+                                transformedInnerNode,
                                 graphTransformer.transformEdge(edge, transformedParentNode));
                     }
                 };

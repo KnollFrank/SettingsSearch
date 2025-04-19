@@ -35,20 +35,20 @@ public class Graph2POJOGraphTransformer {
             private final IdGenerator idGenerator4PreferenceScreen = new IdGenerator();
 
             @Override
-            public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost node) {
-                return convert2POJO(node, Optional.empty());
+            public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {
+                return convert2POJO(rootNode, Optional.empty());
             }
 
             @Override
             public SearchablePreferenceScreenWithMap transformInnerNode(
-                    final PreferenceScreenWithHost node,
-                    final NodeContext<PreferenceEdge, SearchablePreferenceScreenWithMap> nodeContext) {
+                    final PreferenceScreenWithHost innerNode,
+                    final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
                 return convert2POJO(
-                        node,
+                        innerNode,
                         Optional.of(
                                 getPredecessorOfNode(
-                                        nodeContext.transformedParentNode(),
-                                        nodeContext.edgeFromParentNode2Node())));
+                                        contextOfInnerNode.transformedParentNode(),
+                                        contextOfInnerNode.edgeFromParentNode2InnerNode())));
             }
 
             @Override
