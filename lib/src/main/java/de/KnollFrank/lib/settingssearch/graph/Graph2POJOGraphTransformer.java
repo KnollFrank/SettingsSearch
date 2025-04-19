@@ -36,12 +36,14 @@ public class Graph2POJOGraphTransformer {
 
             @Override
             public SearchablePreferenceScreenWithMap transformNode(final PreferenceScreenWithHost node,
+                                                                   final Optional<PreferenceEdge> edgeFromParentNode2Node,
                                                                    final Optional<SearchablePreferenceScreenWithMap> transformedParentNode) {
                 return PreferenceScreenWithHost2POJOConverter
                         .convert2POJO(
                                 node,
                                 idGenerator4PreferenceScreen.nextId(),
-                                preference2SearchablePreferenceConverter);
+                                preference2SearchablePreferenceConverter,
+                                getPredecessorOfNode(transformedParentNode, edgeFromParentNode2Node));
             }
 
             @Override
@@ -51,6 +53,16 @@ public class Graph2POJOGraphTransformer {
                         getTransformedPreference(
                                 edge.preference,
                                 transformedParentNode));
+            }
+
+            private static Optional<SearchablePreference> getPredecessorOfNode(
+                    final Optional<SearchablePreferenceScreenWithMap> parentNode,
+                    final Optional<PreferenceEdge> edgeFromParentNode2Node) {
+                return parentNode.map(
+                        _parentNode ->
+                                getTransformedPreference(
+                                        edgeFromParentNode2Node.orElseThrow().preference,
+                                        _parentNode));
             }
 
             private static SearchablePreference getTransformedPreference(

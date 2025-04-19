@@ -36,7 +36,6 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -47,8 +46,8 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 @RunWith(RobolectricTestRunner.class)
 public class Graph2POJOGraphTransformerTest {
 
-    private static final int DST_PREFERENCE_ID = 4711;
-    private static final int PREFERENCE_CONNECTING_SRC_2_DST_ID = 815;
+    private static final int DST_PREFERENCE_ID = 5;
+    private static final int PREFERENCE_CONNECTING_SRC_2_DST_ID = 4;
 
     @Test
     public void shouldTransformGraph2POJOGraph() {
@@ -68,19 +67,21 @@ public class Graph2POJOGraphTransformerTest {
                                 new IdGenerator());
 
                 // When
-                final Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> pojoGraph =
-                        Graph2POJOGraphTransformer.transformGraph2POJOGraph(
-                                entityGraph,
-                                preference2SearchablePreferenceConverter);
+                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
+                        removeMapFromPojoNodes(
+                                Graph2POJOGraphTransformer.transformGraph2POJOGraph(
+                                        entityGraph,
+                                        preference2SearchablePreferenceConverter));
 
                 // Then
-                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected = createPojoGraph(preferenceFragment.getClass());
-                assertThat(removeMapFromPojoNodes(pojoGraph), is(pojoGraphExpected));
+                // check graph:
+                assertThat(pojoGraph, is(createPojoGraph(preferenceFragment.getClass())));
                 {
-                    final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraphExpected);
+                    final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph);
                     final SearchablePreference preference = data.preference();
                     final SearchablePreference expectedPredecessorOfPreference = data.expectedPredecessorOfPreference();
-                    assertThat(preference.getPredecessor(), is(Optional.of(expectedPredecessorOfPreference)));
+                    // check predecessor:
+                    assertThat("predecessor of " + preference, preference.getPredecessor(), is(Optional.of(expectedPredecessorOfPreference)));
                 }
             });
         }
@@ -97,7 +98,7 @@ public class Graph2POJOGraphTransformerTest {
                     preference.addPreference(createChild(context));
                     preference.addPreference(createChild(context));
                 }
-                screen.addPreference(createConnectionToFragment(TestPreferenceFragment.class, context));
+                screen.addPreference(createConnectionToFragment(PreferenceFragmentWithSinglePreference.class, context));
             }
 
             private static PreferenceCategory createParent(final Context context) {
@@ -125,6 +126,18 @@ public class Graph2POJOGraphTransformerTest {
         };
     }
 
+    public static class PreferenceFragmentWithSinglePreference extends PreferenceFragmentTemplate {
+
+        public PreferenceFragmentWithSinglePreference() {
+            super(context -> {
+                final Preference preference = new Preference(context);
+                preference.setKey("some dst key");
+                preference.setTitle("some title for dst key");
+                return List.of(preference);
+            });
+        }
+    }
+
     private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference preferenceConnectingSrc2Dst =
                 new SearchablePreference(
@@ -135,18 +148,19 @@ public class Graph2POJOGraphTransformerTest {
                         Optional.empty(),
                         Optional.of("preference connected to TestPreferenceFragment"),
                         0,
-                        Optional.of(TestPreferenceFragment.class.getName()),
+                        Optional.of(PreferenceFragmentWithSinglePreference.class.getName()),
                         Optional.empty(),
                         true,
                         Optional.empty(),
                         new Bundle(),
                         host,
-                        List.of());
+                        List.of(),
+                        Optional.empty());
         return DefaultDirectedGraph
                 .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                 .addEdge(
                         createSrc(preferenceConnectingSrc2Dst, host),
-                        createDst(),
+                        createDst(preferenceConnectingSrc2Dst),
                         new SearchablePreferenceEdge(preferenceConnectingSrc2Dst))
                 .build();
     }
@@ -187,7 +201,8 @@ public class Graph2POJOGraphTransformerTest {
                                                 Optional.empty(),
                                                 new Bundle(),
                                                 host,
-                                                List.of()),
+                                                List.of(),
+                                                Optional.empty()),
                                         new SearchablePreference(
                                                 3,
                                                 "some child key 2",
@@ -202,11 +217,13 @@ public class Graph2POJOGraphTransformerTest {
                                                 Optional.empty(),
                                                 new Bundle(),
                                                 host,
-                                                List.of()))),
+                                                List.of(),
+                                                Optional.empty())),
+                                Optional.empty()),
                         preferenceConnectingSrc2Dst));
     }
 
-    private static SearchablePreferenceScreen createDst() {
+    private static SearchablePreferenceScreen createDst(final SearchablePreference predecessor) {
         return new SearchablePreferenceScreen(
                 2,
                 null,
@@ -214,11 +231,11 @@ public class Graph2POJOGraphTransformerTest {
                 List.of(
                         new SearchablePreference(
                                 DST_PREFERENCE_ID,
-                                "some child key 10",
+                                "some dst key",
                                 Optional.empty(),
                                 16,
                                 Optional.empty(),
-                                Optional.empty(),
+                                Optional.of("some title for dst key"),
                                 0,
                                 Optional.empty(),
                                 Optional.empty(),
@@ -226,7 +243,8 @@ public class Graph2POJOGraphTransformerTest {
                                 Optional.empty(),
                                 new Bundle(),
                                 TestPreferenceFragment.class,
-                                List.of())));
+                                List.of(),
+                                Optional.of(predecessor))));
     }
 
     private static PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(

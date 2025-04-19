@@ -47,10 +47,11 @@ public class Preference2SearchablePreferenceConverter {
     }
 
     public SearchablePreferenceWithMap convert2POJO(final Preference preference,
-                                                    final PreferenceFragmentCompat hostOfPreference) {
+                                                    final PreferenceFragmentCompat hostOfPreference,
+                                                    final Optional<SearchablePreference> predecessorOfPreference) {
         final int id = idGenerator.nextId();
         final SearchablePreferencesWithMap searchablePreferencesWithMap =
-                convertChildren2POJOs(preference, hostOfPreference);
+                convertChildren2POJOs(preference, hostOfPreference, predecessorOfPreference);
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         id,
@@ -66,7 +67,8 @@ public class Preference2SearchablePreferenceConverter {
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
                         preference.getExtras(),
                         hostOfPreference.getClass(),
-                        searchablePreferencesWithMap.searchablePreferences());
+                        searchablePreferencesWithMap.searchablePreferences(),
+                        predecessorOfPreference);
         return new SearchablePreferenceWithMap(
                 searchablePreference,
                 ImmutableBiMap
@@ -77,11 +79,12 @@ public class Preference2SearchablePreferenceConverter {
     }
 
     public SearchablePreferencesWithMap convert2POJOs(final List<Preference> preferences,
-                                                      final PreferenceFragmentCompat hostOfPreferences) {
+                                                      final PreferenceFragmentCompat hostOfPreferences,
+                                                      final Optional<SearchablePreference> predecessorOfPreferences) {
         final List<SearchablePreferenceWithMap> pojoWithMapList =
                 preferences
                         .stream()
-                        .map(preference -> convert2POJO(preference, hostOfPreferences))
+                        .map(preference -> convert2POJO(preference, hostOfPreferences, predecessorOfPreferences))
                         .collect(Collectors.toList());
         return new SearchablePreferencesWithMap(
                 getSearchablePreferences(pojoWithMapList),
@@ -89,11 +92,13 @@ public class Preference2SearchablePreferenceConverter {
     }
 
     private SearchablePreferencesWithMap convertChildren2POJOs(final Preference preference,
-                                                               final PreferenceFragmentCompat hostOfPreference) {
+                                                               final PreferenceFragmentCompat hostOfPreference,
+                                                               final Optional<SearchablePreference> predecessorOfPreference) {
         return preference instanceof final PreferenceGroup preferenceGroup ?
                 convert2POJOs(
                         Preferences.getImmediateChildren(preferenceGroup),
-                        hostOfPreference) :
+                        hostOfPreference,
+                        predecessorOfPreference) :
                 new SearchablePreferencesWithMap(
                         Collections.emptyList(),
                         ImmutableBiMap.<SearchablePreference, Preference>builder().build());

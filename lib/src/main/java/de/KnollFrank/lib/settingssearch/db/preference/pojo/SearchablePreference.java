@@ -264,6 +264,7 @@ public final class SearchablePreference {
                 ", extras=" + extras +
                 ", children=" + children +
                 ", host=" + host +
+                ", predecessor=" + predecessor +
                 '}';
     }
 
