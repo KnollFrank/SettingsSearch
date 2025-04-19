@@ -62,7 +62,8 @@ public final class SearchablePreference {
             final Optional<String> searchableInfo,
             final Bundle extras,
             final Class<? extends PreferenceFragmentCompat> host,
-            final List<SearchablePreference> children) {
+            final List<SearchablePreference> children,
+            final Optional<SearchablePreference> predecessor) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData.orElse(null);
@@ -77,39 +78,6 @@ public final class SearchablePreference {
         this.extras = extras;
         this.host = host;
         this.children = children;
-    }
-
-    public SearchablePreference(
-            final int id,
-            final String key,
-            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final @LayoutRes int layoutResId,
-            final Optional<String> summary,
-            final Optional<String> title,
-            final @LayoutRes int widgetLayoutResId,
-            final Optional<String> fragment,
-            final Optional<String> classNameOfReferencedActivity,
-            final boolean visible,
-            final Optional<String> searchableInfo,
-            final Bundle extras,
-            final Class<? extends PreferenceFragmentCompat> host,
-            final List<SearchablePreference> children,
-            final Optional<SearchablePreference> predecessor) {
-        this(
-                id,
-                key,
-                iconResourceIdOrIconPixelData,
-                layoutResId,
-                summary,
-                title,
-                widgetLayoutResId,
-                fragment,
-                classNameOfReferencedActivity,
-                visible,
-                searchableInfo,
-                extras,
-                host,
-                children);
         this.predecessor = predecessor;
     }
 

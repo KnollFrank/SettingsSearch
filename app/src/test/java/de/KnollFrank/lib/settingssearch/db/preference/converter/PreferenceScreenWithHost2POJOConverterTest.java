@@ -131,7 +131,8 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                                                 Optional.of("some searchable info of first child"),
                                                                 new Bundle(),
                                                                 preferenceFragment.getClass(),
-                                                                List.of()),
+                                                                List.of(),
+                                                                Optional.empty()),
                                                         new SearchablePreference(
                                                                 3,
                                                                 "some child key 2",
@@ -146,7 +147,9 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                                                 Optional.of("some searchable info of second child"),
                                                                 new Bundle(),
                                                                 preferenceFragment.getClass(),
-                                                                List.of())))))));
+                                                                List.of(),
+                                                                Optional.empty())),
+                                                Optional.empty())))));
             });
         }
     }
