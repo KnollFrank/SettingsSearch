@@ -5,7 +5,6 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer.NodeContext;
 
@@ -23,7 +22,7 @@ public class GraphTransformerAlgorithm {
 
                     @Override
                     protected void visitRootNode(final V1 rootNode) {
-                        final V2 transformedRootNode = graphTransformer.transformNode(rootNode, Optional.empty());
+                        final V2 transformedRootNode = graphTransformer.transformRootNode(rootNode);
                         transformedNodeByNode.put(rootNode, transformedRootNode);
                         transformedGraph.addVertex(transformedRootNode);
                     }
@@ -32,7 +31,10 @@ public class GraphTransformerAlgorithm {
                     protected void visitInnerNode(final V1 node, final V1 parentNode) {
                         final V2 transformedParentNode = transformedNodeByNode.get(parentNode);
                         final E1 edge = graph.getEdge(parentNode, node);
-                        final V2 transformedNode = graphTransformer.transformNode(node, Optional.of(new NodeContext<>(edge, transformedParentNode)));
+                        final V2 transformedNode =
+                                graphTransformer.transformInnerNode(
+                                        node,
+                                        new NodeContext<>(edge, transformedParentNode));
                         transformedNodeByNode.put(node, transformedNode);
                         transformedGraph.addVertex(transformedNode);
                         transformedGraph.addEdge(

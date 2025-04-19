@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import org.jgrapht.Graph;
 
-import java.util.Optional;
 import java.util.function.Function;
 
 public class NodesTransformer {
@@ -24,7 +23,12 @@ public class NodesTransformer {
         return new GraphTransformer<>() {
 
             @Override
-            public W transformNode(final V node, final Optional<NodeContext<E, W>> nodeContext) {
+            public W transformRootNode(final V node) {
+                return transformNode.apply(node);
+            }
+
+            @Override
+            public W transformInnerNode(final V node, final NodeContext<E, W> nodeContext) {
                 return transformNode.apply(node);
             }
 

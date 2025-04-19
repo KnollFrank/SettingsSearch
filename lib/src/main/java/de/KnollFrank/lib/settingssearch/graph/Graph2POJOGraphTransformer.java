@@ -35,16 +35,20 @@ public class Graph2POJOGraphTransformer {
             private final IdGenerator idGenerator4PreferenceScreen = new IdGenerator();
 
             @Override
-            public SearchablePreferenceScreenWithMap transformNode(
+            public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost node) {
+                return convert2POJO(node, Optional.empty());
+            }
+
+            @Override
+            public SearchablePreferenceScreenWithMap transformInnerNode(
                     final PreferenceScreenWithHost node,
-                    final Optional<NodeContext<PreferenceEdge, SearchablePreferenceScreenWithMap>> nodeContext) {
-                return PreferenceScreenWithHost2POJOConverter
-                        .convert2POJO(
-                                node,
-                                idGenerator4PreferenceScreen.nextId(),
-                                preference2SearchablePreferenceConverter,
-                                // FK-TODO: refactor
-                                getPredecessorOfNode(nodeContext.map(NodeContext::transformedParentNode), nodeContext.map(NodeContext::edgeFromParentNode2Node)));
+                    final NodeContext<PreferenceEdge, SearchablePreferenceScreenWithMap> nodeContext) {
+                return convert2POJO(
+                        node,
+                        Optional.of(
+                                getPredecessorOfNode(
+                                        nodeContext.transformedParentNode(),
+                                        nodeContext.edgeFromParentNode2Node())));
             }
 
             @Override
@@ -56,14 +60,23 @@ public class Graph2POJOGraphTransformer {
                                 transformedParentNode));
             }
 
-            private static Optional<SearchablePreference> getPredecessorOfNode(
-                    final Optional<SearchablePreferenceScreenWithMap> parentNode,
-                    final Optional<PreferenceEdge> edgeFromParentNode2Node) {
-                return parentNode.map(
-                        _parentNode ->
-                                getTransformedPreference(
-                                        edgeFromParentNode2Node.orElseThrow().preference,
-                                        _parentNode));
+            private SearchablePreferenceScreenWithMap convert2POJO(
+                    final PreferenceScreenWithHost node,
+                    final Optional<SearchablePreference> predecessorOfNode) {
+                return PreferenceScreenWithHost2POJOConverter
+                        .convert2POJO(
+                                node,
+                                idGenerator4PreferenceScreen.nextId(),
+                                preference2SearchablePreferenceConverter,
+                                predecessorOfNode);
+            }
+
+            private static SearchablePreference getPredecessorOfNode(
+                    final SearchablePreferenceScreenWithMap parentNode,
+                    final PreferenceEdge edgeFromParentNode2Node) {
+                return getTransformedPreference(
+                        edgeFromParentNode2Node.preference,
+                        parentNode);
             }
 
             private static SearchablePreference getTransformedPreference(
