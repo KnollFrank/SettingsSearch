@@ -24,7 +24,7 @@ public class NodesTransformer {
         return new GraphTransformer<>() {
 
             @Override
-            public W transformNode(final V node, final Optional<E> edgeFromParentNode2Node, final Optional<W> transformedParentNode) {
+            public W transformNode(final V node, final Optional<NodeContext<E, W>> nodeContext) {
                 return transformNode.apply(node);
             }
 

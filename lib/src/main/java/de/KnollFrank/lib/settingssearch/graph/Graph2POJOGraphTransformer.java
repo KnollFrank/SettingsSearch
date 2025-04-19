@@ -35,15 +35,16 @@ public class Graph2POJOGraphTransformer {
             private final IdGenerator idGenerator4PreferenceScreen = new IdGenerator();
 
             @Override
-            public SearchablePreferenceScreenWithMap transformNode(final PreferenceScreenWithHost node,
-                                                                   final Optional<PreferenceEdge> edgeFromParentNode2Node,
-                                                                   final Optional<SearchablePreferenceScreenWithMap> transformedParentNode) {
+            public SearchablePreferenceScreenWithMap transformNode(
+                    final PreferenceScreenWithHost node,
+                    final Optional<NodeContext<PreferenceEdge, SearchablePreferenceScreenWithMap>> nodeContext) {
                 return PreferenceScreenWithHost2POJOConverter
                         .convert2POJO(
                                 node,
                                 idGenerator4PreferenceScreen.nextId(),
                                 preference2SearchablePreferenceConverter,
-                                getPredecessorOfNode(transformedParentNode, edgeFromParentNode2Node));
+                                // FK-TODO: refactor
+                                getPredecessorOfNode(nodeContext.map(NodeContext::transformedParentNode), nodeContext.map(NodeContext::edgeFromParentNode2Node)));
             }
 
             @Override
