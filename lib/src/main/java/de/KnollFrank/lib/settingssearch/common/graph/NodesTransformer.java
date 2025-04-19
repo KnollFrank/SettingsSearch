@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import org.jgrapht.Graph;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 public class NodesTransformer {
@@ -23,12 +24,12 @@ public class NodesTransformer {
         return new GraphTransformer<>() {
 
             @Override
-            public W transformNode(final V v) {
+            public W transformNode(final V v, final Optional<W> transformedParentNode) {
                 return transformNode.apply(v);
             }
 
             @Override
-            public E transformEdge(final E edge, final W w) {
+            public E transformEdge(final E edge, final W transformedParentNode) {
                 return cloneEdge.apply(edge);
             }
         };

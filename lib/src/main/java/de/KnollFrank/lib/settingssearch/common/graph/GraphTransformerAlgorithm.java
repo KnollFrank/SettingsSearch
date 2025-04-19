@@ -5,6 +5,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class GraphTransformerAlgorithm {
 
@@ -20,18 +21,18 @@ public class GraphTransformerAlgorithm {
 
                     @Override
                     protected void visitRootNode(final V1 rootNode) {
-                        final V2 transformedRootNode = graphTransformer.transformNode(rootNode);
+                        final V2 transformedRootNode = graphTransformer.transformNode(rootNode, Optional.empty());
                         transformedNodeByNode.put(rootNode, transformedRootNode);
                         transformedGraph.addVertex(transformedRootNode);
                     }
 
                     @Override
                     protected void visitInnerNode(final V1 node, final V1 parentNode) {
-                        final V2 transformedNode = graphTransformer.transformNode(node);
+                        final V2 transformedParentNode = transformedNodeByNode.get(parentNode);
+                        final V2 transformedNode = graphTransformer.transformNode(node, Optional.of(transformedParentNode));
                         transformedNodeByNode.put(node, transformedNode);
                         transformedGraph.addVertex(transformedNode);
                         final E1 edge = graph.getEdge(parentNode, node);
-                        final V2 transformedParentNode = transformedNodeByNode.get(parentNode);
                         transformedGraph.addEdge(
                                 transformedParentNode,
                                 transformedNode,

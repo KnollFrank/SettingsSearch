@@ -4,6 +4,8 @@ import androidx.preference.Preference;
 
 import org.jgrapht.Graph;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
@@ -33,7 +35,8 @@ public class Graph2POJOGraphTransformer {
             private final IdGenerator idGenerator4PreferenceScreen = new IdGenerator();
 
             @Override
-            public SearchablePreferenceScreenWithMap transformNode(final PreferenceScreenWithHost node) {
+            public SearchablePreferenceScreenWithMap transformNode(final PreferenceScreenWithHost node,
+                                                                   final Optional<SearchablePreferenceScreenWithMap> transformedParentNode) {
                 return PreferenceScreenWithHost2POJOConverter
                         .convert2POJO(
                                 node,
