@@ -82,7 +82,6 @@ public class Graph2POJOGraphTransformerTest {
                     preference.addPreference(createChild(context));
                     preference.addPreference(createChild(context));
                 }
-
                 screen.addPreference(createConnectionToFragment(TestPreferenceFragment.class, context));
             }
 
