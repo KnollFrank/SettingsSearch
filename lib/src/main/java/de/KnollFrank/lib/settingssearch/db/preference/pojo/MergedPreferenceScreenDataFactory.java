@@ -5,18 +5,10 @@ import org.jgrapht.Graph;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.PredecessorByPojoPreferenceProvider;
-
 public class MergedPreferenceScreenDataFactory {
 
-    public static Set<SearchablePreference> getPreferences(
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
-        final PredecessorSetter predecessorSetter =
-                new PredecessorSetter(
-                        PredecessorByPojoPreferenceProvider.getPredecessorByPojoPreference(pojoGraph));
-        final Set<SearchablePreference> preferences = getPreferences(pojoGraph.vertexSet());
-        predecessorSetter.setPredecessors(preferences);
-        return preferences;
+    public static Set<SearchablePreference> getPreferences(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+        return getPreferences(pojoGraph.vertexSet());
     }
 
     public static Set<SearchablePreference> getPreferences(final Set<SearchablePreferenceScreen> preferenceScreens) {

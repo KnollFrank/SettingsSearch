@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest.getInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory.getPreferences;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 
 import android.content.Context;
@@ -21,17 +22,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
-import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -249,14 +247,7 @@ public class Graph2POJOGraphTransformerTest {
 
     private static PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected) {
-        final Set<SearchablePreference> searchablePreferences =
-                Sets.union(
-                        pojoGraphExpected
-                                .vertexSet()
-                                .stream()
-                                .map(SearchablePreferenceScreen::preferences)
-                                .map(HashSet::new)
-                                .collect(Collectors.toSet()));
+        final Set<SearchablePreference> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet());
         return new PreferenceAndExpectedPredecessorOfPreference(
                 getDstPreference(searchablePreferences),
                 getPreferenceConnectingSrc2Dst(searchablePreferences));
