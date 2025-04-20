@@ -23,8 +23,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScree
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
@@ -34,7 +34,7 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 public class MergedPreferenceScreenDataRepository {
 
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
-    private final DefaultFragmentInitializer preferenceDialogs;
+    private final PreferenceDialogs preferenceDialogs;
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
@@ -42,7 +42,7 @@ public class MergedPreferenceScreenDataRepository {
 
     public MergedPreferenceScreenDataRepository(
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-            final DefaultFragmentInitializer preferenceDialogs,
+            final PreferenceDialogs preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
             final PrincipalAndProxyProvider principalAndProxyProvider,
