@@ -28,10 +28,9 @@ public class Preference2SearchablePreferenceConverter {
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
     private final IdGenerator idGenerator;
 
-    public Preference2SearchablePreferenceConverter(
-            final IconProvider iconProvider,
-            final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
-            final IdGenerator idGenerator) {
+    public Preference2SearchablePreferenceConverter(final IconProvider iconProvider,
+                                                    final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
+                                                    final IdGenerator idGenerator) {
         this.iconProvider = iconProvider;
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
         this.idGenerator = idGenerator;
