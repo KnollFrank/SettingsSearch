@@ -6,7 +6,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PredecessorSetter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class MergedPreferenceScreenDataConverter {

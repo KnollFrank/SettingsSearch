@@ -46,7 +46,7 @@ public final class SearchablePreference {
     private final Class<? extends PreferenceFragmentCompat> host;
     private final List<SearchablePreference> children;
     @Exclude
-    private Optional<SearchablePreference> predecessor;
+    private final Optional<SearchablePreference> predecessor;
 
     public SearchablePreference(
             final int id,
@@ -191,14 +191,7 @@ public final class SearchablePreference {
         return getPreferencePathOfPredecessor().append(this);
     }
 
-    public void setPredecessor(final Optional<SearchablePreference> predecessor) {
-        this.predecessor = predecessor;
-    }
-
     public Optional<SearchablePreference> getPredecessor() {
-        if (predecessor == null) {
-            predecessor = Optional.empty();
-        }
         return predecessor;
     }
 
