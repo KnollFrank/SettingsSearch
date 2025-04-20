@@ -4,6 +4,7 @@ import android.content.Context;
 
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public interface MergedPreferenceScreenDataRepositoryFactory {
@@ -14,7 +15,7 @@ public interface MergedPreferenceScreenDataRepositoryFactory {
             ProgressUpdateListener progressUpdateListener);
 
     MergedPreferenceScreenDataRepository createMergedPreferenceScreenDataRepository(
-            DefaultFragmentInitializer preferenceDialogs,
+            PreferenceDialogs preferenceDialogs,
             Context context,
             ProgressUpdateListener progressUpdateListener,
             InstantiateAndInitializeFragment instantiateAndInitializeFragment);
