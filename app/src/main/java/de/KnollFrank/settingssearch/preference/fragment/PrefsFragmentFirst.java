@@ -25,12 +25,12 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -86,11 +86,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private void addPreferenceToP1() {
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
                         final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
-                        final DefaultFragmentInitializer defaultFragmentInitializer =
-                                new DefaultFragmentInitializer(
-                                        requireActivity().getSupportFragmentManager(),
-                                        FRAGMENT_CONTAINER_VIEW_ID,
-                                        OnUiThreadRunnerFactory.fromActivity(requireActivity()));
+                        final DefaultFragmentInitializer defaultFragmentInitializer = DefaultFragmentInitializerFactory.createDefaultFragmentInitializer(PrefsFragmentFirst.this.requireActivity(), FRAGMENT_CONTAINER_VIEW_ID);
                         // FK-TODO: extract method for creation of InstantiateAndInitializeFragment and use multiple times
                         final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                                 new Fragments(
