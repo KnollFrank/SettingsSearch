@@ -31,10 +31,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializerFactory;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
-import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
@@ -89,11 +87,9 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final DefaultFragmentInitializer defaultFragmentInitializer = DefaultFragmentInitializerFactory.createDefaultFragmentInitializer(PrefsFragmentFirst.this.requireActivity(), FRAGMENT_CONTAINER_VIEW_ID);
                         // FK-TODO: extract method for creation of InstantiateAndInitializeFragment and use multiple times
                         final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
-                                new Fragments(
-                                        new FragmentFactoryAndInitializerWithCache(
-                                                new FragmentFactoryAndInitializer(
-                                                        searchDatabaseConfig.fragmentFactory,
-                                                        defaultFragmentInitializer)),
+                                InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
+                                        searchDatabaseConfig.fragmentFactory,
+                                        defaultFragmentInitializer,
                                         requireContext());
                         // FK-TODO: extract method for creation of Preference2SearchablePreferenceConverter and use multiple times
                         final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =

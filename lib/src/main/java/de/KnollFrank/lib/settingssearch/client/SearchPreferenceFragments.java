@@ -21,11 +21,10 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
-import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
@@ -125,11 +124,9 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 preferenceDialogs,
                 context,
                 progressUpdateListener,
-                new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(
-                                new FragmentFactoryAndInitializer(
-                                        searchDatabaseConfig.fragmentFactory,
-                                        preferenceDialogs)),
+                InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
+                        searchDatabaseConfig.fragmentFactory,
+                        preferenceDialogs,
                         context));
     }
 
