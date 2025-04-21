@@ -29,7 +29,11 @@ class FragmentFactory implements de.KnollFrank.lib.settingssearch.fragment.Fragm
                 .orElseGet(() -> delegate.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment));
     }
 
-    private <T extends Fragment> Optional<T> createPreferenceFragment(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+    private <T extends Fragment> Optional<T> createPreferenceFragment(
+            final Class<T> fragmentClass,
+            final Optional<PreferenceWithHost> src,
+            final Context context,
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return preferenceFragmentFactories
                 .stream()
                 .map(preferenceFragmentFactory -> preferenceFragmentFactory.createPreferenceFragmentForClass(fragmentClass, src, context, instantiateAndInitializeFragment))
