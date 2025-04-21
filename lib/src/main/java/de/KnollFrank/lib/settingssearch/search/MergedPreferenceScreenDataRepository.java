@@ -13,9 +13,8 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
-import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.FileDatabaseFactory;
@@ -27,7 +26,6 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
-import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
@@ -108,14 +106,10 @@ public class MergedPreferenceScreenDataRepository {
                     }
                 },
                 searchDatabaseConfig.computePreferencesListener,
-                new Preference2SearchablePreferenceConverter(
-                        new IconProvider(searchDatabaseConfig.iconResourceIdProvider),
-                        new SearchableInfoAndDialogInfoProvider(
-                                searchDatabaseConfig.searchableInfoProvider,
-                                new SearchableDialogInfoOfProvider(
-                                        preferenceDialogs,
-                                        searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider)),
-                        new IdGenerator()),
+                Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
+                        searchDatabaseConfig,
+                        preferenceDialogs,
+                        IdGeneratorFactory.createIdGeneratorStartingAt1()),
                 context);
     }
 }

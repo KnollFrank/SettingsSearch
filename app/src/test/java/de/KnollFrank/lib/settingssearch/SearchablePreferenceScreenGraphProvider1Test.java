@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -127,7 +127,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                         new SearchableInfoAndDialogInfoProvider(
                                 preference -> Optional.empty(),
                                 (preference, hostOfPreference) -> Optional.empty()),
-                        new IdGenerator()),
+                        IdGeneratorFactory.createIdGeneratorStartingAt1()),
                 activity);
     }
 

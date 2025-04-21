@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.search.provider.IconResourceIdProvider;
 
-class IconProvider implements de.KnollFrank.lib.settingssearch.search.provider.IconProvider {
+public class IconProvider implements de.KnollFrank.lib.settingssearch.search.provider.IconProvider {
 
     private final IconResourceIdProvider iconResourceIdProvider;
 

@@ -11,6 +11,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
@@ -32,7 +33,7 @@ public class Graph2POJOGraphTransformer {
             final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
         return new GraphTransformer<>() {
 
-            private final IdGenerator idGenerator4PreferenceScreen = new IdGenerator();
+            private final IdGenerator idGenerator4PreferenceScreen = IdGeneratorFactory.createIdGeneratorStartingAt1();
 
             @Override
             public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {

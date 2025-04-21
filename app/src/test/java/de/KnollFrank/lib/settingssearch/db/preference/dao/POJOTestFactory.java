@@ -10,11 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class POJOTestFactory {
 
-    private static final IdGenerator idGenerator = new IdGenerator();
+    private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt1();
 
     public static SearchablePreference createSearchablePreferencePOJO(
             final String title,

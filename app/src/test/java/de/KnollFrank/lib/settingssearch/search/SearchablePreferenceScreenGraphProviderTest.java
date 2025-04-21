@@ -21,7 +21,7 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
@@ -101,7 +101,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                 new SearchableDialogInfoOfProvider(
                                         fragmentInitializer,
                                         (preference, hostOfPreference) -> Optional.empty())),
-                        new IdGenerator()),
+                        IdGeneratorFactory.createIdGeneratorStartingAt1()),
                 fragmentActivity);
     }
 }

@@ -31,7 +31,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
@@ -62,7 +62,7 @@ public class Graph2POJOGraphTransformerTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
-                                new IdGenerator());
+                                IdGeneratorFactory.createIdGeneratorStartingAt1());
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =

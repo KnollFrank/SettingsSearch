@@ -82,7 +82,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
-                                new IdGenerator());
+                                IdGeneratorFactory.createIdGeneratorStartingAt1());
 
                 // When
                 final SearchablePreferenceScreen pojo =

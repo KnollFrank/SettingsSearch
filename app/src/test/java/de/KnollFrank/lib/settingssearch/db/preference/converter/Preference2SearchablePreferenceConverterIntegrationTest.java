@@ -67,7 +67,7 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
                         new SearchableInfoAndDialogInfoProvider(
                                 _preference -> Optional.empty(),
                                 (_preference, _hostOfPreference) -> Optional.empty()),
-                        new IdGenerator());
+                        IdGeneratorFactory.createIdGeneratorStartingAt1());
         return preference2SearchablePreferenceConverter
                 .convert2POJO(preference, hostOfPreference, Optional.empty())
                 .searchablePreference();

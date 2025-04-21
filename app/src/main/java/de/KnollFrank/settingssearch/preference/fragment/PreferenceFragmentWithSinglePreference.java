@@ -1,6 +1,5 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter.getClassNameOfReferencedActivity;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS;
 
 import android.content.Context;
@@ -10,7 +9,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -60,27 +58,17 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
         return preference;
     }
 
-    public static SearchablePreference createAdditionalSearchablePreference(
-            final Context context,
-            final SearchablePreferenceDAO searchablePreferenceDAO) {
-        final Preference preference = createAdditionalPreference(context);
-        return new SearchablePreference(
-                searchablePreferenceDAO.getUnusedId(),
-                preference.getKey(),
-                Optional.empty(),
-                preference.getLayoutResource(),
-                Preference2SearchablePreferenceConverter.toString(Optional.ofNullable(preference.getSummary())),
-                Preference2SearchablePreferenceConverter.toString(Optional.ofNullable(preference.getTitle())),
-                preference.getWidgetLayoutResource(),
-                Optional.ofNullable(preference.getFragment()),
-                getClassNameOfReferencedActivity(preference),
-                preference.isVisible(),
-                Optional.empty(),
-                preference.getExtras(),
-                PreferenceFragmentWithSinglePreference.class,
-                List.of(),
-                // FK-TODO: generalize because too many hard coded values
-                Optional.of(searchablePreferenceDAO.getPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class)));
+    public SearchablePreference createAdditionalSearchablePreference(
+            final SearchablePreferenceDAO searchablePreferenceDAO,
+            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
+        final Preference preference = createAdditionalPreference(getPreferenceManager().getContext());
+        return preference2SearchablePreferenceConverter
+                .convert2POJO(
+                        preference,
+                        this,
+                        // FK-TODO: generalize because too many hard coded values
+                        Optional.of(searchablePreferenceDAO.getPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class)))
+                .searchablePreference();
     }
 
     private Preference createPreference(final String key,

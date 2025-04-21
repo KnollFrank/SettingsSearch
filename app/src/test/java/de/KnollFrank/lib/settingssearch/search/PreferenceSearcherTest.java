@@ -42,7 +42,7 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -736,7 +736,7 @@ public class PreferenceSearcherTest {
                                         new SearchableDialogInfoOfProvider(
                                                 fragmentInitializer,
                                                 preferenceDialogAndSearchableInfoProvider)),
-                                new IdGenerator()),
+                                IdGeneratorFactory.createIdGeneratorStartingAt1()),
                         fragmentActivity);
         final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(new InMemoryDatabase());
         searchablePreferenceDAO.persist(

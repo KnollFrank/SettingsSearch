@@ -43,7 +43,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSi
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
-class SearchDatabaseConfigFactory {
+public class SearchDatabaseConfigFactory {
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
         return SearchDatabaseConfig

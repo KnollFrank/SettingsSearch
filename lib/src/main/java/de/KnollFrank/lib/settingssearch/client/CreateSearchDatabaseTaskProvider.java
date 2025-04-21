@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class CreateSearchDatabaseTaskProvider {
 
-    private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
+    public static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     public static AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
