@@ -7,6 +7,14 @@ public class IdGeneratorFactory {
     }
 
     public static IdGenerator createIdGeneratorStartingAt(final int startId) {
-        return new IdGenerator(startId);
+        return new IdGenerator() {
+
+            private int id = startId;
+
+            @Override
+            public int nextId() {
+                return id++;
+            }
+        };
     }
 }
