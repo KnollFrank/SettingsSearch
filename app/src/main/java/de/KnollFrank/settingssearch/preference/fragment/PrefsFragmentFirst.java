@@ -85,7 +85,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
                         final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
                         final DefaultFragmentInitializer defaultFragmentInitializer = DefaultFragmentInitializerFactory.createDefaultFragmentInitializer(PrefsFragmentFirst.this.requireActivity(), FRAGMENT_CONTAINER_VIEW_ID);
-                        // FK-TODO: extract method for creation of InstantiateAndInitializeFragment and use multiple times
                         final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                                         searchDatabaseConfig.fragmentFactory,
