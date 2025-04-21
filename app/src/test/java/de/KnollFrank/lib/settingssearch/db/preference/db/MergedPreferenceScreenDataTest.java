@@ -105,6 +105,7 @@ public class MergedPreferenceScreenDataTest {
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
         assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
         assertEquals(actual.getChildren(), expected.getChildren());
+        assertThat(actual.getPredecessor(), is(expected.getPredecessor()));
     }
 
     private static void assertEquals(final List<SearchablePreference> actuals, final List<SearchablePreference> expecteds) {
