@@ -90,7 +90,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         searchDatabaseConfig.fragmentFactory,
                                         defaultFragmentInitializer,
                                         requireContext());
-                        // FK-TODO: extract method for creation of Preference2SearchablePreferenceConverter and use multiple times
                         final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,
