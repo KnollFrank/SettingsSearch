@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.db;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createSearchablePreferencePOJO;
-import static de.KnollFrank.lib.settingssearch.test.TestHelper.equalBundles;
 
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
@@ -17,7 +16,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -30,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConver
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.file.MergedPreferenceScreenDataDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEquality;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -79,7 +78,7 @@ public class MergedPreferenceScreenDataTest {
                                 outputStream2InputStream(predecessorIdByPreferenceId));
 
                 // Then
-                assertEquals(
+                SearchablePreferenceEquality.assertEquals(
                         new ArrayList<>(dataActual),
                         new ArrayList<>(data));
                 assertThat(preferencePathByPreference(dataActual), is(preferencePathByPreference(data)));
@@ -90,29 +89,6 @@ public class MergedPreferenceScreenDataTest {
 
     private static ByteArrayInputStream outputStream2InputStream(final ByteArrayOutputStream outputStream) {
         return new ByteArrayInputStream(outputStream.toByteArray());
-    }
-
-    private static void assertEquals(final SearchablePreference actual, final SearchablePreference expected) {
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getKey(), is(expected.getKey()));
-        assertThat(actual.getIconResourceIdOrIconPixelData(), is(expected.getIconResourceIdOrIconPixelData()));
-        assertThat(actual.getLayoutResId(), is(expected.getLayoutResId()));
-        assertThat(actual.getSummary(), is(expected.getSummary()));
-        assertThat(actual.getTitle(), is(expected.getTitle()));
-        assertThat(actual.getWidgetLayoutResId(), is(expected.getWidgetLayoutResId()));
-        assertThat(actual.getFragment(), is(expected.getFragment()));
-        assertThat(actual.isVisible(), is(expected.isVisible()));
-        assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
-        assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
-        assertEquals(actual.getChildren(), expected.getChildren());
-        assertThat(actual.getPredecessor(), is(expected.getPredecessor()));
-    }
-
-    private static void assertEquals(final List<SearchablePreference> actuals, final List<SearchablePreference> expecteds) {
-        assertThat(actuals.size(), is(expecteds.size()));
-        for (int i = 0; i < actuals.size(); i++) {
-            assertEquals(actuals.get(i), expecteds.get(i));
-        }
     }
 
     private static Map<SearchablePreference, PreferencePath> preferencePathByPreference(final Set<SearchablePreference> preferences) {
