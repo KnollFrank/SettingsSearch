@@ -16,7 +16,7 @@ public class FragmentContainerViewAdder {
     }
 
     private static FragmentContainerView createInvisibleFragmentContainerView(final ViewGroup parent,
-                                                                              final int id) {
+                                                                              final @IdRes int id) {
         final FragmentContainerView fragmentContainerView = new FragmentContainerView(parent.getContext());
         fragmentContainerView.setId(id);
         fragmentContainerView.setVisibility(View.INVISIBLE);
