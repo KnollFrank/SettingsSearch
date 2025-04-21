@@ -9,6 +9,7 @@ import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 
+// FK-TODO: create separate classes FragmentInitializerFactory (creating a FragmentInitializer) and PreferenceDialogsFactory (creating PreferenceDialogs) which are allowed to use the yet to be made private DefaultFragmentInitializer
 public class DefaultFragmentInitializer implements FragmentInitializer, PreferenceDialogs {
 
     private final FragmentManager fragmentManager;
