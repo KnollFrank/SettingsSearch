@@ -26,13 +26,11 @@ import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializerFactory;
-import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
@@ -84,26 +82,22 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private void addPreferenceToP1() {
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
                         final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
-                        final DefaultFragmentInitializer defaultFragmentInitializer = DefaultFragmentInitializerFactory.createDefaultFragmentInitializer(PrefsFragmentFirst.this.requireActivity(), FRAGMENT_CONTAINER_VIEW_ID);
-                        final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
-                                InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
-                                        searchDatabaseConfig.fragmentFactory,
-                                        defaultFragmentInitializer,
-                                        requireContext());
-                        final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
-                                Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
-                                        searchDatabaseConfig,
-                                        defaultFragmentInitializer,
-                                        IdGeneratorFactory.createIdGeneratorStartingAt(searchablePreferenceDAO.getUnusedId()));
                         searchablePreferenceDAO.persistPreference(
-                                instantiateAndInitializeFragment
+                                InstantiateAndInitializeFragmentFactory
+                                        .createInstantiateAndInitializeFragment(
+                                                searchDatabaseConfig.fragmentFactory,
+                                                FragmentInitializerFactory.createFragmentInitializer(requireActivity(), FRAGMENT_CONTAINER_VIEW_ID),
+                                                requireContext())
                                         .instantiateAndInitializeFragment(
                                                 PreferenceFragmentWithSinglePreference.class,
                                                 // FK-FIXME: use real src
                                                 Optional.empty())
                                         .createAdditionalSearchablePreference(
                                                 searchablePreferenceDAO,
-                                                preference2SearchablePreferenceConverter));
+                                                Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
+                                                        searchDatabaseConfig,
+                                                        PreferenceDialogsFactory.createPreferenceDialogs(requireActivity(), FRAGMENT_CONTAINER_VIEW_ID),
+                                                        IdGeneratorFactory.createIdGeneratorStartingAt(searchablePreferenceDAO.getUnusedId()))));
                     }
 
                     private void removePreferenceFromP1() {

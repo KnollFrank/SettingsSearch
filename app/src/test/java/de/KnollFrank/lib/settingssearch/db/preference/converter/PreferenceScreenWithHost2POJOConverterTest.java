@@ -22,14 +22,13 @@ import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
@@ -195,10 +194,9 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                 new FragmentFactoryAndInitializerWithCache(
                         new FragmentFactoryAndInitializer(
                                 createFragmentFactoryReturning(fragment),
-                                new DefaultFragmentInitializer(
-                                        activity.getSupportFragmentManager(),
-                                        TestActivity.FRAGMENT_CONTAINER_VIEW,
-                                        OnUiThreadRunnerFactory.fromActivity(activity)))),
+                                FragmentInitializerFactory.createFragmentInitializer(
+                                        activity,
+                                        TestActivity.FRAGMENT_CONTAINER_VIEW))),
                 activity);
     }
 

@@ -2,7 +2,16 @@ package de.KnollFrank.lib.settingssearch.fragment;
 
 import androidx.fragment.app.Fragment;
 
-public interface FragmentInitializer {
+public class FragmentInitializer {
 
-    void initialize(Fragment fragment);
+    private final FragmentAdderRemover fragmentAdderRemover;
+
+    FragmentInitializer(final FragmentAdderRemover fragmentAdderRemover) {
+        this.fragmentAdderRemover = fragmentAdderRemover;
+    }
+
+    public void initialize(Fragment fragment) {
+        fragmentAdderRemover.add(fragment);
+        fragmentAdderRemover.remove(fragment);
+    }
 }

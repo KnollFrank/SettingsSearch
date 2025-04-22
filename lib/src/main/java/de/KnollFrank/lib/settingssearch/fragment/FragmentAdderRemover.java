@@ -9,44 +9,27 @@ import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 
-// FK-TODO: create separate classes FragmentInitializerFactory (creating a FragmentInitializer) and PreferenceDialogsFactory (creating PreferenceDialogs) which are allowed to use the yet to be made private DefaultFragmentInitializer
-public class DefaultFragmentInitializer implements FragmentInitializer, PreferenceDialogs {
+class FragmentAdderRemover {
 
     private final FragmentManager fragmentManager;
     private final @IdRes int containerViewId;
     private final OnUiThreadRunner onUiThreadRunner;
 
-    public DefaultFragmentInitializer(final FragmentManager fragmentManager,
-                                      final @IdRes int containerViewId,
-                                      final OnUiThreadRunner onUiThreadRunner) {
+    public FragmentAdderRemover(final FragmentManager fragmentManager,
+                                final @IdRes int containerViewId,
+                                final OnUiThreadRunner onUiThreadRunner) {
         this.fragmentManager = fragmentManager;
         this.containerViewId = containerViewId;
         this.onUiThreadRunner = onUiThreadRunner;
     }
 
-    @Override
-    public void initialize(final Fragment fragment) {
-        add(fragment);
-        remove(fragment);
-    }
-
-    @Override
-    public void showPreferenceDialog(final Fragment preferenceDialog) {
-        add(preferenceDialog);
-    }
-
-    @Override
-    public void hidePreferenceDialog(final Fragment preferenceDialog) {
-        remove(preferenceDialog);
-    }
-
-    private void add(final Fragment fragment) {
+    public void add(final Fragment fragment) {
         executeOperationOnFragment(
                 (_fragment, fragmentTransaction) -> fragmentTransaction.add(containerViewId, _fragment),
                 fragment);
     }
 
-    private void remove(final Fragment fragment) {
+    public void remove(final Fragment fragment) {
         executeOperationOnFragment(
                 (_fragment, fragmentTransaction) -> fragmentTransaction.remove(_fragment),
                 fragment);

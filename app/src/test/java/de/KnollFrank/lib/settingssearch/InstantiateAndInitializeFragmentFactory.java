@@ -2,10 +2,9 @@ package de.KnollFrank.lib.settingssearch;
 
 import androidx.fragment.app.FragmentActivity;
 
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
@@ -18,10 +17,9 @@ class InstantiateAndInitializeFragmentFactory {
                 new FragmentFactoryAndInitializerWithCache(
                         new FragmentFactoryAndInitializer(
                                 new DefaultFragmentFactory(),
-                                new DefaultFragmentInitializer(
-                                        activity.getSupportFragmentManager(),
-                                        TestActivity.FRAGMENT_CONTAINER_VIEW,
-                                        OnUiThreadRunnerFactory.fromActivity(activity)))),
+                                FragmentInitializerFactory.createFragmentInitializer(
+                                        activity,
+                                        TestActivity.FRAGMENT_CONTAINER_VIEW))),
                 activity);
     }
 }

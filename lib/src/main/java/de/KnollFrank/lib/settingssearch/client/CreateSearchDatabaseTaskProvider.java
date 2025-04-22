@@ -10,7 +10,8 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializerFactory;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
@@ -42,7 +43,8 @@ public class CreateSearchDatabaseTaskProvider {
             final ProgressUpdateListener progressUpdateListener) {
         return mergedPreferenceScreenDataRepositoryFactory
                 .createMergedPreferenceScreenDataRepository(
-                        DefaultFragmentInitializerFactory.createDefaultFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID),
+                        FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID),
+                        PreferenceDialogsFactory.createPreferenceDialogs(activity, FRAGMENT_CONTAINER_VIEW_ID),
                         activity,
                         progressUpdateListener)
                 .getSearchDatabaseFilledWithPreferences(Utils.geCurrentLocale(activity.getResources()));

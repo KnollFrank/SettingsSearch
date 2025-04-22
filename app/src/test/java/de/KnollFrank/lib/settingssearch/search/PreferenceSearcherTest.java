@@ -40,7 +40,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -50,11 +49,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDA
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -688,15 +688,12 @@ public class PreferenceSearcherTest {
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ComputePreferencesListener computePreferencesListener) {
-        final DefaultFragmentInitializer fragmentInitializer =
-                new DefaultFragmentInitializer(
-                        fragmentActivity.getSupportFragmentManager(),
-                        TestActivity.FRAGMENT_CONTAINER_VIEW,
-                        OnUiThreadRunnerFactory.fromActivity(fragmentActivity));
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
-                        fragmentInitializer);
+                        FragmentInitializerFactory.createFragmentInitializer(
+                                fragmentActivity,
+                                TestActivity.FRAGMENT_CONTAINER_VIEW));
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
@@ -734,7 +731,9 @@ public class PreferenceSearcherTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
                                         new SearchableDialogInfoOfProvider(
-                                                fragmentInitializer,
+                                                PreferenceDialogsFactory.createPreferenceDialogs(
+                                                        fragmentActivity,
+                                                        TestActivity.FRAGMENT_CONTAINER_VIEW),
                                                 preferenceDialogAndSearchableInfoProvider)),
                                 IdGeneratorFactory.createIdGeneratorStartingAt1()),
                         fragmentActivity);

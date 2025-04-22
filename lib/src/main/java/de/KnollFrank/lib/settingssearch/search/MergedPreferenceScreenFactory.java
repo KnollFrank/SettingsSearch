@@ -15,11 +15,12 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -90,13 +91,13 @@ public class MergedPreferenceScreenFactory {
             final FragmentManager childFragmentManager,
             final ProgressUpdateListener progressUpdateListener,
             final @IdRes int containerViewId) {
-        final DefaultFragmentInitializer preferenceDialogs =
-                new DefaultFragmentInitializer(
-                        childFragmentManager,
-                        containerViewId,
-                        onUiThreadRunner);
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
-                new FragmentFactoryAndInitializer(fragmentFactory, preferenceDialogs);
+                new FragmentFactoryAndInitializer(
+                        fragmentFactory,
+                        FragmentInitializerFactory.createFragmentInitializer(
+                                childFragmentManager,
+                                containerViewId,
+                                onUiThreadRunner));
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
@@ -107,7 +108,10 @@ public class MergedPreferenceScreenFactory {
                 preferencePathDisplayer,
                 mergedPreferenceScreenDataRepositoryFactory
                         .createMergedPreferenceScreenDataRepository(
-                                preferenceDialogs,
+                                PreferenceDialogsFactory.createPreferenceDialogs(
+                                        childFragmentManager,
+                                        containerViewId,
+                                        onUiThreadRunner),
                                 activity,
                                 progressUpdateListener,
                                 instantiateAndInitializeFragment)

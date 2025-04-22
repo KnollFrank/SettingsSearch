@@ -19,14 +19,14 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
-import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
+import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
+import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -69,11 +69,6 @@ public class SearchablePreferenceScreenGraphProviderTest {
                             preference.setTitle(String.format("Checkbox %s file", "fourth"));
                             return preference;
                         });
-        final DefaultFragmentInitializer fragmentInitializer =
-                new DefaultFragmentInitializer(
-                        fragmentActivity.getSupportFragmentManager(),
-                        TestActivity.FRAGMENT_CONTAINER_VIEW,
-                        OnUiThreadRunnerFactory.fromActivity(fragmentActivity));
         return new SearchablePreferenceScreenGraphProvider(
                 preferenceFragment.getClass(),
                 new PreferenceScreenWithHostProvider(
@@ -81,7 +76,9 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                 new FragmentFactoryAndInitializerWithCache(
                                         new FragmentFactoryAndInitializer(
                                                 createFragmentFactoryReturning(preferenceFragment),
-                                                fragmentInitializer)),
+                                                FragmentInitializerFactory.createFragmentInitializer(
+                                                        fragmentActivity,
+                                                        TestActivity.FRAGMENT_CONTAINER_VIEW))),
                                 fragmentActivity),
                         new SearchablePreferenceScreenProvider(
                                 new PreferenceVisibleAndSearchablePredicate(
@@ -99,7 +96,9 @@ public class SearchablePreferenceScreenGraphProviderTest {
                         new SearchableInfoAndDialogInfoProvider(
                                 new BuiltinSearchableInfoProvider(),
                                 new SearchableDialogInfoOfProvider(
-                                        fragmentInitializer,
+                                        PreferenceDialogsFactory.createPreferenceDialogs(
+                                                fragmentActivity,
+                                                TestActivity.FRAGMENT_CONTAINER_VIEW),
                                         (preference, hostOfPreference) -> Optional.empty())),
                         IdGeneratorFactory.createIdGeneratorStartingAt1()),
                 fragmentActivity);
