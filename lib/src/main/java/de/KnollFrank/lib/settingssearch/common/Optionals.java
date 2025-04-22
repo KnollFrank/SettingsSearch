@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Optionals {
@@ -20,5 +22,9 @@ public class Optionals {
         return elements
                 .map(Arrays::asList)
                 .orElseGet(Collections::emptyList);
+    }
+
+    public static <T> Set<T> asSet(final Optional<T> optional) {
+        return optional.stream().collect(Collectors.toSet());
     }
 }

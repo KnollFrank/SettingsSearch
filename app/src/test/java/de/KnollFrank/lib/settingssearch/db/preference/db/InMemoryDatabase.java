@@ -6,6 +6,7 @@ import com.google.common.collect.Sets;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
@@ -44,12 +45,15 @@ public class InMemoryDatabase implements Database {
                 Sets.difference(
                         loadAll(),
                         // FK-FIXME: getPreferenceById() könnte auch ein Kind zurückgeben, welches dann nicht in loadAll() auftaucht und deswegen fälschlicherweise nicht aus der DB entfernt wird.
-                        Set.of(getPreferenceById(idOfPreference))));
+                        Optionals.asSet(findPreferenceById(idOfPreference))));
     }
 
     @Override
     public void updateSummary(final int idOfPreference, final String newSummaryOfPreference) {
-        getPreferenceById(idOfPreference).setSummary(newSummaryOfPreference);
+        this
+                .findPreferenceById(idOfPreference)
+                .orElseThrow()
+                .setSummary(newSummaryOfPreference);
     }
 
     @Override
@@ -67,8 +71,8 @@ public class InMemoryDatabase implements Database {
                 Optional.empty();
     }
 
-    private SearchablePreference getPreferenceById(final int id) {
-        return SearchablePreferences.findUniquePreferenceRecursivelyByPredicate(
+    private Optional<SearchablePreference> findPreferenceById(final int id) {
+        return SearchablePreferences.findPreferenceRecursivelyByPredicate(
                 loadAll(),
                 preference -> preference.getId() == id);
     }

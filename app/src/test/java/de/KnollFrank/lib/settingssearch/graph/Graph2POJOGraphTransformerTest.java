@@ -267,8 +267,10 @@ public class Graph2POJOGraphTransformerTest {
 
     private static SearchablePreference getPreferenceById(final Set<SearchablePreference> searchablePreferences,
                                                           final int id) {
-        return SearchablePreferences.findUniquePreferenceRecursivelyByPredicate(
-                searchablePreferences,
-                searchablePreference -> searchablePreference.getId() == id);
+        return SearchablePreferences
+                .findPreferenceRecursivelyByPredicate(
+                        searchablePreferences,
+                        searchablePreference -> searchablePreference.getId() == id)
+                .orElseThrow();
     }
 }

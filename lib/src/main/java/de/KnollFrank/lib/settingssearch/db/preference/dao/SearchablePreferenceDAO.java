@@ -4,6 +4,7 @@ import static de.KnollFrank.lib.settingssearch.search.PreferenceMatcher.getPrefe
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -54,21 +55,21 @@ public class SearchablePreferenceDAO {
                 .collect(Collectors.toSet());
     }
 
-    public SearchablePreference getPreferenceById(final int id) {
-        return findUniquePreferenceRecursivelyByPredicate(preference -> preference.getId() == id);
+    public Optional<SearchablePreference> findPreferenceById(final int id) {
+        return findPreferenceRecursivelyByPredicate(preference -> preference.getId() == id);
     }
 
-    public SearchablePreference getPreferenceByKeyAndHost(final String key,
-                                                          final Class<? extends PreferenceFragmentCompat> host) {
-        return findUniquePreferenceRecursivelyByPredicate(preference -> preference.getKey().equals(key) && preference.getHost().equals(host));
+    public Optional<SearchablePreference> findPreferenceByKeyAndHost(final String key,
+                                                                     final Class<? extends PreferenceFragmentCompat> host) {
+        return findPreferenceRecursivelyByPredicate(preference -> preference.getKey().equals(key) && preference.getHost().equals(host));
     }
 
     public int getUnusedId() {
         return database.getUnusedId();
     }
 
-    private SearchablePreference findUniquePreferenceRecursivelyByPredicate(final Predicate<SearchablePreference> predicate) {
-        return SearchablePreferences.findUniquePreferenceRecursivelyByPredicate(
+    private Optional<SearchablePreference> findPreferenceRecursivelyByPredicate(final Predicate<SearchablePreference> predicate) {
+        return SearchablePreferences.findPreferenceRecursivelyByPredicate(
                 database.loadAll(),
                 predicate);
     }

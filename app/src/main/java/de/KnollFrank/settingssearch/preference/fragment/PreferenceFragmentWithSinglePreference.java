@@ -67,7 +67,10 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
                         preference,
                         this,
                         // FK-TODO: generalize because too many hard coded values
-                        Optional.of(searchablePreferenceDAO.getPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class)))
+                        Optional.of(
+                                searchablePreferenceDAO
+                                        .findPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class)
+                                        .orElseThrow()))
                 .searchablePreference();
     }
 

@@ -8,7 +8,8 @@ class PreferencePathPointerFactory {
                                                                     final SearchablePreferenceDAO searchablePreferenceDAO) {
         return PreferencePathPointer.of(
                 searchablePreferenceDAO
-                        .getPreferenceById(preferencePathNavigatorData.idOfSearchablePreference())
+                        .findPreferenceById(preferencePathNavigatorData.idOfSearchablePreference())
+                        .orElseThrow()
                         .getPreferencePath(),
                 preferencePathNavigatorData.indexWithinPreferencePath());
     }

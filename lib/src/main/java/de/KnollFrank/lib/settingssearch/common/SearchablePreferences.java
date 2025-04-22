@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.MoreCollectors;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -28,13 +29,13 @@ public class SearchablePreferences {
                         .collect(Collectors.toSet()));
     }
 
-    public static SearchablePreference findUniquePreferenceRecursivelyByPredicate(
+    public static Optional<SearchablePreference> findPreferenceRecursivelyByPredicate(
             final Set<SearchablePreference> preferences,
             final Predicate<SearchablePreference> predicate) {
         return SearchablePreferences
                 .getPreferencesRecursively(preferences)
                 .stream()
                 .filter(predicate)
-                .collect(MoreCollectors.onlyElement());
+                .collect(MoreCollectors.toOptional());
     }
 }
