@@ -9,7 +9,6 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-// FK-TODO: write tests for FileDatabase
 class FileDatabase implements Database {
 
     private final MergedPreferenceScreenDataFiles dataFiles;

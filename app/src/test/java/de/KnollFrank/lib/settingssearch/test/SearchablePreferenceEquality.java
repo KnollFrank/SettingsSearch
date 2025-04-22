@@ -10,7 +10,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class SearchablePreferenceEquality {
 
-    public static void assertEquals(final SearchablePreference actual, final SearchablePreference expected) {
+    public static void assertActualEqualsExpected(final SearchablePreference actual, final SearchablePreference expected) {
         assertThat(actual.getId(), is(expected.getId()));
         assertThat(actual.getKey(), is(expected.getKey()));
         assertThat(actual.getIconResourceIdOrIconPixelData(), is(expected.getIconResourceIdOrIconPixelData()));
@@ -22,14 +22,14 @@ public class SearchablePreferenceEquality {
         assertThat(actual.isVisible(), is(expected.isVisible()));
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
         assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
-        assertEquals(actual.getChildren(), expected.getChildren());
+        assertActualListEqualsExpectedList(actual.getChildren(), expected.getChildren());
         assertThat(actual.getPredecessor(), is(expected.getPredecessor()));
     }
 
-    public static void assertEquals(final List<SearchablePreference> actuals, final List<SearchablePreference> expecteds) {
+    public static void assertActualListEqualsExpectedList(final List<SearchablePreference> actuals, final List<SearchablePreference> expecteds) {
         assertThat(actuals.size(), is(expecteds.size()));
         for (int i = 0; i < actuals.size(); i++) {
-            assertEquals(actuals.get(i), expecteds.get(i));
+            assertActualEqualsExpected(actuals.get(i), expecteds.get(i));
         }
     }
 }

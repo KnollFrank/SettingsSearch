@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.search;
+package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -7,11 +7,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
-import de.KnollFrank.lib.settingssearch.db.preference.db.Database;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-// FK-TODO: write tests for InMemoryDatabase
-class InMemoryDatabase implements Database {
+public class InMemoryDatabase implements Database {
 
     private Optional<Set<SearchablePreference>> preferences = Optional.empty();
 

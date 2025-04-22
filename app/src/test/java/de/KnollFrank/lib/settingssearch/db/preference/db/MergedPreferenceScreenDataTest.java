@@ -78,7 +78,7 @@ public class MergedPreferenceScreenDataTest {
                                 outputStream2InputStream(predecessorIdByPreferenceId));
 
                 // Then
-                SearchablePreferenceEquality.assertEquals(
+                SearchablePreferenceEquality.assertActualListEqualsExpectedList(
                         new ArrayList<>(dataActual),
                         new ArrayList<>(data));
                 assertThat(preferencePathByPreference(dataActual), is(preferencePathByPreference(data)));
