@@ -51,9 +51,9 @@ public class POJOTestFactory {
                 Optional.of("some fragment"),
                 Optional.empty(),
                 true,
-                searchableInfo
+                searchableInfo,
                 // extras,
-                // host,
+                host
                 // List.of(),
                 // predecessor
         );

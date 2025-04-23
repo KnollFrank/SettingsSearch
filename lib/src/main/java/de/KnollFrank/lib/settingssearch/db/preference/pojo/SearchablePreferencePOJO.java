@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.LayoutRes;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -41,8 +42,7 @@ public final class SearchablePreferencePOJO {
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
     // FK-TODO: ignore temporarily
     // private final Bundle extras;
-    // FK-TODO: ignore temporarily
-    // private final Class<? extends PreferenceFragmentCompat> host;
+    private final Class<? extends PreferenceFragmentCompat> host;
     // FK-TODO: ignore temporarily
     //@Ignore
     //private final List<SearchablePreference> children;
@@ -60,12 +60,12 @@ public final class SearchablePreferencePOJO {
             final Optional<String> fragment,
             final Optional<String> classNameOfReferencedActivity,
             final boolean visible,
-            final Optional<String> searchableInfo
+            final Optional<String> searchableInfo,
             // final Bundle extras,
-            // final Class<? extends PreferenceFragmentCompat> host,
+            final Class<? extends PreferenceFragmentCompat> host
             // final List<SearchablePreference> children
             // final Optional<SearchablePreference> predecessor
-            ) {
+    ) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         // this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData.orElse(null);
@@ -78,7 +78,7 @@ public final class SearchablePreferencePOJO {
         this.visible = visible;
         this.searchableInfo = searchableInfo;
         // this.extras = extras;
-        // this.host = host;
+        this.host = host;
         // this.children = children;
         // this.predecessor = predecessor;
     }
@@ -197,9 +197,9 @@ public final class SearchablePreferencePOJO {
 //        return predecessor;
 //    }
 
-//    public Class<? extends PreferenceFragmentCompat> getHost() {
-//        return host;
-//    }
+    public Class<? extends PreferenceFragmentCompat> getHost() {
+        return host;
+    }
 
     @Override
     public boolean equals(final Object o) {
@@ -226,7 +226,7 @@ public final class SearchablePreferencePOJO {
                 ", visible=" + visible +
                 //", extras=" + extras +
                 // ", children=" + children +
-                //", host=" + host +
+                ", host=" + host +
                 // ", predecessor=" + predecessor +
                 '}';
     }

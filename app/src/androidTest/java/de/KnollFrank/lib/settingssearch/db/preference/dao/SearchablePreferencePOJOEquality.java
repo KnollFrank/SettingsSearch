@@ -20,6 +20,7 @@ public class SearchablePreferencePOJOEquality {
         assertThat(actual.getFragment(), is(expected.getFragment()));
         assertThat(actual.isVisible(), is(expected.isVisible()));
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
+        assertThat(actual.getHost(), is(expected.getHost()));
         // assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
         // assertActualListEqualsExpectedList(actual.getChildren(), expected.getChildren());
         // assertThat(actual.getPredecessor(), is(expected.getPredecessor()));
