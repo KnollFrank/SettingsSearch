@@ -26,7 +26,9 @@ import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEquality;
 public class SearchablePreferenceDAOTest {
 
     enum DatabaseType {
-        InMemoryDatabase, FileDatabase;
+
+        InMemoryDatabase,
+        FileDatabase;
 
         private Database getDatabase() {
             return switch (this) {
