@@ -1,30 +1,205 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+
+import androidx.annotation.LayoutRes;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Supplier;
+
+import de.KnollFrank.lib.settingssearch.common.Classes;
 
 @Entity
 public final class SearchablePreferencePOJO {
 
     @PrimaryKey
     private final int id;
+    private final String key;
+    // FK-TODO: ignore temporarily
+    // private final Either<Integer, String> iconResourceIdOrIconPixelData;
+    @Ignore
+    private Optional<Drawable> iconCache;
+    private final @LayoutRes int layoutResId;
+    private Optional<String> summary;
+    @Ignore
+    private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
     private final Optional<String> title;
+    @Ignore
+    private Supplier<Optional<CharSequence>> highlightedTitleProvider;
+    private final @LayoutRes int widgetLayoutResId;
+    private final Optional<String> fragment;
+    private final Optional<String> classNameOfReferencedActivity;
+    private final boolean visible;
+    private final Optional<String> searchableInfo;
+    @Ignore
+    private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
+    // FK-TODO: ignore temporarily
+    // private final Bundle extras;
+    // FK-TODO: ignore temporarily
+    // private final Class<? extends PreferenceFragmentCompat> host;
+    // FK-TODO: ignore temporarily
+    //@Ignore
+    //private final List<SearchablePreference> children;
+    // @Ignore
+    // private final Optional<SearchablePreference> predecessor;
 
-    public SearchablePreferencePOJO(final int id, final Optional<String> title) {
+    public SearchablePreferencePOJO(
+            final int id,
+            final String key,
+            // final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+            final @LayoutRes int layoutResId,
+            final Optional<String> summary,
+            final Optional<String> title,
+            final @LayoutRes int widgetLayoutResId,
+            final Optional<String> fragment,
+            final Optional<String> classNameOfReferencedActivity,
+            final boolean visible,
+            final Optional<String> searchableInfo
+            // final Bundle extras,
+            // final Class<? extends PreferenceFragmentCompat> host,
+            // final List<SearchablePreference> children
+            // final Optional<SearchablePreference> predecessor
+            ) {
         this.id = id;
+        this.key = Objects.requireNonNull(key);
+        // this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData.orElse(null);
+        this.layoutResId = layoutResId;
+        this.summary = summary;
         this.title = title;
+        this.widgetLayoutResId = widgetLayoutResId;
+        this.fragment = fragment;
+        this.classNameOfReferencedActivity = classNameOfReferencedActivity;
+        this.visible = visible;
+        this.searchableInfo = searchableInfo;
+        // this.extras = extras;
+        // this.host = host;
+        // this.children = children;
+        // this.predecessor = predecessor;
     }
 
     public int getId() {
         return id;
     }
 
+//    public List<SearchablePreference> getChildren() {
+//        return children;
+//    }
+
+    public String getKey() {
+        return key;
+    }
+
+//    public Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData() {
+//        return Optional.ofNullable(iconResourceIdOrIconPixelData);
+//    }
+
+//    public Optional<Drawable> getIcon(final Context context) {
+//        if (iconCache == null) {
+//            iconCache = _getIcon(context);
+//        }
+//        return iconCache;
+//    }
+
+    public @LayoutRes int getLayoutResId() {
+        return layoutResId;
+    }
+
+    public void setSummary(final Optional<String> summary) {
+        this.summary = summary;
+    }
+
+    public Optional<String> getSummary() {
+        return summary;
+    }
+
+    public void setHighlightedSummaryProvider(final Supplier<Optional<CharSequence>> highlightedSummaryProvider) {
+        this.highlightedSummaryProvider = highlightedSummaryProvider;
+    }
+
+    public Optional<CharSequence> getHighlightedSummary() {
+        if (highlightedSummaryProvider == null) {
+            highlightedSummaryProvider = Optional::empty;
+        }
+        return highlightedSummaryProvider.get();
+    }
+
     public Optional<String> getTitle() {
         return title;
     }
+
+    public void setHighlightedTitleProvider(final Supplier<Optional<CharSequence>> highlightedTitleProvider) {
+        this.highlightedTitleProvider = highlightedTitleProvider;
+    }
+
+    public Optional<CharSequence> getHighlightedTitle() {
+        if (highlightedTitleProvider == null) {
+            highlightedTitleProvider = Optional::empty;
+        }
+        return highlightedTitleProvider.get();
+    }
+
+    public Optional<String> getSearchableInfo() {
+        return searchableInfo;
+    }
+
+    public void setHighlightedSearchableInfoProvider(final Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider) {
+        this.highlightedSearchableInfoProvider = highlightedSearchableInfoProvider;
+    }
+
+    public Optional<CharSequence> getHighlightedSearchableInfo() {
+        if (highlightedSearchableInfoProvider == null) {
+            highlightedSearchableInfoProvider = Optional::empty;
+        }
+        return highlightedSearchableInfoProvider.get();
+    }
+
+    public boolean hasPreferenceMatchWithinSearchableInfo() {
+        return getHighlightedSearchableInfo().isPresent();
+    }
+
+    public @LayoutRes int getWidgetLayoutResId() {
+        return widgetLayoutResId;
+    }
+
+    public Optional<String> getFragment() {
+        return fragment;
+    }
+
+    public Optional<String> getClassNameOfReferencedActivity() {
+        return classNameOfReferencedActivity;
+    }
+
+    public Optional<Class<? extends Activity>> getClassOfReferencedActivity(final Context context) {
+        return this
+                .getClassNameOfReferencedActivity()
+                .flatMap(classNameOfReferencedActivity -> Classes.classNameAsSubclassOfClazz(classNameOfReferencedActivity, Activity.class, context));
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+//    public Bundle getExtras() {
+//        return extras;
+//    }
+
+//    public PreferencePath getPreferencePath() {
+//        return getPreferencePathOfPredecessor().append(this);
+//    }
+
+//    public Optional<SearchablePreference> getPredecessor() {
+//        return predecessor;
+//    }
+
+//    public Class<? extends PreferenceFragmentCompat> getHost() {
+//        return host;
+//    }
 
     @Override
     public boolean equals(final Object o) {
@@ -38,4 +213,40 @@ public final class SearchablePreferencePOJO {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    @Override
+    public String toString() {
+        return "SearchablePreferencePOJO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", summary='" + summary + '\'' +
+                ", searchableInfo='" + searchableInfo + '\'' +
+                ", key='" + key + '\'' +
+                ", fragment='" + fragment + '\'' +
+                ", visible=" + visible +
+                //", extras=" + extras +
+                // ", children=" + children +
+                //", host=" + host +
+                // ", predecessor=" + predecessor +
+                '}';
+    }
+
+//    private Optional<Drawable> _getIcon(final Context context) {
+//        return this
+//                .getIconResourceIdOrIconPixelData()
+//                .map(iconResourceIdOrIconPixelData ->
+//                        iconResourceIdOrIconPixelData.join(
+//                                iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
+//                                iconPixelData ->
+//                                        DrawableAndStringConverter.string2Drawable(
+//                                                iconPixelData,
+//                                                context.getResources())));
+//    }
+
+//    private PreferencePath getPreferencePathOfPredecessor() {
+//        return this
+//                .getPredecessor()
+//                .map(SearchablePreference::getPreferencePath)
+//                .orElseGet(() -> new PreferencePath(List.of()));
+//    }
 }

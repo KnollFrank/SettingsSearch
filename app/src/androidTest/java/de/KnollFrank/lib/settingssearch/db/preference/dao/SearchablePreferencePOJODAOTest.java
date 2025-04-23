@@ -52,7 +52,7 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(preferenceFromDb.isPresent(), is(true));
 
         // And the preference was persisted correctly
-        assertThat(preferenceFromDb.orElseThrow(), is(preference));
+        SearchablePreferencePOJOEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     @Test
@@ -74,6 +74,10 @@ public class SearchablePreferencePOJODAOTest {
     }
     
     private static SearchablePreferencePOJO createSomeSearchablePreference() {
-        return new SearchablePreferencePOJO(1, Optional.of("some title"));
+        return POJOTestFactory.createSearchablePreferencePOJO(
+                Optional.of("some title"),
+                Optional.of("some summary"),
+                Optional.of("some searchable info"),
+                Optional.empty());
     }
 }
