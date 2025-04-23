@@ -3,8 +3,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import android.content.Context;
-
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Test;
@@ -28,7 +26,19 @@ import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEquality;
 public class SearchablePreferenceDAOTest {
 
     enum DatabaseType {
-        InMemoryDatabase, FileDatabase
+        InMemoryDatabase, FileDatabase;
+
+        private Database getDatabase() {
+            return switch (this) {
+                case InMemoryDatabase -> new InMemoryDatabase();
+                case FileDatabase -> {
+                    final FileDatabaseFactory fileDatabaseFactory =
+                            new FileDatabaseFactory(
+                                    new SearchDatabaseDirectoryIO(InstrumentationRegistry.getInstrumentation().getTargetContext()));
+                    yield fileDatabaseFactory.createFileDatabase(Locale.GERMAN);
+                }
+            };
+        }
     }
 
     @Parameter(0)
@@ -46,7 +56,7 @@ public class SearchablePreferenceDAOTest {
     @Test
     public void shouldPersistPreference() {
         // Given
-        final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(getDatabase(databaseType));
+        final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(databaseType.getDatabase());
         final SearchablePreference preference = createSomeSearchablePreference();
 
         // When
@@ -63,7 +73,7 @@ public class SearchablePreferenceDAOTest {
     @Test
     public void shouldRemovePreference() {
         // Given
-        final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(getDatabase(databaseType));
+        final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(databaseType.getDatabase());
         final SearchablePreference preference = createSomeSearchablePreference();
 
         // When
@@ -81,7 +91,7 @@ public class SearchablePreferenceDAOTest {
     @Test
     public void shouldSilentlyRemoveNonExistingPreference() {
         // Given
-        final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(getDatabase(databaseType));
+        final SearchablePreferenceDAO searchablePreferenceDAO = new SearchablePreferenceDAO(databaseType.getDatabase());
         searchablePreferenceDAO.persist(Set.of());
         final int idOfNonExistingPreference = 815;
 
@@ -97,21 +107,5 @@ public class SearchablePreferenceDAOTest {
                 Optional.of("some summary"),
                 Optional.of("some searchable info"),
                 Optional.empty());
-    }
-
-    private static Database getDatabase(final DatabaseType databaseType) {
-        return switch (databaseType) {
-            case InMemoryDatabase -> new InMemoryDatabase();
-            case FileDatabase -> createFileDatabase(
-                    Locale.GERMAN,
-                    InstrumentationRegistry.getInstrumentation().getTargetContext());
-        };
-    }
-
-    private static Database createFileDatabase(final Locale locale, final Context context) {
-        final FileDatabaseFactory fileDatabaseFactory =
-                new FileDatabaseFactory(
-                        new SearchDatabaseDirectoryIO(context));
-        return fileDatabaseFactory.createFileDatabase(locale);
     }
 }
