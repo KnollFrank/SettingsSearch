@@ -1,0 +1,40 @@
+package de.KnollFrank.lib.settingssearch.db.preference.db;
+
+import android.content.Context;
+
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+
+import java.util.Optional;
+
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJODAO;
+
+@Database(entities = {SearchablePreferencePOJO.class}, version = 1, exportSchema = false)
+public abstract class AppDatabase extends RoomDatabase {
+
+    private static volatile Optional<AppDatabase> instance = Optional.empty();
+
+    public static synchronized AppDatabase getInstance(final Context context) {
+        if (instance.isEmpty()) {
+            instance = Optional.of(createInstance(context));
+        }
+        return instance.orElseThrow();
+    }
+
+    private static AppDatabase createInstance(final Context context) {
+        return Room
+                .databaseBuilder(
+                        context,
+                        AppDatabase.class,
+                        "searchable_preferences")
+                .allowMainThreadQueries()
+                .build();
+    }
+
+    protected AppDatabase() {
+    }
+
+    public abstract SearchablePreferencePOJODAO searchablePreferenceDAO();
+}

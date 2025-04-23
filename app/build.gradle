@@ -72,4 +72,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.6.1'
     // https://mvnrepository.com/artifact/com.codepoetics/ambivalence
     implementation 'com.codepoetics:ambivalence:0.2'
+
+    def room_version = "2.7.0"
+    androidTestImplementation "androidx.room:room-runtime:$room_version"
+    androidTestImplementation 'androidx.room:room-runtime-android:2.7.0'
+    androidTestAnnotationProcessor "androidx.room:room-compiler:$room_version"
+    androidTestImplementation "androidx.room:room-testing:$room_version"
 }
