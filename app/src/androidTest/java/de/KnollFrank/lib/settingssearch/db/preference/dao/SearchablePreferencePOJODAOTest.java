@@ -74,6 +74,6 @@ public class SearchablePreferencePOJODAOTest {
     }
     
     private static SearchablePreferencePOJO createSomeSearchablePreference() {
-        return new SearchablePreferencePOJO(1, "some title");
+        return new SearchablePreferencePOJO(1, Optional.of("some title"));
     }
 }

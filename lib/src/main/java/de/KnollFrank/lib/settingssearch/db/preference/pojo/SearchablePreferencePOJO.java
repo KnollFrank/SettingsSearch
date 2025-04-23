@@ -4,15 +4,16 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 public final class SearchablePreferencePOJO {
 
     @PrimaryKey
     private final int id;
-    private final String title;
+    private final Optional<String> title;
 
-    public SearchablePreferencePOJO(final int id, final String title) {
+    public SearchablePreferencePOJO(final int id, final Optional<String> title) {
         this.id = id;
         this.title = title;
     }
@@ -21,7 +22,7 @@ public final class SearchablePreferencePOJO {
         return id;
     }
 
-    public String getTitle() {
+    public Optional<String> getTitle() {
         return title;
     }
 
