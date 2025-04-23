@@ -53,7 +53,7 @@ class FileDatabase implements Database {
         initializeWith(
                 Sets.difference(
                         loadAll(),
-                        // FK-FIXME: getPreferenceById() könnte auch ein Kind zurückgeben, welches dann nicht in loadAll() auftaucht und deswegen fälschlicherweise nicht aus der DB entfernt wird.
+                        // FK-FIXME: findPreferenceById() könnte auch ein Kind zurückgeben, welches dann nicht in loadAll() auftaucht und deswegen fälschlicherweise nicht aus der DB entfernt wird.
                         Optionals.asSet(findPreferenceById(loadAll(), idOfPreference))));
     }
 
