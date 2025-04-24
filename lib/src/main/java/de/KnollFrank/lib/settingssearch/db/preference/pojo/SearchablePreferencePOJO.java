@@ -206,8 +206,8 @@ public final class SearchablePreferencePOJO {
         return dao
                 .getPredecessorAndPreference()
                 .stream()
-                .filter(predecessorAndPreference -> predecessorAndPreference.preference.equals(this))
-                .map(predecessorAndPreference -> Optional.ofNullable(predecessorAndPreference.predecessor))
+                .filter(predecessorAndPreference -> predecessorAndPreference.getPreference().equals(this))
+                .map(predecessorAndPreference -> Optional.ofNullable(predecessorAndPreference.getPredecessor()))
                 .collect(MoreCollectors.toOptional())
                 .orElse(Optional.empty());
     }
