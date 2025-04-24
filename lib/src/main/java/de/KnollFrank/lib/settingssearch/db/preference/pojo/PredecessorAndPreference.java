@@ -3,7 +3,8 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-// FK-TODO: refactor: make predecessor an Optional<SearchablePreferencePOJO>
+import java.util.Optional;
+
 public class PredecessorAndPreference {
 
     @Embedded
@@ -24,7 +25,7 @@ public class PredecessorAndPreference {
         return preference;
     }
 
-    public SearchablePreferencePOJO getPredecessor() {
-        return predecessor;
+    public Optional<SearchablePreferencePOJO> getPredecessor() {
+        return Optional.ofNullable(predecessor);
     }
 }

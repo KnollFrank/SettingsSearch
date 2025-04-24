@@ -207,7 +207,7 @@ public final class SearchablePreferencePOJO {
                 .getPredecessorAndPreference()
                 .stream()
                 .filter(predecessorAndPreference -> predecessorAndPreference.getPreference().equals(this))
-                .map(predecessorAndPreference -> Optional.ofNullable(predecessorAndPreference.getPredecessor()))
+                .map(PredecessorAndPreference::getPredecessor)
                 .collect(MoreCollectors.toOptional())
                 .orElse(Optional.empty());
     }

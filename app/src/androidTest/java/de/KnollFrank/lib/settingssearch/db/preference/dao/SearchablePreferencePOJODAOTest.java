@@ -58,18 +58,18 @@ public class SearchablePreferencePOJODAOTest {
     @Test
     public void shouldGetPredecessorOfPersistedPreference() {
         // Given
-        final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreferencePOJO predecessor = createSomeSearchablePreference(1, -1);
         final SearchablePreferencePOJO preference = createSomeSearchablePreference(2, predecessor.getId());
 
         // When
-        searchablePreferencePOJODAO.persist(predecessor, preference);
+        dao.persist(predecessor, preference);
 
         // Then
-        final SearchablePreferencePOJO preferenceFromDb = searchablePreferencePOJODAO.findPreferenceById(preference.getId()).orElseThrow();
-        final SearchablePreferencePOJO predecessorFromDb = preferenceFromDb.getPredecessor(searchablePreferencePOJODAO).orElseThrow();
+        final SearchablePreferencePOJO preferenceFromDb = dao.findPreferenceById(preference.getId()).orElseThrow();
+        final SearchablePreferencePOJO predecessorFromDb = preferenceFromDb.getPredecessor(dao).orElseThrow();
         assertThat(predecessorFromDb, is(predecessor));
-        assertThat(predecessor.getPredecessor(searchablePreferencePOJODAO), is(Optional.empty()));
+        assertThat(predecessor.getPredecessor(dao), is(Optional.empty()));
     }
 
     @Test
