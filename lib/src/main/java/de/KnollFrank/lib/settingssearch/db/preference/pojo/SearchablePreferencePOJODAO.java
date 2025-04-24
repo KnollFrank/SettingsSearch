@@ -5,8 +5,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.google.common.collect.MoreCollectors;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -17,14 +15,8 @@ public abstract class SearchablePreferencePOJODAO {
     @Query("SELECT * FROM SearchablePreferencePOJO")
     public abstract List<SearchablePreferencePOJO> loadAll();
 
-    @Query("SELECT * FROM SearchablePreferencePOJO WHERE id = :id")
-    protected abstract List<SearchablePreferencePOJO> _findPreferenceById(int id);
-
     public Optional<SearchablePreferencePOJO> findPreferenceById(final int id) {
-        return this
-                ._findPreferenceById(id)
-                .stream()
-                .collect(MoreCollectors.toOptional());
+        return Optional.ofNullable(_findPreferenceById(id));
     }
 
     @Insert
@@ -38,4 +30,7 @@ public abstract class SearchablePreferencePOJODAO {
 
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();
+
+    @Query("SELECT * FROM SearchablePreferencePOJO WHERE id = :id")
+    protected abstract SearchablePreferencePOJO _findPreferenceById(int id);
 }
