@@ -14,6 +14,7 @@ import androidx.room.PrimaryKey;
 import com.codepoetics.ambivalence.Either;
 import com.google.common.collect.MoreCollectors;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -48,11 +49,7 @@ public final class SearchablePreferencePOJO {
     // FK-TODO: ignore temporarily
     // private final Bundle extras;
     private final Class<? extends PreferenceFragmentCompat> host;
-    // FK-TODO: ignore temporarily
-    //@Ignore
-    //private final List<SearchablePreference> children;
-    // @Ignore
-    // private final Optional<SearchablePreference> predecessor;
+    private final Optional<Integer> parentId;
     private final Optional<Integer> predecessorId;
 
     public SearchablePreferencePOJO(
@@ -69,7 +66,7 @@ public final class SearchablePreferencePOJO {
             final Optional<String> searchableInfo,
             // final Bundle extras,
             final Class<? extends PreferenceFragmentCompat> host,
-            // final List<SearchablePreference> children
+            final Optional<Integer> parentId,
             final Optional<Integer> predecessorId) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
@@ -84,17 +81,13 @@ public final class SearchablePreferencePOJO {
         this.searchableInfo = searchableInfo;
         // this.extras = extras;
         this.host = host;
-        // this.children = children;
+        this.parentId = parentId;
         this.predecessorId = predecessorId;
     }
 
     public int getId() {
         return id;
     }
-
-//    public List<SearchablePreference> getChildren() {
-//        return children;
-//    }
 
     public String getKey() {
         return key;
@@ -202,14 +195,29 @@ public final class SearchablePreferencePOJO {
 //        return getPreferencePathOfPredecessor().append(this);
 //    }
 
-    public Optional<SearchablePreferencePOJO> getPredecessor(final SearchablePreferencePOJODAO dao) {
+    public List<SearchablePreferencePOJO> getChildren(final SearchablePreferencePOJODAO dao) {
+        // FK-TODO: refactor using intermediate map?
         return dao
-                .getPreferenceAndPredecessor()
+                .getPreferencesAndChildren()
+                .stream()
+                .filter(preferenceAndChildren -> preferenceAndChildren.preference().equals(this))
+                .map(PreferenceAndChildren::children)
+                .collect(MoreCollectors.onlyElement());
+    }
+
+    public Optional<SearchablePreferencePOJO> getPredecessor(final SearchablePreferencePOJODAO dao) {
+        // FK-TODO: refactor using intermediate map?
+        return dao
+                .getPreferencesAndPredecessors()
                 .stream()
                 .filter(preferenceAndPredecessor -> preferenceAndPredecessor.getPreference().equals(this))
                 .map(PreferenceAndPredecessor::getPredecessor)
                 .collect(MoreCollectors.toOptional())
                 .orElse(Optional.empty());
+    }
+
+    Optional<Integer> getParentId() {
+        return parentId;
     }
 
     Optional<Integer> getPredecessorId() {

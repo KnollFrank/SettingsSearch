@@ -32,7 +32,11 @@ public abstract class SearchablePreferencePOJODAO {
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferencePOJO")
-    public abstract List<PreferenceAndPredecessor> getPreferenceAndPredecessor();
+    public abstract List<PreferenceAndPredecessor> getPreferencesAndPredecessors();
+
+    @Transaction
+    @Query("SELECT * FROM SearchablePreferencePOJO")
+    public abstract List<PreferenceAndChildren> getPreferencesAndChildren();
 
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();

@@ -1,17 +1,22 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.google.common.collect.Iterables;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
@@ -42,7 +47,7 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldPersistPreference() {
         // Given
         final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty());
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
 
         // When
         searchablePreferencePOJODAO.persist(preference);
@@ -59,24 +64,43 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldGetPredecessorOfPersistedPreference() {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO predecessor = createSomeSearchablePreference(1, Optional.empty());
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(2, Optional.of(predecessor.getId()));
+        final SearchablePreferencePOJO predecessor = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(2, Optional.empty(), Optional.of(predecessor.getId()));
+        dao.persist(predecessor, preference);
+        final SearchablePreferencePOJO preferenceFromDb = dao.findPreferenceById(preference.getId()).orElseThrow();
 
         // When
-        dao.persist(predecessor, preference);
+        final SearchablePreferencePOJO predecessorFromDb = preferenceFromDb.getPredecessor(dao).orElseThrow();
 
         // Then
-        final SearchablePreferencePOJO preferenceFromDb = dao.findPreferenceById(preference.getId()).orElseThrow();
-        final SearchablePreferencePOJO predecessorFromDb = preferenceFromDb.getPredecessor(dao).orElseThrow();
         assertThat(predecessorFromDb, is(predecessor));
-        assertThat(predecessor.getPredecessor(dao), is(Optional.empty()));
+        assertThat(predecessorFromDb.getPredecessor(dao), is(Optional.empty()));
+    }
+
+    @Test
+    public void shouldGetChildrenOfPersistedPreference() {
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferencePOJO parent = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
+        final SearchablePreferencePOJO child = createSomeSearchablePreference(2, Optional.of(parent.getId()), Optional.empty());
+        dao.persist(parent, child);
+        final SearchablePreferencePOJO parentFromDb = dao.findPreferenceById(parent.getId()).orElseThrow();
+
+        // When
+        final List<SearchablePreferencePOJO> childrenFromDb = parentFromDb.getChildren(dao);
+
+        // Then
+        assertThat(childrenFromDb, contains(child));
+
+        final SearchablePreferencePOJO childFromDb = Iterables.getOnlyElement(childrenFromDb);
+        assertThat(childFromDb.getChildren(dao), is(empty()));
     }
 
     @Test
     public void shouldRemovePreference() {
         // Given
         final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty());
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
 
         // When
         searchablePreferencePOJODAO.persist(preference);
@@ -90,14 +114,17 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(removed, is(true));
     }
 
-    private static SearchablePreferencePOJO createSomeSearchablePreference(final int id,
-                                                                           final Optional<Integer> predecessorId) {
+    private static SearchablePreferencePOJO createSomeSearchablePreference(
+            final int id,
+            final Optional<Integer> parentId,
+            final Optional<Integer> predecessorId) {
         return POJOTestFactory.createSearchablePreferencePOJO(
                 id,
                 Optional.of("some title"),
                 Optional.of("some summary"),
                 Optional.of("some searchable info"),
                 Optional.empty(),
+                parentId,
                 predecessorId);
     }
 }

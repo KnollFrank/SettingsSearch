@@ -20,6 +20,7 @@ public class POJOTestFactory {
             final Optional<String> summary,
             final Optional<String> searchableInfo,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+            final Optional<Integer> parentId,
             final Optional<Integer> predecessorId) {
         return createSearchablePreferencePOJO(
                 id,
@@ -29,6 +30,7 @@ public class POJOTestFactory {
                 createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
                 PrefsFragmentFirst.class,
+                parentId,
                 predecessorId);
     }
 
@@ -40,6 +42,7 @@ public class POJOTestFactory {
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final Class<? extends PreferenceFragmentCompat> host,
+            final Optional<Integer> parentId,
             final Optional<Integer> predecessorId) {
         return new SearchablePreferencePOJO(
                 id,
@@ -55,7 +58,7 @@ public class POJOTestFactory {
                 searchableInfo,
                 // extras,
                 host,
-                // List.of(),
+                parentId,
                 predecessorId);
     }
 
