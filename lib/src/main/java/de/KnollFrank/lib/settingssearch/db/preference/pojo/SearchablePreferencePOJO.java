@@ -53,7 +53,7 @@ public final class SearchablePreferencePOJO {
     //private final List<SearchablePreference> children;
     // @Ignore
     // private final Optional<SearchablePreference> predecessor;
-    private final int predecessorId;
+    private final Optional<Integer> predecessorId;
 
     public SearchablePreferencePOJO(
             final int id,
@@ -70,7 +70,7 @@ public final class SearchablePreferencePOJO {
             // final Bundle extras,
             final Class<? extends PreferenceFragmentCompat> host,
             // final List<SearchablePreference> children
-            final int predecessorId) {
+            final Optional<Integer> predecessorId) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
@@ -204,15 +204,15 @@ public final class SearchablePreferencePOJO {
 
     public Optional<SearchablePreferencePOJO> getPredecessor(final SearchablePreferencePOJODAO dao) {
         return dao
-                .getPredecessorAndPreference()
+                .getPreferenceAndPredecessor()
                 .stream()
-                .filter(predecessorAndPreference -> predecessorAndPreference.getPreference().equals(this))
-                .map(PredecessorAndPreference::getPredecessor)
+                .filter(preferenceAndPredecessor -> preferenceAndPredecessor.getPreference().equals(this))
+                .map(PreferenceAndPredecessor::getPredecessor)
                 .collect(MoreCollectors.toOptional())
                 .orElse(Optional.empty());
     }
 
-    int getPredecessorId() {
+    Optional<Integer> getPredecessorId() {
         return predecessorId;
     }
 

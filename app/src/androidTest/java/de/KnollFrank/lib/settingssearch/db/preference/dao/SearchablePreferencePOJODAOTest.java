@@ -42,7 +42,7 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldPersistPreference() {
         // Given
         final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, -1);
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty());
 
         // When
         searchablePreferencePOJODAO.persist(preference);
@@ -59,8 +59,8 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldGetPredecessorOfPersistedPreference() {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO predecessor = createSomeSearchablePreference(1, -1);
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(2, predecessor.getId());
+        final SearchablePreferencePOJO predecessor = createSomeSearchablePreference(1, Optional.empty());
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(2, Optional.of(predecessor.getId()));
 
         // When
         dao.persist(predecessor, preference);
@@ -76,7 +76,7 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldRemovePreference() {
         // Given
         final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, -1);
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty());
 
         // When
         searchablePreferencePOJODAO.persist(preference);
@@ -90,7 +90,8 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(removed, is(true));
     }
 
-    private static SearchablePreferencePOJO createSomeSearchablePreference(final int id, final int predecessorId) {
+    private static SearchablePreferencePOJO createSomeSearchablePreference(final int id,
+                                                                           final Optional<Integer> predecessorId) {
         return POJOTestFactory.createSearchablePreferencePOJO(
                 id,
                 Optional.of("some title"),

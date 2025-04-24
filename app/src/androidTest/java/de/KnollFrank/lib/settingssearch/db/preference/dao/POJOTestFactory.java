@@ -20,7 +20,7 @@ public class POJOTestFactory {
             final Optional<String> summary,
             final Optional<String> searchableInfo,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final int predecessorId) {
+            final Optional<Integer> predecessorId) {
         return createSearchablePreferencePOJO(
                 id,
                 title,
@@ -40,7 +40,7 @@ public class POJOTestFactory {
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final Class<? extends PreferenceFragmentCompat> host,
-            final int predecessorId) {
+            final Optional<Integer> predecessorId) {
         return new SearchablePreferencePOJO(
                 id,
                 "some key",

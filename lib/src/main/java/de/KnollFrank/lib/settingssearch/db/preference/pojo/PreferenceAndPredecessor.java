@@ -5,7 +5,7 @@ import androidx.room.Relation;
 
 import java.util.Optional;
 
-class PredecessorAndPreference {
+public class PreferenceAndPredecessor {
 
     @Embedded
     private final SearchablePreferencePOJO preference;
@@ -15,7 +15,7 @@ class PredecessorAndPreference {
             entityColumn = "id")
     private final SearchablePreferencePOJO predecessor;
 
-    public PredecessorAndPreference(final SearchablePreferencePOJO preference,
+    public PreferenceAndPredecessor(final SearchablePreferencePOJO preference,
                                     final SearchablePreferencePOJO predecessor) {
         this.preference = preference;
         this.predecessor = predecessor;

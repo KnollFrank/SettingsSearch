@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceP
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJODAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ClassConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 
 @Database(entities = {SearchablePreferencePOJO.class}, version = 1, exportSchema = false)
@@ -20,7 +21,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalSt
         {
                 ClassConverter.class,
                 OptionalEitherIntegerOrStringConverter.class,
-                OptionalStringConverter.class
+                OptionalStringConverter.class,
+                OptionalIntegerConverter.class
         })
 public abstract class AppDatabase extends RoomDatabase {
 
