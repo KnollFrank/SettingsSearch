@@ -9,12 +9,19 @@ import androidx.room.TypeConverters;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.Converters;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJODAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ClassConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 
 @Database(entities = {SearchablePreferencePOJO.class}, version = 1, exportSchema = false)
-@TypeConverters({Converters.class})
+@TypeConverters(
+        {
+                ClassConverter.class,
+                OptionalEitherIntegerOrStringConverter.class,
+                OptionalStringConverter.class
+        })
 public abstract class AppDatabase extends RoomDatabase {
 
     private static volatile Optional<AppDatabase> instance = Optional.empty();

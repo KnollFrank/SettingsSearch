@@ -5,16 +5,20 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.LayoutRes;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.codepoetics.ambivalence.Either;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.common.Classes;
+import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 
 @Entity
 public final class SearchablePreferencePOJO {
@@ -22,10 +26,9 @@ public final class SearchablePreferencePOJO {
     @PrimaryKey
     private final int id;
     private final String key;
-    // FK-TODO: ignore temporarily
-    // private final Either<Integer, String> iconResourceIdOrIconPixelData;
+    private final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData;
     @Ignore
-    private Optional<Drawable> iconCache;
+    private Optional<Optional<Drawable>> iconCache = Optional.empty();
     private final @LayoutRes int layoutResId;
     private Optional<String> summary;
     @Ignore
@@ -52,7 +55,7 @@ public final class SearchablePreferencePOJO {
     public SearchablePreferencePOJO(
             final int id,
             final String key,
-            // final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final @LayoutRes int layoutResId,
             final Optional<String> summary,
             final Optional<String> title,
@@ -68,7 +71,7 @@ public final class SearchablePreferencePOJO {
     ) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
-        // this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData.orElse(null);
+        this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
         this.layoutResId = layoutResId;
         this.summary = summary;
         this.title = title;
@@ -95,16 +98,16 @@ public final class SearchablePreferencePOJO {
         return key;
     }
 
-//    public Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData() {
-//        return Optional.ofNullable(iconResourceIdOrIconPixelData);
-//    }
+    public Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData() {
+        return iconResourceIdOrIconPixelData;
+    }
 
-//    public Optional<Drawable> getIcon(final Context context) {
-//        if (iconCache == null) {
-//            iconCache = _getIcon(context);
-//        }
-//        return iconCache;
-//    }
+    public Optional<Drawable> getIcon(final Context context) {
+        if (iconCache.isEmpty()) {
+            iconCache = Optional.of(_getIcon(context));
+        }
+        return iconCache.orElseThrow();
+    }
 
     public @LayoutRes int getLayoutResId() {
         return layoutResId;
@@ -231,17 +234,17 @@ public final class SearchablePreferencePOJO {
                 '}';
     }
 
-//    private Optional<Drawable> _getIcon(final Context context) {
-//        return this
-//                .getIconResourceIdOrIconPixelData()
-//                .map(iconResourceIdOrIconPixelData ->
-//                        iconResourceIdOrIconPixelData.join(
-//                                iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
-//                                iconPixelData ->
-//                                        DrawableAndStringConverter.string2Drawable(
-//                                                iconPixelData,
-//                                                context.getResources())));
-//    }
+    private Optional<Drawable> _getIcon(final Context context) {
+        return this
+                .getIconResourceIdOrIconPixelData()
+                .map(iconResourceIdOrIconPixelData ->
+                        iconResourceIdOrIconPixelData.join(
+                                iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
+                                iconPixelData ->
+                                        DrawableAndStringConverter.string2Drawable(
+                                                iconPixelData,
+                                                context.getResources())));
+    }
 
 //    private PreferencePath getPreferencePathOfPredecessor() {
 //        return this

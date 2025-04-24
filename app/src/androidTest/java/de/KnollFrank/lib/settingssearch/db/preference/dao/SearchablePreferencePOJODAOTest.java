@@ -72,7 +72,7 @@ public class SearchablePreferencePOJODAOTest {
                         .isEmpty();
         assertThat(removed, is(true));
     }
-    
+
     private static SearchablePreferencePOJO createSomeSearchablePreference() {
         return POJOTestFactory.createSearchablePreferencePOJO(
                 Optional.of("some title"),

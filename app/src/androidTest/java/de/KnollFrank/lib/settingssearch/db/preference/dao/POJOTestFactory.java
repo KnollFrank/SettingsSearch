@@ -43,7 +43,7 @@ public class POJOTestFactory {
         return new SearchablePreferencePOJO(
                 id,
                 "some key",
-                // iconResourceIdOrIconPixelData,
+                iconResourceIdOrIconPixelData,
                 androidx.preference.R.layout.preference,
                 summary,
                 title,
