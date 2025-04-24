@@ -5,7 +5,7 @@ import androidx.room.Relation;
 
 import java.util.Optional;
 
-public class PredecessorAndPreference {
+class PredecessorAndPreference {
 
     @Embedded
     private final SearchablePreferencePOJO preference;
