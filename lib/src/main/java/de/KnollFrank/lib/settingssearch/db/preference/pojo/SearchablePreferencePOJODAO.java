@@ -4,11 +4,13 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+// FK-TODO: move to package de.KnollFrank.lib.settingssearch.db.preference.dao?
 @Dao
 public abstract class SearchablePreferencePOJODAO {
 
@@ -27,6 +29,10 @@ public abstract class SearchablePreferencePOJODAO {
 
     @Delete
     public abstract void remove(SearchablePreferencePOJO... preferences);
+
+    @Transaction
+    @Query("SELECT * FROM SearchablePreferencePOJO")
+    public abstract List<PredecessorAndPreference> getPredecessorAndPreference();
 
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();

@@ -8,7 +8,6 @@ import com.codepoetics.ambivalence.Either;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
@@ -16,19 +15,21 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 public class POJOTestFactory {
 
     public static SearchablePreferencePOJO createSearchablePreferencePOJO(
+            final int id,
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
-            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+            final int predecessorId) {
         return createSearchablePreferencePOJO(
-                1,
+                id,
                 title,
                 summary,
                 searchableInfo,
                 createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
                 PrefsFragmentFirst.class,
-                Optional.empty());
+                predecessorId);
     }
 
     public static SearchablePreferencePOJO createSearchablePreferencePOJO(
@@ -39,7 +40,7 @@ public class POJOTestFactory {
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final Class<? extends PreferenceFragmentCompat> host,
-            final Optional<SearchablePreference> predecessor) {
+            final int predecessorId) {
         return new SearchablePreferencePOJO(
                 id,
                 "some key",
@@ -53,10 +54,9 @@ public class POJOTestFactory {
                 true,
                 searchableInfo,
                 // extras,
-                host
+                host,
                 // List.of(),
-                // predecessor
-        );
+                predecessorId);
     }
 
     public static Bundle createBundle(final String key, final String value) {

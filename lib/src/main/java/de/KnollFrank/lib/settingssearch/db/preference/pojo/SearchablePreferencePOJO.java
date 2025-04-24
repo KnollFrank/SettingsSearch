@@ -12,6 +12,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.codepoetics.ambivalence.Either;
+import com.google.common.collect.MoreCollectors;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConver
 public final class SearchablePreferencePOJO {
 
     @PrimaryKey
+    // FK-TODO: replace int with long?
     private final int id;
     private final String key;
     private final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData;
@@ -51,6 +53,7 @@ public final class SearchablePreferencePOJO {
     //private final List<SearchablePreference> children;
     // @Ignore
     // private final Optional<SearchablePreference> predecessor;
+    private final int predecessorId;
 
     public SearchablePreferencePOJO(
             final int id,
@@ -65,10 +68,9 @@ public final class SearchablePreferencePOJO {
             final boolean visible,
             final Optional<String> searchableInfo,
             // final Bundle extras,
-            final Class<? extends PreferenceFragmentCompat> host
+            final Class<? extends PreferenceFragmentCompat> host,
             // final List<SearchablePreference> children
-            // final Optional<SearchablePreference> predecessor
-    ) {
+            final int predecessorId) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
@@ -83,7 +85,7 @@ public final class SearchablePreferencePOJO {
         // this.extras = extras;
         this.host = host;
         // this.children = children;
-        // this.predecessor = predecessor;
+        this.predecessorId = predecessorId;
     }
 
     public int getId() {
@@ -192,16 +194,26 @@ public final class SearchablePreferencePOJO {
 //        return extras;
 //    }
 
+    public Class<? extends PreferenceFragmentCompat> getHost() {
+        return host;
+    }
+
 //    public PreferencePath getPreferencePath() {
 //        return getPreferencePathOfPredecessor().append(this);
 //    }
 
-//    public Optional<SearchablePreference> getPredecessor() {
-//        return predecessor;
-//    }
+    public Optional<SearchablePreferencePOJO> getPredecessor(final SearchablePreferencePOJODAO dao) {
+        return dao
+                .getPredecessorAndPreference()
+                .stream()
+                .filter(predecessorAndPreference -> predecessorAndPreference.preference.equals(this))
+                .map(predecessorAndPreference -> Optional.ofNullable(predecessorAndPreference.predecessor))
+                .collect(MoreCollectors.toOptional())
+                .orElse(Optional.empty());
+    }
 
-    public Class<? extends PreferenceFragmentCompat> getHost() {
-        return host;
+    int getPredecessorId() {
+        return predecessorId;
     }
 
     @Override

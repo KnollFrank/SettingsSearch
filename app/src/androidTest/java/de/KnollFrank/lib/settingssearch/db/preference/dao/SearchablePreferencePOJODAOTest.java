@@ -42,7 +42,7 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldPersistPreference() {
         // Given
         final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference();
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, -1);
 
         // When
         searchablePreferencePOJODAO.persist(preference);
@@ -56,10 +56,27 @@ public class SearchablePreferencePOJODAOTest {
     }
 
     @Test
+    public void shouldGetPredecessorOfPersistedPreference() {
+        // Given
+        final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferencePOJO predecessor = createSomeSearchablePreference(1, -1);
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(2, predecessor.getId());
+
+        // When
+        searchablePreferencePOJODAO.persist(predecessor, preference);
+
+        // Then
+        final SearchablePreferencePOJO preferenceFromDb = searchablePreferencePOJODAO.findPreferenceById(preference.getId()).orElseThrow();
+        final SearchablePreferencePOJO predecessorFromDb = preferenceFromDb.getPredecessor(searchablePreferencePOJODAO).orElseThrow();
+        assertThat(predecessorFromDb, is(predecessor));
+        assertThat(predecessor.getPredecessor(searchablePreferencePOJODAO), is(Optional.empty()));
+    }
+
+    @Test
     public void shouldRemovePreference() {
         // Given
         final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference();
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, -1);
 
         // When
         searchablePreferencePOJODAO.persist(preference);
@@ -73,11 +90,13 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(removed, is(true));
     }
 
-    private static SearchablePreferencePOJO createSomeSearchablePreference() {
+    private static SearchablePreferencePOJO createSomeSearchablePreference(final int id, final int predecessorId) {
         return POJOTestFactory.createSearchablePreferencePOJO(
+                id,
                 Optional.of("some title"),
                 Optional.of("some summary"),
                 Optional.of("some searchable info"),
-                Optional.empty());
+                Optional.empty(),
+                predecessorId);
     }
 }
