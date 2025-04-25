@@ -18,9 +18,8 @@ public abstract class SearchablePreferencePOJODAO {
     @Query("SELECT * FROM SearchablePreferencePOJO")
     public abstract List<SearchablePreferencePOJO> loadAll();
 
-    public Optional<SearchablePreferencePOJO> findPreferenceById(final int id) {
-        return Optional.ofNullable(_findPreferenceById(id));
-    }
+    @Query("SELECT * FROM SearchablePreferencePOJO WHERE id = :id")
+    public abstract Optional<SearchablePreferencePOJO> findPreferenceById(final int id);
 
     @Query("SELECT * FROM SearchablePreferencePOJO WHERE `key` = :key AND host = :host")
     public abstract Optional<SearchablePreferencePOJO> findPreferenceByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
@@ -44,8 +43,4 @@ public abstract class SearchablePreferencePOJODAO {
 
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();
-
-    @Query("SELECT * FROM SearchablePreferencePOJO WHERE id = :id")
-    // FK-TODO: return Optional<SearchablePreferencePOJO>
-    protected abstract SearchablePreferencePOJO _findPreferenceById(int id);
 }
