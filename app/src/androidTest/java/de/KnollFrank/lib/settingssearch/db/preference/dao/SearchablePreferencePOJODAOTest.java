@@ -46,14 +46,14 @@ public class SearchablePreferencePOJODAOTest {
     @Test
     public void shouldPersistPreference() {
         // Given
-        final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
 
         // When
-        searchablePreferencePOJODAO.persist(preference);
+        dao.persist(preference);
 
         // Then the preference was persisted at all
-        final Optional<SearchablePreferencePOJO> preferenceFromDb = searchablePreferencePOJODAO.findPreferenceById(preference.getId());
+        final Optional<SearchablePreferencePOJO> preferenceFromDb = dao.findPreferenceById(preference.getId());
         assertThat(preferenceFromDb.isPresent(), is(true));
 
         // And the preference was persisted correctly
@@ -99,19 +99,37 @@ public class SearchablePreferencePOJODAOTest {
     @Test
     public void shouldRemovePreference() {
         // Given
-        final SearchablePreferencePOJODAO searchablePreferencePOJODAO = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
 
         // When
-        searchablePreferencePOJODAO.persist(preference);
-        searchablePreferencePOJODAO.remove(preference);
+        dao.persist(preference);
+        dao.remove(preference);
 
         // Then
         final boolean removed =
-                searchablePreferencePOJODAO
+                dao
                         .findPreferenceById(preference.getId())
                         .isEmpty();
         assertThat(removed, is(true));
+    }
+
+    @Test
+    public void shouldFindPreferenceByKeyAndHost() {
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
+        dao.persist(preference);
+
+        // When
+        final Optional<SearchablePreferencePOJO> preferenceFromDb =
+                dao.findPreferenceByKeyAndHost(
+                        preference.getKey(),
+                        preference.getHost());
+
+        // Then
+        assertThat(preferenceFromDb.isPresent(), is(true));
+        SearchablePreferencePOJOEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     private static SearchablePreferencePOJO createSomeSearchablePreference(

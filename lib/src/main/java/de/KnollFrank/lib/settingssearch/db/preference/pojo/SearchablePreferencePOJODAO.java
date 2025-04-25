@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -20,6 +21,9 @@ public abstract class SearchablePreferencePOJODAO {
     public Optional<SearchablePreferencePOJO> findPreferenceById(final int id) {
         return Optional.ofNullable(_findPreferenceById(id));
     }
+
+    @Query("SELECT * FROM SearchablePreferencePOJO WHERE `key` = :key AND host = :host")
+    public abstract Optional<SearchablePreferencePOJO> findPreferenceByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
 
     @Insert
     public abstract void persist(SearchablePreferencePOJO... searchablePreferencePOJOs);
@@ -42,5 +46,6 @@ public abstract class SearchablePreferencePOJODAO {
     public abstract void removeAll();
 
     @Query("SELECT * FROM SearchablePreferencePOJO WHERE id = :id")
+    // FK-TODO: return Optional<SearchablePreferencePOJO>
     protected abstract SearchablePreferencePOJO _findPreferenceById(int id);
 }

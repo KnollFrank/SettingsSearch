@@ -12,7 +12,7 @@ public class SearchablePreferencePOJOEquality {
     public static void assertActualEqualsExpected(final SearchablePreferencePOJO actual, final SearchablePreferencePOJO expected) {
         assertThat(actual.getId(), is(expected.getId()));
         assertThat(actual.getKey(), is(expected.getKey()));
-        // assertThat(actual.getIconResourceIdOrIconPixelData(), is(expected.getIconResourceIdOrIconPixelData()));
+        assertThat(actual.getIconResourceIdOrIconPixelData(), is(expected.getIconResourceIdOrIconPixelData()));
         assertThat(actual.getLayoutResId(), is(expected.getLayoutResId()));
         assertThat(actual.getSummary(), is(expected.getSummary()));
         assertThat(actual.getTitle(), is(expected.getTitle()));
@@ -22,7 +22,9 @@ public class SearchablePreferencePOJOEquality {
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
         assertThat(actual.getHost(), is(expected.getHost()));
         // assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
+        // FK-TODO: activate using dao
         // assertActualListEqualsExpectedList(actual.getChildren(), expected.getChildren());
+        // FK-TODO: activate using dao
         // assertThat(actual.getPredecessor(), is(expected.getPredecessor()));
     }
 
