@@ -22,6 +22,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJODAO;
+import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 @RunWith(AndroidJUnit4.class)
 public class SearchablePreferencePOJODAOTest {
@@ -130,6 +131,21 @@ public class SearchablePreferencePOJODAOTest {
         // Then
         assertThat(preferenceFromDb.isPresent(), is(true));
         SearchablePreferencePOJOEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+    }
+
+    @Test
+    public void shouldNotFindPreferenceByKeyAndHost() {
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+
+        // When
+        final Optional<SearchablePreferencePOJO> preferenceFromDb =
+                dao.findPreferenceByKeyAndHost(
+                        "nonExistingKey",
+                        PrefsFragmentFirst.class);
+
+        // Then
+        assertThat(preferenceFromDb.isEmpty(), is(true));
     }
 
     private static SearchablePreferencePOJO createSomeSearchablePreference(
