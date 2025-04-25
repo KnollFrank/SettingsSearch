@@ -115,6 +115,7 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(removed, is(true));
     }
 
+    // FK-TODO: add test shouldFindChildPreferenceByKeyAndHost()
     @Test
     public void shouldFindPreferenceByKeyAndHost() {
         // Given
