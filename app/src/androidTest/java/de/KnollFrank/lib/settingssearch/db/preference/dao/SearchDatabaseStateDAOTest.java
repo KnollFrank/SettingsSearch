@@ -12,11 +12,11 @@ import org.junit.runner.RunWith;
 public class SearchDatabaseStateDAOTest extends AppDatabaseTest {
 
     @Test
-    public void shouldSetInitialized() {
+    public void test_searchDatabaseInitialized() {
         final SearchDatabaseStateDAO dao = appDatabase.searchDatabaseStateDAO();
         // search database is initially not initialized
-        assertThat(dao.isInitialized(), is(false));
-        dao.setInitialized(true);
-        assertThat(dao.isInitialized(), is(true));
+        assertThat(dao.isSearchDatabaseInitialized(), is(false));
+        dao.setSearchDatabaseInitialized(true);
+        assertThat(dao.isSearchDatabaseInitialized(), is(true));
     }
 }

@@ -12,13 +12,13 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
 @Dao
 public abstract class SearchDatabaseStateDAO {
 
-    public void setInitialized(final boolean initialized) {
+    public void setSearchDatabaseInitialized(final boolean initialized) {
         final SearchDatabaseState searchDatabaseState = getSearchDatabaseState();
         searchDatabaseState.setInitialized(initialized);
         update(searchDatabaseState);
     }
 
-    public boolean isInitialized() {
+    public boolean isSearchDatabaseInitialized() {
         return getSearchDatabaseState().isInitialized();
     }
 
