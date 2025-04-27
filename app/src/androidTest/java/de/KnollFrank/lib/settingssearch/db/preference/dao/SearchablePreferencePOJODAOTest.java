@@ -48,7 +48,14 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldPersistPreference() {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
+        final SearchablePreferencePOJO preference =
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some title"),
+                        Optional.of("some summary"),
+                        Optional.of("some searchable info"));
 
         // When
         dao.persist(preference);
@@ -65,8 +72,22 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldGetPredecessorOfPersistedPreference() {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO predecessor = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(2, Optional.empty(), Optional.of(predecessor.getId()));
+        final SearchablePreferencePOJO predecessor =
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some title"),
+                        Optional.of("some summary"),
+                        Optional.of("some searchable info"));
+        final SearchablePreferencePOJO preference =
+                createSomeSearchablePreference(
+                        2,
+                        Optional.empty(),
+                        Optional.of(predecessor.getId()),
+                        Optional.of("some title"),
+                        Optional.of("some summary"),
+                        Optional.of("some searchable info"));
         dao.persist(predecessor, preference);
         final SearchablePreferencePOJO preferenceFromDb = dao.findPreferenceById(preference.getId()).orElseThrow();
 
@@ -82,8 +103,22 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldGetChildrenOfPersistedPreference() {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO parent = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
-        final SearchablePreferencePOJO child = createSomeSearchablePreference(2, Optional.of(parent.getId()), Optional.empty());
+        final SearchablePreferencePOJO parent =
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some title"),
+                        Optional.of("some summary"),
+                        Optional.of("some searchable info"));
+        final SearchablePreferencePOJO child =
+                createSomeSearchablePreference(
+                        2,
+                        Optional.of(parent.getId()),
+                        Optional.empty(),
+                        Optional.of("some title"),
+                        Optional.of("some summary"),
+                        Optional.of("some searchable info"));
         dao.persist(parent, child);
         final SearchablePreferencePOJO parentFromDb = dao.findPreferenceById(parent.getId()).orElseThrow();
 
@@ -101,7 +136,14 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldRemovePreference() {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
+        final SearchablePreferencePOJO preference =
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some title"),
+                        Optional.of("some summary"),
+                        Optional.of("some searchable info"));
 
         // When
         dao.persist(preference);
@@ -119,7 +161,14 @@ public class SearchablePreferencePOJODAOTest {
     public void shouldFindPreferenceByKeyAndHost() {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
-        final SearchablePreferencePOJO preference = createSomeSearchablePreference(1, Optional.empty(), Optional.empty());
+        final SearchablePreferencePOJO preference =
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some title"),
+                        Optional.of("some summary"),
+                        Optional.of("some searchable info"));
         dao.persist(preference);
 
         // When
@@ -148,15 +197,73 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(preferenceFromDb.isEmpty(), is(true));
     }
 
+    @Test
+    public void shouldSearchWithinTitleSummarySearchableInfo_title() {
+        final String needle = "title";
+        shouldSearchWithinTitleSummarySearchableInfo(
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some " + needle),
+                        Optional.empty(),
+                        Optional.empty()),
+                needle);
+    }
+
+    @Test
+    public void shouldSearchWithinTitleSummarySearchableInfo_summary() {
+        final String needle = "summary";
+        shouldSearchWithinTitleSummarySearchableInfo(
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some " + needle),
+                        Optional.empty()),
+                needle);
+    }
+
+    // FK-TODO: add test which finds nothing
+    @Test
+    public void shouldSearchWithinTitleSummarySearchableInfo_searchableInfo() {
+        final String needle = "searchableInfo";
+        shouldSearchWithinTitleSummarySearchableInfo(
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some " + needle)),
+                needle);
+    }
+
+    private void shouldSearchWithinTitleSummarySearchableInfo(final SearchablePreferencePOJO preference, final String needle) {
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        dao.persist(preference);
+
+        // When
+        final List<SearchablePreferencePOJO> preferences = dao.searchWithinTitleSummarySearchableInfo(needle);
+
+        // Then
+        assertThat(preferences, contains(preference));
+    }
+
     private static SearchablePreferencePOJO createSomeSearchablePreference(
             final int id,
             final Optional<Integer> parentId,
-            final Optional<Integer> predecessorId) {
+            final Optional<Integer> predecessorId,
+            final Optional<String> title,
+            final Optional<String> summary,
+            final Optional<String> searchableInfo) {
         return POJOTestFactory.createSearchablePreferencePOJO(
                 id,
-                Optional.of("some title"),
-                Optional.of("some summary"),
-                Optional.of("some searchable info"),
+                title,
+                summary,
+                searchableInfo,
                 Optional.empty(),
                 parentId,
                 predecessorId);

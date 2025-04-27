@@ -24,6 +24,10 @@ public abstract class SearchablePreferencePOJODAO {
     @Query("SELECT * FROM SearchablePreferencePOJO WHERE `key` = :key AND host = :host")
     public abstract Optional<SearchablePreferencePOJO> findPreferenceByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
 
+    public List<SearchablePreferencePOJO> searchWithinTitleSummarySearchableInfo(final String needle) {
+        return searchWithinTitleSummarySearchableInfo(Optional.of(needle));
+    }
+
     @Insert
     public abstract void persist(SearchablePreferencePOJO... searchablePreferencePOJOs);
 
@@ -43,4 +47,7 @@ public abstract class SearchablePreferencePOJODAO {
 
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();
+
+    @Query("SELECT * FROM SearchablePreferencePOJO WHERE title LIKE '%' || :needle || '%' OR summary LIKE '%' || :needle || '%' OR searchableInfo LIKE '%' || :needle || '%'")
+    protected abstract List<SearchablePreferencePOJO> searchWithinTitleSummarySearchableInfo(final Optional<String> needle);
 }
