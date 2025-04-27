@@ -66,7 +66,6 @@ public abstract class SearchablePreferencePOJODAO {
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();
 
-
     private static final String pattern = "'%' || :needle || '%'";
 
     @Query("SELECT * FROM SearchablePreferencePOJO WHERE title LIKE " + pattern + " OR summary LIKE " + pattern + "OR searchableInfo LIKE " + pattern)
