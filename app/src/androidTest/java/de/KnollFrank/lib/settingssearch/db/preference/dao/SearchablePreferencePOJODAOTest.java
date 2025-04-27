@@ -305,6 +305,40 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(getPreferences(preferenceMatches), not(contains(someSearchablePreference)));
     }
 
+    @Test
+    public void shouldGetMaxId() {
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final int maxId = 4711;
+        final SearchablePreferencePOJO preference =
+                createSomeSearchablePreference(
+                        maxId,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty());
+        dao.persist(preference);
+
+        // When
+        final Optional<Integer> maxIdActual = dao.getMaxId();
+
+        // Then
+        assertThat(maxIdActual, is(Optional.of(maxId)));
+    }
+
+    @Test
+    public void shouldGetMaxId_emptyDatabase() {
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+
+        // When
+        final Optional<Integer> maxId = dao.getMaxId();
+
+        // Then
+        assertThat(maxId, is(Optional.empty()));
+    }
+
     private static IncludeSearchablePreferencePOJOInSearchResultsPredicate excludePreferenceFromSearchResults(final SearchablePreferencePOJO preference2Exclude) {
         return new IncludeSearchablePreferencePOJOInSearchResultsPredicate() {
 

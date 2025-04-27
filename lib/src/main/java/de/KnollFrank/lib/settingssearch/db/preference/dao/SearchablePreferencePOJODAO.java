@@ -70,6 +70,9 @@ public abstract class SearchablePreferencePOJODAO {
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();
 
+    @Query("SELECT MAX(id) FROM SearchablePreferencePOJO")
+    public abstract Optional<Integer> getMaxId();
+
     private static final String NEEDLE_PATTERN = "'%' || :needle || '%'";
 
     @Query("SELECT * FROM SearchablePreferencePOJO WHERE title LIKE " + NEEDLE_PATTERN + " OR summary LIKE " + NEEDLE_PATTERN + "OR searchableInfo LIKE " + NEEDLE_PATTERN)
