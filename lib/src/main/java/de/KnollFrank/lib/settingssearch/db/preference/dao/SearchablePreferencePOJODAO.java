@@ -70,8 +70,8 @@ public abstract class SearchablePreferencePOJODAO {
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();
 
-    private static final String pattern = "'%' || :needle || '%'";
+    private static final String NEEDLE_PATTERN = "'%' || :needle || '%'";
 
-    @Query("SELECT * FROM SearchablePreferencePOJO WHERE title LIKE " + pattern + " OR summary LIKE " + pattern + "OR searchableInfo LIKE " + pattern)
+    @Query("SELECT * FROM SearchablePreferencePOJO WHERE title LIKE " + NEEDLE_PATTERN + " OR summary LIKE " + NEEDLE_PATTERN + "OR searchableInfo LIKE " + NEEDLE_PATTERN)
     protected abstract List<SearchablePreferencePOJO> searchWithinTitleSummarySearchableInfo(final Optional<String> needle);
 }
