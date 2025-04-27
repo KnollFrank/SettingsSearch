@@ -8,6 +8,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import java.util.Collection;
 import java.util.List;
@@ -54,6 +55,9 @@ public abstract class SearchablePreferencePOJODAO {
 
     @Delete
     public abstract void remove(SearchablePreferencePOJO... preferences);
+
+    @Update
+    public abstract void update(SearchablePreferencePOJO... preferences);
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferencePOJO")

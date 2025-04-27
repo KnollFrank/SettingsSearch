@@ -74,6 +74,36 @@ public class SearchablePreferencePOJODAOTest {
     }
 
     @Test
+    public void shouldUpdateSummaryOfPreference() {
+        // Given
+        final Optional<String> oldSummary = Optional.of("old summary");
+        final Optional<String> newSummary = Optional.of("new summary");
+
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferencePOJO preference =
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        oldSummary,
+                        Optional.empty());
+        dao.persist(preference);
+
+        // When
+        preference.setSummary(newSummary);
+        dao.update(preference);
+
+        // Then
+        final Optional<String> summaryFromDb =
+                dao
+                        .findPreferenceById(preference.getId())
+                        .orElseThrow()
+                        .getSummary();
+        assertThat(summaryFromDb, is(newSummary));
+    }
+
+    @Test
     public void shouldGetPredecessorOfPersistedPreference() {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
