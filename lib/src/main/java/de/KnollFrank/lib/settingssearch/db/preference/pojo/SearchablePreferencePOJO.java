@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
 
 @Entity
 public final class SearchablePreferencePOJO {
@@ -216,11 +217,11 @@ public final class SearchablePreferencePOJO {
                 .orElse(Optional.empty());
     }
 
-    Optional<Integer> getParentId() {
+    public Optional<Integer> getParentId() {
         return parentId;
     }
 
-    Optional<Integer> getPredecessorId() {
+    public Optional<Integer> getPredecessorId() {
         return predecessorId;
     }
 

@@ -6,7 +6,6 @@ import static org.hamcrest.Matchers.is;
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJODAO;
 
 public class SearchablePreferencePOJOEquality {
 

@@ -21,7 +21,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJODAO;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 @RunWith(AndroidJUnit4.class)

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.pojo;
+package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Dao;
@@ -11,7 +11,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-// FK-TODO: move to package de.KnollFrank.lib.settingssearch.db.preference.dao?
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+
 @Dao
 public abstract class SearchablePreferencePOJODAO {
 
