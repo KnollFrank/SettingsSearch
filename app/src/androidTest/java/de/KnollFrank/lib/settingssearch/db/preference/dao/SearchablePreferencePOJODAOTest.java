@@ -6,14 +6,10 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 
-import androidx.room.Room;
-import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.google.common.collect.Iterables;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,7 +18,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
 import de.KnollFrank.lib.settingssearch.provider.IncludeSearchablePreferencePOJOInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
@@ -30,24 +25,7 @@ import de.KnollFrank.lib.settingssearch.search.SearchablePreferencePOJOMatch;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 @RunWith(AndroidJUnit4.class)
-public class SearchablePreferencePOJODAOTest {
-
-    private AppDatabase appDatabase;
-
-    @Before
-    public void createDb() {
-        appDatabase =
-                Room
-                        .inMemoryDatabaseBuilder(
-                                ApplicationProvider.getApplicationContext(),
-                                AppDatabase.class)
-                        .build();
-    }
-
-    @After
-    public void closeDb() {
-        appDatabase.close();
-    }
+public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
 
     @Test
     public void shouldPersistPreference() {
