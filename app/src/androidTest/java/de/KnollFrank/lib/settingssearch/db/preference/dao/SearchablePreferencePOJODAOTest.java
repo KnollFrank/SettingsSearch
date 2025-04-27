@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.provider.IncludeSearchablePreferencePOJOInSearchResultsPredicate;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 @RunWith(AndroidJUnit4.class)
@@ -199,7 +201,7 @@ public class SearchablePreferencePOJODAOTest {
     @Test
     public void shouldSearchWithinTitleSummarySearchableInfo_title() {
         final String needle = "title";
-        shouldSearchWithinTitleSummarySearchableInfo(
+        shouldSearchAndFindWithinTitleSummarySearchableInfo(
                 createSomeSearchablePreference(
                         1,
                         Optional.empty(),
@@ -211,9 +213,50 @@ public class SearchablePreferencePOJODAOTest {
     }
 
     @Test
+    public void shouldSearchWithinTitleSummarySearchableInfo_excludePreferenceFromSearchResults() {
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final String needle = "title";
+        final SearchablePreferencePOJO someSearchablePreference =
+                createSomeSearchablePreference(
+                        1,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.of("some " + needle),
+                        Optional.empty(),
+                        Optional.empty());
+        dao.persist(someSearchablePreference);
+        final IncludeSearchablePreferencePOJOInSearchResultsPredicate includePreferenceInSearchResultsPredicate =
+                excludePreferenceFromSearchResults(someSearchablePreference);
+
+        // When
+        final List<SearchablePreferencePOJO> preferences =
+                dao.searchWithinTitleSummarySearchableInfo(
+                        needle,
+                        includePreferenceInSearchResultsPredicate);
+
+        // Then
+        assertThat(preferences, not(contains(someSearchablePreference)));
+    }
+
+    private static IncludeSearchablePreferencePOJOInSearchResultsPredicate excludePreferenceFromSearchResults(final SearchablePreferencePOJO preference2Exclude) {
+        return new IncludeSearchablePreferencePOJOInSearchResultsPredicate() {
+
+            @Override
+            public boolean includePreferenceInSearchResults(final SearchablePreferencePOJO preference) {
+                return !isPreference2Exclude(preference);
+            }
+
+            private boolean isPreference2Exclude(final SearchablePreferencePOJO preference) {
+                return preference.getId() == preference2Exclude.getId();
+            }
+        };
+    }
+
+    @Test
     public void shouldSearchWithinTitleSummarySearchableInfo_summary() {
         final String needle = "summary";
-        shouldSearchWithinTitleSummarySearchableInfo(
+        shouldSearchAndFindWithinTitleSummarySearchableInfo(
                 createSomeSearchablePreference(
                         1,
                         Optional.empty(),
@@ -227,7 +270,7 @@ public class SearchablePreferencePOJODAOTest {
     @Test
     public void shouldSearchWithinTitleSummarySearchableInfo_searchableInfo() {
         final String needle = "searchableInfo";
-        shouldSearchWithinTitleSummarySearchableInfo(
+        shouldSearchAndFindWithinTitleSummarySearchableInfo(
                 createSomeSearchablePreference(
                         1,
                         Optional.empty(),
@@ -252,7 +295,10 @@ public class SearchablePreferencePOJODAOTest {
         dao.persist(preference);
 
         // When
-        final List<SearchablePreferencePOJO> preferences = dao.searchWithinTitleSummarySearchableInfo("this can't be found");
+        final List<SearchablePreferencePOJO> preferences =
+                dao.searchWithinTitleSummarySearchableInfo(
+                        "this can't be found",
+                        _preference -> true);
 
         // Then
         assertThat(preferences, is(empty()));
@@ -264,19 +310,26 @@ public class SearchablePreferencePOJODAOTest {
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
 
         // When
-        final List<SearchablePreferencePOJO> preferences = dao.searchWithinTitleSummarySearchableInfo("this can't be found");
+        final List<SearchablePreferencePOJO> preferences =
+                dao.searchWithinTitleSummarySearchableInfo(
+                        "this can't be found",
+                        _preference -> true);
 
         // Then
         assertThat(preferences, is(empty()));
     }
 
-    private void shouldSearchWithinTitleSummarySearchableInfo(final SearchablePreferencePOJO preference, final String needle) {
+    private void shouldSearchAndFindWithinTitleSummarySearchableInfo(final SearchablePreferencePOJO preference,
+                                                                     final String needle) {
         // Given
         final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
         dao.persist(preference);
 
         // When
-        final List<SearchablePreferencePOJO> preferences = dao.searchWithinTitleSummarySearchableInfo(needle);
+        final List<SearchablePreferencePOJO> preferences =
+                dao.searchWithinTitleSummarySearchableInfo(
+                        needle,
+                        _preference -> true);
 
         // Then
         assertThat(preferences, contains(preference));

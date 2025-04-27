@@ -10,10 +10,12 @@ import androidx.room.Transaction;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.provider.IncludeSearchablePreferencePOJOInSearchResultsPredicate;
 
 @Dao
 public abstract class SearchablePreferencePOJODAO {
@@ -27,8 +29,14 @@ public abstract class SearchablePreferencePOJODAO {
     @Query("SELECT * FROM SearchablePreferencePOJO WHERE `key` = :key AND host = :host")
     public abstract Optional<SearchablePreferencePOJO> findPreferenceByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
 
-    public List<SearchablePreferencePOJO> searchWithinTitleSummarySearchableInfo(final String needle) {
-        return searchWithinTitleSummarySearchableInfo(Optional.of(needle));
+    public List<SearchablePreferencePOJO> searchWithinTitleSummarySearchableInfo(
+            final String needle,
+            final IncludeSearchablePreferencePOJOInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
+        return this
+                .searchWithinTitleSummarySearchableInfo(Optional.of(needle))
+                .stream()
+                .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
+                .collect(Collectors.toList());
     }
 
     @Insert
