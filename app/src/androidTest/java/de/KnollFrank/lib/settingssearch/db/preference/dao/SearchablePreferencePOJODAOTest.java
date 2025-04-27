@@ -58,7 +58,7 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(preferenceFromDb.isPresent(), is(true));
 
         // And the preference was persisted correctly
-        SearchablePreferencePOJOEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+        new SearchablePreferencePOJOEquality(dao).assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     @Test
@@ -115,7 +115,6 @@ public class SearchablePreferencePOJODAOTest {
         assertThat(removed, is(true));
     }
 
-    // FK-TODO: add test shouldFindChildPreferenceByKeyAndHost()
     @Test
     public void shouldFindPreferenceByKeyAndHost() {
         // Given
@@ -131,7 +130,7 @@ public class SearchablePreferencePOJODAOTest {
 
         // Then
         assertThat(preferenceFromDb.isPresent(), is(true));
-        SearchablePreferencePOJOEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+        new SearchablePreferencePOJOEquality(dao).assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     @Test
