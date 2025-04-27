@@ -225,7 +225,6 @@ public class SearchablePreferencePOJODAOTest {
                 needle);
     }
 
-    // FK-TODO: add test which finds nothing
     @Test
     public void shouldSearchWithinTitleSummarySearchableInfo_searchableInfo() {
         final String needle = "searchableInfo";
@@ -238,6 +237,38 @@ public class SearchablePreferencePOJODAOTest {
                         Optional.empty(),
                         Optional.of("some " + needle)),
                 needle);
+    }
+
+    @Test
+    public void shouldSearchWithinTitleSummarySearchableInfo_nonMatchingNeedle_findNothing() {
+        final SearchablePreferencePOJO preference = createSomeSearchablePreference(
+                1,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of("some title"),
+                Optional.empty(),
+                Optional.empty());
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        dao.persist(preference);
+
+        // When
+        final List<SearchablePreferencePOJO> preferences = dao.searchWithinTitleSummarySearchableInfo("this can't be found");
+
+        // Then
+        assertThat(preferences, is(empty()));
+    }
+
+    @Test
+    public void shouldSearchWithinTitleSummarySearchableInfo_emptyDatabase_findNothing() {
+        // Given
+        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+
+        // When
+        final List<SearchablePreferencePOJO> preferences = dao.searchWithinTitleSummarySearchableInfo("this can't be found");
+
+        // Then
+        assertThat(preferences, is(empty()));
     }
 
     private void shouldSearchWithinTitleSummarySearchableInfo(final SearchablePreferencePOJO preference, final String needle) {
