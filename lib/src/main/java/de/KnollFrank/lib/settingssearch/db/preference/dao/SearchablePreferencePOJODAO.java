@@ -26,14 +26,20 @@ import de.KnollFrank.lib.settingssearch.search.SearchablePreferencePOJOMatch;
 @Dao
 public abstract class SearchablePreferencePOJODAO {
 
-    @Query("SELECT * FROM SearchablePreferencePOJO")
-    public abstract List<SearchablePreferencePOJO> loadAll();
+    private final SearchablePreferencePOJODAOSetter daoSetter = new SearchablePreferencePOJODAOSetter(this);
 
-    @Query("SELECT * FROM SearchablePreferencePOJO WHERE id = :id")
-    public abstract Optional<SearchablePreferencePOJO> findPreferenceById(final int id);
+    public List<SearchablePreferencePOJO> loadAll() {
+        return daoSetter.setDao(_loadAll());
+    }
 
-    @Query("SELECT * FROM SearchablePreferencePOJO WHERE `key` = :key AND host = :host")
-    public abstract Optional<SearchablePreferencePOJO> findPreferenceByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
+    public Optional<SearchablePreferencePOJO> findPreferenceById(final int id) {
+        return daoSetter.setDao(_findPreferenceById(id));
+    }
+
+    public Optional<SearchablePreferencePOJO> findPreferenceByKeyAndHost(final String key,
+                                                                         final Class<? extends PreferenceFragmentCompat> host) {
+        return daoSetter.setDao(_findPreferenceByKeyAndHost(key, host));
+    }
 
     public Set<SearchablePreferencePOJOMatch> searchWithinTitleSummarySearchableInfo(
             final String needle,
@@ -47,25 +53,29 @@ public abstract class SearchablePreferencePOJODAO {
                 .collect(Collectors.toSet());
     }
 
-    @Insert
-    public abstract void persist(SearchablePreferencePOJO... searchablePreferencePOJOs);
+    public void persist(final SearchablePreferencePOJO... searchablePreferencePOJOs) {
+        _persist(daoSetter.setDao(searchablePreferencePOJOs));
+    }
 
-    @Insert
-    public abstract void persist(Collection<SearchablePreferencePOJO> searchablePreferencePOJOs);
+    public void persist(final Collection<SearchablePreferencePOJO> searchablePreferencePOJOs) {
+        _persist(daoSetter.setDao(searchablePreferencePOJOs));
+    }
 
-    @Delete
-    public abstract void remove(SearchablePreferencePOJO... preferences);
+    public void remove(final SearchablePreferencePOJO... preferences) {
+        _remove(daoSetter.setDao(preferences));
+    }
 
-    @Update
-    public abstract void update(SearchablePreferencePOJO... preferences);
+    public void update(final SearchablePreferencePOJO... preferences) {
+        _update(daoSetter.setDao(preferences));
+    }
 
-    @Transaction
-    @Query("SELECT * FROM SearchablePreferencePOJO")
-    public abstract List<PreferenceAndPredecessor> getPreferencesAndPredecessors();
+    public List<PreferenceAndPredecessor> getPreferencesAndPredecessors() {
+        return daoSetter._setDao(_getPreferencesAndPredecessors());
+    }
 
-    @Transaction
-    @Query("SELECT * FROM SearchablePreferencePOJO")
-    public abstract List<PreferenceAndChildren> getPreferencesAndChildren();
+    public List<PreferenceAndChildren> getPreferencesAndChildren() {
+        return daoSetter.__setDao(_getPreferencesAndChildren());
+    }
 
     @Query("DELETE FROM SearchablePreferencePOJO")
     public abstract void removeAll();
@@ -73,8 +83,41 @@ public abstract class SearchablePreferencePOJODAO {
     @Query("SELECT MAX(id) FROM SearchablePreferencePOJO")
     public abstract Optional<Integer> getMaxId();
 
+    @Insert
+    protected abstract void _persist(Collection<SearchablePreferencePOJO> searchablePreferencePOJOs);
+
     private static final String NEEDLE_PATTERN = "'%' || :needle || '%'";
 
     @Query("SELECT * FROM SearchablePreferencePOJO WHERE title LIKE " + NEEDLE_PATTERN + " OR summary LIKE " + NEEDLE_PATTERN + "OR searchableInfo LIKE " + NEEDLE_PATTERN)
-    protected abstract List<SearchablePreferencePOJO> searchWithinTitleSummarySearchableInfo(final Optional<String> needle);
+    protected abstract List<SearchablePreferencePOJO> _searchWithinTitleSummarySearchableInfo(final Optional<String> needle);
+
+    @Insert
+    protected abstract void _persist(SearchablePreferencePOJO... searchablePreferencePOJOs);
+
+    @Query("SELECT * FROM SearchablePreferencePOJO WHERE `key` = :key AND host = :host")
+    protected abstract Optional<SearchablePreferencePOJO> _findPreferenceByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
+
+    @Query("SELECT * FROM SearchablePreferencePOJO WHERE id = :id")
+    protected abstract Optional<SearchablePreferencePOJO> _findPreferenceById(final int id);
+
+    @Transaction
+    @Query("SELECT * FROM SearchablePreferencePOJO")
+    protected abstract List<PreferenceAndPredecessor> _getPreferencesAndPredecessors();
+
+    @Query("SELECT * FROM SearchablePreferencePOJO")
+    protected abstract List<SearchablePreferencePOJO> _loadAll();
+
+    @Transaction
+    @Query("SELECT * FROM SearchablePreferencePOJO")
+    protected abstract List<PreferenceAndChildren> _getPreferencesAndChildren();
+
+    @Delete
+    protected abstract void _remove(SearchablePreferencePOJO... preferences);
+
+    @Update
+    protected abstract void _update(SearchablePreferencePOJO... preferences);
+
+    private List<SearchablePreferencePOJO> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
+        return daoSetter.setDao(_searchWithinTitleSummarySearchableInfo(needle));
+    }
 }

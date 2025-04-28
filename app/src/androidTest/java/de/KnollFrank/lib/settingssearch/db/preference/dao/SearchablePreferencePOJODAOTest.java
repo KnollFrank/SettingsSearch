@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJOEquality.assertActualEqualsExpected;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -48,7 +49,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
         assertThat(preferenceFromDb.isPresent(), is(true));
 
         // And the preference was persisted correctly
-        new SearchablePreferencePOJOEquality(dao).assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+        assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     @Test
@@ -105,11 +106,11 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
         final SearchablePreferencePOJO preferenceFromDb = dao.findPreferenceById(preference.getId()).orElseThrow();
 
         // When
-        final SearchablePreferencePOJO predecessorFromDb = preferenceFromDb.getPredecessor(dao).orElseThrow();
+        final SearchablePreferencePOJO predecessorFromDb = preferenceFromDb.getPredecessor().orElseThrow();
 
         // Then
         assertThat(predecessorFromDb, is(predecessor));
-        assertThat(predecessorFromDb.getPredecessor(dao), is(Optional.empty()));
+        assertThat(predecessorFromDb.getPredecessor(), is(Optional.empty()));
     }
 
     @Test
@@ -136,13 +137,13 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
         final SearchablePreferencePOJO parentFromDb = dao.findPreferenceById(parent.getId()).orElseThrow();
 
         // When
-        final List<SearchablePreferencePOJO> childrenFromDb = parentFromDb.getChildren(dao);
+        final List<SearchablePreferencePOJO> childrenFromDb = parentFromDb.getChildren();
 
         // Then
         assertThat(childrenFromDb, contains(child));
 
         final SearchablePreferencePOJO childFromDb = Iterables.getOnlyElement(childrenFromDb);
-        assertThat(childFromDb.getChildren(dao), is(empty()));
+        assertThat(childFromDb.getChildren(), is(empty()));
     }
 
     @Test
@@ -192,7 +193,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
 
         // Then
         assertThat(preferenceFromDb.isPresent(), is(true));
-        new SearchablePreferencePOJOEquality(dao).assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+        assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     @Test

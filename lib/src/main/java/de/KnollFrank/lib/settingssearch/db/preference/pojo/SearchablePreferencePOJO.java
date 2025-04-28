@@ -26,6 +26,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePO
 @Entity
 public final class SearchablePreferencePOJO {
 
+    @Ignore
+    private Optional<SearchablePreferencePOJODAO> dao = Optional.empty();
+
     @PrimaryKey
     // FK-TODO: replace int with long?
     private final int id;
@@ -84,6 +87,10 @@ public final class SearchablePreferencePOJO {
         this.host = host;
         this.parentId = parentId;
         this.predecessorId = predecessorId;
+    }
+
+    public void setDao(final Optional<SearchablePreferencePOJODAO> dao) {
+        this.dao = dao;
     }
 
     public int getId() {
@@ -196,9 +203,11 @@ public final class SearchablePreferencePOJO {
 //        return getPreferencePathOfPredecessor().append(this);
 //    }
 
-    public List<SearchablePreferencePOJO> getChildren(final SearchablePreferencePOJODAO dao) {
+    public List<SearchablePreferencePOJO> getChildren() {
         // FK-TODO: refactor using intermediate map?
-        return dao
+        return this
+                .dao
+                .orElseThrow()
                 .getPreferencesAndChildren()
                 .stream()
                 .filter(preferenceAndChildren -> preferenceAndChildren.preference().equals(this))
@@ -206,9 +215,11 @@ public final class SearchablePreferencePOJO {
                 .collect(MoreCollectors.onlyElement());
     }
 
-    public Optional<SearchablePreferencePOJO> getPredecessor(final SearchablePreferencePOJODAO dao) {
+    public Optional<SearchablePreferencePOJO> getPredecessor() {
         // FK-TODO: refactor using intermediate map?
-        return dao
+        return this
+                .dao
+                .orElseThrow()
                 .getPreferencesAndPredecessors()
                 .stream()
                 .filter(preferenceAndPredecessor -> preferenceAndPredecessor.getPreference().equals(this))
