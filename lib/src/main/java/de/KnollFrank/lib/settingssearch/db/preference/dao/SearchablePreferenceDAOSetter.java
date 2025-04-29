@@ -7,17 +7,17 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-class SearchablePreferencePOJODAOSetter {
+class SearchablePreferenceDAOSetter {
 
     private final SearchablePreferencePOJODAO dao;
 
-    public SearchablePreferencePOJODAOSetter(final SearchablePreferencePOJODAO dao) {
+    public SearchablePreferenceDAOSetter(final SearchablePreferencePOJODAO dao) {
         this.dao = dao;
     }
 
-    public Optional<SearchablePreferencePOJO> setDao(final Optional<SearchablePreferencePOJO> searchablePreferencePOJO) {
+    public Optional<SearchablePreference> setDao(final Optional<SearchablePreference> searchablePreferencePOJO) {
         searchablePreferencePOJO.ifPresent(this::setDao);
         return searchablePreferencePOJO;
     }
@@ -32,24 +32,24 @@ class SearchablePreferencePOJODAOSetter {
         return preferenceAndChildren;
     }
 
-    public List<SearchablePreferencePOJO> setDao(final List<SearchablePreferencePOJO> searchablePreferencePOJOs) {
-        searchablePreferencePOJOs.forEach(this::setDao);
-        return searchablePreferencePOJOs;
+    public List<SearchablePreference> setDao(final List<SearchablePreference> searchablePreferences) {
+        searchablePreferences.forEach(this::setDao);
+        return searchablePreferences;
     }
 
-    public SearchablePreferencePOJO[] setDao(final SearchablePreferencePOJO[] searchablePreferencePOJOs) {
-        setDao(Arrays.asList(searchablePreferencePOJOs));
-        return searchablePreferencePOJOs;
+    public SearchablePreference[] setDao(final SearchablePreference[] searchablePreferences) {
+        setDao(Arrays.asList(searchablePreferences));
+        return searchablePreferences;
     }
 
-    public Collection<SearchablePreferencePOJO> setDao(final Collection<SearchablePreferencePOJO> searchablePreferencePOJOs) {
-        searchablePreferencePOJOs.forEach(this::setDao);
-        return searchablePreferencePOJOs;
+    public Collection<SearchablePreference> setDao(final Collection<SearchablePreference> searchablePreferences) {
+        searchablePreferences.forEach(this::setDao);
+        return searchablePreferences;
     }
 
-    private SearchablePreferencePOJO setDao(final SearchablePreferencePOJO searchablePreferencePOJO) {
-        searchablePreferencePOJO.setDao(Optional.of(dao));
-        return searchablePreferencePOJO;
+    private SearchablePreference setDao(final SearchablePreference searchablePreference) {
+        searchablePreference.setDao(Optional.of(dao));
+        return searchablePreference;
     }
 
     private PreferenceAndPredecessor setDao(final PreferenceAndPredecessor preferenceAndPredecessor) {

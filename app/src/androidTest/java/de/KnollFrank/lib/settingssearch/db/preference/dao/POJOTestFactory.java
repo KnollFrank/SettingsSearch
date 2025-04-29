@@ -8,13 +8,13 @@ import com.codepoetics.ambivalence.Either;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: DRY with de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory
 public class POJOTestFactory {
 
-    public static SearchablePreferencePOJO createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreferencePOJO(
             final int id,
             final Optional<String> title,
             final Optional<String> summary,
@@ -34,7 +34,7 @@ public class POJOTestFactory {
                 predecessorId);
     }
 
-    public static SearchablePreferencePOJO createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreferencePOJO(
             final int id,
             final Optional<String> title,
             final Optional<String> summary,
@@ -44,7 +44,7 @@ public class POJOTestFactory {
             final Class<? extends PreferenceFragmentCompat> host,
             final Optional<Integer> parentId,
             final Optional<Integer> predecessorId) {
-        return new SearchablePreferencePOJO(
+        return new SearchablePreference(
                 id,
                 "some key",
                 iconResourceIdOrIconPixelData,

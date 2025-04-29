@@ -8,8 +8,12 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import com.codepoetics.ambivalence.Either;
+import com.google.common.collect.MoreCollectors;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,34 +23,39 @@ import java.util.function.Supplier;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.Exclude;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
 
+@Entity
 public final class SearchablePreference {
 
+    @Ignore
+    private Optional<SearchablePreferencePOJODAO> dao = Optional.empty();
+
+    @PrimaryKey
+    // FK-TODO: replace int with long?
     private final int id;
     private final String key;
-    private final Either<Integer, String> iconResourceIdOrIconPixelData;
-    @Exclude
-    private Optional<Drawable> iconCache;
+    private final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData;
+    @Ignore
+    private Optional<Optional<Drawable>> iconCache = Optional.empty();
     private final @LayoutRes int layoutResId;
-    private String summary;
-    @Exclude
+    private Optional<String> summary;
+    @Ignore
     private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
-    private final String title;
-    @Exclude
+    private final Optional<String> title;
+    @Ignore
     private Supplier<Optional<CharSequence>> highlightedTitleProvider;
     private final @LayoutRes int widgetLayoutResId;
-    private final String fragment;
-    private final String classNameOfReferencedActivity;
+    private final Optional<String> fragment;
+    private final Optional<String> classNameOfReferencedActivity;
     private final boolean visible;
-    private final String searchableInfo;
-    @Exclude
+    private final Optional<String> searchableInfo;
+    @Ignore
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
     private final Bundle extras;
     private final Class<? extends PreferenceFragmentCompat> host;
-    private final List<SearchablePreference> children;
-    @Exclude
-    private final Optional<SearchablePreference> predecessor;
+    private final Optional<Integer> parentId;
+    private final Optional<Integer> predecessorId;
 
     public SearchablePreference(
             final int id,
@@ -62,31 +71,31 @@ public final class SearchablePreference {
             final Optional<String> searchableInfo,
             final Bundle extras,
             final Class<? extends PreferenceFragmentCompat> host,
-            final List<SearchablePreference> children,
-            final Optional<SearchablePreference> predecessor) {
+            final Optional<Integer> parentId,
+            final Optional<Integer> predecessorId) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
-        this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData.orElse(null);
+        this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
         this.layoutResId = layoutResId;
-        this.summary = summary.orElse(null);
-        this.title = title.orElse(null);
+        this.summary = summary;
+        this.title = title;
         this.widgetLayoutResId = widgetLayoutResId;
-        this.fragment = fragment.orElse(null);
-        this.classNameOfReferencedActivity = classNameOfReferencedActivity.orElse(null);
+        this.fragment = fragment;
+        this.classNameOfReferencedActivity = classNameOfReferencedActivity;
         this.visible = visible;
-        this.searchableInfo = searchableInfo.orElse(null);
+        this.searchableInfo = searchableInfo;
         this.extras = extras;
         this.host = host;
-        this.children = children;
-        this.predecessor = predecessor;
+        this.parentId = parentId;
+        this.predecessorId = predecessorId;
+    }
+
+    public void setDao(final Optional<SearchablePreferencePOJODAO> dao) {
+        this.dao = dao;
     }
 
     public int getId() {
         return id;
-    }
-
-    public List<SearchablePreference> getChildren() {
-        return children;
     }
 
     public String getKey() {
@@ -94,26 +103,26 @@ public final class SearchablePreference {
     }
 
     public Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData() {
-        return Optional.ofNullable(iconResourceIdOrIconPixelData);
+        return iconResourceIdOrIconPixelData;
     }
 
     public Optional<Drawable> getIcon(final Context context) {
-        if (iconCache == null) {
-            iconCache = _getIcon(context);
+        if (iconCache.isEmpty()) {
+            iconCache = Optional.of(_getIcon(context));
         }
-        return iconCache;
+        return iconCache.orElseThrow();
     }
 
     public @LayoutRes int getLayoutResId() {
         return layoutResId;
     }
 
-    public void setSummary(final String summary) {
+    public void setSummary(final Optional<String> summary) {
         this.summary = summary;
     }
 
     public Optional<String> getSummary() {
-        return Optional.ofNullable(summary);
+        return summary;
     }
 
     public void setHighlightedSummaryProvider(final Supplier<Optional<CharSequence>> highlightedSummaryProvider) {
@@ -128,7 +137,7 @@ public final class SearchablePreference {
     }
 
     public Optional<String> getTitle() {
-        return Optional.ofNullable(title);
+        return title;
     }
 
     public void setHighlightedTitleProvider(final Supplier<Optional<CharSequence>> highlightedTitleProvider) {
@@ -143,7 +152,7 @@ public final class SearchablePreference {
     }
 
     public Optional<String> getSearchableInfo() {
-        return Optional.ofNullable(searchableInfo);
+        return searchableInfo;
     }
 
     public void setHighlightedSearchableInfoProvider(final Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider) {
@@ -166,11 +175,11 @@ public final class SearchablePreference {
     }
 
     public Optional<String> getFragment() {
-        return Optional.ofNullable(fragment);
+        return fragment;
     }
 
     public Optional<String> getClassNameOfReferencedActivity() {
-        return Optional.ofNullable(classNameOfReferencedActivity);
+        return classNameOfReferencedActivity;
     }
 
     public Optional<Class<? extends Activity>> getClassOfReferencedActivity(final Context context) {
@@ -187,16 +196,45 @@ public final class SearchablePreference {
         return extras;
     }
 
+    public Class<? extends PreferenceFragmentCompat> getHost() {
+        return host;
+    }
+
     public PreferencePath getPreferencePath() {
         return getPreferencePathOfPredecessor().append(this);
     }
 
-    public Optional<SearchablePreference> getPredecessor() {
-        return predecessor;
+    public List<SearchablePreference> getChildren() {
+        // FK-TODO: refactor using intermediate map?
+        return this
+                .dao
+                .orElseThrow()
+                .getPreferencesAndChildren()
+                .stream()
+                .filter(preferenceAndChildren -> preferenceAndChildren.preference().equals(this))
+                .map(PreferenceAndChildren::children)
+                .collect(MoreCollectors.onlyElement());
     }
 
-    public Class<? extends PreferenceFragmentCompat> getHost() {
-        return host;
+    public Optional<SearchablePreference> getPredecessor() {
+        // FK-TODO: refactor using intermediate map?
+        return this
+                .dao
+                .orElseThrow()
+                .getPreferencesAndPredecessors()
+                .stream()
+                .filter(preferenceAndPredecessor -> preferenceAndPredecessor.getPreference().equals(this))
+                .map(PreferenceAndPredecessor::getPredecessor)
+                .collect(MoreCollectors.toOptional())
+                .orElse(Optional.empty());
+    }
+
+    public Optional<Integer> getParentId() {
+        return parentId;
+    }
+
+    public Optional<Integer> getPredecessorId() {
+        return predecessorId;
     }
 
     @Override
@@ -223,9 +261,9 @@ public final class SearchablePreference {
                 ", fragment='" + fragment + '\'' +
                 ", visible=" + visible +
                 ", extras=" + extras +
-                ", children=" + children +
                 ", host=" + host +
-                ", predecessor=" + predecessor +
+                ", parentId=" + parentId +
+                ", predecessorId=" + predecessorId +
                 '}';
     }
 

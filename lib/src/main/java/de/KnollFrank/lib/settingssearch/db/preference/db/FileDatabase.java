@@ -60,7 +60,7 @@ class FileDatabase implements Database {
     @Override
     public void updateSummary(final int idOfPreference, final String newSummaryOfPreference) {
         final Set<SearchablePreference> preferences = loadAll();
-        findPreferenceById(preferences, idOfPreference).orElseThrow().setSummary(newSummaryOfPreference);
+        findPreferenceById(preferences, idOfPreference).orElseThrow().setSummary(Optional.of(newSummaryOfPreference));
         initializeWith(preferences);
     }
 

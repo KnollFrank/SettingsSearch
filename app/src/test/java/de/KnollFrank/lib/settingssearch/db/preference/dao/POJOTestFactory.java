@@ -6,7 +6,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.codepoetics.ambivalence.Either;
 
-import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
@@ -35,8 +34,8 @@ public class POJOTestFactory {
                 Optional.empty(),
                 new Bundle(),
                 host,
-                List.of(),
-                predecessor);
+                Optional.empty(),
+                predecessor.map(SearchablePreference::getId));
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -78,8 +77,8 @@ public class POJOTestFactory {
                 searchableInfo,
                 extras,
                 host,
-                List.of(),
-                predecessor);
+                Optional.empty(),
+                predecessor.map(SearchablePreference::getId));
     }
 
     public static Bundle createBundle(final String key, final String value) {

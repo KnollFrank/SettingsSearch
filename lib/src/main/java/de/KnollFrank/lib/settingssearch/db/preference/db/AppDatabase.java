@@ -13,7 +13,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseStateDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ClassConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
@@ -21,7 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIn
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 
 @Database(
-        entities = {SearchablePreferencePOJO.class, SearchDatabaseState.class},
+        entities = {SearchablePreference.class, SearchDatabaseState.class},
         version = 1,
         exportSchema = false)
 @TypeConverters(

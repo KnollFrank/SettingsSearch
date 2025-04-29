@@ -53,7 +53,7 @@ public class InMemoryDatabase implements Database {
         this
                 .findPreferenceById(idOfPreference)
                 .orElseThrow()
-                .setSummary(newSummaryOfPreference);
+                .setSummary(Optional.of(newSummaryOfPreference));
     }
 
     @Override

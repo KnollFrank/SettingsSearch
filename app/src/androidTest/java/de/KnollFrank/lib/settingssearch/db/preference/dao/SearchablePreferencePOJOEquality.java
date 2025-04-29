@@ -6,11 +6,11 @@ import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleEquality.
 
 import java.util.List;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class SearchablePreferencePOJOEquality {
 
-    public static void assertActualEqualsExpected(final SearchablePreferencePOJO actual, final SearchablePreferencePOJO expected) {
+    public static void assertActualEqualsExpected(final SearchablePreference actual, final SearchablePreference expected) {
         assertThat(actual.getId(), is(expected.getId()));
         assertThat(actual.getKey(), is(expected.getKey()));
         assertThat(actual.getIconResourceIdOrIconPixelData(), is(expected.getIconResourceIdOrIconPixelData()));
@@ -27,7 +27,7 @@ public class SearchablePreferencePOJOEquality {
         assertThat(actual.getPredecessor(), is(expected.getPredecessor()));
     }
 
-    public static void assertActualListEqualsExpectedList(final List<SearchablePreferencePOJO> actuals, final List<SearchablePreferencePOJO> expecteds) {
+    public static void assertActualListEqualsExpectedList(final List<SearchablePreference> actuals, final List<SearchablePreference> expecteds) {
         assertThat(actuals.size(), is(expecteds.size()));
         for (int i = 0; i < actuals.size(); i++) {
             assertActualEqualsExpected(actuals.get(i), expecteds.get(i));

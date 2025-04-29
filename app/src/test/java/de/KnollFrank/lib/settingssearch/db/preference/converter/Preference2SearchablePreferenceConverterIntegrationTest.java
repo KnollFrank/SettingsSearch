@@ -69,7 +69,7 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
                                 (_preference, _hostOfPreference) -> Optional.empty()),
                         IdGeneratorFactory.createIdGeneratorStartingAt1());
         return preference2SearchablePreferenceConverter
-                .convert2POJO(preference, hostOfPreference, Optional.empty())
+                .convert2POJO(preference, hostOfPreference, Optional.empty(), Optional.empty())
                 .searchablePreference();
     }
 

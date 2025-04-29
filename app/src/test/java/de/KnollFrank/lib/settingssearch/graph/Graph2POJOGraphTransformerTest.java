@@ -152,7 +152,7 @@ public class Graph2POJOGraphTransformerTest {
                         Optional.empty(),
                         new Bundle(),
                         host,
-                        List.of(),
+                        Optional.empty(),
                         Optional.empty());
         return DefaultDirectedGraph
                 .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
@@ -184,39 +184,39 @@ public class Graph2POJOGraphTransformerTest {
                                 Optional.empty(),
                                 new Bundle(),
                                 host,
-                                List.of(
-                                        new SearchablePreference(
-                                                2,
-                                                "some child key 1",
-                                                Optional.empty(),
-                                                16,
-                                                Optional.empty(),
-                                                Optional.empty(),
-                                                0,
-                                                Optional.empty(),
-                                                Optional.empty(),
-                                                true,
-                                                Optional.empty(),
-                                                new Bundle(),
-                                                host,
-                                                List.of(),
-                                                Optional.empty()),
-                                        new SearchablePreference(
-                                                3,
-                                                "some child key 2",
-                                                Optional.empty(),
-                                                16,
-                                                Optional.empty(),
-                                                Optional.empty(),
-                                                0,
-                                                Optional.empty(),
-                                                Optional.empty(),
-                                                true,
-                                                Optional.empty(),
-                                                new Bundle(),
-                                                host,
-                                                List.of(),
-                                                Optional.empty())),
+                                Optional.empty(),
+                                Optional.empty()),
+                        new SearchablePreference(
+                                2,
+                                "some child key 1",
+                                Optional.empty(),
+                                16,
+                                Optional.empty(),
+                                Optional.empty(),
+                                0,
+                                Optional.empty(),
+                                Optional.empty(),
+                                true,
+                                Optional.empty(),
+                                new Bundle(),
+                                host,
+                                Optional.of(1),
+                                Optional.empty()),
+                        new SearchablePreference(
+                                3,
+                                "some child key 2",
+                                Optional.empty(),
+                                16,
+                                Optional.empty(),
+                                Optional.empty(),
+                                0,
+                                Optional.empty(),
+                                Optional.empty(),
+                                true,
+                                Optional.empty(),
+                                new Bundle(),
+                                host,
+                                Optional.of(1),
                                 Optional.empty()),
                         preferenceConnectingSrc2Dst));
     }
@@ -241,8 +241,8 @@ public class Graph2POJOGraphTransformerTest {
                                 Optional.empty(),
                                 new Bundle(),
                                 TestPreferenceFragment.class,
-                                List.of(),
-                                Optional.of(predecessor))));
+                                Optional.empty(),
+                                Optional.of(predecessor.getId()))));
     }
 
     private static PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(

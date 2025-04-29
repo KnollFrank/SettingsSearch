@@ -66,6 +66,7 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
                 .convert2POJO(
                         preference,
                         this,
+                        Optional.empty(),
                         // FK-TODO: generalize because too many hard coded values
                         Optional.of(
                                 searchablePreferenceDAO

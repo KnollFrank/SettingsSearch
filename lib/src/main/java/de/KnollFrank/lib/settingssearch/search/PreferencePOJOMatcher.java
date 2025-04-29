@@ -6,12 +6,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Strings;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferencePOJOMatcher {
 
     public static Optional<SearchablePreferencePOJOMatch> getPreferenceMatch(
-            final SearchablePreferencePOJO haystack,
+            final SearchablePreference haystack,
             final String needle) {
         final Set<IndexRange> titleMatches = getMatches(haystack.getTitle(), needle);
         final Set<IndexRange> summaryMatches = getMatches(haystack.getSummary(), needle);
