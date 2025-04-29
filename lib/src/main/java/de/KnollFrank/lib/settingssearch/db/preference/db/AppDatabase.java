@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseStateDAO
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferencePOJO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ClassConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
@@ -28,7 +29,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalSt
                 ClassConverter.class,
                 OptionalEitherIntegerOrStringConverter.class,
                 OptionalStringConverter.class,
-                OptionalIntegerConverter.class
+                OptionalIntegerConverter.class,
+                BundleConverter.class
         })
 public abstract class AppDatabase extends RoomDatabase {
 

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TestHelper {
+public class BundleEquality {
 
     // adapted from https://stackoverflow.com/a/13238729
     public static boolean equalBundles(final Bundle one, final Bundle two) {

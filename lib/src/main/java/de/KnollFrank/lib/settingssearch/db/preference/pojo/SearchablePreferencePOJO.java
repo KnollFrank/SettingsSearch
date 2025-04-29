@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -50,8 +51,7 @@ public final class SearchablePreferencePOJO {
     private final Optional<String> searchableInfo;
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
-    // FK-TODO: ignore temporarily
-    // private final Bundle extras;
+    private final Bundle extras;
     private final Class<? extends PreferenceFragmentCompat> host;
     private final Optional<Integer> parentId;
     private final Optional<Integer> predecessorId;
@@ -68,7 +68,7 @@ public final class SearchablePreferencePOJO {
             final Optional<String> classNameOfReferencedActivity,
             final boolean visible,
             final Optional<String> searchableInfo,
-            // final Bundle extras,
+            final Bundle extras,
             final Class<? extends PreferenceFragmentCompat> host,
             final Optional<Integer> parentId,
             final Optional<Integer> predecessorId) {
@@ -83,7 +83,7 @@ public final class SearchablePreferencePOJO {
         this.classNameOfReferencedActivity = classNameOfReferencedActivity;
         this.visible = visible;
         this.searchableInfo = searchableInfo;
-        // this.extras = extras;
+        this.extras = extras;
         this.host = host;
         this.parentId = parentId;
         this.predecessorId = predecessorId;
@@ -191,9 +191,9 @@ public final class SearchablePreferencePOJO {
         return visible;
     }
 
-//    public Bundle getExtras() {
-//        return extras;
-//    }
+    public Bundle getExtras() {
+        return extras;
+    }
 
     public Class<? extends PreferenceFragmentCompat> getHost() {
         return host;

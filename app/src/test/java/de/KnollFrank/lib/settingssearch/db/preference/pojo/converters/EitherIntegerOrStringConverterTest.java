@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.pojo;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -6,8 +6,6 @@ import static org.hamcrest.Matchers.is;
 import com.codepoetics.ambivalence.Either;
 
 import org.junit.Test;
-
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.EitherIntegerOrStringConverter;
 
 public class EitherIntegerOrStringConverterTest {
 

@@ -56,7 +56,7 @@ public class POJOTestFactory {
                 Optional.empty(),
                 true,
                 searchableInfo,
-                // extras,
+                extras,
                 host,
                 parentId,
                 predecessorId);

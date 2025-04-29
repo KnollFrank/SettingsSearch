@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleEquality.equalBundles;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class SearchablePreferencePOJOEquality {
         assertThat(actual.isVisible(), is(expected.isVisible()));
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
         assertThat(actual.getHost(), is(expected.getHost()));
-        // assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
+        assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
         assertActualListEqualsExpectedList(actual.getChildren(), expected.getChildren());
         assertThat(actual.getPredecessor(), is(expected.getPredecessor()));
     }

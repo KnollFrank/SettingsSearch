@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.test.TestHelper.equalBundles;
+import static de.KnollFrank.lib.settingssearch.test.BundleEquality.equalBundles;
 
 import java.util.List;
 
