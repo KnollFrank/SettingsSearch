@@ -13,7 +13,6 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.codepoetics.ambivalence.Either;
-import com.google.common.collect.MoreCollectors;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +21,7 @@ import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.ChildrenAndPredecessorsProvider;
 
@@ -205,28 +205,11 @@ public final class SearchablePreference {
     }
 
     public List<SearchablePreference> getChildren() {
-        // FK-TODO: refactor using intermediate map?
-        return this
-                .dao
-                .orElseThrow()
-                .getPreferencesAndChildren()
-                .stream()
-                .filter(preferenceAndChildren -> preferenceAndChildren.preference().equals(this))
-                .map(PreferenceAndChildren::children)
-                .collect(MoreCollectors.onlyElement());
+        return dao.orElseThrow().getChildrenByPreference().get(this);
     }
 
     public Optional<SearchablePreference> getPredecessor() {
-        // FK-TODO: refactor using intermediate map?
-        return this
-                .dao
-                .orElseThrow()
-                .getPreferencesAndPredecessors()
-                .stream()
-                .filter(preferenceAndPredecessor -> preferenceAndPredecessor.getPreference().equals(this))
-                .map(PreferenceAndPredecessor::getPredecessor)
-                .collect(MoreCollectors.toOptional())
-                .orElse(Optional.empty());
+        return Maps.get(dao.orElseThrow().getPredecessorByPreference(), this);
     }
 
     public Optional<Integer> getParentId() {

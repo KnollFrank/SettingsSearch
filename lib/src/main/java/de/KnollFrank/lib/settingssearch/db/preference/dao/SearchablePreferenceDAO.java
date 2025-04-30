@@ -12,6 +12,7 @@ import androidx.room.Update;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,8 +28,8 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorsProvider {
 
     private final SearchablePreferenceDAOSetter daoSetter = new SearchablePreferenceDAOSetter(this);
-    private Optional<List<PreferenceAndPredecessor>> preferencesAndPredecessors = Optional.empty();
-    private Optional<List<PreferenceAndChildren>> preferencesAndChildren = Optional.empty();
+    private Optional<Map<SearchablePreference, SearchablePreference>> predecessorByPreference = Optional.empty();
+    private Optional<Map<SearchablePreference, List<SearchablePreference>>> childrenByPreference = Optional.empty();
 
     public List<SearchablePreference> loadAll() {
         return daoSetter.setDao(_loadAll());
@@ -75,19 +76,19 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessors
     }
 
     @Override
-    public List<PreferenceAndPredecessor> getPreferencesAndPredecessors() {
-        if (preferencesAndPredecessors.isEmpty()) {
-            preferencesAndPredecessors = Optional.of(daoSetter._setDao(_getPreferencesAndPredecessors()));
+    public Map<SearchablePreference, SearchablePreference> getPredecessorByPreference() {
+        if (predecessorByPreference.isEmpty()) {
+            predecessorByPreference = Optional.of(_getPredecessorByPreference(daoSetter._setDao(_getPreferencesAndPredecessors())));
         }
-        return preferencesAndPredecessors.orElseThrow();
+        return predecessorByPreference.orElseThrow();
     }
 
     @Override
-    public List<PreferenceAndChildren> getPreferencesAndChildren() {
-        if (preferencesAndChildren.isEmpty()) {
-            preferencesAndChildren = Optional.of(daoSetter.__setDao(_getPreferencesAndChildren()));
+    public Map<SearchablePreference, List<SearchablePreference>> getChildrenByPreference() {
+        if (childrenByPreference.isEmpty()) {
+            childrenByPreference = Optional.of(_getChildrenByPreference(daoSetter.__setDao(_getPreferencesAndChildren())));
         }
-        return preferencesAndChildren.orElseThrow();
+        return childrenByPreference.orElseThrow();
     }
 
     public void removeAll() {
@@ -139,8 +140,27 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessors
         return daoSetter.setDao(_searchWithinTitleSummarySearchableInfo(needle));
     }
 
+    private Map<SearchablePreference, SearchablePreference> _getPredecessorByPreference(final List<PreferenceAndPredecessor> preferencesAndPredecessors) {
+        return preferencesAndPredecessors
+                .stream()
+                .filter(preferenceAndPredecessor -> preferenceAndPredecessor.getPredecessor().isPresent())
+                .collect(
+                        Collectors.toMap(
+                                PreferenceAndPredecessor::getPreference,
+                                preferenceAndPredecessor -> preferenceAndPredecessor.getPredecessor().orElseThrow()));
+    }
+
+    private Map<SearchablePreference, List<SearchablePreference>> _getChildrenByPreference(final List<PreferenceAndChildren> preferencesAndChildren) {
+        return preferencesAndChildren
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                PreferenceAndChildren::preference,
+                                PreferenceAndChildren::children));
+    }
+
     private void invalidateCaches() {
-        preferencesAndPredecessors = Optional.empty();
-        preferencesAndChildren = Optional.empty();
+        predecessorByPreference = Optional.empty();
+        childrenByPreference = Optional.empty();
     }
 }

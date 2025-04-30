@@ -5,6 +5,7 @@ import androidx.room.Relation;
 
 import java.util.List;
 
+// FK-TODO: make package private
 public record PreferenceAndChildren(
 
         @Embedded SearchablePreference preference,

@@ -1,13 +1,13 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import java.util.List;
+import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public interface ChildrenAndPredecessorsProvider {
 
-    List<PreferenceAndChildren> getPreferencesAndChildren();
+    Map<SearchablePreference, List<SearchablePreference>> getChildrenByPreference();
 
-    List<PreferenceAndPredecessor> getPreferencesAndPredecessors();
+    Map<SearchablePreference, SearchablePreference> getPredecessorByPreference();
 }
