@@ -28,6 +28,7 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessors
 
     private final SearchablePreferenceDAOSetter daoSetter = new SearchablePreferenceDAOSetter(this);
     private Optional<List<PreferenceAndPredecessor>> preferencesAndPredecessors = Optional.empty();
+    private Optional<List<PreferenceAndChildren>> preferencesAndChildren = Optional.empty();
 
     public List<SearchablePreference> loadAll() {
         return daoSetter.setDao(_loadAll());
@@ -55,22 +56,22 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessors
 
     public void persist(final SearchablePreference... searchablePreferences) {
         _persist(daoSetter.setDao(searchablePreferences));
-        preferencesAndPredecessors = Optional.empty();
+        invalidateCaches();
     }
 
     public void persist(final Collection<SearchablePreference> searchablePreferences) {
         _persist(daoSetter.setDao(searchablePreferences));
-        preferencesAndPredecessors = Optional.empty();
+        invalidateCaches();
     }
 
     public void remove(final SearchablePreference... preferences) {
         _remove(daoSetter.setDao(preferences));
-        preferencesAndPredecessors = Optional.empty();
+        invalidateCaches();
     }
 
     public void update(final SearchablePreference... preferences) {
         _update(daoSetter.setDao(preferences));
-        preferencesAndPredecessors = Optional.empty();
+        invalidateCaches();
     }
 
     @Override
@@ -83,12 +84,15 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessors
 
     @Override
     public List<PreferenceAndChildren> getPreferencesAndChildren() {
-        return daoSetter.__setDao(_getPreferencesAndChildren());
+        if (preferencesAndChildren.isEmpty()) {
+            preferencesAndChildren = Optional.of(daoSetter.__setDao(_getPreferencesAndChildren()));
+        }
+        return preferencesAndChildren.orElseThrow();
     }
 
     public void removeAll() {
         _removeAll();
-        preferencesAndPredecessors = Optional.empty();
+        invalidateCaches();
     }
 
     @Query("DELETE FROM SearchablePreference")
@@ -133,5 +137,10 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessors
 
     private List<SearchablePreference> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
         return daoSetter.setDao(_searchWithinTitleSummarySearchableInfo(needle));
+    }
+
+    private void invalidateCaches() {
+        preferencesAndPredecessors = Optional.empty();
+        preferencesAndChildren = Optional.empty();
     }
 }
