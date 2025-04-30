@@ -5,6 +5,8 @@ import org.jgrapht.Graph;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.Sets;
+
 public class MergedPreferenceScreenDataFactory {
 
     public static Set<SearchablePreference> getPreferences(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
@@ -12,9 +14,10 @@ public class MergedPreferenceScreenDataFactory {
     }
 
     public static Set<SearchablePreference> getPreferences(final Set<SearchablePreferenceScreen> preferenceScreens) {
-        return preferenceScreens
-                .stream()
-                .flatMap(preferenceScreen -> preferenceScreen.preferences().stream())
-                .collect(Collectors.toSet());
+        return Sets.union(
+                preferenceScreens
+                        .stream()
+                        .map(SearchablePreferenceScreen::allPreferences)
+                        .collect(Collectors.toSet()));
     }
 }

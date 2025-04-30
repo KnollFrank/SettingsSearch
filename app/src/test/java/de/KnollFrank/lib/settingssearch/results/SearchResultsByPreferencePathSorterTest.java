@@ -2,7 +2,8 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.copy;
+import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnPreferences;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.copyPreferenceAndSetPredecessor;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createSearchablePreferencePOJO;
 
 import org.junit.Test;
@@ -12,13 +13,15 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.search.AppDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchResultsByPreferencePathSorterTest {
+public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
 
     @Test
     public void shouldSortSearchResultsByPreferencePath() {
@@ -35,7 +38,7 @@ public class SearchResultsByPreferencePathSorterTest {
                         SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
                         Optional.empty());
 
-        final SearchablePreference defaultSpeedOfCar = copy(defaultSpeed, Optional.of(car));
+        final SearchablePreference defaultSpeedOfCar = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(car));
 
         final SearchablePreference walk =
                 createSearchablePreferencePOJO(
@@ -43,13 +46,14 @@ public class SearchResultsByPreferencePathSorterTest {
                         SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
                         Optional.empty());
 
-        final SearchablePreference defaultSpeedOfWalk = copy(defaultSpeed, Optional.of(walk));
+        final SearchablePreference defaultSpeedOfWalk = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(walk));
 
         final Collection<SearchablePreference> searchResults =
-                List.of(
+                Set.of(
                         defaultSpeedOfWalk,
                         defaultSpeed,
                         defaultSpeedOfCar);
+        makeGetPreferencePathWorkOnPreferences(searchResults, appDatabase);
         final SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
 
         // When

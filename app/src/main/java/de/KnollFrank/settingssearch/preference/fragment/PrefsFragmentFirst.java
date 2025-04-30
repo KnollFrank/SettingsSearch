@@ -28,6 +28,7 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDataba
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
@@ -82,7 +83,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private void addPreferenceToP1() {
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
                         final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
-                        searchablePreferenceDAO.persistPreference(
+                        searchablePreferenceDAO.persist(
                                 InstantiateAndInitializeFragmentFactory
                                         .createInstantiateAndInitializeFragment(
                                                 searchDatabaseConfig.fragmentFactory,
@@ -97,18 +98,21 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                                         searchDatabaseConfig,
                                                         PreferenceDialogsFactory.createPreferenceDialogs(requireActivity(), FRAGMENT_CONTAINER_VIEW_ID),
-                                                        IdGeneratorFactory.createIdGeneratorStartingAt(searchablePreferenceDAO.getUnusedId()))));
+                                                        IdGeneratorFactory.createIdGeneratorStartingAt(
+                                                                searchablePreferenceDAO
+                                                                        .getMaxId()
+                                                                        .map(maxId -> maxId + 1)
+                                                                        .orElse(0)))));
                     }
 
                     private void removePreferenceFromP1() {
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
-                        searchablePreferenceDAO.removePreference(
+                        searchablePreferenceDAO.remove(
                                 searchablePreferenceDAO
                                         .findPreferenceByKeyAndHost(
                                                 ADDITIONAL_PREFERENCE_KEY,
                                                 PreferenceFragmentWithSinglePreference.class)
-                                        .orElseThrow()
-                                        .getId());
+                                        .orElseThrow());
                     }
                 });
         return checkBoxPreference;
@@ -129,14 +133,14 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private void setSummary(final Preference preference, final String summary) {
                         preference.setSummary(summary);
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
-                        searchablePreferenceDAO.updateSummary(
+                        final SearchablePreference searchablePreference =
                                 searchablePreferenceDAO
                                         .findPreferenceByKeyAndHost(
                                                 preference.getKey(),
                                                 PrefsFragmentFirst.this.getClass())
-                                        .orElseThrow()
-                                        .getId(),
-                                summary);
+                                        .orElseThrow();
+                        searchablePreference.setSummary(Optional.of(summary));
+                        searchablePreferenceDAO.update(searchablePreference);
                     }
                 });
     }

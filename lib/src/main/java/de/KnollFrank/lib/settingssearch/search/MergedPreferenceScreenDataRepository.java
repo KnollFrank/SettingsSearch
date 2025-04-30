@@ -15,9 +15,8 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDataba
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.db.FileDatabaseFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -55,19 +54,14 @@ public class MergedPreferenceScreenDataRepository {
 
     public SearchablePreferenceDAO getSearchDatabaseFilledWithPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
-            final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO(locale);
-            if (!searchablePreferenceDAO.isDatabaseInitialized()) {
+            final AppDatabase appDatabase = AppDatabase.getInstance(context, locale);
+            final SearchablePreferenceDAO searchablePreferenceDAO = appDatabase.searchablePreferenceDAO();
+            if (!appDatabase.searchDatabaseStateDAO().isSearchDatabaseInitialized()) {
                 computeAndPersistPreferences(searchablePreferenceDAO);
+                appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(true);
             }
             return searchablePreferenceDAO;
         }
-    }
-
-    private SearchablePreferenceDAO getSearchablePreferenceDAO(final Locale locale) {
-        final FileDatabaseFactory fileDatabaseFactory =
-                new FileDatabaseFactory(
-                        new SearchDatabaseDirectoryIO(context));
-        return new SearchablePreferenceDAO(fileDatabaseFactory.createFileDatabase(locale));
     }
 
     private void computeAndPersistPreferences(final SearchablePreferenceDAO searchablePreferenceDAO) {

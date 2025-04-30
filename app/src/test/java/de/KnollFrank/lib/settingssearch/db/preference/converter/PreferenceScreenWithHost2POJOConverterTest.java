@@ -18,6 +18,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
@@ -123,27 +124,30 @@ public class PreferenceScreenWithHost2POJOConverterTest {
             final @LayoutRes int layoutResIdOfEachChild,
 
             final Class<? extends PreferenceFragmentCompat> host) {
+        final SearchablePreference parent =
+                new SearchablePreference(
+                        1,
+                        parentKey,
+                        Optional.empty(),
+                        layoutResIdOfParent,
+                        Optional.empty(),
+                        Optional.empty(),
+                        0,
+                        Optional.empty(),
+                        Optional.empty(),
+                        true,
+                        Optional.empty(),
+                        new Bundle(),
+                        host,
+                        Optional.empty(),
+                        Optional.empty());
         return new SearchablePreferenceScreen(
                 id,
                 "screen title",
                 "screen summary",
-                List.of(
-                        new SearchablePreference(
-                                1,
-                                parentKey,
-                                Optional.empty(),
-                                layoutResIdOfParent,
-                                Optional.empty(),
-                                Optional.empty(),
-                                0,
-                                Optional.empty(),
-                                Optional.empty(),
-                                true,
-                                Optional.empty(),
-                                new Bundle(),
-                                host,
-                                Optional.empty(),
-                                Optional.empty()),
+                List.of(parent),
+                Set.of(
+                        parent,
                         new SearchablePreference(
                                 2,
                                 keyOfChild1,

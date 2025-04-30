@@ -87,8 +87,8 @@ public class POJOTestFactory {
         return bundle;
     }
 
-    public static SearchablePreference copy(final SearchablePreference preference,
-                                            final Optional<SearchablePreference> predecessor) {
+    public static SearchablePreference copyPreferenceAndSetPredecessor(final SearchablePreference preference,
+                                                                       final Optional<SearchablePreference> predecessor) {
         return createSearchablePreferencePOJO(
                 preference.getTitle().orElseThrow(),
                 preference.getHost(),

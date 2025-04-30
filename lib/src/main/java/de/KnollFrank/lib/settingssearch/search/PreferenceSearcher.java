@@ -18,6 +18,6 @@ class PreferenceSearcher {
     }
 
     public Set<PreferenceMatch> searchFor(final String needle) {
-        return searchablePreferenceDAO.searchFor(needle, includePreferenceInSearchResultsPredicate);
+        return searchablePreferenceDAO.searchWithinTitleSummarySearchableInfo(needle, includePreferenceInSearchResultsPredicate);
     }
 }

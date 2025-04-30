@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.common;
 
 import android.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,9 +27,7 @@ public class Lists {
     }
 
     public static <T> List<T> reverse(final List<T> ts) {
-        final List<T> tsReversed = new ArrayList<>(ts);
-        Collections.reverse(tsReversed);
-        return tsReversed;
+        return com.google.common.collect.Lists.reverse(ts);
     }
 
     // adapted from https://stackoverflow.com/questions/31963297/how-to-zip-two-java-lists

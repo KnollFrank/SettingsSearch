@@ -20,18 +20,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.provider.IncludeSearchablePreferencePOJOInSearchResultsPredicate;
+import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
-import de.KnollFrank.lib.settingssearch.search.SearchablePreferencePOJOMatch;
+import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
+// FK-TODO: Try to move this test into the unit test folder.
 @RunWith(AndroidJUnit4.class)
-public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
+public class SearchablePreferenceDAOTest extends AppDatabaseTest {
 
     @Test
     public void shouldPersistPreference() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreference preference =
                 createSomeSearchablePreference(
                         1,
@@ -58,7 +59,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
         final Optional<String> oldSummary = Optional.of("old summary");
         final Optional<String> newSummary = Optional.of("new summary");
 
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreference preference =
                 createSomeSearchablePreference(
                         1,
@@ -85,7 +86,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetPredecessorOfPersistedPreference() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreference predecessor =
                 createSomeSearchablePreference(
                         1,
@@ -116,7 +117,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetChildrenOfPersistedPreference() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreference parent =
                 createSomeSearchablePreference(
                         1,
@@ -149,7 +150,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldRemovePreference() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreference preference =
                 createSomeSearchablePreference(
                         1,
@@ -174,7 +175,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldFindPreferenceByKeyAndHost() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreference preference =
                 createSomeSearchablePreference(
                         1,
@@ -199,7 +200,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldNotFindPreferenceByKeyAndHost() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
 
         // When
         final Optional<SearchablePreference> preferenceFromDb =
@@ -235,11 +236,11 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
                 Optional.of("title in summary"),
                 Optional.of("searchable info also has a title"));
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         dao.persist(preference);
 
         // When
-        final Set<SearchablePreferencePOJOMatch> preferenceMatches =
+        final Set<PreferenceMatch> preferenceMatches =
                 dao.searchWithinTitleSummarySearchableInfo(
                         "title",
                         _preference -> true);
@@ -248,7 +249,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
         assertThat(
                 Iterables.getOnlyElement(preferenceMatches),
                 is(
-                        new SearchablePreferencePOJOMatch(
+                        new PreferenceMatch(
                                 preference,
                                 Set.of(
                                         new IndexRange(0, 5),
@@ -260,7 +261,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldSearchWithinTitleSummarySearchableInfo_excludePreferenceFromSearchResults() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final String needle = "title";
         final SearchablePreference someSearchablePreference =
                 createSomeSearchablePreference(
@@ -271,11 +272,11 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
                         Optional.empty(),
                         Optional.empty());
         dao.persist(someSearchablePreference);
-        final IncludeSearchablePreferencePOJOInSearchResultsPredicate includePreferenceInSearchResultsPredicate =
+        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate =
                 excludePreferenceFromSearchResults(someSearchablePreference);
 
         // When
-        final Set<SearchablePreferencePOJOMatch> preferenceMatches =
+        final Set<PreferenceMatch> preferenceMatches =
                 dao.searchWithinTitleSummarySearchableInfo(
                         needle,
                         includePreferenceInSearchResultsPredicate);
@@ -287,7 +288,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetMaxId() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final int maxId = 4711;
         final SearchablePreference preference =
                 createSomeSearchablePreference(
@@ -309,7 +310,7 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetMaxId_emptyDatabase() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
 
         // When
         final Optional<Integer> maxId = dao.getMaxId();
@@ -318,8 +319,8 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
         assertThat(maxId, is(Optional.empty()));
     }
 
-    private static IncludeSearchablePreferencePOJOInSearchResultsPredicate excludePreferenceFromSearchResults(final SearchablePreference preference2Exclude) {
-        return new IncludeSearchablePreferencePOJOInSearchResultsPredicate() {
+    private static IncludePreferenceInSearchResultsPredicate excludePreferenceFromSearchResults(final SearchablePreference preference2Exclude) {
+        return new IncludePreferenceInSearchResultsPredicate() {
 
             @Override
             public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
@@ -370,11 +371,11 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
                 Optional.empty(),
                 Optional.empty());
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         dao.persist(preference);
 
         // When
-        final Set<SearchablePreferencePOJOMatch> preferenceMatches =
+        final Set<PreferenceMatch> preferenceMatches =
                 dao.searchWithinTitleSummarySearchableInfo(
                         "this can't be found",
                         _preference -> true);
@@ -386,10 +387,10 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     @Test
     public void shouldSearchWithinTitleSummarySearchableInfo_emptyDatabase_findNothing() {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
 
         // When
-        final Set<SearchablePreferencePOJOMatch> preferenceMatches =
+        final Set<PreferenceMatch> preferenceMatches =
                 dao.searchWithinTitleSummarySearchableInfo(
                         "this can't be found",
                         _preference -> true);
@@ -401,11 +402,11 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
     private void shouldSearchAndFindWithinTitleSummarySearchableInfo(final SearchablePreference preference,
                                                                      final String needle) {
         // Given
-        final SearchablePreferencePOJODAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         dao.persist(preference);
 
         // When
-        final Set<SearchablePreferencePOJOMatch> preferenceMatches =
+        final Set<PreferenceMatch> preferenceMatches =
                 dao.searchWithinTitleSummarySearchableInfo(
                         needle,
                         _preference -> true);
@@ -414,10 +415,10 @@ public class SearchablePreferencePOJODAOTest extends AppDatabaseTest {
         assertThat(getPreferences(preferenceMatches), contains(preference));
     }
 
-    private static Set<SearchablePreference> getPreferences(final Set<SearchablePreferencePOJOMatch> preferenceMatches) {
+    private static Set<SearchablePreference> getPreferences(final Set<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
-                .map(SearchablePreferencePOJOMatch::preference)
+                .map(PreferenceMatch::preference)
                 .collect(Collectors.toSet());
     }
 

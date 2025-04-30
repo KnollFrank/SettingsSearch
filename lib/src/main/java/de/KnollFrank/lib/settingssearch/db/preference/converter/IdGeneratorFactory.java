@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 public class IdGeneratorFactory {
 
+    // FK-TODO: inline method
     public static IdGenerator createIdGeneratorStartingAt1() {
         return createIdGeneratorStartingAt(1);
     }

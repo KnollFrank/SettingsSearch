@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnPreferences;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItemCount;
@@ -18,21 +19,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
+import de.KnollFrank.lib.settingssearch.search.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchResultsDisplayerTest {
+public class SearchResultsDisplayerTest extends AppDatabaseTest {
 
     @Test
     public void shouldDisplaySearchResults() {
@@ -47,20 +51,22 @@ public class SearchResultsDisplayerTest {
                                 new DefaultMarkupsFactory(activity),
                                 preference -> true,
                                 new LexicographicalSearchResultsSorter());
+                final SearchablePreference preference =
+                        POJOTestFactory.createSearchablePreferencePOJO(
+                                Optional.of(title),
+                                Optional.of("some summary"),
+                                Optional.of("searchable info also has a title"),
+                                Optional.empty());
+                makeGetPreferencePathWorkOnPreferences(List.of(preference), appDatabase);
 
                 // When
                 searchResultsDisplayer.displaySearchResults(
                         Set.of(
                                 new PreferenceMatch(
-                                        POJOTestFactory.createSearchablePreferencePOJO(
-                                                Optional.of(title),
-                                                Optional.of("some summary"),
-                                                Optional.of("searchable info also has a title"),
-                                                Optional.empty()),
+                                        preference,
                                         Set.of(new IndexRange(0, 5)),
                                         Set.of(),
-                                        Set.of()))
-                );
+                                        Set.of())));
 
                 // Then
                 assertThat(

@@ -11,9 +11,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class SearchablePreferenceDAOSetter {
 
-    private final SearchablePreferencePOJODAO dao;
+    private final SearchablePreferenceDAO dao;
 
-    public SearchablePreferenceDAOSetter(final SearchablePreferencePOJODAO dao) {
+    public SearchablePreferenceDAOSetter(final SearchablePreferenceDAO dao) {
         this.dao = dao;
     }
 

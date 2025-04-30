@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseStateDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJODAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleConverter;
@@ -80,7 +80,7 @@ public abstract class AppDatabase extends RoomDatabase {
     protected AppDatabase() {
     }
 
-    public abstract SearchablePreferencePOJODAO searchablePreferenceDAO();
+    public abstract SearchablePreferenceDAO searchablePreferenceDAO();
 
     public abstract SearchDatabaseStateDAO searchDatabaseStateDAO();
 }

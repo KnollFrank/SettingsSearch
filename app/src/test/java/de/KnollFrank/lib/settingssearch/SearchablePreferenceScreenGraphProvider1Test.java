@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory.getPreferences;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emptyComputePreferencesListener;
 
 import android.os.Bundle;
@@ -22,24 +23,26 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.search.AppDatabaseTest;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenGraphProvider1Test {
+public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTest {
 
     @Test
     public void shouldGetSearchablePreferenceScreenGraph() {
@@ -84,6 +87,7 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
 
                 // Then
+                makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase);
                 final SearchablePreference preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3.class,
@@ -147,8 +151,8 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                 .stream()
                 .flatMap(
                         searchablePreferenceScreen ->
-                                SearchablePreferences
-                                        .getPreferencesRecursively(searchablePreferenceScreen.preferences())
+                                searchablePreferenceScreen
+                                        .allPreferences()
                                         .stream()
                                         .filter(predicate))
                 .collect(MoreCollectors.onlyElement());
@@ -198,5 +202,15 @@ public class SearchablePreferenceScreenGraphProvider1Test {
                     "fourth screen",
                     List.of());
         }
+    }
+
+    public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+                                                        final AppDatabase appDatabase) {
+        makeGetPreferencePathWorkOnPreferences(getPreferences(graph), appDatabase);
+    }
+
+    public static void makeGetPreferencePathWorkOnPreferences(final Collection<SearchablePreference> preferences,
+                                                              final AppDatabase appDatabase) {
+        appDatabase.searchablePreferenceDAO().persist(preferences);
     }
 }

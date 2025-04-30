@@ -16,13 +16,14 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
 
     private static final String TITLE_OF_PREFERENCE = "some preference of NonStandardPreferenceFragment";
     private static final String KEY_OF_PREFERENCE = "key";
 
-    public static void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment() {
+    public static void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(final SearchablePreferenceDAO searchablePreferenceDAO) {
         testSearch(
                 // Given a NonStandardPreferenceFragment
                 new NonStandardPreferenceFragment(),
@@ -33,7 +34,8 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
-                                hasItem(KEY_OF_PREFERENCE)));
+                                hasItem(KEY_OF_PREFERENCE)),
+                searchablePreferenceDAO);
     }
 
     public static class NonStandardPreferenceFragment extends Fragment {
@@ -54,7 +56,8 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     private static void testSearch(final Fragment nonPreferenceFragment,
                                    final PrincipalAndProxyProvider principalAndProxyProvider,
                                    final String keyword,
-                                   final Consumer<Set<PreferenceMatch>> checkPreferenceMatches) {
+                                   final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
+                                   final SearchablePreferenceDAO searchablePreferenceDAO) {
         PreferenceSearcherTest.testSearch(
                 nonPreferenceFragment,
                 (preference, hostOfPreference) -> true,
@@ -63,6 +66,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 (preference, hostOfPreference) -> Optional.empty(),
                 (preference, hostOfPreference) -> Optional.empty(),
                 principalAndProxyProvider,
-                checkPreferenceMatches);
+                checkPreferenceMatches,
+                searchablePreferenceDAO);
     }
 }

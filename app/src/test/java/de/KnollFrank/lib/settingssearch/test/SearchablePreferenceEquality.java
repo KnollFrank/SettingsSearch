@@ -24,8 +24,8 @@ public class SearchablePreferenceEquality {
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
         assertThat(actual.getHost(), equalTo(expected.getHost()));
         assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
-        assertActualListEqualsExpectedList(actual.getChildren(), expected.getChildren());
-        assertThat(actual.getPredecessor(), is(expected.getPredecessor()));
+        assertThat(actual.getParentId(), is(expected.getParentId()));
+        assertThat(actual.getPredecessorId(), is(expected.getPredecessorId()));
     }
 
     public static void assertActualListEqualsExpectedList(final List<SearchablePreference> actuals, final List<SearchablePreference> expecteds) {
