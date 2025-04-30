@@ -27,7 +27,7 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 
 @Dao
-public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorsProvider {
+public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorProvider {
 
     private final SearchablePreferenceDAOSetter daoSetter = new SearchablePreferenceDAOSetter(this);
     private Optional<Map<SearchablePreference, SearchablePreference>> predecessorByPreference = Optional.empty();

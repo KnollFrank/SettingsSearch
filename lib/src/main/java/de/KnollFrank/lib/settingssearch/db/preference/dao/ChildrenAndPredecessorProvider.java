@@ -5,7 +5,7 @@ import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-public interface ChildrenAndPredecessorsProvider {
+public interface ChildrenAndPredecessorProvider {
 
     Map<SearchablePreference, List<SearchablePreference>> getChildrenByPreference();
 

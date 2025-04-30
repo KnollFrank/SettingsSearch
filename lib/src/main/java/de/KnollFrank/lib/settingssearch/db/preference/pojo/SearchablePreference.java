@@ -23,13 +23,13 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.ChildrenAndPredecessorsProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.ChildrenAndPredecessorProvider;
 
 @Entity
 public final class SearchablePreference {
 
     @Ignore
-    private Optional<ChildrenAndPredecessorsProvider> dao = Optional.empty();
+    private Optional<ChildrenAndPredecessorProvider> dao = Optional.empty();
 
     @PrimaryKey
     // FK-TODO: replace int with long?
@@ -90,7 +90,7 @@ public final class SearchablePreference {
         this.predecessorId = predecessorId;
     }
 
-    public void setDao(final ChildrenAndPredecessorsProvider dao) {
+    public void setDao(final ChildrenAndPredecessorProvider dao) {
         this.dao = Optional.of(dao);
     }
 
