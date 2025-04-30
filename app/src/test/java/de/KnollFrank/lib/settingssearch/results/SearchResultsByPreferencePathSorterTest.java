@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -48,16 +47,18 @@ public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
 
         final SearchablePreference defaultSpeedOfWalk = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(walk));
 
-        final Collection<SearchablePreference> searchResults =
-                Set.of(
-                        defaultSpeedOfWalk,
-                        defaultSpeed,
-                        defaultSpeedOfCar);
-        makeGetPreferencePathWorkOnPreferences(searchResults, appDatabase);
+        makeGetPreferencePathWorkOnPreferences(
+                List.of(car, walk, defaultSpeedOfWalk, defaultSpeed, defaultSpeedOfCar),
+                appDatabase);
         final SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
 
         // When
-        final List<SearchablePreference> sortedSearchResults = searchResultsSorter.sort(searchResults);
+        final List<SearchablePreference> sortedSearchResults =
+                searchResultsSorter.sort(
+                        Set.of(
+                                defaultSpeedOfWalk,
+                                defaultSpeed,
+                                defaultSpeedOfCar));
 
         // Then
         assertThat(

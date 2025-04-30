@@ -25,7 +25,6 @@ import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.ChildrenAndPredecessorsProvider;
 
-// FK-TODO: remove all unused classes
 @Entity
 public final class SearchablePreference {
 
