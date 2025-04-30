@@ -48,7 +48,7 @@ class SearchablePreferenceDAOSetter {
     }
 
     private SearchablePreference setDao(final SearchablePreference searchablePreference) {
-        searchablePreference.setDao(Optional.of(dao));
+        searchablePreference.setDao(dao);
         return searchablePreference;
     }
 

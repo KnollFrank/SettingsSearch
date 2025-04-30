@@ -90,9 +90,8 @@ public final class SearchablePreference {
         this.predecessorId = predecessorId;
     }
 
-    // FK-TODO: refactor to setDao(final SearchablePreferenceDAO dao) {this.dao = Optional.of(dao); }
-    public void setDao(final Optional<ChildrenAndPredecessorsProvider> dao) {
-        this.dao = dao;
+    public void setDao(final ChildrenAndPredecessorsProvider dao) {
+        this.dao = Optional.of(dao);
     }
 
     public int getId() {
