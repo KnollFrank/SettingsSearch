@@ -111,6 +111,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.showSettingsFragmentAndHighlightSetting);
     }
 
+    // FK-FIXME: implement for sqlite database
     public void rebuildSearchDatabase() {
         new SearchDatabaseDirectoryIO(activity).removeSearchDatabaseDirectories4AllLocales();
     }
