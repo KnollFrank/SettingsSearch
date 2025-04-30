@@ -100,7 +100,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                                 fragmentActivity,
                                                 TestActivity.FRAGMENT_CONTAINER_VIEW),
                                         (preference, hostOfPreference) -> Optional.empty())),
-                        IdGeneratorFactory.createIdGeneratorStartingAt1()),
+                        IdGeneratorFactory.createIdGeneratorStartingAt(1)),
                 fragmentActivity);
     }
 }

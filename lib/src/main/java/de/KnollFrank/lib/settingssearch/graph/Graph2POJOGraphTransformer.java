@@ -33,7 +33,7 @@ public class Graph2POJOGraphTransformer {
             final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
         return new GraphTransformer<>() {
 
-            private final IdGenerator idGenerator4PreferenceScreen = IdGeneratorFactory.createIdGeneratorStartingAt1();
+            private final IdGenerator idGenerator4PreferenceScreen = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
             @Override
             public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {

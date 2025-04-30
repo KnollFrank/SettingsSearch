@@ -64,7 +64,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
-                                IdGeneratorFactory.createIdGeneratorStartingAt1());
+                                IdGeneratorFactory.createIdGeneratorStartingAt(1));
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =

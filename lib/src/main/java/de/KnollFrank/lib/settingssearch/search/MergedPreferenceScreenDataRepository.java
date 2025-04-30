@@ -103,7 +103,7 @@ public class MergedPreferenceScreenDataRepository {
                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                         searchDatabaseConfig,
                         preferenceDialogs,
-                        IdGeneratorFactory.createIdGeneratorStartingAt1()),
+                        IdGeneratorFactory.createIdGeneratorStartingAt(1)),
                 context);
     }
 }

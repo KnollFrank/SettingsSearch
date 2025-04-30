@@ -15,7 +15,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class POJOTestFactory {
 
-    private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt1();
+    private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
     public static SearchablePreference createSearchablePreferencePOJO(
             final int id,

@@ -131,7 +131,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                         new SearchableInfoAndDialogInfoProvider(
                                 preference -> Optional.empty(),
                                 (preference, hostOfPreference) -> Optional.empty()),
-                        IdGeneratorFactory.createIdGeneratorStartingAt1()),
+                        IdGeneratorFactory.createIdGeneratorStartingAt(1)),
                 activity);
     }
 

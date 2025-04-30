@@ -758,7 +758,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                                         fragmentActivity,
                                                         TestActivity.FRAGMENT_CONTAINER_VIEW),
                                                 preferenceDialogAndSearchableInfoProvider)),
-                                IdGeneratorFactory.createIdGeneratorStartingAt1()),
+                                IdGeneratorFactory.createIdGeneratorStartingAt(1)),
                         fragmentActivity);
         searchablePreferenceDAO.persist(
                 PojoGraphs.getPreferences(
