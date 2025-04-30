@@ -5,7 +5,6 @@ import androidx.room.Relation;
 
 import java.util.Optional;
 
-// FK-TODO: make package private
 public class PreferenceAndPredecessor {
 
     @Embedded
