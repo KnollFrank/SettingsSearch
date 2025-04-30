@@ -32,7 +32,6 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    // FK-TODO: update
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.preference:preference:1.2.1'
     // https://mvnrepository.com/artifact/com.google.guava/guava
@@ -51,7 +50,6 @@ dependencies {
     // https://mvnrepository.com/artifact/com.codepoetics/ambivalence
     implementation 'com.codepoetics:ambivalence:0.2'
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
-    // FK-TODO: update
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
 
     def room_version = "2.7.1"
