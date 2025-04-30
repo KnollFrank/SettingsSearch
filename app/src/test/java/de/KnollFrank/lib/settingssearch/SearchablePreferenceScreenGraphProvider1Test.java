@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory.getPreferences;
+import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emptyComputePreferencesListener;
 
 import android.os.Bundle;

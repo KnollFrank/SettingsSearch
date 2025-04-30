@@ -4,8 +4,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnGraph;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest.getInstantiateAndInitializeFragment;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.MergedPreferenceScreenDataFactory.getPreferences;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
+import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
 
 import android.content.Context;
 import android.os.Bundle;
