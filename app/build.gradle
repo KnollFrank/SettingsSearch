@@ -73,8 +73,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.codepoetics/ambivalence
     implementation 'com.codepoetics:ambivalence:0.2'
 
-    // FK-TODO: upgrade to 2.7.1
-    def room_version = "2.7.0"
+    def room_version = "2.7.1"
     androidTestImplementation "androidx.room:room-runtime:$room_version"
     androidTestImplementation "androidx.room:room-runtime-android:$room_version"
     androidTestAnnotationProcessor "androidx.room:room-compiler:$room_version"

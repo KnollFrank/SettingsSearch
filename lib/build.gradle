@@ -54,8 +54,7 @@ dependencies {
     // FK-TODO: update
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
 
-    // FK-TODO: upgrade to 2.7.1
-    def room_version = "2.7.0"
+    def room_version = "2.7.1"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 }
