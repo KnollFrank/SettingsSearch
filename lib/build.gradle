@@ -42,7 +42,6 @@ dependencies {
     implementation 'org.threeten:threetenbp:1.7.0'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core
     implementation 'org.jgrapht:jgrapht-core:1.5.2'
-    // FK-TODO: remove gson dependency?
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation 'com.google.code.gson:gson:2.12.1'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
