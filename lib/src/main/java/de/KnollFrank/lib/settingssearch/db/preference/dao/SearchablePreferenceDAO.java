@@ -27,6 +27,7 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorsProvider {
 
     private final SearchablePreferenceDAOSetter daoSetter = new SearchablePreferenceDAOSetter(this);
+    private Optional<List<PreferenceAndPredecessor>> preferencesAndPredecessors = Optional.empty();
 
     public List<SearchablePreference> loadAll() {
         return daoSetter.setDao(_loadAll());
@@ -54,23 +55,30 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessors
 
     public void persist(final SearchablePreference... searchablePreferences) {
         _persist(daoSetter.setDao(searchablePreferences));
+        preferencesAndPredecessors = Optional.empty();
     }
 
     public void persist(final Collection<SearchablePreference> searchablePreferences) {
         _persist(daoSetter.setDao(searchablePreferences));
+        preferencesAndPredecessors = Optional.empty();
     }
 
     public void remove(final SearchablePreference... preferences) {
         _remove(daoSetter.setDao(preferences));
+        preferencesAndPredecessors = Optional.empty();
     }
 
     public void update(final SearchablePreference... preferences) {
         _update(daoSetter.setDao(preferences));
+        preferencesAndPredecessors = Optional.empty();
     }
 
     @Override
     public List<PreferenceAndPredecessor> getPreferencesAndPredecessors() {
-        return daoSetter._setDao(_getPreferencesAndPredecessors());
+        if (preferencesAndPredecessors.isEmpty()) {
+            preferencesAndPredecessors = Optional.of(daoSetter._setDao(_getPreferencesAndPredecessors()));
+        }
+        return preferencesAndPredecessors.orElseThrow();
     }
 
     @Override
@@ -78,8 +86,13 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessors
         return daoSetter.__setDao(_getPreferencesAndChildren());
     }
 
+    public void removeAll() {
+        _removeAll();
+        preferencesAndPredecessors = Optional.empty();
+    }
+
     @Query("DELETE FROM SearchablePreference")
-    public abstract void removeAll();
+    protected abstract void _removeAll();
 
     @Query("SELECT MAX(id) FROM SearchablePreference")
     public abstract Optional<Integer> getMaxId();
