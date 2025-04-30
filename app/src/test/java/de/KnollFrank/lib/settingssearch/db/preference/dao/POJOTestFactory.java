@@ -11,10 +11,59 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class POJOTestFactory {
 
     private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt1();
+
+    public static SearchablePreference createSearchablePreferencePOJO(
+            final int id,
+            final Optional<String> title,
+            final Optional<String> summary,
+            final Optional<String> searchableInfo,
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+            final Optional<Integer> parentId,
+            final Optional<Integer> predecessorId) {
+        return createSearchablePreferencePOJO(
+                id,
+                title,
+                summary,
+                searchableInfo,
+                createBundle("someKey", "someValue"),
+                iconResourceIdOrIconPixelData,
+                PrefsFragmentFirst.class,
+                parentId,
+                predecessorId);
+    }
+
+    public static SearchablePreference createSearchablePreferencePOJO(
+            final int id,
+            final Optional<String> title,
+            final Optional<String> summary,
+            final Optional<String> searchableInfo,
+            final Bundle extras,
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+            final Class<? extends PreferenceFragmentCompat> host,
+            final Optional<Integer> parentId,
+            final Optional<Integer> predecessorId) {
+        return new SearchablePreference(
+                id,
+                "some key",
+                iconResourceIdOrIconPixelData,
+                androidx.preference.R.layout.preference,
+                summary,
+                title,
+                0,
+                Optional.of("some fragment"),
+                Optional.empty(),
+                true,
+                searchableInfo,
+                extras,
+                host,
+                parentId,
+                predecessorId);
+    }
 
     public static SearchablePreference createSearchablePreferencePOJO(
             final String title,

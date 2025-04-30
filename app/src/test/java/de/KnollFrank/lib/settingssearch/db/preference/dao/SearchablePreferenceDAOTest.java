@@ -5,14 +5,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferencePOJOEquality.assertActualEqualsExpected;
-
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.google.common.collect.Iterables;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,12 +19,13 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
+import de.KnollFrank.lib.settingssearch.search.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
+import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEquality;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
-// FK-TODO: Try to move this test into the unit test folder.
-@RunWith(AndroidJUnit4.class)
+@RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceDAOTest extends AppDatabaseTest {
 
     @Test
@@ -50,7 +49,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         assertThat(preferenceFromDb.isPresent(), is(true));
 
         // And the preference was persisted correctly
-        assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+        SearchablePreferenceEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     @Test
@@ -194,7 +193,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
 
         // Then
         assertThat(preferenceFromDb.isPresent(), is(true));
-        assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+        SearchablePreferenceEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     @Test
