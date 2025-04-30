@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 
+// FK-TODO: move to unit test folder
 @RunWith(AndroidJUnit4.class)
 public class AppDatabaseInstanceTest {
 
