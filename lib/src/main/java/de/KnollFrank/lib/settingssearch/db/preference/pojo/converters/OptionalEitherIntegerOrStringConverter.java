@@ -6,7 +6,6 @@ import com.codepoetics.ambivalence.Either;
 
 import java.util.Optional;
 
-// FK-TODO: unit test
 public class OptionalEitherIntegerOrStringConverter implements Converter<Optional<Either<Integer, String>>> {
 
     private static final OptionalConverter<Either<Integer, String>> converter = new OptionalConverter<>(new EitherIntegerOrStringConverter());
