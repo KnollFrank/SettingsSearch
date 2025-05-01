@@ -17,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFacto
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -54,7 +55,7 @@ public class MergedPreferenceScreenDataRepository {
 
     public SearchablePreferenceDAO getSearchDatabaseFilledWithPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
-            final AppDatabase appDatabase = AppDatabase.getInstance(context, locale);
+            final AppDatabase appDatabase = AppDatabaseFactory.getInstance(locale, context);
             final SearchablePreferenceDAO searchablePreferenceDAO = appDatabase.searchablePreferenceDAO();
             if (!appDatabase.searchDatabaseStateDAO().isSearchDatabaseInitialized()) {
                 computeAndPersistPreferences(searchablePreferenceDAO);
