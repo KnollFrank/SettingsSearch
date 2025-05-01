@@ -5,13 +5,12 @@ import androidx.room.TypeConverter;
 
 import de.KnollFrank.lib.settingssearch.common.Classes;
 
-// FK-TODO: unit test
-public class ClassConverter implements Converter<Class<? extends PreferenceFragmentCompat>> {
+public class PreferenceFragmentClassConverter implements Converter<Class<? extends PreferenceFragmentCompat>> {
 
     @TypeConverter
     @Override
-    public String toString(final Class<? extends PreferenceFragmentCompat> value) {
-        return value.getName();
+    public String toString(final Class<? extends PreferenceFragmentCompat> clazz) {
+        return clazz.getName();
     }
 
     @TypeConverter

@@ -15,10 +15,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDA
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ClassConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
 
 @Database(
         entities = {SearchablePreference.class, SearchDatabaseState.class},
@@ -26,7 +26,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalSt
         exportSchema = false)
 @TypeConverters(
         {
-                ClassConverter.class,
+                PreferenceFragmentClassConverter.class,
                 OptionalEitherIntegerOrStringConverter.class,
                 OptionalStringConverter.class,
                 OptionalIntegerConverter.class,
