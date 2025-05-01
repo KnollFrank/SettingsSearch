@@ -21,10 +21,10 @@ public class OptionalIntegerConverterTest {
 
     private static void shouldConvertFromOptionalInteger2StringAndBack(final Optional<Integer> optionalInteger) {
         // Given
-        final OptionalIntegerConverter converter = new OptionalIntegerConverter();
+        final Converter<Optional<Integer>, Integer> converter = new OptionalIntegerConverter();
 
         // When
-        final Optional<Integer> optionalIntegerActual = converter.fromString(converter.toString(optionalInteger));
+        final Optional<Integer> optionalIntegerActual = converter.doBackward(converter.doForward(optionalInteger));
 
         // Then
         assertThat(optionalIntegerActual, is(optionalInteger));

@@ -14,11 +14,11 @@ public class PreferenceFragmentClassConverterTest {
     @Test
     public void shouldConvertFromClass2StringAndBack() {
         // Given
-        final PreferenceFragmentClassConverter converter = new PreferenceFragmentClassConverter();
-        final Class<PrefsFragmentFirst> clazz = PrefsFragmentFirst.class;
+        final Converter<Class<? extends PreferenceFragmentCompat>, String> converter = new PreferenceFragmentClassConverter();
+        final Class<? extends PreferenceFragmentCompat> clazz = PrefsFragmentFirst.class;
 
         // When
-        final Class<? extends PreferenceFragmentCompat> clazzActual = converter.fromString(converter.toString(clazz));
+        final Class<? extends PreferenceFragmentCompat> clazzActual = converter.doBackward(converter.doForward(clazz));
 
         // Then
         assertThat(clazzActual == clazz, is(true));

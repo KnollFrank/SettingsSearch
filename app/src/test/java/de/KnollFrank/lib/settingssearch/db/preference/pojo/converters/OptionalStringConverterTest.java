@@ -22,10 +22,10 @@ public class OptionalStringConverterTest {
 
     private static void shouldConvertFromOptionalString2StringAndBack(final Optional<String> optionalString) {
         // Given
-        final OptionalStringConverter converter = new OptionalStringConverter();
+        final Converter<Optional<String>, String> converter = new OptionalStringConverter();
 
         // When
-        final Optional<String> optionalStringActual = converter.fromString(converter.toString(optionalString));
+        final Optional<String> optionalStringActual = converter.doBackward(converter.doForward(optionalString));
 
         // Then
         assertThat(optionalStringActual, is(optionalString));

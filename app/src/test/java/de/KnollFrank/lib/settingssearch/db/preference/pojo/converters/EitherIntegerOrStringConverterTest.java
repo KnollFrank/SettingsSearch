@@ -11,22 +11,20 @@ public class EitherIntegerOrStringConverterTest {
 
     @Test
     public void shouldConvertFromLeft2StringAndBack() {
-        // Given
         shouldConvertFromEither2StringAndBack(Either.ofLeft(815));
     }
 
     @Test
     public void shouldConvertFromRight2StringAndBack() {
-        // Given
         shouldConvertFromEither2StringAndBack(Either.ofRight("some string"));
     }
 
     private static void shouldConvertFromEither2StringAndBack(final Either<Integer, String> either) {
         // Given
-        final var converter = new EitherIntegerOrStringConverter();
+        final Converter<Either<Integer, String>, String> converter = new EitherIntegerOrStringConverter();
 
         // When
-        final Either<Integer, String> eitherActual = converter.fromString(converter.toString(either));
+        final Either<Integer, String> eitherActual = converter.doBackward(converter.doForward(either));
 
         // Then
         assertThat(eitherActual, is(either));

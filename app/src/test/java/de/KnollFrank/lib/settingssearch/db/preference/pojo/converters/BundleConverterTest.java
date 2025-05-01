@@ -18,10 +18,10 @@ public class BundleConverterTest {
     public void shouldConvertFromBundle2StringAndBack() {
         // Given
         final Bundle bundle = createBundle("someKey", "someValue");
-        final BundleConverter converter = new BundleConverter();
+        final Converter<Bundle, String> converter = new BundleConverter();
 
         // When
-        final Bundle bundleActual = converter.fromString(converter.toString(bundle));
+        final Bundle bundleActual = converter.doBackward(converter.doForward(bundle));
 
         // Then
         assertThat(equalBundles(bundle, bundleActual), is(true));

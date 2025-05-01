@@ -4,16 +4,17 @@ import androidx.room.TypeConverter;
 
 import java.util.Optional;
 
-// FK-TODO: make "implements Converter<Optional<Integer>, Integer>" after adding a second parameter to Converter interface
-public class OptionalIntegerConverter {
+public class OptionalIntegerConverter implements Converter<Optional<Integer>, Integer> {
 
     @TypeConverter
-    public Integer toString(final Optional<Integer> value) {
+    @Override
+    public Integer doForward(final Optional<Integer> value) {
         return value.orElse(null);
     }
 
     @TypeConverter
-    public Optional<Integer> fromString(final Integer value) {
+    @Override
+    public Optional<Integer> doBackward(final Integer value) {
         return Optional.ofNullable(value);
     }
 }

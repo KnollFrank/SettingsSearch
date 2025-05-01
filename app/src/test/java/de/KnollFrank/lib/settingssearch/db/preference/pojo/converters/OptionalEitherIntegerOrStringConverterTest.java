@@ -28,10 +28,10 @@ public class OptionalEitherIntegerOrStringConverterTest {
 
     private static void shouldConvertOptionalEitherIntegerOrString(final Optional<Either<Integer, String>> value) {
         // Given
-        final OptionalEitherIntegerOrStringConverter converter = new OptionalEitherIntegerOrStringConverter();
+        final Converter<Optional<Either<Integer, String>>, String> converter = new OptionalEitherIntegerOrStringConverter();
 
         // When
-        final Optional<Either<Integer, String>> valueActual = converter.fromString(converter.toString(value));
+        final Optional<Either<Integer, String>> valueActual = converter.doBackward(converter.doForward(value));
 
         // Then
         assertThat(valueActual, is(value));

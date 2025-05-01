@@ -1,8 +1,8 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
-interface Converter<T> {
+interface Converter<A, B> {
 
-    String toString(final T value);
+    B doForward(A a);
 
-    T fromString(final String string);
+    A doBackward(B b);
 }
