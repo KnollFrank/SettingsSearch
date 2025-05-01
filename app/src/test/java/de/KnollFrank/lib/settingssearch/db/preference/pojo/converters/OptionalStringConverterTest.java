@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConverterTest.test_a_doForward_doBackward_equals_a;
 
 import org.junit.Test;
 
@@ -21,13 +20,6 @@ public class OptionalStringConverterTest {
     }
 
     private static void shouldConvertFromOptionalString2StringAndBack(final Optional<String> optionalString) {
-        // Given
-        final Converter<Optional<String>, String> converter = new OptionalStringConverter();
-
-        // When
-        final Optional<String> optionalStringActual = converter.doBackward(converter.doForward(optionalString));
-
-        // Then
-        assertThat(optionalStringActual, is(optionalString));
+        test_a_doForward_doBackward_equals_a(new OptionalStringConverter(), optionalString);
     }
 }
