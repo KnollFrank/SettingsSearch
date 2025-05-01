@@ -4,7 +4,6 @@ import androidx.room.TypeConverter;
 
 import java.util.Optional;
 
-// FK-TODO: unit test
 // FK-TODO: make "implements Converter<Optional<Integer>, Integer>" after adding a second parameter to Converter interface
 public class OptionalIntegerConverter {
 
