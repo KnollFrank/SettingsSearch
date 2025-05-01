@@ -25,7 +25,7 @@ public class Bundles {
     }
 
     public Optional<String> getOptionalString(final String key) {
-        return Optional.ofNullable(this.bundle.getString(key));
+        return Optional.ofNullable(bundle.getString(key));
     }
 
     public OptionalInt getOptionalInt(final String key) {
@@ -35,10 +35,10 @@ public class Bundles {
     }
 
     public <T> void putClass(final String key, final Class<? extends T> value) {
-        this.bundle.putString(key, value.getName());
+        bundle.putString(key, value.getName());
     }
 
     public <T> Class<? extends T> getClass(final String key) {
-        return Classes.getClass(this.bundle.getString(key));
+        return Classes.getClass(bundle.getString(key));
     }
 }
