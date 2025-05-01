@@ -7,8 +7,8 @@ class ConverterTest {
 
     public static <A, B> void test_a_doForward_doBackward_equals_a(
             // Given
-            final Converter<A, B> converter,
-            final A a) {
+            final A a,
+            final Converter<A, B> converter) {
         // When
         final A aActual = converter.doBackward(converter.doForward(a));
 

@@ -14,16 +14,16 @@ public class OptionalEitherIntegerOrStringConverterTest {
 
     @Test
     public void shouldConvertFromPresentLeft2StringAndBack() {
-        test_a_doForward_doBackward_equals_a(converter, Optional.of(Either.ofLeft(4711)));
+        test_a_doForward_doBackward_equals_a(Optional.of(Either.ofLeft(4711)), converter);
     }
 
     @Test
     public void shouldConvertFromPresentRight2StringAndBack() {
-        test_a_doForward_doBackward_equals_a(converter, Optional.of(Either.ofRight("some str")));
+        test_a_doForward_doBackward_equals_a(Optional.of(Either.ofRight("some str")), converter);
     }
 
     @Test
     public void shouldConvertFromEmpty2StringAndBack() {
-        test_a_doForward_doBackward_equals_a(converter, Optional.empty());
+        test_a_doForward_doBackward_equals_a(Optional.empty(), converter);
     }
 }

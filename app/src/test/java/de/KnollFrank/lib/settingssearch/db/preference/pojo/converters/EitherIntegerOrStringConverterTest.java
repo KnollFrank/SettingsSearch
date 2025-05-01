@@ -8,17 +8,15 @@ import org.junit.Test;
 
 public class EitherIntegerOrStringConverterTest {
 
+    private final EitherIntegerOrStringConverter converter = new EitherIntegerOrStringConverter();
+
     @Test
     public void shouldConvertFromLeft2StringAndBack() {
-        shouldConvertFromEither2StringAndBack(Either.ofLeft(815));
+        test_a_doForward_doBackward_equals_a(Either.ofLeft(815), converter);
     }
 
     @Test
     public void shouldConvertFromRight2StringAndBack() {
-        shouldConvertFromEither2StringAndBack(Either.ofRight("some string"));
-    }
-
-    private static void shouldConvertFromEither2StringAndBack(final Either<Integer, String> either) {
-        test_a_doForward_doBackward_equals_a(new EitherIntegerOrStringConverter(), either);
+        test_a_doForward_doBackward_equals_a(Either.ofRight("some string"), converter);
     }
 }

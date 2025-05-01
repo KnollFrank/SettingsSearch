@@ -12,11 +12,11 @@ public class OptionalStringConverterTest {
 
     @Test
     public void shouldConvertFromPresentString2StringAndBack() {
-        test_a_doForward_doBackward_equals_a(converter, Optional.of("some string"));
+        test_a_doForward_doBackward_equals_a(Optional.of("some string"), converter);
     }
 
     @Test
     public void shouldConvertFromEmptyString2StringAndBack() {
-        test_a_doForward_doBackward_equals_a(converter, Optional.empty());
+        test_a_doForward_doBackward_equals_a(Optional.empty(), converter);
     }
 }
