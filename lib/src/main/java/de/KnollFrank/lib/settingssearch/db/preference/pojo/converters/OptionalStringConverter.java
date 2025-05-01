@@ -4,7 +4,6 @@ import androidx.room.TypeConverter;
 
 import java.util.Optional;
 
-// FK-TODO: unit test
 public class OptionalStringConverter implements Converter<Optional<String>> {
 
     private static final OptionalConverter<String> converter =
