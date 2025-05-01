@@ -32,7 +32,6 @@ public final class SearchablePreference {
     private Optional<ChildrenAndPredecessorProvider> dao = Optional.empty();
 
     @PrimaryKey
-    // FK-TODO: replace int with long?
     private final int id;
     private final String key;
     private final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData;
