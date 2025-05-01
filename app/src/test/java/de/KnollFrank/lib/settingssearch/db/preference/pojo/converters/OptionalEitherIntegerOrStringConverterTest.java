@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConverterTest.test_a_doForward_doBackward_equals_a;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -11,29 +10,20 @@ import java.util.Optional;
 
 public class OptionalEitherIntegerOrStringConverterTest {
 
+    private final OptionalEitherIntegerOrStringConverter converter = new OptionalEitherIntegerOrStringConverter();
+
     @Test
     public void shouldConvertFromPresentLeft2StringAndBack() {
-        shouldConvertOptionalEitherIntegerOrString(Optional.of(Either.ofLeft(4711)));
+        test_a_doForward_doBackward_equals_a(converter, Optional.of(Either.ofLeft(4711)));
     }
 
     @Test
     public void shouldConvertFromPresentRight2StringAndBack() {
-        shouldConvertOptionalEitherIntegerOrString(Optional.of(Either.ofRight("some str")));
+        test_a_doForward_doBackward_equals_a(converter, Optional.of(Either.ofRight("some str")));
     }
 
     @Test
     public void shouldConvertFromEmpty2StringAndBack() {
-        shouldConvertOptionalEitherIntegerOrString(Optional.empty());
-    }
-
-    private static void shouldConvertOptionalEitherIntegerOrString(final Optional<Either<Integer, String>> value) {
-        // Given
-        final Converter<Optional<Either<Integer, String>>, String> converter = new OptionalEitherIntegerOrStringConverter();
-
-        // When
-        final Optional<Either<Integer, String>> valueActual = converter.doBackward(converter.doForward(value));
-
-        // Then
-        assertThat(valueActual, is(value));
+        test_a_doForward_doBackward_equals_a(converter, Optional.empty());
     }
 }
