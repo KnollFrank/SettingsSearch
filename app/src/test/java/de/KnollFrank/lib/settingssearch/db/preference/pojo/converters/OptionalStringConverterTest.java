@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.util.Optional;
 
-// FK-TODO: DRY with OptionalIntegerConverterTest
 public class OptionalStringConverterTest {
 
     @Test
