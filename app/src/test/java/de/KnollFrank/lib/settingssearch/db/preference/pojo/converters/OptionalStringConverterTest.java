@@ -8,17 +8,15 @@ import java.util.Optional;
 
 public class OptionalStringConverterTest {
 
+    private final OptionalStringConverter converter = new OptionalStringConverter();
+
     @Test
     public void shouldConvertFromPresentString2StringAndBack() {
-        shouldConvertFromOptionalString2StringAndBack(Optional.of("some string"));
+        test_a_doForward_doBackward_equals_a(converter, Optional.of("some string"));
     }
 
     @Test
     public void shouldConvertFromEmptyString2StringAndBack() {
-        shouldConvertFromOptionalString2StringAndBack(Optional.empty());
-    }
-
-    private static void shouldConvertFromOptionalString2StringAndBack(final Optional<String> optionalString) {
-        test_a_doForward_doBackward_equals_a(new OptionalStringConverter(), optionalString);
+        test_a_doForward_doBackward_equals_a(converter, Optional.empty());
     }
 }
