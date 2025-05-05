@@ -18,8 +18,8 @@ import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseDirectoryIO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DatabaseResetter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -111,9 +111,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.showSettingsFragmentAndHighlightSetting);
     }
 
-    // FK-FIXME: implement for sqlite database.
     public void rebuildSearchDatabase() {
-        new SearchDatabaseDirectoryIO(activity).removeSearchDatabaseDirectories4AllLocales();
+        DatabaseResetter.resetDatabases(activity);
     }
 
     @Override
