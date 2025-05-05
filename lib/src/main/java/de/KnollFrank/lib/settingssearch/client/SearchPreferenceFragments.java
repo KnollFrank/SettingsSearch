@@ -111,7 +111,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.showSettingsFragmentAndHighlightSetting);
     }
 
-    // FK-FIXME: implement for sqlite database. Verwende dazu eine neue Datenbank mit einer einzigen Tabelle, die die Namen der bestehenden localespezifischen Datenkbanken speichert. Wenn eine Datenbank mit AppDatabaseFactory.getInstance("de") erzeugt wird, dann muß in dieser Methode auch in die neue Tabelle der neuen Datenbank diese neue de-Instanz eingetragen werden.
+    // FK-FIXME: implement for sqlite database.
     public void rebuildSearchDatabase() {
         new SearchDatabaseDirectoryIO(activity).removeSearchDatabaseDirectories4AllLocales();
     }

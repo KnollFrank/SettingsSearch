@@ -8,6 +8,7 @@ import java.util.Locale;
 import de.KnollFrank.lib.settingssearch.common.IOUtils;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 
+// FK-TODO: remove
 public class SearchDatabaseDirectoryIO {
 
     private final Context context;
