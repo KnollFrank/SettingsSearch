@@ -5,5 +5,5 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public record Locale(@PrimaryKey @NonNull String languageCode) {
+public record Locale(@PrimaryKey @NonNull String language) {
 }

@@ -5,27 +5,24 @@ import android.content.Context;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.Locale;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.LocaleDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 
 class AppDatabaseProvider {
 
-    public static Set<AppDatabase> getAppDatabases(final Context context) {
-        final Set<Locale> locales = LocaleDatabase.getInstance(context).localeDAO().getLocales();
-        return asStandardLocales(locales)
+    private final LocaleDAO localeDAO;
+    private final LocaleConverter localeConverter;
+
+    public AppDatabaseProvider(final LocaleDAO localeDAO, final LocaleConverter localeConverter) {
+        this.localeDAO = localeDAO;
+        this.localeConverter = localeConverter;
+    }
+
+    public Set<AppDatabase> getAppDatabases(final Context context) {
+        return localeConverter
+                .doForward(localeDAO.getLocales())
                 .stream()
                 .map(locale -> AppDatabaseFactory.getInstance(locale, context))
                 .collect(Collectors.toSet());
-    }
-
-    private static Set<java.util.Locale> asStandardLocales(final Set<Locale> locales) {
-        return locales
-                .stream()
-                .map(AppDatabaseProvider::asStandardLocale)
-                .collect(Collectors.toSet());
-    }
-
-    // FK-TODO: there are multiple conversions from java.util.Locale to de.KnollFrank.lib.settingssearch.db.preference.pojo.Locale and back. Introduce converter class.
-    private static java.util.Locale asStandardLocale(final Locale locale) {
-        return new java.util.Locale(locale.languageCode());
     }
 }

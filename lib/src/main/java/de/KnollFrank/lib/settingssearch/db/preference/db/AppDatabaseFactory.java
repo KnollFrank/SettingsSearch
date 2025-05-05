@@ -7,7 +7,7 @@ import androidx.room.Room;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.LocaleDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 
 public class AppDatabaseFactory {
 
@@ -50,12 +50,9 @@ public class AppDatabaseFactory {
     }
 
     private static void rememberCreationOfAppDatabaseForLocale(final Locale locale, final Context context) {
-        AppDatabaseFactory
-                .getLocaleDAO(context)
-                .persist(new de.KnollFrank.lib.settingssearch.db.preference.pojo.Locale(locale.getLanguage()));
-    }
-
-    private static LocaleDAO getLocaleDAO(final Context context) {
-        return LocaleDatabase.getInstance(context).localeDAO();
+        LocaleDatabase
+                .getInstance(context)
+                .localeDAO()
+                .persist(new LocaleConverter().doBackward(locale));
     }
 }

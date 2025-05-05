@@ -39,10 +39,10 @@ public class AppDatabaseFactoryTest {
     }
 
     private static void shouldRememberCreationOfAppDatabaseForLocale(final Locale locale) {
-        // When creating AppDatabase for languageCode
+        // When creating AppDatabase for language
         AppDatabaseFactory.getInstance(locale, ApplicationProvider.getApplicationContext());
 
-        // Then languageCode is remembered
+        // Then language is remembered
         final LocaleDAO localeDAO = LocaleDatabase.getInstance(ApplicationProvider.getApplicationContext()).localeDAO();
         assertThat(localeDAO.getLocales(), hasItem(new de.KnollFrank.lib.settingssearch.db.preference.pojo.Locale(locale.getLanguage())));
     }
