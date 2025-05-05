@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createSearchablePreferencePOJO;
 
+import android.content.Context;
+
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Test;
@@ -13,6 +15,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -21,9 +24,44 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 public class DatabasesResetterTest {
 
     @Test
-    public void shouldResetDatabase() {
+    public void shouldResetDatabases() {
         // Given
-        final AppDatabase appDatabase = AppDatabaseFactory.getInstance(Locale.GERMAN, ApplicationProvider.getApplicationContext());
+        final AppDatabase germanAppDatabase = getAppDatabase(Locale.GERMAN);
+        initialize(germanAppDatabase);
+
+        final AppDatabase chineseAppDatabase = getAppDatabase(Locale.CHINESE);
+        initialize(chineseAppDatabase);
+
+        // When
+        DatabasesResetter.resetDatabases(Set.of(germanAppDatabase, chineseAppDatabase));
+
+        // Then
+        assertIsReset(germanAppDatabase);
+        assertIsReset(chineseAppDatabase);
+    }
+
+    @Test
+    public void shouldResetAllDatabases() {
+        // Given
+        final AppDatabase germanAppDatabase = getAppDatabase(Locale.GERMAN);
+        initialize(germanAppDatabase);
+
+        final AppDatabase chineseAppDatabase = getAppDatabase(Locale.CHINESE);
+        initialize(chineseAppDatabase);
+
+        // When
+        DatabasesResetter.resetDatabases(ApplicationProvider.<Context>getApplicationContext());
+
+        // Then
+        assertIsReset(germanAppDatabase);
+        assertIsReset(chineseAppDatabase);
+    }
+
+    private static AppDatabase getAppDatabase(final Locale locale) {
+        return AppDatabaseFactory.getInstance(locale, ApplicationProvider.getApplicationContext());
+    }
+
+    private static void initialize(final AppDatabase appDatabase) {
         final SearchablePreference preference =
                 createSearchablePreferencePOJO(
                         "some preference",
@@ -31,11 +69,9 @@ public class DatabasesResetterTest {
                         Optional.empty());
         appDatabase.searchablePreferenceDAO().persist(preference);
         appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(true);
+    }
 
-        // When
-        DatabasesResetter.resetDatabase(appDatabase);
-
-        // Then
+    private static void assertIsReset(final AppDatabase appDatabase) {
         assertThat(appDatabase.searchablePreferenceDAO().loadAll(), is(empty()));
         assertThat(appDatabase.searchDatabaseStateDAO().isSearchDatabaseInitialized(), is(false));
     }

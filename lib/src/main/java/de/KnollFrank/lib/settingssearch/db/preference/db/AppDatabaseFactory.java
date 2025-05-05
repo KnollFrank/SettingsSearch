@@ -25,7 +25,6 @@ public class AppDatabaseFactory {
         localeSpecificAppDatabase.ifPresentOrElse(
                 _localeSpecificAppDatabase -> {
                     if (!_localeSpecificAppDatabase.locale().equals(locale)) {
-                        _localeSpecificAppDatabase.appDatabase().close();
                         localeSpecificAppDatabase = Optional.of(createLocaleSpecificAppDatabase(locale, context));
                     }
                 },
