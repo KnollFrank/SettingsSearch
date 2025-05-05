@@ -21,7 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 @RunWith(RobolectricTestRunner.class)
-public class DatabasesResetterTest {
+public class DatabaseResetterTest {
 
     @Test
     public void shouldResetDatabases() {
@@ -33,7 +33,7 @@ public class DatabasesResetterTest {
         initialize(chineseAppDatabase);
 
         // When
-        DatabasesResetter.resetDatabases(Set.of(germanAppDatabase, chineseAppDatabase));
+        DatabaseResetter.resetDatabases(Set.of(germanAppDatabase, chineseAppDatabase));
 
         // Then
         assertIsReset(germanAppDatabase);
@@ -50,7 +50,7 @@ public class DatabasesResetterTest {
         initialize(chineseAppDatabase);
 
         // When
-        DatabasesResetter.resetDatabases(ApplicationProvider.<Context>getApplicationContext());
+        DatabaseResetter.resetDatabases(ApplicationProvider.<Context>getApplicationContext());
 
         // Then
         assertIsReset(germanAppDatabase);
