@@ -15,7 +15,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
-import de.KnollFrank.lib.settingssearch.search.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceTest extends AppDatabaseTest {

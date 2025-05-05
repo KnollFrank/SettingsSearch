@@ -9,8 +9,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.db.preference.db.LocaleDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.Locale;
-import de.KnollFrank.lib.settingssearch.search.LocaleDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
 public class LocaleDAOTest extends LocaleDatabaseTest {

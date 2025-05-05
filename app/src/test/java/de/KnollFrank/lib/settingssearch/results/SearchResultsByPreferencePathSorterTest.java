@@ -16,8 +16,8 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.search.AppDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {

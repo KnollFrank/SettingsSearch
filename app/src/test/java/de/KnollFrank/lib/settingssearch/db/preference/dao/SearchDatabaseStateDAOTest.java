@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import de.KnollFrank.lib.settingssearch.search.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchDatabaseStateDAOTest extends AppDatabaseTest {

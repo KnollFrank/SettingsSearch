@@ -25,11 +25,11 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
-import de.KnollFrank.lib.settingssearch.search.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
