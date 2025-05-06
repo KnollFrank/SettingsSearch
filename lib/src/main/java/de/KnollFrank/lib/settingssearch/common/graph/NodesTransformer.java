@@ -6,9 +6,9 @@ import java.util.function.Function;
 
 public class NodesTransformer {
 
-    public static <V, W, E> Graph<W, E> transformNodes(
-            final Graph<V, E> graph,
-            final Function<V, W> transformNode,
+    public static <VSrc, VDst, E> Graph<VDst, E> transformNodes(
+            final Graph<VSrc, E> graph,
+            final Function<VSrc, VDst> transformNode,
             final Class<? extends E> edgeClass,
             final Function<E, E> cloneEdge) {
         return GraphTransformerAlgorithm.transform(
@@ -17,23 +17,23 @@ public class NodesTransformer {
                 transformNodes(transformNode, cloneEdge));
     }
 
-    private static <V, W, E> GraphTransformer<V, E, W, E> transformNodes(
-            final Function<V, W> transformNode,
+    private static <VSrc, VDst, E> GraphTransformer<VSrc, E, VDst, E> transformNodes(
+            final Function<VSrc, VDst> transformNode,
             final Function<E, E> cloneEdge) {
         return new GraphTransformer<>() {
 
             @Override
-            public W transformRootNode(final V rootNode) {
+            public VDst transformRootNode(final VSrc rootNode) {
                 return transformNode.apply(rootNode);
             }
 
             @Override
-            public W transformInnerNode(final V innerNode, final ContextOfInnerNode<E, W> contextOfInnerNode) {
+            public VDst transformInnerNode(final VSrc innerNode, final ContextOfInnerNode<E, VDst> contextOfInnerNode) {
                 return transformNode.apply(innerNode);
             }
 
             @Override
-            public E transformEdge(final E edge, final W transformedParentNode) {
+            public E transformEdge(final E edge, final VDst transformedParentNode) {
                 return cloneEdge.apply(edge);
             }
         };

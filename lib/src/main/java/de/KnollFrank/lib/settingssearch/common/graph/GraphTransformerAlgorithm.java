@@ -10,28 +10,28 @@ import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer.ContextOfI
 
 public class GraphTransformerAlgorithm {
 
-    public static <V1, E1, V2, E2> Graph<V2, E2> transform(
-            final Graph<V1, E1> graph,
-            final Class<? extends E2> transformedEdgeClass,
-            final GraphTransformer<V1, E1, V2, E2> graphTransformer) {
-        final Graph<V2, E2> transformedGraph = new DefaultDirectedGraph<>(transformedEdgeClass);
-        final BreadthFirstGraphVisitor<V1, E1> graphVisitor =
+    public static <VSrc, ESrc, VDst, EDst> Graph<VDst, EDst> transform(
+            final Graph<VSrc, ESrc> graph,
+            final Class<? extends EDst> transformedEdgeClass,
+            final GraphTransformer<VSrc, ESrc, VDst, EDst> graphTransformer) {
+        final Graph<VDst, EDst> transformedGraph = new DefaultDirectedGraph<>(transformedEdgeClass);
+        final BreadthFirstGraphVisitor<VSrc, ESrc> graphVisitor =
                 new BreadthFirstGraphVisitor<>() {
 
-                    private final Map<V1, V2> transformedNodeByNode = new HashMap<>();
+                    private final Map<VSrc, VDst> transformedNodeByNode = new HashMap<>();
 
                     @Override
-                    protected void visitRootNode(final V1 rootNode) {
-                        final V2 transformedRootNode = graphTransformer.transformRootNode(rootNode);
+                    protected void visitRootNode(final VSrc rootNode) {
+                        final VDst transformedRootNode = graphTransformer.transformRootNode(rootNode);
                         transformedNodeByNode.put(rootNode, transformedRootNode);
                         transformedGraph.addVertex(transformedRootNode);
                     }
 
                     @Override
-                    protected void visitInnerNode(final V1 innerNode, final V1 parentNode) {
-                        final V2 transformedParentNode = transformedNodeByNode.get(parentNode);
-                        final E1 edge = graph.getEdge(parentNode, innerNode);
-                        final V2 transformedInnerNode =
+                    protected void visitInnerNode(final VSrc innerNode, final VSrc parentNode) {
+                        final VDst transformedParentNode = transformedNodeByNode.get(parentNode);
+                        final ESrc edge = graph.getEdge(parentNode, innerNode);
+                        final VDst transformedInnerNode =
                                 graphTransformer.transformInnerNode(
                                         innerNode,
                                         new ContextOfInnerNode<>(edge, transformedParentNode));
