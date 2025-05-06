@@ -7,7 +7,6 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 
 class PreferenceSearcher {
 
-    // FK-TODO: SQL-Datenbank verwenden? (siehe Branch precompute-MergedPreferenceScreen-SQLite)
     private final SearchablePreferenceDAO searchablePreferenceDAO;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
 
