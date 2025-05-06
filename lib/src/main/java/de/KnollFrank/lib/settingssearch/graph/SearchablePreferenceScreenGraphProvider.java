@@ -62,14 +62,15 @@ public class SearchablePreferenceScreenGraphProvider {
     }
 
     private Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph() {
-        final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
-                new PreferenceScreenGraphProvider(
+        // FK-TODO: make PreferenceScreenGraphProvider an constructor parameter
+        return PreferenceScreenGraphProviderFactory
+                .createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         preferenceFragmentConnected2PreferenceProvider,
                         rootPreferenceFragmentOfActivityProvider,
-                        preferenceScreenGraphListener,
-                        context);
-        return preferenceScreenGraphProvider.getPreferenceScreenGraph(rootPreferenceFragmentClass);
+                        context,
+                        preferenceScreenGraphListener)
+                .getPreferenceScreenGraph(rootPreferenceFragmentClass);
     }
 
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformGraph2POJOGraph(

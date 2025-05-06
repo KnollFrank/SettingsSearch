@@ -22,17 +22,17 @@ public class PojoGraphTestFactory {
             final PreferenceFragmentCompat preferenceFragment,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
-        final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
-                new PreferenceScreenGraphProvider(
+        return PreferenceScreenGraphProviderFactory
+                .createPreferenceScreenGraphProvider(
                         new PreferenceScreenWithHostProvider(
                                 instantiateAndInitializeFragment,
                                 PreferenceFragmentCompat::getPreferenceScreen,
                                 new PrincipalAndProxyProvider(ImmutableBiMap.of())),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
+                        context,
                         preferenceScreenWithHost -> {
-                        },
-                        context);
-        return preferenceScreenGraphProvider.getPreferenceScreenGraph(preferenceFragment.getClass());
+                        })
+                .getPreferenceScreenGraph(preferenceFragment.getClass());
     }
 }
