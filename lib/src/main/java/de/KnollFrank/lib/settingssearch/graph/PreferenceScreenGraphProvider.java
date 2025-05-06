@@ -33,7 +33,6 @@ public class PreferenceScreenGraphProvider {
     private final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider;
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
     private final Context context;
-    private Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                          final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
@@ -48,17 +47,22 @@ public class PreferenceScreenGraphProvider {
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final Class<? extends Fragment> rootPreferenceFragmentClass) {
-        preferenceScreenGraph = PreferenceScreenGraphFactory.createEmptyPreferenceScreenGraph(preferenceScreenGraphListener);
-        buildPreferenceScreenGraph(
+        return getPreferenceScreenGraph(
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
                                 rootPreferenceFragmentClass,
                                 Optional.empty())
                         .orElseThrow());
+    }
+
+    public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
+        final var preferenceScreenGraph = PreferenceScreenGraphFactory.createEmptyPreferenceScreenGraph(preferenceScreenGraphListener);
+        buildPreferenceScreenGraph(root, preferenceScreenGraph);
         return preferenceScreenGraph;
     }
 
-    private void buildPreferenceScreenGraph(final PreferenceScreenWithHost root) {
+    private void buildPreferenceScreenGraph(final PreferenceScreenWithHost root,
+                                            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         if (preferenceScreenGraph.containsVertex(root)) {
             return;
         }
@@ -73,7 +77,7 @@ public class PreferenceScreenGraphProvider {
                 .getConnectedPreferenceScreenByPreference(root)
                 .forEach(
                         (preference, child) -> {
-                            buildPreferenceScreenGraph(child);
+                            buildPreferenceScreenGraph(child, preferenceScreenGraph);
                             preferenceScreenGraph.addVertex(child);
                             preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(preference));
                         });
