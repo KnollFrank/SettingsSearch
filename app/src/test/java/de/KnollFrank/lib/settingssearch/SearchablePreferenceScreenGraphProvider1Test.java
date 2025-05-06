@@ -38,6 +38,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -115,15 +116,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity);
         return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragmentClass,
-                new PreferenceScreenWithHostProvider(
-                        instantiateAndInitializeFragment,
-                        PreferenceFragmentCompat::getPreferenceScreen,
-                        new PrincipalAndProxyProvider(ImmutableBiMap.of())),
-                (preference, hostOfPreference) -> Optional.empty(),
-                classNameOfActivity -> Optional.empty(),
                 preferenceScreenGraph -> {
-                },
-                preferenceScreenWithHost -> {
                 },
                 emptyComputePreferencesListener(),
                 new Preference2SearchablePreferenceConverter(
@@ -132,7 +125,16 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                 preference -> Optional.empty(),
                                 (preference, hostOfPreference) -> Optional.empty()),
                         IdGeneratorFactory.createIdGeneratorStartingAt(1)),
-                activity);
+                PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                        new PreferenceScreenWithHostProvider(
+                                instantiateAndInitializeFragment,
+                                PreferenceFragmentCompat::getPreferenceScreen,
+                                new PrincipalAndProxyProvider(ImmutableBiMap.of())),
+                        (preference, hostOfPreference) -> Optional.empty(),
+                        classNameOfActivity -> Optional.empty(),
+                        activity,
+                        preferenceScreenWithHost -> {
+                        }));
     }
 
     private static SearchablePreference getPreference(

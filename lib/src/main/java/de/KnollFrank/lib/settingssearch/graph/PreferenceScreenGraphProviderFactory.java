@@ -6,7 +6,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
-class PreferenceScreenGraphProviderFactory {
+public class PreferenceScreenGraphProviderFactory {
 
     public static PreferenceScreenGraphProvider createPreferenceScreenGraphProvider(
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,

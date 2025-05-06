@@ -29,6 +29,7 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
@@ -71,24 +72,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                         });
         return new SearchablePreferenceScreenGraphProvider(
                 preferenceFragment.getClass(),
-                new PreferenceScreenWithHostProvider(
-                        new Fragments(
-                                new FragmentFactoryAndInitializerWithCache(
-                                        new FragmentFactoryAndInitializer(
-                                                createFragmentFactoryReturning(preferenceFragment),
-                                                FragmentInitializerFactory.createFragmentInitializer(
-                                                        fragmentActivity,
-                                                        TestActivity.FRAGMENT_CONTAINER_VIEW))),
-                                fragmentActivity),
-                        new SearchablePreferenceScreenProvider(
-                                new PreferenceVisibleAndSearchablePredicate(
-                                        (preference, hostOfPreference) -> true)),
-                        new PrincipalAndProxyProvider(ImmutableBiMap.of())),
-                (preference, hostOfPreference) -> Optional.empty(),
-                activityClass -> Optional.empty(),
                 preferenceScreenGraph -> {
-                },
-                preferenceScreenWithHost -> {
                 },
                 computePreferencesListener,
                 new Preference2SearchablePreferenceConverter(
@@ -101,6 +85,24 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                                 TestActivity.FRAGMENT_CONTAINER_VIEW),
                                         (preference, hostOfPreference) -> Optional.empty())),
                         IdGeneratorFactory.createIdGeneratorStartingAt(1)),
-                fragmentActivity);
+                PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                        new PreferenceScreenWithHostProvider(
+                                new Fragments(
+                                        new FragmentFactoryAndInitializerWithCache(
+                                                new FragmentFactoryAndInitializer(
+                                                        createFragmentFactoryReturning(preferenceFragment),
+                                                        FragmentInitializerFactory.createFragmentInitializer(
+                                                                fragmentActivity,
+                                                                TestActivity.FRAGMENT_CONTAINER_VIEW))),
+                                        fragmentActivity),
+                                new SearchablePreferenceScreenProvider(
+                                        new PreferenceVisibleAndSearchablePredicate(
+                                                (preference1, hostOfPreference1) -> true)),
+                                new PrincipalAndProxyProvider(ImmutableBiMap.of())),
+                        (preference, hostOfPreference) -> Optional.empty(),
+                        activityClass -> Optional.empty(),
+                        fragmentActivity,
+                        preferenceScreenWithHost -> {
+                        }));
     }
 }

@@ -25,6 +25,7 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
@@ -84,27 +85,28 @@ public class MergedPreferenceScreenDataRepository {
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
         return new SearchablePreferenceScreenGraphProvider(
                 searchDatabaseConfig.rootPreferenceFragment,
-                new PreferenceScreenWithHostProvider(
-                        instantiateAndInitializeFragment,
-                        new SearchablePreferenceScreenProvider(
-                                new PreferenceVisibleAndSearchablePredicate(
-                                        searchDatabaseConfig.preferenceSearchablePredicate)),
-                        principalAndProxyProvider),
-                searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
-                searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,
-                new PreferenceScreenGraphListener() {
-
-                    @Override
-                    public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
-                        progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
-                    }
-                },
                 searchDatabaseConfig.computePreferencesListener,
                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                         searchDatabaseConfig,
                         preferenceDialogs,
                         IdGeneratorFactory.createIdGeneratorStartingAt(1)),
-                context);
+                PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                        new PreferenceScreenWithHostProvider(
+                                instantiateAndInitializeFragment,
+                                new SearchablePreferenceScreenProvider(
+                                        new PreferenceVisibleAndSearchablePredicate(
+                                                searchDatabaseConfig.preferenceSearchablePredicate)),
+                                principalAndProxyProvider),
+                        searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
+                        searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
+                        context,
+                        new PreferenceScreenGraphListener() {
+
+                            @Override
+                            public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
+                                progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
+                            }
+                        }));
     }
 }

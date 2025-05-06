@@ -58,6 +58,7 @@ import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
@@ -725,29 +726,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 new SearchablePreferenceScreenGraphProvider(
                         preferenceFragment.getClass(),
-                        new PreferenceScreenWithHostProvider(
-                                instantiateAndInitializeFragment,
-                                new SearchablePreferenceScreenProvider(
-                                        new PreferenceVisibleAndSearchablePredicate(
-                                                preferenceSearchablePredicate)),
-                                principalAndProxyProvider),
-                        preferenceFragmentConnected2PreferenceProvider,
-                        new RootPreferenceFragmentOfActivityProvider() {
-
-                            @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
-                                if (SettingsActivity.class.equals(activityClass)) {
-                                    return Optional.of(SettingsFragment.class);
-                                }
-                                if (SettingsActivity2.class.equals(activityClass)) {
-                                    return Optional.of(SettingsActivity2.SettingsFragment2.class);
-                                }
-                                return Optional.empty();
-                            }
-                        },
                         preferenceScreenGraph -> {
-                        },
-                        preferenceScreenWithHost -> {
                         },
                         computePreferencesListener,
                         new Preference2SearchablePreferenceConverter(
@@ -760,7 +739,30 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                                         TestActivity.FRAGMENT_CONTAINER_VIEW),
                                                 preferenceDialogAndSearchableInfoProvider)),
                                 IdGeneratorFactory.createIdGeneratorStartingAt(1)),
-                        fragmentActivity);
+                        PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                                new PreferenceScreenWithHostProvider(
+                                        instantiateAndInitializeFragment,
+                                        new SearchablePreferenceScreenProvider(
+                                                new PreferenceVisibleAndSearchablePredicate(
+                                                        preferenceSearchablePredicate)),
+                                        principalAndProxyProvider),
+                                preferenceFragmentConnected2PreferenceProvider,
+                                new RootPreferenceFragmentOfActivityProvider() {
+
+                                    @Override
+                                    public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
+                                        if (SettingsActivity.class.equals(activityClass)) {
+                                            return Optional.of(SettingsFragment.class);
+                                        }
+                                        if (SettingsActivity2.class.equals(activityClass)) {
+                                            return Optional.of(SettingsActivity2.SettingsFragment2.class);
+                                        }
+                                        return Optional.empty();
+                                    }
+                                },
+                                fragmentActivity,
+                                preferenceScreenWithHost -> {
+                                }));
         searchablePreferenceDAO.persist(
                 PojoGraphs.getPreferences(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()));
