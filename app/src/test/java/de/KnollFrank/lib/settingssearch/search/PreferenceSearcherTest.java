@@ -112,12 +112,12 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
     @Test
     public void shouldSearchAndFindPreference_includePreferenceInSearchResults() {
         final String keyword = "fourth";
-        final String keyOfPreference = "fourthfile";
+        final String keyOfPreferenceToIncludeInSearchResults = "fourthfile";
         final PreferenceFragmentCompat preferenceFragment =
                 PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CheckBoxPreference preference = new CheckBoxPreference(context);
-                            preference.setKey(keyOfPreference);
+                            preference.setKey(keyOfPreferenceToIncludeInSearchResults);
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         });
@@ -127,8 +127,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreference preference1) {
-                        return keyOfPreference.equals(preference1.getKey()) && preferenceFragment.getClass().equals(preference1.getHost());
+                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
+                        return keyOfPreferenceToIncludeInSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost());
                     }
                 },
                 keyword,
@@ -138,19 +138,19 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
-                                hasItem(keyOfPreference)),
+                                hasItem(keyOfPreferenceToIncludeInSearchResults)),
                 appDatabase.searchablePreferenceDAO());
     }
 
     @Test
     public void shouldSearchAndFindPreference_excludePreferenceFromSearchResults() {
         final String keyword = "fourth";
-        final String keyOfPreference = "fourthfile";
+        final String keyOfPreferenceToExcludeFromSearchResults = "fourthfile";
         final PreferenceFragmentCompat preferenceFragment =
                 PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
                             final CheckBoxPreference preference = new CheckBoxPreference(context);
-                            preference.setKey(keyOfPreference);
+                            preference.setKey(keyOfPreferenceToExcludeFromSearchResults);
                             preference.setTitle(String.format("Checkbox %s file", keyword));
                             return preference;
                         });
@@ -160,8 +160,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreference preference1) {
-                        return !(keyOfPreference.equals(preference1.getKey()) && preferenceFragment.getClass().equals(preference1.getHost()));
+                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
+                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost()));
                     }
                 },
                 keyword,
@@ -171,7 +171,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 preferenceMatches ->
                         assertThat(
                                 getKeySet(preferenceMatches),
-                                not(hasItem(keyOfPreference))),
+                                not(hasItem(keyOfPreferenceToExcludeFromSearchResults))),
                 appDatabase.searchablePreferenceDAO());
     }
 
