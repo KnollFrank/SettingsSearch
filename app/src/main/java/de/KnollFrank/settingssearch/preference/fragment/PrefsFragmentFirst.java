@@ -118,6 +118,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         return checkBoxPreference;
     }
 
+    // FK-TODO: add unit test which searches for changed summary
     private void configureSummaryChangingPreference() {
         final SwitchPreference summaryChangingPreference = getPreferenceScreen().findPreference("summaryChangingPreference");
         summaryChangingPreference.setSummary(getSummary(summaryChangingPreference.isChecked()));
