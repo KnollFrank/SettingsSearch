@@ -183,7 +183,8 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndNotFindNonAddedPreference() {
-        uncheckCheckBoxExplicitly(26, ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
+        final int positionOfAddPreferenceToP1CheckBox = 26;
+        uncheckCheckBoxExplicitly(positionOfAddPreferenceToP1CheckBox, ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
@@ -191,7 +192,8 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFindAddedPreference() {
-        checkCheckBoxExplicitly(26, ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
+        final int positionOfAddPreferenceToP1CheckBox = 26;
+        checkCheckBoxExplicitly(positionOfAddPreferenceToP1CheckBox, ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
@@ -200,7 +202,8 @@ public class PreferenceSearchExampleTest {
     @Test
     public void shouldSearchAndFindSummaryChangingPreferenceIsON() {
         final boolean checked = true;
-        checkCheckBoxExplicitly(11, SUMMARY_CHANGING_PREFERENCE_KEY);
+        final int positionOfSummaryChangingPreferenceCheckBox = 11;
+        checkCheckBoxExplicitly(positionOfSummaryChangingPreferenceCheckBox, SUMMARY_CHANGING_PREFERENCE_KEY);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
@@ -209,7 +212,8 @@ public class PreferenceSearchExampleTest {
     @Test
     public void shouldSearchAndFindSummaryChangingPreferenceIsOFF() {
         final boolean checked = false;
-        uncheckCheckBoxExplicitly(11, SUMMARY_CHANGING_PREFERENCE_KEY);
+        final int positionOfSummaryChangingPreferenceCheckBox = 11;
+        uncheckCheckBoxExplicitly(positionOfSummaryChangingPreferenceCheckBox, SUMMARY_CHANGING_PREFERENCE_KEY);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
