@@ -23,6 +23,7 @@ import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItemCount;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.SOME_ADDITIONAL_PREFERENCE;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY;
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.SUMMARY_CHANGING_PREFERENCE_KEY;
 
 import android.content.SharedPreferences;
 import android.view.View;
@@ -182,7 +183,7 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndNotFindNonAddedPreference() {
-        uncheckAddPreferenceToP1CheckBoxExplicitly();
+        uncheckCheckBoxExplicitly(26, ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
@@ -190,10 +191,28 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFindAddedPreference() {
-        checkAddPreferenceToP1CheckBoxExplicitly();
+        checkCheckBoxExplicitly(26, ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
+    }
+
+    @Test
+    public void shouldSearchAndFindSummaryChangingPreferenceIsON() {
+        final boolean checked = true;
+        checkCheckBoxExplicitly(11, SUMMARY_CHANGING_PREFERENCE_KEY);
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
+        onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
+    }
+
+    @Test
+    public void shouldSearchAndFindSummaryChangingPreferenceIsOFF() {
+        final boolean checked = false;
+        uncheckCheckBoxExplicitly(11, SUMMARY_CHANGING_PREFERENCE_KEY);
+        onView(searchButton()).perform(click());
+        onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
+        onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
     }
 
     private static ViewInteraction preferencesContainer() {
@@ -274,30 +293,30 @@ public class PreferenceSearchExampleTest {
                 isDisplayed());
     }
 
-    private void checkAddPreferenceToP1CheckBoxExplicitly() {
-        uncheckAddPreferenceToP1CheckBox();
-        checkAddPreferenceToP1CheckBox();
+    private void checkCheckBoxExplicitly(final int positionOfCheckBox, final String key) {
+        uncheckCheckBox(positionOfCheckBox, key);
+        checkCheckBox(positionOfCheckBox, key);
     }
 
-    private void uncheckAddPreferenceToP1CheckBoxExplicitly() {
-        checkAddPreferenceToP1CheckBox();
-        uncheckAddPreferenceToP1CheckBox();
+    private void uncheckCheckBoxExplicitly(final int positionOfCheckBox, final String key) {
+        checkCheckBox(positionOfCheckBox, key);
+        uncheckCheckBox(positionOfCheckBox, key);
     }
 
-    private void checkAddPreferenceToP1CheckBox() {
-        if (!isAddPreferenceToP1CheckBoxChecked()) {
-            clickAddPreferenceToP1CheckBox();
+    private void checkCheckBox(final int positionOfCheckBox, final String key) {
+        if (!isCheckBoxChecked(key)) {
+            clickCheckBox(positionOfCheckBox);
         }
     }
 
-    private void uncheckAddPreferenceToP1CheckBox() {
-        if (isAddPreferenceToP1CheckBoxChecked()) {
-            clickAddPreferenceToP1CheckBox();
+    private void uncheckCheckBox(final int positionOfCheckBox, final String key) {
+        if (isCheckBoxChecked(key)) {
+            clickCheckBox(positionOfCheckBox);
         }
     }
 
-    private boolean isAddPreferenceToP1CheckBoxChecked() {
-        return getSharedPreferences().getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, false);
+    private boolean isCheckBoxChecked(final String key) {
+        return getSharedPreferences().getBoolean(key, false);
     }
 
     private SharedPreferences getSharedPreferences() {
@@ -306,8 +325,7 @@ public class PreferenceSearchExampleTest {
         return Objects.requireNonNull(sharedPreferencesHolder[0]);
     }
 
-    private static void clickAddPreferenceToP1CheckBox() {
-        final int positionOfAddPreferenceToP1CheckBox = 26;
-        preferencesContainer().perform(actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
+    private static void clickCheckBox(final int positionOfCheckBox) {
+        preferencesContainer().perform(actionOnItemAtPosition(positionOfCheckBox, click()));
     }
 }

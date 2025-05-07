@@ -49,6 +49,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     private static final String KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER = "keyOfPreferenceWithOnPreferenceClickListener";
     public static final String SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS = "summary of src preference with extras";
     public static final String SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS = "summary of src preference without extras";
+    public static final String SUMMARY_CHANGING_PREFERENCE_KEY = "summaryChangingPreference";
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -118,9 +119,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         return checkBoxPreference;
     }
 
-    // FK-TODO: add unit test which searches for changed summary
     private void configureSummaryChangingPreference() {
-        final SwitchPreference summaryChangingPreference = getPreferenceScreen().findPreference("summaryChangingPreference");
+        final SwitchPreference summaryChangingPreference = getPreferenceScreen().findPreference(SUMMARY_CHANGING_PREFERENCE_KEY);
         summaryChangingPreference.setSummary(getSummary(summaryChangingPreference.isChecked()));
         summaryChangingPreference.setOnPreferenceChangeListener(
                 new Preference.OnPreferenceChangeListener() {
@@ -152,7 +152,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 .orElseThrow();
     }
 
-    private static String getSummary(final boolean checked) {
+    public static String getSummary(final boolean checked) {
         return checked ?
                 "summaryChangingPreference is ON" :
                 "summaryChangingPreference is OFF";
