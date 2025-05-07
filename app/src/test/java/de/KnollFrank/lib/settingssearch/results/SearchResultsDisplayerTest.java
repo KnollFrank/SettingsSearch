@@ -137,7 +137,6 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
         }
     }
 
-    // FK-TODO: replace usages of TestActivity with FragmentActivity
     private static SearchResultsFragment getInitializedSearchResultsFragment(final FragmentActivity activity) {
         final SearchResultsFragment searchResultsFragment =
                 new SearchResultsFragment(

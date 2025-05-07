@@ -5,6 +5,7 @@ import static org.mockito.Mockito.verify;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.createFragmentFactoryReturning;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.test.core.app.ActivityScenario;
 
@@ -61,7 +62,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
 
     private static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
             final ComputePreferencesListener computePreferencesListener,
-            final TestActivity fragmentActivity) {
+            final FragmentActivity fragmentActivity) {
         final Fragment preferenceFragment =
                 PreferenceFragmentFactory.fromSinglePreference(
                         context -> {
