@@ -10,6 +10,7 @@ import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.matcher.BoundedMatcher;
@@ -136,7 +137,8 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
         }
     }
 
-    private static SearchResultsFragment getInitializedSearchResultsFragment(final TestActivity activity) {
+    // FK-TODO: replace usages of TestActivity with FragmentActivity
+    private static SearchResultsFragment getInitializedSearchResultsFragment(final FragmentActivity activity) {
         final SearchResultsFragment searchResultsFragment =
                 new SearchResultsFragment(
                         preferencePathPointer -> {

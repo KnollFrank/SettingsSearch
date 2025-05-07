@@ -19,7 +19,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 
-// FK-TODO: replace usages of ActivityScenario with ApplicationProvider.getApplicationContext() in multiple test classes
 @RunWith(RobolectricTestRunner.class)
 public class PreferenceMatchesHighlighterTest {
 
