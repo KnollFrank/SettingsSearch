@@ -297,25 +297,25 @@ public class PreferenceSearchExampleTest {
                 isDisplayed());
     }
 
-    private void checkCheckBoxExplicitly(final int positionOfCheckBox, final String key) {
-        uncheckCheckBox(positionOfCheckBox, key);
-        checkCheckBox(positionOfCheckBox, key);
+    private void checkCheckBoxExplicitly(final int position, final String key) {
+        uncheckCheckBox(position, key);
+        checkCheckBox(position, key);
     }
 
-    private void uncheckCheckBoxExplicitly(final int positionOfCheckBox, final String key) {
-        checkCheckBox(positionOfCheckBox, key);
-        uncheckCheckBox(positionOfCheckBox, key);
+    private void uncheckCheckBoxExplicitly(final int position, final String key) {
+        checkCheckBox(position, key);
+        uncheckCheckBox(position, key);
     }
 
-    private void checkCheckBox(final int positionOfCheckBox, final String key) {
+    private void checkCheckBox(final int position, final String key) {
         if (!isCheckBoxChecked(key)) {
-            clickCheckBox(positionOfCheckBox);
+            clickCheckBox(position);
         }
     }
 
-    private void uncheckCheckBox(final int positionOfCheckBox, final String key) {
+    private void uncheckCheckBox(final int position, final String key) {
         if (isCheckBoxChecked(key)) {
-            clickCheckBox(positionOfCheckBox);
+            clickCheckBox(position);
         }
     }
 
@@ -329,7 +329,7 @@ public class PreferenceSearchExampleTest {
         return Objects.requireNonNull(sharedPreferencesHolder[0]);
     }
 
-    private static void clickCheckBox(final int positionOfCheckBox) {
-        preferencesContainer().perform(actionOnItemAtPosition(positionOfCheckBox, click()));
+    private static void clickCheckBox(final int position) {
+        preferencesContainer().perform(actionOnItemAtPosition(position, click()));
     }
 }
