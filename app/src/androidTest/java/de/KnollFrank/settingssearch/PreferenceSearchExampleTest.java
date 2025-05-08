@@ -180,7 +180,7 @@ public class PreferenceSearchExampleTest {
     @Test
     public void shouldSearchAndNotFindNonAddedPreference() {
         final int positionOfAddPreferenceToP1CheckBox = 26;
-        uncheckCheckBoxExplicitly(positionOfAddPreferenceToP1CheckBox, ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
+        uncheckCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, positionOfAddPreferenceToP1CheckBox);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
@@ -189,7 +189,7 @@ public class PreferenceSearchExampleTest {
     @Test
     public void shouldSearchAndFindAddedPreference() {
         final int positionOfAddPreferenceToP1CheckBox = 26;
-        checkCheckBoxExplicitly(positionOfAddPreferenceToP1CheckBox, ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
+        checkCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, positionOfAddPreferenceToP1CheckBox);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
@@ -199,7 +199,7 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFindSummaryChangingPreferenceIsON() {
         final boolean checked = true;
         final int positionOfSummaryChangingPreferenceCheckBox = 11;
-        checkCheckBoxExplicitly(positionOfSummaryChangingPreferenceCheckBox, SUMMARY_CHANGING_PREFERENCE_KEY);
+        checkCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, positionOfSummaryChangingPreferenceCheckBox);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
@@ -209,7 +209,7 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFindSummaryChangingPreferenceIsOFF() {
         final boolean checked = false;
         final int positionOfSummaryChangingPreferenceCheckBox = 11;
-        uncheckCheckBoxExplicitly(positionOfSummaryChangingPreferenceCheckBox, SUMMARY_CHANGING_PREFERENCE_KEY);
+        uncheckCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, positionOfSummaryChangingPreferenceCheckBox);
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
@@ -284,16 +284,16 @@ public class PreferenceSearchExampleTest {
                 isDisplayed());
     }
 
-    private void checkCheckBoxExplicitly(final int position, final String key) {
-        createCheckBoxHandler(position, key).checkCheckBoxExplicitly();
+    private void checkCheckBoxExplicitly(final String key, final int position) {
+        createCheckBoxHandler(key, position).checkCheckBoxExplicitly();
     }
 
-    private void uncheckCheckBoxExplicitly(final int position, final String key) {
-        createCheckBoxHandler(position, key).uncheckCheckBoxExplicitly();
+    private void uncheckCheckBoxExplicitly(final String key, final int position) {
+        createCheckBoxHandler(key, position).uncheckCheckBoxExplicitly();
     }
 
-    private static CheckBoxHandler createCheckBoxHandler(final int position, final String key) {
-        return CheckBoxHandler.of(position, key, preferencesContainer());
+    private static CheckBoxHandler createCheckBoxHandler(final String key, final int position) {
+        return CheckBoxHandler.of(key, preferencesContainer(), position);
     }
 
     private static ViewInteraction preferencesContainer() {

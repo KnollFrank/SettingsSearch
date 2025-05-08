@@ -11,9 +11,9 @@ import androidx.test.espresso.ViewInteraction;
 
 abstract class CheckBoxHandler {
 
-    public static CheckBoxHandler of(final int position,
-                                     final String key,
-                                     final ViewInteraction preferencesContainer) {
+    public static CheckBoxHandler of(final String key,
+                                     final ViewInteraction preferencesContainer,
+                                     final int position) {
         return new CheckBoxHandler() {
 
             @Override
