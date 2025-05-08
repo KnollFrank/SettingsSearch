@@ -215,15 +215,6 @@ public class PreferenceSearchExampleTest {
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
     }
 
-    private static ViewInteraction preferencesContainer() {
-        return onView(
-                allOf(
-                        withId(androidx.preference.R.id.recycler_view),
-                        childAtPosition(
-                                withId(android.R.id.list_container),
-                                0)));
-    }
-
     private static void searchForQueryThenClickSearchResultAtPosition(final String query, final int position) {
         onView(searchButton()).perform(click());
         onView(searchView()).perform(replaceText(query), closeSoftKeyboard());
@@ -294,10 +285,23 @@ public class PreferenceSearchExampleTest {
     }
 
     private void checkCheckBoxExplicitly(final int position, final String key) {
-        new CheckBoxHandler(position, key, preferencesContainer()).checkCheckBoxExplicitly();
+        createCheckBoxHandler(position, key).checkCheckBoxExplicitly();
     }
 
     private void uncheckCheckBoxExplicitly(final int position, final String key) {
-        new CheckBoxHandler(position, key, preferencesContainer()).uncheckCheckBoxExplicitly();
+        createCheckBoxHandler(position, key).uncheckCheckBoxExplicitly();
+    }
+
+    private static CheckBoxHandler createCheckBoxHandler(final int position, final String key) {
+        return CheckBoxHandler.of(position, key, preferencesContainer());
+    }
+
+    private static ViewInteraction preferencesContainer() {
+        return onView(
+                allOf(
+                        withId(androidx.preference.R.id.recycler_view),
+                        childAtPosition(
+                                withId(android.R.id.list_container),
+                                0)));
     }
 }

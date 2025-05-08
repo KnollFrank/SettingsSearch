@@ -9,16 +9,27 @@ import androidx.preference.PreferenceManager;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
 
-class CheckBoxHandler {
+abstract class CheckBoxHandler {
 
-    private final int position;
-    private final String key;
-    private final ViewInteraction preferencesContainer;
+    public static CheckBoxHandler of(final int position,
+                                     final String key,
+                                     final ViewInteraction preferencesContainer) {
+        return new CheckBoxHandler() {
 
-    public CheckBoxHandler(final int position, final String key, final ViewInteraction preferencesContainer) {
-        this.position = position;
-        this.key = key;
-        this.preferencesContainer = preferencesContainer;
+            @Override
+            protected boolean isCheckBoxChecked() {
+                return getSharedPreferences().getBoolean(key, false);
+            }
+
+            @Override
+            protected void clickCheckBox() {
+                preferencesContainer.perform(actionOnItemAtPosition(position, click()));
+            }
+
+            private static SharedPreferences getSharedPreferences() {
+                return PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
+            }
+        };
     }
 
     public void checkCheckBoxExplicitly() {
@@ -43,15 +54,7 @@ class CheckBoxHandler {
         }
     }
 
-    private boolean isCheckBoxChecked() {
-        return getSharedPreferences().getBoolean(key, false);
-    }
+    protected abstract boolean isCheckBoxChecked();
 
-    private SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
-    }
-
-    private void clickCheckBox() {
-        preferencesContainer.perform(actionOnItemAtPosition(position, click()));
-    }
+    protected abstract void clickCheckBox();
 }
