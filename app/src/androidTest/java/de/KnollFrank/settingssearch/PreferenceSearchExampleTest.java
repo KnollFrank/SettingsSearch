@@ -25,10 +25,8 @@ import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmen
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.SUMMARY_CHANGING_PREFERENCE_KEY;
 
-import android.content.SharedPreferences;
 import android.view.View;
 
-import androidx.preference.PreferenceManager;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -39,8 +37,6 @@ import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Objects;
 
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
@@ -298,38 +294,10 @@ public class PreferenceSearchExampleTest {
     }
 
     private void checkCheckBoxExplicitly(final int position, final String key) {
-        uncheckCheckBox(position, key);
-        checkCheckBox(position, key);
+        new CheckBoxHandler(position, key, preferencesContainer()).checkCheckBoxExplicitly();
     }
 
     private void uncheckCheckBoxExplicitly(final int position, final String key) {
-        checkCheckBox(position, key);
-        uncheckCheckBox(position, key);
-    }
-
-    private void checkCheckBox(final int position, final String key) {
-        if (!isCheckBoxChecked(key)) {
-            clickCheckBox(position);
-        }
-    }
-
-    private void uncheckCheckBox(final int position, final String key) {
-        if (isCheckBoxChecked(key)) {
-            clickCheckBox(position);
-        }
-    }
-
-    private boolean isCheckBoxChecked(final String key) {
-        return getSharedPreferences().getBoolean(key, false);
-    }
-
-    private SharedPreferences getSharedPreferences() {
-        final SharedPreferences[] sharedPreferencesHolder = new SharedPreferences[1];
-        activityScenarioRule.getScenario().onActivity(activity -> sharedPreferencesHolder[0] = PreferenceManager.getDefaultSharedPreferences(activity));
-        return Objects.requireNonNull(sharedPreferencesHolder[0]);
-    }
-
-    private static void clickCheckBox(final int position) {
-        preferencesContainer().perform(actionOnItemAtPosition(position, click()));
+        new CheckBoxHandler(position, key, preferencesContainer()).uncheckCheckBoxExplicitly();
     }
 }
