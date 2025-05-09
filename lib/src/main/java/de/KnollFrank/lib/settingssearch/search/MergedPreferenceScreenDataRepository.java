@@ -74,6 +74,7 @@ public class MergedPreferenceScreenDataRepository {
     }
 
     private Set<SearchablePreference> computePreferences() {
+        // FK-TODO: return this graph and persist it using SearchablePreferenceScreenGraphDAO
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()

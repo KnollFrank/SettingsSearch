@@ -93,7 +93,7 @@ public final class SearchablePreferenceScreen {
         return allPreferences.orElseGet(this::getAllPreferencesFromDao);
     }
 
-    // FK-TODO: return Set instead of List
+    // FK-TODO: remove getChildren() and dependent classes and variables
     public List<SearchablePreferenceScreen> getChildren() {
         return dao
                 .orElseThrow()

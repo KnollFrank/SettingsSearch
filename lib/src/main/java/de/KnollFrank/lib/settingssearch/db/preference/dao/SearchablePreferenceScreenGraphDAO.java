@@ -18,13 +18,27 @@ public class SearchablePreferenceScreenGraphDAO {
 
     public void persist(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
         searchablePreferenceScreenDAO.persist(graph.vertexSet());
-        // FK-TODO: persist edges
     }
 
+    // FK-TODO: refactor
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
         final List<SearchablePreferenceScreen> searchablePreferenceScreens = searchablePreferenceScreenDAO.loadAll();
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = new DefaultDirectedGraph<>(SearchablePreferenceEdge.class);
         searchablePreferenceScreens.forEach(graph::addVertex);
+        searchablePreferenceScreens.forEach(targetScreen ->
+                targetScreen
+                        .getAllPreferences()
+                        .forEach(targetPreference ->
+                                targetPreference
+                                        .getPredecessor()
+                                        .ifPresent(sourcePreference ->
+                                                searchablePreferenceScreenDAO
+                                                        .findSearchablePreferenceScreenById(sourcePreference.getSearchablePreferenceScreenId())
+                                                        .ifPresent(sourceScreen ->
+                                                                graph.addEdge(
+                                                                        sourceScreen,
+                                                                        targetScreen,
+                                                                        new SearchablePreferenceEdge(sourcePreference))))));
         return graph;
     }
 }

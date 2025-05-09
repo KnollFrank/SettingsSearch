@@ -45,6 +45,11 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
         invalidateCaches();
     }
 
+    // FK-TODO: unit test findSearchablePreferenceScreenById()
+    public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(final int id) {
+        return daoSetter.setDao(_findSearchablePreferenceScreenById(id));
+    }
+
     public List<SearchablePreferenceScreen> loadAll() {
         return daoSetter.setDao(_loadAll());
     }
@@ -82,6 +87,9 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceScreen")
     protected abstract List<SearchablePreferenceScreenAndChildren> _getSearchablePreferenceScreenAndChildren();
+
+    @Query("SELECT * FROM SearchablePreferenceScreen WHERE id = :id")
+    protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final int id);
 
     private void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();
