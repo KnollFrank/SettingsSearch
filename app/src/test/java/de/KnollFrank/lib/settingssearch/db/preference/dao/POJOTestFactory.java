@@ -63,7 +63,6 @@ public class POJOTestFactory {
                 host,
                 parentId,
                 predecessorId,
-                // FK-FIXME: -1
                 -1);
     }
 
@@ -87,7 +86,6 @@ public class POJOTestFactory {
                 host,
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
-                // FK-FIXME: -1
                 -1);
     }
 
@@ -132,7 +130,6 @@ public class POJOTestFactory {
                 host,
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
-                // FK-FIXME: -1
                 -1);
     }
 
