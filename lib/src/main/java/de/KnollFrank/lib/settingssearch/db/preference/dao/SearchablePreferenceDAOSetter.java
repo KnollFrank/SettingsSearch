@@ -17,9 +17,9 @@ class SearchablePreferenceDAOSetter {
         this.dao = dao;
     }
 
-    public Optional<SearchablePreference> setDao(final Optional<SearchablePreference> searchablePreferencePOJO) {
-        searchablePreferencePOJO.ifPresent(this::setDao);
-        return searchablePreferencePOJO;
+    public Optional<SearchablePreference> setDao(final Optional<SearchablePreference> searchablePreference) {
+        searchablePreference.ifPresent(this::setDao);
+        return searchablePreference;
     }
 
     public List<PreferenceAndPredecessor> _setDao(final List<PreferenceAndPredecessor> preferenceAndPredecessors) {
