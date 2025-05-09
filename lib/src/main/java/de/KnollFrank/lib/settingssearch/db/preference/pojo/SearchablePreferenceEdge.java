@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class SearchablePreferenceEdge extends DefaultEdge {
 
@@ -27,6 +28,10 @@ public class SearchablePreferenceEdge extends DefaultEdge {
 
     @Override
     public String toString() {
-        return "(" + getSource() + " : " + getTarget() + " : " + preference + ")";
+        return new StringJoiner(", ", SearchablePreferenceEdge.class.getSimpleName() + "[", "]")
+                .add("source=" + getSource())
+                .add("target=" + getTarget())
+                .add("preference=" + preference)
+                .toString();
     }
 }
