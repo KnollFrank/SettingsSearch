@@ -83,6 +83,10 @@ public final class SearchablePreferenceScreen {
         return allPreferences.orElseGet(this::getAllPreferencesFromDao);
     }
 
+    public List<SearchablePreferenceScreen> getChildren() {
+        return null;
+    }
+
     private Set<SearchablePreference> getAllPreferencesFromDao() {
         return dao
                 .orElseThrow()
