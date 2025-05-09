@@ -65,6 +65,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
     @Insert
     protected abstract void _persist(SearchablePreferenceScreen searchablePreferenceScreen);
 
+    // FK-TODO: return Set instead of List? dito other methods in other DAOs
     @Query("SELECT * FROM SearchablePreferenceScreen")
     protected abstract List<SearchablePreferenceScreen> _loadAll();
 
