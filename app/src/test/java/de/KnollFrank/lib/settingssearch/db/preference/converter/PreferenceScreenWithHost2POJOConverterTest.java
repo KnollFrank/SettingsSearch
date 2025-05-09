@@ -63,6 +63,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                                 getPreferenceScreen(preferenceFragment, activity),
                                                 preferenceFragment),
                                         id,
+                                        Optional.empty(),
                                         new Preference2SearchablePreferenceConverter(
                                                 (preference, hostOfPreference) -> Optional.empty(),
                                                 new SearchableInfoAndDialogInfoProvider(
@@ -145,6 +146,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                         id);
         return new SearchablePreferenceScreen(
                 id,
+                Optional.empty(),
                 "screen title",
                 "screen summary",
                 List.of(parent),

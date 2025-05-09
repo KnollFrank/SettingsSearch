@@ -163,7 +163,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                 .addEdge(
                         createSrc(screenId, preferenceConnectingSrc2Dst, host),
-                        createDst(preferenceConnectingSrc2Dst),
+                        createDst(Optional.of(screenId), preferenceConnectingSrc2Dst),
                         new SearchablePreferenceEdge(preferenceConnectingSrc2Dst))
                 .build();
     }
@@ -191,6 +191,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         screenId);
         return new SearchablePreferenceScreen(
                 screenId,
+                Optional.empty(),
                 "screen title",
                 "screen summary",
                 List.of(parent),
@@ -233,7 +234,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         preferenceConnectingSrc2Dst));
     }
 
-    private static SearchablePreferenceScreen createDst(final SearchablePreference predecessor) {
+    private static SearchablePreferenceScreen createDst(final Optional<Integer> parentScreenId,
+                                                        final SearchablePreference predecessor) {
         final int screenId = 2;
         final SearchablePreference e1 =
                 new SearchablePreference(
@@ -255,6 +257,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         screenId);
         return new SearchablePreferenceScreen(
                 screenId,
+                parentScreenId,
                 null,
                 null,
                 List.of(e1),

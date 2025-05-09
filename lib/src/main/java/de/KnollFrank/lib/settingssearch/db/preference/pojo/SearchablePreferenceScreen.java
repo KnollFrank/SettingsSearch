@@ -9,16 +9,17 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesBySearchablePreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesAndChildrenProvider;
 
 @Entity
 public final class SearchablePreferenceScreen {
 
     @Ignore
-    private Optional<AllPreferencesBySearchablePreferenceScreenProvider> dao = Optional.empty();
+    private Optional<AllPreferencesAndChildrenProvider> dao = Optional.empty();
 
     @PrimaryKey
     private final int id;
+    private final Optional<Integer> parentId;
     private final String title;
     private final String summary;
     @Ignore
@@ -27,39 +28,44 @@ public final class SearchablePreferenceScreen {
     private final Optional<Set<SearchablePreference>> allPreferences;
 
     public SearchablePreferenceScreen(final int id,
+                                      final Optional<Integer> parentId,
                                       final String title,
                                       final String summary,
                                       final List<SearchablePreference> firstLevelPreferences,
                                       final Set<SearchablePreference> allPreferences) {
-        this(id, title, summary, firstLevelPreferences, Optional.of(allPreferences));
+        this(id, parentId, title, summary, firstLevelPreferences, Optional.of(allPreferences));
     }
 
     public SearchablePreferenceScreen(final int id,
+                                      final Optional<Integer> parentId,
                                       final String title,
                                       final String summary,
                                       final List<SearchablePreference> firstLevelPreferences) {
-        this(id, title, summary, firstLevelPreferences, Optional.empty());
+        this(id, parentId, title, summary, firstLevelPreferences, Optional.empty());
     }
 
     public SearchablePreferenceScreen(final int id,
+                                      final Optional<Integer> parentId,
                                       final String title,
                                       final String summary) {
-        this(id, title, summary, List.of(), Optional.empty());
+        this(id, parentId, title, summary, List.of(), Optional.empty());
     }
 
     private SearchablePreferenceScreen(final int id,
+                                       final Optional<Integer> parentId,
                                        final String title,
                                        final String summary,
                                        final List<SearchablePreference> firstLevelPreferences,
                                        final Optional<Set<SearchablePreference>> allPreferences) {
         this.id = id;
+        this.parentId = parentId;
         this.title = title;
         this.summary = summary;
         this.firstLevelPreferences = firstLevelPreferences;
         this.allPreferences = allPreferences;
     }
 
-    public void setDao(final AllPreferencesBySearchablePreferenceScreenProvider dao) {
+    public void setDao(final AllPreferencesAndChildrenProvider dao) {
         this.dao = Optional.of(dao);
     }
 
@@ -75,6 +81,10 @@ public final class SearchablePreferenceScreen {
         return summary;
     }
 
+    public Optional<Integer> getParentId() {
+        return parentId;
+    }
+
     public List<SearchablePreference> getFirstLevelPreferences() {
         return firstLevelPreferences;
     }
@@ -83,8 +93,12 @@ public final class SearchablePreferenceScreen {
         return allPreferences.orElseGet(this::getAllPreferencesFromDao);
     }
 
+    // FK-TODO: return Set instead of List
     public List<SearchablePreferenceScreen> getChildren() {
-        return null;
+        return dao
+                .orElseThrow()
+                .getChildrenBySearchablePreferenceScreen()
+                .get(this);
     }
 
     private Set<SearchablePreference> getAllPreferencesFromDao() {
@@ -110,6 +124,7 @@ public final class SearchablePreferenceScreen {
     public String toString() {
         return "SearchablePreferenceScreen{" +
                 "id=" + id +
+                ", parentId=" + parentId +
                 ", title='" + title + '\'' +
                 ", summary='" + summary + '\'' +
                 ", firstLevelPreferences=" + firstLevelPreferences +

@@ -206,6 +206,7 @@ public final class SearchablePreference {
         return getPreferencePathOfPredecessor().append(this);
     }
 
+    // FK-TODO: return Set instead of List
     public List<SearchablePreference> getChildren() {
         return dao
                 .orElseThrow()

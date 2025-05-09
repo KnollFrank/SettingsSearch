@@ -9,6 +9,7 @@ public class SearchablePreferenceScreenEquality {
 
     public static void assertActualEqualsExpected(final SearchablePreferenceScreen actual, final SearchablePreferenceScreen expected) {
         assertThat(actual.getId(), is(expected.getId()));
+        assertThat(actual.getParentId(), is(expected.getParentId()));
         assertThat(actual.getTitle(), is(expected.getTitle()));
         assertThat(actual.getSummary(), is(expected.getSummary()));
         SearchablePreferenceEquality.assertActualListEqualsExpectedList(actual.getFirstLevelPreferences(), expected.getFirstLevelPreferences());

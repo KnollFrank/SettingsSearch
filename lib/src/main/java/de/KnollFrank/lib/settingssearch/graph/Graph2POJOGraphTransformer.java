@@ -37,7 +37,7 @@ public class Graph2POJOGraphTransformer {
 
             @Override
             public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {
-                return convert2POJO(rootNode, Optional.empty());
+                return convert2POJO(rootNode, Optional.empty(), Optional.empty());
             }
 
             @Override
@@ -46,6 +46,7 @@ public class Graph2POJOGraphTransformer {
                     final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
                 return convert2POJO(
                         innerNode,
+                        Optional.of(getParentId(contextOfInnerNode)),
                         Optional.of(
                                 getPredecessorOfNode(
                                         contextOfInnerNode.transformedParentNode(),
@@ -63,11 +64,13 @@ public class Graph2POJOGraphTransformer {
 
             private SearchablePreferenceScreenWithMap convert2POJO(
                     final PreferenceScreenWithHost node,
+                    final Optional<Integer> parentId,
                     final Optional<SearchablePreference> predecessorOfNode) {
                 return PreferenceScreenWithHost2POJOConverter
                         .convert2POJO(
                                 node,
                                 idGenerator4PreferenceScreen.nextId(),
+                                parentId,
                                 preference2SearchablePreferenceConverter,
                                 predecessorOfNode);
             }
@@ -87,6 +90,10 @@ public class Graph2POJOGraphTransformer {
                         .pojoEntityMap()
                         .inverse()
                         .get(preference);
+            }
+
+            private static int getParentId(final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
+                return contextOfInnerNode.transformedParentNode().searchablePreferenceScreen().getId();
             }
         };
     }

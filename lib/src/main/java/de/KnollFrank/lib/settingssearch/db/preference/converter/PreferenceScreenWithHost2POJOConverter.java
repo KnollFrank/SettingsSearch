@@ -9,10 +9,12 @@ public class PreferenceScreenWithHost2POJOConverter {
 
     public static SearchablePreferenceScreenWithMap convert2POJO(final PreferenceScreenWithHost preferenceScreenWithHost,
                                                                  final int id,
+                                                                 final Optional<Integer> parentId,
                                                                  final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
                                                                  final Optional<SearchablePreference> predecessorOfPreferenceScreen) {
         return SearchablePreferenceScreen2POJOConverter.convert2POJO(
                 id,
+                parentId,
                 preferenceScreenWithHost.preferenceScreen(),
                 preferenceScreenWithHost.host(),
                 preference2SearchablePreferenceConverter,
