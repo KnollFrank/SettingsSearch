@@ -139,7 +139,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
         }
     }
 
-    private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+        final int screenId = 1;
         final SearchablePreference preferenceConnectingSrc2Dst =
                 new SearchablePreference(
                         PREFERENCE_CONNECTING_SRC_2_DST_ID,
@@ -156,17 +157,19 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         new Bundle(),
                         host,
                         Optional.empty(),
-                        Optional.empty());
+                        Optional.empty(),
+                        screenId);
         return DefaultDirectedGraph
                 .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                 .addEdge(
-                        createSrc(preferenceConnectingSrc2Dst, host),
+                        createSrc(screenId, preferenceConnectingSrc2Dst, host),
                         createDst(preferenceConnectingSrc2Dst),
                         new SearchablePreferenceEdge(preferenceConnectingSrc2Dst))
                 .build();
     }
 
-    private static SearchablePreferenceScreen createSrc(final SearchablePreference preferenceConnectingSrc2Dst,
+    private static SearchablePreferenceScreen createSrc(final int screenId,
+                                                        final SearchablePreference preferenceConnectingSrc2Dst,
                                                         final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference parent =
                 new SearchablePreference(
@@ -184,9 +187,10 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         new Bundle(),
                         host,
                         Optional.empty(),
-                        Optional.empty());
+                        Optional.empty(),
+                        screenId);
         return new SearchablePreferenceScreen(
-                1,
+                screenId,
                 "screen title",
                 "screen summary",
                 List.of(parent),
@@ -207,7 +211,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                 new Bundle(),
                                 host,
                                 Optional.of(1),
-                                Optional.empty()),
+                                Optional.empty(),
+                                screenId),
                         new SearchablePreference(
                                 3,
                                 "some child key 2",
@@ -223,11 +228,13 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                 new Bundle(),
                                 host,
                                 Optional.of(1),
-                                Optional.empty()),
+                                Optional.empty(),
+                                screenId),
                         preferenceConnectingSrc2Dst));
     }
 
     private static SearchablePreferenceScreen createDst(final SearchablePreference predecessor) {
+        final int screenId = 2;
         final SearchablePreference e1 =
                 new SearchablePreference(
                         DST_PREFERENCE_ID,
@@ -244,9 +251,10 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         new Bundle(),
                         TestPreferenceFragment.class,
                         Optional.empty(),
-                        Optional.of(predecessor.getId()));
+                        Optional.of(predecessor.getId()),
+                        screenId);
         return new SearchablePreferenceScreen(
-                2,
+                screenId,
                 null,
                 null,
                 List.of(e1),

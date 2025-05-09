@@ -20,6 +20,7 @@ class SearchablePreferenceScreen2POJOConverter {
         final SearchablePreferencesWithMap searchablePreferencesWithMap =
                 preference2SearchablePreferenceConverter.convert2POJOs(
                         Preferences.getImmediateChildren(preferenceScreen),
+                        id,
                         hostOfPreferenceScreen,
                         Optional.empty(),
                         predecessorOfPreferenceScreen);

@@ -62,7 +62,9 @@ public class POJOTestFactory {
                 extras,
                 host,
                 parentId,
-                predecessorId);
+                predecessorId,
+                // FK-FIXME: -1
+                -1);
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -84,7 +86,9 @@ public class POJOTestFactory {
                 new Bundle(),
                 host,
                 Optional.empty(),
-                predecessor.map(SearchablePreference::getId));
+                predecessor.map(SearchablePreference::getId),
+                // FK-FIXME: -1
+                -1);
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -127,7 +131,9 @@ public class POJOTestFactory {
                 extras,
                 host,
                 Optional.empty(),
-                predecessor.map(SearchablePreference::getId));
+                predecessor.map(SearchablePreference::getId),
+                // FK-FIXME: -1
+                -1);
     }
 
     public static Bundle createBundle(final String key, final String value) {

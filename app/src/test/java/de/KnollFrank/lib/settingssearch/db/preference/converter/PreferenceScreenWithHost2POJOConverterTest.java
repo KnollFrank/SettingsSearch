@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -33,7 +35,6 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
-import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -72,7 +73,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 .searchablePreferenceScreen();
 
                 // Then
-                SearchablePreferenceScreenEquality.assertEquals(
+                assertActualEqualsExpected(
                         pojo,
                         getSearchablePreferenceScreenHavingParentWithTwoChildren(id, parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild, preferenceFragment.getClass()));
             });
@@ -140,7 +141,8 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                         new Bundle(),
                         host,
                         Optional.empty(),
-                        Optional.empty());
+                        Optional.empty(),
+                        id);
         return new SearchablePreferenceScreen(
                 id,
                 "screen title",
@@ -163,7 +165,8 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 new Bundle(),
                                 host,
                                 Optional.of(1),
-                                Optional.empty()),
+                                Optional.empty(),
+                                id),
                         new SearchablePreference(
                                 3,
                                 keyOfChild2,
@@ -179,7 +182,8 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 new Bundle(),
                                 host,
                                 Optional.of(1),
-                                Optional.empty())));
+                                Optional.empty(),
+                                id)));
     }
 
     public static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,

@@ -6,8 +6,10 @@ import androidx.room.TypeConverters;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseStateDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
@@ -15,7 +17,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalSt
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
 
 @Database(
-        entities = {SearchablePreference.class, SearchDatabaseState.class},
+        entities = {
+                SearchablePreferenceScreen.class,
+                SearchablePreference.class,
+                SearchDatabaseState.class
+        },
         version = 1,
         exportSchema = false)
 @TypeConverters(
@@ -30,6 +36,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     protected AppDatabase() {
     }
+
+    public abstract SearchablePreferenceScreenDAO searchablePreferenceScreenDAO();
 
     public abstract SearchablePreferenceDAO searchablePreferenceDAO();
 

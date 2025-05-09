@@ -55,6 +55,7 @@ public final class SearchablePreference {
     private final Class<? extends PreferenceFragmentCompat> host;
     private final Optional<Integer> parentId;
     private final Optional<Integer> predecessorId;
+    private final int searchablePreferenceScreenId;
 
     public SearchablePreference(
             final int id,
@@ -71,7 +72,8 @@ public final class SearchablePreference {
             final Bundle extras,
             final Class<? extends PreferenceFragmentCompat> host,
             final Optional<Integer> parentId,
-            final Optional<Integer> predecessorId) {
+            final Optional<Integer> predecessorId,
+            final int searchablePreferenceScreenId) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
@@ -87,6 +89,7 @@ public final class SearchablePreference {
         this.host = host;
         this.parentId = parentId;
         this.predecessorId = predecessorId;
+        this.searchablePreferenceScreenId = searchablePreferenceScreenId;
     }
 
     public void setDao(final ChildrenAndPredecessorProvider dao) {
@@ -204,7 +207,10 @@ public final class SearchablePreference {
     }
 
     public List<SearchablePreference> getChildren() {
-        return dao.orElseThrow().getChildrenByPreference().get(this);
+        return dao
+                .orElseThrow()
+                .getChildrenByPreference()
+                .get(this);
     }
 
     public Optional<SearchablePreference> getPredecessor() {
@@ -217,6 +223,10 @@ public final class SearchablePreference {
 
     public Optional<Integer> getPredecessorId() {
         return predecessorId;
+    }
+
+    public int getSearchablePreferenceScreenId() {
+        return searchablePreferenceScreenId;
     }
 
     @Override
@@ -246,6 +256,7 @@ public final class SearchablePreference {
                 ", host=" + host +
                 ", parentId=" + parentId +
                 ", predecessorId=" + predecessorId +
+                ", searchablePreferenceScreenId=" + searchablePreferenceScreenId +
                 '}';
     }
 

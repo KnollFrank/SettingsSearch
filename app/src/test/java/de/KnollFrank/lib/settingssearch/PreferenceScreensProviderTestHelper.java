@@ -33,7 +33,7 @@ class PreferenceScreensProviderTestHelper {
             final String name) {
         return preferenceScreens
                 .stream()
-                .filter(preferenceScreen -> name.equals(preferenceScreen.title()))
+                .filter(preferenceScreen -> name.equals(preferenceScreen.getTitle()))
                 .findFirst()
                 .orElseThrow();
     }

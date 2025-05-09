@@ -154,7 +154,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 .flatMap(
                         searchablePreferenceScreen ->
                                 searchablePreferenceScreen
-                                        .allPreferences()
+                                        .getAllPreferences()
                                         .stream()
                                         .filter(predicate))
                 .collect(MoreCollectors.onlyElement());

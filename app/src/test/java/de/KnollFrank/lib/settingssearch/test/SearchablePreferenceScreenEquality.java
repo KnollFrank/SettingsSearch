@@ -7,10 +7,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenEquality {
 
-    public static void assertEquals(final SearchablePreferenceScreen actual, final SearchablePreferenceScreen expected) {
-        assertThat(actual.id(), is(expected.id()));
-        assertThat(actual.title(), is(expected.title()));
-        assertThat(actual.summary(), is(expected.summary()));
-        SearchablePreferenceEquality.assertActualListEqualsExpectedList(actual.firstLevelPreferences(), expected.firstLevelPreferences());
+    public static void assertActualEqualsExpected(final SearchablePreferenceScreen actual, final SearchablePreferenceScreen expected) {
+        assertThat(actual.getId(), is(expected.getId()));
+        assertThat(actual.getTitle(), is(expected.getTitle()));
+        assertThat(actual.getSummary(), is(expected.getSummary()));
+        SearchablePreferenceEquality.assertActualListEqualsExpectedList(actual.getFirstLevelPreferences(), expected.getFirstLevelPreferences());
     }
 }
