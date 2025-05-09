@@ -1,7 +1,11 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.builder.GraphBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,17 +31,26 @@ public class SearchablePreferenceScreenGraphDAO {
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
         final var graphBuilder = DefaultDirectedGraph.<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class);
         final List<SearchablePreferenceScreen> screens = searchablePreferenceScreenDAO.loadAll();
-        screens.forEach(graphBuilder::addVertex);
+        addNodes(graphBuilder, screens);
+        addEdges(graphBuilder, getEdgeDescriptions(screens));
+        return graphBuilder.build();
+    }
+
+    private record EdgeDescription(SearchablePreferenceScreen source,
+                                   SearchablePreferenceScreen target,
+                                   SearchablePreferenceEdge edge) {
+    }
+
+    // FK-TODO: refactor
+    private List<EdgeDescription> getEdgeDescriptions(final List<SearchablePreferenceScreen> screens) {
+        final Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableList.builder();
         for (final SearchablePreferenceScreen targetScreen : screens) {
             for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen)) {
                 final SearchablePreferenceScreen sourceScreen = getSearchablePreferenceScreen(sourcePreference);
-                graphBuilder.addEdge(
-                        sourceScreen,
-                        targetScreen,
-                        new SearchablePreferenceEdge(sourcePreference));
+                edgeDescriptionsBuilder.add(new EdgeDescription(sourceScreen, targetScreen, new SearchablePreferenceEdge(sourcePreference)));
             }
         }
-        return graphBuilder.build();
+        return edgeDescriptionsBuilder.build();
     }
 
     private static Set<SearchablePreference> getSourcePreferences(final SearchablePreferenceScreen targetScreen) {
@@ -54,5 +67,20 @@ public class SearchablePreferenceScreenGraphDAO {
         return searchablePreferenceScreenDAO
                 .findSearchablePreferenceScreenById(preference.getSearchablePreferenceScreenId())
                 .orElseThrow();
+    }
+
+    private static void addNodes(final GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> graphBuilder,
+                                 final List<SearchablePreferenceScreen> nodes) {
+        nodes.forEach(graphBuilder::addVertex);
+    }
+
+    private void addEdges(final GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> graphBuilder,
+                          final List<EdgeDescription> edgeDescriptions) {
+        edgeDescriptions.forEach(
+                edgeDescription ->
+                        graphBuilder.addEdge(
+                                edgeDescription.source(),
+                                edgeDescription.target(),
+                                edgeDescription.edge()));
     }
 }
