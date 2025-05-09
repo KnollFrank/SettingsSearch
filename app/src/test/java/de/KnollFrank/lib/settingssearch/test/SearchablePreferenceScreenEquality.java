@@ -12,6 +12,5 @@ public class SearchablePreferenceScreenEquality {
         assertThat(actual.getParentId(), is(expected.getParentId()));
         assertThat(actual.getTitle(), is(expected.getTitle()));
         assertThat(actual.getSummary(), is(expected.getSummary()));
-        SearchablePreferenceEquality.assertActualListEqualsExpectedList(actual.getFirstLevelPreferences(), expected.getFirstLevelPreferences());
     }
 }

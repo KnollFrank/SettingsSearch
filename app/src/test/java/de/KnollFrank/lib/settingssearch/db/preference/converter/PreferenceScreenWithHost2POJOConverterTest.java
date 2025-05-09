@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -149,7 +148,6 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                 Optional.empty(),
                 "screen title",
                 "screen summary",
-                List.of(parent),
                 Set.of(
                         parent,
                         new SearchablePreference(

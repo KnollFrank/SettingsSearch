@@ -31,7 +31,6 @@ class SearchablePreferenceScreen2POJOConverter {
                         parentId,
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getTitle())),
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getSummary())),
-                        searchablePreferencesWithMap.searchablePreferences(),
                         searchablePreferencesWithMap.pojoEntityMap().keySet()),
                 searchablePreferencesWithMap.pojoEntityMap());
     }

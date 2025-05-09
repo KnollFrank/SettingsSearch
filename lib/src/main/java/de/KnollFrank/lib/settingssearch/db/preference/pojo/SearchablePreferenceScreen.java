@@ -4,7 +4,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -23,45 +22,32 @@ public final class SearchablePreferenceScreen {
     private final String title;
     private final String summary;
     @Ignore
-    private final List<SearchablePreference> firstLevelPreferences;
-    @Ignore
     private final Optional<Set<SearchablePreference>> allPreferences;
 
     public SearchablePreferenceScreen(final int id,
                                       final Optional<Integer> parentId,
                                       final String title,
                                       final String summary,
-                                      final List<SearchablePreference> firstLevelPreferences,
                                       final Set<SearchablePreference> allPreferences) {
-        this(id, parentId, title, summary, firstLevelPreferences, Optional.of(allPreferences));
-    }
-
-    public SearchablePreferenceScreen(final int id,
-                                      final Optional<Integer> parentId,
-                                      final String title,
-                                      final String summary,
-                                      final List<SearchablePreference> firstLevelPreferences) {
-        this(id, parentId, title, summary, firstLevelPreferences, Optional.empty());
+        this(id, parentId, title, summary, Optional.of(allPreferences));
     }
 
     public SearchablePreferenceScreen(final int id,
                                       final Optional<Integer> parentId,
                                       final String title,
                                       final String summary) {
-        this(id, parentId, title, summary, List.of(), Optional.empty());
+        this(id, parentId, title, summary, Optional.empty());
     }
 
     private SearchablePreferenceScreen(final int id,
                                        final Optional<Integer> parentId,
                                        final String title,
                                        final String summary,
-                                       final List<SearchablePreference> firstLevelPreferences,
                                        final Optional<Set<SearchablePreference>> allPreferences) {
         this.id = id;
         this.parentId = parentId;
         this.title = title;
         this.summary = summary;
-        this.firstLevelPreferences = firstLevelPreferences;
         this.allPreferences = allPreferences;
     }
 
@@ -83,10 +69,6 @@ public final class SearchablePreferenceScreen {
 
     public Optional<Integer> getParentId() {
         return parentId;
-    }
-
-    public List<SearchablePreference> getFirstLevelPreferences() {
-        return firstLevelPreferences;
     }
 
     public Set<SearchablePreference> getAllPreferences() {
@@ -119,7 +101,6 @@ public final class SearchablePreferenceScreen {
                 ", parentId=" + parentId +
                 ", title='" + title + '\'' +
                 ", summary='" + summary + '\'' +
-                ", firstLevelPreferences=" + firstLevelPreferences +
                 '}';
     }
 }

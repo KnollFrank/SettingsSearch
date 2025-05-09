@@ -194,7 +194,6 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 Optional.empty(),
                 "screen title",
                 "screen summary",
-                List.of(parent),
                 Set.of(
                         parent,
                         new SearchablePreference(
@@ -260,7 +259,6 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 parentScreenId,
                 null,
                 null,
-                List.of(e1),
                 Set.of(e1));
     }
 

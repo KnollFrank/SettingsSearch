@@ -29,7 +29,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 public class SearchablePreferenceDAOTest extends AppDatabaseTest {
 
     @Test
-    public void shouldPersistPreference() {
+    public void shouldPersistAndFindPreferenceById() {
         // Given
         final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreference preference =
