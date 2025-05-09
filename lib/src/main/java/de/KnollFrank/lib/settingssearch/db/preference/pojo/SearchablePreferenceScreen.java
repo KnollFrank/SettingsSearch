@@ -9,13 +9,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesAndChildrenProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesProvider;
 
 @Entity
 public final class SearchablePreferenceScreen {
 
     @Ignore
-    private Optional<AllPreferencesAndChildrenProvider> dao = Optional.empty();
+    private Optional<AllPreferencesProvider> dao = Optional.empty();
 
     @PrimaryKey
     private final int id;
@@ -65,7 +65,7 @@ public final class SearchablePreferenceScreen {
         this.allPreferences = allPreferences;
     }
 
-    public void setDao(final AllPreferencesAndChildrenProvider dao) {
+    public void setDao(final AllPreferencesProvider dao) {
         this.dao = Optional.of(dao);
     }
 
@@ -91,14 +91,6 @@ public final class SearchablePreferenceScreen {
 
     public Set<SearchablePreference> getAllPreferences() {
         return allPreferences.orElseGet(this::getAllPreferencesFromDao);
-    }
-
-    // FK-TODO: remove getChildren() and dependent classes and variables
-    public List<SearchablePreferenceScreen> getChildren() {
-        return dao
-                .orElseThrow()
-                .getChildrenBySearchablePreferenceScreen()
-                .get(this);
     }
 
     private Set<SearchablePreference> getAllPreferencesFromDao() {

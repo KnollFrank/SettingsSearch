@@ -16,16 +16,13 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndChildren;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndChildrens;
 
 @Dao
-public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAndChildrenProvider {
+public abstract class SearchablePreferenceScreenDAO implements AllPreferencesProvider {
 
     private final SearchablePreferenceDAO searchablePreferenceDAO;
     private final SearchablePreferenceScreenDAOSetter daoSetter;
     private Optional<Map<SearchablePreferenceScreen, Set<SearchablePreference>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
-    private Optional<Map<SearchablePreferenceScreen, List<SearchablePreferenceScreen>>> childrenBySearchablePreferenceScreen = Optional.empty();
 
     public SearchablePreferenceScreenDAO(final AppDatabase appDatabase) {
         this.searchablePreferenceDAO = appDatabase.searchablePreferenceDAO();
@@ -45,7 +42,6 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
         invalidateCaches();
     }
 
-    // FK-TODO: unit test findSearchablePreferenceScreenById()
     public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(final int id) {
         return daoSetter.setDao(_findSearchablePreferenceScreenById(id));
     }
@@ -66,14 +62,6 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
         return allPreferencesBySearchablePreferenceScreen.orElseThrow();
     }
 
-    @Override
-    public Map<SearchablePreferenceScreen, List<SearchablePreferenceScreen>> getChildrenBySearchablePreferenceScreen() {
-        if (childrenBySearchablePreferenceScreen.isEmpty()) {
-            childrenBySearchablePreferenceScreen = Optional.of(SearchablePreferenceScreenAndChildrens.getChildrenBySearchablePreferenceScreen(daoSetter.___setDao(_getSearchablePreferenceScreenAndChildren())));
-        }
-        return childrenBySearchablePreferenceScreen.orElseThrow();
-    }
-
     @Insert
     protected abstract void _persist(SearchablePreferenceScreen searchablePreferenceScreen);
 
@@ -84,15 +72,10 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     @Query("SELECT * FROM SearchablePreferenceScreen")
     protected abstract List<SearchablePreferenceScreenAndAllPreferences> _getSearchablePreferenceScreenAndAllPreferences();
 
-    @Transaction
-    @Query("SELECT * FROM SearchablePreferenceScreen")
-    protected abstract List<SearchablePreferenceScreenAndChildren> _getSearchablePreferenceScreenAndChildren();
-
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE id = :id")
     protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final int id);
 
     private void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();
-        childrenBySearchablePreferenceScreen = Optional.empty();
     }
 }

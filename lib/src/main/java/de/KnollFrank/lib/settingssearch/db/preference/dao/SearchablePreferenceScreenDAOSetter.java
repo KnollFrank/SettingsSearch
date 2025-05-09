@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndChildren;
 
 class SearchablePreferenceScreenDAOSetter {
 
@@ -38,20 +37,9 @@ class SearchablePreferenceScreenDAOSetter {
         return searchablePreferenceScreen;
     }
 
-    public List<SearchablePreferenceScreenAndChildren> ___setDao(final List<SearchablePreferenceScreenAndChildren> searchablePreferenceScreenAndChildrenList) {
-        searchablePreferenceScreenAndChildrenList.forEach(this::setDao);
-        return searchablePreferenceScreenAndChildrenList;
-    }
-
     private SearchablePreferenceScreenAndAllPreferences setDao(final SearchablePreferenceScreenAndAllPreferences searchablePreferenceScreenAndAllPreferences) {
         setDao(searchablePreferenceScreenAndAllPreferences.searchablePreferenceScreen());
         searchablePreferenceDAOSetter.setDao(searchablePreferenceScreenAndAllPreferences.allPreferences());
         return searchablePreferenceScreenAndAllPreferences;
-    }
-
-    private SearchablePreferenceScreenAndChildren setDao(final SearchablePreferenceScreenAndChildren searchablePreferenceScreenAndChildren) {
-        setDao(searchablePreferenceScreenAndChildren.searchablePreferenceScreen());
-        setDao(searchablePreferenceScreenAndChildren.children());
-        return searchablePreferenceScreenAndChildren;
     }
 }

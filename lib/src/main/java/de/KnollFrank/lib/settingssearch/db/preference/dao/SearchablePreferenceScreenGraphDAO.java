@@ -45,10 +45,9 @@ public class SearchablePreferenceScreenGraphDAO {
         final Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableList.builder();
         for (final SearchablePreferenceScreen targetScreen : screens) {
             for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen)) {
-                final SearchablePreferenceScreen sourceScreen = getSearchablePreferenceScreen(sourcePreference);
                 edgeDescriptionsBuilder.add(
                         new EdgeDescription(
-                                sourceScreen,
+                                getSearchablePreferenceScreen(sourcePreference),
                                 targetScreen,
                                 new SearchablePreferenceEdge(sourcePreference)));
             }
@@ -61,7 +60,7 @@ public class SearchablePreferenceScreenGraphDAO {
                 .getAllPreferences()
                 .stream()
                 .map(SearchablePreference::getPredecessor)
-                // Fk-TODO: use mapMulti()
+                // Fk-TODO: use mapMulti() if API level is at least 34
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)
                 .collect(Collectors.toSet());
