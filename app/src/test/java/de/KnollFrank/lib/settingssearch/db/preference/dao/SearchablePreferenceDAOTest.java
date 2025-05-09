@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -137,7 +136,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreference parentFromDb = dao.findPreferenceById(parent.getId()).orElseThrow();
 
         // When
-        final List<SearchablePreference> childrenFromDb = parentFromDb.getChildren();
+        final Set<SearchablePreference> childrenFromDb = parentFromDb.getChildren();
 
         // Then
         assertThat(childrenFromDb, contains(child));

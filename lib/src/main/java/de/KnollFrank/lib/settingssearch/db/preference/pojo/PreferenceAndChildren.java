@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import androidx.room.Embedded;
 import androidx.room.Relation;
 
-import java.util.List;
+import java.util.Set;
 
 public record PreferenceAndChildren(
         @Embedded
@@ -11,5 +11,5 @@ public record PreferenceAndChildren(
         @Relation(
                 parentColumn = "id",
                 entityColumn = "parentId")
-        List<SearchablePreference> children) {
+        Set<SearchablePreference> children) {
 }

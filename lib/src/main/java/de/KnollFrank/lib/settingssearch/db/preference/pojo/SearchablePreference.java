@@ -17,6 +17,7 @@ import com.codepoetics.ambivalence.Either;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -206,8 +207,7 @@ public final class SearchablePreference {
         return getPreferencePathOfPredecessor().append(this);
     }
 
-    // FK-TODO: return Set instead of List
-    public List<SearchablePreference> getChildren() {
+    public Set<SearchablePreference> getChildren() {
         return dao
                 .orElseThrow()
                 .getChildrenByPreference()
