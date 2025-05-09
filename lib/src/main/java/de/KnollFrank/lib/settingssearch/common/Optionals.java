@@ -14,6 +14,7 @@ public class Optionals {
     public static <T> Stream<T> streamOfPresentElements(final Optional<T>... elements) {
         return Arrays
                 .stream(elements)
+                // Fk-TODO: use mapMulti()
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow);
     }

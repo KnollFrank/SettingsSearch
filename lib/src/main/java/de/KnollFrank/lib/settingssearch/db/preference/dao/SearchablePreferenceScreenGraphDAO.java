@@ -41,13 +41,16 @@ public class SearchablePreferenceScreenGraphDAO {
                                    SearchablePreferenceEdge edge) {
     }
 
-    // FK-TODO: refactor
     private List<EdgeDescription> getEdgeDescriptions(final List<SearchablePreferenceScreen> screens) {
         final Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableList.builder();
         for (final SearchablePreferenceScreen targetScreen : screens) {
             for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen)) {
                 final SearchablePreferenceScreen sourceScreen = getSearchablePreferenceScreen(sourcePreference);
-                edgeDescriptionsBuilder.add(new EdgeDescription(sourceScreen, targetScreen, new SearchablePreferenceEdge(sourcePreference)));
+                edgeDescriptionsBuilder.add(
+                        new EdgeDescription(
+                                sourceScreen,
+                                targetScreen,
+                                new SearchablePreferenceEdge(sourcePreference)));
             }
         }
         return edgeDescriptionsBuilder.build();
@@ -58,6 +61,7 @@ public class SearchablePreferenceScreenGraphDAO {
                 .getAllPreferences()
                 .stream()
                 .map(SearchablePreference::getPredecessor)
+                // Fk-TODO: use mapMulti()
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)
                 .collect(Collectors.toSet());
