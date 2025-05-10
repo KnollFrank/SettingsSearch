@@ -1,13 +1,11 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableList.Builder;
+import com.google.common.collect.ImmutableSet;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.builder.GraphBuilder;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,7 +28,7 @@ public class SearchablePreferenceScreenGraphDAO {
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
         final var graphBuilder = DefaultDirectedGraph.<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class);
-        final List<SearchablePreferenceScreen> screens = searchablePreferenceScreenDAO.loadAll();
+        final Set<SearchablePreferenceScreen> screens = searchablePreferenceScreenDAO.loadAll();
         addNodes(graphBuilder, screens);
         addEdges(graphBuilder, getEdgeDescriptions(screens));
         return graphBuilder.build();
@@ -41,8 +39,8 @@ public class SearchablePreferenceScreenGraphDAO {
                                    SearchablePreferenceEdge edge) {
     }
 
-    private List<EdgeDescription> getEdgeDescriptions(final List<SearchablePreferenceScreen> screens) {
-        final Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableList.builder();
+    private Set<EdgeDescription> getEdgeDescriptions(final Set<SearchablePreferenceScreen> screens) {
+        final ImmutableSet.Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableSet.builder();
         for (final SearchablePreferenceScreen targetScreen : screens) {
             for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen)) {
                 edgeDescriptionsBuilder.add(
@@ -73,12 +71,12 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     private static void addNodes(final GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> graphBuilder,
-                                 final List<SearchablePreferenceScreen> nodes) {
+                                 final Set<SearchablePreferenceScreen> nodes) {
         nodes.forEach(graphBuilder::addVertex);
     }
 
     private void addEdges(final GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> graphBuilder,
-                          final List<EdgeDescription> edgeDescriptions) {
+                          final Set<EdgeDescription> edgeDescriptions) {
         edgeDescriptions.forEach(
                 edgeDescription ->
                         graphBuilder.addEdge(

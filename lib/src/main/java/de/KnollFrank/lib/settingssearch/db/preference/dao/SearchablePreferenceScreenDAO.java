@@ -6,6 +6,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -46,8 +47,9 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
         return daoSetter.setDao(_findSearchablePreferenceScreenById(id));
     }
 
-    public List<SearchablePreferenceScreen> loadAll() {
-        return daoSetter.setDao(_loadAll());
+    // FK-TODO: return Set instead of List like here in other methods in other DAOs
+    public Set<SearchablePreferenceScreen> loadAll() {
+        return daoSetter.setDao(new HashSet<>(_loadAll()));
     }
 
     @Override
@@ -65,7 +67,6 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
     @Insert
     protected abstract void _persist(SearchablePreferenceScreen searchablePreferenceScreen);
 
-    // FK-TODO: return Set instead of List? dito other methods in other DAOs
     @Query("SELECT * FROM SearchablePreferenceScreen")
     protected abstract List<SearchablePreferenceScreen> _loadAll();
 
