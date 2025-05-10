@@ -89,7 +89,7 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
     @Override
     public Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference() {
         if (childrenByPreference.isEmpty()) {
-            childrenByPreference = Optional.of(PreferenceAndChildrens.getChildrenByPreference(daoSetter.__setDao(_getPreferencesAndChildren())));
+            childrenByPreference = Optional.of(PreferenceAndChildrens.getChildrenByPreference(daoSetter.__setDao(new HashSet<>(_getPreferencesAndChildren()))));
         }
         return childrenByPreference.orElseThrow();
     }
