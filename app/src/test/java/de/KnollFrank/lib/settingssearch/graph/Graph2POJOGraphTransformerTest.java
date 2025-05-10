@@ -37,6 +37,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -191,6 +192,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         screenId);
         return new SearchablePreferenceScreen(
                 screenId,
+                new HostWithArguments(host, Optional.empty()),
                 "screen title",
                 "screen summary",
                 Set.of(
@@ -256,6 +258,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         screenId);
         return new SearchablePreferenceScreen(
                 screenId,
+                new HostWithArguments(TestPreferenceFragment.class, Optional.empty()),
                 null,
                 null,
                 Set.of(e1),

@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.test;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.Bundle;
 
@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class BundleEquality {
 
+    // FK-TODO: unit test and refactor
     // adapted from https://stackoverflow.com/a/13238729
     public static boolean equalBundles(final Bundle one, final Bundle two) {
         if (one.size() != two.size())

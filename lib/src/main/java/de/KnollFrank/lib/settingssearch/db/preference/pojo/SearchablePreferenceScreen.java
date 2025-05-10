@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -7,6 +8,7 @@ import androidx.room.PrimaryKey;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesProvider;
 
@@ -18,33 +20,41 @@ public final class SearchablePreferenceScreen {
 
     @PrimaryKey
     private final int id;
+    @Embedded
+    private final HostWithArguments hostWithArguments;
+    // FK-TODO: make title Optional<String>
     private final String title;
+    // FK-TODO: make summary Optional<String>
     private final String summary;
     @Ignore
     private final Optional<Set<SearchablePreference>> allPreferences;
     private final Optional<Integer> parentId;
 
     public SearchablePreferenceScreen(final int id,
+                                      final HostWithArguments hostWithArguments,
                                       final String title,
                                       final String summary,
                                       final Set<SearchablePreference> allPreferences,
                                       final Optional<Integer> parentId) {
-        this(id, title, summary, Optional.of(allPreferences), parentId);
+        this(id, hostWithArguments, title, summary, Optional.of(allPreferences), parentId);
     }
 
     public SearchablePreferenceScreen(final int id,
+                                      final HostWithArguments hostWithArguments,
                                       final String title,
                                       final String summary,
                                       final Optional<Integer> parentId) {
-        this(id, title, summary, Optional.empty(), parentId);
+        this(id, hostWithArguments, title, summary, Optional.empty(), parentId);
     }
 
     private SearchablePreferenceScreen(final int id,
+                                       final HostWithArguments hostWithArguments,
                                        final String title,
                                        final String summary,
                                        final Optional<Set<SearchablePreference>> allPreferences,
                                        final Optional<Integer> parentId) {
         this.id = id;
+        this.hostWithArguments = hostWithArguments;
         this.parentId = parentId;
         this.title = title;
         this.summary = summary;
@@ -57,6 +67,10 @@ public final class SearchablePreferenceScreen {
 
     public int getId() {
         return id;
+    }
+
+    public HostWithArguments getHostWithArguments() {
+        return hostWithArguments;
     }
 
     public String getTitle() {
@@ -96,11 +110,12 @@ public final class SearchablePreferenceScreen {
 
     @Override
     public String toString() {
-        return "SearchablePreferenceScreen{" +
-                "id=" + id +
-                ", parentId=" + parentId +
-                ", title='" + title + '\'' +
-                ", summary='" + summary + '\'' +
-                '}';
+        return new StringJoiner(", ", SearchablePreferenceScreen.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("hostWithArguments=" + hostWithArguments)
+                .add("title='" + title + "'")
+                .add("summary='" + summary + "'")
+                .add("parentId=" + parentId)
+                .toString();
     }
 }

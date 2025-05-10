@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createBundle;
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
 
 import android.content.Context;
@@ -25,6 +26,7 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -51,7 +53,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                 final String keyOfChild2 = "some child key 2";
                 final @LayoutRes int layoutResIdOfEachChild = 16;
 
-                final PreferenceFragmentCompat preferenceFragment = createPreferenceFragmentHavingParentWithTwoChildren(parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild);
+                final PreferenceFragmentCompat preferenceFragment = createPreferenceFragmentHavingParentWithTwoChildren(parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild, createBundle("someKey", "someValue"));
                 final int id = 4711;
 
                 // When
@@ -75,7 +77,17 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                 // Then
                 assertActualEqualsExpected(
                         pojo,
-                        getSearchablePreferenceScreenHavingParentWithTwoChildren(id, parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild, preferenceFragment.getClass()));
+                        getSearchablePreferenceScreenHavingParentWithTwoChildren(
+                                id,
+                                parentKey,
+                                layoutResIdOfParent,
+
+                                keyOfChild1,
+                                keyOfChild2,
+                                layoutResIdOfEachChild,
+                                new HostWithArguments(
+                                        preferenceFragment.getClass(),
+                                        Optional.ofNullable(preferenceFragment.getArguments()))));
             });
         }
     }
@@ -86,32 +98,36 @@ public class PreferenceScreenWithHost2POJOConverterTest {
 
             final String keyOfChild1,
             final String keyOfChild2,
-            final @LayoutRes int layoutResIdOfEachChild) {
-        return new PreferenceFragmentTemplate(
-                new BiConsumer<>() {
+            final @LayoutRes int layoutResIdOfEachChild,
+            final Bundle arguments) {
+        final PreferenceFragmentTemplate preferenceFragment =
+                new PreferenceFragmentTemplate(
+                        new BiConsumer<>() {
 
-                    @Override
-                    public void accept(final PreferenceScreen screen, final Context context) {
-                        final PreferenceCategory preference = createParent(context);
-                        screen.addPreference(preference);
-                        preference.addPreference(createChild(keyOfChild1, context));
-                        preference.addPreference(createChild(keyOfChild2, context));
-                    }
+                            @Override
+                            public void accept(final PreferenceScreen screen, final Context context) {
+                                final PreferenceCategory preference = createParent(context);
+                                screen.addPreference(preference);
+                                preference.addPreference(createChild(keyOfChild1, context));
+                                preference.addPreference(createChild(keyOfChild2, context));
+                            }
 
-                    private PreferenceCategory createParent(final Context context) {
-                        final PreferenceCategory preference = new PreferenceCategory(context);
-                        preference.setKey(parentKey);
-                        preference.setLayoutResource(layoutResIdOfParent);
-                        return preference;
-                    }
+                            private PreferenceCategory createParent(final Context context) {
+                                final PreferenceCategory preference = new PreferenceCategory(context);
+                                preference.setKey(parentKey);
+                                preference.setLayoutResource(layoutResIdOfParent);
+                                return preference;
+                            }
 
-                    private Preference createChild(final String key, final Context context) {
-                        final Preference preference = new Preference(context);
-                        preference.setKey(key);
-                        preference.setLayoutResource(layoutResIdOfEachChild);
-                        return preference;
-                    }
-                });
+                            private Preference createChild(final String key, final Context context) {
+                                final Preference preference = new Preference(context);
+                                preference.setKey(key);
+                                preference.setLayoutResource(layoutResIdOfEachChild);
+                                return preference;
+                            }
+                        });
+        preferenceFragment.setArguments(arguments);
+        return preferenceFragment;
     }
 
     private static SearchablePreferenceScreen getSearchablePreferenceScreenHavingParentWithTwoChildren(
@@ -123,8 +139,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
             final String keyOfChild1,
             final String keyOfChild2,
             final @LayoutRes int layoutResIdOfEachChild,
-
-            final Class<? extends PreferenceFragmentCompat> host) {
+            final HostWithArguments hostWithArguments) {
         final SearchablePreference parent =
                 new SearchablePreference(
                         1,
@@ -139,12 +154,13 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                         true,
                         Optional.empty(),
                         new Bundle(),
-                        host,
+                        hostWithArguments.host(),
                         Optional.empty(),
                         Optional.empty(),
                         id);
         return new SearchablePreferenceScreen(
                 id,
+                hostWithArguments,
                 "screen title",
                 "screen summary",
                 Set.of(
@@ -162,7 +178,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 true,
                                 Optional.empty(),
                                 new Bundle(),
-                                host,
+                                hostWithArguments.host(),
                                 Optional.of(1),
                                 Optional.empty(),
                                 id),
@@ -179,7 +195,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 true,
                                 Optional.empty(),
                                 new Bundle(),
-                                host,
+                                hostWithArguments.host(),
                                 Optional.of(1),
                                 Optional.empty(),
                                 id)),

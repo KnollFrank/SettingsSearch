@@ -3,9 +3,7 @@ package de.KnollFrank.lib.settingssearch.test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.test.BundleEquality.equalBundles;
-
-import java.util.List;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleEquality.equalBundles;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
@@ -26,12 +24,5 @@ public class SearchablePreferenceEquality {
         assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
         assertThat(actual.getParentId(), is(expected.getParentId()));
         assertThat(actual.getPredecessorId(), is(expected.getPredecessorId()));
-    }
-
-    public static void assertActualListEqualsExpectedList(final List<SearchablePreference> actuals, final List<SearchablePreference> expecteds) {
-        assertThat(actuals.size(), is(expecteds.size()));
-        for (int i = 0; i < actuals.size(); i++) {
-            assertActualEqualsExpected(actuals.get(i), expecteds.get(i));
-        }
     }
 }
