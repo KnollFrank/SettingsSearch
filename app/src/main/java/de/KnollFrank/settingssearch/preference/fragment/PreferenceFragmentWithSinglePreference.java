@@ -9,6 +9,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import com.google.common.collect.Iterables;
+
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -71,9 +73,10 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
                         Optional.empty(),
                         // FK-TODO: generalize because too many hard coded values
                         Optional.of(
-                                searchablePreferenceDAO
-                                        .findPreferenceByKeyAndHost(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, PrefsFragmentFirst.class)
-                                        .orElseThrow()))
+                                Iterables.getOnlyElement(
+                                        searchablePreferenceDAO.findPreferenceByKeyAndHost(
+                                                KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS,
+                                                PrefsFragmentFirst.class))))
                 .searchablePreference();
     }
 

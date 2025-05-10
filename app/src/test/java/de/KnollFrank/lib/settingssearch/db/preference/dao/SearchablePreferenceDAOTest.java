@@ -185,14 +185,16 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         dao.persist(preference);
 
         // When
-        final Optional<SearchablePreference> preferenceFromDb =
+        final Set<SearchablePreference> preferencesFromDb =
                 dao.findPreferenceByKeyAndHost(
                         preference.getKey(),
                         preference.getHost());
 
         // Then
-        assertThat(preferenceFromDb.isPresent(), is(true));
-        SearchablePreferenceEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+        assertThat(preferencesFromDb.size(), is(1));
+        SearchablePreferenceEquality.assertActualEqualsExpected(
+                Iterables.getOnlyElement(preferencesFromDb),
+                preference);
     }
 
     @Test
@@ -201,13 +203,13 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
 
         // When
-        final Optional<SearchablePreference> preferenceFromDb =
+        final Set<SearchablePreference> preferencesFromDb =
                 dao.findPreferenceByKeyAndHost(
                         "nonExistingKey",
                         PrefsFragmentFirst.class);
 
         // Then
-        assertThat(preferenceFromDb.isEmpty(), is(true));
+        assertThat(preferencesFromDb.isEmpty(), is(true));
     }
 
     @Test

@@ -21,6 +21,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
+import com.google.common.collect.Iterables;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -109,11 +111,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private void removePreferenceFromP1() {
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
                         searchablePreferenceDAO.remove(
-                                searchablePreferenceDAO
-                                        .findPreferenceByKeyAndHost(
-                                                ADDITIONAL_PREFERENCE_KEY,
-                                                PreferenceFragmentWithSinglePreference.class)
-                                        .orElseThrow());
+                                Iterables.getOnlyElement(
+                                        searchablePreferenceDAO
+                                                .findPreferenceByKeyAndHost(
+                                                        ADDITIONAL_PREFERENCE_KEY,
+                                                        PreferenceFragmentWithSinglePreference.class)));
                     }
                 });
         return checkBoxPreference;
@@ -135,11 +137,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         preference.setSummary(summary);
                         final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
                         final SearchablePreference searchablePreference =
-                                searchablePreferenceDAO
-                                        .findPreferenceByKeyAndHost(
-                                                preference.getKey(),
-                                                PrefsFragmentFirst.this.getClass())
-                                        .orElseThrow();
+                                Iterables.getOnlyElement(
+                                        searchablePreferenceDAO
+                                                .findPreferenceByKeyAndHost(
+                                                        preference.getKey(),
+                                                        PrefsFragmentFirst.this.getClass()));
                         searchablePreference.setSummary(Optional.of(summary));
                         searchablePreferenceDAO.update(searchablePreference);
                     }
