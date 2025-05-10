@@ -23,7 +23,7 @@ class SearchablePreferenceDAOSetter {
         return searchablePreference;
     }
 
-    public List<PreferenceAndPredecessor> _setDao(final List<PreferenceAndPredecessor> preferenceAndPredecessors) {
+    public Set<PreferenceAndPredecessor> _setDao(final Set<PreferenceAndPredecessor> preferenceAndPredecessors) {
         preferenceAndPredecessors.forEach(this::setDao);
         return preferenceAndPredecessors;
     }
