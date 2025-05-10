@@ -11,6 +11,7 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,8 +34,8 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
     private Optional<Map<SearchablePreference, SearchablePreference>> predecessorByPreference = Optional.empty();
     private Optional<Map<SearchablePreference, Set<SearchablePreference>>> childrenByPreference = Optional.empty();
 
-    public List<SearchablePreference> loadAll() {
-        return daoSetter.setDao(_loadAll());
+    public Set<SearchablePreference> loadAll() {
+        return daoSetter.setDao(new HashSet<>(_loadAll()));
     }
 
     public Optional<SearchablePreference> findPreferenceById(final int id) {

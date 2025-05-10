@@ -47,7 +47,6 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
         return daoSetter.setDao(_findSearchablePreferenceScreenById(id));
     }
 
-    // FK-TODO: return Set instead of List like here in other methods in other DAOs
     public Set<SearchablePreferenceScreen> loadAll() {
         return daoSetter.setDao(new HashSet<>(_loadAll()));
     }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
@@ -43,6 +44,11 @@ class SearchablePreferenceDAOSetter {
     }
 
     public Collection<SearchablePreference> setDao(final Collection<SearchablePreference> searchablePreferences) {
+        searchablePreferences.forEach(this::setDao);
+        return searchablePreferences;
+    }
+
+    public Set<SearchablePreference> setDao(final Set<SearchablePreference> searchablePreferences) {
         searchablePreferences.forEach(this::setDao);
         return searchablePreferences;
     }
