@@ -58,7 +58,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
                     Optional.of(
                             SearchablePreferenceScreenAndAllPreferencesHelper.getAllPreferencesBySearchablePreferenceScreen(
                                     daoSetter.__setDao(
-                                            _getSearchablePreferenceScreenAndAllPreferences())));
+                                            new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()))));
         }
         return allPreferencesBySearchablePreferenceScreen.orElseThrow();
     }

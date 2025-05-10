@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,7 +22,7 @@ class SearchablePreferenceScreenDAOSetter {
         return searchablePreferenceScreens;
     }
 
-    public List<SearchablePreferenceScreenAndAllPreferences> __setDao(final List<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesList) {
+    public Set<SearchablePreferenceScreenAndAllPreferences> __setDao(final Set<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesList) {
         searchablePreferenceScreenAndAllPreferencesList.forEach(this::setDao);
         return searchablePreferenceScreenAndAllPreferencesList;
     }
