@@ -139,8 +139,8 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
     @Update
     protected abstract void _update(SearchablePreference... preferences);
 
-    private List<SearchablePreference> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
-        return daoSetter.setDao(_searchWithinTitleSummarySearchableInfo(needle));
+    private Set<SearchablePreference> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
+        return daoSetter.setDao(new HashSet<>(_searchWithinTitleSummarySearchableInfo(needle)));
     }
 
     private void invalidateCaches() {
