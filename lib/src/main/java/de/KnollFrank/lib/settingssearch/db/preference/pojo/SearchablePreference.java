@@ -53,6 +53,7 @@ public final class SearchablePreference {
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
     private final Bundle extras;
+    // FK-TODO: move host to SearchablePreferenceScreen
     private final Class<? extends PreferenceFragmentCompat> host;
     private final Optional<Integer> parentId;
     private final Optional<Integer> predecessorId;
