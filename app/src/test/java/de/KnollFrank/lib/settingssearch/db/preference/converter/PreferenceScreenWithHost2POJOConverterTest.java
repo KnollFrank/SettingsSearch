@@ -145,7 +145,6 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                         id);
         return new SearchablePreferenceScreen(
                 id,
-                Optional.empty(),
                 "screen title",
                 "screen summary",
                 Set.of(
@@ -183,7 +182,8 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 host,
                                 Optional.of(1),
                                 Optional.empty(),
-                                id)));
+                                id)),
+                Optional.empty());
     }
 
     public static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,

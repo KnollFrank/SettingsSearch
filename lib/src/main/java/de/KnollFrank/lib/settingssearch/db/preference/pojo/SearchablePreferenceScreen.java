@@ -18,32 +18,32 @@ public final class SearchablePreferenceScreen {
 
     @PrimaryKey
     private final int id;
-    private final Optional<Integer> parentId;
     private final String title;
     private final String summary;
     @Ignore
     private final Optional<Set<SearchablePreference>> allPreferences;
+    private final Optional<Integer> parentId;
 
     public SearchablePreferenceScreen(final int id,
-                                      final Optional<Integer> parentId,
                                       final String title,
                                       final String summary,
-                                      final Set<SearchablePreference> allPreferences) {
-        this(id, parentId, title, summary, Optional.of(allPreferences));
+                                      final Set<SearchablePreference> allPreferences,
+                                      final Optional<Integer> parentId) {
+        this(id, title, summary, Optional.of(allPreferences), parentId);
     }
 
     public SearchablePreferenceScreen(final int id,
-                                      final Optional<Integer> parentId,
                                       final String title,
-                                      final String summary) {
-        this(id, parentId, title, summary, Optional.empty());
+                                      final String summary,
+                                      final Optional<Integer> parentId) {
+        this(id, title, summary, Optional.empty(), parentId);
     }
 
     private SearchablePreferenceScreen(final int id,
-                                       final Optional<Integer> parentId,
                                        final String title,
                                        final String summary,
-                                       final Optional<Set<SearchablePreference>> allPreferences) {
+                                       final Optional<Set<SearchablePreference>> allPreferences,
+                                       final Optional<Integer> parentId) {
         this.id = id;
         this.parentId = parentId;
         this.title = title;
