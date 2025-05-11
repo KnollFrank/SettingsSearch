@@ -113,7 +113,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         searchablePreferenceDAO.remove(
                                 Iterables.getOnlyElement(
                                         searchablePreferenceDAO
-                                                .findPreferenceByKeyAndHost(
+                                                .findPreferencesByKeyAndHost(
                                                         ADDITIONAL_PREFERENCE_KEY,
                                                         PreferenceFragmentWithSinglePreference.class)));
                     }
@@ -139,7 +139,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final SearchablePreference searchablePreference =
                                 Iterables.getOnlyElement(
                                         searchablePreferenceDAO
-                                                .findPreferenceByKeyAndHost(
+                                                .findPreferencesByKeyAndHost(
                                                         preference.getKey(),
                                                         PrefsFragmentFirst.this.getClass()));
                         searchablePreference.setSummary(Optional.of(summary));

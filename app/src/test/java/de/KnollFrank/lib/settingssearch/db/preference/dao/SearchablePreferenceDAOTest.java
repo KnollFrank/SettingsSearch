@@ -171,7 +171,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     }
 
     @Test
-    public void shouldFindPreferenceByKeyAndHost() {
+    public void shouldFindPreferencesByKeyAndHost() {
         // Given
         final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
         final SearchablePreference preference =
@@ -186,7 +186,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
 
         // When
         final Set<SearchablePreference> preferencesFromDb =
-                dao.findPreferenceByKeyAndHost(
+                dao.findPreferencesByKeyAndHost(
                         preference.getKey(),
                         preference.getHost());
 
@@ -198,13 +198,13 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     }
 
     @Test
-    public void shouldNotFindPreferenceByKeyAndHost() {
+    public void shouldNotFindPreferencesByKeyAndHost() {
         // Given
         final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
 
         // When
         final Set<SearchablePreference> preferencesFromDb =
-                dao.findPreferenceByKeyAndHost(
+                dao.findPreferencesByKeyAndHost(
                         "nonExistingKey",
                         PrefsFragmentFirst.class);
 

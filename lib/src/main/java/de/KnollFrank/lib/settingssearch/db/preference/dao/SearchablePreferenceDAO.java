@@ -42,9 +42,9 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
         return daoSetter.setDao(_findPreferenceById(id));
     }
 
-    public Set<SearchablePreference> findPreferenceByKeyAndHost(final String key,
-                                                                final Class<? extends PreferenceFragmentCompat> host) {
-        return daoSetter.setDao(new HashSet<>(_findPreferenceByKeyAndHost(key, host)));
+    public Set<SearchablePreference> findPreferencesByKeyAndHost(final String key,
+                                                                 final Class<? extends PreferenceFragmentCompat> host) {
+        return daoSetter.setDao(new HashSet<>(_findPreferencesByKeyAndHost(key, host)));
     }
 
     public Set<PreferenceMatch> searchWithinTitleSummarySearchableInfo(final String needle,
@@ -117,7 +117,7 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
     protected abstract void _persist(SearchablePreference... searchablePreferences);
 
     @Query("SELECT * FROM SearchablePreference WHERE `key` = :key AND host = :host")
-    protected abstract List<SearchablePreference> _findPreferenceByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
+    protected abstract List<SearchablePreference> _findPreferencesByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
 
     @Query("SELECT * FROM SearchablePreference WHERE id = :id")
     protected abstract Optional<SearchablePreference> _findPreferenceById(final int id);
