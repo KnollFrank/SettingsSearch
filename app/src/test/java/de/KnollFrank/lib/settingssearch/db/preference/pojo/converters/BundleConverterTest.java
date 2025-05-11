@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createBundle;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory.createBundle;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleEquality.equalBundles;
 
 import android.os.Bundle;

@@ -62,6 +62,8 @@ dependencies {
     testImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     testImplementation 'com.google.code.gson:gson:2.12.1'
+    // https://mvnrepository.com/artifact/com.google.guava/guava-testlib
+    testImplementation("com.google.guava:guava-testlib:33.4.8-android")
 
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'org.mockito:mockito-android:5.7.0'

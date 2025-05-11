@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory.createSomeBundleOfBundles;
 
 import android.os.Bundle;
 
@@ -77,16 +78,10 @@ public class BundleTypeAdapterFactoryTest {
     @Test
     public void testSerializeBundleOfBundles() {
         // Given
-        final Bundle outer = new Bundle();
-        outer.putString("a", "abc");
-
-        final Bundle inner = new Bundle();
-        inner.putString("b", "bcd");
-
-        outer.putBundle("c", inner);
+        final Bundle bundleOfBundles = createSomeBundleOfBundles();
 
         // When
-        final JsonObject jsonObj = gson.toJsonTree(outer).getAsJsonObject();
+        final JsonObject jsonObj = gson.toJsonTree(bundleOfBundles).getAsJsonObject();
 
         // Then
         assertThat(jsonObj.get("c").getAsJsonObject().get("b").getAsString(), is("bcd"));

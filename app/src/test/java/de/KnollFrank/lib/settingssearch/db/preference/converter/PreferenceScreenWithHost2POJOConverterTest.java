@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createBundle;
+import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory.createBundle;
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
 
 import android.content.Context;

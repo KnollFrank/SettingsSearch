@@ -30,7 +30,7 @@ public class POJOTestFactory {
                 title,
                 summary,
                 searchableInfo,
-                createBundle("someKey", "someValue"),
+                BundleTestFactory.createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
                 PrefsFragmentFirst.class,
                 parentId,
@@ -99,7 +99,7 @@ public class POJOTestFactory {
                 title,
                 summary,
                 searchableInfo,
-                createBundle("someKey", "someValue"),
+                BundleTestFactory.createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
                 TestPreferenceFragment.class,
                 Optional.empty());
@@ -131,12 +131,6 @@ public class POJOTestFactory {
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
                 -1);
-    }
-
-    public static Bundle createBundle(final String key, final String value) {
-        final Bundle bundle = new Bundle();
-        bundle.putString(key, value);
-        return bundle;
     }
 
     public static SearchablePreference copyPreferenceAndSetPredecessor(final SearchablePreference preference,
