@@ -1,9 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Pair;
@@ -16,6 +12,10 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 // adapted from https://github.com/google-gson/typeadapters/blob/master/android/src/main/java/BundleTypeAdapterFactory.java
 
 /**
@@ -23,26 +23,27 @@ import com.google.gson.stream.JsonWriter;
  *
  * @author Inderjeet Singh
  */
+// FK-TODO: add unit test
 class BundleTypeAdapterFactory implements TypeAdapterFactory {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> TypeAdapter<T> create(final Gson gson, TypeToken<T> type) {
+    public <T> TypeAdapter<T> create(final Gson gson, final TypeToken<T> type) {
         if (!Bundle.class.isAssignableFrom(type.getRawType())) {
             return null;
         }
         return (TypeAdapter<T>) new TypeAdapter<Bundle>() {
 
             @Override
-            public void write(JsonWriter out, Bundle bundle) throws IOException {
+            public void write(final JsonWriter out, final Bundle bundle) throws IOException {
                 if (bundle == null) {
                     out.nullValue();
                     return;
                 }
                 out.beginObject();
-                for (String key : bundle.keySet()) {
+                for (final String key : bundle.keySet()) {
                     out.name(key);
-                    Object value = bundle.get(key);
+                    final Object value = bundle.get(key);
                     if (value == null) {
                         out.nullValue();
                     } else {
@@ -53,7 +54,7 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
             }
 
             @Override
-            public Bundle read(JsonReader in) throws IOException {
+            public Bundle read(final JsonReader in) throws IOException {
                 return switch (in.peek()) {
                     case NULL -> {
                         in.nextNull();
@@ -64,24 +65,24 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
                 };
             }
 
-            private Bundle toBundle(List<Pair<String, Object>> values) throws IOException {
-                Bundle bundle = new Bundle();
-                for (Pair<String, Object> entry : values) {
+            private Bundle toBundle(final List<Pair<String, Object>> values) throws IOException {
+                final Bundle bundle = new Bundle();
+                for (final Pair<String, Object> entry : values) {
                     String key = entry.first;
                     Object value = entry.second;
-                    if (value instanceof String _value) {
+                    if (value instanceof final String _value) {
                         bundle.putString(key, _value);
-                    } else if (value instanceof Integer _value) {
+                    } else if (value instanceof final Integer _value) {
                         bundle.putInt(key, _value);
-                    } else if (value instanceof Long _value) {
+                    } else if (value instanceof final Long _value) {
                         bundle.putLong(key, _value);
-                    } else if (value instanceof Double _value) {
+                    } else if (value instanceof final Double _value) {
                         bundle.putDouble(key, _value);
-                    } else if (value instanceof Parcelable _value) {
+                    } else if (value instanceof final Parcelable _value) {
                         bundle.putParcelable(key, _value);
                     } else if (value instanceof List) {
-                        List<Pair<String, Object>> objectValues = (List<Pair<String, Object>>) value;
-                        Bundle subBundle = toBundle(objectValues);
+                        final List<Pair<String, Object>> objectValues = (List<Pair<String, Object>>) value;
+                        final Bundle subBundle = toBundle(objectValues);
                         bundle.putParcelable(key, subBundle);
                     } else {
                         throw new IOException("Unparcelable key, value: " + key + ", " + value);
@@ -90,14 +91,14 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
                 return bundle;
             }
 
-            private List<Pair<String, Object>> readObject(JsonReader in) throws IOException {
-                List<Pair<String, Object>> object = new ArrayList<>();
+            private List<Pair<String, Object>> readObject(final JsonReader in) throws IOException {
+                final List<Pair<String, Object>> object = new ArrayList<>();
                 in.beginObject();
                 while (in.peek() != JsonToken.END_OBJECT) {
                     switch (in.peek()) {
                         case NAME -> {
-                            String name = in.nextName();
-                            Object value = readValue(in);
+                            final String name = in.nextName();
+                            final Object value = readValue(in);
                             object.add(new Pair<>(name, value));
                         }
                         case END_OBJECT -> {
@@ -109,7 +110,7 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
                 return object;
             }
 
-            private Object readValue(JsonReader in) throws IOException {
+            private Object readValue(final JsonReader in) throws IOException {
                 return switch (in.peek()) {
                     case BEGIN_ARRAY -> readArray(in);
                     case BEGIN_OBJECT -> readObject(in);
@@ -124,11 +125,11 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
                 };
             }
 
-            private Object readNumber(JsonReader in) throws IOException {
-                double doubleValue = in.nextDouble();
+            private Object readNumber(final JsonReader in) throws IOException {
+                final double doubleValue = in.nextDouble();
                 if (doubleValue - Math.ceil(doubleValue) == 0) {
-                    long longValue = (long) doubleValue;
-                    if (longValue >= Integer.MIN_VALUE && longValue <= Integer.MAX_VALUE) {
+                    final long longValue = (long) doubleValue;
+                    if (Integer.MIN_VALUE <= longValue && longValue <= Integer.MAX_VALUE) {
                         return (int) longValue;
                     }
                     return longValue;
@@ -137,11 +138,11 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
             }
 
             @SuppressWarnings("rawtypes")
-            private List readArray(JsonReader in) throws IOException {
-                List list = new ArrayList();
+            private List readArray(final JsonReader in) throws IOException {
+                final List list = new ArrayList();
                 in.beginArray();
                 while (in.peek() != JsonToken.END_ARRAY) {
-                    Object element = readValue(in);
+                    final Object element = readValue(in);
                     list.add(element);
                 }
                 in.endArray();
