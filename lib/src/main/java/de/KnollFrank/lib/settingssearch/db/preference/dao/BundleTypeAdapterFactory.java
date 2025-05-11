@@ -23,7 +23,6 @@ import java.util.List;
  *
  * @author Inderjeet Singh
  */
-// FK-TODO: add unit test
 class BundleTypeAdapterFactory implements TypeAdapterFactory {
 
     @SuppressWarnings("unchecked")
