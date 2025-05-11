@@ -39,13 +39,15 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Preference
                 BundleWithEqualityConverter.class,
                 OptionalBundleWithEqualityConverter.class
         })
-public abstract class AppDatabase extends RoomDatabase {
+public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
 
     protected AppDatabase() {
     }
 
+    @Override
     public abstract SearchablePreferenceScreenDAO searchablePreferenceScreenDAO();
 
+    @Override
     public abstract SearchablePreferenceDAO searchablePreferenceDAO();
 
     public abstract SearchDatabaseStateDAO searchDatabaseStateDAO();

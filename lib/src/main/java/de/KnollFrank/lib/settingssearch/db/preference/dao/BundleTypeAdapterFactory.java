@@ -73,6 +73,9 @@ class BundleTypeAdapterFactory implements TypeAdapterFactory {
                         bundle.putString(key, _value);
                     } else if (value instanceof final Integer _value) {
                         bundle.putInt(key, _value);
+                    } else if (value instanceof final Boolean _value) {
+                        // FK-TODO: add test case for Boolean in BundleTypeAdapterFactoryTest
+                        bundle.putBoolean(key, _value);
                     } else if (value instanceof final Long _value) {
                         bundle.putLong(key, _value);
                     } else if (value instanceof final Double _value) {

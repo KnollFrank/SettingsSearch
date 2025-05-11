@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.client.CreateSearchDatabaseTaskProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
@@ -23,15 +23,15 @@ public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
 
-    private Optional<AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO>> createSearchDatabaseTask = Optional.empty();
-    private Optional<SearchablePreferenceDAO> searchablePreferenceDAO = Optional.empty();
+    private Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>> createSearchDatabaseTask = Optional.empty();
+    private Optional<DAOProvider> appDatabase = Optional.empty();
 
-    public void setSearchablePreferenceDAO(final SearchablePreferenceDAO searchablePreferenceDAO) {
-        this.searchablePreferenceDAO = Optional.of(searchablePreferenceDAO);
+    public void setAppDatabase(final DAOProvider appDatabase) {
+        this.appDatabase = Optional.of(appDatabase);
     }
 
-    public Optional<SearchablePreferenceDAO> getSearchablePreferenceDAO() {
-        return searchablePreferenceDAO;
+    public Optional<DAOProvider> getAppDatabase() {
+        return appDatabase;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
                                 createSearchPreferenceFragments(),
                                 this,
-                                this::setSearchablePreferenceDAO));
+                                this::setAppDatabase));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 

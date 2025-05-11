@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DatabaseResetter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -38,7 +38,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
-    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO>>> createSearchDatabaseTaskSupplier;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchDatabaseConfig searchDatabaseConfig,
@@ -57,7 +57,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final FragmentActivity activity,
-                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO>>> createSearchDatabaseTaskSupplier,
+                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
                                         final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;

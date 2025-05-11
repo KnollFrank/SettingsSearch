@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
@@ -20,10 +20,10 @@ public class CreateSearchDatabaseTaskProvider {
 
     public static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
-    public static AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO> getCreateSearchDatabaseTask(
+    public static AsyncTaskWithProgressUpdateListeners<Void, DAOProvider> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
             final FragmentActivity activity,
-            final Consumer<SearchablePreferenceDAO> searchablePreferenceDAOConsumer) {
+            final Consumer<DAOProvider> appDatabaseConsumer) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
@@ -34,10 +34,10 @@ public class CreateSearchDatabaseTaskProvider {
                                 mergedPreferenceScreenDataRepositoryFactory,
                                 activity,
                                 progressUpdateListener),
-                searchablePreferenceDAOConsumer);
+                appDatabaseConsumer);
     }
 
-    private static SearchablePreferenceDAO createSearchDatabase(
+    private static DAOProvider createSearchDatabase(
             final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener) {

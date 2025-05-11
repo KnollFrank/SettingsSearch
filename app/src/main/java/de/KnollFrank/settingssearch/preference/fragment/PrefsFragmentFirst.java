@@ -27,9 +27,12 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
@@ -84,7 +87,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private void addPreferenceToP1() {
-                        final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
+                        final SearchablePreferenceDAO searchablePreferenceDAO = getAppDatabase().searchablePreferenceDAO();
                         final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
                         searchablePreferenceDAO.persist(
                                 InstantiateAndInitializeFragmentFactory
@@ -109,7 +112,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private void removePreferenceFromP1() {
-                        final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
+                        final SearchablePreferenceDAO searchablePreferenceDAO = getAppDatabase().searchablePreferenceDAO();
                         searchablePreferenceDAO.remove(
                                 Iterables.getOnlyElement(
                                         searchablePreferenceDAO
@@ -135,22 +138,31 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     private void setSummary(final Preference preference, final String summary) {
                         preference.setSummary(summary);
-                        final SearchablePreferenceDAO searchablePreferenceDAO = getSearchablePreferenceDAO();
+                        final SearchablePreferenceDAO searchablePreferenceDAO = getAppDatabase().searchablePreferenceDAO();
                         final SearchablePreference searchablePreference =
-                                Iterables.getOnlyElement(
-                                        searchablePreferenceDAO
-                                                .findPreferencesByKeyAndHost(
-                                                        preference.getKey(),
-                                                        PrefsFragmentFirst.this.getClass()));
+                                getSearchablePreference(
+                                        HostWithArguments.of(PrefsFragmentFirst.this),
+                                        preference);
                         searchablePreference.setSummary(Optional.of(summary));
                         searchablePreferenceDAO.update(searchablePreference);
+                    }
+
+                    private SearchablePreference getSearchablePreference(final HostWithArguments hostOfPreference, final Preference preference) {
+                        return SearchablePreferences
+                                .findPreferenceByKey(
+                                        getAppDatabase()
+                                                .searchablePreferenceScreenDAO()
+                                                .findSearchablePreferenceScreenByHostWithArguments(hostOfPreference)
+                                                .getAllPreferences(),
+                                        preference.getKey())
+                                .orElseThrow();
                     }
                 });
     }
 
-    private SearchablePreferenceDAO getSearchablePreferenceDAO() {
+    private DAOProvider getAppDatabase() {
         return ((PreferenceSearchExample) requireActivity())
-                .getSearchablePreferenceDAO()
+                .getAppDatabase()
                 .orElseThrow();
     }
 

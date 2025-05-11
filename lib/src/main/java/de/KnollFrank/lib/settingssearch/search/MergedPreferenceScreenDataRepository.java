@@ -14,10 +14,10 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDataba
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -52,14 +52,14 @@ public class MergedPreferenceScreenDataRepository {
         this.context = context;
     }
 
-    public SearchablePreferenceDAO getSearchDatabaseFilledWithPreferences(final Locale locale) {
+    public DAOProvider getSearchDatabaseFilledWithPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final AppDatabase appDatabase = AppDatabaseFactory.getInstance(locale, context);
             if (!appDatabase.searchDatabaseStateDAO().isSearchDatabaseInitialized()) {
                 computeAndPersistSearchablePreferenceScreenGraph(appDatabase.searchablePreferenceScreenGraphDAO());
                 appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(true);
             }
-            return appDatabase.searchablePreferenceDAO();
+            return appDatabase;
         }
     }
 

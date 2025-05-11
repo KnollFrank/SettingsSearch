@@ -11,7 +11,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 
 public class SearchPreferenceFragmentsBuilder {
 
@@ -20,7 +20,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
     private final SearchConfig searchConfig;
-    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO>>> createSearchDatabaseTaskSupplier = Optional::empty;
+    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
 
@@ -37,7 +37,7 @@ public class SearchPreferenceFragmentsBuilder {
         this.activity = activity;
     }
 
-    public SearchPreferenceFragmentsBuilder withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, SearchablePreferenceDAO>>> createSearchDatabaseTaskSupplier) {
+    public SearchPreferenceFragmentsBuilder withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier) {
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         return this;
     }

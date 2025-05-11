@@ -38,4 +38,10 @@ public class SearchablePreferences {
                 .filter(predicate)
                 .collect(MoreCollectors.toOptional());
     }
+
+    public static Optional<SearchablePreference> findPreferenceByKey(final Set<SearchablePreference> preferences, final String key) {
+        return findPreferenceRecursivelyByPredicate(
+                preferences,
+                searchablePreference -> searchablePreference.getKey().equals(key));
+    }
 }
