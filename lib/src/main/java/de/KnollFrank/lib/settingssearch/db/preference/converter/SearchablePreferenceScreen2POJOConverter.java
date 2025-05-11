@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter.SearchablePreferencesWithMap;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleWithEquality;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -40,7 +41,9 @@ class SearchablePreferenceScreen2POJOConverter {
     private static HostWithArguments getHostWithArguments(final PreferenceFragmentCompat preferenceFragment) {
         return new HostWithArguments(
                 preferenceFragment.getClass(),
-                Optional.ofNullable(preferenceFragment.getArguments()));
+                Optional
+                        .ofNullable(preferenceFragment.getArguments())
+                        .map(BundleWithEquality::new));
     }
 
     private static String toStringOrNull(final Optional<CharSequence> preferenceScreen) {

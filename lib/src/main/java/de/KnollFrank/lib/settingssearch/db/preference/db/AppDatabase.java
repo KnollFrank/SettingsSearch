@@ -12,7 +12,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleWithEqualityConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalBundleConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalBundleWithEqualityConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
@@ -33,7 +35,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Preference
                 OptionalStringConverter.class,
                 OptionalIntegerConverter.class,
                 BundleConverter.class,
-                OptionalBundleConverter.class
+                OptionalBundleConverter.class,
+                BundleWithEqualityConverter.class,
+                OptionalBundleWithEqualityConverter.class
         })
 public abstract class AppDatabase extends RoomDatabase {
 

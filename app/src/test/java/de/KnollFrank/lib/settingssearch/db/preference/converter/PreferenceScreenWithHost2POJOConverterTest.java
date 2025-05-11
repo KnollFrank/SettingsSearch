@@ -26,6 +26,7 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleWithEquality;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -87,7 +88,9 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 layoutResIdOfEachChild,
                                 new HostWithArguments(
                                         preferenceFragment.getClass(),
-                                        Optional.ofNullable(preferenceFragment.getArguments()))));
+                                        Optional
+                                                .ofNullable(preferenceFragment.getArguments())
+                                                .map(BundleWithEquality::new))));
             });
         }
     }
