@@ -65,7 +65,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         {
             final Preference preference = getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT);
             preference.setIcon(R.drawable.face);
-            markFragmentInstance(preference.getExtras(), PrefsFragmentSecond.class);
+            markClassAsDestinationOfPreference(PrefsFragmentSecond.class, preference);
         }
         getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
@@ -73,9 +73,9 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         setOnPreferenceClickListeners();
     }
 
-    public static Bundle markFragmentInstance(final Bundle bundle, final Class<?> clazz) {
-        bundle.putInt("fragmentInstanceMarker_" + clazz.getName(), 1);
-        return bundle;
+    public static Bundle markClassAsDestinationOfPreference(final Class<?> clazz, final Preference preference) {
+        preference.getExtras().putBoolean(preference.getKey() + "->" + clazz.getName(), true);
+        return preference.getExtras();
     }
 
     private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference() {
