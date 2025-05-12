@@ -258,7 +258,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         screenId);
         return new SearchablePreferenceScreen(
                 screenId,
-                new HostWithArguments(TestPreferenceFragment.class, Optional.empty()),
+                new HostWithArguments(PreferenceFragmentWithSinglePreference.class, Optional.empty()),
                 Optional.empty(),
                 Optional.empty(),
                 Set.of(e1),

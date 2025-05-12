@@ -53,12 +53,14 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, context);
                 preference.setTitle("first preference connected to " + PreferenceFragmentWithSinglePreference.class.getSimpleName());
                 preference.setKey("key1");
+                preference.getExtras().putString("someArgument", "1");
                 screen.addPreference(preference);
             }
             {
                 final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, context);
                 preference.setTitle("second preference connected to " + PreferenceFragmentWithSinglePreference.class.getSimpleName());
                 preference.setKey("key2");
+                preference.getExtras().putString("someArgument", "2");
                 screen.addPreference(preference);
             }
             setPreferenceScreen(screen);

@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -18,9 +19,10 @@ public final class SearchablePreferenceScreen {
     @Ignore
     private Optional<AllPreferencesProvider> dao = Optional.empty();
 
-    @PrimaryKey
     private final int id;
     @Embedded
+    @NonNull
+    @PrimaryKey
     private final HostWithArguments hostWithArguments;
     private final Optional<String> title;
     private final Optional<String> summary;
@@ -95,15 +97,15 @@ public final class SearchablePreferenceScreen {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreferenceScreen that = (SearchablePreferenceScreen) o;
-        return getId() == that.getId();
+    public boolean equals(final Object object) {
+        if (object == null || getClass() != object.getClass()) return false;
+        final SearchablePreferenceScreen that = (SearchablePreferenceScreen) object;
+        return Objects.equals(hostWithArguments, that.hostWithArguments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hashCode(hostWithArguments);
     }
 
     @Override
