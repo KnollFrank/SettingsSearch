@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import java.util.Optional;
 
+// FK-TODO: implement interface de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter
 class PreferencePathNavigatorDataConverter {
 
     private static final String PREFERENCE_PATH_NAVIGATOR_DATA = PreferencePathNavigatorData.class.getPackage().getName();
@@ -20,6 +21,7 @@ class PreferencePathNavigatorDataConverter {
                 .map(Converter::fromBundle);
     }
 
+    // FK-TODO: implement interface de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter
     private static class Converter {
 
         private static final String ID_OF_SEARCHABLE_PREFERENCE = "idOfSearchablePreference";

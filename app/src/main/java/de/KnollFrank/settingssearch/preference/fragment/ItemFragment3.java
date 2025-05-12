@@ -95,13 +95,14 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
         @Override
         public void initializePreferenceFragmentWithFragmentBeforeOnCreate(final ItemFragment3 itemFragment3) {
             items = itemFragment3.getItems();
+            setArguments(itemFragment3.getArguments());
         }
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
-            screen.setTitle("screen title");
+            screen.setTitle("screen title PreferenceFragment3");
             screen.setSummary("screen summary");
             PreferenceFragment3
                     .asPreferences(items, context)
@@ -109,7 +110,8 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
             setPreferenceScreen(screen);
         }
 
-        private static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items, final Context context) {
+        private static List<Preference> asPreferences(final List<PlaceholderContent.PlaceholderItem> items,
+                                                      final Context context) {
             return items
                     .stream()
                     .map(placeholderItem -> asPreference(placeholderItem, context))

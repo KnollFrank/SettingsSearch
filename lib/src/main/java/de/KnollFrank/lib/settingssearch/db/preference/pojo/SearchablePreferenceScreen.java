@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
@@ -13,16 +13,16 @@ import java.util.StringJoiner;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesProvider;
 
-@Entity
+// FK-TODO: make host and arguments constants, also in HostWithArguments as ColumnInfos
+@Entity(indices = {@Index(value = {"host", "arguments"}, unique = true)})
 public final class SearchablePreferenceScreen {
 
     @Ignore
     private Optional<AllPreferencesProvider> dao = Optional.empty();
 
+    @PrimaryKey
     private final int id;
     @Embedded
-    @NonNull
-    @PrimaryKey
     private final HostWithArguments hostWithArguments;
     private final Optional<String> title;
     private final Optional<String> summary;
@@ -100,12 +100,12 @@ public final class SearchablePreferenceScreen {
     public boolean equals(final Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         final SearchablePreferenceScreen that = (SearchablePreferenceScreen) object;
-        return Objects.equals(hostWithArguments, that.hostWithArguments);
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(hostWithArguments);
+        return Objects.hashCode(id);
     }
 
     @Override

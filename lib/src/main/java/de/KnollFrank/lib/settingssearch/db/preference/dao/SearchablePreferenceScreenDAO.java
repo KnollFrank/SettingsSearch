@@ -91,7 +91,9 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
     protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final int id);
 
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host AND arguments = :arguments")
-    protected abstract List<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(final Class<? extends PreferenceFragmentCompat> host, final Optional<BundleWithEquality> arguments);
+    protected abstract List<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(
+            final Class<? extends PreferenceFragmentCompat> host,
+            final Optional<BundleWithEquality> arguments);
 
     private void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();

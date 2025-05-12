@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch;
 
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markFragmentInstance;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -52,11 +54,20 @@ public class SearchDatabaseConfigFactory {
                         new FragmentFactory() {
 
                             @Override
-                            public <T extends Fragment> T instantiate(final Class<T> fragmentClass, final Optional<PreferenceWithHost> src, final Context context, final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+                            public <T extends Fragment> T instantiate(final Class<T> fragmentClass,
+                                                                      final Optional<PreferenceWithHost> src,
+                                                                      final Context context,
+                                                                      final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
                                         src.isPresent() &&
                                         PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.orElseThrow().preference().getKey())) {
-                                    return Classes.instantiateFragmentClass(fragmentClass, Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context)));
+                                    return Classes.instantiateFragmentClass(
+                                            fragmentClass,
+                                            Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context)));
+                                } else if (ItemFragment3.class.equals(fragmentClass) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
+                                    return Classes.instantiateFragmentClass(
+                                            fragmentClass,
+                                            Optional.of(markFragmentInstance(new Bundle(), fragmentClass)));
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
                             }
@@ -95,7 +106,9 @@ public class SearchDatabaseConfigFactory {
                         new PreferenceFragmentConnected2PreferenceProvider() {
 
                             @Override
-                            public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+                            public Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(
+                                    final Preference preference,
+                                    final PreferenceFragmentCompat hostOfPreference) {
                                 return PrefsFragmentFirst.NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey()) ?
                                         Optional.of(PrefsFragmentSecond.class) :
                                         Optional.empty();
@@ -105,7 +118,9 @@ public class SearchDatabaseConfigFactory {
                         new PreferenceDialogAndSearchableInfoProvider() {
 
                             @Override
-                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+                            public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(
+                                    final Preference preference,
+                                    final PreferenceFragmentCompat hostOfPreference) {
                                 return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
                                         Optional.of(
                                                 new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(

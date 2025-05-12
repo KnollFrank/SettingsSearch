@@ -62,11 +62,20 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
-        getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT).setIcon(R.drawable.face);
+        {
+            final Preference preference = getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT);
+            preference.setIcon(R.drawable.face);
+            markFragmentInstance(preference.getExtras(), PrefsFragmentSecond.class);
+        }
         getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
         configureSummaryChangingPreference();
         setOnPreferenceClickListeners();
+    }
+
+    public static Bundle markFragmentInstance(final Bundle bundle, final Class<?> clazz) {
+        bundle.putInt("fragmentInstanceMarker_" + clazz.getName(), 1);
+        return bundle;
     }
 
     private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference() {
@@ -77,7 +86,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 new OnPreferenceChangeListener() {
 
                     @Override
-                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
+                    public boolean onPreferenceChange(@NonNull final Preference preference,
+                                                      final Object checked) {
                         if ((boolean) checked) {
                             addPreferenceToP1();
                         } else {
@@ -131,7 +141,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 new Preference.OnPreferenceChangeListener() {
 
                     @Override
-                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
+                    public boolean onPreferenceChange(@NonNull final Preference preference,
+                                                      final Object checked) {
                         setSummary(preference, getSummary((boolean) checked));
                         return true;
                     }
@@ -147,7 +158,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         searchablePreferenceDAO.update(searchablePreference);
                     }
 
-                    private SearchablePreference getSearchablePreference(final HostWithArguments hostOfPreference, final Preference preference) {
+                    private SearchablePreference getSearchablePreference(final HostWithArguments hostOfPreference,
+                                                                         final Preference preference) {
                         return SearchablePreferences
                                 .findPreferenceByKey(
                                         getAppDatabase()
@@ -172,7 +184,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 "summaryChangingPreference is OFF";
     }
 
-    private Intent createIntent(final Class<? extends Activity> activityClass, final Bundle extras) {
+    private Intent createIntent(final Class<? extends Activity> activityClass,
+                                final Bundle extras) {
         final Intent intent = new Intent(getContext(), activityClass);
         intent.putExtras(extras);
         return intent;
@@ -212,7 +225,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         return false;
     }
 
-    public static Bundle createArguments4PreferenceWithoutExtras(final @NonNull Preference preference, final Context context) {
+    public static Bundle createArguments4PreferenceWithoutExtras(final @NonNull Preference preference,
+                                                                 final Context context) {
         final Bundle arguments = new Bundle();
         arguments.putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, preference.getSummary().toString());
         arguments.putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, false));

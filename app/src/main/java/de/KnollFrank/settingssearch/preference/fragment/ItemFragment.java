@@ -100,7 +100,7 @@ public class ItemFragment extends Fragment implements SettingHighlighterProvider
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
-            screen.setTitle("screen title");
+            screen.setTitle("screen title PreferenceFragment");
             screen.setSummary("screen summary");
             PreferenceFragment
                     .asPreferences(items, context)
