@@ -91,6 +91,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
     protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final int id);
 
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host AND arguments = :arguments")
+    // FK-TODO: return Optional<SearchablePreferenceScreen> because of unique constraint
     protected abstract List<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(
             final Class<? extends PreferenceFragmentCompat> host,
             final Optional<BundleWithEquality> arguments);
