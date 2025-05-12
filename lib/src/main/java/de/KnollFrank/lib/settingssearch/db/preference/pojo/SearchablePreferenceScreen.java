@@ -13,8 +13,7 @@ import java.util.StringJoiner;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesProvider;
 
-// FK-TODO: make host and arguments constants, also in HostWithArguments as ColumnInfos
-@Entity(indices = {@Index(value = {"host", "arguments"}, unique = true)})
+@Entity(indices = {@Index(value = {HostWithArguments.HOST, HostWithArguments.ARGUMENTS}, unique = true)})
 public final class SearchablePreferenceScreen {
 
     @Ignore
