@@ -288,7 +288,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
     private static SearchablePreference getPreferenceById(final Set<SearchablePreference> searchablePreferences,
                                                           final int id) {
         return SearchablePreferences
-                .findPreferenceRecursivelyByPredicate(
+                .findPreferenceByPredicate(
                         searchablePreferences,
                         searchablePreference -> searchablePreference.getId() == id)
                 .orElseThrow();
