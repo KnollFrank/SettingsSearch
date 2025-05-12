@@ -62,7 +62,6 @@ public final class SearchablePreference {
     private final Optional<Integer> predecessorId;
     private final int searchablePreferenceScreenId;
 
-    // FK-TODO: reorder params
     public SearchablePreference(
             final int id,
             final String key,
