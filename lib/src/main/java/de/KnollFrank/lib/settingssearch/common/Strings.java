@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalInt;
 
 public class Strings {
@@ -46,5 +47,9 @@ public class Strings {
 
     public static OptionalInt indexOf(final String haystack, final String needle, final int fromIndex) {
         return minusOne2Empty(haystack.indexOf(needle, fromIndex));
+    }
+
+    public static Optional<String> toString(final Optional<CharSequence> charSequence) {
+        return charSequence.map(CharSequence::toString);
     }
 }

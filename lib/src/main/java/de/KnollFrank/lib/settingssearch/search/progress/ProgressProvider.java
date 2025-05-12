@@ -5,6 +5,7 @@ import androidx.preference.PreferenceScreen;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.common.Strings;
 
 public class ProgressProvider {
 
@@ -19,9 +20,8 @@ public class ProgressProvider {
     }
 
     private static Optional<String> getQuotedTitle(final PreferenceScreen preferenceScreen) {
-        return Optional
-                .ofNullable(preferenceScreen.getTitle())
-                .map(CharSequence::toString)
+        return Strings
+                .toString(Optional.ofNullable(preferenceScreen.getTitle()))
                 .map(ProgressProvider::quote);
     }
 

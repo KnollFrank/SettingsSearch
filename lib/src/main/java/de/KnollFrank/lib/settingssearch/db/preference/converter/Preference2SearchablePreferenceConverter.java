@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.Intents;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -58,8 +59,8 @@ public class Preference2SearchablePreferenceConverter {
                         preference.getKey(),
                         getIconResourceIdOrIconPixelData(preference, hostOfPreference),
                         preference.getLayoutResource(),
-                        toString(Optional.ofNullable(preference.getSummary())),
-                        toString(Optional.ofNullable(preference.getTitle())),
+                        Strings.toString(Optional.ofNullable(preference.getSummary())),
+                        Strings.toString(Optional.ofNullable(preference.getTitle())),
                         preference.getWidgetLayoutResource(),
                         Optional.ofNullable(preference.getFragment()),
                         getClassNameOfReferencedActivity(preference),
@@ -123,10 +124,6 @@ public class Preference2SearchablePreferenceConverter {
                         .stream()
                         .map(SearchablePreferenceWithMap::pojoEntityMap)
                         .collect(Collectors.toList()));
-    }
-
-    private static Optional<String> toString(final Optional<CharSequence> charSequence) {
-        return charSequence.map(CharSequence::toString);
     }
 
     private static Optional<String> getClassNameOfReferencedActivity(final Preference preference) {

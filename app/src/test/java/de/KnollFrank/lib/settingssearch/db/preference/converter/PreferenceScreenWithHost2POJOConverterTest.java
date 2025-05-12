@@ -164,8 +164,8 @@ public class PreferenceScreenWithHost2POJOConverterTest {
         return new SearchablePreferenceScreen(
                 id,
                 hostWithArguments,
-                "screen title",
-                "screen summary",
+                Optional.of("screen title"),
+                Optional.of("screen summary"),
                 Set.of(
                         parent,
                         new SearchablePreference(

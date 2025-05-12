@@ -22,18 +22,16 @@ public final class SearchablePreferenceScreen {
     private final int id;
     @Embedded
     private final HostWithArguments hostWithArguments;
-    // FK-TODO: make title Optional<String>
-    private final String title;
-    // FK-TODO: make summary Optional<String>
-    private final String summary;
+    private final Optional<String> title;
+    private final Optional<String> summary;
     @Ignore
     private final Optional<Set<SearchablePreference>> allPreferences;
     private final Optional<Integer> parentId;
 
     public SearchablePreferenceScreen(final int id,
                                       final HostWithArguments hostWithArguments,
-                                      final String title,
-                                      final String summary,
+                                      final Optional<String> title,
+                                      final Optional<String> summary,
                                       final Set<SearchablePreference> allPreferences,
                                       final Optional<Integer> parentId) {
         this(id, hostWithArguments, title, summary, Optional.of(allPreferences), parentId);
@@ -41,16 +39,16 @@ public final class SearchablePreferenceScreen {
 
     public SearchablePreferenceScreen(final int id,
                                       final HostWithArguments hostWithArguments,
-                                      final String title,
-                                      final String summary,
+                                      final Optional<String> title,
+                                      final Optional<String> summary,
                                       final Optional<Integer> parentId) {
         this(id, hostWithArguments, title, summary, Optional.empty(), parentId);
     }
 
     private SearchablePreferenceScreen(final int id,
                                        final HostWithArguments hostWithArguments,
-                                       final String title,
-                                       final String summary,
+                                       final Optional<String> title,
+                                       final Optional<String> summary,
                                        final Optional<Set<SearchablePreference>> allPreferences,
                                        final Optional<Integer> parentId) {
         this.id = id;
@@ -73,11 +71,11 @@ public final class SearchablePreferenceScreen {
         return hostWithArguments;
     }
 
-    public String getTitle() {
+    public Optional<String> getTitle() {
         return title;
     }
 
-    public String getSummary() {
+    public Optional<String> getSummary() {
         return summary;
     }
 

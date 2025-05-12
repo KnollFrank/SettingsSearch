@@ -193,8 +193,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
         return new SearchablePreferenceScreen(
                 screenId,
                 new HostWithArguments(host, Optional.empty()),
-                "screen title",
-                "screen summary",
+                Optional.of("screen title"),
+                Optional.of("screen summary"),
                 Set.of(
                         parent,
                         new SearchablePreference(
@@ -259,8 +259,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
         return new SearchablePreferenceScreen(
                 screenId,
                 new HostWithArguments(TestPreferenceFragment.class, Optional.empty()),
-                null,
-                null,
+                Optional.empty(),
+                Optional.empty(),
                 Set.of(e1),
                 parentScreenId);
     }
