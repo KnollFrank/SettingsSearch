@@ -45,14 +45,15 @@ public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
     }
 
     @Override
+    public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
+        return new SearchablePreferenceScreenGraphDAO(searchablePreferenceScreenDAO());
+    }
+
+    @Override
     public abstract SearchablePreferenceScreenDAO searchablePreferenceScreenDAO();
 
     @Override
     public abstract SearchablePreferenceDAO searchablePreferenceDAO();
 
     public abstract SearchDatabaseStateDAO searchDatabaseStateDAO();
-
-    public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
-        return new SearchablePreferenceScreenGraphDAO(searchablePreferenceScreenDAO());
-    }
 }
