@@ -66,9 +66,10 @@ public final class SearchablePreference {
     public SearchablePreference(
             final int id,
             final String key,
+            final Optional<String> title,
+            final Optional<String> summary,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final @LayoutRes int layoutResId,
-            final Optional<String> title, final Optional<String> summary,
             final @LayoutRes int widgetLayoutResId,
             final Optional<String> fragment,
             final Optional<String> classNameOfReferencedActivity,

@@ -57,10 +57,10 @@ public class Preference2SearchablePreferenceConverter {
                 new SearchablePreference(
                         id,
                         preference.getKey(),
-                        getIconResourceIdOrIconPixelData(preference, hostOfPreference),
-                        preference.getLayoutResource(),
                         Strings.toString(Optional.ofNullable(preference.getTitle())),
                         Strings.toString(Optional.ofNullable(preference.getSummary())),
+                        getIconResourceIdOrIconPixelData(preference, hostOfPreference),
+                        preference.getLayoutResource(),
                         preference.getWidgetLayoutResource(),
                         Optional.ofNullable(preference.getFragment()),
                         getClassNameOfReferencedActivity(preference),
