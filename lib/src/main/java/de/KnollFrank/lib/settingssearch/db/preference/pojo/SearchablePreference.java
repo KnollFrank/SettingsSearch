@@ -39,12 +39,15 @@ public final class SearchablePreference {
     @Ignore
     private Optional<Optional<Drawable>> iconCache = Optional.empty();
     private final @LayoutRes int layoutResId;
-    private Optional<String> summary;
-    @Ignore
-    private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
+
     private final Optional<String> title;
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedTitleProvider;
+
+    private Optional<String> summary;
+    @Ignore
+    private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
+
     private final @LayoutRes int widgetLayoutResId;
     private final Optional<String> fragment;
     private final Optional<String> classNameOfReferencedActivity;
@@ -65,8 +68,7 @@ public final class SearchablePreference {
             final String key,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final @LayoutRes int layoutResId,
-            final Optional<String> summary,
-            final Optional<String> title,
+            final Optional<String> title, final Optional<String> summary,
             final @LayoutRes int widgetLayoutResId,
             final Optional<String> fragment,
             final Optional<String> classNameOfReferencedActivity,
