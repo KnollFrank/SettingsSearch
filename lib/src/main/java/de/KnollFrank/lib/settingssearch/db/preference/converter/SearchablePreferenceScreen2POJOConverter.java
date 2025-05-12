@@ -1,12 +1,14 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
+
+import com.google.common.collect.BiMap;
 
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter.SearchablePreferencesWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -19,7 +21,7 @@ class SearchablePreferenceScreen2POJOConverter {
                                                                  final PreferenceFragmentCompat hostOfPreferenceScreen,
                                                                  final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
                                                                  final Optional<SearchablePreference> predecessorOfPreferenceScreen) {
-        final SearchablePreferencesWithMap searchablePreferencesWithMap =
+        final BiMap<SearchablePreference, Preference> searchablePreferences =
                 preference2SearchablePreferenceConverter.convert2POJOs(
                         Preferences.getImmediateChildren(preferenceScreen),
                         id,
@@ -32,9 +34,9 @@ class SearchablePreferenceScreen2POJOConverter {
                         HostWithArguments.of(hostOfPreferenceScreen),
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getTitle())),
                         toStringOrNull(Optional.ofNullable(preferenceScreen.getSummary())),
-                        searchablePreferencesWithMap.pojoEntityMap().keySet(),
+                        searchablePreferences.keySet(),
                         parentId),
-                searchablePreferencesWithMap.pojoEntityMap());
+                searchablePreferences);
     }
 
     private static String toStringOrNull(final Optional<CharSequence> preferenceScreen) {
