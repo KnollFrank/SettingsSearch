@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.PARENT_KEY;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createSomeSearchablePreferenceScreen;
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
 
@@ -15,7 +16,9 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
@@ -62,5 +65,23 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
 
         // Then
         assertThat(screenActual, is(Optional.empty()));
+    }
+
+    @Test
+    public void shouldGetHostOfPreferencesOfScreen() {
+        // Given
+        final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
+        final SearchablePreferenceScreen screen = createSomeSearchablePreferenceScreen();
+        dao.persist(screen);
+        final SearchablePreference preference =
+                SearchablePreferences
+                        .findPreferenceByKey(screen.getAllPreferences(), PARENT_KEY)
+                        .orElseThrow();
+
+        // When
+        final SearchablePreferenceScreen hostOfPreference = preference._getHost();
+
+        // Then
+        assertThat(hostOfPreference, is(screen));
     }
 }

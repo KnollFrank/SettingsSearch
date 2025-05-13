@@ -22,11 +22,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
 
 @Dao
-public abstract class SearchablePreferenceScreenDAO implements AllPreferencesProvider {
+public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAndHostProvider {
 
     private final SearchablePreferenceDAO searchablePreferenceDAO;
     private final SearchablePreferenceScreenDAOSetter daoSetter;
     private Optional<Map<SearchablePreferenceScreen, Set<SearchablePreference>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
+    private Optional<Map<SearchablePreference, SearchablePreferenceScreen>> hostByPreference = Optional.empty();
 
     public SearchablePreferenceScreenDAO(final AppDatabase appDatabase) {
         this.searchablePreferenceDAO = appDatabase.searchablePreferenceDAO();
@@ -73,6 +74,18 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
         return allPreferencesBySearchablePreferenceScreen.orElseThrow();
     }
 
+    @Override
+    public Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference() {
+        if (hostByPreference.isEmpty()) {
+            hostByPreference =
+                    Optional.of(
+                            SearchablePreferenceScreenAndAllPreferencesHelper.getHostByPreference(
+                                    daoSetter.__setDao(
+                                            new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()))));
+        }
+        return hostByPreference.orElseThrow();
+    }
+
     @Insert
     protected abstract void _persist(SearchablePreferenceScreen searchablePreferenceScreen);
 
@@ -93,5 +106,6 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
 
     private void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();
+        hostByPreference = Optional.empty();
     }
 }

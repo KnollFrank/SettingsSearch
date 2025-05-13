@@ -24,13 +24,13 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.ChildrenAndPredecessorProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.ChildrenAndPredecessorAndHostProvider;
 
 @Entity
 public final class SearchablePreference {
 
     @Ignore
-    private Optional<ChildrenAndPredecessorProvider> dao = Optional.empty();
+    private Optional<ChildrenAndPredecessorAndHostProvider> dao = Optional.empty();
 
     @PrimaryKey
     private final int id;
@@ -97,7 +97,7 @@ public final class SearchablePreference {
         this.searchablePreferenceScreenId = searchablePreferenceScreenId;
     }
 
-    public void setDao(final ChildrenAndPredecessorProvider dao) {
+    public void setDao(final ChildrenAndPredecessorAndHostProvider dao) {
         this.dao = Optional.of(dao);
     }
 
@@ -209,6 +209,11 @@ public final class SearchablePreference {
 
     public Class<? extends PreferenceFragmentCompat> getHost() {
         return host;
+    }
+
+    // FK-TODO: rename to getHost() after removing old getHost() method
+    public SearchablePreferenceScreen _getHost() {
+        return dao.orElseThrow().getHostByPreference().get(this);
     }
 
     public PreferencePath getPreferencePath() {

@@ -11,13 +11,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesAndHostProvider;
 
 @Entity(indices = {@Index(value = {HostWithArguments.HOST, HostWithArguments.ARGUMENTS}, unique = true)})
 public final class SearchablePreferenceScreen {
 
     @Ignore
-    private Optional<AllPreferencesProvider> dao = Optional.empty();
+    private Optional<AllPreferencesAndHostProvider> dao = Optional.empty();
 
     @PrimaryKey
     private final int id;
@@ -60,7 +60,7 @@ public final class SearchablePreferenceScreen {
         this.allPreferences = allPreferences;
     }
 
-    public void setDao(final AllPreferencesProvider dao) {
+    public void setDao(final AllPreferencesAndHostProvider dao) {
         this.dao = Optional.of(dao);
     }
 

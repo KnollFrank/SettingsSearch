@@ -18,20 +18,27 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildrens;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessors;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 
 @Dao
-public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorProvider {
+public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorAndHostProvider {
 
     private final SearchablePreferenceDAOSetter daoSetter = new SearchablePreferenceDAOSetter(this);
+    private final AppDatabase appDatabase;
     private Optional<Map<SearchablePreference, SearchablePreference>> predecessorByPreference = Optional.empty();
     private Optional<Map<SearchablePreference, Set<SearchablePreference>>> childrenByPreference = Optional.empty();
+
+    public SearchablePreferenceDAO(final AppDatabase appDatabase) {
+        this.appDatabase = appDatabase;
+    }
 
     public Set<SearchablePreference> loadAll() {
         return daoSetter.setDao(new HashSet<>(_loadAll()));
@@ -86,6 +93,11 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
             childrenByPreference = Optional.of(PreferenceAndChildrens.getChildrenByPreference(daoSetter.__setDao(new HashSet<>(_getPreferencesAndChildren()))));
         }
         return childrenByPreference.orElseThrow();
+    }
+
+    @Override
+    public Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference() {
+        return appDatabase.searchablePreferenceScreenDAO().getHostByPreference();
     }
 
     public void removeAll() {

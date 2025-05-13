@@ -17,6 +17,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
 
     public static final int DST_PREFERENCE_ID = 5;
     public static final int PREFERENCE_CONNECTING_SRC_2_DST_ID = 4;
+    public static final String PARENT_KEY = "parentKey";
 
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final int screenId = 1;
@@ -53,7 +54,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
         final SearchablePreference parent =
                 new SearchablePreference(
                         1,
-                        "parentKey",
+                        PARENT_KEY,
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty(),
