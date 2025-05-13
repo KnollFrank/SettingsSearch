@@ -22,6 +22,7 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
@@ -132,11 +133,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private Optional<SearchablePreference> _findSearchablePreference(final Bundle bundle) {
-                        final HostWithArguments hostOfPreference =
+                        return findSearchablePreference(
                                 new HostWithArguments(
                                         PreferenceFragmentWithSinglePreference.class,
-                                        Optional.of(new BundleWithEquality(bundle)));
-                        return findSearchablePreference(hostOfPreference, ADDITIONAL_PREFERENCE_KEY);
+                                        Optional.of(new BundleWithEquality(bundle))),
+                                ADDITIONAL_PREFERENCE_KEY);
                     }
 
                     private Bundle createBundle1() {
@@ -176,14 +177,17 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     }
 
     private Optional<SearchablePreference> findSearchablePreference(final HostWithArguments hostOfPreference, final String keyOfPreference) {
-        return SearchablePreferences
-                .findPreferenceByKey(
-                        getAppDatabase()
-                                .searchablePreferenceScreenDAO()
-                                .findSearchablePreferenceScreenByHostWithArguments(hostOfPreference)
-                                .orElseThrow()
-                                .getAllPreferences(),
-                        keyOfPreference);
+        return SearchablePreferences.findPreferenceByKey(
+                getPreferences(hostOfPreference),
+                keyOfPreference);
+    }
+
+    private Set<SearchablePreference> getPreferences(final HostWithArguments host) {
+        return getAppDatabase()
+                .searchablePreferenceScreenDAO()
+                .findSearchablePreferenceScreenByHostWithArguments(host)
+                .orElseThrow()
+                .getAllPreferences();
     }
 
     private DAOProvider getAppDatabase() {
