@@ -6,8 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
 
-import com.google.common.collect.Iterables;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -56,13 +54,11 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
         return daoSetter.setDao(new HashSet<>(_loadAll()));
     }
 
-    // FK-TODO: unit test this method
-    public SearchablePreferenceScreen findSearchablePreferenceScreenByHostWithArguments(final HostWithArguments hostWithArguments) {
+    public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(final HostWithArguments hostWithArguments) {
         return daoSetter.setDao(
-                Iterables.getOnlyElement(
-                        findSearchablePreferenceScreenByHostWithArguments(
-                                hostWithArguments.host(),
-                                hostWithArguments.arguments())));
+                findSearchablePreferenceScreenByHostWithArguments(
+                        hostWithArguments.host(),
+                        hostWithArguments.arguments()));
     }
 
     @Override
@@ -91,8 +87,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesPro
     protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final int id);
 
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host AND arguments = :arguments")
-    // FK-TODO: return Optional<SearchablePreferenceScreen> because of unique constraint
-    protected abstract List<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(
+    protected abstract Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(
             final Class<? extends PreferenceFragmentCompat> host,
             final Optional<BundleWithEquality> arguments);
 

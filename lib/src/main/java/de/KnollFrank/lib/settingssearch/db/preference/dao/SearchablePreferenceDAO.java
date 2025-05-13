@@ -42,6 +42,7 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
         return daoSetter.setDao(_findPreferenceById(id));
     }
 
+    // FK-TODO: remove this method and use SearchablePreferenceScreenDAO.findSearchablePreferenceScreenByHostWithArguments() instead
     public Set<SearchablePreference> findPreferencesByKeyAndHost(final String key,
                                                                  final Class<? extends PreferenceFragmentCompat> host) {
         return daoSetter.setDao(new HashSet<>(_findPreferencesByKeyAndHost(key, host)));

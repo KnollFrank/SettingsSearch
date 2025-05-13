@@ -3,8 +3,8 @@ package de.KnollFrank.lib.settingssearch.results;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnPreferences;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.copyPreferenceAndSetPredecessor;
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory.createSearchablePreferencePOJO;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.copyPreferenceAndSetPredecessor;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreferencePOJO;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

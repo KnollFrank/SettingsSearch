@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import static de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.createPojoGraph;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createPojoGraph;
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenGraphEquality.assertActualEqualsExpected;
 
 import androidx.preference.PreferenceFragmentCompat;

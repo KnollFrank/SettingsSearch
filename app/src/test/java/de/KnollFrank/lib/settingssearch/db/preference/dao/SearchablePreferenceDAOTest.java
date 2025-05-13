@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
@@ -429,7 +430,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo) {
-        return POJOTestFactory.createSearchablePreferencePOJO(
+        return SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
                 id,
                 title,
                 summary,

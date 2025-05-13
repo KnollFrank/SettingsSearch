@@ -25,9 +25,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -53,7 +53,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                                 preference -> true,
                                 new LexicographicalSearchResultsSorter());
                 final SearchablePreference preference =
-                        POJOTestFactory.createSearchablePreferencePOJO(
+                        SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
                                 Optional.of(title),
                                 Optional.of("some summary"),
                                 Optional.of("searchable info also has a title"),
@@ -119,7 +119,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                 searchResultsDisplayer.displaySearchResults(
                         Set.of(
                                 new PreferenceMatch(
-                                        POJOTestFactory.createSearchablePreferencePOJO(
+                                        SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
                                                 Optional.of("Title, title part"),
                                                 Optional.of("some summary"),
                                                 Optional.of("searchable info also has a title"),

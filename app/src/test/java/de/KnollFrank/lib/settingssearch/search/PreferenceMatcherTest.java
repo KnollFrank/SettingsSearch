@@ -15,8 +15,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.POJOTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -29,7 +29,7 @@ public class PreferenceMatcherTest {
             scenario.onActivity(activity -> {
                 // Given
                 final SearchablePreference searchablePreference =
-                        POJOTestFactory.createSearchablePreferencePOJO(
+                        SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
                                 Optional.of("Title, title part"),
                                 Optional.of("title in summary"),
                                 Optional.of("searchable info also has a title"),

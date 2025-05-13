@@ -4,11 +4,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnGraph;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest.getInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.DST_PREFERENCE_ID;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.PREFERENCE_CONNECTING_SRC_2_DST_ID;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createPojoGraph;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
@@ -18,7 +20,6 @@ import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -35,9 +36,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -46,9 +45,6 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
 public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
-
-    private static final int DST_PREFERENCE_ID = 5;
-    private static final int PREFERENCE_CONNECTING_SRC_2_DST_ID = 4;
 
     @Test
     public void shouldTransformGraph2POJOGraph() {
@@ -138,131 +134,6 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 return List.of(preference);
             });
         }
-    }
-
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
-        final int screenId = 1;
-        final SearchablePreference preferenceConnectingSrc2Dst =
-                new SearchablePreference(
-                        PREFERENCE_CONNECTING_SRC_2_DST_ID,
-                        "some key",
-                        Optional.of("preference connected to TestPreferenceFragment"),
-                        Optional.empty(),
-                        Optional.empty(),
-                        2131427444,
-                        0,
-                        Optional.of(PreferenceFragmentWithSinglePreference.class.getName()),
-                        Optional.empty(),
-                        true,
-                        Optional.empty(),
-                        new Bundle(),
-                        host,
-                        Optional.empty(),
-                        Optional.empty(),
-                        screenId);
-        return DefaultDirectedGraph
-                .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
-                .addEdge(
-                        createSrc(screenId, preferenceConnectingSrc2Dst, host),
-                        createDst(Optional.of(screenId), preferenceConnectingSrc2Dst),
-                        new SearchablePreferenceEdge(preferenceConnectingSrc2Dst))
-                .build();
-    }
-
-    private static SearchablePreferenceScreen createSrc(final int screenId,
-                                                        final SearchablePreference preferenceConnectingSrc2Dst,
-                                                        final Class<? extends PreferenceFragmentCompat> host) {
-        final SearchablePreference parent =
-                new SearchablePreference(
-                        1,
-                        "parentKey",
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        15,
-                        0,
-                        Optional.empty(),
-                        Optional.empty(),
-                        true,
-                        Optional.empty(),
-                        new Bundle(),
-                        host,
-                        Optional.empty(),
-                        Optional.empty(),
-                        screenId);
-        return new SearchablePreferenceScreen(
-                screenId,
-                new HostWithArguments(host, Optional.empty()),
-                Optional.of("screen title"),
-                Optional.of("screen summary"),
-                Set.of(
-                        parent,
-                        new SearchablePreference(
-                                2,
-                                "some child key 1",
-                                Optional.empty(),
-                                Optional.empty(),
-                                Optional.empty(),
-                                16,
-                                0,
-                                Optional.empty(),
-                                Optional.empty(),
-                                true,
-                                Optional.empty(),
-                                new Bundle(),
-                                host,
-                                Optional.of(1),
-                                Optional.empty(),
-                                screenId),
-                        new SearchablePreference(
-                                3,
-                                "some child key 2",
-                                Optional.empty(),
-                                Optional.empty(),
-                                Optional.empty(),
-                                16,
-                                0,
-                                Optional.empty(),
-                                Optional.empty(),
-                                true,
-                                Optional.empty(),
-                                new Bundle(),
-                                host,
-                                Optional.of(1),
-                                Optional.empty(),
-                                screenId),
-                        preferenceConnectingSrc2Dst),
-                Optional.empty());
-    }
-
-    private static SearchablePreferenceScreen createDst(final Optional<Integer> parentScreenId,
-                                                        final SearchablePreference predecessor) {
-        final int screenId = 2;
-        final SearchablePreference e1 =
-                new SearchablePreference(
-                        DST_PREFERENCE_ID,
-                        "some dst key",
-                        Optional.of("some title for dst key"),
-                        Optional.empty(),
-                        Optional.empty(),
-                        16,
-                        0,
-                        Optional.empty(),
-                        Optional.empty(),
-                        true,
-                        Optional.empty(),
-                        new Bundle(),
-                        TestPreferenceFragment.class,
-                        Optional.empty(),
-                        Optional.of(predecessor.getId()),
-                        screenId);
-        return new SearchablePreferenceScreen(
-                screenId,
-                new HostWithArguments(PreferenceFragmentWithSinglePreference.class, Optional.empty()),
-                Optional.empty(),
-                Optional.empty(),
-                Set.of(e1),
-                parentScreenId);
     }
 
     private static PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
