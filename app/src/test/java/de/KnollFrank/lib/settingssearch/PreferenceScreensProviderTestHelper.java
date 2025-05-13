@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch;
 
-import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markClassAsDestinationOfPreference;
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markPreferenceConnectingSrcWithDst;
 
 import android.content.Context;
 
@@ -47,7 +47,7 @@ class PreferenceScreensProviderTestHelper {
         preference.setFragment(dst.getName());
         preference.setTitle("preference connected to " + dst.getSimpleName());
         preference.setKey("key of preference connected to " + dst.getSimpleName());
-        markClassAsDestinationOfPreference(src, dst, preference);
+        markPreferenceConnectingSrcWithDst(preference, src, dst);
         return preference;
     }
 }

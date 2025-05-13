@@ -1,6 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markClassAsDestinationOfPreference;
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markPreferenceConnectingSrcWithDst;
 
 import android.os.Bundle;
 
@@ -18,7 +18,7 @@ public class PrefsFragmentSecond extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences2);
         final Preference preference = getPreferenceScreen().findPreference("link_to_third_fragment");
         copySrc2Dst(Optional.ofNullable(getArguments()), preference.getExtras());
-        markClassAsDestinationOfPreference(this, PrefsFragmentThird.class, preference);
+        markPreferenceConnectingSrcWithDst(preference, this, PrefsFragmentThird.class);
     }
 
     private static void copySrc2Dst(final Optional<Bundle> src, final Bundle dst) {

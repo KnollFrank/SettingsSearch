@@ -1,7 +1,5 @@
 package de.KnollFrank.settingssearch;
 
-import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markClassAsDestinationOfPreference;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -67,7 +65,13 @@ public class SearchDatabaseConfigFactory {
                                 } else if (ItemFragment3.class.equals(fragmentClass) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
                                     return Classes.instantiateFragmentClass(
                                             fragmentClass,
-                                            Optional.of(markClassAsDestinationOfPreference(src.orElseThrow().host(), fragmentClass, src.orElseThrow().preference())));
+                                            Optional.of(
+                                                    PrefsFragmentFirst
+                                                            .markPreferenceConnectingSrcWithDst(
+                                                                    src.orElseThrow().preference(),
+                                                                    src.orElseThrow().host(),
+                                                                    fragmentClass)
+                                                            .getExtras()));
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
                             }
