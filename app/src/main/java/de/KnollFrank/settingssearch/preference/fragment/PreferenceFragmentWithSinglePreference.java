@@ -1,15 +1,11 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS;
-
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
-
-import com.google.common.collect.Iterables;
 
 import java.util.Optional;
 
@@ -42,9 +38,9 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
             if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS)) {
                 screen.addPreference(
                         createPreference("keyOfPreferenceOfConnectedFragment2",
-                                TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS,
-                                arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS),
-                                context));
+                                         TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS,
+                                         arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS),
+                                         context));
             }
             if (arguments.getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false)) {
                 screen.addPreference(createAdditionalPreference(context));
@@ -72,11 +68,7 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
                         this,
                         Optional.empty(),
                         // FK-TODO: generalize because too many hard coded values
-                        Optional.of(
-                                Iterables.getOnlyElement(
-                                        searchablePreferenceDAO.findPreferencesByKeyAndHost(
-                                                KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS,
-                                                PrefsFragmentFirst.class))))
+                        Optional.empty())
                 .searchablePreference();
     }
 

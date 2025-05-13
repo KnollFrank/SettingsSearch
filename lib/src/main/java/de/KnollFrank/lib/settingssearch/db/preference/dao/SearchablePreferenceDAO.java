@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static de.KnollFrank.lib.settingssearch.search.PreferencePOJOMatcher.getPreferenceMatch;
 
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -40,12 +39,6 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
 
     public Optional<SearchablePreference> findPreferenceById(final int id) {
         return daoSetter.setDao(_findPreferenceById(id));
-    }
-
-    // FK-TODO: remove this method and use SearchablePreferenceScreenDAO.findSearchablePreferenceScreenByHostWithArguments() instead
-    public Set<SearchablePreference> findPreferencesByKeyAndHost(final String key,
-                                                                 final Class<? extends PreferenceFragmentCompat> host) {
-        return daoSetter.setDao(new HashSet<>(_findPreferencesByKeyAndHost(key, host)));
     }
 
     public Set<PreferenceMatch> searchWithinTitleSummarySearchableInfo(final String needle,
@@ -116,9 +109,6 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorP
 
     @Insert
     protected abstract void _persist(SearchablePreference... searchablePreferences);
-
-    @Query("SELECT * FROM SearchablePreference WHERE `key` = :key AND host = :host")
-    protected abstract List<SearchablePreference> _findPreferencesByKeyAndHost(String key, Class<? extends PreferenceFragmentCompat> host);
 
     @Query("SELECT * FROM SearchablePreference WHERE id = :id")
     protected abstract Optional<SearchablePreference> _findPreferenceById(final int id);
