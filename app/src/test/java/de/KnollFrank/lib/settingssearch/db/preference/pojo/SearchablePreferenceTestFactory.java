@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.Bundle;
 
-import androidx.preference.PreferenceFragmentCompat;
-
 import com.codepoetics.ambivalence.Either;
 
 import java.util.Optional;
@@ -11,8 +9,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
-import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class SearchablePreferenceTestFactory {
 
@@ -33,7 +29,6 @@ public class SearchablePreferenceTestFactory {
                 searchableInfo,
                 BundleTestFactory.createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
-                PrefsFragmentFirst.class,
                 parentId,
                 predecessorId);
     }
@@ -45,7 +40,6 @@ public class SearchablePreferenceTestFactory {
             final Optional<String> searchableInfo,
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Class<? extends PreferenceFragmentCompat> host,
             final Optional<Integer> parentId,
             final Optional<Integer> predecessorId) {
         return new SearchablePreference(
@@ -61,7 +55,6 @@ public class SearchablePreferenceTestFactory {
                 true,
                 searchableInfo,
                 extras,
-                host,
                 parentId,
                 predecessorId,
                 -1);
@@ -69,7 +62,6 @@ public class SearchablePreferenceTestFactory {
 
     public static SearchablePreference createSearchablePreferencePOJO(
             final String title,
-            final Class<? extends PreferenceFragmentCompat> host,
             final Optional<SearchablePreference> predecessor) {
         return new SearchablePreference(
                 idGenerator.nextId(),
@@ -84,7 +76,6 @@ public class SearchablePreferenceTestFactory {
                 true,
                 Optional.empty(),
                 new Bundle(),
-                host,
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
                 -1);
@@ -102,7 +93,6 @@ public class SearchablePreferenceTestFactory {
                 searchableInfo,
                 BundleTestFactory.createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
-                TestPreferenceFragment.class,
                 Optional.empty());
     }
 
@@ -113,7 +103,6 @@ public class SearchablePreferenceTestFactory {
             final Optional<String> searchableInfo,
             final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Class<? extends PreferenceFragmentCompat> host,
             final Optional<SearchablePreference> predecessor) {
         return new SearchablePreference(
                 id,
@@ -128,7 +117,6 @@ public class SearchablePreferenceTestFactory {
                 true,
                 searchableInfo,
                 extras,
-                host,
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
                 -1);
@@ -148,7 +136,6 @@ public class SearchablePreferenceTestFactory {
                 true,
                 Optional.empty(),
                 new Bundle(),
-                PreferenceFragmentCompat.class,
                 Optional.empty(),
                 Optional.empty(),
                 -1);
@@ -158,7 +145,6 @@ public class SearchablePreferenceTestFactory {
                                                                        final Optional<SearchablePreference> predecessor) {
         return createSearchablePreferencePOJO(
                 preference.getTitle().orElseThrow(),
-                preference.getHost(),
                 predecessor);
     }
 }

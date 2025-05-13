@@ -65,7 +65,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         {
             final Preference preference = getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT);
             preference.setIcon(R.drawable.face);
-            markClassAsDestinationOfPreference(PrefsFragmentSecond.class, preference);
+            markClassAsDestinationOfPreference(this, PrefsFragmentSecond.class, preference);
         }
         getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
@@ -73,8 +73,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         setOnPreferenceClickListeners();
     }
 
-    public static Bundle markClassAsDestinationOfPreference(final Class<?> clazz, final Preference preference) {
-        preference.getExtras().putBoolean(preference.getKey() + "->" + clazz.getName(), true);
+    // FK-TODO: refactor, rename method, change signature
+    public static Bundle markClassAsDestinationOfPreference(final PreferenceFragmentCompat src,
+                                                            final Class<?> dst,
+                                                            final Preference preference) {
+        preference.getExtras().putBoolean(preference.getKey() + ": " + src.getClass().getName() + " -> " + dst.getName(), true);
         return preference.getExtras();
     }
 

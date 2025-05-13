@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
-import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emptyComputePreferencesListener;
 
 import android.os.Bundle;
@@ -208,7 +207,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
 
     public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                                         final AppDatabase appDatabase) {
-        makeGetPreferencePathWorkOnPreferences(getPreferences(graph), appDatabase);
+        appDatabase.searchablePreferenceScreenGraphDAO().persist(graph);
     }
 
     public static void makeGetPreferencePathWorkOnPreferences(final Collection<SearchablePreference> preferences,

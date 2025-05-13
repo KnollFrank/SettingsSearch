@@ -67,7 +67,6 @@ public class Preference2SearchablePreferenceConverter {
                         preference.isVisible(),
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
                         preference.getExtras(),
-                        hostOfPreference.getClass(),
                         parentIdOfPreference,
                         predecessorOfPreference.map(SearchablePreference::getId),
                         searchablePreferenceScreenId);

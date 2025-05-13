@@ -157,7 +157,6 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                         true,
                         Optional.empty(),
                         new Bundle(),
-                        hostWithArguments.host(),
                         Optional.empty(),
                         Optional.empty(),
                         id);
@@ -181,7 +180,6 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 true,
                                 Optional.empty(),
                                 new Bundle(),
-                                hostWithArguments.host(),
                                 Optional.of(1),
                                 Optional.empty(),
                                 id),
@@ -198,7 +196,6 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 true,
                                 Optional.empty(),
                                 new Bundle(),
-                                hostWithArguments.host(),
                                 Optional.of(1),
                                 Optional.empty(),
                                 id)),

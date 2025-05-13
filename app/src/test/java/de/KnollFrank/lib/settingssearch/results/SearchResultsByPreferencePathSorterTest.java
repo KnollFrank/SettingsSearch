@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
@@ -28,13 +26,11 @@ public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
         final SearchablePreference defaultSpeed =
                 createSearchablePreferencePOJO(
                         "default speed",
-                        TestPreferenceFragment.class,
                         Optional.empty());
 
         final SearchablePreference car =
                 createSearchablePreferencePOJO(
                         "car",
-                        SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
                         Optional.empty());
 
         final SearchablePreference defaultSpeedOfCar = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(car));
@@ -42,7 +38,6 @@ public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
         final SearchablePreference walk =
                 createSearchablePreferencePOJO(
                         "walk",
-                        SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
                         Optional.empty());
 
         final SearchablePreference defaultSpeedOfWalk = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(walk));

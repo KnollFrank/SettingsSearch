@@ -17,13 +17,16 @@ import java.util.function.Consumer;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
 
     private static final String TITLE_OF_PREFERENCE = "some preference of NonStandardPreferenceFragment";
     private static final String KEY_OF_PREFERENCE = "key";
 
-    public static void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(final SearchablePreferenceDAO searchablePreferenceDAO) {
+    public static void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(
+            final SearchablePreferenceDAO searchablePreferenceDAO,
+            final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         testSearch(
                 // Given a NonStandardPreferenceFragment
                 new NonStandardPreferenceFragment(),
@@ -35,7 +38,8 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(KEY_OF_PREFERENCE)),
-                searchablePreferenceDAO);
+                searchablePreferenceDAO,
+                searchablePreferenceScreenGraphDAO);
     }
 
     public static class NonStandardPreferenceFragment extends Fragment {
@@ -57,7 +61,8 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                                    final PrincipalAndProxyProvider principalAndProxyProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
-                                   final SearchablePreferenceDAO searchablePreferenceDAO) {
+                                   final SearchablePreferenceDAO searchablePreferenceDAO,
+                                   final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         PreferenceSearcherTest.testSearch(
                 nonPreferenceFragment,
                 (preference, hostOfPreference) -> true,
@@ -67,6 +72,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 (preference, hostOfPreference) -> Optional.empty(),
                 principalAndProxyProvider,
                 checkPreferenceMatches,
-                searchablePreferenceDAO);
+                searchablePreferenceDAO,
+                searchablePreferenceScreenGraphDAO);
     }
 }

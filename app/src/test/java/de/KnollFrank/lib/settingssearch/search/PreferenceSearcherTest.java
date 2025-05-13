@@ -46,6 +46,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -57,7 +58,6 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
-import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -106,7 +106,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -139,7 +140,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceToIncludeInSearchResults)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -172,7 +174,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreferenceToExcludeFromSearchResults))),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -197,7 +200,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -227,7 +231,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfNestedPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -252,7 +257,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -277,7 +283,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -305,7 +312,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -334,7 +342,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -361,7 +370,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -388,7 +398,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -416,7 +427,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -442,7 +454,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -479,7 +492,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItems(keyOfPreference1, keyOfPreference2)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -498,7 +512,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -517,7 +532,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -536,7 +552,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -564,7 +581,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -593,7 +611,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
@@ -619,22 +638,29 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))),
-                appDatabase.searchablePreferenceDAO());
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
     public void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths() {
-        PreferenceSearcherTestCaseTwoDifferentPreferencePaths.shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths(appDatabase.searchablePreferenceDAO());
+        PreferenceSearcherTestCaseTwoDifferentPreferencePaths.shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths(
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
     public void shouldSearchAndFindPreferenceOfNonStandardConnectedFragment() {
-        PreferenceSearcherTestCaseTwoNonStandardConnectedFragments.shouldSearchAndFindPreferenceOfNonStandardConnectedFragment(appDatabase.searchablePreferenceDAO());
+        PreferenceSearcherTestCaseTwoNonStandardConnectedFragments.shouldSearchAndFindPreferenceOfNonStandardConnectedFragment(
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     @Test
     public void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment() {
-        PreferenceSearcherTestCaseNonStandardPreferenceFragment.shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(appDatabase.searchablePreferenceDAO());
+        PreferenceSearcherTestCaseNonStandardPreferenceFragment.shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(
+                appDatabase.searchablePreferenceDAO(),
+                appDatabase.searchablePreferenceScreenGraphDAO());
     }
 
     static void testSearch(final Fragment preferenceFragment,
@@ -645,7 +671,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                            final PrincipalAndProxyProvider principalAndProxyProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
-                           final SearchablePreferenceDAO searchablePreferenceDAO) {
+                           final SearchablePreferenceDAO searchablePreferenceDAO,
+                           final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -659,7 +686,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 preferenceDialogAndSearchableInfoProvider,
                                 principalAndProxyProvider,
                                 emptyComputePreferencesListener(),
-                                searchablePreferenceDAO);
+                                searchablePreferenceDAO,
+                                searchablePreferenceScreenGraphDAO);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.searchablePreferenceDAO(),
@@ -712,7 +740,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ComputePreferencesListener computePreferencesListener,
-            final SearchablePreferenceDAO searchablePreferenceDAO) {
+            final SearchablePreferenceDAO searchablePreferenceDAO,
+            final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
@@ -763,9 +792,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 fragmentActivity,
                                 preferenceScreenWithHost -> {
                                 }));
-        searchablePreferenceDAO.persist(
-                PojoGraphs.getPreferences(
-                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph()));
+        searchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph());
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 fragment -> {
                 },

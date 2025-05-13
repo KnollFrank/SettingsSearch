@@ -20,7 +20,7 @@ public class SearchablePreferenceEquality {
         assertThat(actual.getFragment(), is(expected.getFragment()));
         assertThat(actual.isVisible(), is(expected.isVisible()));
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
-        assertThat(actual.getHost(), equalTo(expected.getHost()));
+        assertThat(actual.getSearchablePreferenceScreenId(), equalTo(expected.getSearchablePreferenceScreenId()));
         assertThat(equalBundles(actual.getExtras(), expected.getExtras()), is(true));
         assertThat(actual.getParentId(), is(expected.getParentId()));
         assertThat(actual.getPredecessorId(), is(expected.getPredecessorId()));

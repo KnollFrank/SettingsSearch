@@ -56,8 +56,6 @@ public final class SearchablePreference {
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
     private final Bundle extras;
-    // FK-TODO: remove host, because it can be found in "searchablePreferenceScreenId".hostWithArguments.host()
-    private final Class<? extends PreferenceFragmentCompat> host;
     private final Optional<Integer> parentId;
     private final Optional<Integer> predecessorId;
     private final int searchablePreferenceScreenId;
@@ -75,7 +73,6 @@ public final class SearchablePreference {
             final boolean visible,
             final Optional<String> searchableInfo,
             final Bundle extras,
-            final Class<? extends PreferenceFragmentCompat> host,
             final Optional<Integer> parentId,
             final Optional<Integer> predecessorId,
             final int searchablePreferenceScreenId) {
@@ -91,7 +88,6 @@ public final class SearchablePreference {
         this.visible = visible;
         this.searchableInfo = searchableInfo;
         this.extras = extras;
-        this.host = host;
         this.parentId = parentId;
         this.predecessorId = predecessorId;
         this.searchablePreferenceScreenId = searchablePreferenceScreenId;
@@ -208,7 +204,7 @@ public final class SearchablePreference {
     }
 
     public Class<? extends PreferenceFragmentCompat> getHost() {
-        return host;
+        return _getHost().getHostWithArguments().host();
     }
 
     // FK-TODO: rename to getHost() after removing old getHost() method
@@ -267,7 +263,6 @@ public final class SearchablePreference {
                 ", fragment='" + fragment + '\'' +
                 ", visible=" + visible +
                 ", extras=" + extras +
-                ", host=" + host +
                 ", parentId=" + parentId +
                 ", predecessorId=" + predecessorId +
                 ", searchablePreferenceScreenId=" + searchablePreferenceScreenId +

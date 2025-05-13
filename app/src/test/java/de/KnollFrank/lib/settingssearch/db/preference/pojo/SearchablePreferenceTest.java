@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
@@ -26,13 +24,11 @@ public class SearchablePreferenceTest extends AppDatabaseTest {
         final SearchablePreference predecessor =
                 createSearchablePreferencePOJO(
                         "predecessor",
-                        SearchablePreferenceScreenGraphProvider1Test.Fragment3.class,
                         Optional.empty());
 
         final SearchablePreference parent =
                 createSearchablePreferencePOJO(
                         "parent",
-                        TestPreferenceFragment.class,
                         Optional.of(predecessor));
         makeGetPreferencePathWorkOnPreferences(List.of(parent, predecessor), appDatabase);
 

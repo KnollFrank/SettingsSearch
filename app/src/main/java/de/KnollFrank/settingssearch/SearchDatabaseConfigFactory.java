@@ -67,7 +67,7 @@ public class SearchDatabaseConfigFactory {
                                 } else if (ItemFragment3.class.equals(fragmentClass) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
                                     return Classes.instantiateFragmentClass(
                                             fragmentClass,
-                                            Optional.of(markClassAsDestinationOfPreference(fragmentClass, src.orElseThrow().preference())));
+                                            Optional.of(markClassAsDestinationOfPreference(src.orElseThrow().host(), fragmentClass, src.orElseThrow().preference())));
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
                             }

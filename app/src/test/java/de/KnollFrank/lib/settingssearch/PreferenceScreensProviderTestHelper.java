@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch;
 
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markClassAsDestinationOfPreference;
+
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
@@ -23,7 +25,7 @@ class PreferenceScreensProviderTestHelper {
         screen.setTitle(title);
         connectedFragments
                 .stream()
-                .map(connectedFragment -> createConnectionToFragment(connectedFragment, context))
+                .map(connectedFragment -> createPreferenceConnectingSrc2Dst(fragment, connectedFragment, context))
                 .forEach(screen::addPreference);
         fragment.setPreferenceScreen(screen);
     }
@@ -38,12 +40,14 @@ class PreferenceScreensProviderTestHelper {
                 .orElseThrow();
     }
 
-    private static Preference createConnectionToFragment(final Class<? extends Fragment> fragment,
-                                                         final Context context) {
+    private static Preference createPreferenceConnectingSrc2Dst(final PreferenceFragmentCompat src,
+                                                                final Class<? extends Fragment> dst,
+                                                                final Context context) {
         final Preference preference = new Preference(context);
-        preference.setFragment(fragment.getName());
-        preference.setTitle("preference connected to " + fragment.getSimpleName());
-        preference.setKey("key of preference connected to " + fragment.getSimpleName());
+        preference.setFragment(dst.getName());
+        preference.setTitle("preference connected to " + dst.getSimpleName());
+        preference.setKey("key of preference connected to " + dst.getSimpleName());
+        markClassAsDestinationOfPreference(src, dst, preference);
         return preference;
     }
 }

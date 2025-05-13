@@ -10,7 +10,6 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 
 public class SearchablePreferenceScreenGraphTestFactory {
@@ -35,7 +34,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         Optional.empty(),
                         new Bundle(),
-                        host,
                         Optional.empty(),
                         Optional.empty(),
                         screenId);
@@ -65,7 +63,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         Optional.empty(),
                         new Bundle(),
-                        host,
                         Optional.empty(),
                         Optional.empty(),
                         screenId);
@@ -89,7 +86,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 true,
                                 Optional.empty(),
                                 new Bundle(),
-                                host,
                                 Optional.of(1),
                                 Optional.empty(),
                                 screenId),
@@ -106,7 +102,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 true,
                                 Optional.empty(),
                                 new Bundle(),
-                                host,
                                 Optional.of(1),
                                 Optional.empty(),
                                 screenId),
@@ -131,7 +126,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         Optional.empty(),
                         new Bundle(),
-                        TestPreferenceFragment.class,
                         Optional.empty(),
                         Optional.of(predecessor.getId()),
                         screenId);

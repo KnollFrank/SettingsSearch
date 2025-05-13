@@ -18,7 +18,7 @@ public class PrefsFragmentSecond extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences2);
         final Preference preference = getPreferenceScreen().findPreference("link_to_third_fragment");
         copySrc2Dst(Optional.ofNullable(getArguments()), preference.getExtras());
-        markClassAsDestinationOfPreference(PrefsFragmentThird.class, preference);
+        markClassAsDestinationOfPreference(this, PrefsFragmentThird.class, preference);
     }
 
     private static void copySrc2Dst(final Optional<Bundle> src, final Bundle dst) {

@@ -17,7 +17,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.TestPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 @RunWith(RobolectricTestRunner.class)
@@ -65,7 +64,6 @@ public class DatabaseResetterTest {
         final SearchablePreference preference =
                 createSearchablePreferencePOJO(
                         "some preference",
-                        TestPreferenceFragment.class,
                         Optional.empty());
         appDatabase.searchablePreferenceDAO().persist(preference);
         appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(true);
