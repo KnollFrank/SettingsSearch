@@ -1,12 +1,10 @@
-package de.KnollFrank.lib.settingssearch.common;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import com.google.common.collect.MoreCollectors;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class SearchablePreferences {
 
