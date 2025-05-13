@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -203,12 +202,7 @@ public final class SearchablePreference {
         return extras;
     }
 
-    public Class<? extends PreferenceFragmentCompat> getHost() {
-        return _getHost().getHostWithArguments().host();
-    }
-
-    // FK-TODO: rename to getHost() after removing old getHost() method
-    public SearchablePreferenceScreen _getHost() {
+    public SearchablePreferenceScreen getHost() {
         return dao.orElseThrow().getHostByPreference().get(this);
     }
 
