@@ -134,6 +134,26 @@ public class SearchablePreferenceTestFactory {
                 -1);
     }
 
+    public static SearchablePreference createSearchablePreference(final String key) {
+        return new SearchablePreference(
+                1,
+                key,
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                16,
+                0,
+                Optional.empty(),
+                Optional.empty(),
+                true,
+                Optional.empty(),
+                new Bundle(),
+                PreferenceFragmentCompat.class,
+                Optional.empty(),
+                Optional.empty(),
+                -1);
+    }
+
     public static SearchablePreference copyPreferenceAndSetPredecessor(final SearchablePreference preference,
                                                                        final Optional<SearchablePreference> predecessor) {
         return createSearchablePreferencePOJO(

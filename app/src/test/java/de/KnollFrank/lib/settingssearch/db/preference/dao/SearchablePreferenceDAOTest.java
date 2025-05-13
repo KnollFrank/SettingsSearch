@@ -23,7 +23,6 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEquality;
-import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceDAOTest extends AppDatabaseTest {
@@ -169,48 +168,6 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                         .findPreferenceById(preference.getId())
                         .isEmpty();
         assertThat(removed, is(true));
-    }
-
-    @Test
-    public void shouldFindPreferencesByKeyAndHost() {
-        // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
-        final SearchablePreference preference =
-                createSomeSearchablePreference(
-                        1,
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.of("some title"),
-                        Optional.of("some summary"),
-                        Optional.of("some searchable info"));
-        dao.persist(preference);
-
-        // When
-        final Set<SearchablePreference> preferencesFromDb =
-                dao.findPreferencesByKeyAndHost(
-                        preference.getKey(),
-                        preference.getHost());
-
-        // Then
-        assertThat(preferencesFromDb.size(), is(1));
-        SearchablePreferenceEquality.assertActualEqualsExpected(
-                Iterables.getOnlyElement(preferencesFromDb),
-                preference);
-    }
-
-    @Test
-    public void shouldNotFindPreferencesByKeyAndHost() {
-        // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
-
-        // When
-        final Set<SearchablePreference> preferencesFromDb =
-                dao.findPreferencesByKeyAndHost(
-                        "nonExistingKey",
-                        PrefsFragmentFirst.class);
-
-        // Then
-        assertThat(preferencesFromDb.isEmpty(), is(true));
     }
 
     @Test
