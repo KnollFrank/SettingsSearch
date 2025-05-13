@@ -25,6 +25,7 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         final Context context = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+        screen.setTitle("PreferenceFragmentWithSinglePreference");
         final Bundle arguments = getArguments();
         if (arguments != null) {
             if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS)) {
