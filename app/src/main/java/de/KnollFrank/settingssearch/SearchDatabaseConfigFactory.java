@@ -63,15 +63,15 @@ public class SearchDatabaseConfigFactory {
                                             fragmentClass,
                                             Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context)));
                                 } else if (ItemFragment3.class.equals(fragmentClass) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
+                                    final Preference preference = src.orElseThrow().preference();
+                                    PrefsFragmentFirst
+                                            .markExtrasOfPreferenceConnectingSrcWithDst(
+                                                    preference,
+                                                    src.orElseThrow().host(),
+                                                    fragmentClass);
                                     return Classes.instantiateFragmentClass(
                                             fragmentClass,
-                                            Optional.of(
-                                                    PrefsFragmentFirst
-                                                            .markPreferenceConnectingSrcWithDst(
-                                                                    src.orElseThrow().preference(),
-                                                                    src.orElseThrow().host(),
-                                                                    fragmentClass)
-                                                            .getExtras()));
+                                            Optional.of(preference.getExtras()));
                                 }
                                 return new DefaultFragmentFactory().instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
                             }
