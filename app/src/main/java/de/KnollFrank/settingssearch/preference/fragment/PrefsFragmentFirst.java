@@ -21,8 +21,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
-import com.google.common.collect.Iterables;
-
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -31,6 +29,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFacto
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleWithEquality;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
@@ -122,13 +121,28 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private void removePreferenceFromP1() {
-                        final SearchablePreferenceDAO searchablePreferenceDAO = getAppDatabase().searchablePreferenceDAO();
-                        searchablePreferenceDAO.remove(
-                                Iterables.getOnlyElement(
-                                        searchablePreferenceDAO
-                                                .findPreferencesByKeyAndHost(
-                                                        ADDITIONAL_PREFERENCE_KEY,
-                                                        PreferenceFragmentWithSinglePreference.class)));
+                        getAppDatabase().searchablePreferenceDAO().remove(findSearchablePreference2());
+                    }
+
+                    private SearchablePreference findSearchablePreference2() {
+                        final Optional<SearchablePreference> searchablePreference = _findSearchablePreference(createBundle1());
+                        return searchablePreference.isPresent() ?
+                                searchablePreference.orElseThrow() :
+                                _findSearchablePreference(createArguments4PreferenceWithoutExtras(SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, requireContext())).orElseThrow();
+                    }
+
+                    private Optional<SearchablePreference> _findSearchablePreference(final Bundle bundle) {
+                        final HostWithArguments hostOfPreference =
+                                new HostWithArguments(
+                                        PreferenceFragmentWithSinglePreference.class,
+                                        Optional.of(new BundleWithEquality(bundle)));
+                        return findSearchablePreference(hostOfPreference, ADDITIONAL_PREFERENCE_KEY);
+                    }
+
+                    private Bundle createBundle1() {
+                        final Bundle bundle = new Bundle();
+                        bundle.putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS, SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS);
+                        return bundle;
                     }
                 });
         return checkBoxPreference;
@@ -150,27 +164,26 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private void setSummary(final Preference preference, final String summary) {
                         preference.setSummary(summary);
                         final SearchablePreferenceDAO searchablePreferenceDAO = getAppDatabase().searchablePreferenceDAO();
+                        final HostWithArguments hostOfPreference = HostWithArguments.of(PrefsFragmentFirst.this);
                         final SearchablePreference searchablePreference =
-                                getSearchablePreference(
-                                        HostWithArguments.of(PrefsFragmentFirst.this),
-                                        preference);
+                                PrefsFragmentFirst.this
+                                        .findSearchablePreference(hostOfPreference, preference.getKey())
+                                        .orElseThrow();
                         searchablePreference.setSummary(Optional.of(summary));
                         searchablePreferenceDAO.update(searchablePreference);
                     }
-
-                    private SearchablePreference getSearchablePreference(final HostWithArguments hostOfPreference,
-                                                                         final Preference preference) {
-                        return SearchablePreferences
-                                .findPreferenceByKey(
-                                        getAppDatabase()
-                                                .searchablePreferenceScreenDAO()
-                                                .findSearchablePreferenceScreenByHostWithArguments(hostOfPreference)
-                                                .orElseThrow()
-                                                .getAllPreferences(),
-                                        preference.getKey())
-                                .orElseThrow();
-                    }
                 });
+    }
+
+    private Optional<SearchablePreference> findSearchablePreference(final HostWithArguments hostOfPreference, final String keyOfPreference) {
+        return SearchablePreferences
+                .findPreferenceByKey(
+                        getAppDatabase()
+                                .searchablePreferenceScreenDAO()
+                                .findSearchablePreferenceScreenByHostWithArguments(hostOfPreference)
+                                .orElseThrow()
+                                .getAllPreferences(),
+                        keyOfPreference);
     }
 
     private DAOProvider getAppDatabase() {
@@ -228,8 +241,12 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     public static Bundle createArguments4PreferenceWithoutExtras(final @NonNull Preference preference,
                                                                  final Context context) {
+        return createArguments4PreferenceWithoutExtras(preference.getSummary().toString(), context);
+    }
+
+    private static Bundle createArguments4PreferenceWithoutExtras(final String summary, final Context context) {
         final Bundle arguments = new Bundle();
-        arguments.putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, preference.getSummary().toString());
+        arguments.putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, summary);
         arguments.putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, false));
         return arguments;
     }
