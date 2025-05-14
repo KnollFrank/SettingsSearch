@@ -52,22 +52,22 @@ class ConnectedPreferenceScreenByPreferenceProvider {
     }
 
     private Optional<PreferenceScreenWithHost> getConnectedPreferenceScreen(final Preference preference,
-                                                                            final PreferenceFragmentCompat host) {
+                                                                            final PreferenceFragmentCompat hostOfPreference) {
         return this
-                .getConnectedPreferenceFragment(preference, host)
+                .getConnectedPreferenceFragment(preference, hostOfPreference)
                 .flatMap(
                         fragmentConnectedToPreference ->
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(
                                                 fragmentConnectedToPreference,
-                                                Optional.of(new PreferenceWithHost(preference, host))));
+                                                Optional.of(new PreferenceWithHost(preference, hostOfPreference))));
     }
 
-    private Optional<Class<? extends Fragment>> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat host) {
+    private Optional<Class<? extends Fragment>> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
         return ConnectedPreferenceScreenByPreferenceProvider
                 .loadFragmentClass(preference, context)
                 .or(() -> getRootPreferenceFragment(Optional.ofNullable(preference.getIntent())))
-                .or(() -> preferenceFragmentConnected2PreferenceProvider.getPreferenceFragmentConnected2Preference(preference, host));
+                .or(() -> preferenceFragmentConnected2PreferenceProvider.getPreferenceFragmentConnected2Preference(preference, hostOfPreference));
     }
 
     private static Optional<Class<? extends Fragment>> loadFragmentClass(final Preference preference, final Context context) {
