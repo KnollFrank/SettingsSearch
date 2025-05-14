@@ -6,7 +6,6 @@ import androidx.room.TypeConverter;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleWithEquality;
 
-// FK-TODO: unit test
 public class BundleWithEqualityConverter implements Converter<BundleWithEquality, String> {
 
     private final Converter<Bundle, String> bundleConverter = new BundleConverter();
