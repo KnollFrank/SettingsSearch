@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
@@ -88,11 +89,8 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
     }
 
     @Override
-    public Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference() {
-        if (childrenByPreference.isEmpty()) {
-            childrenByPreference = Optional.of(PreferenceAndChildrens.getChildrenByPreference(daoSetter.__setDao(new HashSet<>(_getPreferencesAndChildren()))));
-        }
-        return childrenByPreference.orElseThrow();
+    public Set<SearchablePreference> getChildren(SearchablePreference preference) {
+        return Maps.get(getChildrenByPreference(), preference).orElseThrow();
     }
 
     @Override
@@ -144,6 +142,19 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
 
     private Set<SearchablePreference> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
         return daoSetter.setDao(new HashSet<>(_searchWithinTitleSummarySearchableInfo(needle)));
+    }
+
+    private Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference() {
+        if (childrenByPreference.isEmpty()) {
+            childrenByPreference = Optional.of(computeChildrenByPreference());
+        }
+        return childrenByPreference.orElseThrow();
+    }
+
+    private Map<SearchablePreference, Set<SearchablePreference>> computeChildrenByPreference() {
+        return PreferenceAndChildrens.getChildrenByPreference(
+                daoSetter.__setDao(
+                        new HashSet<>(_getPreferencesAndChildren())));
     }
 
     private void invalidateCaches() {

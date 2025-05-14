@@ -8,8 +8,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public interface ChildrenAndPredecessorAndHostProvider {
 
-    // FK-TODO: change to "Set<SearchablePreference> getChildren(SearchablePreference preference);"
-    Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference();
+    Set<SearchablePreference> getChildren(SearchablePreference preference);
 
     // FK-TODO: change to Optional<SearchablePreference> getPredecessor(SearchablePreference preference);
     Map<SearchablePreference, SearchablePreference> getPredecessorByPreference();

@@ -211,10 +211,7 @@ public final class SearchablePreference {
     }
 
     public Set<SearchablePreference> getChildren() {
-        return dao
-                .orElseThrow()
-                .getChildrenByPreference()
-                .get(this);
+        return dao.orElseThrow().getChildren(this);
     }
 
     public Optional<SearchablePreference> getPredecessor() {
