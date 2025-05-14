@@ -65,19 +65,12 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
 
     @Override
     public Set<SearchablePreference> getAllPreferences(final SearchablePreferenceScreen screen) {
-        return Maps.get(_getAllPreferencesBySearchablePreferenceScreen(), screen).orElseThrow();
+        return Maps.get(getAllPreferencesBySearchablePreferenceScreen(), screen).orElseThrow();
     }
 
     @Override
-    public Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference() {
-        if (hostByPreference.isEmpty()) {
-            hostByPreference =
-                    Optional.of(
-                            SearchablePreferenceScreenAndAllPreferencesHelper.getHostByPreference(
-                                    daoSetter.__setDao(
-                                            new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()))));
-        }
-        return hostByPreference.orElseThrow();
+    public SearchablePreferenceScreen getHost(SearchablePreference preference) {
+        return Maps.get(getHostByPreference(), preference).orElseThrow();
     }
 
     @Insert
@@ -98,7 +91,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
             final Class<? extends PreferenceFragmentCompat> host,
             final Optional<BundleWithEquality> arguments);
 
-    private Map<SearchablePreferenceScreen, Set<SearchablePreference>> _getAllPreferencesBySearchablePreferenceScreen() {
+    private Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
             allPreferencesBySearchablePreferenceScreen = Optional.of(computeAllPreferencesBySearchablePreferenceScreen());
         }
@@ -107,6 +100,19 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
 
     private Map<SearchablePreferenceScreen, Set<SearchablePreference>> computeAllPreferencesBySearchablePreferenceScreen() {
         return SearchablePreferenceScreenAndAllPreferencesHelper.getAllPreferencesBySearchablePreferenceScreen(
+                daoSetter.__setDao(
+                        new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences())));
+    }
+
+    private Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference() {
+        if (hostByPreference.isEmpty()) {
+            hostByPreference = Optional.of(computeHostByPreference());
+        }
+        return hostByPreference.orElseThrow();
+    }
+
+    private Map<SearchablePreference, SearchablePreferenceScreen> computeHostByPreference() {
+        return SearchablePreferenceScreenAndAllPreferencesHelper.getHostByPreference(
                 daoSetter.__setDao(
                         new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences())));
     }

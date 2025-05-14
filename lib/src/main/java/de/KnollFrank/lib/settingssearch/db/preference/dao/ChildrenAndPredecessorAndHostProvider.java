@@ -14,6 +14,5 @@ public interface ChildrenAndPredecessorAndHostProvider {
     // FK-TODO: change to Optional<SearchablePreference> getPredecessor(SearchablePreference preference);
     Map<SearchablePreference, SearchablePreference> getPredecessorByPreference();
 
-    // FK-TODO: change to SearchablePreferenceScreen getHost(SearchablePreference preference);
-    Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference();
+    SearchablePreferenceScreen getHost(SearchablePreference preference);
 }

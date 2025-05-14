@@ -203,7 +203,7 @@ public final class SearchablePreference {
     }
 
     public SearchablePreferenceScreen getHost() {
-        return dao.orElseThrow().getHostByPreference().get(this);
+        return dao.orElseThrow().getHost(this);
     }
 
     public PreferencePath getPreferencePath() {

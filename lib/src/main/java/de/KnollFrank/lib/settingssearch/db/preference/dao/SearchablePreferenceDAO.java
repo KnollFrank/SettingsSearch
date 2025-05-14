@@ -96,8 +96,8 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
     }
 
     @Override
-    public Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference() {
-        return appDatabase.searchablePreferenceScreenDAO().getHostByPreference();
+    public SearchablePreferenceScreen getHost(SearchablePreference preference) {
+        return appDatabase.searchablePreferenceScreenDAO().getHost(preference);
     }
 
     public void removeAll() {
