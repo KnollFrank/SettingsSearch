@@ -8,13 +8,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.IOUtils;
 
 public class JsonDAO {
 
-    // FK-TODO: use Optional<Gson>?
-    private static Gson INSTANCE;
+    private static Optional<Gson> INSTANCE = Optional.empty();
 
     public static <T> void persist(final T source, final OutputStream sink) {
         IOUtils.persist(toJson(source), sink);
@@ -33,17 +33,20 @@ public class JsonDAO {
     }
 
     private static Gson getGson() {
-        if (INSTANCE == null) {
-            INSTANCE =
-                    new GsonBuilder()
-                            .registerTypeAdapter(Class.class, new ClassTypeAdapter())
-                            .registerTypeAdapterFactory(new EitherIntegerOrStringTypeAdapterFactory())
-                            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
-                            .registerTypeAdapterFactory(new BundleTypeAdapterFactory())
-                            .setExclusionStrategies(new AnnotationExclusionStrategy())
-                            .enableComplexMapKeySerialization()
-                            .create();
+        if (INSTANCE.isEmpty()) {
+            INSTANCE = Optional.of(createGson());
         }
-        return INSTANCE;
+        return INSTANCE.orElseThrow();
+    }
+
+    private static Gson createGson() {
+        return new GsonBuilder()
+                .registerTypeAdapter(Class.class, new ClassTypeAdapter())
+                .registerTypeAdapterFactory(new EitherIntegerOrStringTypeAdapterFactory())
+                .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+                .registerTypeAdapterFactory(new BundleTypeAdapterFactory())
+                .setExclusionStrategies(new AnnotationExclusionStrategy())
+                .enableComplexMapKeySerialization()
+                .create();
     }
 }
