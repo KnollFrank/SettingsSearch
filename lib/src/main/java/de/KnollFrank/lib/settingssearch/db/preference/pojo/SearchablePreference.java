@@ -186,11 +186,12 @@ public final class SearchablePreference {
     public Optional<Class<? extends Activity>> getClassOfReferencedActivity(final Context context) {
         return this
                 .getClassNameOfReferencedActivity()
-                .flatMap(classNameOfReferencedActivity ->
-                                 Classes.classNameAsSubclassOfClazz(
-                                         classNameOfReferencedActivity,
-                                         Activity.class,
-                                         context));
+                .flatMap(
+                        classNameOfReferencedActivity ->
+                                Classes.classNameAsSubclassOfClazz(
+                                        classNameOfReferencedActivity,
+                                        Activity.class,
+                                        context));
     }
 
     public boolean isVisible() {
@@ -263,12 +264,12 @@ public final class SearchablePreference {
         return this
                 .getIconResourceIdOrIconPixelData()
                 .map(iconResourceIdOrIconPixelData ->
-                             iconResourceIdOrIconPixelData.join(
-                                     iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
-                                     iconPixelData ->
-                                             DrawableAndStringConverter.string2Drawable(
-                                                     iconPixelData,
-                                                     context.getResources())));
+                        iconResourceIdOrIconPixelData.join(
+                                iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
+                                iconPixelData ->
+                                        DrawableAndStringConverter.string2Drawable(
+                                                iconPixelData,
+                                                context.getResources())));
     }
 
     private PreferencePath getPreferencePathOfPredecessor() {
