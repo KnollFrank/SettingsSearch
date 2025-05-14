@@ -11,6 +11,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 public class PreferenceFragmentClassConverterTest {
 
+    // FK-TODO: use ConverterTest?
     @Test
     public void shouldConvertFromClass2StringAndBack() {
         // Given
