@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.common.IOUtils;
 
 public class JsonDAO {
 
+    // FK-TODO: use Optional<Gson>?
     private static Gson INSTANCE;
 
     public static <T> void persist(final T source, final OutputStream sink) {

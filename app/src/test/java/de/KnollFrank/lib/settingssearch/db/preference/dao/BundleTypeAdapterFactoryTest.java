@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory.createSomeBundleOfBundles;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleEquality.equalBundles;
 
 import android.os.Bundle;
 
@@ -18,9 +19,26 @@ import org.robolectric.RobolectricTestRunner;
 @RunWith(RobolectricTestRunner.class)
 public class BundleTypeAdapterFactoryTest {
 
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapterFactory(new BundleTypeAdapterFactory())
-            .create();
+    private final Gson gson =
+            new GsonBuilder()
+                    .registerTypeAdapterFactory(new BundleTypeAdapterFactory())
+                    .create();
+
+    @Test
+    public void shouldConvertFromBundle2StringAndBack() {
+        // Given
+        final Bundle bundle = new Bundle();
+        bundle.putInt("a", 1);
+        bundle.putString("b", "b value");
+        bundle.putBoolean("c", true);
+        // FK-TODO: add other types to bundle, e.g. bundle.putFloat(), ...
+
+        // When
+        final Bundle bundleActual = gson.fromJson(gson.toJson(bundle), Bundle.class);
+
+        // Then
+        assertThat(equalBundles(bundle, bundleActual), is(true));
+    }
 
     @Test
     public void testSerialize() {
@@ -28,14 +46,16 @@ public class BundleTypeAdapterFactoryTest {
         final Bundle bundle = new Bundle();
         bundle.putInt("a", 1);
         bundle.putString("b", "b value");
+        bundle.putBoolean("c", true);
 
         // When
         final JsonObject json = gson.toJsonTree(bundle).getAsJsonObject();
 
         // Then
-        assertThat(json.entrySet().size(), is(2));
+        assertThat(json.entrySet().size(), is(3));
         assertThat(json.get("b").getAsString(), is("b value"));
         assertThat(json.get("a").getAsInt(), is(1));
+        assertThat(json.get("c").getAsBoolean(), is(true));
     }
 
     @Test
