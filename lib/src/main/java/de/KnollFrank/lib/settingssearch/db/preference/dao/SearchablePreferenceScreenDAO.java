@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleWithEquality;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
@@ -63,15 +64,8 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     }
 
     @Override
-    public Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen() {
-        if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
-            allPreferencesBySearchablePreferenceScreen =
-                    Optional.of(
-                            SearchablePreferenceScreenAndAllPreferencesHelper.getAllPreferencesBySearchablePreferenceScreen(
-                                    daoSetter.__setDao(
-                                            new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()))));
-        }
-        return allPreferencesBySearchablePreferenceScreen.orElseThrow();
+    public Set<SearchablePreference> getAllPreferences(final SearchablePreferenceScreen screen) {
+        return Maps.get(_getAllPreferencesBySearchablePreferenceScreen(), screen).orElseThrow();
     }
 
     @Override
@@ -103,6 +97,19 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     protected abstract Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(
             final Class<? extends PreferenceFragmentCompat> host,
             final Optional<BundleWithEquality> arguments);
+
+    private Map<SearchablePreferenceScreen, Set<SearchablePreference>> _getAllPreferencesBySearchablePreferenceScreen() {
+        if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
+            allPreferencesBySearchablePreferenceScreen = Optional.of(computeAllPreferencesBySearchablePreferenceScreen());
+        }
+        return allPreferencesBySearchablePreferenceScreen.orElseThrow();
+    }
+
+    private Map<SearchablePreferenceScreen, Set<SearchablePreference>> computeAllPreferencesBySearchablePreferenceScreen() {
+        return SearchablePreferenceScreenAndAllPreferencesHelper.getAllPreferencesBySearchablePreferenceScreen(
+                daoSetter.__setDao(
+                        new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences())));
+    }
 
     private void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();

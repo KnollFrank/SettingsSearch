@@ -89,10 +89,7 @@ public final class SearchablePreferenceScreen {
     }
 
     private Set<SearchablePreference> getAllPreferencesFromDao() {
-        return dao
-                .orElseThrow()
-                .getAllPreferencesBySearchablePreferenceScreen()
-                .get(this);
+        return dao.orElseThrow().getAllPreferences(this);
     }
 
     @Override
