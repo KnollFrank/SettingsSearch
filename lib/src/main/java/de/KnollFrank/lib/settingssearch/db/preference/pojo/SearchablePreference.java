@@ -21,7 +21,6 @@ import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
-import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.ChildrenAndPredecessorAndHostProvider;
 
@@ -215,7 +214,7 @@ public final class SearchablePreference {
     }
 
     public Optional<SearchablePreference> getPredecessor() {
-        return Maps.get(dao.orElseThrow().getPredecessorByPreference(), this);
+        return dao.orElseThrow().getPredecessor(this);
     }
 
     public Optional<Integer> getParentId() {

@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -10,8 +10,7 @@ public interface ChildrenAndPredecessorAndHostProvider {
 
     Set<SearchablePreference> getChildren(SearchablePreference preference);
 
-    // FK-TODO: change to Optional<SearchablePreference> getPredecessor(SearchablePreference preference);
-    Map<SearchablePreference, SearchablePreference> getPredecessorByPreference();
+    Optional<SearchablePreference> getPredecessor(SearchablePreference preference);
 
     SearchablePreferenceScreen getHost(SearchablePreference preference);
 }

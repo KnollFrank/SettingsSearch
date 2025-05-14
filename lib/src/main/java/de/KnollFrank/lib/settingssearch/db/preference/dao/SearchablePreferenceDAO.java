@@ -34,7 +34,7 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
 
     private final SearchablePreferenceDAOSetter daoSetter = new SearchablePreferenceDAOSetter(this);
     private final AppDatabase appDatabase;
-    private Optional<Map<SearchablePreference, SearchablePreference>> predecessorByPreference = Optional.empty();
+    private Optional<Map<SearchablePreference, Optional<SearchablePreference>>> predecessorByPreference = Optional.empty();
     private Optional<Map<SearchablePreference, Set<SearchablePreference>>> childrenByPreference = Optional.empty();
 
     public SearchablePreferenceDAO(final AppDatabase appDatabase) {
@@ -81,11 +81,8 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
     }
 
     @Override
-    public Map<SearchablePreference, SearchablePreference> getPredecessorByPreference() {
-        if (predecessorByPreference.isEmpty()) {
-            predecessorByPreference = Optional.of(PreferenceAndPredecessors.getPredecessorByPreference(daoSetter._setDao(new HashSet<>(_getPreferencesAndPredecessors()))));
-        }
-        return predecessorByPreference.orElseThrow();
+    public Optional<SearchablePreference> getPredecessor(SearchablePreference preference) {
+        return Maps.get(getPredecessorByPreference(), preference).orElseThrow();
     }
 
     @Override
@@ -155,6 +152,19 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
         return PreferenceAndChildrens.getChildrenByPreference(
                 daoSetter.__setDao(
                         new HashSet<>(_getPreferencesAndChildren())));
+    }
+
+    private Map<SearchablePreference, Optional<SearchablePreference>> getPredecessorByPreference() {
+        if (predecessorByPreference.isEmpty()) {
+            predecessorByPreference = Optional.of(computePredecessorByPreference());
+        }
+        return predecessorByPreference.orElseThrow();
+    }
+
+    private Map<SearchablePreference, Optional<SearchablePreference>> computePredecessorByPreference() {
+        return PreferenceAndPredecessors.getPredecessorByPreference(
+                daoSetter._setDao(
+                        new HashSet<>(_getPreferencesAndPredecessors())));
     }
 
     private void invalidateCaches() {
