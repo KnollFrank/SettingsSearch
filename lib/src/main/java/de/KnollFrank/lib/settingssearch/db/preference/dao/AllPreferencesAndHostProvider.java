@@ -8,6 +8,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public interface AllPreferencesAndHostProvider {
 
+    // FK-TODO: change to "Set<SearchablePreference> getAllPreferences(SearchablePreferenceScreen screen);"
     Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen();
 
     // FK-TODO: change to SearchablePreferenceScreen getHost(SearchablePreference preference);
