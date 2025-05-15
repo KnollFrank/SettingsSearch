@@ -1,6 +1,8 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.PARENT_KEY;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createSomeSearchablePreferenceScreen;
@@ -13,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Optional;
+import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -47,10 +50,10 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
         dao.persist(screen);
 
         // When
-        final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHost(screen.getHost());
+        final Set<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHost(screen.getHost());
 
         // Then
-        assertThat(screenActual, is(Optional.of(screen)));
+        assertThat(screenActual, contains(screen));
     }
 
     @Test
@@ -60,10 +63,10 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
         final Class<? extends PreferenceFragmentCompat> nonExistingHost = PreferenceFragmentCompat.class;
 
         // When
-        final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHost(nonExistingHost);
+        final Set<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHost(nonExistingHost);
 
         // Then
-        assertThat(screenActual, is(Optional.empty()));
+        assertThat(screenActual, is(empty()));
     }
 
     @Test

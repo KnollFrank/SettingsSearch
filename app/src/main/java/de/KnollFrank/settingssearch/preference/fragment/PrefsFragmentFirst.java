@@ -21,6 +21,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
+import com.google.common.collect.Iterables;
+
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -182,10 +184,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     }
 
     private Set<SearchablePreference> getPreferences(final Class<? extends PreferenceFragmentCompat> host) {
-        return getAppDatabase()
-                .searchablePreferenceScreenDAO()
-                .findSearchablePreferenceScreenByHost(host)
-                .orElseThrow()
+        return Iterables
+                .getOnlyElement(
+                        getAppDatabase()
+                                .searchablePreferenceScreenDAO()
+                                .findSearchablePreferenceScreenByHost(host))
                 .getAllPreferences();
     }
 
