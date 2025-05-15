@@ -1,14 +1,11 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import android.os.Bundle;
-
 import com.codepoetics.ambivalence.Either;
 
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory;
 
 public class SearchablePreferenceTestFactory {
 
@@ -19,26 +16,6 @@ public class SearchablePreferenceTestFactory {
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
-            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Optional<Integer> parentId,
-            final Optional<Integer> predecessorId) {
-        return createSearchablePreferencePOJO(
-                id,
-                title,
-                summary,
-                searchableInfo,
-                BundleTestFactory.createBundle("someKey", "someValue"),
-                iconResourceIdOrIconPixelData,
-                parentId,
-                predecessorId);
-    }
-
-    public static SearchablePreference createSearchablePreferencePOJO(
-            final int id,
-            final Optional<String> title,
-            final Optional<String> summary,
-            final Optional<String> searchableInfo,
-            final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final Optional<Integer> parentId,
             final Optional<Integer> predecessorId) {
@@ -54,7 +31,6 @@ public class SearchablePreferenceTestFactory {
                 Optional.empty(),
                 true,
                 searchableInfo,
-                extras,
                 parentId,
                 predecessorId,
                 "-1");
@@ -75,7 +51,6 @@ public class SearchablePreferenceTestFactory {
                 Optional.empty(),
                 true,
                 Optional.empty(),
-                new Bundle(),
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
                 "-1");
@@ -91,7 +66,6 @@ public class SearchablePreferenceTestFactory {
                 title,
                 summary,
                 searchableInfo,
-                BundleTestFactory.createBundle("someKey", "someValue"),
                 iconResourceIdOrIconPixelData,
                 Optional.empty());
     }
@@ -101,7 +75,6 @@ public class SearchablePreferenceTestFactory {
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
-            final Bundle extras,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final Optional<SearchablePreference> predecessor) {
         return new SearchablePreference(
@@ -116,7 +89,6 @@ public class SearchablePreferenceTestFactory {
                 Optional.empty(),
                 true,
                 searchableInfo,
-                extras,
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
                 "-1");
@@ -135,7 +107,6 @@ public class SearchablePreferenceTestFactory {
                 Optional.empty(),
                 true,
                 Optional.empty(),
-                new Bundle(),
                 Optional.empty(),
                 Optional.empty(),
                 "-1");

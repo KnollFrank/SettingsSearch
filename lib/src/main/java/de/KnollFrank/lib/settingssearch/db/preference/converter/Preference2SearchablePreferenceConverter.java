@@ -66,7 +66,6 @@ public class Preference2SearchablePreferenceConverter {
                         getClassNameOfReferencedActivity(preference),
                         preference.isVisible(),
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
-                        preference.getExtras(),
                         parentIdOfPreference,
                         predecessorOfPreference.map(SearchablePreference::getId),
                         searchablePreferenceScreenId);
@@ -112,9 +111,9 @@ public class Preference2SearchablePreferenceConverter {
         return iconProvider
                 .getIconResourceIdOrIconDrawableOfPreference(preference, hostOfPreference)
                 .map(iconResourceIdOrIconDrawable ->
-                        iconResourceIdOrIconDrawable.map(
-                                Function.identity(),
-                                DrawableAndStringConverter::drawable2String));
+                             iconResourceIdOrIconDrawable.map(
+                                     Function.identity(),
+                                     DrawableAndStringConverter::drawable2String));
     }
 
     private static BiMap<SearchablePreference, Preference> getPojoEntityMap(final List<SearchablePreferenceWithMap> pojoWithMapList) {

@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -53,7 +52,6 @@ public final class SearchablePreference {
     private final Optional<String> searchableInfo;
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
-    private final Bundle extras;
     private final Optional<Integer> parentId;
     private final Optional<Integer> predecessorId;
     private final String searchablePreferenceScreenId;
@@ -70,7 +68,6 @@ public final class SearchablePreference {
             final Optional<String> classNameOfReferencedActivity,
             final boolean visible,
             final Optional<String> searchableInfo,
-            final Bundle extras,
             final Optional<Integer> parentId,
             final Optional<Integer> predecessorId,
             final String searchablePreferenceScreenId) {
@@ -85,7 +82,6 @@ public final class SearchablePreference {
         this.classNameOfReferencedActivity = classNameOfReferencedActivity;
         this.visible = visible;
         this.searchableInfo = searchableInfo;
-        this.extras = extras;
         this.parentId = parentId;
         this.predecessorId = predecessorId;
         this.searchablePreferenceScreenId = searchablePreferenceScreenId;
@@ -198,10 +194,6 @@ public final class SearchablePreference {
         return visible;
     }
 
-    public Bundle getExtras() {
-        return extras;
-    }
-
     public SearchablePreferenceScreen getHost() {
         return dao.orElseThrow().getHost(this);
     }
@@ -253,7 +245,6 @@ public final class SearchablePreference {
                 ", key='" + key + '\'' +
                 ", fragment='" + fragment + '\'' +
                 ", visible=" + visible +
-                ", extras=" + extras +
                 ", parentId=" + parentId +
                 ", predecessorId=" + predecessorId +
                 ", searchablePreferenceScreenId=" + searchablePreferenceScreenId +
@@ -264,12 +255,12 @@ public final class SearchablePreference {
         return this
                 .getIconResourceIdOrIconPixelData()
                 .map(iconResourceIdOrIconPixelData ->
-                        iconResourceIdOrIconPixelData.join(
-                                iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
-                                iconPixelData ->
-                                        DrawableAndStringConverter.string2Drawable(
-                                                iconPixelData,
-                                                context.getResources())));
+                             iconResourceIdOrIconPixelData.join(
+                                     iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
+                                     iconPixelData ->
+                                             DrawableAndStringConverter.string2Drawable(
+                                                     iconPixelData,
+                                                     context.getResources())));
     }
 
     private PreferencePath getPreferencePathOfPredecessor() {

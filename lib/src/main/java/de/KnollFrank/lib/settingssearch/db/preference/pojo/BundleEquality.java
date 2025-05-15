@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.Bundle;
 
+// FK-TODO: remove?
 public class BundleEquality {
 
     public static boolean equalBundles(final Bundle bundle1, final Bundle bundle2) {

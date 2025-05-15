@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import android.os.Bundle;
-
 import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
@@ -33,7 +31,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         true,
                         Optional.empty(),
-                        new Bundle(),
                         Optional.empty(),
                         Optional.empty(),
                         screenId);
@@ -62,7 +59,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         true,
                         Optional.empty(),
-                        new Bundle(),
                         Optional.empty(),
                         Optional.empty(),
                         screenId);
@@ -85,7 +81,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 Optional.empty(),
                                 true,
                                 Optional.empty(),
-                                new Bundle(),
                                 Optional.of(1),
                                 Optional.empty(),
                                 screenId),
@@ -101,7 +96,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 Optional.empty(),
                                 true,
                                 Optional.empty(),
-                                new Bundle(),
                                 Optional.of(1),
                                 Optional.empty(),
                                 screenId),
@@ -125,7 +119,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         true,
                         Optional.empty(),
-                        new Bundle(),
                         Optional.empty(),
                         Optional.of(predecessor.getId()),
                         screenId);
