@@ -1,10 +1,8 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory.createBundle;
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
 
 import android.content.Context;
-import android.os.Bundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.fragment.app.Fragment;
@@ -52,7 +50,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                 final String keyOfChild2 = "some child key 2";
                 final @LayoutRes int layoutResIdOfEachChild = 16;
 
-                final PreferenceFragmentCompat preferenceFragment = createPreferenceFragmentHavingParentWithTwoChildren(parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild, createBundle("someKey", "someValue"));
+                final PreferenceFragmentCompat preferenceFragment = createPreferenceFragmentHavingParentWithTwoChildren(parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild);
                 final String id = "some unique id";
 
                 // When
@@ -95,36 +93,32 @@ public class PreferenceScreenWithHost2POJOConverterTest {
 
             final String keyOfChild1,
             final String keyOfChild2,
-            final @LayoutRes int layoutResIdOfEachChild,
-            final Bundle arguments) {
-        final PreferenceFragmentTemplate preferenceFragment =
-                new PreferenceFragmentTemplate(
-                        new BiConsumer<>() {
+            final @LayoutRes int layoutResIdOfEachChild) {
+        return new PreferenceFragmentTemplate(
+                new BiConsumer<>() {
 
-                            @Override
-                            public void accept(final PreferenceScreen screen, final Context context) {
-                                final PreferenceCategory preference = createParent(context);
-                                screen.addPreference(preference);
-                                preference.addPreference(createChild(keyOfChild1, context));
-                                preference.addPreference(createChild(keyOfChild2, context));
-                            }
+                    @Override
+                    public void accept(final PreferenceScreen screen, final Context context) {
+                        final PreferenceCategory preference = createParent(context);
+                        screen.addPreference(preference);
+                        preference.addPreference(createChild(keyOfChild1, context));
+                        preference.addPreference(createChild(keyOfChild2, context));
+                    }
 
-                            private PreferenceCategory createParent(final Context context) {
-                                final PreferenceCategory preference = new PreferenceCategory(context);
-                                preference.setKey(parentKey);
-                                preference.setLayoutResource(layoutResIdOfParent);
-                                return preference;
-                            }
+                    private PreferenceCategory createParent(final Context context) {
+                        final PreferenceCategory preference = new PreferenceCategory(context);
+                        preference.setKey(parentKey);
+                        preference.setLayoutResource(layoutResIdOfParent);
+                        return preference;
+                    }
 
-                            private Preference createChild(final String key, final Context context) {
-                                final Preference preference = new Preference(context);
-                                preference.setKey(key);
-                                preference.setLayoutResource(layoutResIdOfEachChild);
-                                return preference;
-                            }
-                        });
-        preferenceFragment.setArguments(arguments);
-        return preferenceFragment;
+                    private Preference createChild(final String key, final Context context) {
+                        final Preference preference = new Preference(context);
+                        preference.setKey(key);
+                        preference.setLayoutResource(layoutResIdOfEachChild);
+                        return preference;
+                    }
+                });
     }
 
     private static SearchablePreferenceScreen getSearchablePreferenceScreenHavingParentWithTwoChildren(
