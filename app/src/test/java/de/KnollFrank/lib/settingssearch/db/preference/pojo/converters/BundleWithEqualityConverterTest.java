@@ -1,9 +1,8 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory.createBundle;
 import static de.KnollFrank.lib.settingssearch.db.preference.dao.BundleTestFactory.createSomeBundleOfBundles;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConverterTest.test_a_doForward_doBackward_equals_a;
 
 import android.os.Bundle;
 
@@ -18,17 +17,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleWithEquality;
 @RunWith(RobolectricTestRunner.class)
 public class BundleWithEqualityConverterTest {
 
+    private final Converter<BundleWithEquality, String> converter = new BundleWithEqualityConverter();
+
     @Test
     public void shouldConvertFromBundle2StringAndBack() {
-        // Given
-        final BundleWithEquality bundle = new BundleWithEquality(createBundle("someKey", "someValue"));
-        final Converter<BundleWithEquality, String> converter = new BundleWithEqualityConverter();
-
-        // When
-        final BundleWithEquality bundleActual = converter.doBackward(converter.doForward(bundle));
-
-        // Then
-        assertThat(bundleActual, is(bundle));
+        test_a_doForward_doBackward_equals_a(new BundleWithEquality(createBundle("someKey", "someValue")), converter);
     }
 
     @Test
@@ -40,8 +33,6 @@ public class BundleWithEqualityConverterTest {
         final Bundle bundle2 = new Bundle();
         bundle2.putString("someKeyB", "someValueB");
         bundle2.putString("someKeyA", "someValueA");
-
-        final Converter<BundleWithEquality, String> converter = new BundleWithEqualityConverter();
 
         new EqualsTester()
                 .addEqualityGroup(
