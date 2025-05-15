@@ -15,7 +15,6 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
@@ -41,27 +40,27 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     }
 
     @Test
-    public void test_findSearchablePreferenceScreenByHostWithArguments() {
+    public void test_findSearchablePreferenceScreenByHost() {
         // Given
         final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
         final SearchablePreferenceScreen screen = createSomeSearchablePreferenceScreen();
         dao.persist(screen);
 
         // When
-        final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHostWithArguments(screen.getHost());
+        final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHost(screen.getHost());
 
         // Then
         assertThat(screenActual, is(Optional.of(screen)));
     }
 
     @Test
-    public void test_findSearchablePreferenceScreenByHostWithArguments_emptyDatabase() {
+    public void test_findSearchablePreferenceScreenByHost_emptyDatabase() {
         // Given
         final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
-        final HostWithArguments nonExistingHostWithArguments = new HostWithArguments(PreferenceFragmentCompat.class);
+        final Class<? extends PreferenceFragmentCompat> nonExistingHost = PreferenceFragmentCompat.class;
 
         // When
-        final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHostWithArguments(nonExistingHostWithArguments);
+        final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHost(nonExistingHost);
 
         // Then
         assertThat(screenActual, is(Optional.empty()));

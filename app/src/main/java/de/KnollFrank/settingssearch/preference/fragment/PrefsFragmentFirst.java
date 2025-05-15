@@ -30,7 +30,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFacto
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
@@ -136,7 +135,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     private Optional<SearchablePreference> _findSearchablePreference(final Bundle bundle) {
                         return findSearchablePreference(
-                                new HostWithArguments(PreferenceFragmentWithSinglePreference.class),
+                                PreferenceFragmentWithSinglePreference.class,
                                 ADDITIONAL_PREFERENCE_KEY);
                     }
 
@@ -165,7 +164,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private void setSummary(final Preference preference, final String summary) {
                         preference.setSummary(summary);
                         final SearchablePreferenceDAO searchablePreferenceDAO = getAppDatabase().searchablePreferenceDAO();
-                        final HostWithArguments hostOfPreference = HostWithArguments.of(PrefsFragmentFirst.this);
+                        final Class<? extends PreferenceFragmentCompat> hostOfPreference = PrefsFragmentFirst.class;
                         final SearchablePreference searchablePreference =
                                 PrefsFragmentFirst.this
                                         .findSearchablePreference(hostOfPreference, preference.getKey())
@@ -176,16 +175,16 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 });
     }
 
-    private Optional<SearchablePreference> findSearchablePreference(final HostWithArguments hostOfPreference, final String keyOfPreference) {
+    private Optional<SearchablePreference> findSearchablePreference(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final String keyOfPreference) {
         return SearchablePreferences.findPreferenceByKey(
                 getPreferences(hostOfPreference),
                 keyOfPreference);
     }
 
-    private Set<SearchablePreference> getPreferences(final HostWithArguments host) {
+    private Set<SearchablePreference> getPreferences(final Class<? extends PreferenceFragmentCompat> host) {
         return getAppDatabase()
                 .searchablePreferenceScreenDAO()
-                .findSearchablePreferenceScreenByHostWithArguments(host)
+                .findSearchablePreferenceScreenByHost(host)
                 .orElseThrow()
                 .getAllPreferences();
     }

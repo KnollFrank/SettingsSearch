@@ -15,7 +15,6 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
@@ -56,8 +55,8 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     }
 
     // FK-TODO: remove method
-    public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(final HostWithArguments hostWithArguments) {
-        return daoSetter.setDao(findSearchablePreferenceScreenByHostWithArguments(hostWithArguments.host()));
+    public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHost(final Class<? extends PreferenceFragmentCompat> host) {
+        return daoSetter.setDao(_findSearchablePreferenceScreenByHost(host));
     }
 
     @Override
@@ -85,7 +84,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
 
     // FK-TODO: remove method
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host")
-    protected abstract Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(final Class<? extends PreferenceFragmentCompat> host);
+    protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenByHost(final Class<? extends PreferenceFragmentCompat> host);
 
     private Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
