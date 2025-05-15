@@ -11,10 +11,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleWithEqualityConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalBundleConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalBundleWithEqualityConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
@@ -33,11 +29,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Preference
                 PreferenceFragmentClassConverter.class,
                 OptionalEitherIntegerOrStringConverter.class,
                 OptionalStringConverter.class,
-                OptionalIntegerConverter.class,
-                BundleConverter.class,
-                OptionalBundleConverter.class,
-                BundleWithEqualityConverter.class,
-                OptionalBundleWithEqualityConverter.class
+                OptionalIntegerConverter.class
         })
 public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
 
