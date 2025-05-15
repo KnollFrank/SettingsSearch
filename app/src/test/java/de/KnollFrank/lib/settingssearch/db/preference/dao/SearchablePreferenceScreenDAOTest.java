@@ -48,7 +48,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
         dao.persist(screen);
 
         // When
-        final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHostWithArguments(screen.getHostWithArguments());
+        final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHostWithArguments(screen.getHost());
 
         // Then
         assertThat(screenActual, is(Optional.of(screen)));

@@ -10,7 +10,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.Strings;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
@@ -32,7 +31,7 @@ class SearchablePreferenceScreen2POJOConverter {
         return new SearchablePreferenceScreenWithMap(
                 new SearchablePreferenceScreen(
                         id,
-                        HostWithArguments.of(hostOfPreferenceScreen),
+                        hostOfPreferenceScreen.getClass(),
                         Strings.toString(Optional.ofNullable(preferenceScreen.getTitle())),
                         Strings.toString(Optional.ofNullable(preferenceScreen.getSummary())),
                         searchablePreferences.keySet(),

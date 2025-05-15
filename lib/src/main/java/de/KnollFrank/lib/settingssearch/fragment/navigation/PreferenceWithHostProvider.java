@@ -30,7 +30,7 @@ class PreferenceWithHostProvider {
                                                     final Optional<PreferenceWithHost> src) {
         final PreferenceFragmentCompat hostOfPreference =
                 instantiateAndInitializePreferenceFragment(
-                        preference.getHost().getHostWithArguments().host(),
+                        preference.getHost().getHost(),
                         src);
         return new PreferenceWithHost(
                 Preferences.findPreferenceOrElseThrow(hostOfPreference, preference.getKey()),

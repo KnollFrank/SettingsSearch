@@ -144,7 +144,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
             final Set<SearchablePreferenceScreen> preferenceScreenWithHostSet) {
         return getPreference(
                 preferenceScreenWithHostSet,
-                preference -> hostOfPreference.equals(preference.getHost().getHostWithArguments().host()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
+                preference -> hostOfPreference.equals(preference.getHost().getHost()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
     private static SearchablePreference getPreference(

@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import androidx.annotation.NonNull;
-import androidx.room.Embedded;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -22,8 +22,7 @@ public final class SearchablePreferenceScreen {
     @PrimaryKey
     @NonNull
     private final String id;
-    @Embedded
-    private final HostWithArguments hostWithArguments;
+    private final Class<? extends PreferenceFragmentCompat> host;
     private final Optional<String> title;
     private final Optional<String> summary;
     @Ignore
@@ -31,30 +30,30 @@ public final class SearchablePreferenceScreen {
     private final Optional<String> parentId;
 
     public SearchablePreferenceScreen(final String id,
-                                      final HostWithArguments hostWithArguments,
+                                      final Class<? extends PreferenceFragmentCompat> host,
                                       final Optional<String> title,
                                       final Optional<String> summary,
                                       final Set<SearchablePreference> allPreferences,
                                       final Optional<String> parentId) {
-        this(id, hostWithArguments, title, summary, Optional.of(allPreferences), parentId);
+        this(id, host, title, summary, Optional.of(allPreferences), parentId);
     }
 
     public SearchablePreferenceScreen(final String id,
-                                      final HostWithArguments hostWithArguments,
+                                      final Class<? extends PreferenceFragmentCompat> host,
                                       final Optional<String> title,
                                       final Optional<String> summary,
                                       final Optional<String> parentId) {
-        this(id, hostWithArguments, title, summary, Optional.empty(), parentId);
+        this(id, host, title, summary, Optional.empty(), parentId);
     }
 
     private SearchablePreferenceScreen(final String id,
-                                       final HostWithArguments hostWithArguments,
+                                       final Class<? extends PreferenceFragmentCompat> host,
                                        final Optional<String> title,
                                        final Optional<String> summary,
                                        final Optional<Set<SearchablePreference>> allPreferences,
                                        final Optional<String> parentId) {
         this.id = id;
-        this.hostWithArguments = hostWithArguments;
+        this.host = host;
         this.parentId = parentId;
         this.title = title;
         this.summary = summary;
@@ -69,8 +68,8 @@ public final class SearchablePreferenceScreen {
         return id;
     }
 
-    public HostWithArguments getHostWithArguments() {
-        return hostWithArguments;
+    public Class<? extends PreferenceFragmentCompat> getHost() {
+        return host;
     }
 
     public Optional<String> getTitle() {
@@ -109,7 +108,7 @@ public final class SearchablePreferenceScreen {
     public String toString() {
         return new StringJoiner(", ", SearchablePreferenceScreen.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
-                .add("hostWithArguments=" + hostWithArguments)
+                .add("host=" + host)
                 .add("title='" + title + "'")
                 .add("summary='" + summary + "'")
                 .add("parentId=" + parentId)

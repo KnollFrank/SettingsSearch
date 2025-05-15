@@ -26,7 +26,6 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -85,7 +84,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                                 keyOfChild1,
                                 keyOfChild2,
                                 layoutResIdOfEachChild,
-                                new HostWithArguments(preferenceFragment.getClass())));
+                                preferenceFragment.getClass()));
             });
         }
     }
@@ -137,7 +136,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
             final String keyOfChild1,
             final String keyOfChild2,
             final @LayoutRes int layoutResIdOfEachChild,
-            final HostWithArguments hostWithArguments) {
+            final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference parent =
                 new SearchablePreference(
                         1,
@@ -156,7 +155,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                         id);
         return new SearchablePreferenceScreen(
                 id,
-                hostWithArguments,
+                host,
                 Optional.of("screen title"),
                 Optional.of("screen summary"),
                 Set.of(
