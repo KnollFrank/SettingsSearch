@@ -64,7 +64,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId);
         return new SearchablePreferenceScreen(
                 screenId,
-                new HostWithArguments(host, Optional.empty()),
+                new HostWithArguments(host),
                 Optional.of("screen title"),
                 Optional.of("screen summary"),
                 Set.of(
@@ -124,7 +124,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId);
         return new SearchablePreferenceScreen(
                 screenId,
-                new HostWithArguments(Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class, Optional.empty()),
+                new HostWithArguments(Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class),
                 Optional.empty(),
                 Optional.empty(),
                 Set.of(e1),

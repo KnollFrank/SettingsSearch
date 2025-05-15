@@ -7,6 +7,7 @@ import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+// FK-tODO: remove BundleWithEquality, remove gson
 public record BundleWithEquality(Bundle bundle) {
 
     @Override

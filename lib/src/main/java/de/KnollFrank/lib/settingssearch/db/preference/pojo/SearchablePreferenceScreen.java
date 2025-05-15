@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.util.Objects;
@@ -14,7 +13,7 @@ import java.util.StringJoiner;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.AllPreferencesAndHostProvider;
 
-@Entity(indices = {@Index(value = {HostWithArguments.HOST, HostWithArguments.ARGUMENTS}, unique = true)})
+@Entity
 public final class SearchablePreferenceScreen {
 
     @Ignore

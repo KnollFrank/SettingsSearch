@@ -30,7 +30,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFacto
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleWithEquality;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
@@ -137,9 +136,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     private Optional<SearchablePreference> _findSearchablePreference(final Bundle bundle) {
                         return findSearchablePreference(
-                                new HostWithArguments(
-                                        PreferenceFragmentWithSinglePreference.class,
-                                        Optional.of(new BundleWithEquality(bundle))),
+                                new HostWithArguments(PreferenceFragmentWithSinglePreference.class),
                                 ADDITIONAL_PREFERENCE_KEY);
                     }
 

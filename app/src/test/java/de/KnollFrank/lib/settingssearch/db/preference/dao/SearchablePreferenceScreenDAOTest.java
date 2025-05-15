@@ -58,7 +58,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     public void test_findSearchablePreferenceScreenByHostWithArguments_emptyDatabase() {
         // Given
         final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
-        final HostWithArguments nonExistingHostWithArguments = new HostWithArguments(PreferenceFragmentCompat.class, Optional.empty());
+        final HostWithArguments nonExistingHostWithArguments = new HostWithArguments(PreferenceFragmentCompat.class);
 
         // When
         final Optional<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHostWithArguments(nonExistingHostWithArguments);

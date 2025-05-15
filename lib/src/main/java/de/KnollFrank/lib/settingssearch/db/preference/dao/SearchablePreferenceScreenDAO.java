@@ -15,7 +15,6 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.BundleWithEquality;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.HostWithArguments;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -56,11 +55,9 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
         return daoSetter.setDao(new HashSet<>(_loadAll()));
     }
 
+    // FK-TODO: remove method
     public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(final HostWithArguments hostWithArguments) {
-        return daoSetter.setDao(
-                findSearchablePreferenceScreenByHostWithArguments(
-                        hostWithArguments.host(),
-                        hostWithArguments.arguments()));
+        return daoSetter.setDao(findSearchablePreferenceScreenByHostWithArguments(hostWithArguments.host()));
     }
 
     @Override
@@ -86,10 +83,9 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE id = :id")
     protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final String id);
 
-    @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host AND arguments = :arguments")
-    protected abstract Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(
-            final Class<? extends PreferenceFragmentCompat> host,
-            final Optional<BundleWithEquality> arguments);
+    // FK-TODO: remove method
+    @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host")
+    protected abstract Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(final Class<? extends PreferenceFragmentCompat> host);
 
     private Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
