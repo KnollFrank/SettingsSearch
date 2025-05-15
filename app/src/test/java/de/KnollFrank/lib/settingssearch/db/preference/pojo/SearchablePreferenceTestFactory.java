@@ -57,7 +57,7 @@ public class SearchablePreferenceTestFactory {
                 extras,
                 parentId,
                 predecessorId,
-                -1);
+                "-1");
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -78,7 +78,7 @@ public class SearchablePreferenceTestFactory {
                 new Bundle(),
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
-                -1);
+                "-1");
     }
 
     public static SearchablePreference createSearchablePreferencePOJO(
@@ -119,7 +119,7 @@ public class SearchablePreferenceTestFactory {
                 extras,
                 Optional.empty(),
                 predecessor.map(SearchablePreference::getId),
-                -1);
+                "-1");
     }
 
     public static SearchablePreference createSearchablePreference(final String key) {
@@ -138,7 +138,7 @@ public class SearchablePreferenceTestFactory {
                 new Bundle(),
                 Optional.empty(),
                 Optional.empty(),
-                -1);
+                "-1");
     }
 
     public static SearchablePreference copyPreferenceAndSetPredecessor(final SearchablePreference preference,

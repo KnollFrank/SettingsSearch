@@ -41,7 +41,7 @@ public class Preference2SearchablePreferenceConverter {
     }
 
     public SearchablePreferenceWithMap convert2POJO(final Preference preference,
-                                                    final int searchablePreferenceScreenId,
+                                                    final String searchablePreferenceScreenId,
                                                     final PreferenceFragmentCompat hostOfPreference,
                                                     final Optional<Integer> parentIdOfPreference,
                                                     final Optional<SearchablePreference> predecessorOfPreference) {
@@ -80,7 +80,7 @@ public class Preference2SearchablePreferenceConverter {
     }
 
     public BiMap<SearchablePreference, Preference> convert2POJOs(final List<Preference> preferences,
-                                                                 final int searchablePreferenceScreenId,
+                                                                 final String searchablePreferenceScreenId,
                                                                  final PreferenceFragmentCompat hostOfPreferences,
                                                                  final Optional<Integer> parentIdOfPreferences,
                                                                  final Optional<SearchablePreference> predecessorOfPreferences) {
@@ -93,7 +93,7 @@ public class Preference2SearchablePreferenceConverter {
     }
 
     private BiMap<SearchablePreference, Preference> convertChildren2POJOs(final Preference preference,
-                                                                          final int searchablePreferenceScreenId,
+                                                                          final String searchablePreferenceScreenId,
                                                                           final PreferenceFragmentCompat hostOfPreference,
                                                                           final Optional<Integer> idOfPreference,
                                                                           final Optional<SearchablePreference> predecessorOfPreference) {

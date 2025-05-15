@@ -19,7 +19,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
     public static final String PARENT_KEY = "parentKey";
 
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
-        final int screenId = 1;
+        final String screenId = "1";
         final SearchablePreference preferenceConnectingSrc2Dst =
                 new SearchablePreference(
                         PREFERENCE_CONNECTING_SRC_2_DST_ID,
@@ -46,7 +46,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 .build();
     }
 
-    private static SearchablePreferenceScreen createSrc(final int screenId,
+    private static SearchablePreferenceScreen createSrc(final String screenId,
                                                         final SearchablePreference preferenceConnectingSrc2Dst,
                                                         final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference parent =
@@ -109,9 +109,9 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 Optional.empty());
     }
 
-    private static SearchablePreferenceScreen createDst(final Optional<Integer> parentScreenId,
+    private static SearchablePreferenceScreen createDst(final Optional<String> parentScreenId,
                                                         final SearchablePreference predecessor) {
-        final int screenId = 2;
+        final String screenId = "2";
         final SearchablePreference e1 =
                 new SearchablePreference(
                         DST_PREFERENCE_ID,

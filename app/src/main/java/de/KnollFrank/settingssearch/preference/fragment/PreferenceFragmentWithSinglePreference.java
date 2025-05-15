@@ -65,7 +65,7 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
                 .convert2POJO(
                         preference,
                         // FK-FIXME: -1
-                        -1,
+                        "-1",
                         this,
                         Optional.empty(),
                         // FK-TODO: generalize because too many hard coded values

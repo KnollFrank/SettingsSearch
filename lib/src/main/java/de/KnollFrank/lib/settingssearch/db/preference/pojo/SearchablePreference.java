@@ -56,7 +56,7 @@ public final class SearchablePreference {
     private final Bundle extras;
     private final Optional<Integer> parentId;
     private final Optional<Integer> predecessorId;
-    private final int searchablePreferenceScreenId;
+    private final String searchablePreferenceScreenId;
 
     public SearchablePreference(
             final int id,
@@ -73,7 +73,7 @@ public final class SearchablePreference {
             final Bundle extras,
             final Optional<Integer> parentId,
             final Optional<Integer> predecessorId,
-            final int searchablePreferenceScreenId) {
+            final String searchablePreferenceScreenId) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
@@ -226,7 +226,7 @@ public final class SearchablePreference {
         return predecessorId;
     }
 
-    public int getSearchablePreferenceScreenId() {
+    public String getSearchablePreferenceScreenId() {
         return searchablePreferenceScreenId;
     }
 

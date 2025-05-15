@@ -64,12 +64,13 @@ public class Graph2POJOGraphTransformer {
 
             private SearchablePreferenceScreenWithMap convert2POJO(
                     final PreferenceScreenWithHost node,
-                    final Optional<Integer> parentId,
+                    final Optional<String> parentId,
                     final Optional<SearchablePreference> predecessorOfNode) {
                 return PreferenceScreenWithHost2POJOConverter
                         .convert2POJO(
                                 node,
-                                idGenerator4PreferenceScreen.nextId(),
+                                // FK-TODO: this String id has to be created by the user of this library, e.g. in node.host() which has to implement the yet to be introduced interface StringIdGenerator?
+                                String.valueOf(idGenerator4PreferenceScreen.nextId()),
                                 parentId,
                                 preference2SearchablePreferenceConverter,
                                 predecessorOfNode);
@@ -92,7 +93,7 @@ public class Graph2POJOGraphTransformer {
                         .get(preference);
             }
 
-            private static int getParentId(final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
+            private static String getParentId(final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
                 return contextOfInnerNode.transformedParentNode().searchablePreferenceScreen().getId();
             }
         };

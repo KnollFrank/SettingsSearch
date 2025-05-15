@@ -9,6 +9,7 @@ public record HostWithArguments(
         @ColumnInfo(name = HOST)
         Class<? extends PreferenceFragmentCompat> host,
 
+        // FK-tODO: remove BundleWithEquality, remove gson
         @ColumnInfo(name = ARGUMENTS)
         Optional<BundleWithEquality> arguments) {
 

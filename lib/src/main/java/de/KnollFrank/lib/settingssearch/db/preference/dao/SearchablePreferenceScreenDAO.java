@@ -48,7 +48,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
         invalidateCaches();
     }
 
-    public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(final int id) {
+    public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(final String id) {
         return daoSetter.setDao(_findSearchablePreferenceScreenById(id));
     }
 
@@ -84,7 +84,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     protected abstract List<SearchablePreferenceScreenAndAllPreferences> _getSearchablePreferenceScreenAndAllPreferences();
 
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE id = :id")
-    protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final int id);
+    protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final String id);
 
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host AND arguments = :arguments")
     protected abstract Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenByHostWithArguments(

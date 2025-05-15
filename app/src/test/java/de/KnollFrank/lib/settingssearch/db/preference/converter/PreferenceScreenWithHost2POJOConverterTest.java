@@ -55,7 +55,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                 final @LayoutRes int layoutResIdOfEachChild = 16;
 
                 final PreferenceFragmentCompat preferenceFragment = createPreferenceFragmentHavingParentWithTwoChildren(parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild, createBundle("someKey", "someValue"));
-                final int id = 4711;
+                final String id = "some unique id";
 
                 // When
                 final SearchablePreferenceScreen pojo =
@@ -134,7 +134,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
     }
 
     private static SearchablePreferenceScreen getSearchablePreferenceScreenHavingParentWithTwoChildren(
-            final int id,
+            final String id,
 
             final String parentKey,
             final @LayoutRes int layoutResIdOfParent,

@@ -16,8 +16,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 class SearchablePreferenceScreen2POJOConverter {
 
-    public static SearchablePreferenceScreenWithMap convert2POJO(final int id,
-                                                                 final Optional<Integer> parentId,
+    public static SearchablePreferenceScreenWithMap convert2POJO(final String id,
+                                                                 final Optional<String> parentId,
                                                                  final PreferenceScreen preferenceScreen,
                                                                  final PreferenceFragmentCompat hostOfPreferenceScreen,
                                                                  final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
