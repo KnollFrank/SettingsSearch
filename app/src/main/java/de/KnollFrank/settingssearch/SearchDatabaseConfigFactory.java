@@ -50,17 +50,7 @@ public class SearchDatabaseConfigFactory {
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
         return SearchDatabaseConfig
-                .builder(
-                        PrefsFragmentFirst.class,
-                        new PreferenceFragmentIdProvider() {
-
-                            private final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
-
-                            @Override
-                            public String getId(final PreferenceFragmentCompat preferenceFragment) {
-                                return String.valueOf(idGenerator.nextId());
-                            }
-                        })
+                .builder(PrefsFragmentFirst.class)
                 .withFragmentFactory(
                         new FragmentFactory() {
 
@@ -165,6 +155,16 @@ public class SearchDatabaseConfigFactory {
                             @Override
                             public void onFinishComputePreferences() {
                                 Log.i(this.getClass().getSimpleName(), "onFinishComputePreferences");
+                            }
+                        })
+                .withPreferenceFragmentIdProvider(
+                        new PreferenceFragmentIdProvider() {
+
+                            private final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
+
+                            @Override
+                            public String getId(final PreferenceFragmentCompat preferenceFragment) {
+                                return String.valueOf(idGenerator.nextId());
                             }
                         })
                 .build();

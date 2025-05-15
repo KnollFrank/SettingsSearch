@@ -62,8 +62,7 @@ public class SearchDatabaseConfig {
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
-    public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
-                                                      final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
-        return new SearchDatabaseConfigBuilder(rootPreferenceFragment, preferenceFragmentIdProvider);
+    public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
+        return new SearchDatabaseConfigBuilder(rootPreferenceFragment);
     }
 }

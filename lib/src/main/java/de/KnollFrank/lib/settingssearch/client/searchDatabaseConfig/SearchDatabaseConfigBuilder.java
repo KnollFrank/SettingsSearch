@@ -24,8 +24,6 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 public class SearchDatabaseConfigBuilder {
 
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
-    // FK-TODO: make non final, provide and use DefaultPreferenceFragmentIdProvider
-    private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -46,11 +44,10 @@ public class SearchDatabaseConfigBuilder {
     private PreferenceSearchablePredicate preferenceSearchablePredicate = (preference, hostOfPreference) -> true;
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
+    private PreferenceFragmentIdProvider preferenceFragmentIdProvider = new DefaultPreferenceFragmentIdProvider();
 
-    SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
-                                final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+    SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
         this.rootPreferenceFragment = rootPreferenceFragment;
-        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
     @SuppressWarnings("unused")
@@ -105,6 +102,12 @@ public class SearchDatabaseConfigBuilder {
     @SuppressWarnings("unused")
     public SearchDatabaseConfigBuilder withActivityInitializerByActivity(final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
         this.activityInitializerByActivity = activityInitializerByActivity;
+        return this;
+    }
+
+    @SuppressWarnings("unused")
+    public SearchDatabaseConfigBuilder withPreferenceFragmentIdProvider(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
         return this;
     }
 
