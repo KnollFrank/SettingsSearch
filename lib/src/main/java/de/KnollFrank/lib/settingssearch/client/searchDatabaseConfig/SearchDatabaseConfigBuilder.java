@@ -24,6 +24,8 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 public class SearchDatabaseConfigBuilder {
 
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
+    // FK-TODO: make non final, provide and use DefaultPreferenceFragmentIdProvider
+    private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -45,8 +47,10 @@ public class SearchDatabaseConfigBuilder {
     private ActivitySearchDatabaseConfigs activitySearchDatabaseConfigs = new ActivitySearchDatabaseConfigs(Map.of(), Set.of());
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
 
-    SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
+    SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+                                final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.rootPreferenceFragment = rootPreferenceFragment;
+        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
     @SuppressWarnings("unused")
@@ -123,6 +127,7 @@ public class SearchDatabaseConfigBuilder {
                 computePreferencesListener,
                 preferenceSearchablePredicate,
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
-                activityInitializerByActivity);
+                activityInitializerByActivity,
+                preferenceFragmentIdProvider);
     }
 }

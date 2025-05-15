@@ -20,6 +20,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -104,6 +105,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                         activityClass -> Optional.empty(),
                         fragmentActivity,
                         preferenceScreenWithHost -> {
-                        }));
+                        }),
+                new DefaultPreferenceFragmentIdProvider());
     }
 }

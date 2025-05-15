@@ -8,10 +8,9 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
@@ -22,18 +21,18 @@ public class Graph2POJOGraphTransformer {
 
     public static Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
-            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
+            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
+            final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 SearchablePreferenceEdge.class,
-                createGraphTransformer(preference2SearchablePreferenceConverter));
+                createGraphTransformer(preference2SearchablePreferenceConverter, preferenceFragmentIdProvider));
     }
 
     private static GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer(
-            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
+            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
+            final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         return new GraphTransformer<>() {
-
-            private final IdGenerator idGenerator4PreferenceScreen = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
             @Override
             public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {
@@ -69,8 +68,7 @@ public class Graph2POJOGraphTransformer {
                 return PreferenceScreenWithHost2POJOConverter
                         .convert2POJO(
                                 node,
-                                // FK-TODO: this String id has to be created by the user of this library, e.g. in node.host() which has to implement the yet to be introduced interface StringIdGenerator?
-                                String.valueOf(idGenerator4PreferenceScreen.nextId()),
+                                preferenceFragmentIdProvider.getId(node.host()),
                                 parentId,
                                 preference2SearchablePreferenceConverter,
                                 predecessorOfNode);

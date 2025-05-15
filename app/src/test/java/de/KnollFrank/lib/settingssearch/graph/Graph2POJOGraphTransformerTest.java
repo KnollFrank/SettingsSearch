@@ -31,6 +31,7 @@ import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -68,7 +69,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         removeMapFromPojoNodes(
                                 Graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                         entityGraph,
-                                        preference2SearchablePreferenceConverter));
+                                        preference2SearchablePreferenceConverter,
+                                        new DefaultPreferenceFragmentIdProvider()));
 
                 // Then
                 makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase);

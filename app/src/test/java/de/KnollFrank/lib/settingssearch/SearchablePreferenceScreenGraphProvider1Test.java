@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -133,7 +134,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                         classNameOfActivity -> Optional.empty(),
                         activity,
                         preferenceScreenWithHost -> {
-                        }));
+                        }),
+                new DefaultPreferenceFragmentIdProvider());
     }
 
     private static SearchablePreference getPreference(

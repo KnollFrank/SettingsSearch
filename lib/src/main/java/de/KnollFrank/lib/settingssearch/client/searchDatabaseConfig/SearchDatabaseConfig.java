@@ -32,6 +32,7 @@ public class SearchDatabaseConfig {
     public final PreferenceSearchablePredicate preferenceSearchablePredicate;
     public final PrincipalAndProxyProvider principalAndProxyProvider;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
+    public final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,
                          final IconResourceIdProvider iconResourceIdProvider,
@@ -44,7 +45,8 @@ public class SearchDatabaseConfig {
                          final ComputePreferencesListener computePreferencesListener,
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final PrincipalAndProxyProvider principalAndProxyProvider,
-                         final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity) {
+                         final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
+                         final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.fragmentFactory = fragmentFactory;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -57,9 +59,11 @@ public class SearchDatabaseConfig {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.activityInitializerByActivity = activityInitializerByActivity;
+        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
-    public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
-        return new SearchDatabaseConfigBuilder(rootPreferenceFragment);
+    public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
+                                                      final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+        return new SearchDatabaseConfigBuilder(rootPreferenceFragment, preferenceFragmentIdProvider);
     }
 }

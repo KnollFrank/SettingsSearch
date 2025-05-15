@@ -104,6 +104,7 @@ public class MergedPreferenceScreenDataRepository {
                             public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
                                 progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                             }
-                        }));
+                        }),
+                searchDatabaseConfig.preferenceFragmentIdProvider);
     }
 }

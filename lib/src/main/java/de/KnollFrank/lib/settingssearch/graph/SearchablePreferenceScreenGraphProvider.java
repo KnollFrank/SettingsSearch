@@ -6,6 +6,7 @@ import org.jgrapht.Graph;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -18,17 +19,20 @@ public class SearchablePreferenceScreenGraphProvider {
     private final ComputePreferencesListener computePreferencesListener;
     private final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter;
     private final PreferenceScreenGraphProvider preferenceScreenGraphProvider;
+    private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
 
     public SearchablePreferenceScreenGraphProvider(final Class<? extends Fragment> rootPreferenceFragmentClass,
                                                    final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                                    final ComputePreferencesListener computePreferencesListener,
                                                    final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
-                                                   final PreferenceScreenGraphProvider preferenceScreenGraphProvider) {
+                                                   final PreferenceScreenGraphProvider preferenceScreenGraphProvider,
+                                                   final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.rootPreferenceFragmentClass = rootPreferenceFragmentClass;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.computePreferencesListener = computePreferencesListener;
         this.preference2SearchablePreferenceConverter = preference2SearchablePreferenceConverter;
         this.preferenceScreenGraphProvider = preferenceScreenGraphProvider;
+        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getSearchablePreferenceScreenGraph() {
@@ -49,6 +53,7 @@ public class SearchablePreferenceScreenGraphProvider {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
                 Graph2POJOGraphTransformer.transformGraph2POJOGraph(
                         preferenceScreenGraph,
-                        preference2SearchablePreferenceConverter));
+                        preference2SearchablePreferenceConverter,
+                        preferenceFragmentIdProvider));
     }
 }
