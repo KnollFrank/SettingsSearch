@@ -10,7 +10,6 @@ import androidx.preference.PreferenceScreen;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCompat {
@@ -57,9 +56,7 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
         return preference;
     }
 
-    public SearchablePreference createAdditionalSearchablePreference(
-            final SearchablePreferenceDAO searchablePreferenceDAO,
-            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
+    public SearchablePreference createAdditionalSearchablePreference(final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
         final Preference preference = createAdditionalPreference(getPreferenceManager().getContext());
         return preference2SearchablePreferenceConverter
                 .convert2POJO(

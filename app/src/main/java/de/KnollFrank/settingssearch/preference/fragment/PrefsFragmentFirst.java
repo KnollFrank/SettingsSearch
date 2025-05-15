@@ -113,7 +113,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                                 // FK-FIXME: use real src
                                                 Optional.empty())
                                         .createAdditionalSearchablePreference(
-                                                searchablePreferenceDAO,
                                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                                         searchDatabaseConfig,
                                                         PreferenceDialogsFactory.createPreferenceDialogs(requireActivity(), FRAGMENT_CONTAINER_VIEW_ID),
