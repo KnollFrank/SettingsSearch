@@ -55,8 +55,8 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     }
 
     // FK-TODO: remove method
-    public Set<SearchablePreferenceScreen> findSearchablePreferenceScreenByHost(final Class<? extends PreferenceFragmentCompat> host) {
-        return daoSetter.setDao(new HashSet<>(_findSearchablePreferenceScreenByHost(host)));
+    public Set<SearchablePreferenceScreen> findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host) {
+        return daoSetter.setDao(new HashSet<>(_findSearchablePreferenceScreensByHost(host)));
     }
 
     @Override
@@ -84,7 +84,7 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
 
     // FK-TODO: remove method
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host")
-    protected abstract List<SearchablePreferenceScreen> _findSearchablePreferenceScreenByHost(final Class<? extends PreferenceFragmentCompat> host);
+    protected abstract List<SearchablePreferenceScreen> _findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host);
 
     private Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {

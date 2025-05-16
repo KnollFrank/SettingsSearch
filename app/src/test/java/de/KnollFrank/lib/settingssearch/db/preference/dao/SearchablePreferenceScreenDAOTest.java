@@ -43,27 +43,27 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     }
 
     @Test
-    public void test_findSearchablePreferenceScreenByHost() {
+    public void test_findSearchablePreferenceScreensByHost() {
         // Given
         final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
         final SearchablePreferenceScreen screen = createSomeSearchablePreferenceScreen();
         dao.persist(screen);
 
         // When
-        final Set<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHost(screen.getHost());
+        final Set<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreensByHost(screen.getHost());
 
         // Then
         assertThat(screenActual, contains(screen));
     }
 
     @Test
-    public void test_findSearchablePreferenceScreenByHost_emptyDatabase() {
+    public void test_findSearchablePreferenceScreensByHost_emptyDatabase() {
         // Given
         final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
         final Class<? extends PreferenceFragmentCompat> nonExistingHost = PreferenceFragmentCompat.class;
 
         // When
-        final Set<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreenByHost(nonExistingHost);
+        final Set<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreensByHost(nonExistingHost);
 
         // Then
         assertThat(screenActual, is(empty()));
