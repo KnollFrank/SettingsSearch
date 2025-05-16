@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -36,18 +35,16 @@ public class SearchablePreferenceScreenGraphProvider2Test {
 
     private static void shouldIgnoreNonPreferenceFragments(final FragmentActivity activity) {
         // Given
-        final var result = createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(activity);
+        final var result =
+                createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
+                        activity,
+                        FragmentConnectedToNonPreferenceFragment.class);
 
         // When
         final Set<SearchablePreferenceScreen> preferenceScreens =
                 result
                         .searchablePreferenceScreenGraphProvider()
-                        .getSearchablePreferenceScreenGraph(
-                                result.preferenceScreenWithHostProvider()
-                                        .getPreferenceScreenWithHostOfFragment(
-                                                FragmentConnectedToNonPreferenceFragment.class,
-                                                Optional.empty())
-                                        .orElseThrow())
+                        .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
                         .vertexSet();
 
         // Then
