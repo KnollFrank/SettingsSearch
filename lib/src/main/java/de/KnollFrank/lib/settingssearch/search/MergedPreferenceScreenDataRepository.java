@@ -8,8 +8,6 @@ import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
@@ -20,7 +18,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
@@ -30,25 +27,22 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class MergedPreferenceScreenDataRepository {
 
-    private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
+    private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceDialogs preferenceDialogs;
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
-    private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final Context context;
 
-    public MergedPreferenceScreenDataRepository(
-            final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
+    MergedPreferenceScreenDataRepository(
+            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final PreferenceDialogs preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
-            final PrincipalAndProxyProvider principalAndProxyProvider,
             final Context context) {
-        this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
+        this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
-        this.principalAndProxyProvider = principalAndProxyProvider;
         this.context = context;
     }
 
@@ -89,12 +83,7 @@ public class MergedPreferenceScreenDataRepository {
                         preferenceDialogs,
                         IdGeneratorFactory.createIdGeneratorStartingAt(1)),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
-                        new PreferenceScreenWithHostProvider(
-                                instantiateAndInitializeFragment,
-                                new SearchablePreferenceScreenProvider(
-                                        new PreferenceVisibleAndSearchablePredicate(
-                                                searchDatabaseConfig.preferenceSearchablePredicate)),
-                                principalAndProxyProvider),
+                        preferenceScreenWithHostProvider,
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         context,
@@ -105,6 +94,7 @@ public class MergedPreferenceScreenDataRepository {
                                 progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                             }
                         }),
+                preferenceScreenWithHostProvider,
                 searchDatabaseConfig.preferenceFragmentIdProvider);
     }
 }

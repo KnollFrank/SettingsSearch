@@ -753,6 +753,13 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         fragmentActivity);
+        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
+                new PreferenceScreenWithHostProvider(
+                        instantiateAndInitializeFragment,
+                        new SearchablePreferenceScreenProvider(
+                                new PreferenceVisibleAndSearchablePredicate(
+                                        preferenceSearchablePredicate)),
+                        principalAndProxyProvider);
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 new SearchablePreferenceScreenGraphProvider(
                         preferenceFragment.getClass(),
@@ -770,12 +777,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                                 preferenceDialogAndSearchableInfoProvider)),
                                 IdGeneratorFactory.createIdGeneratorStartingAt(1)),
                         PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
-                                new PreferenceScreenWithHostProvider(
-                                        instantiateAndInitializeFragment,
-                                        new SearchablePreferenceScreenProvider(
-                                                new PreferenceVisibleAndSearchablePredicate(
-                                                        preferenceSearchablePredicate)),
-                                        principalAndProxyProvider),
+                                preferenceScreenWithHostProvider,
                                 preferenceFragmentConnected2PreferenceProvider,
                                 new RootPreferenceFragmentOfActivityProvider() {
 
@@ -793,6 +795,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 fragmentActivity,
                                 preferenceScreenWithHost -> {
                                 }),
+                        preferenceScreenWithHostProvider,
                         new DefaultPreferenceFragmentIdProvider());
         searchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph());
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(

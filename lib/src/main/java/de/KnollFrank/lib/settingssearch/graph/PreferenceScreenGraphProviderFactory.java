@@ -15,7 +15,6 @@ public class PreferenceScreenGraphProviderFactory {
             final Context context,
             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         return new PreferenceScreenGraphProvider(
-                preferenceScreenWithHostProvider,
                 preferenceScreenGraphListener,
                 new ConnectedPreferenceScreenByPreferenceProvider(
                         preferenceScreenWithHostProvider,

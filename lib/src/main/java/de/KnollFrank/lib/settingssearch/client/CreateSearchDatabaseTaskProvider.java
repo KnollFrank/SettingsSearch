@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
-import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
 public class CreateSearchDatabaseTaskProvider {
@@ -21,7 +21,7 @@ public class CreateSearchDatabaseTaskProvider {
     public static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     public static AsyncTaskWithProgressUpdateListeners<Void, DAOProvider> getCreateSearchDatabaseTask(
-            final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
+            final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final Consumer<DAOProvider> appDatabaseConsumer) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
@@ -31,17 +31,17 @@ public class CreateSearchDatabaseTaskProvider {
         return new AsyncTaskWithProgressUpdateListeners<>(
                 (_void, progressUpdateListener) ->
                         createSearchDatabase(
-                                mergedPreferenceScreenDataRepositoryFactory,
+                                mergedPreferenceScreenDataRepositoryProvider,
                                 activity,
                                 progressUpdateListener),
                 appDatabaseConsumer);
     }
 
     private static DAOProvider createSearchDatabase(
-            final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
+            final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener) {
-        return mergedPreferenceScreenDataRepositoryFactory
+        return mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(
                         FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID),
                         PreferenceDialogsFactory.createPreferenceDialogs(activity, FRAGMENT_CONTAINER_VIEW_ID),

@@ -45,7 +45,7 @@ public class MergedPreferenceScreenFactory {
     private final FragmentActivity activity;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory;
+    private final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
     private final SearchResultsFilter searchResultsFilter;
     private final SearchResultsSorter searchResultsSorter;
@@ -62,7 +62,7 @@ public class MergedPreferenceScreenFactory {
             final FragmentActivity activity,
             final Locale locale,
             final OnUiThreadRunner onUiThreadRunner,
-            final MergedPreferenceScreenDataRepositoryFactory mergedPreferenceScreenDataRepositoryFactory,
+            final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final SearchResultsFilter searchResultsFilter,
             final SearchResultsSorter searchResultsSorter,
@@ -77,7 +77,7 @@ public class MergedPreferenceScreenFactory {
         this.activity = activity;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
-        this.mergedPreferenceScreenDataRepositoryFactory = mergedPreferenceScreenDataRepositoryFactory;
+        this.mergedPreferenceScreenDataRepositoryProvider = mergedPreferenceScreenDataRepositoryProvider;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
         this.searchResultsFilter = searchResultsFilter;
         this.searchResultsSorter = searchResultsSorter;
@@ -106,7 +106,7 @@ public class MergedPreferenceScreenFactory {
                 prepareShow,
                 showPreferencePathPredicate,
                 preferencePathDisplayer,
-                mergedPreferenceScreenDataRepositoryFactory
+                mergedPreferenceScreenDataRepositoryProvider
                         .createMergedPreferenceScreenDataRepository(
                                 PreferenceDialogsFactory.createPreferenceDialogs(
                                         childFragmentManager,

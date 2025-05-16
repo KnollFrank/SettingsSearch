@@ -114,6 +114,11 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
             final Class<? extends Fragment> rootPreferenceFragmentClass,
             final FragmentActivity activity) {
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity);
+        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
+                new PreferenceScreenWithHostProvider(
+                        instantiateAndInitializeFragment,
+                        PreferenceFragmentCompat::getPreferenceScreen,
+                        new PrincipalAndProxyProvider(ImmutableBiMap.of()));
         return new SearchablePreferenceScreenGraphProvider(
                 rootPreferenceFragmentClass,
                 preferenceScreenGraph -> {
@@ -126,15 +131,13 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                 (preference, hostOfPreference) -> Optional.empty()),
                         IdGeneratorFactory.createIdGeneratorStartingAt(1)),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
-                        new PreferenceScreenWithHostProvider(
-                                instantiateAndInitializeFragment,
-                                PreferenceFragmentCompat::getPreferenceScreen,
-                                new PrincipalAndProxyProvider(ImmutableBiMap.of())),
+                        preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         activity,
                         preferenceScreenWithHost -> {
                         }),
+                preferenceScreenWithHostProvider,
                 new DefaultPreferenceFragmentIdProvider());
     }
 

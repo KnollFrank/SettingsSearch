@@ -27,11 +27,12 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepository;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
+import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryProvider;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
-public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepositoryFactory {
+public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepositoryProvider {
 
     public final SearchConfig searchConfig;
     private final SearchDatabaseConfig searchDatabaseConfig;
@@ -137,7 +138,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
             final Context context,
             final ProgressUpdateListener progressUpdateListener,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        return new MergedPreferenceScreenDataRepository(
+        return MergedPreferenceScreenDataRepositoryFactory.createMergedPreferenceScreenDataRepository(
                 instantiateAndInitializeFragment,
                 preferenceDialogs,
                 searchDatabaseConfig,

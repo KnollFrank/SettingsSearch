@@ -22,17 +22,25 @@ public class PojoGraphTestFactory {
             final PreferenceFragmentCompat preferenceFragment,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
-        return PreferenceScreenGraphProviderFactory
-                .createPreferenceScreenGraphProvider(
-                        new PreferenceScreenWithHostProvider(
-                                instantiateAndInitializeFragment,
-                                PreferenceFragmentCompat::getPreferenceScreen,
-                                new PrincipalAndProxyProvider(ImmutableBiMap.of())),
-                        (preference, hostOfPreference) -> Optional.empty(),
-                        classNameOfActivity -> Optional.empty(),
-                        context,
-                        preferenceScreenWithHost -> {
-                        })
-                .getPreferenceScreenGraph(preferenceFragment.getClass());
+        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
+                new PreferenceScreenWithHostProvider(
+                        instantiateAndInitializeFragment,
+                        PreferenceFragmentCompat::getPreferenceScreen,
+                        new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+        PreferenceScreenGraphProvider preferenceScreenGraphProvider =
+                PreferenceScreenGraphProviderFactory
+                        .createPreferenceScreenGraphProvider(
+                                preferenceScreenWithHostProvider,
+                                (preference, hostOfPreference) -> Optional.empty(),
+                                classNameOfActivity -> Optional.empty(),
+                                context,
+                                preferenceScreenWithHost -> {
+                                });
+        return preferenceScreenGraphProvider.getPreferenceScreenGraph(
+                preferenceScreenWithHostProvider
+                        .getPreferenceScreenWithHostOfFragment(
+                                preferenceFragment.getClass(),
+                                Optional.empty())
+                        .orElseThrow());
     }
 }

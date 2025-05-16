@@ -4,8 +4,11 @@ import androidx.fragment.app.Fragment;
 
 import org.jgrapht.Graph;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -19,6 +22,7 @@ public class SearchablePreferenceScreenGraphProvider {
     private final ComputePreferencesListener computePreferencesListener;
     private final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter;
     private final PreferenceScreenGraphProvider preferenceScreenGraphProvider;
+    private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
 
     public SearchablePreferenceScreenGraphProvider(final Class<? extends Fragment> rootPreferenceFragmentClass,
@@ -26,12 +30,14 @@ public class SearchablePreferenceScreenGraphProvider {
                                                    final ComputePreferencesListener computePreferencesListener,
                                                    final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
                                                    final PreferenceScreenGraphProvider preferenceScreenGraphProvider,
+                                                   final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
                                                    final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.rootPreferenceFragmentClass = rootPreferenceFragmentClass;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.computePreferencesListener = computePreferencesListener;
         this.preference2SearchablePreferenceConverter = preference2SearchablePreferenceConverter;
         this.preferenceScreenGraphProvider = preferenceScreenGraphProvider;
+        this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
@@ -43,7 +49,13 @@ public class SearchablePreferenceScreenGraphProvider {
     }
 
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> _getSearchablePreferenceScreenGraph() {
-        final var preferenceScreenGraph = preferenceScreenGraphProvider.getPreferenceScreenGraph(rootPreferenceFragmentClass);
+        final var preferenceScreenGraph =
+                preferenceScreenGraphProvider.getPreferenceScreenGraph(
+                        preferenceScreenWithHostProvider
+                                .getPreferenceScreenWithHostOfFragment(
+                                        rootPreferenceFragmentClass,
+                                        Optional.empty())
+                                .orElseThrow());
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
         return transformGraph2POJOGraph(preferenceScreenGraph);
     }
