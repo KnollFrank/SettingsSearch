@@ -762,7 +762,6 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         principalAndProxyProvider);
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 new SearchablePreferenceScreenGraphProvider(
-                        preferenceFragment.getClass(),
                         preferenceScreenGraph -> {
                         },
                         computePreferencesListener,
@@ -795,9 +794,14 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 fragmentActivity,
                                 preferenceScreenWithHost -> {
                                 }),
-                        preferenceScreenWithHostProvider,
                         new DefaultPreferenceFragmentIdProvider());
-        searchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph());
+        searchablePreferenceScreenGraphDAO.persist(
+                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
+                        preferenceScreenWithHostProvider
+                                .getPreferenceScreenWithHostOfFragment(
+                                        preferenceFragment.getClass(),
+                                        Optional.empty())
+                                .orElseThrow()));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 fragment -> {
                 },

@@ -7,7 +7,6 @@ import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emp
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
@@ -37,7 +36,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -50,15 +48,19 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
-                        createSearchablePreferenceScreenGraphProvider(
-                                Fragment1ConnectedToFragment2AndFragment4.class,
-                                activity);
+                final var result = createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(activity);
 
                 // When
                 final Set<SearchablePreferenceScreen> preferenceScreens =
-                        searchablePreferenceScreenGraphProvider
-                                .getSearchablePreferenceScreenGraph()
+                        result
+                                .searchablePreferenceScreenGraphProvider()
+                                .getSearchablePreferenceScreenGraph(
+                                        result
+                                                .preferenceScreenWithHostProvider()
+                                                .getPreferenceScreenWithHostOfFragment(
+                                                        Fragment1ConnectedToFragment2AndFragment4.class,
+                                                        Optional.empty())
+                                                .orElseThrow())
                                 .vertexSet();
 
                 // Then
@@ -78,14 +80,19 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
-                        createSearchablePreferenceScreenGraphProvider(
-                                Fragment1ConnectedToFragment2AndFragment4.class,
-                                activity);
+                final var result = createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(activity);
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
-                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
+                        result
+                                .searchablePreferenceScreenGraphProvider()
+                                .getSearchablePreferenceScreenGraph(
+                                        result
+                                                .preferenceScreenWithHostProvider()
+                                                .getPreferenceScreenWithHostOfFragment(
+                                                        Fragment1ConnectedToFragment2AndFragment4.class,
+                                                        Optional.empty())
+                                                .orElseThrow());
 
                 // Then
                 makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase);
@@ -111,16 +118,9 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
     }
 
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
-            final Class<? extends Fragment> rootPreferenceFragmentClass,
-            final FragmentActivity activity) {
-        final InstantiateAndInitializeFragment instantiateAndInitializeFragment = InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity);
-        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
-                new PreferenceScreenWithHostProvider(
-                        instantiateAndInitializeFragment,
-                        PreferenceFragmentCompat::getPreferenceScreen,
-                        new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+            final FragmentActivity activity,
+            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
         return new SearchablePreferenceScreenGraphProvider(
-                rootPreferenceFragmentClass,
                 preferenceScreenGraph -> {
                 },
                 emptyComputePreferencesListener(),
@@ -137,7 +137,6 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                         activity,
                         preferenceScreenWithHost -> {
                         }),
-                preferenceScreenWithHostProvider,
                 new DefaultPreferenceFragmentIdProvider());
     }
 
@@ -162,6 +161,24 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                         .stream()
                                         .filter(predicate))
                 .collect(MoreCollectors.onlyElement());
+    }
+
+    public static SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(final FragmentActivity activity) {
+        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
+                new PreferenceScreenWithHostProvider(
+                        InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity),
+                        PreferenceFragmentCompat::getPreferenceScreen,
+                        new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+        return new SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
+                createSearchablePreferenceScreenGraphProvider(
+                        activity,
+                        preferenceScreenWithHostProvider),
+                preferenceScreenWithHostProvider);
+    }
+
+    public record SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
+            SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
+            PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
     }
 
     public static class Fragment1ConnectedToFragment2AndFragment4 extends PreferenceFragmentCompat {

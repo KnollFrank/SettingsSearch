@@ -5,6 +5,7 @@ import android.content.Context;
 import org.jgrapht.Graph;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
@@ -68,14 +69,18 @@ public class MergedPreferenceScreenDataRepository {
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()
-                        .getSearchablePreferenceScreenGraph();
+                        .getSearchablePreferenceScreenGraph(
+                                preferenceScreenWithHostProvider
+                                        .getPreferenceScreenWithHostOfFragment(
+                                                searchDatabaseConfig.rootPreferenceFragment,
+                                                Optional.empty())
+                                        .orElseThrow());
         progressUpdateListener.onProgressUpdate("preparing search database");
         return searchablePreferenceScreenGraph;
     }
 
     private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
         return new SearchablePreferenceScreenGraphProvider(
-                searchDatabaseConfig.rootPreferenceFragment,
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
@@ -94,7 +99,6 @@ public class MergedPreferenceScreenDataRepository {
                                 progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                             }
                         }),
-                preferenceScreenWithHostProvider,
                 searchDatabaseConfig.preferenceFragmentIdProvider);
     }
 }

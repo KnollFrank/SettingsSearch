@@ -4,9 +4,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.createFragmentFactoryReturning;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
@@ -46,13 +46,31 @@ public class SearchablePreferenceScreenGraphProviderTest {
             scenario.onActivity(fragmentActivity -> {
                 // Given
                 final ComputePreferencesListener computePreferencesListener = mock(ComputePreferencesListener.class);
+                final PreferenceFragmentCompat preferenceFragment =
+                        PreferenceFragmentFactory.fromSinglePreference(
+                                context -> {
+                                    final CheckBoxPreference preference = new CheckBoxPreference(context);
+                                    preference.setKey("fourthfile");
+                                    preference.setTitle(String.format("Checkbox %s file", "fourth"));
+                                    return preference;
+                                });
+                final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
+                        createPreferenceScreenWithHostProvider(
+                                fragmentActivity,
+                                preferenceFragment);
                 final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                         createSearchablePreferenceScreenGraphProvider(
                                 computePreferencesListener,
-                                fragmentActivity);
+                                fragmentActivity,
+                                preferenceScreenWithHostProvider);
 
                 // When
-                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph();
+                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
+                        preferenceScreenWithHostProvider
+                                .getPreferenceScreenWithHostOfFragment(
+                                        preferenceFragment.getClass(),
+                                        Optional.empty())
+                                .orElseThrow());
 
                 // Then
                 verify(computePreferencesListener).onStartComputePreferences();
@@ -61,33 +79,27 @@ public class SearchablePreferenceScreenGraphProviderTest {
         }
     }
 
+    private static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final TestActivity fragmentActivity, final PreferenceFragmentCompat preferenceFragment) {
+        return new PreferenceScreenWithHostProvider(
+                new Fragments(
+                        new FragmentFactoryAndInitializerWithCache(
+                                new FragmentFactoryAndInitializer(
+                                        createFragmentFactoryReturning(preferenceFragment),
+                                        FragmentInitializerFactory.createFragmentInitializer(
+                                                fragmentActivity,
+                                                TestActivity.FRAGMENT_CONTAINER_VIEW))),
+                        fragmentActivity),
+                new SearchablePreferenceScreenProvider(
+                        new PreferenceVisibleAndSearchablePredicate(
+                                (preference1, hostOfPreference1) -> true)),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+    }
+
     private static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
             final ComputePreferencesListener computePreferencesListener,
-            final FragmentActivity fragmentActivity) {
-        final Fragment preferenceFragment =
-                PreferenceFragmentFactory.fromSinglePreference(
-                        context -> {
-                            final CheckBoxPreference preference = new CheckBoxPreference(context);
-                            preference.setKey("fourthfile");
-                            preference.setTitle(String.format("Checkbox %s file", "fourth"));
-                            return preference;
-                        });
-        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
-                new PreferenceScreenWithHostProvider(
-                        new Fragments(
-                                new FragmentFactoryAndInitializerWithCache(
-                                        new FragmentFactoryAndInitializer(
-                                                createFragmentFactoryReturning(preferenceFragment),
-                                                FragmentInitializerFactory.createFragmentInitializer(
-                                                        fragmentActivity,
-                                                        TestActivity.FRAGMENT_CONTAINER_VIEW))),
-                                fragmentActivity),
-                        new SearchablePreferenceScreenProvider(
-                                new PreferenceVisibleAndSearchablePredicate(
-                                        (preference1, hostOfPreference1) -> true)),
-                        new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+            final FragmentActivity fragmentActivity,
+            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
         return new SearchablePreferenceScreenGraphProvider(
-                preferenceFragment.getClass(),
                 preferenceScreenGraph -> {
                 },
                 computePreferencesListener,
@@ -108,7 +120,6 @@ public class SearchablePreferenceScreenGraphProviderTest {
                         fragmentActivity,
                         preferenceScreenWithHost -> {
                         }),
-                preferenceScreenWithHostProvider,
                 new DefaultPreferenceFragmentIdProvider());
     }
 }
