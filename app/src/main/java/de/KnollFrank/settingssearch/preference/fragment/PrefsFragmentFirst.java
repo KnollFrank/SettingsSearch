@@ -1,6 +1,5 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADDITIONAL_PREFERENCE_KEY;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE;
 
 import android.app.Activity;
@@ -15,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
-import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -30,18 +28,12 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
-import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
@@ -93,11 +85,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(requireContext());
         checkBoxPreference.setKey(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
         checkBoxPreference.setTitle("add preference to P1");
-        checkBoxPreference.setOnPreferenceChangeListener(
-                new OnPreferenceChangeListener() {
+        checkBoxPreference.setOnPreferenceClickListener(
+                new OnPreferenceClickListener() {
 
                     @Override
-                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
+                    public boolean onPreferenceClick(@NonNull final Preference preference) {
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph = getPojoGraph();
                         final SearchablePreferenceScreen pojoScreenOfPrefsFragmentFirst = getPojoScreenRootedAt(PrefsFragmentFirst.this);
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraphRootedAtPrefsFragmentFirst =
@@ -111,11 +103,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         /* node = */       pojoScreenOfPrefsFragmentFirst,
                                         /* graph4Node = */ newPojoGraphRootedAtPrefsFragmentFirst);
                         getAppDatabase().searchablePreferenceScreenGraphDAO().persist(newPojoGraph);
-                        if ((boolean) checked) {
-                            addPreferenceToP1();
-                        } else {
-                            removePreferenceFromP1();
-                        }
                         return true;
                     }
 
@@ -123,7 +110,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                             final SearchablePreferenceScreen node,
                             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph4Node) {
-                        return graph;
+                        return graph4Node;
                     }
 
                     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {
@@ -147,53 +134,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         DUMMY_FRAGMENT_CONTAINER_VIEW,
                                         SearchDatabaseConfigFactory.createSearchDatabaseConfig())
                                 .getSearchablePreferenceScreenGraph(root);
-                    }
-
-                    private void addPreferenceToP1() {
-                        final SearchablePreferenceDAO searchablePreferenceDAO = getAppDatabase().searchablePreferenceDAO();
-                        final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
-                        searchablePreferenceDAO.persist(
-                                InstantiateAndInitializeFragmentFactory
-                                        .createInstantiateAndInitializeFragment(
-                                                searchDatabaseConfig.fragmentFactory,
-                                                FragmentInitializerFactory.createFragmentInitializer(requireActivity(), DUMMY_FRAGMENT_CONTAINER_VIEW),
-                                                requireContext())
-                                        .instantiateAndInitializeFragment(
-                                                PreferenceFragmentWithSinglePreference.class,
-                                                // FK-FIXME: use real src
-                                                Optional.empty())
-                                        .createAdditionalSearchablePreference(
-                                                Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
-                                                        searchDatabaseConfig,
-                                                        PreferenceDialogsFactory.createPreferenceDialogs(requireActivity(), DUMMY_FRAGMENT_CONTAINER_VIEW),
-                                                        IdGeneratorFactory.createIdGeneratorStartingAt(
-                                                                searchablePreferenceDAO
-                                                                        .getMaxId()
-                                                                        .map(maxId -> maxId + 1)
-                                                                        .orElse(0)))));
-                    }
-
-                    private void removePreferenceFromP1() {
-                        getAppDatabase().searchablePreferenceDAO().remove(findSearchablePreference2());
-                    }
-
-                    private SearchablePreference findSearchablePreference2() {
-                        final Optional<SearchablePreference> searchablePreference = _findSearchablePreference(createBundle1());
-                        return searchablePreference.isPresent() ?
-                                searchablePreference.orElseThrow() :
-                                _findSearchablePreference(createArguments4PreferenceWithoutExtras(SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, requireContext())).orElseThrow();
-                    }
-
-                    private Optional<SearchablePreference> _findSearchablePreference(final Bundle bundle) {
-                        return findSearchablePreference(
-                                PreferenceFragmentWithSinglePreference.class,
-                                ADDITIONAL_PREFERENCE_KEY);
-                    }
-
-                    private Bundle createBundle1() {
-                        final Bundle bundle = new Bundle();
-                        bundle.putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS, SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS);
-                        return bundle;
                     }
                 });
         return checkBoxPreference;
