@@ -1,4 +1,4 @@
-package de.KnollFrank.settingssearch.preference.fragment;
+package de.KnollFrank.lib.settingssearch.graph;
 
 import android.content.Context;
 import android.view.ViewGroup;
@@ -18,8 +18,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDA
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.search.PreferenceVisibleAndSearchablePredicate;
 
