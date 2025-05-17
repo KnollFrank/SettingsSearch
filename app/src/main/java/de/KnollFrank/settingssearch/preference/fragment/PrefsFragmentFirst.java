@@ -1,6 +1,5 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.lib.settingssearch.client.CreateSearchDatabaseTaskProvider.FRAGMENT_CONTAINER_VIEW_ID;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADDITIONAL_PREFERENCE_KEY;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE;
 
@@ -9,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -23,20 +24,32 @@ import androidx.preference.SwitchPreference;
 
 import com.google.common.collect.Iterables;
 
+import org.jgrapht.Graph;
+
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
+import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
+import de.KnollFrank.lib.settingssearch.search.PreferenceVisibleAndSearchablePredicate;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
@@ -55,6 +68,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     public static final String SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS = "summary of src preference with extras";
     public static final String SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS = "summary of src preference without extras";
     public static final String SUMMARY_CHANGING_PREFERENCE_KEY = "summaryChangingPreference";
+
+    private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -89,14 +104,90 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 new OnPreferenceChangeListener() {
 
                     @Override
-                    public boolean onPreferenceChange(@NonNull final Preference preference,
-                                                      final Object checked) {
+                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
+                        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph = getPojoGraph();
+                        final SearchablePreferenceScreen pojoScreenOfPrefsFragmentFirst = getPojoScreenRootedAt(PrefsFragmentFirst.this);
+                        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraphRootedAtPrefsFragmentFirst =
+                                getPojoGraphRootedAt(
+                                        new PreferenceScreenWithHost(
+                                                getPreferenceScreen(),
+                                                PrefsFragmentFirst.this));
+                        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
+                                replaceNodeWithGraph4NodeWithinGraph(
+                                        /* graph = */      pojoGraph,
+                                        /* node = */       pojoScreenOfPrefsFragmentFirst,
+                                        /* graph4Node = */ newPojoGraphRootedAtPrefsFragmentFirst);
+                        // entferne pojoGraph aus Suchdatenbank
+                        getAppDatabase().searchablePreferenceScreenGraphDAO().persist(newPojoGraph);
                         if ((boolean) checked) {
                             addPreferenceToP1();
                         } else {
                             removePreferenceFromP1();
                         }
                         return true;
+                    }
+
+                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replaceNodeWithGraph4NodeWithinGraph(
+                            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+                            final SearchablePreferenceScreen node,
+                            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph4Node) {
+                        return null;
+                    }
+
+                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {
+                        return getAppDatabase()
+                                .searchablePreferenceScreenGraphDAO()
+                                .load();
+                    }
+
+                    private SearchablePreferenceScreen getPojoScreenRootedAt(final PrefsFragmentFirst preferenceFragment) {
+                        return Iterables.getOnlyElement(
+                                getAppDatabase()
+                                        .searchablePreferenceScreenDAO()
+                                        .findSearchablePreferenceScreensByHost(preferenceFragment.getClass()));
+                    }
+
+                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(final PreferenceScreenWithHost root) {
+                        final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider = getSearchablePreferenceScreenGraphProvider();
+                        return searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(root);
+                    }
+
+                    private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
+                        FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
+                                (ViewGroup) PrefsFragmentFirst.this.requireView(),
+                                DUMMY_FRAGMENT_CONTAINER_VIEW);
+                        final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
+                        final Context context = PrefsFragmentFirst.this.requireContext();
+                        return new SearchablePreferenceScreenGraphProvider(
+                                searchDatabaseConfig.preferenceScreenGraphAvailableListener,
+                                searchDatabaseConfig.computePreferencesListener,
+                                Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
+                                        searchDatabaseConfig,
+                                        PreferenceDialogsFactory.createPreferenceDialogs(requireActivity(), DUMMY_FRAGMENT_CONTAINER_VIEW),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(
+                                                getAppDatabase()
+                                                        .searchablePreferenceDAO()
+                                                        .getMaxId()
+                                                        .map(maxId -> maxId + 1)
+                                                        .orElse(0))),
+                                PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                                        new PreferenceScreenWithHostProvider(
+                                                InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
+                                                        searchDatabaseConfig.fragmentFactory,
+                                                        FragmentInitializerFactory.createFragmentInitializer(
+                                                                getChildFragmentManager(),
+                                                                DUMMY_FRAGMENT_CONTAINER_VIEW,
+                                                                OnUiThreadRunnerFactory.fromActivity(requireActivity())),
+                                                        context),
+                                                new SearchablePreferenceScreenProvider(
+                                                        new PreferenceVisibleAndSearchablePredicate(searchDatabaseConfig.preferenceSearchablePredicate)),
+                                                searchDatabaseConfig.principalAndProxyProvider),
+                                        searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
+                                        searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
+                                        context,
+                                        preferenceScreenWithHost -> {
+                                        }),
+                                searchDatabaseConfig.preferenceFragmentIdProvider);
                     }
 
                     private void addPreferenceToP1() {
@@ -106,7 +197,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 InstantiateAndInitializeFragmentFactory
                                         .createInstantiateAndInitializeFragment(
                                                 searchDatabaseConfig.fragmentFactory,
-                                                FragmentInitializerFactory.createFragmentInitializer(requireActivity(), FRAGMENT_CONTAINER_VIEW_ID),
+                                                FragmentInitializerFactory.createFragmentInitializer(requireActivity(), DUMMY_FRAGMENT_CONTAINER_VIEW),
                                                 requireContext())
                                         .instantiateAndInitializeFragment(
                                                 PreferenceFragmentWithSinglePreference.class,
@@ -115,7 +206,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         .createAdditionalSearchablePreference(
                                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                                         searchDatabaseConfig,
-                                                        PreferenceDialogsFactory.createPreferenceDialogs(requireActivity(), FRAGMENT_CONTAINER_VIEW_ID),
+                                                        PreferenceDialogsFactory.createPreferenceDialogs(requireActivity(), DUMMY_FRAGMENT_CONTAINER_VIEW),
                                                         IdGeneratorFactory.createIdGeneratorStartingAt(
                                                                 searchablePreferenceDAO
                                                                         .getMaxId()

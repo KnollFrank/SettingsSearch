@@ -5,7 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
-class PreferenceVisibleAndSearchablePredicate implements PreferenceSearchablePredicate {
+public class PreferenceVisibleAndSearchablePredicate implements PreferenceSearchablePredicate {
 
     private final PreferenceSearchablePredicate delegate;
 
