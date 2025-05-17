@@ -124,7 +124,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                             final SearchablePreferenceScreen node,
                             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph4Node) {
-                        return null;
+                        return graph;
                     }
 
                     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {
