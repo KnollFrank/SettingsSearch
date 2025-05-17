@@ -69,6 +69,12 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
         return Maps.get(getHostByPreference(), preference).orElseThrow();
     }
 
+    public void removeAll() {
+        searchablePreferenceDAO.removeAll();
+        _removeAll();
+        invalidateCaches();
+    }
+
     @Insert
     protected abstract void _persist(SearchablePreferenceScreen searchablePreferenceScreen);
 
@@ -85,6 +91,9 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     // FK-TODO: remove method
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host")
     protected abstract List<SearchablePreferenceScreen> _findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host);
+
+    @Query("DELETE FROM SearchablePreferenceScreen")
+    protected abstract void _removeAll();
 
     private Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {

@@ -62,7 +62,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     public static final String SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS = "summary of src preference without extras";
     public static final String SUMMARY_CHANGING_PREFERENCE_KEY = "summaryChangingPreference";
 
-    private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
+    private final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -110,7 +110,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         /* graph = */      pojoGraph,
                                         /* node = */       pojoScreenOfPrefsFragmentFirst,
                                         /* graph4Node = */ newPojoGraphRootedAtPrefsFragmentFirst);
-                        // entferne pojoGraph aus Suchdatenbank
                         getAppDatabase().searchablePreferenceScreenGraphDAO().persist(newPojoGraph);
                         if ((boolean) checked) {
                             addPreferenceToP1();

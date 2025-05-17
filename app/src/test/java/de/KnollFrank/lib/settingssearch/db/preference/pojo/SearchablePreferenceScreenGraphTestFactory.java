@@ -16,6 +16,30 @@ public class SearchablePreferenceScreenGraphTestFactory {
     public static final int PREFERENCE_CONNECTING_SRC_2_DST_ID = 4;
     public static final String PARENT_KEY = "parentKey";
 
+    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createSingleNodePojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+        final String screenId = "1";
+        final SearchablePreference preferenceConnectingSrc2Dst =
+                new SearchablePreference(
+                        PREFERENCE_CONNECTING_SRC_2_DST_ID,
+                        "some key",
+                        Optional.of("preference connected to TestPreferenceFragment"),
+                        Optional.empty(),
+                        Optional.empty(),
+                        2131427444,
+                        0,
+                        Optional.of(Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
+                        Optional.empty(),
+                        true,
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        screenId);
+        return DefaultDirectedGraph
+                .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                .addVertex(createSrc(screenId, preferenceConnectingSrc2Dst, host))
+                .build();
+    }
+
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final String screenId = "1";
         final SearchablePreference preferenceConnectingSrc2Dst =

@@ -24,6 +24,7 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public void persist(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+        removePersistedGraph();
         searchablePreferenceScreenDAO.persist(graph.vertexSet());
     }
 
@@ -84,5 +85,9 @@ public class SearchablePreferenceScreenGraphDAO {
                                 edgeDescription.source(),
                                 edgeDescription.target(),
                                 edgeDescription.edge()));
+    }
+
+    private void removePersistedGraph() {
+        searchablePreferenceScreenDAO.removeAll();
     }
 }
