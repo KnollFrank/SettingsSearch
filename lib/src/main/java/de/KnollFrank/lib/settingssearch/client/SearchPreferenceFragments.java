@@ -143,8 +143,6 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 preferenceDialogs,
                 searchDatabaseConfig,
                 progressUpdateListener,
-                // FK-TODO: remove param because it is contained in the above param searchDatabaseConfig
-                searchDatabaseConfig.principalAndProxyProvider,
                 context);
     }
 

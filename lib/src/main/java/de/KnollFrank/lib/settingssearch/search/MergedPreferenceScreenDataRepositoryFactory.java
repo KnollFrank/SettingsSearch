@@ -18,12 +18,11 @@ public class MergedPreferenceScreenDataRepositoryFactory {
             final PreferenceDialogs preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
-            final PrincipalAndProxyProvider principalAndProxyProvider,
             final Context context) {
         return new MergedPreferenceScreenDataRepository(
                 createPreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
-                        principalAndProxyProvider,
+                        searchDatabaseConfig.principalAndProxyProvider,
                         searchDatabaseConfig.preferenceSearchablePredicate),
                 preferenceDialogs,
                 searchDatabaseConfig,
