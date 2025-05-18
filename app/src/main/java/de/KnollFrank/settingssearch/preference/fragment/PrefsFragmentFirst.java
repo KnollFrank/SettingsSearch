@@ -22,12 +22,14 @@ import androidx.preference.SwitchPreference;
 import com.google.common.collect.Iterables;
 
 import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -98,19 +100,24 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                                 getPreferenceScreen(),
                                                 PrefsFragmentFirst.this));
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
-                                replaceNodeWithGraph4NodeWithinGraph(
-                                        /* graph = */      pojoGraph,
-                                        /* node = */       pojoScreenOfPrefsFragmentFirst,
-                                        /* graph4Node = */ newPojoGraphRootedAtPrefsFragmentFirst);
+                                replaceNodeWithGraph(
+                                        /* graph = */            pojoGraph,
+                                        /* nodeToReplace = */    pojoScreenOfPrefsFragmentFirst,
+                                        /* replacementGraph = */ newPojoGraphRootedAtPrefsFragmentFirst);
                         getAppDatabase().searchablePreferenceScreenGraphDAO().persist(newPojoGraph);
                         return true;
                     }
 
-                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replaceNodeWithGraph4NodeWithinGraph(
+                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replaceNodeWithGraph(
                             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-                            final SearchablePreferenceScreen node,
-                            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph4Node) {
-                        return graph4Node;
+                            final SearchablePreferenceScreen nodeToReplace,
+                            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replacementGraph) {
+                        return SubtreeReplacer.replaceSubtreeWithTree(
+                                graph,
+                                nodeToReplace,
+                                replacementGraph,
+                                () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
+                                (source, target, originalEdge) -> new SearchablePreferenceEdge(originalEdge.preference));
                     }
 
                     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {
