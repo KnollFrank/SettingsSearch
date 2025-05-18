@@ -44,7 +44,6 @@ public class SubtreeReplacerTest {
                 }
             };
 
-
     @Test
     public void replaceSubtree_nonMutating_nodeToReplaceIsRoot_replacesEntireGraph() {
         // Given
