@@ -53,61 +53,63 @@ public class SubtreeReplacer {
                 edgeFactory);
 
         // Integrate the replacement tree (if it's not empty)
-        final Optional<V> replacementRootOpt = GraphUtils.getRootNode(replacementTree);
-
-        replacementRootOpt.ifPresent(replacementRoot -> {
-            // Add all vertices and edges from the replacement tree
-            replacementTree.vertexSet().forEach(resultGraph::addVertex);
-            for (final E e : replacementTree.edgeSet()) {
-                final V source = replacementTree.getEdgeSource(e);
-                final V target = replacementTree.getEdgeTarget(e);
-                resultGraph.addEdge(source, target, edgeFactory.createEdge(source, target, e));
-            }
-
-            // Connect the parent (if any) to the root of the replacement tree
-            parentInfoOpt.ifPresent(parentInfo -> {
-                if (resultGraph.containsVertex(parentInfo.parent)) {
-                    final E connectingEdge =
-                            edgeFactory.createEdge(
-                                    parentInfo.parent,
-                                    replacementRoot,
-                                    parentInfo.edgeToChild); // Pass the original incoming edge directly
-                    resultGraph.addEdge(parentInfo.parent, replacementRoot, connectingEdge);
-                }
-            });
-        });
+        GraphUtils
+                .getRootNode(replacementTree)
+                .ifPresent(
+                        replacementRoot -> {
+                            copyGraphFromSrc2Dst(replacementTree, resultGraph, edgeFactory);
+                            // Connect the parent (if any) to the root of the replacement tree
+                            parentInfoOpt.ifPresent(parentInfo -> {
+                                if (resultGraph.containsVertex(parentInfo.parent)) {
+                                    final E connectingEdge =
+                                            edgeFactory.createEdge(
+                                                    parentInfo.parent,
+                                                    replacementRoot,
+                                                    parentInfo.edgeToChild); // Pass the original incoming edge directly
+                                    resultGraph.addEdge(parentInfo.parent, replacementRoot, connectingEdge);
+                                }
+                            });
+                        });
         return resultGraph;
+    }
+
+    // Add all vertices and edges from the replacement tree
+    private static <V, E> void copyGraphFromSrc2Dst(final Graph<V, E> src,
+                                                    final Graph<V, E> dst,
+                                                    final EdgeFactory<V, E> edgeFactory) {
+        copyNodesFromSrc2Dst(src, Set.of(), dst);
+        copyEdgesFromSrc2Dst(src, src.edgeSet(), dst, edgeFactory);
     }
 
     private static <V, E> void copyPartsOfGraph(final Graph<V, E> originalGraph,
                                                 final Set<V> subtreeVerticesToRemove,
                                                 final Graph<V, E> resultGraph,
                                                 final EdgeFactory<V, E> edgeFactory) {
-        copyNodes(originalGraph, subtreeVerticesToRemove, resultGraph);
-        copyEdges(originalGraph, edgeFactory, subtreeVerticesToRemove, resultGraph);
+        copyNodesFromSrc2Dst(originalGraph, subtreeVerticesToRemove, resultGraph);
+        copyEdgesFromSrc2Dst(
+                originalGraph,
+                getEdgesToRetain(originalGraph, subtreeVerticesToRemove),
+                resultGraph,
+                edgeFactory);
     }
 
-    private static <V, E> void copyNodes(final Graph<V, E> originalGraph,
-                                         final Set<V> nodesToRemove,
-                                         final Graph<V, E> resultGraph) {
+    private static <V, E> void copyNodesFromSrc2Dst(final Graph<V, E> src,
+                                                    final Set<V> nodesToRemoveFromSrc,
+                                                    final Graph<V, E> dst) {
         Sets
-                .difference(originalGraph.vertexSet(), nodesToRemove)
-                .forEach(resultGraph::addVertex);
+                .difference(src.vertexSet(), nodesToRemoveFromSrc)
+                .forEach(dst::addVertex);
     }
 
-    private static <V, E> void copyEdges(final Graph<V, E> originalGraph,
-                                         final EdgeFactory<V, E> edgeFactory,
-                                         final Set<V> nodesToRemove,
-                                         final Graph<V, E> resultGraph) {
-
-        SubtreeReplacer
-                .getEdgesToRetain(originalGraph, nodesToRemove)
-                .forEach(
-                        edge -> {
-                            final V source = originalGraph.getEdgeSource(edge);
-                            final V target = originalGraph.getEdgeTarget(edge);
-                            resultGraph.addEdge(source, target, edgeFactory.createEdge(source, target, edge));
-                        });
+    private static <V, E> void copyEdgesFromSrc2Dst(final Graph<V, E> src,
+                                                    final Set<E> edgesOfSrcToRetain,
+                                                    final Graph<V, E> dst,
+                                                    final EdgeFactory<V, E> edgeFactory) {
+        for (final E edge : edgesOfSrcToRetain) {
+            final V source = src.getEdgeSource(edge);
+            final V target = src.getEdgeTarget(edge);
+            dst.addEdge(source, target, edgeFactory.createEdge(source, target, edge));
+        }
     }
 
     private static <V, E> Set<E> getEdgesToRetain(final Graph<V, E> graph,
