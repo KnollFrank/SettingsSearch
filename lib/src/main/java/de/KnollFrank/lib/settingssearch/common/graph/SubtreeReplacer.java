@@ -9,6 +9,7 @@ import org.jgrapht.traverse.BreadthFirstIterator;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class SubtreeReplacer {
 
@@ -27,6 +28,7 @@ public class SubtreeReplacer {
          *                     being copied.
          * @return The new edge.
          */
+        // FK-TODO: remove source and target? Then rename createEdge(E originalEdge) to clone(E edge)
         E createEdge(V source, V target, E originalEdge);
     }
 
@@ -97,13 +99,24 @@ public class SubtreeReplacer {
                                          final EdgeFactory<V, E> edgeFactory,
                                          final Set<V> nodesToRemove,
                                          final Graph<V, E> resultGraph) {
-        for (final E edge : originalGraph.edgeSet()) {
-            final V source = originalGraph.getEdgeSource(edge);
-            final V target = originalGraph.getEdgeTarget(edge);
-            if (!nodesToRemove.contains(source) && !nodesToRemove.contains(target)) {
-                resultGraph.addEdge(source, target, edgeFactory.createEdge(source, target, edge));
-            }
-        }
+
+        SubtreeReplacer
+                .getEdgesToRetain(originalGraph, nodesToRemove)
+                .forEach(
+                        edge -> {
+                            final V source = originalGraph.getEdgeSource(edge);
+                            final V target = originalGraph.getEdgeTarget(edge);
+                            resultGraph.addEdge(source, target, edgeFactory.createEdge(source, target, edge));
+                        });
+    }
+
+    private static <V, E> Set<E> getEdgesToRetain(final Graph<V, E> graph,
+                                                  final Set<V> nodesToRemove) {
+        return graph
+                .edgeSet()
+                .stream()
+                .filter(edge -> !nodesToRemove.contains(graph.getEdgeSource(edge)) && !nodesToRemove.contains(graph.getEdgeTarget(edge)))
+                .collect(Collectors.toSet());
     }
 
     private static <V, E> Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(final Graph<V, E> graph,
