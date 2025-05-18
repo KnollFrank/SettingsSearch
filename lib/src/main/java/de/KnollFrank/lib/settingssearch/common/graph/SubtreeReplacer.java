@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 
 import org.jgrapht.Graph;
 import org.jgrapht.traverse.BreadthFirstIterator;
@@ -32,33 +33,22 @@ public class SubtreeReplacer {
     private record ParentAndEdge<V, E>(V parent, E edgeToChild) {
     }
 
-    public static <V, E> Graph<V, E> replaceSubtreeWithTree(
-            final Graph<V, E> originalGraph,
-            final V nodeToReplace,
-            final Graph<V, E> replacementTree,
-            final Supplier<Graph<V, E>> graphSupplier,
-            final EdgeFactory<V, E> edgeFactory) {
+    public static <V, E> Graph<V, E> replaceSubtreeWithTree(final Graph<V, E> originalGraph,
+                                                            final V nodeToReplace,
+                                                            final Graph<V, E> replacementTree,
+                                                            final Supplier<Graph<V, E>> graphSupplier,
+                                                            final EdgeFactory<V, E> edgeFactory) {
         if (!originalGraph.containsVertex(nodeToReplace)) {
             return originalGraph;
         }
 
         final Graph<V, E> resultGraph = graphSupplier.get();
         final Optional<ParentAndEdge<V, E>> parentInfoOpt = getParentAndIncomingEdge(originalGraph, nodeToReplace);
-        final Set<V> subtreeVerticesToRemove = getSubtreeVertices(originalGraph, nodeToReplace);
-
-        // Copy parts of the original graph that are NOT part of the subtree being replaced
-        for (final V v : originalGraph.vertexSet()) {
-            if (!subtreeVerticesToRemove.contains(v)) {
-                resultGraph.addVertex(v);
-            }
-        }
-        for (final E e : originalGraph.edgeSet()) {
-            final V source = originalGraph.getEdgeSource(e);
-            final V target = originalGraph.getEdgeTarget(e);
-            if (!subtreeVerticesToRemove.contains(source) && !subtreeVerticesToRemove.contains(target)) {
-                resultGraph.addEdge(source, target, edgeFactory.createEdge(source, target, e));
-            }
-        }
+        copyPartsOfGraph(
+                originalGraph,
+                getSubtreeVertices(originalGraph, nodeToReplace),
+                resultGraph,
+                edgeFactory);
 
         // Integrate the replacement tree (if it's not empty)
         final Optional<V> replacementRootOpt = GraphUtils.getRootNode(replacementTree);
@@ -85,6 +75,35 @@ public class SubtreeReplacer {
             });
         });
         return resultGraph;
+    }
+
+    private static <V, E> void copyPartsOfGraph(final Graph<V, E> originalGraph,
+                                                final Set<V> subtreeVerticesToRemove,
+                                                final Graph<V, E> resultGraph,
+                                                final EdgeFactory<V, E> edgeFactory) {
+        copyNodes(originalGraph, subtreeVerticesToRemove, resultGraph);
+        copyEdges(originalGraph, edgeFactory, subtreeVerticesToRemove, resultGraph);
+    }
+
+    private static <V, E> void copyNodes(final Graph<V, E> originalGraph,
+                                         final Set<V> nodesToRemove,
+                                         final Graph<V, E> resultGraph) {
+        Sets
+                .difference(originalGraph.vertexSet(), nodesToRemove)
+                .forEach(resultGraph::addVertex);
+    }
+
+    private static <V, E> void copyEdges(final Graph<V, E> originalGraph,
+                                         final EdgeFactory<V, E> edgeFactory,
+                                         final Set<V> nodesToRemove,
+                                         final Graph<V, E> resultGraph) {
+        for (final E edge : originalGraph.edgeSet()) {
+            final V source = originalGraph.getEdgeSource(edge);
+            final V target = originalGraph.getEdgeTarget(edge);
+            if (!nodesToRemove.contains(source) && !nodesToRemove.contains(target)) {
+                resultGraph.addEdge(source, target, edgeFactory.createEdge(source, target, edge));
+            }
+        }
     }
 
     private static <V, E> Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(final Graph<V, E> graph,
