@@ -1,9 +1,10 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import com.google.common.collect.ImmutableSet;
+
 import org.jgrapht.Graph;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -37,13 +38,11 @@ public class SubtreeReplacer {
             final Graph<V, E> replacementTree,
             final Supplier<Graph<V, E>> graphSupplier,
             final EdgeFactory<V, E> edgeFactory) {
-
         if (!originalGraph.containsVertex(nodeToReplace)) {
             return originalGraph;
         }
 
         final Graph<V, E> resultGraph = graphSupplier.get();
-
         final Optional<ParentAndEdge<V, E>> parentInfoOpt = getParentAndIncomingEdge(originalGraph, nodeToReplace);
         final Set<V> subtreeVerticesToRemove = getSubtreeVertices(originalGraph, nodeToReplace);
 
@@ -88,26 +87,23 @@ public class SubtreeReplacer {
         return resultGraph;
     }
 
-    private static <V, E> Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(Graph<V, E> graph, V node) {
+    private static <V, E> Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(final Graph<V, E> graph,
+                                                                                 final V node) {
         final Set<E> incomingEdges = graph.incomingEdgesOf(node);
         if (!incomingEdges.isEmpty()) {
             final E edgeToChild = incomingEdges.iterator().next();
-            final V parent = graph.getEdgeSource(edgeToChild);
-            return Optional.of(new ParentAndEdge<>(parent, edgeToChild));
+            return Optional.of(
+                    new ParentAndEdge<>(
+                            graph.getEdgeSource(edgeToChild),
+                            edgeToChild));
         }
         return Optional.empty();
     }
 
     private static <V, E> Set<V> getSubtreeVertices(final Graph<V, E> graph, final V startNode) {
-        final Set<V> visited = new HashSet<>();
-        if (!graph.containsVertex(startNode)) {
-            return visited;
-        }
-        final BreadthFirstIterator<V, E> bfsIterator = new BreadthFirstIterator<>(graph, startNode);
-        while (bfsIterator.hasNext()) {
-            visited.add(bfsIterator.next());
-        }
-        return visited;
+        return graph.containsVertex(startNode) ?
+                ImmutableSet.copyOf(new BreadthFirstIterator<>(graph, startNode)) :
+                Set.of();
     }
 
     private static <V, E> Optional<V> getRootOfTree(final Graph<V, E> tree) {
