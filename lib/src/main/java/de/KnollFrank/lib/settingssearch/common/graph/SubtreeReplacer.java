@@ -102,10 +102,10 @@ public class SubtreeReplacer {
     }
 
     private static <V, E> void copyEdgesFromSrc2Dst(final Graph<V, E> src,
-                                                    final Set<E> edgesOfSrcToRetain,
+                                                    final Set<E> edgesOfSrcToCopy,
                                                     final Graph<V, E> dst,
                                                     final EdgeFactory<V, E> edgeFactory) {
-        for (final E edge : edgesOfSrcToRetain) {
+        for (final E edge : edgesOfSrcToCopy) {
             final V source = src.getEdgeSource(edge);
             final V target = src.getEdgeTarget(edge);
             dst.addEdge(source, target, edgeFactory.createEdge(source, target, edge));
