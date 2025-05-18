@@ -43,14 +43,12 @@ public class SubtreeReplacer {
         if (!originalGraph.containsVertex(nodeToReplace)) {
             return originalGraph;
         }
-
         final Graph<V, E> resultGraph = graphSupplier.get();
         copyPartsOfGraph(
                 originalGraph,
                 getSubtreeVertices(originalGraph, nodeToReplace),
                 resultGraph,
                 edgeFactory);
-
         integrateReplacementTreeIntoResultGraph(originalGraph, nodeToReplace, replacementTree, edgeFactory, resultGraph);
         return resultGraph;
     }
