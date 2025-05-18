@@ -12,6 +12,8 @@ public class SubtreeReplacer {
 
     @FunctionalInterface
     public interface EdgeFactory<V, E> {
+
+        // FK-TODO: make originalEdge Optional<E>
         E createEdge(V source, V target, E originalEdge);
     }
 
