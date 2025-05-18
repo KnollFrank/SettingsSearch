@@ -73,11 +73,10 @@ public class SubtreeReplacer {
         return resultGraph;
     }
 
-    // Add all vertices and edges from the replacement tree
     private static <V, E> void copyGraphFromSrc2Dst(final Graph<V, E> src,
                                                     final Graph<V, E> dst,
                                                     final EdgeFactory<V, E> edgeFactory) {
-        copyNodesFromSrc2Dst(src, Set.of(), dst);
+        addNodesToGraph(src.vertexSet(), dst);
         copyEdgesFromSrc2Dst(src, src.edgeSet(), dst, edgeFactory);
     }
 
@@ -96,9 +95,13 @@ public class SubtreeReplacer {
     private static <V, E> void copyNodesFromSrc2Dst(final Graph<V, E> src,
                                                     final Set<V> nodesToRemoveFromSrc,
                                                     final Graph<V, E> dst) {
-        Sets
-                .difference(src.vertexSet(), nodesToRemoveFromSrc)
-                .forEach(dst::addVertex);
+        addNodesToGraph(
+                Sets.difference(src.vertexSet(), nodesToRemoveFromSrc),
+                dst);
+    }
+
+    private static <V, E> void addNodesToGraph(final Set<V> nodes, final Graph<V, E> graph) {
+        nodes.forEach(graph::addVertex);
     }
 
     private static <V, E> void copyEdgesFromSrc2Dst(final Graph<V, E> src,
