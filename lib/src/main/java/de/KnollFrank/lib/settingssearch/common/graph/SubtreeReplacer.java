@@ -45,32 +45,54 @@ public class SubtreeReplacer {
         }
 
         final Graph<V, E> resultGraph = graphSupplier.get();
-        final Optional<ParentAndEdge<V, E>> parentInfoOpt = getParentAndIncomingEdge(originalGraph, nodeToReplace);
         copyPartsOfGraph(
                 originalGraph,
                 getSubtreeVertices(originalGraph, nodeToReplace),
                 resultGraph,
                 edgeFactory);
 
-        // Integrate the replacement tree (if it's not empty)
+        integrateReplacementTreeIntoResultGraph(originalGraph, nodeToReplace, replacementTree, edgeFactory, resultGraph);
+        return resultGraph;
+    }
+
+    private static <V, E> void integrateReplacementTreeIntoResultGraph(final Graph<V, E> originalGraph,
+                                                                       final V nodeToReplace,
+                                                                       final Graph<V, E> replacementTree,
+                                                                       final EdgeFactory<V, E> edgeFactory,
+                                                                       final Graph<V, E> resultGraph) {
         GraphUtils
                 .getRootNode(replacementTree)
                 .ifPresent(
                         replacementRoot -> {
                             copyGraphFromSrc2Dst(replacementTree, resultGraph, edgeFactory);
-                            // Connect the parent (if any) to the root of the replacement tree
-                            parentInfoOpt.ifPresent(parentInfo -> {
-                                if (resultGraph.containsVertex(parentInfo.parent)) {
-                                    final E connectingEdge =
-                                            edgeFactory.createEdge(
-                                                    parentInfo.parent,
-                                                    replacementRoot,
-                                                    parentInfo.edgeToChild); // Pass the original incoming edge directly
-                                    resultGraph.addEdge(parentInfo.parent, replacementRoot, connectingEdge);
-                                }
-                            });
+                            connectParentToRootOfReplacementTree(
+                                    SubtreeReplacer.getParentAndIncomingEdge(originalGraph, nodeToReplace),
+                                    edgeFactory,
+                                    resultGraph,
+                                    replacementRoot);
                         });
-        return resultGraph;
+    }
+
+    private static <V, E> void connectParentToRootOfReplacementTree(final Optional<ParentAndEdge<V, E>> parentAndEdge,
+                                                                    final EdgeFactory<V, E> edgeFactory,
+                                                                    final Graph<V, E> resultGraph,
+                                                                    final V replacementRoot) {
+        parentAndEdge
+                .filter(_parentAndEdge -> resultGraph.containsVertex(_parentAndEdge.parent))
+                .ifPresent(_parentAndEdge -> connectParentToRootOfReplacementTree(_parentAndEdge, edgeFactory, resultGraph, replacementRoot));
+    }
+
+    private static <V, E> void connectParentToRootOfReplacementTree(final ParentAndEdge<V, E> parentAndEdge,
+                                                                    final EdgeFactory<V, E> edgeFactory,
+                                                                    final Graph<V, E> resultGraph,
+                                                                    final V replacementRoot) {
+        resultGraph.addEdge(
+                parentAndEdge.parent,
+                replacementRoot,
+                edgeFactory.createEdge(
+                        parentAndEdge.parent,
+                        replacementRoot,
+                        parentAndEdge.edgeToChild));
     }
 
     private static <V, E> void copyGraphFromSrc2Dst(final Graph<V, E> src,
