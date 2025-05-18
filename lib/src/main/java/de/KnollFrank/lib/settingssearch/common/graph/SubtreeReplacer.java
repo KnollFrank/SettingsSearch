@@ -84,20 +84,14 @@ public class SubtreeReplacer {
                                                 final Set<V> subtreeVerticesToRemove,
                                                 final Graph<V, E> resultGraph,
                                                 final EdgeFactory<V, E> edgeFactory) {
-        copyNodesFromSrc2Dst(originalGraph, subtreeVerticesToRemove, resultGraph);
+        addNodesToGraph(
+                Sets.difference(originalGraph.vertexSet(), subtreeVerticesToRemove),
+                resultGraph);
         copyEdgesFromSrc2Dst(
                 originalGraph,
                 getEdgesToRetain(originalGraph, subtreeVerticesToRemove),
                 resultGraph,
                 edgeFactory);
-    }
-
-    private static <V, E> void copyNodesFromSrc2Dst(final Graph<V, E> src,
-                                                    final Set<V> nodesToRemoveFromSrc,
-                                                    final Graph<V, E> dst) {
-        addNodesToGraph(
-                Sets.difference(src.vertexSet(), nodesToRemoveFromSrc),
-                dst);
     }
 
     private static <V, E> void addNodesToGraph(final Set<V> nodes, final Graph<V, E> graph) {
