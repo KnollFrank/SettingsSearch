@@ -117,7 +117,13 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 nodeToReplace,
                                 replacementGraph,
                                 () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
-                                (source, target, originalEdge) -> new SearchablePreferenceEdge(originalEdge.preference));
+                                new SubtreeReplacer.EdgeFactory<>() {
+
+                                    @Override
+                                    public SearchablePreferenceEdge createEdge(final SearchablePreferenceScreen source, final SearchablePreferenceScreen target, final SearchablePreferenceEdge originalEdge) {
+                                        return new SearchablePreferenceEdge(originalEdge.preference);
+                                    }
+                                });
                     }
 
                     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {

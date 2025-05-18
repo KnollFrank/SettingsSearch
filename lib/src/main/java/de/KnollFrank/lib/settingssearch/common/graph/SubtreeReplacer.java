@@ -12,9 +12,23 @@ public class SubtreeReplacer {
 
     @FunctionalInterface
     public interface EdgeFactory<V, E> {
-
-        // FK-TODO: make originalEdge Optional<E>
+        /**
+         * Creates a new edge based on an original edge.
+         *
+         * @param source       The source vertex for the new edge.
+         * @param target       The target vertex for the new edge.
+         * @param originalEdge The original edge that this new edge is based on
+         *                     (e.g., for copying properties or labels).
+         *                     This will be the edge that previously connected to the
+         *                     {@code nodeToReplace} if replacing a child, or an edge from
+         *                     the replacementTree, or an edge from the originalGraph
+         *                     being copied.
+         * @return The new edge.
+         */
         E createEdge(V source, V target, E originalEdge);
+    }
+
+    private record ParentAndEdge<V, E>(V parent, E edgeToChild) {
     }
 
     public static <V, E> Graph<V, E> replaceSubtreeWithTree(
@@ -30,19 +44,10 @@ public class SubtreeReplacer {
 
         final Graph<V, E> resultGraph = graphSupplier.get();
 
-        // 1. Identify parent of nodeToReplace and the edge connecting them (if any)
-        V parentOfNodeToReplace = null;
-        E edgeToNodeToReplace = null;
-        final Set<E> incomingEdges = originalGraph.incomingEdgesOf(nodeToReplace);
-        if (!incomingEdges.isEmpty()) {
-            edgeToNodeToReplace = incomingEdges.iterator().next();
-            parentOfNodeToReplace = originalGraph.getEdgeSource(edgeToNodeToReplace);
-        }
-
-        // 2. Identify the subtree to be removed (all descendants of nodeToReplace, including itself)
+        final Optional<ParentAndEdge<V, E>> parentInfoOpt = getParentAndIncomingEdge(originalGraph, nodeToReplace);
         final Set<V> subtreeVerticesToRemove = getSubtreeVertices(originalGraph, nodeToReplace);
 
-        // 3. Copy parts of the original graph that are NOT part of the subtree being replaced
+        // Copy parts of the original graph that are NOT part of the subtree being replaced
         for (final V v : originalGraph.vertexSet()) {
             if (!subtreeVerticesToRemove.contains(v)) {
                 resultGraph.addVertex(v);
@@ -56,15 +61,11 @@ public class SubtreeReplacer {
             }
         }
 
-        // 4. Integrate the replacement tree (if it's not empty)
-        final Optional<V> replacementRootOptional = getRootOfTree(replacementTree);
+        // Integrate the replacement tree (if it's not empty)
+        final Optional<V> replacementRootOpt = getRootOfTree(replacementTree);
 
-        if (replacementRootOptional.isPresent()) {
-            final V replacementRoot = replacementRootOptional.get();
-
+        replacementRootOpt.ifPresent(replacementRoot -> {
             // Add all vertices and edges from the replacement tree
-            // It's generally safer to iterate and add rather than Graphs.addGraphNatively
-            // if the vertex/edge instances need to be distinct or processed by the factory.
             replacementTree.vertexSet().forEach(resultGraph::addVertex);
             for (final E e : replacementTree.edgeSet()) {
                 final V source = replacementTree.getEdgeSource(e);
@@ -72,30 +73,37 @@ public class SubtreeReplacer {
                 resultGraph.addEdge(source, target, edgeFactory.createEdge(source, target, e));
             }
 
-            if (parentOfNodeToReplace != null) {
-                if (resultGraph.containsVertex(parentOfNodeToReplace)) { // Should always be true if copied correctly
-                    final E connectingEdge = edgeFactory.createEdge(parentOfNodeToReplace, replacementRoot, edgeToNodeToReplace);
-                    resultGraph.addEdge(parentOfNodeToReplace, replacementRoot, connectingEdge);
+            // Connect the parent (if any) to the root of the replacement tree
+            parentInfoOpt.ifPresent(parentInfo -> {
+                if (resultGraph.containsVertex(parentInfo.parent)) {
+                    final E connectingEdge =
+                            edgeFactory.createEdge(
+                                    parentInfo.parent,
+                                    replacementRoot,
+                                    parentInfo.edgeToChild); // Pass the original incoming edge directly
+                    resultGraph.addEdge(parentInfo.parent, replacementRoot, connectingEdge);
                 }
-            }
-        }
+            });
+        });
         return resultGraph;
     }
 
-    /**
-     * Helper method to get all vertices in the subtree rooted at a given startNode.
-     * Uses JGraphT's BreadthFirstIterator for traversal.
-     */
+    private static <V, E> Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(Graph<V, E> graph, V node) {
+        final Set<E> incomingEdges = graph.incomingEdgesOf(node);
+        if (!incomingEdges.isEmpty()) {
+            final E edgeToChild = incomingEdges.iterator().next();
+            final V parent = graph.getEdgeSource(edgeToChild);
+            return Optional.of(new ParentAndEdge<>(parent, edgeToChild));
+        }
+        return Optional.empty();
+    }
+
     private static <V, E> Set<V> getSubtreeVertices(final Graph<V, E> graph, final V startNode) {
         final Set<V> visited = new HashSet<>();
         if (!graph.containsVertex(startNode)) {
-            return visited; // Return empty set if startNode is not in the graph
+            return visited;
         }
-
-        // Create a BreadthFirstIterator starting from startNode
         final BreadthFirstIterator<V, E> bfsIterator = new BreadthFirstIterator<>(graph, startNode);
-
-        // Iterate and add all reachable vertices to the set
         while (bfsIterator.hasNext()) {
             visited.add(bfsIterator.next());
         }

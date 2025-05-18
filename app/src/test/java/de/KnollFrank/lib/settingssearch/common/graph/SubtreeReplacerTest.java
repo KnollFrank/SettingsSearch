@@ -40,7 +40,7 @@ public class SubtreeReplacerTest {
 
                 @Override
                 public StringEdge createEdge(final StringVertex source, final StringVertex target, final StringEdge originalEdge) {
-                    return new StringEdge(originalEdge != null ? originalEdge.getLabel() : source.getLabel() + "->" + target.getLabel() + "_newFromFactory");
+                    return new StringEdge(originalEdge.getLabel());
                 }
             };
 
