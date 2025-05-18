@@ -4,13 +4,15 @@ import com.google.common.collect.MoreCollectors;
 
 import org.jgrapht.Graph;
 
+import java.util.Optional;
+
 public class GraphUtils {
 
-    public static <V> V getRootNode(final Graph<V, ?> graph) {
+    public static <V> Optional<V> getRootNode(final Graph<V, ?> graph) {
         return graph
                 .vertexSet()
                 .stream()
                 .filter(vertex -> graph.inDegreeOf(vertex) == 0)
-                .collect(MoreCollectors.onlyElement());
+                .collect(MoreCollectors.toOptional());
     }
 }

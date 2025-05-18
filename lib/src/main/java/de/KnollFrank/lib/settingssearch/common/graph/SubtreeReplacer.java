@@ -61,7 +61,7 @@ public class SubtreeReplacer {
         }
 
         // Integrate the replacement tree (if it's not empty)
-        final Optional<V> replacementRootOpt = getRootOfTree(replacementTree);
+        final Optional<V> replacementRootOpt = GraphUtils.getRootNode(replacementTree);
 
         replacementRootOpt.ifPresent(replacementRoot -> {
             // Add all vertices and edges from the replacement tree
@@ -104,14 +104,5 @@ public class SubtreeReplacer {
         return graph.containsVertex(startNode) ?
                 ImmutableSet.copyOf(new BreadthFirstIterator<>(graph, startNode)) :
                 Set.of();
-    }
-
-    private static <V, E> Optional<V> getRootOfTree(final Graph<V, E> tree) {
-        if (tree.vertexSet().isEmpty()) {
-            return Optional.empty();
-        }
-        return tree.vertexSet().stream()
-                .filter(v -> tree.inDegreeOf(v) == 0)
-                .findFirst();
     }
 }
