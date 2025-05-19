@@ -15,19 +15,6 @@ public class SubtreeReplacer {
 
     @FunctionalInterface
     public interface EdgeFactory<V, E> {
-        /**
-         * Creates a new edge based on an original edge.
-         *
-         * @param source       The source vertex for the new edge.
-         * @param target       The target vertex for the new edge.
-         * @param originalEdge The original edge that this new edge is based on
-         *                     (e.g., for copying properties or labels).
-         *                     This will be the edge that previously connected to the
-         *                     {@code nodeToReplace} if replacing a child, or an edge from
-         *                     the replacementTree, or an edge from the originalGraph
-         *                     being copied.
-         * @return The new edge.
-         */
         // FK-TODO: remove source and target? Then rename createEdge(E originalEdge) to clone(E edge)
         E createEdge(V source, V target, E originalEdge);
     }
@@ -152,8 +139,6 @@ public class SubtreeReplacer {
     }
 
     private static <V, E> Set<V> getSubtreeVertices(final Graph<V, E> graph, final V startNode) {
-        return graph.containsVertex(startNode) ?
-                ImmutableSet.copyOf(new BreadthFirstIterator<>(graph, startNode)) :
-                Set.of();
+        return ImmutableSet.copyOf(new BreadthFirstIterator<>(graph, startNode));
     }
 }
