@@ -206,8 +206,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 "summaryChangingPreference is OFF";
     }
 
-    private Intent createIntent(final Class<? extends Activity> activityClass,
-                                final Bundle extras) {
+    private Intent createIntent(final Class<? extends Activity> activityClass, final Bundle extras) {
         final Intent intent = new Intent(getContext(), activityClass);
         intent.putExtras(extras);
         return intent;
