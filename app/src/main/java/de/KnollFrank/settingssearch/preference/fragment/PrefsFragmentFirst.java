@@ -30,7 +30,6 @@ import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -159,39 +158,40 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 new Preference.OnPreferenceChangeListener() {
 
                     @Override
-                    public boolean onPreferenceChange(@NonNull final Preference preference,
-                                                      final Object checked) {
+                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
                         setSummary(preference, getSummary((boolean) checked));
                         return true;
                     }
 
                     private void setSummary(final Preference preference, final String summary) {
                         preference.setSummary(summary);
-                        final SearchablePreferenceDAO searchablePreferenceDAO = getAppDatabase().searchablePreferenceDAO();
-                        final Class<? extends PreferenceFragmentCompat> hostOfPreference = PrefsFragmentFirst.class;
-                        final SearchablePreference searchablePreference =
-                                PrefsFragmentFirst.this
-                                        .findSearchablePreference(hostOfPreference, preference.getKey())
-                                        .orElseThrow();
+                        setSummary(
+                                this
+                                        .findSearchablePreference(PrefsFragmentFirst.class, preference.getKey())
+                                        .orElseThrow(),
+                                summary);
+                    }
+
+                    private Optional<SearchablePreference> findSearchablePreference(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final String keyOfPreference) {
+                        return SearchablePreferences.findPreferenceByKey(
+                                getPreferences(hostOfPreference),
+                                keyOfPreference);
+                    }
+
+                    private Set<SearchablePreference> getPreferences(final Class<? extends PreferenceFragmentCompat> host) {
+                        return Iterables
+                                .getOnlyElement(
+                                        getAppDatabase()
+                                                .searchablePreferenceScreenDAO()
+                                                .findSearchablePreferenceScreensByHost(host))
+                                .getAllPreferences();
+                    }
+
+                    private void setSummary(final SearchablePreference searchablePreference, final String summary) {
                         searchablePreference.setSummary(Optional.of(summary));
-                        searchablePreferenceDAO.update(searchablePreference);
+                        getAppDatabase().searchablePreferenceDAO().update(searchablePreference);
                     }
                 });
-    }
-
-    private Optional<SearchablePreference> findSearchablePreference(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final String keyOfPreference) {
-        return SearchablePreferences.findPreferenceByKey(
-                getPreferences(hostOfPreference),
-                keyOfPreference);
-    }
-
-    private Set<SearchablePreference> getPreferences(final Class<? extends PreferenceFragmentCompat> host) {
-        return Iterables
-                .getOnlyElement(
-                        getAppDatabase()
-                                .searchablePreferenceScreenDAO()
-                                .findSearchablePreferenceScreensByHost(host))
-                .getAllPreferences();
     }
 
     private DAOProvider getAppDatabase() {
