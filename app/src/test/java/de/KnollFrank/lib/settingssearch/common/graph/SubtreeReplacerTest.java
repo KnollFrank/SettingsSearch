@@ -14,9 +14,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.builder.GraphBuilder;
 import org.junit.Test;
 
-import java.util.Set;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class SubtreeReplacerTest {
 
@@ -45,7 +43,7 @@ public class SubtreeReplacerTest {
             };
 
     @Test
-    public void replaceSubtree_nonMutating_nodeToReplaceIsRoot_replacesEntireGraph() {
+    public void replaceSubtree_nodeToReplaceIsRoot_replacesEntireGraph() {
         // Given
         // Original Tree: R -> A (eRA)
         final Graph<StringVertex, StringEdge> originalGraph =
@@ -62,10 +60,6 @@ public class SubtreeReplacerTest {
                         .addVertices(vX, vY)
                         .addEdge(vX, vY, eXY)
                         .build();
-
-        // Expected Returned Tree: X -> Y (new edge, label from eXY, as originalEdge to factory is null)
-        // For root replacement, the edge factory might create a new label if it can't reuse an incoming edge label.
-        // Let's assume the replacement tree's own edges are used directly (or their labels).
         final Graph<StringVertex, StringEdge> expectedReturnedGraph =
                 SubtreeReplacerTest
                         .newGraphBuilder()
@@ -83,7 +77,7 @@ public class SubtreeReplacerTest {
                         edgeFactory);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        GraphEquality.assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
         assertThat("Returned graph should be a new instance.", returnedGraph, is(not(sameInstance(originalGraph))));
     }
 
@@ -132,7 +126,7 @@ public class SubtreeReplacerTest {
                         edgeFactory);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        GraphEquality.assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
         final StringEdge edgeParentToNewRoot = returnedGraph.getEdge(vP, vX);
         assertThat("Edge P->X should exist in returned graph", edgeParentToNewRoot, is(notNullValue()));
         assertThat("Label of P->X should be from original P->R edge", edgeParentToNewRoot.getLabel(), is(equalTo(ePR.getLabel())));
@@ -178,7 +172,7 @@ public class SubtreeReplacerTest {
                         edgeFactory);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        GraphEquality.assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
         assertThat(
                 "Returned graph with empty replacement should only contain parent P.",
                 returnedGraph.vertexSet(),
@@ -227,7 +221,7 @@ public class SubtreeReplacerTest {
                         edgeFactory);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        GraphEquality.assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
         assertThat(returnedGraph, is(not(sameInstance(originalGraph))));
     }
 
@@ -265,7 +259,7 @@ public class SubtreeReplacerTest {
                 "Returned graph should be the same instance as original when node not found.",
                 returnedGraph,
                 is(sameInstance(originalGraph)));
-        assertActualEqualsExpected(returnedGraph, originalGraphSnapshotForExpected);
+        GraphEquality.assertActualEqualsExpected(returnedGraph, originalGraphSnapshotForExpected);
     }
 
     @Test
@@ -302,7 +296,7 @@ public class SubtreeReplacerTest {
                         edgeFactory);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        GraphEquality.assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
         assertThat("Returned graph should be empty.", returnedGraph.vertexSet(), is(empty()));
         assertThat("Returned graph should have no edges.", returnedGraph.edgeSet(), is(empty()));
         assertThat(returnedGraph, is(not(sameInstance(originalGraph))));
@@ -369,7 +363,7 @@ public class SubtreeReplacerTest {
                         edgeFactory);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        GraphEquality.assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
         final StringEdge edgeParentToNewRoot = returnedGraph.getEdge(vP, vX);
         assertThat(edgeParentToNewRoot, is(notNullValue()));
         assertThat(edgeParentToNewRoot.getLabel(), is(equalTo(ePR.getLabel())));
@@ -408,7 +402,7 @@ public class SubtreeReplacerTest {
 
         // Then
         assertThat(returnedGraph, is(sameInstance(originalGraph)));
-        assertActualEqualsExpected(returnedGraph, originalGraphSnapshotForExpected);
+        GraphEquality.assertActualEqualsExpected(returnedGraph, originalGraphSnapshotForExpected);
     }
 
     private static GraphBuilder<StringVertex, StringEdge, ?> newGraphBuilder() {
@@ -420,43 +414,5 @@ public class SubtreeReplacerTest {
         graph.vertexSet().forEach(copy::addVertex);
         graph.edgeSet().forEach(e -> copy.addEdge(graph.getEdgeSource(e), graph.getEdgeTarget(e), new StringEdge(e.getLabel())));
         return copy;
-    }
-
-    private void assertActualEqualsExpected(final Graph<StringVertex, StringEdge> actual,
-                                            final Graph<StringVertex, StringEdge> expected) {
-        assertActualEqualsExpected(actual.vertexSet(), expected.vertexSet());
-        assertActualEdgesEqualsExpectedEdges(actual, expected);
-    }
-
-    private static void assertActualEqualsExpected(final Set<StringVertex> nodesActual, final Set<StringVertex> nodesExpected) {
-        assertThat(
-                "Vertex sets should be equal. Expected: [" + nodes2String(nodesExpected) + "], Actual: [" + nodes2String(nodesActual) + "]",
-                nodesActual,
-                is(equalTo(nodesExpected)));
-    }
-
-    private static void assertActualEdgesEqualsExpectedEdges(final Graph<StringVertex, StringEdge> actual, final Graph<StringVertex, StringEdge> expected) {
-        final Set<String> expectedEdgesRepr = edgesAsStrings(expected);
-        final Set<String> actualEdgesRepr = edgesAsStrings(actual);
-        assertThat(
-                "Edge representations should be equal. Expected: " + expectedEdgesRepr + ", Actual: " + actualEdgesRepr,
-                actualEdgesRepr,
-                is(equalTo(expectedEdgesRepr)));
-    }
-
-    private static String nodes2String(final Set<StringVertex> nodes) {
-        return nodes
-                .stream()
-                .map(StringVertex::getLabel)
-                .sorted()
-                .collect(Collectors.joining(", "));
-    }
-
-    private static Set<String> edgesAsStrings(final Graph<StringVertex, StringEdge> graph) {
-        return graph
-                .edgeSet()
-                .stream()
-                .map(edge -> graph.getEdgeSource(edge).getLabel() + "->" + graph.getEdgeTarget(edge).getLabel() + ":" + edge.getLabel())
-                .collect(Collectors.toSet());
     }
 }
