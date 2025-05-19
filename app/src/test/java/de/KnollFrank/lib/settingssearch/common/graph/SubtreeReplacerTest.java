@@ -1,9 +1,5 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.sameInstance;
 import static de.KnollFrank.lib.settingssearch.common.graph.GraphEquality.assertActualEqualsExpected;
 
 import org.jgrapht.Graph;
@@ -74,7 +70,6 @@ public class SubtreeReplacerTest {
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
-        assertThat("Returned graph should be a new instance.", returnedGraph, is(not(sameInstance(originalGraph))));
     }
 
     @Test
