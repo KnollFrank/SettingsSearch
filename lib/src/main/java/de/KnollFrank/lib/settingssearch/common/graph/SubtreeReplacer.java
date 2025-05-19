@@ -19,9 +19,6 @@ public class SubtreeReplacer {
         E createEdge(V source, V target, E originalEdge);
     }
 
-    private record ParentAndEdge<V, E>(V parent, E edgeToChild) {
-    }
-
     public static <V, E> Graph<V, E> replaceSubtreeWithTree(final Graph<V, E> originalGraph,
                                                             final V nodeToReplace,
                                                             final Graph<V, E> replacementTree,
@@ -51,11 +48,14 @@ public class SubtreeReplacer {
                         replacementRoot -> {
                             copyGraphFromSrc2Dst(replacementTree, resultGraph, edgeFactory);
                             connectParentToRootOfReplacementTree(
-                                    SubtreeReplacer.getParentAndIncomingEdge(originalGraph, nodeToReplace),
+                                    getParentAndIncomingEdge(originalGraph, nodeToReplace),
                                     edgeFactory,
                                     resultGraph,
                                     replacementRoot);
                         });
+    }
+
+    private record ParentAndEdge<V, E>(V parent, E edgeToChild) {
     }
 
     private static <V, E> void connectParentToRootOfReplacementTree(final Optional<ParentAndEdge<V, E>> parentAndEdge,
