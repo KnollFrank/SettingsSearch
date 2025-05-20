@@ -45,6 +45,7 @@ public class PreferenceFragmentFactory<F extends Fragment, P extends PreferenceF
     private P createPreferenceFragment(final Optional<PreferenceWithHost> src,
                                        final Context context,
                                        final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+        // FK-TODO: warum DefaultFragmentFactory? Ist das nicht zu speziell?
         return new DefaultFragmentFactory().instantiate(
                 principalAndProxy.proxy(),
                 src,

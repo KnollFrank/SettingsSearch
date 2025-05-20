@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
@@ -123,7 +124,7 @@ public class SearchDatabaseConfigBuilder {
 
                     @Override
                     public Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragmentOfActivity(final Class<? extends Activity> activityClass) {
-                        return Optional.ofNullable(activitySearchDatabaseConfigs.rootPreferenceFragmentByActivity().get(activityClass));
+                        return Maps.get(activitySearchDatabaseConfigs.rootPreferenceFragmentByActivity(), activityClass);
                     }
                 },
                 preferenceScreenGraphAvailableListener,
