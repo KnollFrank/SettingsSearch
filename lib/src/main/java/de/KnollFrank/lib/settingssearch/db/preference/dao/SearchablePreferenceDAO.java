@@ -81,17 +81,17 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
     }
 
     @Override
-    public Optional<SearchablePreference> getPredecessor(SearchablePreference preference) {
+    public Optional<SearchablePreference> getPredecessor(final SearchablePreference preference) {
         return Maps.get(getPredecessorByPreference(), preference).orElseThrow();
     }
 
     @Override
-    public Set<SearchablePreference> getChildren(SearchablePreference preference) {
+    public Set<SearchablePreference> getChildren(final SearchablePreference preference) {
         return Maps.get(getChildrenByPreference(), preference).orElseThrow();
     }
 
     @Override
-    public SearchablePreferenceScreen getHost(SearchablePreference preference) {
+    public SearchablePreferenceScreen getHost(final SearchablePreference preference) {
         return appDatabase.searchablePreferenceScreenDAO().getHost(preference);
     }
 
