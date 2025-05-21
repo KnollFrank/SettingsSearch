@@ -38,7 +38,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                 searchablePreferenceDAO);
     }
 
-    private static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
+    public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
             final @IdRes int containerViewId,
             final ViewGroup view,
             final FragmentActivity fragmentActivity,
