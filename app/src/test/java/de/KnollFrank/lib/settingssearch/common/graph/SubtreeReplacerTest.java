@@ -25,7 +25,7 @@ public class SubtreeReplacerTest {
     private final StringEdge eXZ = new StringEdge("X->Z");
     private final StringEdge ePR = new StringEdge("P->R");
 
-    private final Supplier<Graph<StringVertex, StringEdge>> graphSupplier = () -> new DefaultDirectedGraph<>(StringEdge.class);
+    private final Supplier<Graph<StringVertex, StringEdge>> emptyGraphSupplier = () -> new DefaultDirectedGraph<>(StringEdge.class);
     private final SubtreeReplacer.EdgeFactory<StringVertex, StringEdge> edgeFactory =
             new SubtreeReplacer.EdgeFactory<>() {
 
@@ -65,7 +65,7 @@ public class SubtreeReplacerTest {
                         originalGraph,
                         vR,
                         replacementGraph,
-                        graphSupplier,
+                        emptyGraphSupplier,
                         edgeFactory);
 
         // Then
@@ -111,7 +111,7 @@ public class SubtreeReplacerTest {
                         originalGraph,
                         vR,
                         replacementGraph,
-                        graphSupplier,
+                        emptyGraphSupplier,
                         edgeFactory);
 
         // Then
@@ -151,7 +151,7 @@ public class SubtreeReplacerTest {
                         originalGraph,
                         vR,
                         emptyReplacementGraph,
-                        graphSupplier,
+                        emptyGraphSupplier,
                         edgeFactory);
 
         // Then
@@ -189,7 +189,7 @@ public class SubtreeReplacerTest {
                         originalGraph,
                         vR,
                         replacementGraph,
-                        graphSupplier,
+                        emptyGraphSupplier,
                         edgeFactory);
 
         // Then
@@ -226,7 +226,7 @@ public class SubtreeReplacerTest {
                         originalGraph,
                         nonExistentNode,
                         replacementGraph,
-                        graphSupplier,
+                        emptyGraphSupplier,
                         edgeFactory);
 
         // Then
@@ -261,7 +261,7 @@ public class SubtreeReplacerTest {
                         originalGraph,
                         vR,
                         emptyReplacementGraph,
-                        graphSupplier,
+                        emptyGraphSupplier,
                         edgeFactory);
 
         // Then
@@ -323,7 +323,7 @@ public class SubtreeReplacerTest {
                         originalGraph,
                         vR,
                         replacementGraph,
-                        graphSupplier,
+                        emptyGraphSupplier,
                         edgeFactory);
 
         // Then
@@ -356,7 +356,7 @@ public class SubtreeReplacerTest {
                         originalGraph,
                         vR,
                         replacementGraph,
-                        graphSupplier,
+                        emptyGraphSupplier,
                         edgeFactory);
 
         // Then

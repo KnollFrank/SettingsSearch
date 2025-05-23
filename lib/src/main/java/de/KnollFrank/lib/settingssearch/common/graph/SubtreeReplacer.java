@@ -22,12 +22,12 @@ public class SubtreeReplacer {
     public static <V, E> Graph<V, E> replaceSubtreeWithTree(final Graph<V, E> originalGraph,
                                                             final V nodeToReplace,
                                                             final Graph<V, E> replacementTree,
-                                                            final Supplier<Graph<V, E>> graphSupplier,
+                                                            final Supplier<Graph<V, E>> emptyGraphSupplier,
                                                             final EdgeFactory<V, E> edgeFactory) {
         if (!originalGraph.containsVertex(nodeToReplace)) {
             return originalGraph;
         }
-        final Graph<V, E> resultGraph = graphSupplier.get();
+        final Graph<V, E> resultGraph = emptyGraphSupplier.get();
         copyPartsOfGraph(
                 originalGraph,
                 getSubtreeVertices(originalGraph, nodeToReplace),
