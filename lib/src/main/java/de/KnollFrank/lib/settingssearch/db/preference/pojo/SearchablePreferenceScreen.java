@@ -27,7 +27,6 @@ public final class SearchablePreferenceScreen {
     private final Optional<String> summary;
     @Ignore
     private final Optional<Set<SearchablePreference>> allPreferences;
-    // FK-TODO: remove parentId
     private final Optional<String> parentId;
 
     public SearchablePreferenceScreen(final String id,
