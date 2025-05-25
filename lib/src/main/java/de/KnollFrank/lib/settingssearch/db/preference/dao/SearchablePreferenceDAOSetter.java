@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -12,9 +13,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 class SearchablePreferenceDAOSetter {
 
-    private final SearchablePreferenceDAO dao;
+    private final SearchablePreference.DbDataProvider dao;
 
-    public SearchablePreferenceDAOSetter(final SearchablePreferenceDAO dao) {
+    public SearchablePreferenceDAOSetter(final SearchablePreference.DbDataProvider dao) {
         this.dao = dao;
     }
 
@@ -53,9 +54,25 @@ class SearchablePreferenceDAOSetter {
         return searchablePreferences;
     }
 
-    private SearchablePreference setDao(final SearchablePreference searchablePreference) {
+    public SearchablePreference setDao(final SearchablePreference searchablePreference) {
         searchablePreference.setDao(dao);
         return searchablePreference;
+    }
+
+    public void setDao(final Map<SearchablePreference, Set<SearchablePreference>> childrenByPreference) {
+        childrenByPreference.forEach(
+                (preference, children) -> {
+                    setDao(preference);
+                    setDao(children);
+                });
+    }
+
+    public void _setDao(final Map<SearchablePreference, Optional<SearchablePreference>> predecessorByPreference) {
+        predecessorByPreference.forEach(
+                (preference, predecessor) -> {
+                    setDao(preference);
+                    setDao(predecessor);
+                });
     }
 
     private PreferenceAndPredecessor setDao(final PreferenceAndPredecessor preferenceAndPredecessor) {

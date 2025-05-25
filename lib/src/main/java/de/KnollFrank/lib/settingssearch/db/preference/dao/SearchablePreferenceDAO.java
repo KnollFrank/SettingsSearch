@@ -30,7 +30,7 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 
 @Dao
-public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorAndHostProvider {
+public abstract class SearchablePreferenceDAO implements SearchablePreference.DbDataProvider {
 
     private final SearchablePreferenceDAOSetter daoSetter = new SearchablePreferenceDAOSetter(this);
     private final AppDatabase appDatabase;
@@ -141,7 +141,7 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
         return daoSetter.setDao(new HashSet<>(_searchWithinTitleSummarySearchableInfo(needle)));
     }
 
-    private Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference() {
+    public Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference() {
         if (childrenByPreference.isEmpty()) {
             childrenByPreference = Optional.of(computeChildrenByPreference());
         }
@@ -154,7 +154,7 @@ public abstract class SearchablePreferenceDAO implements ChildrenAndPredecessorA
                         new HashSet<>(_getPreferencesAndChildren())));
     }
 
-    private Map<SearchablePreference, Optional<SearchablePreference>> getPredecessorByPreference() {
+    public Map<SearchablePreference, Optional<SearchablePreference>> getPredecessorByPreference() {
         if (predecessorByPreference.isEmpty()) {
             predecessorByPreference = Optional.of(computePredecessorByPreference());
         }

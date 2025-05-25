@@ -21,13 +21,21 @@ import java.util.function.Supplier;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.ChildrenAndPredecessorAndHostProvider;
 
 @Entity
 public final class SearchablePreference {
 
+    public interface DbDataProvider {
+
+        Set<SearchablePreference> getChildren(SearchablePreference preference);
+
+        Optional<SearchablePreference> getPredecessor(SearchablePreference preference);
+
+        SearchablePreferenceScreen getHost(SearchablePreference preference);
+    }
+
     @Ignore
-    private Optional<ChildrenAndPredecessorAndHostProvider> dao = Optional.empty();
+    private Optional<DbDataProvider> dao = Optional.empty();
 
     @PrimaryKey
     private final int id;
@@ -87,7 +95,7 @@ public final class SearchablePreference {
         this.searchablePreferenceScreenId = searchablePreferenceScreenId;
     }
 
-    public void setDao(final ChildrenAndPredecessorAndHostProvider dao) {
+    public void setDao(final DbDataProvider dao) {
         this.dao = Optional.of(dao);
     }
 

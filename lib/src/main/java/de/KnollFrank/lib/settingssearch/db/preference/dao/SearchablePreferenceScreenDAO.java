@@ -21,7 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
 
 @Dao
-public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAndHostProvider {
+public abstract class SearchablePreferenceScreenDAO implements SearchablePreferenceScreen.DbDataProvider {
 
     private final SearchablePreferenceDAO searchablePreferenceDAO;
     private final SearchablePreferenceScreenDAOSetter daoSetter;
@@ -41,8 +41,8 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
     }
 
     public void persist(final SearchablePreferenceScreen searchablePreferenceScreen) {
-        _persist(daoSetter.setDao(searchablePreferenceScreen));
         searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferences());
+        _persist(daoSetter.setDao(searchablePreferenceScreen));
         invalidateCaches();
     }
 
@@ -119,6 +119,14 @@ public abstract class SearchablePreferenceScreenDAO implements AllPreferencesAnd
         return SearchablePreferenceScreenAndAllPreferencesHelper.getHostByPreference(
                 daoSetter.__setDao(
                         new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences())));
+    }
+
+    DbDataProvider createDetachedDbDataProvider() {
+        return new DetachedDbDataProvider(
+                getAllPreferencesBySearchablePreferenceScreen(),
+                getHostByPreference(),
+                searchablePreferenceDAO.getPredecessorByPreference(),
+                searchablePreferenceDAO.getChildrenByPreference());
     }
 
     private void invalidateCaches() {

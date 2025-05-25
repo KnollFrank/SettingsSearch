@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnPreferences;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreferencePOJO;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,12 +22,12 @@ public class SearchablePreferenceTest extends AppDatabaseTest {
     public void shouldGetPreferencePath() {
         // Given
         final SearchablePreference predecessor =
-                createSearchablePreferencePOJO(
+                createSearchablePreference(
                         "predecessor",
                         Optional.empty());
 
         final SearchablePreference parent =
-                createSearchablePreferencePOJO(
+                createSearchablePreference(
                         "parent",
                         Optional.of(predecessor));
         makeGetPreferencePathWorkOnPreferences(List.of(parent, predecessor), appDatabase);

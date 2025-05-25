@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnPreferences;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.copyPreferenceAndSetPredecessor;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreferencePOJO;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,19 +24,19 @@ public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
     public void shouldSortSearchResultsByPreferencePath() {
         // Given
         final SearchablePreference defaultSpeed =
-                createSearchablePreferencePOJO(
+                createSearchablePreference(
                         "default speed",
                         Optional.empty());
 
         final SearchablePreference car =
-                createSearchablePreferencePOJO(
+                createSearchablePreference(
                         "car",
                         Optional.empty());
 
         final SearchablePreference defaultSpeedOfCar = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(car));
 
         final SearchablePreference walk =
-                createSearchablePreferencePOJO(
+                createSearchablePreference(
                         "walk",
                         Optional.empty());
 

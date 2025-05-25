@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
 import android.text.Spannable;
 
@@ -15,7 +16,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory;
 import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 
@@ -26,7 +26,7 @@ public class PreferenceMatchesHighlighterTest {
     public void shouldHighlightPreferenceMatches_title() {
         // Given
         final SearchablePreference preference =
-                SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
+                createSearchablePreference(
                         Optional.of("title, title"),
                         Optional.empty(),
                         Optional.empty(),
@@ -58,7 +58,7 @@ public class PreferenceMatchesHighlighterTest {
     public void shouldHighlightPreferenceMatches_summary() {
         // Given
         final SearchablePreference preference =
-                SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
+                createSearchablePreference(
                         Optional.empty(),
                         Optional.of("summary, summary"),
                         Optional.empty(),
@@ -91,7 +91,7 @@ public class PreferenceMatchesHighlighterTest {
         // Given
         final String _searchableInfo = "info, info";
         final SearchablePreference preference =
-                SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
+                createSearchablePreference(
                         Optional.empty(),
                         Optional.empty(),
                         Optional.of(_searchableInfo),

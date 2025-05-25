@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
 import androidx.test.core.app.ActivityScenario;
 
@@ -16,7 +17,6 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -29,7 +29,7 @@ public class PreferenceMatcherTest {
             scenario.onActivity(activity -> {
                 // Given
                 final SearchablePreference searchablePreference =
-                        SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
+                        createSearchablePreference(
                                 Optional.of("Title, title part"),
                                 Optional.of("title in summary"),
                                 Optional.of("searchable info also has a title"),

@@ -11,7 +11,7 @@ public class SearchablePreferenceTestFactory {
 
     private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
-    public static SearchablePreference createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreference(
             final int id,
             final Optional<String> title,
             final Optional<String> summary,
@@ -36,7 +36,7 @@ public class SearchablePreferenceTestFactory {
                 "-1");
     }
 
-    public static SearchablePreference createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreference(
             final String title,
             final Optional<SearchablePreference> predecessor) {
         return new SearchablePreference(
@@ -56,12 +56,12 @@ public class SearchablePreferenceTestFactory {
                 "-1");
     }
 
-    public static SearchablePreference createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreference(
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
-        return createSearchablePreferencePOJO(
+        return createSearchablePreference(
                 1,
                 title,
                 summary,
@@ -70,7 +70,7 @@ public class SearchablePreferenceTestFactory {
                 Optional.empty());
     }
 
-    public static SearchablePreference createSearchablePreferencePOJO(
+    public static SearchablePreference createSearchablePreference(
             final int id,
             final Optional<String> title,
             final Optional<String> summary,
@@ -114,7 +114,7 @@ public class SearchablePreferenceTestFactory {
 
     public static SearchablePreference copyPreferenceAndSetPredecessor(final SearchablePreference preference,
                                                                        final Optional<SearchablePreference> predecessor) {
-        return createSearchablePreferencePOJO(
+        return createSearchablePreference(
                 preference.getTitle().orElseThrow(),
                 predecessor);
     }

@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
 import com.google.common.collect.Iterables;
 
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.search.IndexRange;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
@@ -387,7 +387,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo) {
-        return SearchablePreferenceTestFactory.createSearchablePreferencePOJO(
+        return createSearchablePreference(
                 id,
                 title,
                 summary,

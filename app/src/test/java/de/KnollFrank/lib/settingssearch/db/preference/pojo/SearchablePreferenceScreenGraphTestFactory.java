@@ -105,7 +105,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 Optional.empty(),
                                 true,
                                 Optional.empty(),
-                                Optional.of(1),
+                                Optional.of(parent.getId()),
                                 Optional.empty(),
                                 screenId),
                         new SearchablePreference(
@@ -120,7 +120,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 Optional.empty(),
                                 true,
                                 Optional.empty(),
-                                Optional.of(1),
+                                Optional.of(parent.getId()),
                                 Optional.empty(),
                                 screenId),
                         preferenceConnectingSrc2Dst),
