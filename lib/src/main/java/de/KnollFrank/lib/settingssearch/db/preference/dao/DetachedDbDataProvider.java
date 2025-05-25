@@ -8,7 +8,7 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
-public class DetachedDbDataProvider implements DbDataProvider {
+class DetachedDbDataProvider implements SearchablePreferenceScreen.DbDataProvider, SearchablePreference.DbDataProvider {
 
     private final Map<SearchablePreferenceScreen, Set<SearchablePreference>> allPreferencesBySearchablePreferenceScreen;
     private final Map<SearchablePreference, SearchablePreferenceScreen> hostByPreference;

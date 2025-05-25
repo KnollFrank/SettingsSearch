@@ -127,7 +127,7 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
                 .setDao(screens);
     }
 
-    private DbDataProvider createDetachedDbDataProvider() {
+    private DetachedDbDataProvider createDetachedDbDataProvider() {
         return new DetachedDbDataProvider(
                 getAllPreferencesBySearchablePreferenceScreen(),
                 getHostByPreference(),
@@ -135,7 +135,7 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
                 searchablePreferenceDAO.getChildrenByPreference());
     }
 
-    private static SearchablePreferenceScreenDAOSetter createSearchablePreferenceScreenDAOSetter(final DbDataProvider dbDataProvider) {
+    private static SearchablePreferenceScreenDAOSetter createSearchablePreferenceScreenDAOSetter(final DetachedDbDataProvider dbDataProvider) {
         return new SearchablePreferenceScreenDAOSetter(
                 dbDataProvider,
                 new SearchablePreferenceDAOSetter(dbDataProvider));
