@@ -121,12 +121,24 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
                         new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences())));
     }
 
-    DbDataProvider createDetachedDbDataProvider() {
+    void detachScreensFromDb(final Set<SearchablePreferenceScreen> screens) {
+        SearchablePreferenceScreenDAO
+                .createSearchablePreferenceScreenDAOSetter(createDetachedDbDataProvider())
+                .setDao(screens);
+    }
+
+    private DbDataProvider createDetachedDbDataProvider() {
         return new DetachedDbDataProvider(
                 getAllPreferencesBySearchablePreferenceScreen(),
                 getHostByPreference(),
                 searchablePreferenceDAO.getPredecessorByPreference(),
                 searchablePreferenceDAO.getChildrenByPreference());
+    }
+
+    private static SearchablePreferenceScreenDAOSetter createSearchablePreferenceScreenDAOSetter(final DbDataProvider dbDataProvider) {
+        return new SearchablePreferenceScreenDAOSetter(
+                dbDataProvider,
+                new SearchablePreferenceDAOSetter(dbDataProvider));
     }
 
     private void invalidateCaches() {

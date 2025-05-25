@@ -30,16 +30,7 @@ public class SearchablePreferenceScreenGraphDAO {
         searchablePreferenceScreenDAO.removeAll();
     }
 
-    // FK-TODO: rename method and move to SearchablePreferenceScreenDAO
     private void detachGraphFromDb(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        SearchablePreferenceScreenGraphDAO
-                .createSearchablePreferenceScreenDAOSetter(searchablePreferenceScreenDAO.createDetachedDbDataProvider())
-                .setDao(graph.vertexSet());
-    }
-
-    private static SearchablePreferenceScreenDAOSetter createSearchablePreferenceScreenDAOSetter(final DbDataProvider detachedDbDataProvider) {
-        return new SearchablePreferenceScreenDAOSetter(
-                detachedDbDataProvider,
-                new SearchablePreferenceDAOSetter(detachedDbDataProvider));
+        searchablePreferenceScreenDAO.detachScreensFromDb(graph.vertexSet());
     }
 }
