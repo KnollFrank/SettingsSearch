@@ -46,20 +46,6 @@ public final class SearchablePreferenceScreen {
         this(id, host, title, summary, Optional.empty(), parentId);
     }
 
-    private SearchablePreferenceScreen(final String id,
-                                       final Class<? extends PreferenceFragmentCompat> host,
-                                       final Optional<String> title,
-                                       final Optional<String> summary,
-                                       final Optional<Set<SearchablePreference>> allPreferences,
-                                       final Optional<String> parentId) {
-        this.id = id;
-        this.host = host;
-        this.parentId = parentId;
-        this.title = title;
-        this.summary = summary;
-        this.allPreferences = allPreferences;
-    }
-
     public void setDao(final AllPreferencesAndHostProvider dao) {
         this.dao = Optional.of(dao);
     }
@@ -88,10 +74,6 @@ public final class SearchablePreferenceScreen {
         return allPreferences.orElseGet(this::getAllPreferencesFromDao);
     }
 
-    private Set<SearchablePreference> getAllPreferencesFromDao() {
-        return dao.orElseThrow().getAllPreferences(this);
-    }
-
     @Override
     public boolean equals(final Object object) {
         if (object == null || getClass() != object.getClass()) return false;
@@ -113,5 +95,23 @@ public final class SearchablePreferenceScreen {
                 .add("summary='" + summary + "'")
                 .add("parentId=" + parentId)
                 .toString();
+    }
+
+    private SearchablePreferenceScreen(final String id,
+                                       final Class<? extends PreferenceFragmentCompat> host,
+                                       final Optional<String> title,
+                                       final Optional<String> summary,
+                                       final Optional<Set<SearchablePreference>> allPreferences,
+                                       final Optional<String> parentId) {
+        this.id = id;
+        this.host = host;
+        this.parentId = parentId;
+        this.title = title;
+        this.summary = summary;
+        this.allPreferences = allPreferences;
+    }
+
+    private Set<SearchablePreference> getAllPreferencesFromDao() {
+        return dao.orElseThrow().getAllPreferences(this);
     }
 }
