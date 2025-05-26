@@ -26,14 +26,6 @@ public class SubtreeReplacerTest {
     private final StringEdge ePR = new StringEdge("P->R");
 
     private final Supplier<Graph<StringVertex, StringEdge>> emptyGraphSupplier = () -> new DefaultDirectedGraph<>(StringEdge.class);
-    private final SubtreeReplacer.EdgeFactory<StringVertex, StringEdge> edgeFactory =
-            new SubtreeReplacer.EdgeFactory<>() {
-
-                @Override
-                public StringEdge createEdge(final StringVertex source, final StringVertex target, final StringEdge originalEdge) {
-                    return copyEdge(originalEdge);
-                }
-            };
 
     @Test
     public void replaceSubtree_nodeToReplaceIsRoot_replacesEntireGraph() {
@@ -56,7 +48,7 @@ public class SubtreeReplacerTest {
                 SubtreeReplacerTest
                         .newGraphBuilder()
                         .addVertices(vX, vY)
-                        .addEdge(vX, vY, copyEdge(eXY))
+                        .addEdge(vX, vY, cloneEdge(eXY))
                         .build();
 
         // When
@@ -66,7 +58,7 @@ public class SubtreeReplacerTest {
                         vR,
                         replacementGraph,
                         emptyGraphSupplier,
-                        edgeFactory);
+                        SubtreeReplacerTest::cloneEdge);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -101,8 +93,8 @@ public class SubtreeReplacerTest {
                 SubtreeReplacerTest
                         .newGraphBuilder()
                         .addVertices(vP, vX, vY)
-                        .addEdge(vP, vX, copyEdge(ePR))
-                        .addEdge(vX, vY, copyEdge(eXY))
+                        .addEdge(vP, vX, cloneEdge(ePR))
+                        .addEdge(vX, vY, cloneEdge(eXY))
                         .build();
 
         // When
@@ -112,7 +104,7 @@ public class SubtreeReplacerTest {
                         vR,
                         replacementGraph,
                         emptyGraphSupplier,
-                        edgeFactory);
+                        SubtreeReplacerTest::cloneEdge);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -152,7 +144,7 @@ public class SubtreeReplacerTest {
                         vR,
                         emptyReplacementGraph,
                         emptyGraphSupplier,
-                        edgeFactory);
+                        SubtreeReplacerTest::cloneEdge);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -180,7 +172,7 @@ public class SubtreeReplacerTest {
                 SubtreeReplacerTest
                         .newGraphBuilder()
                         .addVertices(vP, vX)
-                        .addEdge(vP, vX, copyEdge(ePR))
+                        .addEdge(vP, vX, cloneEdge(ePR))
                         .build();
 
         // When
@@ -190,7 +182,7 @@ public class SubtreeReplacerTest {
                         vR,
                         replacementGraph,
                         emptyGraphSupplier,
-                        edgeFactory);
+                        SubtreeReplacerTest::cloneEdge);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -227,7 +219,7 @@ public class SubtreeReplacerTest {
                         nonExistentNode,
                         replacementGraph,
                         emptyGraphSupplier,
-                        edgeFactory);
+                        SubtreeReplacerTest::cloneEdge);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -262,7 +254,7 @@ public class SubtreeReplacerTest {
                         vR,
                         emptyReplacementGraph,
                         emptyGraphSupplier,
-                        edgeFactory);
+                        SubtreeReplacerTest::cloneEdge);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -312,9 +304,9 @@ public class SubtreeReplacerTest {
                 SubtreeReplacerTest
                         .newGraphBuilder()
                         .addVertices(vP, vX, vY, vZ)
-                        .addEdge(vP, vX, copyEdge(ePR)) // Edge factory reuses ePR label
-                        .addEdge(vX, vY, copyEdge(eXY)) // Edges from replacement
-                        .addEdge(vX, vZ, copyEdge(eXZ)) // Edges from replacement
+                        .addEdge(vP, vX, cloneEdge(ePR)) // Edge factory reuses ePR label
+                        .addEdge(vX, vY, cloneEdge(eXY)) // Edges from replacement
+                        .addEdge(vX, vZ, cloneEdge(eXZ)) // Edges from replacement
                         .build();
 
         // When
@@ -324,7 +316,7 @@ public class SubtreeReplacerTest {
                         vR,
                         replacementGraph,
                         emptyGraphSupplier,
-                        edgeFactory);
+                        SubtreeReplacerTest::cloneEdge);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -357,7 +349,7 @@ public class SubtreeReplacerTest {
                         vR,
                         replacementGraph,
                         emptyGraphSupplier,
-                        edgeFactory);
+                        SubtreeReplacerTest::cloneEdge);
 
         // Then
         assertActualEqualsExpected(returnedGraph, originalGraphSnapshotForExpected);
@@ -367,7 +359,7 @@ public class SubtreeReplacerTest {
         return DefaultDirectedGraph.createBuilder(StringEdge.class);
     }
 
-    private static StringEdge copyEdge(final StringEdge edge) {
+    private static StringEdge cloneEdge(final StringEdge edge) {
         return new StringEdge(edge.getLabel());
     }
 }
