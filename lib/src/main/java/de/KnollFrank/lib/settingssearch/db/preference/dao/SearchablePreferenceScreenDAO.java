@@ -65,7 +65,7 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
     }
 
     @Override
-    public SearchablePreferenceScreen getHost(SearchablePreference preference) {
+    public SearchablePreferenceScreen getHost(final SearchablePreference preference) {
         return Maps.get(getHostByPreference(), preference).orElseThrow();
     }
 
