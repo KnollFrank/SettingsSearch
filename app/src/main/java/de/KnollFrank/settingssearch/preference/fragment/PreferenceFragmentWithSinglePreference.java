@@ -7,11 +7,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import java.util.Optional;
-
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-
 public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCompat {
 
     public static final String TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS = "title of dst preference coming from src with extras";
@@ -54,20 +49,6 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
         preference.setKey(ADDITIONAL_PREFERENCE_KEY);
         preference.setTitle(SOME_ADDITIONAL_PREFERENCE);
         return preference;
-    }
-
-    public SearchablePreference createAdditionalSearchablePreference(final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
-        final Preference preference = createAdditionalPreference(getPreferenceManager().getContext());
-        return preference2SearchablePreferenceConverter
-                .convert2POJO(
-                        preference,
-                        // FK-FIXME: -1
-                        "-1",
-                        this,
-                        Optional.empty(),
-                        // FK-TODO: generalize because too many hard coded values
-                        Optional.empty())
-                .searchablePreference();
     }
 
     private Preference createPreference(final String key,
