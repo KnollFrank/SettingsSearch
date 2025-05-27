@@ -24,17 +24,17 @@ public class SubtreeReplacer<V, E> {
     }
 
     public Graph<V, E> replaceSubtreeWithTree(final Graph<V, E> originalGraph,
-                                              final V nodeToReplace,
+                                              final V rootNodeOfSubtreeToReplace,
                                               final Graph<V, E> replacementTree) {
-        if (!originalGraph.containsVertex(nodeToReplace)) {
+        if (!originalGraph.containsVertex(rootNodeOfSubtreeToReplace)) {
             return originalGraph;
         }
         final Graph<V, E> resultGraph = emptyGraphSupplier.get();
         copyPartsOfGraph(
                 originalGraph,
-                getSubtreeVertices(originalGraph, nodeToReplace),
+                getSubtreeVertices(originalGraph, rootNodeOfSubtreeToReplace),
                 resultGraph);
-        integrateReplacementTreeIntoResultGraph(originalGraph, nodeToReplace, replacementTree, resultGraph);
+        integrateReplacementTreeIntoResultGraph(originalGraph, rootNodeOfSubtreeToReplace, replacementTree, resultGraph);
         return resultGraph;
     }
 
