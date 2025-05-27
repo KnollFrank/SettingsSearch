@@ -89,12 +89,13 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         checkBoxPreference.setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
 
+                    private final SubtreeReplacer<SearchablePreferenceScreen, SearchablePreferenceEdge> subtreeReplacer =
+                            new SubtreeReplacer<>(
+                                    () -> new DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>(SearchablePreferenceEdge.class),
+                                    edge -> new SearchablePreferenceEdge(edge.preference));
+
                     @Override
                     public boolean onPreferenceClick(@NonNull final Preference preference) {
-                        final SubtreeReplacer<SearchablePreferenceScreen, SearchablePreferenceEdge> subtreeReplacer =
-                                new SubtreeReplacer<>(
-                                        () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
-                                        edge -> new SearchablePreferenceEdge(edge.preference));
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                                 subtreeReplacer.replaceSubtreeWithTree(
                                         getPojoGraph(),
