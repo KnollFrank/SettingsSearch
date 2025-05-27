@@ -91,32 +91,18 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     @Override
                     public boolean onPreferenceClick(@NonNull final Preference preference) {
-                        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph = getPojoGraph();
-                        final SearchablePreferenceScreen pojoScreenOfPrefsFragmentFirst = getPojoScreenRootedAt(PrefsFragmentFirst.this);
-                        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraphRootedAtPrefsFragmentFirst =
-                                getPojoGraphRootedAt(
-                                        new PreferenceScreenWithHost(
-                                                getPreferenceScreen(),
-                                                PrefsFragmentFirst.this));
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
-                                replaceNodeWithGraph(
-                                        /* graph = */            pojoGraph,
-                                        /* nodeToReplace = */    pojoScreenOfPrefsFragmentFirst,
-                                        /* replacementGraph = */ newPojoGraphRootedAtPrefsFragmentFirst);
+                                SubtreeReplacer.replaceSubtreeWithTree(
+                                        getPojoGraph(),
+                                        getPojoScreenRootedAt(PrefsFragmentFirst.this),
+                                        getPojoGraphRootedAt(
+                                                new PreferenceScreenWithHost(
+                                                        getPreferenceScreen(),
+                                                        PrefsFragmentFirst.this)),
+                                        () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
+                                        edge -> new SearchablePreferenceEdge(edge.preference));
                         getAppDatabase().searchablePreferenceScreenGraphDAO().persist(newPojoGraph);
                         return true;
-                    }
-
-                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replaceNodeWithGraph(
-                            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-                            final SearchablePreferenceScreen nodeToReplace,
-                            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replacementGraph) {
-                        return SubtreeReplacer.replaceSubtreeWithTree(
-                                graph,
-                                nodeToReplace,
-                                replacementGraph,
-                                () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
-                                edge -> new SearchablePreferenceEdge(edge.preference));
                     }
 
                     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {
