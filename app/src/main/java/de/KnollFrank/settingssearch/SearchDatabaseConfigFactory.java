@@ -20,12 +20,9 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Classes;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -155,16 +152,6 @@ public class SearchDatabaseConfigFactory {
                             @Override
                             public void onFinishComputePreferences() {
                                 Log.i(this.getClass().getSimpleName(), "onFinishComputePreferences");
-                            }
-                        })
-                .withPreferenceFragmentIdProvider(
-                        new PreferenceFragmentIdProvider() {
-
-                            private final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
-
-                            @Override
-                            public String getId(final PreferenceFragmentCompat preferenceFragment) {
-                                return String.valueOf(idGenerator.nextId());
                             }
                         })
                 .build();
