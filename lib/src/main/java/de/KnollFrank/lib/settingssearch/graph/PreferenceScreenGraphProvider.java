@@ -28,12 +28,6 @@ class PreferenceScreenGraphProvider {
             return;
         }
         preferenceScreenGraph.addVertex(root);
-        // FK-TODO: remove sleep
-//        try {
-//            Thread.sleep(1000);
-//        } catch (final InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
         connectedPreferenceScreenByPreferenceProvider
                 .getConnectedPreferenceScreenByPreference(root)
                 .forEach(
