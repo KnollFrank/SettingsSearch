@@ -7,8 +7,6 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.builder.GraphBuilder;
 import org.junit.Test;
 
-import java.util.function.Supplier;
-
 public class SubtreeReplacerTest {
 
     private final StringVertex vR = new StringVertex("R");
@@ -25,11 +23,10 @@ public class SubtreeReplacerTest {
     private final StringEdge eXZ = new StringEdge("X->Z");
     private final StringEdge ePR = new StringEdge("P->R");
 
-    private final Supplier<Graph<StringVertex, StringEdge>> emptyGraphSupplier = () -> new DefaultDirectedGraph<>(StringEdge.class);
-
     @Test
     public void replaceSubtree_nodeToReplaceIsRoot_replacesEntireGraph() {
         // Given
+        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: R -> A (eRA)
         final Graph<StringVertex, StringEdge> originalGraph =
                 SubtreeReplacerTest
@@ -53,12 +50,10 @@ public class SubtreeReplacerTest {
 
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
-                SubtreeReplacer.replaceSubtreeWithTree(
+                subtreeReplacer.replaceSubtreeWithTree(
                         originalGraph,
                         vR,
-                        replacementGraph,
-                        emptyGraphSupplier,
-                        SubtreeReplacerTest::cloneEdge);
+                        replacementGraph);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -67,6 +62,7 @@ public class SubtreeReplacerTest {
     @Test
     public void replaceSubtree_nodeToReplaceIsChild() {
         // Given
+        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree:
         //   P --ePR--> R --eRA--> A
         //              |
@@ -99,12 +95,10 @@ public class SubtreeReplacerTest {
 
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
-                SubtreeReplacer.replaceSubtreeWithTree(
+                subtreeReplacer.replaceSubtreeWithTree(
                         originalGraph,
                         vR,
-                        replacementGraph,
-                        emptyGraphSupplier,
-                        SubtreeReplacerTest::cloneEdge);
+                        replacementGraph);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -113,6 +107,7 @@ public class SubtreeReplacerTest {
     @Test
     public void replaceSubtree_emptyReplacement_removesSubtree() {
         // Given
+        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree:
         //   P --ePR--> R --eRA--> A
         // Node to replace: R (and its subtree [A])
@@ -139,12 +134,10 @@ public class SubtreeReplacerTest {
 
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
-                SubtreeReplacer.replaceSubtreeWithTree(
+                subtreeReplacer.replaceSubtreeWithTree(
                         originalGraph,
                         vR,
-                        emptyReplacementGraph,
-                        emptyGraphSupplier,
-                        SubtreeReplacerTest::cloneEdge);
+                        emptyReplacementGraph);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -153,6 +146,7 @@ public class SubtreeReplacerTest {
     @Test
     public void replaceSubtree_nodeToReplaceIsLeaf() {
         // Given
+        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: P --ePR--> R
         // Node to replace: R (a leaf)
         final Graph<StringVertex, StringEdge> originalGraph =
@@ -177,12 +171,10 @@ public class SubtreeReplacerTest {
 
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
-                SubtreeReplacer.replaceSubtreeWithTree(
+                subtreeReplacer.replaceSubtreeWithTree(
                         originalGraph,
                         vR,
-                        replacementGraph,
-                        emptyGraphSupplier,
-                        SubtreeReplacerTest::cloneEdge);
+                        replacementGraph);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -191,6 +183,7 @@ public class SubtreeReplacerTest {
     @Test
     public void replaceSubtree_nodeToReplaceNotInGraph_returnsOriginalGraphInstance() {
         // Given
+        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: R -> A (eRA)
         final Graph<StringVertex, StringEdge> originalGraph =
                 SubtreeReplacerTest
@@ -214,12 +207,10 @@ public class SubtreeReplacerTest {
 
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
-                SubtreeReplacer.replaceSubtreeWithTree(
+                subtreeReplacer.replaceSubtreeWithTree(
                         originalGraph,
                         nonExistentNode,
-                        replacementGraph,
-                        emptyGraphSupplier,
-                        SubtreeReplacerTest::cloneEdge);
+                        replacementGraph);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -228,6 +219,7 @@ public class SubtreeReplacerTest {
     @Test
     public void replaceSubtree_replacementGraphIsEmptyAndNodeToReplaceIsRoot_resultsInEmptyGraph() {
         // Given
+        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: R -> A (eRA)
         // Node to replace: R (the root)
         final Graph<StringVertex, StringEdge> originalGraph =
@@ -249,12 +241,10 @@ public class SubtreeReplacerTest {
 
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
-                SubtreeReplacer.replaceSubtreeWithTree(
+                subtreeReplacer.replaceSubtreeWithTree(
                         originalGraph,
                         vR,
-                        emptyReplacementGraph,
-                        emptyGraphSupplier,
-                        SubtreeReplacerTest::cloneEdge);
+                        emptyReplacementGraph);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -263,6 +253,7 @@ public class SubtreeReplacerTest {
     @Test
     public void replaceSubtree_complexScenarioWithDeeperSubtree() {
         // Given
+        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree:
         //      P
         //      | (ePR P->R)
@@ -311,12 +302,10 @@ public class SubtreeReplacerTest {
 
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
-                SubtreeReplacer.replaceSubtreeWithTree(
+                subtreeReplacer.replaceSubtreeWithTree(
                         originalGraph,
                         vR,
-                        replacementGraph,
-                        emptyGraphSupplier,
-                        SubtreeReplacerTest::cloneEdge);
+                        replacementGraph);
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
@@ -325,6 +314,7 @@ public class SubtreeReplacerTest {
     @Test
     public void replaceSubtree_originalGraphIsEmpty_nodeToReplaceNotFound() {
         // Given
+        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: (empty)
         final Graph<StringVertex, StringEdge> originalGraph =
                 SubtreeReplacerTest
@@ -344,15 +334,19 @@ public class SubtreeReplacerTest {
 
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
-                SubtreeReplacer.replaceSubtreeWithTree(
+                subtreeReplacer.replaceSubtreeWithTree(
                         originalGraph,
                         vR,
-                        replacementGraph,
-                        emptyGraphSupplier,
-                        SubtreeReplacerTest::cloneEdge);
+                        replacementGraph);
 
         // Then
         assertActualEqualsExpected(returnedGraph, originalGraphSnapshotForExpected);
+    }
+
+    private SubtreeReplacer<StringVertex, StringEdge> createSubtreeReplacer() {
+        return new SubtreeReplacer<>(
+                () -> new DefaultDirectedGraph<>(StringEdge.class),
+                SubtreeReplacerTest::cloneEdge);
     }
 
     private static GraphBuilder<StringVertex, StringEdge, ?> newGraphBuilder() {

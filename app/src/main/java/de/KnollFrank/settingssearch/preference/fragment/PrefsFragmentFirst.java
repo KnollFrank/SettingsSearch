@@ -91,16 +91,18 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     @Override
                     public boolean onPreferenceClick(@NonNull final Preference preference) {
+                        final SubtreeReplacer<SearchablePreferenceScreen, SearchablePreferenceEdge> subtreeReplacer =
+                                new SubtreeReplacer<>(
+                                        () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
+                                        edge -> new SearchablePreferenceEdge(edge.preference));
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
-                                SubtreeReplacer.replaceSubtreeWithTree(
+                                subtreeReplacer.replaceSubtreeWithTree(
                                         getPojoGraph(),
                                         getPojoScreenRootedAt(PrefsFragmentFirst.this),
                                         getPojoGraphRootedAt(
                                                 new PreferenceScreenWithHost(
                                                         getPreferenceScreen(),
-                                                        PrefsFragmentFirst.this)),
-                                        () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
-                                        edge -> new SearchablePreferenceEdge(edge.preference));
+                                                        PrefsFragmentFirst.this)));
                         getAppDatabase().searchablePreferenceScreenGraphDAO().persist(newPojoGraph);
                         return true;
                     }
