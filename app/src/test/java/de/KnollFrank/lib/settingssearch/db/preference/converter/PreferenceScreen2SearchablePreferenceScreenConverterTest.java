@@ -42,6 +42,10 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
+                final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter =
+                        new PreferenceScreen2SearchablePreferenceScreenConverter(
+                                createPreference2SearchablePreferenceConverter());
+
                 final String parentKey = "parentKey";
                 final @LayoutRes int layoutResIdOfParent = 15;
 
@@ -54,7 +58,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
 
                 // When
                 final SearchablePreferenceScreen pojo =
-                        new PreferenceScreen2SearchablePreferenceScreenConverter(createPreference2SearchablePreferenceConverter())
+                        preferenceScreen2SearchablePreferenceScreenConverter
                                 .convertPreferenceScreen(
                                         getPreferenceScreen(preferenceFragment, activity),
                                         preferenceFragment,

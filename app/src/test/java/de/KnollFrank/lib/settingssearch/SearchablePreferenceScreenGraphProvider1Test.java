@@ -123,10 +123,10 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 emptyComputePreferencesListener(),
                 new PreferenceScreen2SearchablePreferenceScreenConverter(
                         new Preference2SearchablePreferenceConverter(
-                                (preference1, hostOfPreference1) -> Optional.empty(),
+                                (preference, hostOfPreference) -> Optional.empty(),
                                 new SearchableInfoAndDialogInfoProvider(
-                                        preference1 -> Optional.empty(),
-                                        (preference1, hostOfPreference1) -> Optional.empty()),
+                                        preference -> Optional.empty(),
+                                        (preference, hostOfPreference) -> Optional.empty()),
                                 IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,

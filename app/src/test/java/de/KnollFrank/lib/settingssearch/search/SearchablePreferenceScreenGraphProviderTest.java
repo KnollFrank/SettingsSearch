@@ -113,7 +113,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                                 PreferenceDialogsFactory.createPreferenceDialogs(
                                                         fragmentActivity,
                                                         TestActivity.FRAGMENT_CONTAINER_VIEW),
-                                                (preference1, hostOfPreference1) -> Optional.empty())),
+                                                (preference, hostOfPreference) -> Optional.empty())),
                                 IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,

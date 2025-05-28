@@ -20,6 +20,7 @@ public class Graph2POJOGraphTransformer {
 
     public static Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
+            // FK-TODO: make preferenceScreen2SearchablePreferenceScreenConverter an instance variable of this class
             final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         return GraphTransformerAlgorithm.transform(
