@@ -7,6 +7,7 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
+// FK-TODO: remove PreferencePathNavigator an replace with adapted PreferencePath
 public class PreferencePathPointer {
 
     public final PreferencePath preferencePath;

@@ -19,6 +19,7 @@ class SearchablePreferenceScreen2POJOConverter {
                                                                  final Optional<String> parentId,
                                                                  final PreferenceScreen preferenceScreen,
                                                                  final PreferenceFragmentCompat hostOfPreferenceScreen,
+                                                                 // FK-TODO: make preference2SearchablePreferenceConverter an instance variable of this class
                                                                  final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
                                                                  final Optional<SearchablePreference> predecessorOfPreferenceScreen) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
