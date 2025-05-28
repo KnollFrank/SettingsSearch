@@ -11,7 +11,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -21,16 +20,16 @@ public class Graph2POJOGraphTransformer {
 
     public static Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
-            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
+            final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 SearchablePreferenceEdge.class,
-                createGraphTransformer(preference2SearchablePreferenceConverter, preferenceFragmentIdProvider));
+                createGraphTransformer(preferenceScreen2SearchablePreferenceScreenConverter, preferenceFragmentIdProvider));
     }
 
     private static GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer(
-            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
+            final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         return new GraphTransformer<>() {
 
@@ -65,8 +64,7 @@ public class Graph2POJOGraphTransformer {
                     final PreferenceScreenWithHost node,
                     final Optional<String> parentId,
                     final Optional<SearchablePreference> predecessorOfNode) {
-                // FK-TODO: replace preference2SearchablePreferenceConverter with PreferenceScreen2SearchablePreferenceScreenConverter
-                return new PreferenceScreen2SearchablePreferenceScreenConverter(preference2SearchablePreferenceConverter).convertPreferenceScreen(
+                return preferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
                         preferenceFragmentIdProvider.getId(node.host()),

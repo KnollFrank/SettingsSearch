@@ -6,6 +6,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
@@ -48,7 +49,8 @@ public class SearchablePreferenceScreenGraphProvider {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
                 Graph2POJOGraphTransformer.transformGraph2POJOGraph(
                         preferenceScreenGraph,
-                        preference2SearchablePreferenceConverter,
+                        // FK-TODO: make PreferenceScreen2SearchablePreferenceScreenConverter a instance variable
+                        new PreferenceScreen2SearchablePreferenceScreenConverter(preference2SearchablePreferenceConverter),
                         preferenceFragmentIdProvider));
     }
 }

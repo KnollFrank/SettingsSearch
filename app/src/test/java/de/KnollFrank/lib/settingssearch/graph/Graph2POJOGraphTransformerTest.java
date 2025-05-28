@@ -36,6 +36,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -69,7 +70,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         removeMapFromPojoNodes(
                                 Graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                         entityGraph,
-                                        preference2SearchablePreferenceConverter,
+                                        new PreferenceScreen2SearchablePreferenceScreenConverter(preference2SearchablePreferenceConverter),
                                         new DefaultPreferenceFragmentIdProvider()));
 
                 // Then
