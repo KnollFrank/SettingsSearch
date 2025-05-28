@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFr
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -65,13 +65,13 @@ public class Graph2POJOGraphTransformer {
                     final PreferenceScreenWithHost node,
                     final Optional<String> parentId,
                     final Optional<SearchablePreference> predecessorOfNode) {
-                return PreferenceScreenWithHost2POJOConverter
-                        .convertPreferenceScreen(
-                                node,
-                                preferenceFragmentIdProvider.getId(node.host()),
-                                parentId,
-                                preference2SearchablePreferenceConverter,
-                                predecessorOfNode);
+                return PreferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
+                        node.preferenceScreen(),
+                        node.host(),
+                        preferenceFragmentIdProvider.getId(node.host()),
+                        parentId,
+                        preference2SearchablePreferenceConverter,
+                        predecessorOfNode);
             }
 
             private static SearchablePreference getPredecessorOfNode(

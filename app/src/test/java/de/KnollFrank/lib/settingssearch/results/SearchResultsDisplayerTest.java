@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.results;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnPreferences;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest.getInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItemCount;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenWithHost2POJOConverterTest;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
@@ -156,7 +156,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                                 return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                             }
                         });
-        PreferenceScreenWithHost2POJOConverterTest.initializeFragment(
+        PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment(
                 searchResultsFragment,
                 getInstantiateAndInitializeFragment(searchResultsFragment, activity));
         return searchResultsFragment;

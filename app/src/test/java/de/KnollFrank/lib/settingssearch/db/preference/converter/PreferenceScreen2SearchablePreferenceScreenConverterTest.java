@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -36,10 +35,10 @@ import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndIniti
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class PreferenceScreenWithHost2POJOConverterTest {
+public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
 
     @Test
-    public void shouldConvertPreferenceScreenWithHost2POJO() {
+    public void shouldConvertPreferenceScreen() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -55,11 +54,10 @@ public class PreferenceScreenWithHost2POJOConverterTest {
 
                 // When
                 final SearchablePreferenceScreen pojo =
-                        PreferenceScreenWithHost2POJOConverter
+                        PreferenceScreen2SearchablePreferenceScreenConverter
                                 .convertPreferenceScreen(
-                                        new PreferenceScreenWithHost(
-                                                getPreferenceScreen(preferenceFragment, activity),
-                                                preferenceFragment),
+                                        getPreferenceScreen(preferenceFragment, activity),
+                                        preferenceFragment,
                                         id,
                                         Optional.empty(),
                                         new Preference2SearchablePreferenceConverter(
