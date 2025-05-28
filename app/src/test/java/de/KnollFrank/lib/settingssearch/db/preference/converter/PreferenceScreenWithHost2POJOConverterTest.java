@@ -56,7 +56,7 @@ public class PreferenceScreenWithHost2POJOConverterTest {
                 // When
                 final SearchablePreferenceScreen pojo =
                         PreferenceScreenWithHost2POJOConverter
-                                .convert2POJO(
+                                .convertPreferenceScreen(
                                         new PreferenceScreenWithHost(
                                                 getPreferenceScreen(preferenceFragment, activity),
                                                 preferenceFragment),

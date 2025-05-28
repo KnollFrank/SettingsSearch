@@ -66,7 +66,7 @@ public class Graph2POJOGraphTransformer {
                     final Optional<String> parentId,
                     final Optional<SearchablePreference> predecessorOfNode) {
                 return PreferenceScreenWithHost2POJOConverter
-                        .convert2POJO(
+                        .convertPreferenceScreen(
                                 node,
                                 preferenceFragmentIdProvider.getId(node.host()),
                                 parentId,

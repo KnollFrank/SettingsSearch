@@ -40,14 +40,14 @@ public class Preference2SearchablePreferenceConverter {
                                               BiMap<SearchablePreference, Preference> pojoEntityMap) {
     }
 
-    public SearchablePreferenceWithMap convert2POJO(final Preference preference,
-                                                    final String searchablePreferenceScreenId,
-                                                    final PreferenceFragmentCompat hostOfPreference,
-                                                    final Optional<Integer> parentIdOfPreference,
-                                                    final Optional<SearchablePreference> predecessorOfPreference) {
+    public SearchablePreferenceWithMap convertPreference(final Preference preference,
+                                                         final String searchablePreferenceScreenId,
+                                                         final PreferenceFragmentCompat hostOfPreference,
+                                                         final Optional<Integer> parentIdOfPreference,
+                                                         final Optional<SearchablePreference> predecessorOfPreference) {
         final int id = idGenerator.nextId();
         final BiMap<SearchablePreference, Preference> searchablePreferences =
-                convertChildren2POJOs(
+                convertChildrenOfPreference(
                         preference,
                         searchablePreferenceScreenId,
                         hostOfPreference,
@@ -78,26 +78,26 @@ public class Preference2SearchablePreferenceConverter {
                         .buildOrThrow());
     }
 
-    public BiMap<SearchablePreference, Preference> convert2POJOs(final List<Preference> preferences,
-                                                                 final String searchablePreferenceScreenId,
-                                                                 final PreferenceFragmentCompat hostOfPreferences,
-                                                                 final Optional<Integer> parentIdOfPreferences,
-                                                                 final Optional<SearchablePreference> predecessorOfPreferences) {
+    public BiMap<SearchablePreference, Preference> convertPreferences(final List<Preference> preferences,
+                                                                      final String searchablePreferenceScreenId,
+                                                                      final PreferenceFragmentCompat hostOfPreferences,
+                                                                      final Optional<Integer> parentIdOfPreferences,
+                                                                      final Optional<SearchablePreference> predecessorOfPreferences) {
         final List<SearchablePreferenceWithMap> pojoWithMapList =
                 preferences
                         .stream()
-                        .map(preference -> convert2POJO(preference, searchablePreferenceScreenId, hostOfPreferences, parentIdOfPreferences, predecessorOfPreferences))
+                        .map(preference -> convertPreference(preference, searchablePreferenceScreenId, hostOfPreferences, parentIdOfPreferences, predecessorOfPreferences))
                         .collect(Collectors.toList());
         return getPojoEntityMap(pojoWithMapList);
     }
 
-    private BiMap<SearchablePreference, Preference> convertChildren2POJOs(final Preference preference,
-                                                                          final String searchablePreferenceScreenId,
-                                                                          final PreferenceFragmentCompat hostOfPreference,
-                                                                          final Optional<Integer> idOfPreference,
-                                                                          final Optional<SearchablePreference> predecessorOfPreference) {
+    private BiMap<SearchablePreference, Preference> convertChildrenOfPreference(final Preference preference,
+                                                                                final String searchablePreferenceScreenId,
+                                                                                final PreferenceFragmentCompat hostOfPreference,
+                                                                                final Optional<Integer> idOfPreference,
+                                                                                final Optional<SearchablePreference> predecessorOfPreference) {
         return preference instanceof final PreferenceGroup preferenceGroup ?
-                convert2POJOs(
+                convertPreferences(
                         Preferences.getImmediateChildren(preferenceGroup),
                         searchablePreferenceScreenId,
                         hostOfPreference,
