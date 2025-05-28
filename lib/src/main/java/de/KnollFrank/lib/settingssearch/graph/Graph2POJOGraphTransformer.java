@@ -18,10 +18,15 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 
 public class Graph2POJOGraphTransformer {
 
-    public static Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
+    private final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter;
+
+    public Graph2POJOGraphTransformer(final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter) {
+        this.preferenceScreen2SearchablePreferenceScreenConverter = preferenceScreen2SearchablePreferenceScreenConverter;
+    }
+
+    public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
-            // FK-TODO: make preferenceScreen2SearchablePreferenceScreenConverter an instance variable of this class
-            final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
+            // FK-TODO: make preferenceFragmentIdProvider an instance variable?
             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,

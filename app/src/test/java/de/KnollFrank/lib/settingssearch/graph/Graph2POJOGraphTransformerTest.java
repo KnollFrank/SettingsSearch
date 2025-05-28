@@ -57,20 +57,21 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 final InstantiateAndInitializeFragment instantiateAndInitializeFragment = getInstantiateAndInitializeFragment(preferenceFragment, activity);
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
                         PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, instantiateAndInitializeFragment, activity);
-                final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
-                        new Preference2SearchablePreferenceConverter(
-                                (preference, hostOfPreference) -> Optional.empty(),
-                                new SearchableInfoAndDialogInfoProvider(
-                                        preference -> Optional.empty(),
-                                        (preference, hostOfPreference) -> Optional.empty()),
-                                IdGeneratorFactory.createIdGeneratorStartingAt(1));
+                final Graph2POJOGraphTransformer graph2POJOGraphTransformer =
+                        new Graph2POJOGraphTransformer(
+                                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                                        new Preference2SearchablePreferenceConverter(
+                                                (preference, hostOfPreference) -> Optional.empty(),
+                                                new SearchableInfoAndDialogInfoProvider(
+                                                        preference -> Optional.empty(),
+                                                        (preference, hostOfPreference) -> Optional.empty()),
+                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))));
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
                         removeMapFromPojoNodes(
-                                Graph2POJOGraphTransformer.transformGraph2POJOGraph(
+                                graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                         entityGraph,
-                                        new PreferenceScreen2SearchablePreferenceScreenConverter(preference2SearchablePreferenceConverter),
                                         new DefaultPreferenceFragmentIdProvider()));
 
                 // Then

@@ -92,7 +92,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                         fragmentActivity),
                 new SearchablePreferenceScreenProvider(
                         new PreferenceVisibleAndSearchablePredicate(
-                                (preference1, hostOfPreference1) -> true)),
+                                (preference, hostOfPreference) -> true)),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 

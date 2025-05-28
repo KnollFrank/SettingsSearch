@@ -46,9 +46,9 @@ public class SearchablePreferenceScreenGraphProvider {
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
-                Graph2POJOGraphTransformer.transformGraph2POJOGraph(
+                // FK-TODO: make Graph2POJOGraphTransformer an instance variable and remove preferenceScreen2SearchablePreferenceScreenConverter
+                new Graph2POJOGraphTransformer(preferenceScreen2SearchablePreferenceScreenConverter).transformGraph2POJOGraph(
                         preferenceScreenGraph,
-                        preferenceScreen2SearchablePreferenceScreenConverter,
                         preferenceFragmentIdProvider));
     }
 }
