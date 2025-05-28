@@ -65,14 +65,14 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                                 new SearchableInfoAndDialogInfoProvider(
                                                         preference -> Optional.empty(),
                                                         (preference, hostOfPreference) -> Optional.empty()),
-                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))));
+                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                new DefaultPreferenceFragmentIdProvider());
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
                         removeMapFromPojoNodes(
                                 graph2POJOGraphTransformer.transformGraph2POJOGraph(
-                                        entityGraph,
-                                        new DefaultPreferenceFragmentIdProvider()));
+                                        entityGraph));
 
                 // Then
                 makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase);

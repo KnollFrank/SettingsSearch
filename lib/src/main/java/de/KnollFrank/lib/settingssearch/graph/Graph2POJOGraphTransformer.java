@@ -19,24 +19,23 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 public class Graph2POJOGraphTransformer {
 
     private final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter;
+    private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
 
-    public Graph2POJOGraphTransformer(final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter) {
+    public Graph2POJOGraphTransformer(final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
+                                      final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.preferenceScreen2SearchablePreferenceScreenConverter = preferenceScreen2SearchablePreferenceScreenConverter;
+        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
     public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
-            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
-            // FK-TODO: make preferenceFragmentIdProvider an instance variable?
-            final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 SearchablePreferenceEdge.class,
-                createGraphTransformer(preferenceScreen2SearchablePreferenceScreenConverter, preferenceFragmentIdProvider));
+                createGraphTransformer());
     }
 
-    private static GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer(
-            final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
-            final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer() {
         return new GraphTransformer<>() {
 
             @Override

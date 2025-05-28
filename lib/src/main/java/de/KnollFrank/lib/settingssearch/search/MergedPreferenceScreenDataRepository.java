@@ -90,7 +90,8 @@ public class MergedPreferenceScreenDataRepository {
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         preferenceDialogs,
-                                        IdGeneratorFactory.createIdGeneratorStartingAt(1)))),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                        searchDatabaseConfig.preferenceFragmentIdProvider),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
@@ -102,7 +103,6 @@ public class MergedPreferenceScreenDataRepository {
                             public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
                                 progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                             }
-                        }),
-                searchDatabaseConfig.preferenceFragmentIdProvider);
+                        }));
     }
 }

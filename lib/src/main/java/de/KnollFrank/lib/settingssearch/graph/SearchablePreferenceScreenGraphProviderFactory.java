@@ -55,14 +55,15 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                 searchDatabaseConfig.computePreferencesListener,
                 new Graph2POJOGraphTransformer(
                         new PreferenceScreen2SearchablePreferenceScreenConverter(
-                        Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
-                                searchDatabaseConfig,
-                                PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId),
-                                IdGeneratorFactory.createIdGeneratorStartingAt(
-                                        searchablePreferenceDAO
-                                                .getMaxId()
-                                                .map(maxId -> maxId + 1)
-                                                .orElse(0))))),
+                                Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
+                                        searchDatabaseConfig,
+                                        PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(
+                                                searchablePreferenceDAO
+                                                        .getMaxId()
+                                                        .map(maxId -> maxId + 1)
+                                                        .orElse(0)))),
+                        searchDatabaseConfig.preferenceFragmentIdProvider),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         new PreferenceScreenWithHostProvider(
                                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
@@ -79,7 +80,6 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         context,
                         preferenceScreenWithHost -> {
-                        }),
-                searchDatabaseConfig.preferenceFragmentIdProvider);
+                        }));
     }
 }

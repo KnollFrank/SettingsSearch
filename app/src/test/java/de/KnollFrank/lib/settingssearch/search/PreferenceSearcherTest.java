@@ -778,7 +778,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                                                         fragmentActivity,
                                                                         TestActivity.FRAGMENT_CONTAINER_VIEW),
                                                                 preferenceDialogAndSearchableInfoProvider)),
-                                                IdGeneratorFactory.createIdGeneratorStartingAt(1)))),
+                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                new DefaultPreferenceFragmentIdProvider()),
                         PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                                 preferenceScreenWithHostProvider,
                                 preferenceFragmentConnected2PreferenceProvider,
@@ -797,8 +798,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 },
                                 fragmentActivity,
                                 preferenceScreenWithHost -> {
-                                }),
-                        new DefaultPreferenceFragmentIdProvider());
+                                }));
         searchablePreferenceScreenGraphDAO.persist(
                 searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
                         preferenceScreenWithHostProvider

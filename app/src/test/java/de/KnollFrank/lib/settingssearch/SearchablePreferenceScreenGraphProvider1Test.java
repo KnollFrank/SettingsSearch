@@ -124,20 +124,20 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 emptyComputePreferencesListener(),
                 new Graph2POJOGraphTransformer(
                         new PreferenceScreen2SearchablePreferenceScreenConverter(
-                        new Preference2SearchablePreferenceConverter(
-                                (preference, hostOfPreference) -> Optional.empty(),
-                                new SearchableInfoAndDialogInfoProvider(
-                                        preference -> Optional.empty(),
-                                        (preference, hostOfPreference) -> Optional.empty()),
-                                IdGeneratorFactory.createIdGeneratorStartingAt(1)))),
+                                new Preference2SearchablePreferenceConverter(
+                                        (preference, hostOfPreference) -> Optional.empty(),
+                                        new SearchableInfoAndDialogInfoProvider(
+                                                preference -> Optional.empty(),
+                                                (preference, hostOfPreference) -> Optional.empty()),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                        new DefaultPreferenceFragmentIdProvider()),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         activity,
                         preferenceScreenWithHost -> {
-                        }),
-                new DefaultPreferenceFragmentIdProvider());
+                        }));
     }
 
     private static SearchablePreference getPreference(

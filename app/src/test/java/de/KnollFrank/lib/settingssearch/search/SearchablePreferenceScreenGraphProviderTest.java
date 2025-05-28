@@ -107,23 +107,23 @@ public class SearchablePreferenceScreenGraphProviderTest {
                 computePreferencesListener,
                 new Graph2POJOGraphTransformer(
                         new PreferenceScreen2SearchablePreferenceScreenConverter(
-                        new Preference2SearchablePreferenceConverter(
-                                new IconProvider(new ReflectionIconResourceIdProvider()),
-                                new SearchableInfoAndDialogInfoProvider(
-                                        new BuiltinSearchableInfoProvider(),
-                                        new SearchableDialogInfoOfProvider(
-                                                PreferenceDialogsFactory.createPreferenceDialogs(
-                                                        fragmentActivity,
-                                                        TestActivity.FRAGMENT_CONTAINER_VIEW),
-                                                (preference, hostOfPreference) -> Optional.empty())),
-                                IdGeneratorFactory.createIdGeneratorStartingAt(1)))),
+                                new Preference2SearchablePreferenceConverter(
+                                        new IconProvider(new ReflectionIconResourceIdProvider()),
+                                        new SearchableInfoAndDialogInfoProvider(
+                                                new BuiltinSearchableInfoProvider(),
+                                                new SearchableDialogInfoOfProvider(
+                                                        PreferenceDialogsFactory.createPreferenceDialogs(
+                                                                fragmentActivity,
+                                                                TestActivity.FRAGMENT_CONTAINER_VIEW),
+                                                        (preference, hostOfPreference) -> Optional.empty())),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                        new DefaultPreferenceFragmentIdProvider()),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         activityClass -> Optional.empty(),
                         fragmentActivity,
                         preferenceScreenWithHost -> {
-                        }),
-                new DefaultPreferenceFragmentIdProvider());
+                        }));
     }
 }
