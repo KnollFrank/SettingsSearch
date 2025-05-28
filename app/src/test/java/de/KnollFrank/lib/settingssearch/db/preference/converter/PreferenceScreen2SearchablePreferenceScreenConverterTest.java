@@ -54,18 +54,12 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
 
                 // When
                 final SearchablePreferenceScreen pojo =
-                        PreferenceScreen2SearchablePreferenceScreenConverter
+                        new PreferenceScreen2SearchablePreferenceScreenConverter(createPreference2SearchablePreferenceConverter())
                                 .convertPreferenceScreen(
                                         getPreferenceScreen(preferenceFragment, activity),
                                         preferenceFragment,
                                         id,
                                         Optional.empty(),
-                                        new Preference2SearchablePreferenceConverter(
-                                                (preference, hostOfPreference) -> Optional.empty(),
-                                                new SearchableInfoAndDialogInfoProvider(
-                                                        preference -> Optional.empty(),
-                                                        (preference, hostOfPreference) -> Optional.empty()),
-                                                IdGeneratorFactory.createIdGeneratorStartingAt(1)),
                                         Optional.empty())
                                 .searchablePreferenceScreen();
 
@@ -83,6 +77,15 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                                 preferenceFragment.getClass()));
             });
         }
+    }
+
+    private static Preference2SearchablePreferenceConverter createPreference2SearchablePreferenceConverter() {
+        return new Preference2SearchablePreferenceConverter(
+                (preference, hostOfPreference) -> Optional.empty(),
+                new SearchableInfoAndDialogInfoProvider(
+                        preference -> Optional.empty(),
+                        (preference, hostOfPreference) -> Optional.empty()),
+                IdGeneratorFactory.createIdGeneratorStartingAt(1));
     }
 
     private static PreferenceFragmentCompat createPreferenceFragmentHavingParentWithTwoChildren(

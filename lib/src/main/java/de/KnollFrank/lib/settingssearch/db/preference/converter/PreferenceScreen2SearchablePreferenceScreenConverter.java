@@ -15,13 +15,17 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class PreferenceScreen2SearchablePreferenceScreenConverter {
 
-    public static SearchablePreferenceScreenWithMap convertPreferenceScreen(
+    private final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter;
+
+    public PreferenceScreen2SearchablePreferenceScreenConverter(final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
+        this.preference2SearchablePreferenceConverter = preference2SearchablePreferenceConverter;
+    }
+
+    public SearchablePreferenceScreenWithMap convertPreferenceScreen(
             final PreferenceScreen preferenceScreen,
             final PreferenceFragmentCompat hostOfPreferenceScreen,
             final String id,
             final Optional<String> parentId,
-            // FK-TODO: make preference2SearchablePreferenceConverter an instance variable of this class
-            final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter,
             final Optional<SearchablePreference> predecessorOfPreferenceScreen) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 preference2SearchablePreferenceConverter.convertPreferences(

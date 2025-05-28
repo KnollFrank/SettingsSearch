@@ -65,12 +65,12 @@ public class Graph2POJOGraphTransformer {
                     final PreferenceScreenWithHost node,
                     final Optional<String> parentId,
                     final Optional<SearchablePreference> predecessorOfNode) {
-                return PreferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
+                // FK-TODO: replace preference2SearchablePreferenceConverter with PreferenceScreen2SearchablePreferenceScreenConverter
+                return new PreferenceScreen2SearchablePreferenceScreenConverter(preference2SearchablePreferenceConverter).convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
                         preferenceFragmentIdProvider.getId(node.host()),
                         parentId,
-                        preference2SearchablePreferenceConverter,
                         predecessorOfNode);
             }
 
