@@ -21,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
+import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -84,11 +85,12 @@ public class MergedPreferenceScreenDataRepository {
         return new SearchablePreferenceScreenGraphProvider(
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
-                new PreferenceScreen2SearchablePreferenceScreenConverter(
-                        Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
-                                searchDatabaseConfig,
-                                preferenceDialogs,
-                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                new Graph2POJOGraphTransformer(
+                        new PreferenceScreen2SearchablePreferenceScreenConverter(
+                                Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
+                                        searchDatabaseConfig,
+                                        preferenceDialogs,
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(1)))),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,

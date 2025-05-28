@@ -53,7 +53,8 @@ public class SearchablePreferenceScreenGraphProviderFactory {
         return new SearchablePreferenceScreenGraphProvider(
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
-                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                new Graph2POJOGraphTransformer(
+                        new PreferenceScreen2SearchablePreferenceScreenConverter(
                         Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                 searchDatabaseConfig,
                                 PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId),
@@ -61,7 +62,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                                         searchablePreferenceDAO
                                                 .getMaxId()
                                                 .map(maxId -> maxId + 1)
-                                                .orElse(0)))),
+                                                .orElse(0))))),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         new PreferenceScreenWithHostProvider(
                                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(

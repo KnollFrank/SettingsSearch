@@ -32,6 +32,7 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
+import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
@@ -104,7 +105,8 @@ public class SearchablePreferenceScreenGraphProviderTest {
                 preferenceScreenGraph -> {
                 },
                 computePreferencesListener,
-                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                new Graph2POJOGraphTransformer(
+                        new PreferenceScreen2SearchablePreferenceScreenConverter(
                         new Preference2SearchablePreferenceConverter(
                                 new IconProvider(new ReflectionIconResourceIdProvider()),
                                 new SearchableInfoAndDialogInfoProvider(
@@ -114,7 +116,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                                         fragmentActivity,
                                                         TestActivity.FRAGMENT_CONTAINER_VIEW),
                                                 (preference, hostOfPreference) -> Optional.empty())),
-                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                IdGeneratorFactory.createIdGeneratorStartingAt(1)))),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),

@@ -38,6 +38,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -121,13 +122,14 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 preferenceScreenGraph -> {
                 },
                 emptyComputePreferencesListener(),
-                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                new Graph2POJOGraphTransformer(
+                        new PreferenceScreen2SearchablePreferenceScreenConverter(
                         new Preference2SearchablePreferenceConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
-                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                IdGeneratorFactory.createIdGeneratorStartingAt(1)))),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
