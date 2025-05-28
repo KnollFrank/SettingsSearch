@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
-class SearchablePreferenceScreen2POJOConverter {
+class PreferenceScreen2SearchablePreferenceScreenConverter {
 
     public static SearchablePreferenceScreenWithMap convert2POJO(final String id,
                                                                  final Optional<String> parentId,
