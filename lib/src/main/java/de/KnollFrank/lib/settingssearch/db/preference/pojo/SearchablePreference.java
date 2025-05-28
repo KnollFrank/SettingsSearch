@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -245,18 +246,18 @@ public final class SearchablePreference {
 
     @Override
     public String toString() {
-        return "SearchablePreference{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", summary='" + summary + '\'' +
-                ", searchableInfo='" + searchableInfo + '\'' +
-                ", key='" + key + '\'' +
-                ", fragment='" + fragment + '\'' +
-                ", visible=" + visible +
-                ", parentId=" + parentId +
-                ", predecessorId=" + predecessorId +
-                ", searchablePreferenceScreenId=" + searchablePreferenceScreenId +
-                '}';
+        return new StringJoiner(", ", SearchablePreference.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("key='" + key + "'")
+                .add("title=" + title)
+                .add("summary=" + summary)
+                .add("searchableInfo=" + searchableInfo)
+                .add("fragment=" + fragment)
+                .add("visible=" + visible)
+                .add("parentId=" + parentId)
+                .add("predecessorId=" + predecessorId)
+                .add("searchablePreferenceScreenId='" + searchablePreferenceScreenId + "'")
+                .toString();
     }
 
     private Optional<Drawable> _getIcon(final Context context) {
