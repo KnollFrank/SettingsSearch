@@ -65,21 +65,20 @@ public final class SearchablePreference {
     private final Optional<Integer> predecessorId;
     private final String searchablePreferenceScreenId;
 
-    public SearchablePreference(
-            final int id,
-            final String key,
-            final Optional<String> title,
-            final Optional<String> summary,
-            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final @LayoutRes int layoutResId,
-            final @LayoutRes int widgetLayoutResId,
-            final Optional<String> fragment,
-            final Optional<String> classNameOfReferencedActivity,
-            final boolean visible,
-            final Optional<String> searchableInfo,
-            final Optional<Integer> parentId,
-            final Optional<Integer> predecessorId,
-            final String searchablePreferenceScreenId) {
+    public SearchablePreference(final int id,
+                                final String key,
+                                final Optional<String> title,
+                                final Optional<String> summary,
+                                final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+                                final @LayoutRes int layoutResId,
+                                final @LayoutRes int widgetLayoutResId,
+                                final Optional<String> fragment,
+                                final Optional<String> classNameOfReferencedActivity,
+                                final boolean visible,
+                                final Optional<String> searchableInfo,
+                                final Optional<Integer> parentId,
+                                final Optional<Integer> predecessorId,
+                                final String searchablePreferenceScreenId) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
