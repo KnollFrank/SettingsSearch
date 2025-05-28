@@ -25,6 +25,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -103,16 +104,17 @@ public class SearchablePreferenceScreenGraphProviderTest {
                 preferenceScreenGraph -> {
                 },
                 computePreferencesListener,
-                new Preference2SearchablePreferenceConverter(
-                        new IconProvider(new ReflectionIconResourceIdProvider()),
-                        new SearchableInfoAndDialogInfoProvider(
-                                new BuiltinSearchableInfoProvider(),
-                                new SearchableDialogInfoOfProvider(
-                                        PreferenceDialogsFactory.createPreferenceDialogs(
-                                                fragmentActivity,
-                                                TestActivity.FRAGMENT_CONTAINER_VIEW),
-                                        (preference, hostOfPreference) -> Optional.empty())),
-                        IdGeneratorFactory.createIdGeneratorStartingAt(1)),
+                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                        new Preference2SearchablePreferenceConverter(
+                                new IconProvider(new ReflectionIconResourceIdProvider()),
+                                new SearchableInfoAndDialogInfoProvider(
+                                        new BuiltinSearchableInfoProvider(),
+                                        new SearchableDialogInfoOfProvider(
+                                                PreferenceDialogsFactory.createPreferenceDialogs(
+                                                        fragmentActivity,
+                                                        TestActivity.FRAGMENT_CONTAINER_VIEW),
+                                                (preference1, hostOfPreference1) -> Optional.empty())),
+                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),

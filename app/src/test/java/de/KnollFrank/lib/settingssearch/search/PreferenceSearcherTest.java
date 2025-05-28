@@ -46,6 +46,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFacto
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
@@ -765,7 +766,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                         preferenceScreenGraph -> {
                         },
                         computePreferencesListener,
-                        new Preference2SearchablePreferenceConverter(
+                        new PreferenceScreen2SearchablePreferenceScreenConverter(
+                                new Preference2SearchablePreferenceConverter(
                                 new IconProvider(new ReflectionIconResourceIdProvider()),
                                 new SearchableInfoAndDialogInfoProvider(
                                         new ReversedListPreferenceSearchableInfoProvider().orElse(new BuiltinSearchableInfoProvider()),
@@ -774,7 +776,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                                         fragmentActivity,
                                                         TestActivity.FRAGMENT_CONTAINER_VIEW),
                                                 preferenceDialogAndSearchableInfoProvider)),
-                                IdGeneratorFactory.createIdGeneratorStartingAt(1)),
+                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                         PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                                 preferenceScreenWithHostProvider,
                                 preferenceFragmentConnected2PreferenceProvider,
