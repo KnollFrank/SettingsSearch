@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 import de.KnollFrank.lib.settingssearch.R;
 
 class PreferencePathView {
@@ -21,13 +21,13 @@ class PreferencePathView {
     }
 
     public static void displayPreferencePath(final Optional<TextView> preferencePathView,
-                                             final PreferencePath preferencePath,
+                                             final PreferenceEntityPath preferenceEntityPath,
                                              final boolean showPreferencePath,
                                              final PreferencePathDisplayer preferencePathDisplayer) {
         if (showPreferencePath) {
             TextViews.setTextOnOptionalTextView(
                     preferencePathView,
-                    preferencePathDisplayer.display(preferencePath));
+                    preferencePathDisplayer.display(preferenceEntityPath));
         } else {
             preferencePathView.ifPresent(_preferencePathView -> _preferencePathView.setVisibility(View.GONE));
         }

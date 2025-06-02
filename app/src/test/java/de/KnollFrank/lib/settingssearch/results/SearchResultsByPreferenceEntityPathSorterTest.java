@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
+public class SearchResultsByPreferenceEntityPathSorterTest extends AppDatabaseTest {
 
     @Test
     public void shouldSortSearchResultsByPreferencePath() {

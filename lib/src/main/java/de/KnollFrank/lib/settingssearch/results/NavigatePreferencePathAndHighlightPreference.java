@@ -33,7 +33,7 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
                         fragmentOfPreferenceScreen ->
                                 showSettingsFragmentAndHighlightSetting(
                                         fragmentOfPreferenceScreen,
-                                        preferencePathPointer.preferencePath.getPreference()));
+                                        preferencePathPointer.preferenceEntityPath.getPreference()));
     }
 
     private void showSettingsFragmentAndHighlightSetting(final Fragment settingsFragment,

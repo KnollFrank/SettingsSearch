@@ -107,7 +107,7 @@ public class SearchablePreferenceEntityScreenEntityGraphProvider1Test extends Ap
                 assertThat(
                         preferenceOfFragment2PointingToFragment3.getPreferencePath(),
                         is(
-                                new PreferencePath(
+                                new PreferenceEntityPath(
                                         List.of(
                                                 preferenceOfFragment1PointingToFragment2,
                                                 preferenceOfFragment2PointingToFragment3))));

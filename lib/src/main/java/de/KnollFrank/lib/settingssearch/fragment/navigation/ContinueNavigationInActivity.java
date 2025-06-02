@@ -87,7 +87,7 @@ class ContinueNavigationInActivity {
     private static Bundle getPreferencePathNavigatorData(final PreferencePathPointer preferencePathPointer) {
         return PreferencePathNavigatorDataConverter.toBundle(
                 new PreferencePathNavigatorData(
-                        preferencePathPointer.preferencePath.getPreference().getId(),
+                        preferencePathPointer.preferenceEntityPath.getPreference().getId(),
                         preferencePathPointer.indexWithinPreferencePath));
     }
 }

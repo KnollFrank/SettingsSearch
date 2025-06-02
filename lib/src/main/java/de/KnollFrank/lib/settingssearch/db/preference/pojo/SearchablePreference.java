@@ -6,9 +6,6 @@ import android.graphics.drawable.Drawable;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -19,66 +16,43 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 
-@Entity
-public final class SearchablePreferenceEntity {
+public final class SearchablePreference {
 
-    public interface DbDataProvider {
-
-        Set<SearchablePreferenceEntity> getChildren(SearchablePreferenceEntity preference);
-
-        Optional<SearchablePreferenceEntity> getPredecessor(SearchablePreferenceEntity preference);
-
-        SearchablePreferenceScreenEntity getHost(SearchablePreferenceEntity preference);
-    }
-
-    @Ignore
-    private Optional<DbDataProvider> dao = Optional.empty();
-
-    @PrimaryKey
     private final int id;
     private final String key;
     private final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData;
-    @Ignore
     private Optional<Optional<Drawable>> iconCache = Optional.empty();
     private final @LayoutRes int layoutResId;
-
     private final Optional<String> title;
-    @Ignore
-    private Supplier<Optional<CharSequence>> highlightedTitleProvider;
-
+    private Optional<Supplier<Optional<CharSequence>>> highlightedTitleProvider = Optional.empty();
     private Optional<String> summary;
-    @Ignore
-    private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
-
+    private Optional<Supplier<Optional<CharSequence>>> highlightedSummaryProvider = Optional.empty();
     private final @LayoutRes int widgetLayoutResId;
     private final Optional<String> fragment;
     private final Optional<String> classNameOfReferencedActivity;
     private final boolean visible;
     private final Optional<String> searchableInfo;
-    @Ignore
-    private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
-    private final Optional<Integer> parentId;
-    private final Optional<Integer> predecessorId;
-    private final String searchablePreferenceScreenId;
+    private Optional<Supplier<Optional<CharSequence>>> highlightedSearchableInfoProvider = Optional.empty();
+    private final Set<SearchablePreference> children;
+    private final Optional<SearchablePreference> predecessor;
 
-    public SearchablePreferenceEntity(final int id,
-                                      final String key,
-                                      final Optional<String> title,
-                                      final Optional<String> summary,
-                                      final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-                                      final @LayoutRes int layoutResId,
-                                      final @LayoutRes int widgetLayoutResId,
-                                      final Optional<String> fragment,
-                                      final Optional<String> classNameOfReferencedActivity,
-                                      final boolean visible,
-                                      final Optional<String> searchableInfo,
-                                      final Optional<Integer> parentId,
-                                      final Optional<Integer> predecessorId,
-                                      final String searchablePreferenceScreenId) {
+    public SearchablePreference(final int id,
+                                final String key,
+                                final Optional<String> title,
+                                final Optional<String> summary,
+                                final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+                                final @LayoutRes int layoutResId,
+                                final @LayoutRes int widgetLayoutResId,
+                                final Optional<String> fragment,
+                                final Optional<String> classNameOfReferencedActivity,
+                                final boolean visible,
+                                final Optional<String> searchableInfo,
+                                final Set<SearchablePreference> children,
+                                final Optional<SearchablePreference> predecessor) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
@@ -90,13 +64,8 @@ public final class SearchablePreferenceEntity {
         this.classNameOfReferencedActivity = classNameOfReferencedActivity;
         this.visible = visible;
         this.searchableInfo = searchableInfo;
-        this.parentId = parentId;
-        this.predecessorId = predecessorId;
-        this.searchablePreferenceScreenId = searchablePreferenceScreenId;
-    }
-
-    public void setDao(final DbDataProvider dao) {
-        this.dao = Optional.of(dao);
+        this.children = children;
+        this.predecessor = predecessor;
     }
 
     public int getId() {
@@ -131,14 +100,11 @@ public final class SearchablePreferenceEntity {
     }
 
     public void setHighlightedSummaryProvider(final Supplier<Optional<CharSequence>> highlightedSummaryProvider) {
-        this.highlightedSummaryProvider = highlightedSummaryProvider;
+        this.highlightedSummaryProvider = Optional.of(highlightedSummaryProvider);
     }
 
     public Optional<CharSequence> getHighlightedSummary() {
-        if (highlightedSummaryProvider == null) {
-            highlightedSummaryProvider = Optional::empty;
-        }
-        return highlightedSummaryProvider.get();
+        return highlightedSummaryProvider.orElseThrow().get();
     }
 
     public Optional<String> getTitle() {
@@ -146,14 +112,11 @@ public final class SearchablePreferenceEntity {
     }
 
     public void setHighlightedTitleProvider(final Supplier<Optional<CharSequence>> highlightedTitleProvider) {
-        this.highlightedTitleProvider = highlightedTitleProvider;
+        this.highlightedTitleProvider = Optional.of(highlightedTitleProvider);
     }
 
     public Optional<CharSequence> getHighlightedTitle() {
-        if (highlightedTitleProvider == null) {
-            highlightedTitleProvider = Optional::empty;
-        }
-        return highlightedTitleProvider.get();
+        return highlightedTitleProvider.orElseThrow().get();
     }
 
     public Optional<String> getSearchableInfo() {
@@ -161,14 +124,11 @@ public final class SearchablePreferenceEntity {
     }
 
     public void setHighlightedSearchableInfoProvider(final Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider) {
-        this.highlightedSearchableInfoProvider = highlightedSearchableInfoProvider;
+        this.highlightedSearchableInfoProvider = Optional.of(highlightedSearchableInfoProvider);
     }
 
     public Optional<CharSequence> getHighlightedSearchableInfo() {
-        if (highlightedSearchableInfoProvider == null) {
-            highlightedSearchableInfoProvider = Optional::empty;
-        }
-        return highlightedSearchableInfoProvider.get();
+        return highlightedSearchableInfoProvider.orElseThrow().get();
     }
 
     public boolean hasPreferenceMatchWithinSearchableInfo() {
@@ -202,39 +162,23 @@ public final class SearchablePreferenceEntity {
         return visible;
     }
 
-    public SearchablePreferenceScreenEntity getHost() {
-        return dao.orElseThrow().getHost(this);
-    }
-
-    public PreferenceEntityPath getPreferencePath() {
+    public PreferencePath getPreferencePath() {
         return getPreferencePathOfPredecessor().append(this);
     }
 
-    public Set<SearchablePreferenceEntity> getChildren() {
-        return dao.orElseThrow().getChildren(this);
+    public Set<SearchablePreference> getChildren() {
+        return children;
     }
 
-    public Optional<SearchablePreferenceEntity> getPredecessor() {
-        return dao.orElseThrow().getPredecessor(this);
-    }
-
-    public Optional<Integer> getParentId() {
-        return parentId;
-    }
-
-    public Optional<Integer> getPredecessorId() {
-        return predecessorId;
-    }
-
-    public String getSearchablePreferenceScreenId() {
-        return searchablePreferenceScreenId;
+    public Optional<SearchablePreference> getPredecessor() {
+        return predecessor;
     }
 
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreferenceEntity that = (SearchablePreferenceEntity) o;
+        final SearchablePreference that = (SearchablePreference) o;
         return id == that.id;
     }
 
@@ -245,7 +189,7 @@ public final class SearchablePreferenceEntity {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", SearchablePreferenceEntity.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", SearchablePreference.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("key='" + key + "'")
                 .add("title=" + title)
@@ -253,9 +197,7 @@ public final class SearchablePreferenceEntity {
                 .add("searchableInfo=" + searchableInfo)
                 .add("fragment=" + fragment)
                 .add("visible=" + visible)
-                .add("parentId=" + parentId)
-                .add("predecessorId=" + predecessorId)
-                .add("searchablePreferenceScreenId='" + searchablePreferenceScreenId + "'")
+                .add("predecessorId=" + predecessor.map(SearchablePreference::getId))
                 .toString();
     }
 
@@ -271,10 +213,10 @@ public final class SearchablePreferenceEntity {
                                                      context.getResources())));
     }
 
-    private PreferenceEntityPath getPreferencePathOfPredecessor() {
+    private PreferencePath getPreferencePathOfPredecessor() {
         return this
-                .getPredecessor()
-                .map(SearchablePreferenceEntity::getPreferencePath)
-                .orElseGet(() -> new PreferenceEntityPath(List.of()));
+                .predecessor
+                .map(SearchablePreference::getPreferencePath)
+                .orElseGet(() -> new PreferencePath(List.of()));
     }
 }
