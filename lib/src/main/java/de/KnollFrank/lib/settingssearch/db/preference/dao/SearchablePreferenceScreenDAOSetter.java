@@ -4,29 +4,29 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 class SearchablePreferenceScreenDAOSetter {
 
-    private final SearchablePreferenceScreen.DbDataProvider dao;
+    private final SearchablePreferenceScreenEntity.DbDataProvider dao;
     private final SearchablePreferenceDAOSetter searchablePreferenceDAOSetter;
 
-    public SearchablePreferenceScreenDAOSetter(final SearchablePreferenceScreen.DbDataProvider dao,
+    public SearchablePreferenceScreenDAOSetter(final SearchablePreferenceScreenEntity.DbDataProvider dao,
                                                final SearchablePreferenceDAOSetter searchablePreferenceDAOSetter) {
         this.dao = dao;
         this.searchablePreferenceDAOSetter = searchablePreferenceDAOSetter;
     }
 
-    public SearchablePreferenceScreen setDao(final SearchablePreferenceScreen searchablePreferenceScreen) {
-        searchablePreferenceScreen.setDao(dao);
-        return searchablePreferenceScreen;
+    public SearchablePreferenceScreenEntity setDao(final SearchablePreferenceScreenEntity searchablePreferenceScreenEntity) {
+        searchablePreferenceScreenEntity.setDao(dao);
+        return searchablePreferenceScreenEntity;
     }
 
-    public Set<SearchablePreferenceScreen> setDao(final Set<SearchablePreferenceScreen> searchablePreferenceScreens) {
-        searchablePreferenceScreens.forEach(this::setDao);
-        return searchablePreferenceScreens;
+    public Set<SearchablePreferenceScreenEntity> setDao(final Set<SearchablePreferenceScreenEntity> searchablePreferenceScreenEntities) {
+        searchablePreferenceScreenEntities.forEach(this::setDao);
+        return searchablePreferenceScreenEntities;
     }
 
     public Set<SearchablePreferenceScreenAndAllPreferences> __setDao(final Set<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesList) {
@@ -34,12 +34,12 @@ class SearchablePreferenceScreenDAOSetter {
         return searchablePreferenceScreenAndAllPreferencesList;
     }
 
-    public Optional<SearchablePreferenceScreen> setDao(final Optional<SearchablePreferenceScreen> searchablePreferenceScreen) {
+    public Optional<SearchablePreferenceScreenEntity> setDao(final Optional<SearchablePreferenceScreenEntity> searchablePreferenceScreen) {
         searchablePreferenceScreen.ifPresent(this::setDao);
         return searchablePreferenceScreen;
     }
 
-    public void _setDao(final Map<SearchablePreferenceScreen, Set<SearchablePreference>> allPreferencesBySearchablePreferenceScreen) {
+    public void _setDao(final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen) {
         allPreferencesBySearchablePreferenceScreen.forEach(
                 (searchablePreferenceScreen, allPreferences) -> {
                     searchablePreferenceScreen.setDao(dao);
@@ -47,7 +47,7 @@ class SearchablePreferenceScreenDAOSetter {
                 });
     }
 
-    public void setDao(final Map<SearchablePreference, SearchablePreferenceScreen> hostByPreference) {
+    public void setDao(final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference) {
         hostByPreference.forEach(
                 (preference, host) -> {
                     searchablePreferenceDAOSetter.setDao(preference);

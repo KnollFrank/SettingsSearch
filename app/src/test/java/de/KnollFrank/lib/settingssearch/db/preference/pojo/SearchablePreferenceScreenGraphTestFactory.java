@@ -16,10 +16,10 @@ public class SearchablePreferenceScreenGraphTestFactory {
     public static final int PREFERENCE_CONNECTING_SRC_2_DST_ID = 4;
     public static final String PARENT_KEY = "parentKey";
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createSingleNodePojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> createSingleNodePojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final String screenId = "1";
-        final SearchablePreference preferenceConnectingSrc2Dst =
-                new SearchablePreference(
+        final SearchablePreferenceEntity preferenceConnectingSrc2Dst =
+                new SearchablePreferenceEntity(
                         PREFERENCE_CONNECTING_SRC_2_DST_ID,
                         "some key",
                         Optional.of("preference connected to TestPreferenceFragment"),
@@ -35,15 +35,15 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         screenId);
         return DefaultDirectedGraph
-                .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                .<SearchablePreferenceScreenEntity, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                 .addVertex(createSrc(screenId, preferenceConnectingSrc2Dst, host))
                 .build();
     }
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final String screenId = "1";
-        final SearchablePreference preferenceConnectingSrc2Dst =
-                new SearchablePreference(
+        final SearchablePreferenceEntity preferenceConnectingSrc2Dst =
+                new SearchablePreferenceEntity(
                         PREFERENCE_CONNECTING_SRC_2_DST_ID,
                         "some key",
                         Optional.of("preference connected to TestPreferenceFragment"),
@@ -59,7 +59,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         screenId);
         return DefaultDirectedGraph
-                .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                .<SearchablePreferenceScreenEntity, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                 .addEdge(
                         createSrc(screenId, preferenceConnectingSrc2Dst, host),
                         createDst(Optional.of(screenId), preferenceConnectingSrc2Dst),
@@ -67,11 +67,11 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 .build();
     }
 
-    private static SearchablePreferenceScreen createSrc(final String screenId,
-                                                        final SearchablePreference preferenceConnectingSrc2Dst,
-                                                        final Class<? extends PreferenceFragmentCompat> host) {
-        final SearchablePreference parent =
-                new SearchablePreference(
+    private static SearchablePreferenceScreenEntity createSrc(final String screenId,
+                                                              final SearchablePreferenceEntity preferenceConnectingSrc2Dst,
+                                                              final Class<? extends PreferenceFragmentCompat> host) {
+        final SearchablePreferenceEntity parent =
+                new SearchablePreferenceEntity(
                         1,
                         PARENT_KEY,
                         Optional.empty(),
@@ -86,14 +86,14 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         screenId);
-        return new SearchablePreferenceScreen(
+        return new SearchablePreferenceScreenEntity(
                 screenId,
                 host,
                 Optional.of("screen title"),
                 Optional.of("screen summary"),
                 Set.of(
                         parent,
-                        new SearchablePreference(
+                        new SearchablePreferenceEntity(
                                 2,
                                 "some child key 1",
                                 Optional.empty(),
@@ -108,7 +108,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 Optional.of(parent.getId()),
                                 Optional.empty(),
                                 screenId),
-                        new SearchablePreference(
+                        new SearchablePreferenceEntity(
                                 3,
                                 "some child key 2",
                                 Optional.empty(),
@@ -127,11 +127,11 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 Optional.empty());
     }
 
-    private static SearchablePreferenceScreen createDst(final Optional<String> parentScreenId,
-                                                        final SearchablePreference predecessor) {
+    private static SearchablePreferenceScreenEntity createDst(final Optional<String> parentScreenId,
+                                                              final SearchablePreferenceEntity predecessor) {
         final String screenId = "2";
-        final SearchablePreference e1 =
-                new SearchablePreference(
+        final SearchablePreferenceEntity e1 =
+                new SearchablePreferenceEntity(
                         DST_PREFERENCE_ID,
                         "some dst key",
                         Optional.of("some title for dst key"),
@@ -146,7 +146,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.of(predecessor.getId()),
                         screenId);
-        return new SearchablePreferenceScreen(
+        return new SearchablePreferenceScreenEntity(
                 screenId,
                 Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class,
                 Optional.empty(),

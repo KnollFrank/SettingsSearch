@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceEntityScreenEntityConverterTest.initializeFragment;
 
 import android.content.Context;
 
@@ -21,33 +21,33 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenProviderTest {
+public class SearchablePreferenceEntityScreenEntityProviderTest {
 
     @Test
     public void test_getPreferenceScreen_searchablePreference() {
         test_getPreferenceScreen(
-                SearchablePreferenceScreenProviderTest::addSinglePreferencesScreen,
+                SearchablePreferenceEntityScreenEntityProviderTest::addSinglePreferencesScreen,
                 true);
     }
 
     @Test
     public void test_getPreferenceScreen_nonSearchablePreference() {
         test_getPreferenceScreen(
-                SearchablePreferenceScreenProviderTest::addSinglePreferencesScreen,
+                SearchablePreferenceEntityScreenEntityProviderTest::addSinglePreferencesScreen,
                 false);
     }
 
     @Test
     public void test_getPreferenceScreen_nestedSearchablePreference() {
         test_getPreferenceScreen(
-                SearchablePreferenceScreenProviderTest::addNestedPreference2Screen,
+                SearchablePreferenceEntityScreenEntityProviderTest::addNestedPreference2Screen,
                 true);
     }
 
     @Test
     public void test_getPreferenceScreen_nestedNonSearchablePreference() {
         test_getPreferenceScreen(
-                SearchablePreferenceScreenProviderTest::addNestedPreference2Screen,
+                SearchablePreferenceEntityScreenEntityProviderTest::addNestedPreference2Screen,
                 false);
     }
 

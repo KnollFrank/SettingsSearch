@@ -6,21 +6,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 public class PojoGraphs {
 
-    public static Set<SearchablePreference> getPreferences(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+    public static Set<SearchablePreferenceEntity> getPreferences(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> pojoGraph) {
         return getPreferences(pojoGraph.vertexSet());
     }
 
-    public static Set<SearchablePreference> getPreferences(final Set<SearchablePreferenceScreen> preferenceScreens) {
+    public static Set<SearchablePreferenceEntity> getPreferences(final Set<SearchablePreferenceScreenEntity> preferenceScreens) {
         return Sets.union(
                 preferenceScreens
                         .stream()
-                        .map(SearchablePreferenceScreen::getAllPreferences)
+                        .map(SearchablePreferenceScreenEntity::getAllPreferences)
                         .collect(Collectors.toSet()));
     }
 }

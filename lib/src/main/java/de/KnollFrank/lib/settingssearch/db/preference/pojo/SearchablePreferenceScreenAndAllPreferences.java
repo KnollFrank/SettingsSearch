@@ -10,24 +10,24 @@ import java.util.Set;
 public final class SearchablePreferenceScreenAndAllPreferences {
 
     @Embedded
-    private final SearchablePreferenceScreen searchablePreferenceScreen;
+    private final SearchablePreferenceScreenEntity searchablePreferenceScreenEntity;
 
     @Relation(
             parentColumn = "id",
             entityColumn = "searchablePreferenceScreenId")
-    private final List<SearchablePreference> allPreferences;
+    private final List<SearchablePreferenceEntity> allPreferences;
 
-    public SearchablePreferenceScreenAndAllPreferences(final SearchablePreferenceScreen searchablePreferenceScreen,
-                                                       final List<SearchablePreference> allPreferences) {
-        this.searchablePreferenceScreen = searchablePreferenceScreen;
+    public SearchablePreferenceScreenAndAllPreferences(final SearchablePreferenceScreenEntity searchablePreferenceScreenEntity,
+                                                       final List<SearchablePreferenceEntity> allPreferences) {
+        this.searchablePreferenceScreenEntity = searchablePreferenceScreenEntity;
         this.allPreferences = allPreferences;
     }
 
-    public SearchablePreferenceScreen searchablePreferenceScreen() {
-        return searchablePreferenceScreen;
+    public SearchablePreferenceScreenEntity searchablePreferenceScreen() {
+        return searchablePreferenceScreenEntity;
     }
 
-    public Set<SearchablePreference> allPreferences() {
+    public Set<SearchablePreferenceEntity> allPreferences() {
         return new HashSet<>(allPreferences);
     }
 }

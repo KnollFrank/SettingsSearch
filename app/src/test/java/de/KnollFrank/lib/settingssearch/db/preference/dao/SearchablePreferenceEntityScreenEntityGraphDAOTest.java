@@ -18,22 +18,22 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
+public class SearchablePreferenceEntityScreenEntityGraphDAOTest extends AppDatabaseTest {
 
     @Test
     public void shouldPersistSearchablePreferenceScreenGraph() {
         // Given
         final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO());
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = createPojoGraph(PreferenceFragmentCompat.class);
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> graph = createPojoGraph(PreferenceFragmentCompat.class);
 
         // When
         dao.persist(graph);
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load();
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> graphFromDb = dao.load();
 
         // Then
         assertActualEqualsExpected(graphFromDb, graph);
@@ -48,11 +48,11 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         dao.persist(createSingleNodePojoGraph(PreferenceFragmentCompat.class));
 
         // And
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = createPojoGraph(PreferenceFragmentCompat.class);
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> graph = createPojoGraph(PreferenceFragmentCompat.class);
         dao.persist(graph);
 
         // Then
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load();
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> graphFromDb = dao.load();
         assertActualEqualsExpected(graphFromDb, graph);
     }
 
@@ -60,19 +60,19 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     public void test_persistTwice_checkAllPreferences() {
         // Given
         final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO());
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = createSingleNodePojoGraph(PreferenceFragmentCompat.class);
-        final Set<SearchablePreference> allPreferences = getAllPreferencesOfSingleNode(graph);
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> graph = createSingleNodePojoGraph(PreferenceFragmentCompat.class);
+        final Set<SearchablePreferenceEntity> allPreferences = getAllPreferencesOfSingleNode(graph);
 
         // When
         dao.persist(graph);
         dao.persist(dao.load());
 
         // Then
-        final Set<SearchablePreference> allPreferencesFromDb = getAllPreferencesOfSingleNode(dao.load());
+        final Set<SearchablePreferenceEntity> allPreferencesFromDb = getAllPreferencesOfSingleNode(dao.load());
         assertThat(allPreferencesFromDb, is(allPreferences));
     }
 
-    private static Set<SearchablePreference> getAllPreferencesOfSingleNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+    private static Set<SearchablePreferenceEntity> getAllPreferencesOfSingleNode(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> graph) {
         return Iterables
                 .getOnlyElement(graph.vertexSet())
                 .getAllPreferences();

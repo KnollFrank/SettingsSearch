@@ -24,15 +24,15 @@ import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 
 @Entity
-public final class SearchablePreference {
+public final class SearchablePreferenceEntity {
 
     public interface DbDataProvider {
 
-        Set<SearchablePreference> getChildren(SearchablePreference preference);
+        Set<SearchablePreferenceEntity> getChildren(SearchablePreferenceEntity preference);
 
-        Optional<SearchablePreference> getPredecessor(SearchablePreference preference);
+        Optional<SearchablePreferenceEntity> getPredecessor(SearchablePreferenceEntity preference);
 
-        SearchablePreferenceScreen getHost(SearchablePreference preference);
+        SearchablePreferenceScreenEntity getHost(SearchablePreferenceEntity preference);
     }
 
     @Ignore
@@ -65,20 +65,20 @@ public final class SearchablePreference {
     private final Optional<Integer> predecessorId;
     private final String searchablePreferenceScreenId;
 
-    public SearchablePreference(final int id,
-                                final String key,
-                                final Optional<String> title,
-                                final Optional<String> summary,
-                                final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-                                final @LayoutRes int layoutResId,
-                                final @LayoutRes int widgetLayoutResId,
-                                final Optional<String> fragment,
-                                final Optional<String> classNameOfReferencedActivity,
-                                final boolean visible,
-                                final Optional<String> searchableInfo,
-                                final Optional<Integer> parentId,
-                                final Optional<Integer> predecessorId,
-                                final String searchablePreferenceScreenId) {
+    public SearchablePreferenceEntity(final int id,
+                                      final String key,
+                                      final Optional<String> title,
+                                      final Optional<String> summary,
+                                      final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
+                                      final @LayoutRes int layoutResId,
+                                      final @LayoutRes int widgetLayoutResId,
+                                      final Optional<String> fragment,
+                                      final Optional<String> classNameOfReferencedActivity,
+                                      final boolean visible,
+                                      final Optional<String> searchableInfo,
+                                      final Optional<Integer> parentId,
+                                      final Optional<Integer> predecessorId,
+                                      final String searchablePreferenceScreenId) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
@@ -202,7 +202,7 @@ public final class SearchablePreference {
         return visible;
     }
 
-    public SearchablePreferenceScreen getHost() {
+    public SearchablePreferenceScreenEntity getHost() {
         return dao.orElseThrow().getHost(this);
     }
 
@@ -210,11 +210,11 @@ public final class SearchablePreference {
         return getPreferencePathOfPredecessor().append(this);
     }
 
-    public Set<SearchablePreference> getChildren() {
+    public Set<SearchablePreferenceEntity> getChildren() {
         return dao.orElseThrow().getChildren(this);
     }
 
-    public Optional<SearchablePreference> getPredecessor() {
+    public Optional<SearchablePreferenceEntity> getPredecessor() {
         return dao.orElseThrow().getPredecessor(this);
     }
 
@@ -234,7 +234,7 @@ public final class SearchablePreference {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreference that = (SearchablePreference) o;
+        final SearchablePreferenceEntity that = (SearchablePreferenceEntity) o;
         return id == that.id;
     }
 
@@ -245,7 +245,7 @@ public final class SearchablePreference {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", SearchablePreference.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", SearchablePreferenceEntity.class.getSimpleName() + "[", "]")
                 .add("id=" + id)
                 .add("key='" + key + "'")
                 .add("title=" + title)
@@ -274,7 +274,7 @@ public final class SearchablePreference {
     private PreferencePath getPreferencePathOfPredecessor() {
         return this
                 .getPredecessor()
-                .map(SearchablePreference::getPreferencePath)
+                .map(SearchablePreferenceEntity::getPreferencePath)
                 .orElseGet(() -> new PreferencePath(List.of()));
     }
 }

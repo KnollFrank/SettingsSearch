@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
-import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider;
+import static de.KnollFrank.lib.settingssearch.SearchablePreferenceEntityScreenEntityGraphProvider1Test.createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider;
 
 import android.os.Bundle;
 
@@ -20,16 +20,16 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenGraphProvider2Test {
+public class SearchablePreferenceEntityScreenEntityGraphProvider2Test {
 
     @Test
     public void shouldIgnoreNonPreferenceFragments() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(SearchablePreferenceScreenGraphProvider2Test::shouldIgnoreNonPreferenceFragments);
+            scenario.onActivity(SearchablePreferenceEntityScreenEntityGraphProvider2Test::shouldIgnoreNonPreferenceFragments);
         }
     }
 
@@ -41,7 +41,7 @@ public class SearchablePreferenceScreenGraphProvider2Test {
                         FragmentConnectedToNonPreferenceFragment.class);
 
         // When
-        final Set<SearchablePreferenceScreen> preferenceScreens =
+        final Set<SearchablePreferenceScreenEntity> preferenceScreens =
                 result
                         .searchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())

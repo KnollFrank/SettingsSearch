@@ -40,7 +40,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoPro
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenGraphProviderTest {
+public class SearchablePreferenceEntityScreenEntityGraphProviderTest {
 
     @Test
     public void shouldInvokeComputePreferencesListener() {

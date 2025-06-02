@@ -9,7 +9,7 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 
 public class SearchablePreferenceScreenAndAllPreferencesHelper {
 
-    public static Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen(final Set<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesSet) {
+    public static Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen(final Set<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesSet) {
         return searchablePreferenceScreenAndAllPreferencesSet
                 .stream()
                 .collect(
@@ -18,7 +18,7 @@ public class SearchablePreferenceScreenAndAllPreferencesHelper {
                                 SearchablePreferenceScreenAndAllPreferences::allPreferences));
     }
 
-    public static Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference(final Set<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesSet) {
+    public static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference(final Set<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesSet) {
         return Maps.merge(
                 searchablePreferenceScreenAndAllPreferencesSet
                         .stream()
@@ -26,7 +26,7 @@ public class SearchablePreferenceScreenAndAllPreferencesHelper {
                         .collect(Collectors.toSet()));
     }
 
-    private static Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference(final SearchablePreferenceScreenAndAllPreferences searchablePreferenceScreenAndAllPreferences) {
+    private static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference(final SearchablePreferenceScreenAndAllPreferences searchablePreferenceScreenAndAllPreferences) {
         return searchablePreferenceScreenAndAllPreferences
                 .allPreferences()
                 .stream()

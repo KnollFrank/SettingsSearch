@@ -5,18 +5,18 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
-public record PreferencePath(List<SearchablePreference> preferences) {
+public record PreferencePath(List<SearchablePreferenceEntity> preferences) {
 
-    public SearchablePreference getPreference() {
+    public SearchablePreferenceEntity getPreference() {
         return Lists.getLastElement(preferences).orElseThrow();
     }
 
-    public PreferencePath append(final SearchablePreference preference) {
+    public PreferencePath append(final SearchablePreferenceEntity preference) {
         return new PreferencePath(
                 ImmutableList
-                        .<SearchablePreference>builder()
+                        .<SearchablePreferenceEntity>builder()
                         .addAll(preferences)
                         .add(preference)
                         .build());

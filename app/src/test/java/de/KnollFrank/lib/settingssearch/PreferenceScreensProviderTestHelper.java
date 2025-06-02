@@ -12,7 +12,7 @@ import androidx.preference.PreferenceScreen;
 import java.util.List;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 class PreferenceScreensProviderTestHelper {
 
@@ -30,8 +30,8 @@ class PreferenceScreensProviderTestHelper {
         fragment.setPreferenceScreen(screen);
     }
 
-    public static SearchablePreferenceScreen getPreferenceScreenByName(
-            final Set<SearchablePreferenceScreen> preferenceScreens,
+    public static SearchablePreferenceScreenEntity getPreferenceScreenByName(
+            final Set<SearchablePreferenceScreenEntity> preferenceScreens,
             final String name) {
         return preferenceScreens
                 .stream()

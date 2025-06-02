@@ -18,24 +18,24 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
+public class SearchablePreferenceEntityScreenEntityDAOTest extends AppDatabaseTest {
 
     @Test
     public void shouldPersistAndFindSearchablePreferenceScreenById() {
         // Given
         final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
-        final SearchablePreferenceScreen screen = createSomeSearchablePreferenceScreen();
+        final SearchablePreferenceScreenEntity screen = createSomeSearchablePreferenceScreen();
 
         // When
         dao.persist(screen);
 
         // Then the SearchablePreferenceScreen was persisted at all
-        final Optional<SearchablePreferenceScreen> screenFromDb = dao.findSearchablePreferenceScreenById(screen.getId());
+        final Optional<SearchablePreferenceScreenEntity> screenFromDb = dao.findSearchablePreferenceScreenById(screen.getId());
         assertThat(screenFromDb.isPresent(), is(true));
 
         // And the SearchablePreferenceScreen was persisted correctly
@@ -46,11 +46,11 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     public void test_findSearchablePreferenceScreensByHost() {
         // Given
         final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
-        final SearchablePreferenceScreen screen = createSomeSearchablePreferenceScreen();
+        final SearchablePreferenceScreenEntity screen = createSomeSearchablePreferenceScreen();
         dao.persist(screen);
 
         // When
-        final Set<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreensByHost(screen.getHost());
+        final Set<SearchablePreferenceScreenEntity> screenActual = dao.findSearchablePreferenceScreensByHost(screen.getHost());
 
         // Then
         assertThat(screenActual, contains(screen));
@@ -63,7 +63,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
         final Class<? extends PreferenceFragmentCompat> nonExistingHost = PreferenceFragmentCompat.class;
 
         // When
-        final Set<SearchablePreferenceScreen> screenActual = dao.findSearchablePreferenceScreensByHost(nonExistingHost);
+        final Set<SearchablePreferenceScreenEntity> screenActual = dao.findSearchablePreferenceScreensByHost(nonExistingHost);
 
         // Then
         assertThat(screenActual, is(empty()));
@@ -73,15 +73,15 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     public void shouldGetHostOfPreferencesOfScreen() {
         // Given
         final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
-        final SearchablePreferenceScreen screen = createSomeSearchablePreferenceScreen();
+        final SearchablePreferenceScreenEntity screen = createSomeSearchablePreferenceScreen();
         dao.persist(screen);
-        final SearchablePreference preference =
+        final SearchablePreferenceEntity preference =
                 SearchablePreferences
                         .findPreferenceByKey(screen.getAllPreferences(), PARENT_KEY)
                         .orElseThrow();
 
         // When
-        final SearchablePreferenceScreen hostOfPreference = preference.getHost();
+        final SearchablePreferenceScreenEntity hostOfPreference = preference.getHost();
 
         // Then
         assertThat(hostOfPreference, is(screen));

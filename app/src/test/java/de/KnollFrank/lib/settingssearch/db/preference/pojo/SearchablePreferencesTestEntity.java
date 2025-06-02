@@ -9,16 +9,16 @@ import org.junit.Test;
 import java.util.Optional;
 import java.util.Set;
 
-public class SearchablePreferencesTest {
+public class SearchablePreferencesTestEntity {
 
     @Test
     public void shouldFindPreferenceByKey() {
         // Given
         final String key = "some key";
-        final SearchablePreference preference = createSearchablePreference(key);
+        final SearchablePreferenceEntity preference = createSearchablePreference(key);
 
         // When
-        final Optional<SearchablePreference> preferenceActual =
+        final Optional<SearchablePreferenceEntity> preferenceActual =
                 SearchablePreferences.findPreferenceByKey(
                         Set.of(preference),
                         key);
@@ -33,7 +33,7 @@ public class SearchablePreferencesTest {
         final String nonExistingKey = "nonExistingKey";
 
         // When
-        final Optional<SearchablePreference> preferenceActual =
+        final Optional<SearchablePreferenceEntity> preferenceActual =
                 SearchablePreferences.findPreferenceByKey(
                         Set.of(),
                         nonExistingKey);

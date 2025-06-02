@@ -8,7 +8,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.GraphUtils;
 
 public class SearchablePreferenceScreenTestFactory {
 
-    public static SearchablePreferenceScreen createSomeSearchablePreferenceScreen() {
+    public static SearchablePreferenceScreenEntity createSomeSearchablePreferenceScreen() {
         return GraphUtils
                 .getRootNode(createPojoGraph(PreferenceFragmentCompat.class))
                 .orElseThrow();

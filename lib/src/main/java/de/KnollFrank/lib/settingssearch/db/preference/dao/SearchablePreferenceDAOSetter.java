@@ -9,17 +9,17 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 class SearchablePreferenceDAOSetter {
 
-    private final SearchablePreference.DbDataProvider dao;
+    private final SearchablePreferenceEntity.DbDataProvider dao;
 
-    public SearchablePreferenceDAOSetter(final SearchablePreference.DbDataProvider dao) {
+    public SearchablePreferenceDAOSetter(final SearchablePreferenceEntity.DbDataProvider dao) {
         this.dao = dao;
     }
 
-    public Optional<SearchablePreference> setDao(final Optional<SearchablePreference> searchablePreference) {
+    public Optional<SearchablePreferenceEntity> setDao(final Optional<SearchablePreferenceEntity> searchablePreference) {
         searchablePreference.ifPresent(this::setDao);
         return searchablePreference;
     }
@@ -34,32 +34,32 @@ class SearchablePreferenceDAOSetter {
         return preferenceAndChildren;
     }
 
-    public List<SearchablePreference> setDao(final List<SearchablePreference> searchablePreferences) {
-        searchablePreferences.forEach(this::setDao);
-        return searchablePreferences;
+    public List<SearchablePreferenceEntity> setDao(final List<SearchablePreferenceEntity> searchablePreferenceEntities) {
+        searchablePreferenceEntities.forEach(this::setDao);
+        return searchablePreferenceEntities;
     }
 
-    public SearchablePreference[] setDao(final SearchablePreference[] searchablePreferences) {
-        setDao(Arrays.asList(searchablePreferences));
-        return searchablePreferences;
+    public SearchablePreferenceEntity[] setDao(final SearchablePreferenceEntity[] searchablePreferenceEntities) {
+        setDao(Arrays.asList(searchablePreferenceEntities));
+        return searchablePreferenceEntities;
     }
 
-    public Collection<SearchablePreference> setDao(final Collection<SearchablePreference> searchablePreferences) {
-        searchablePreferences.forEach(this::setDao);
-        return searchablePreferences;
+    public Collection<SearchablePreferenceEntity> setDao(final Collection<SearchablePreferenceEntity> searchablePreferenceEntities) {
+        searchablePreferenceEntities.forEach(this::setDao);
+        return searchablePreferenceEntities;
     }
 
-    public Set<SearchablePreference> setDao(final Set<SearchablePreference> searchablePreferences) {
-        searchablePreferences.forEach(this::setDao);
-        return searchablePreferences;
+    public Set<SearchablePreferenceEntity> setDao(final Set<SearchablePreferenceEntity> searchablePreferenceEntities) {
+        searchablePreferenceEntities.forEach(this::setDao);
+        return searchablePreferenceEntities;
     }
 
-    public SearchablePreference setDao(final SearchablePreference searchablePreference) {
-        searchablePreference.setDao(dao);
-        return searchablePreference;
+    public SearchablePreferenceEntity setDao(final SearchablePreferenceEntity searchablePreferenceEntity) {
+        searchablePreferenceEntity.setDao(dao);
+        return searchablePreferenceEntity;
     }
 
-    public void setDao(final Map<SearchablePreference, Set<SearchablePreference>> childrenByPreference) {
+    public void setDao(final Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference) {
         childrenByPreference.forEach(
                 (preference, children) -> {
                     setDao(preference);
@@ -67,7 +67,7 @@ class SearchablePreferenceDAOSetter {
                 });
     }
 
-    public void _setDao(final Map<SearchablePreference, Optional<SearchablePreference>> predecessorByPreference) {
+    public void _setDao(final Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference) {
         predecessorByPreference.forEach(
                 (preference, predecessor) -> {
                     setDao(preference);

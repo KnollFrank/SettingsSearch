@@ -8,23 +8,23 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 public class SearchResultsByPreferencePathSorter implements SearchResultsSorter {
 
-    private static final Comparator<SearchablePreference> PREFERENCE_BY_PREFERENCE_PATH_COMPARATOR = getPreferenceByPreferencePathComparator();
+    private static final Comparator<SearchablePreferenceEntity> PREFERENCE_BY_PREFERENCE_PATH_COMPARATOR = getPreferenceByPreferencePathComparator();
 
     @Override
-    public List<SearchablePreference> sort(final Collection<SearchablePreference> searchResults) {
+    public List<SearchablePreferenceEntity> sort(final Collection<SearchablePreferenceEntity> searchResults) {
         return searchResults
                 .stream()
                 .sorted(PREFERENCE_BY_PREFERENCE_PATH_COMPARATOR)
                 .collect(Collectors.toList());
     }
 
-    private static Comparator<SearchablePreference> getPreferenceByPreferencePathComparator() {
+    private static Comparator<SearchablePreferenceEntity> getPreferenceByPreferencePathComparator() {
         return Comparator.comparing(
-                SearchablePreference::getPreferencePath,
+                SearchablePreferenceEntity::getPreferencePath,
                 getPreferencePathComparator());
     }
 

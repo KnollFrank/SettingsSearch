@@ -30,20 +30,20 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
 
 // adapted from androidx.preference.PreferenceGroupAdapter
 public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
-    private final List<SearchablePreference> items = new ArrayList<>();
-    private final Consumer<SearchablePreference> onPreferenceClickListener;
+    private final List<SearchablePreferenceEntity> items = new ArrayList<>();
+    private final Consumer<SearchablePreferenceEntity> onPreferenceClickListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
 
-    public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreference> onPreferenceClickListener,
+    public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreferenceEntity> onPreferenceClickListener,
                                             final ShowPreferencePathPredicate showPreferencePathPredicate,
                                             final PreferencePathDisplayer preferencePathDisplayer) {
         this.onPreferenceClickListener = onPreferenceClickListener;
@@ -72,7 +72,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         return items.size();
     }
 
-    public void setItems(final List<SearchablePreference> items) {
+    public void setItems(final List<SearchablePreferenceEntity> items) {
         final DiffResult diffResult = DiffUtil.calculateDiff(getDiffUtilCallback(this.items, items));
         {
             this.items.clear();
@@ -81,17 +81,17 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         diffResult.dispatchUpdatesTo(this);
     }
 
-    private SearchablePreference getItem(final int position) {
+    private SearchablePreferenceEntity getItem(final int position) {
         return items.get(position);
     }
 
     private record ItemResourceDescriptor(@LayoutRes int layoutResId,
                                           @LayoutRes int widgetLayoutResId) {
 
-        public static ItemResourceDescriptor from(final SearchablePreference searchablePreference) {
+        public static ItemResourceDescriptor from(final SearchablePreferenceEntity searchablePreferenceEntity) {
             return new ItemResourceDescriptor(
-                    searchablePreference.getLayoutResId(),
-                    searchablePreference.getWidgetLayoutResId());
+                    searchablePreferenceEntity.getLayoutResId(),
+                    searchablePreferenceEntity.getWidgetLayoutResId());
         }
     }
 
@@ -150,43 +150,43 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         }
     }
 
-    private void onBindViewHolder(final PreferenceViewHolder viewHolder, final SearchablePreference searchablePreference) {
+    private void onBindViewHolder(final PreferenceViewHolder viewHolder, final SearchablePreferenceEntity searchablePreferenceEntity) {
         viewHolder.resetState();
         viewHolder.itemView.setClickable(true);
-        viewHolder.itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreference));
+        viewHolder.itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreferenceEntity));
         // itemView.setId(mViewId);
-        displayTitle(viewHolder, searchablePreference);
-        displaySummary(viewHolder, searchablePreference);
-        displaySearchableInfo(viewHolder, searchablePreference);
-        displayPreferencePath(viewHolder, searchablePreference);
-        displayIcon(viewHolder, searchablePreference, true);
+        displayTitle(viewHolder, searchablePreferenceEntity);
+        displaySummary(viewHolder, searchablePreferenceEntity);
+        displaySearchableInfo(viewHolder, searchablePreferenceEntity);
+        displayPreferencePath(viewHolder, searchablePreferenceEntity);
+        displayIcon(viewHolder, searchablePreferenceEntity, true);
         setEnabledStateOnViews(viewHolder.itemView, true);
     }
 
     private static void displayTitle(final PreferenceViewHolder holder,
-                                     final SearchablePreference searchablePreference) {
+                                     final SearchablePreferenceEntity searchablePreferenceEntity) {
         setOptionalTextOnOptionalTextView(
                 holder.findViewById(android.R.id.title),
-                searchablePreference.getHighlightedTitle());
+                searchablePreferenceEntity.getHighlightedTitle());
     }
 
     private static void displaySummary(final PreferenceViewHolder holder,
-                                       final SearchablePreference searchablePreference) {
+                                       final SearchablePreferenceEntity searchablePreferenceEntity) {
         setOptionalTextOnOptionalTextView(
                 holder.findViewById(android.R.id.summary),
-                searchablePreference.getHighlightedSummary());
+                searchablePreferenceEntity.getHighlightedSummary());
     }
 
     private static void displaySearchableInfo(final PreferenceViewHolder holder,
-                                              final SearchablePreference searchablePreference) {
+                                              final SearchablePreferenceEntity searchablePreferenceEntity) {
         setOptionalTextOnOptionalTextView(
                 getSearchableInfoView(holder),
-                searchablePreference.getHighlightedSearchableInfo());
+                searchablePreferenceEntity.getHighlightedSearchableInfo());
     }
 
     private void displayPreferencePath(final PreferenceViewHolder holder,
-                                       final SearchablePreference searchablePreference) {
-        final PreferencePath preferencePath = searchablePreference.getPreferencePath();
+                                       final SearchablePreferenceEntity searchablePreferenceEntity) {
+        final PreferencePath preferencePath = searchablePreferenceEntity.getPreferencePath();
         PreferencePathView.displayPreferencePath(
                 getPreferencePathView(holder),
                 preferencePath,
@@ -194,8 +194,8 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
                 preferencePathDisplayer);
     }
 
-    private static void displayIcon(final PreferenceViewHolder holder, final SearchablePreference searchablePreference, final boolean iconSpaceReserved) {
-        final Optional<Drawable> icon = searchablePreference.getIcon(holder.itemView.getContext());
+    private static void displayIcon(final PreferenceViewHolder holder, final SearchablePreferenceEntity searchablePreferenceEntity, final boolean iconSpaceReserved) {
+        final Optional<Drawable> icon = searchablePreferenceEntity.getIcon(holder.itemView.getContext());
         holder
                 .<ImageView>findViewById(android.R.id.icon)
                 .ifPresent(
@@ -247,8 +247,8 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     }
 
     private static DiffUtil.Callback getDiffUtilCallback(
-            final List<SearchablePreference> oldItems,
-            final List<SearchablePreference> newItems) {
+            final List<SearchablePreferenceEntity> oldItems,
+            final List<SearchablePreferenceEntity> newItems) {
         return new DiffUtil.Callback() {
 
             @Override

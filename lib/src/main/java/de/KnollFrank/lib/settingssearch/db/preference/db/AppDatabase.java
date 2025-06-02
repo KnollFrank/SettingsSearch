@@ -9,8 +9,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDA
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
@@ -18,8 +18,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Preference
 
 @Database(
         entities = {
-                SearchablePreferenceScreen.class,
-                SearchablePreference.class,
+                SearchablePreferenceScreenEntity.class,
+                SearchablePreferenceEntity.class,
                 SearchDatabaseState.class
         },
         version = 1,

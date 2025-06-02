@@ -21,12 +21,12 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class Preference2SearchablePreferenceConverterIntegrationTest {
+public class Preference2SearchablePreferenceEntityConverterIntegrationTest {
 
     @Test
     public void test_iconOfPreference_survives_convertPreference2POJO() {
@@ -37,7 +37,7 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
                 final Preference preference = createPreferenceWithIcon(activity, icon);
 
                 // When
-                final SearchablePreference pojo =
+                final SearchablePreferenceEntity pojo =
                         convertPreference2SearchablePreference(
                                 preference,
                                 createSomePreferenceFragment(activity));
@@ -56,8 +56,8 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
         return preference;
     }
 
-    private static SearchablePreference convertPreference2SearchablePreference(final Preference preference,
-                                                                               final PreferenceFragmentCompat hostOfPreference) {
+    private static SearchablePreferenceEntity convertPreference2SearchablePreference(final Preference preference,
+                                                                                     final PreferenceFragmentCompat hostOfPreference) {
         final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
                 new Preference2SearchablePreferenceConverter(
                         (_preference, _hostOfPreference) ->
@@ -70,7 +70,7 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
                         IdGeneratorFactory.createIdGeneratorStartingAt(1));
         return preference2SearchablePreferenceConverter
                 .convertPreference(preference, "-1", hostOfPreference, Optional.empty(), Optional.empty())
-                .searchablePreference();
+                .searchablePreferenceEntity();
     }
 
     private static boolean equals(final Drawable drawable1, final Drawable drawable2) {

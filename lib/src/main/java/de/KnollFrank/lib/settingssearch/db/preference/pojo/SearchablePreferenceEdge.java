@@ -7,9 +7,9 @@ import java.util.StringJoiner;
 
 public class SearchablePreferenceEdge extends DefaultEdge {
 
-    public final SearchablePreference preference;
+    public final SearchablePreferenceEntity preference;
 
-    public SearchablePreferenceEdge(final SearchablePreference preference) {
+    public SearchablePreferenceEdge(final SearchablePreferenceEntity preference) {
         this.preference = preference;
     }
 
