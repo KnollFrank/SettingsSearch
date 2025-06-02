@@ -1,5 +1,8 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
@@ -11,7 +14,17 @@ public class SearchablePreferenceScreenConverter {
                 searchablePreferenceScreen.host(),
                 searchablePreferenceScreen.title(),
                 searchablePreferenceScreen.summary(),
-                searchablePreferenceScreen.allPreferences(),
+                searchablePreferenceScreen
+                        .allPreferences()
+                        .stream()
+                        .map(
+                                preference ->
+                                        SearchablePreferenceConverter.toEntity(
+                                                preference,
+                                                // FK-FIXME: not correct:
+                                                Optional.empty(),
+                                                searchablePreferenceScreen.id()))
+                        .collect(Collectors.toSet()),
                 searchablePreferenceScreen.parentId());
     }
 
@@ -21,7 +34,11 @@ public class SearchablePreferenceScreenConverter {
                 searchablePreferenceScreenEntity.getHost(),
                 searchablePreferenceScreenEntity.getTitle(),
                 searchablePreferenceScreenEntity.getSummary(),
-                searchablePreferenceScreenEntity.getAllPreferences(),
+                searchablePreferenceScreenEntity
+                        .getAllPreferences()
+                        .stream()
+                        .map(SearchablePreferenceConverter::fromEntity)
+                        .collect(Collectors.toSet()),
                 searchablePreferenceScreenEntity.getParentId());
     }
 }

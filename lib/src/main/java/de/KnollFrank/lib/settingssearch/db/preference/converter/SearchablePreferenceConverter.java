@@ -5,13 +5,12 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class SearchablePreferenceConverter {
 
     public static SearchablePreferenceEntity toEntity(final SearchablePreference searchablePreference,
                                                       final Optional<SearchablePreference> parentPreference,
-                                                      final SearchablePreferenceScreen parentScreen) {
+                                                      final String parentScreenId) {
         return new SearchablePreferenceEntity(
                 searchablePreference.getId(),
                 searchablePreference.getKey(),
@@ -26,7 +25,7 @@ public class SearchablePreferenceConverter {
                 searchablePreference.getSearchableInfo(),
                 parentPreference.map(SearchablePreference::getId),
                 searchablePreference.getPredecessor().map(SearchablePreference::getId),
-                parentScreen.id());
+                parentScreenId);
     }
 
     public static SearchablePreference fromEntity(final SearchablePreferenceEntity searchablePreferenceEntity) {

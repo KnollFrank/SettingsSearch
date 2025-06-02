@@ -10,7 +10,7 @@ public record SearchablePreferenceScreen(String id,
                                          Class<? extends PreferenceFragmentCompat> host,
                                          Optional<String> title,
                                          Optional<String> summary,
-                                         Set<SearchablePreferenceEntity> allPreferences,
+                                         Set<SearchablePreference> allPreferences,
                                          Optional<String> parentId) {
 
     @Override
