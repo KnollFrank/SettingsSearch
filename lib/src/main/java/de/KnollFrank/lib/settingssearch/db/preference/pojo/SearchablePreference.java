@@ -135,6 +135,7 @@ public final class SearchablePreference {
     }
 
     public Optional<CharSequence> getHighlightedSummary() {
+        // FK-FIXME: never use null !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (highlightedSummaryProvider == null) {
             highlightedSummaryProvider = Optional::empty;
         }
@@ -150,6 +151,7 @@ public final class SearchablePreference {
     }
 
     public Optional<CharSequence> getHighlightedTitle() {
+        // FK-FIXME: never use null !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (highlightedTitleProvider == null) {
             highlightedTitleProvider = Optional::empty;
         }
@@ -165,6 +167,7 @@ public final class SearchablePreference {
     }
 
     public Optional<CharSequence> getHighlightedSearchableInfo() {
+        // FK-FIXME: never use null !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (highlightedSearchableInfoProvider == null) {
             highlightedSearchableInfoProvider = Optional::empty;
         }

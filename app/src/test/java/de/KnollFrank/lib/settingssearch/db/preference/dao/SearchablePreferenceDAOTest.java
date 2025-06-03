@@ -105,7 +105,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreference preferenceFromDb = dao.findPreferenceById(preference.getId()).orElseThrow();
 
         // When
-        final SearchablePreference predecessorFromDb = preferenceFromDb.getPredecessor().orElseThrow();
+        final SearchablePreference predecessorFromDb = dao.getPredecessor(preferenceFromDb).orElseThrow();
 
         // Then
         assertThat(predecessorFromDb, is(predecessor));

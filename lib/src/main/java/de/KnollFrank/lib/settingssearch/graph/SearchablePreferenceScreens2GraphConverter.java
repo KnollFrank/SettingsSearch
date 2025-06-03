@@ -33,7 +33,7 @@ public class SearchablePreferenceScreens2GraphConverter {
                                                             final SearchablePreference.DbDataProvider dbDataProvider) {
         final ImmutableSet.Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableSet.builder();
         for (final SearchablePreferenceScreen targetScreen : screens) {
-            for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen)) {
+            for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen, dbDataProvider)) {
                 edgeDescriptionsBuilder.add(
                         new EdgeDescription(
                                 dbDataProvider.getHost(sourcePreference),
@@ -44,11 +44,12 @@ public class SearchablePreferenceScreens2GraphConverter {
         return edgeDescriptionsBuilder.build();
     }
 
-    private static Set<SearchablePreference> getSourcePreferences(final SearchablePreferenceScreen targetScreen) {
+    private static Set<SearchablePreference> getSourcePreferences(final SearchablePreferenceScreen targetScreen,
+                                                                  final SearchablePreference.DbDataProvider dbDataProvider) {
         return targetScreen
                 .getAllPreferences()
                 .stream()
-                .map(SearchablePreference::getPredecessor)
+                .map(dbDataProvider::getPredecessor)
                 // Fk-TODO: use mapMulti() if API level is at least 34
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)
