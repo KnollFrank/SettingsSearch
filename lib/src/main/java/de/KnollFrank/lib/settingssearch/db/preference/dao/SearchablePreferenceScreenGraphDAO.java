@@ -20,9 +20,9 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public void persist(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        detachGraphFromDb(graph);
+        final SearchablePreferenceScreen.DbDataProvider dbDataProvider = searchablePreferenceScreenDAO.createDetachedDbDataProvider();
         removePersistedGraph();
-        searchablePreferenceScreenDAO.persist(graph.vertexSet());
+        searchablePreferenceScreenDAO.persist(graph.vertexSet(), dbDataProvider);
     }
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
@@ -34,9 +34,5 @@ public class SearchablePreferenceScreenGraphDAO {
 
     private void removePersistedGraph() {
         searchablePreferenceScreenDAO.removeAll();
-    }
-
-    private void detachGraphFromDb(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        searchablePreferenceScreenDAO.detachScreensFromDb(graph.vertexSet());
     }
 }

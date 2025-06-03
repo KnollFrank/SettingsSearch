@@ -8,6 +8,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
 
+// FK-TODO: remove
 class SearchablePreferenceScreenDAOSetter {
 
     private final SearchablePreferenceScreen.DbDataProvider dao;

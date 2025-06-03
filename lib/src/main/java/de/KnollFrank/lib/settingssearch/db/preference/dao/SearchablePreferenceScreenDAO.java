@@ -37,11 +37,25 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
     }
 
     public void persist(final Collection<SearchablePreferenceScreen> searchablePreferenceScreens) {
-        searchablePreferenceScreens.forEach(this::persist);
+        persist(searchablePreferenceScreens, this);
+    }
+
+    public void persist(final Collection<SearchablePreferenceScreen> searchablePreferenceScreens,
+                        final SearchablePreferenceScreen.DbDataProvider dbDataProvider) {
+        searchablePreferenceScreens.forEach(
+                searchablePreferenceScreen ->
+                        persist(
+                                searchablePreferenceScreen,
+                                dbDataProvider));
     }
 
     public void persist(final SearchablePreferenceScreen searchablePreferenceScreen) {
-        searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferences(this));
+        persist(searchablePreferenceScreen, this);
+    }
+
+    public void persist(final SearchablePreferenceScreen searchablePreferenceScreen,
+                        final SearchablePreferenceScreen.DbDataProvider dbDataProvider) {
+        searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferences(dbDataProvider));
         _persist(daoSetter.setDao(searchablePreferenceScreen));
         invalidateCaches();
     }
@@ -121,24 +135,12 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
                         new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences())));
     }
 
-    void detachScreensFromDb(final Set<SearchablePreferenceScreen> screens) {
-        SearchablePreferenceScreenDAO
-                .createSearchablePreferenceScreenDAOSetter(createDetachedDbDataProvider())
-                .setDao(screens);
-    }
-
-    private DetachedDbDataProvider createDetachedDbDataProvider() {
+    DetachedDbDataProvider createDetachedDbDataProvider() {
         return new DetachedDbDataProvider(
                 getAllPreferencesBySearchablePreferenceScreen(),
                 getHostByPreference(),
                 searchablePreferenceDAO.getPredecessorByPreference(),
                 searchablePreferenceDAO.getChildrenByPreference());
-    }
-
-    private static SearchablePreferenceScreenDAOSetter createSearchablePreferenceScreenDAOSetter(final DetachedDbDataProvider dbDataProvider) {
-        return new SearchablePreferenceScreenDAOSetter(
-                dbDataProvider,
-                new SearchablePreferenceDAOSetter(dbDataProvider));
     }
 
     private void invalidateCaches() {

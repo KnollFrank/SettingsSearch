@@ -11,6 +11,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
+// FK-TODO: remove
 class SearchablePreferenceDAOSetter {
 
     private final SearchablePreference.DbDataProvider dao;
