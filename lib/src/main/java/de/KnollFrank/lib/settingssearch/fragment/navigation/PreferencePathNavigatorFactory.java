@@ -6,6 +6,7 @@ import android.content.Context;
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
@@ -17,12 +18,14 @@ public class PreferencePathNavigatorFactory {
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-            final PrincipalAndProxyProvider principalAndProxyProvider) {
+            final PrincipalAndProxyProvider principalAndProxyProvider,
+            final DbDataProvider dbDataProvider) {
         final PreferenceWithHostProvider preferenceWithHostProvider =
                 new PreferenceWithHostProvider(
                         fragmentFactoryAndInitializer,
                         instantiateAndInitializeFragment,
-                        context);
+                        context,
+                        dbDataProvider);
         return new PreferencePathNavigator(
                 context,
                 preferenceWithHostProvider,
