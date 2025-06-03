@@ -206,10 +206,6 @@ public final class SearchablePreference {
         return getPreferencePathOfPredecessor().append(this);
     }
 
-    public Set<SearchablePreference> getChildren() {
-        return dao.orElseThrow().getChildren(this);
-    }
-
     public Optional<SearchablePreference> getPredecessor() {
         return dao.orElseThrow().getPredecessor(this);
     }
