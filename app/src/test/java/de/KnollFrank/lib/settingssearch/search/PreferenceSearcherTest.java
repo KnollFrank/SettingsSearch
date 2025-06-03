@@ -827,13 +827,14 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 },
                 new DefaultMarkupsFactory(fragmentActivity),
                 preference -> true,
-                new SearchResultsByPreferencePathSorter(),
+                new SearchResultsByPreferencePathSorter(searchablePreference -> searchablePreference.getPreferencePath(searchablePreferenceDAO)),
                 instantiateAndInitializeFragment,
                 Map.of(),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 (activity, settingsFragment, setting2Highlight) -> {
                 },
-                fragmentActivity);
+                fragmentActivity,
+                searchablePreferenceDAO);
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

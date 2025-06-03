@@ -105,7 +105,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                 Fragment2ConnectedToFragment3.class,
                                 pojoGraph.vertexSet());
                 assertThat(
-                        preferenceOfFragment2PointingToFragment3.getPreferencePath(),
+                        preferenceOfFragment2PointingToFragment3.getPreferencePath(appDatabase.searchablePreferenceDAO()),
                         is(
                                 new PreferencePath(
                                         List.of(

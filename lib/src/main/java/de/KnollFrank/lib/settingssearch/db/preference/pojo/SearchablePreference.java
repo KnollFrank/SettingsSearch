@@ -35,9 +35,6 @@ public final class SearchablePreference {
         SearchablePreferenceScreen getHost(SearchablePreference preference);
     }
 
-    @Ignore
-    private Optional<DbDataProvider> dao = Optional.empty();
-
     @PrimaryKey
     private final int id;
     private final String key;
@@ -95,8 +92,8 @@ public final class SearchablePreference {
         this.searchablePreferenceScreenId = searchablePreferenceScreenId;
     }
 
+    // FK-TODO: remove method
     public void setDao(final DbDataProvider dao) {
-        this.dao = Optional.of(dao);
     }
 
     public int getId() {
@@ -205,12 +202,8 @@ public final class SearchablePreference {
         return visible;
     }
 
-    public PreferencePath getPreferencePath() {
-        return getPreferencePathOfPredecessor().append(this);
-    }
-
-    public Optional<SearchablePreference> getPredecessor() {
-        return dao.orElseThrow().getPredecessor(this);
+    public PreferencePath getPreferencePath(final DbDataProvider dbDataProvider) {
+        return getPreferencePathOfPredecessor(dbDataProvider).append(this);
     }
 
     public Optional<Integer> getParentId() {
@@ -266,10 +259,10 @@ public final class SearchablePreference {
                                                 context.getResources())));
     }
 
-    private PreferencePath getPreferencePathOfPredecessor() {
-        return this
-                .getPredecessor()
-                .map(SearchablePreference::getPreferencePath)
+    private PreferencePath getPreferencePathOfPredecessor(final DbDataProvider dbDataProvider) {
+        return dbDataProvider
+                .getPredecessor(this)
+                .map(searchablePreference -> searchablePreference.getPreferencePath(dbDataProvider))
                 .orElseGet(() -> new PreferencePath(List.of()));
     }
 }

@@ -31,6 +31,7 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
 
@@ -41,14 +42,17 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     private final Consumer<SearchablePreference> onPreferenceClickListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PreferencePathDisplayer preferencePathDisplayer;
+    private final DbDataProvider dbDataProvider;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
 
     public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreference> onPreferenceClickListener,
                                             final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                            final PreferencePathDisplayer preferencePathDisplayer) {
+                                            final PreferencePathDisplayer preferencePathDisplayer,
+                                            final DbDataProvider dbDataProvider) {
         this.onPreferenceClickListener = onPreferenceClickListener;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.preferencePathDisplayer = preferencePathDisplayer;
+        this.dbDataProvider = dbDataProvider;
     }
 
     @Override
@@ -186,7 +190,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
 
     private void displayPreferencePath(final PreferenceViewHolder holder,
                                        final SearchablePreference searchablePreference) {
-        final PreferencePath preferencePath = searchablePreference.getPreferencePath();
+        final PreferencePath preferencePath = searchablePreference.getPreferencePath(dbDataProvider);
         PreferencePathView.displayPreferencePath(
                 getPreferencePathView(holder),
                 preferencePath,

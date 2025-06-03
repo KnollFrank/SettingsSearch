@@ -137,7 +137,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
         }
     }
 
-    private static SearchResultsFragment getInitializedSearchResultsFragment(final FragmentActivity activity) {
+    private SearchResultsFragment getInitializedSearchResultsFragment(final FragmentActivity activity) {
         final SearchResultsFragment searchResultsFragment =
                 new SearchResultsFragment(
                         preferencePathPointer -> {
@@ -155,7 +155,8 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                             public RecyclerView getSearchResultsView(View rootView) {
                                 return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                             }
-                        });
+                        },
+                        appDatabase.searchablePreferenceDAO());
         PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment(
                 searchResultsFragment,
                 getInstantiateAndInitializeFragment(searchResultsFragment, activity));

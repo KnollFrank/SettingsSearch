@@ -45,7 +45,7 @@ public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
         makeGetPreferencePathWorkOnPreferences(
                 List.of(car, walk, defaultSpeedOfWalk, defaultSpeed, defaultSpeedOfCar),
                 appDatabase);
-        final SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
+        final SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter(searchablePreference -> searchablePreference.getPreferencePath(appDatabase.searchablePreferenceDAO()));
 
         // When
         final List<SearchablePreference> sortedSearchResults =

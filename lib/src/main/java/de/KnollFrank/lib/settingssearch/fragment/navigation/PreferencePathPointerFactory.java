@@ -10,7 +10,7 @@ class PreferencePathPointerFactory {
                 searchablePreferenceDAO
                         .findPreferenceById(preferencePathNavigatorData.idOfSearchablePreference())
                         .orElseThrow()
-                        .getPreferencePath(),
+                        .getPreferencePath(searchablePreferenceDAO),
                 preferencePathNavigatorData.indexWithinPreferencePath());
     }
 }

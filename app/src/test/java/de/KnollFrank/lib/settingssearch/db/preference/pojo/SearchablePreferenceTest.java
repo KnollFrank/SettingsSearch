@@ -33,7 +33,7 @@ public class SearchablePreferenceTest extends AppDatabaseTest {
         makeGetPreferencePathWorkOnPreferences(List.of(parent, predecessor), appDatabase);
 
         // When
-        final PreferencePath preferencePath = parent.getPreferencePath();
+        final PreferencePath preferencePath = parent.getPreferencePath(appDatabase.searchablePreferenceDAO());
 
         // Then
         assertThat(preferencePath, is(new PreferencePath(List.of(predecessor, parent))));

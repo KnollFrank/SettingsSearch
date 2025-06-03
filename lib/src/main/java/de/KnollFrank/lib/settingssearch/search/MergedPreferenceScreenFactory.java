@@ -15,6 +15,8 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
@@ -126,7 +128,8 @@ public class MergedPreferenceScreenFactory {
                 activityInitializerByActivity,
                 principalAndProxyProvider,
                 showSettingsFragmentAndHighlightSetting,
-                activity);
+                activity,
+                AppDatabaseFactory.getInstance(locale, activity).searchablePreferenceDAO());
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
@@ -143,7 +146,8 @@ public class MergedPreferenceScreenFactory {
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
-            final FragmentActivity activity) {
+            final FragmentActivity activity,
+            final DbDataProvider dbDataProvider) {
         return new MergedPreferenceScreen(
                 searchablePreferenceDAO,
                 new SearchResultsDisplayer(
@@ -160,7 +164,8 @@ public class MergedPreferenceScreenFactory {
                                         activity),
                                 showPreferencePathPredicate,
                                 preferencePathDisplayer,
-                                searchResultsFragmentUI),
+                                searchResultsFragmentUI,
+                                dbDataProvider),
                         markupsFactory,
                         searchResultsFilter,
                         searchResultsSorter));

@@ -5,7 +5,12 @@ import android.content.Context;
 import androidx.annotation.IdRes;
 
 import java.util.Optional;
+import java.util.function.Function;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -33,7 +38,7 @@ public class SearchConfigBuilder {
     };
     private PreferencePathDisplayer preferencePathDisplayer = new DefaultPreferencePathDisplayer();
     private SearchResultsFilter searchResultsFilter = preference -> true;
-    private SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter();
+    private SearchResultsSorter searchResultsSorter;
     private SearchPreferenceFragmentUI searchPreferenceFragmentUI = new DefaultSearchPreferenceFragmentUI();
     private SearchResultsFragmentUI searchResultsFragmentUI = new DefaultSearchResultsFragmentUI();
     private MarkupsFactory markupsFactory;
@@ -43,6 +48,16 @@ public class SearchConfigBuilder {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.markupsFactory = new DefaultMarkupsFactory(context);
         this.showSettingsFragmentAndHighlightSetting = new DefaultShowSettingsFragmentAndHighlightSetting(fragmentContainerViewId);
+        this.searchResultsSorter =
+                new SearchResultsByPreferencePathSorter(
+                        createGetPreferencePathFunction(
+                                AppDatabaseFactory
+                                        .getInstanceForCurrentLocale(context)
+                                        .searchablePreferenceDAO()));
+    }
+
+    private static Function<SearchablePreference, PreferencePath> createGetPreferencePathFunction(final SearchablePreferenceDAO dbDataProvider) {
+        return searchablePreference -> searchablePreference.getPreferencePath(dbDataProvider);
     }
 
     @SuppressWarnings("unused")
