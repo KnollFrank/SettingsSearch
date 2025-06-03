@@ -214,6 +214,10 @@ public final class SearchablePreference {
         return dbDataProvider.getPredecessor(this);
     }
 
+    public SearchablePreferenceScreen getHost(final DbDataProvider dbDataProvider) {
+        return dbDataProvider.getHost(this);
+    }
+
     public Optional<Integer> getParentId() {
         return parentId;
     }

@@ -81,7 +81,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
                         .orElseThrow();
 
         // When
-        final SearchablePreferenceScreen hostOfPreference = appDatabase.searchablePreferenceDAO().getHost(preference);
+        final SearchablePreferenceScreen hostOfPreference = preference.getHost(appDatabase.searchablePreferenceDAO());
 
         // Then
         assertThat(hostOfPreference, is(screen));

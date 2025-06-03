@@ -31,7 +31,9 @@ class PreferenceWithHostProvider {
                                                     final Optional<PreferenceWithHost> src) {
         final PreferenceFragmentCompat hostOfPreference =
                 instantiateAndInitializePreferenceFragment(
-                        AppDatabaseFactory.getInstanceForCurrentLocale(context).searchablePreferenceDAO().getHost(preference).getHost(),
+                        preference
+                                .getHost(AppDatabaseFactory.getInstanceForCurrentLocale(context).searchablePreferenceDAO())
+                                .getHost(),
                         src);
         return new PreferenceWithHost(
                 Preferences.findPreferenceOrElseThrow(hostOfPreference, preference.getKey()),

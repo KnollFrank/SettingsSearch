@@ -36,7 +36,7 @@ public class SearchablePreferenceScreens2GraphConverter {
             for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen, dbDataProvider)) {
                 edgeDescriptionsBuilder.add(
                         new EdgeDescription(
-                                dbDataProvider.getHost(sourcePreference),
+                                sourcePreference.getHost(dbDataProvider),
                                 targetScreen,
                                 new SearchablePreferenceEdge(sourcePreference)));
             }
