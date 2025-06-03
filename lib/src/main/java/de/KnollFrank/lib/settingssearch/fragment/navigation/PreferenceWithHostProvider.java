@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -30,7 +31,7 @@ class PreferenceWithHostProvider {
                                                     final Optional<PreferenceWithHost> src) {
         final PreferenceFragmentCompat hostOfPreference =
                 instantiateAndInitializePreferenceFragment(
-                        preference.getHost().getHost(),
+                        AppDatabaseFactory.getInstanceForCurrentLocale(context).searchablePreferenceDAO().getHost(preference).getHost(),
                         src);
         return new PreferenceWithHost(
                 Preferences.findPreferenceOrElseThrow(hostOfPreference, preference.getKey()),

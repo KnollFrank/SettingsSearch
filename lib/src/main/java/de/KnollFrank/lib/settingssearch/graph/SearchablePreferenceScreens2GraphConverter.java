@@ -16,10 +16,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreens2GraphConverter {
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> convertScreensToGraph(final Set<SearchablePreferenceScreen> screens) {
+    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> convertScreensToGraph(final Set<SearchablePreferenceScreen> screens,
+                                                                                                    final SearchablePreference.DbDataProvider dbDataProvider) {
         final var graphBuilder = DefaultDirectedGraph.<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class);
         addNodes(graphBuilder, screens);
-        addEdges(graphBuilder, getEdgeDescriptions(screens));
+        addEdges(graphBuilder, getEdgeDescriptions(screens, dbDataProvider));
         return graphBuilder.build();
     }
 
@@ -28,13 +29,14 @@ public class SearchablePreferenceScreens2GraphConverter {
                                    SearchablePreferenceEdge edge) {
     }
 
-    private static Set<EdgeDescription> getEdgeDescriptions(final Set<SearchablePreferenceScreen> screens) {
+    private static Set<EdgeDescription> getEdgeDescriptions(final Set<SearchablePreferenceScreen> screens,
+                                                            final SearchablePreference.DbDataProvider dbDataProvider) {
         final ImmutableSet.Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableSet.builder();
         for (final SearchablePreferenceScreen targetScreen : screens) {
             for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen)) {
                 edgeDescriptionsBuilder.add(
                         new EdgeDescription(
-                                sourcePreference.getHost(),
+                                dbDataProvider.getHost(sourcePreference),
                                 targetScreen,
                                 new SearchablePreferenceEdge(sourcePreference)));
             }

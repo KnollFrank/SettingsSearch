@@ -140,13 +140,13 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                         }));
     }
 
-    private static SearchablePreference getPreference(
+    private SearchablePreference getPreference(
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
             final Class<? extends PreferenceFragmentCompat> fragmentPointedTo,
             final Set<SearchablePreferenceScreen> preferenceScreenWithHostSet) {
         return getPreference(
                 preferenceScreenWithHostSet,
-                preference -> hostOfPreference.equals(preference.getHost().getHost()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
+                preference -> hostOfPreference.equals(appDatabase.searchablePreferenceDAO().getHost(preference).getHost()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
     private static SearchablePreference getPreference(

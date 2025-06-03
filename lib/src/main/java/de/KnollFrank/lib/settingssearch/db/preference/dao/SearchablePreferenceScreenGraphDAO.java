@@ -11,9 +11,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class SearchablePreferenceScreenGraphDAO {
 
     private final SearchablePreferenceScreenDAO searchablePreferenceScreenDAO;
+    private final SearchablePreferenceDAO searchablePreferenceDAO;
 
-    public SearchablePreferenceScreenGraphDAO(final SearchablePreferenceScreenDAO searchablePreferenceScreenDAO) {
+    public SearchablePreferenceScreenGraphDAO(final SearchablePreferenceScreenDAO searchablePreferenceScreenDAO,
+                                              final SearchablePreferenceDAO searchablePreferenceDAO) {
         this.searchablePreferenceScreenDAO = searchablePreferenceScreenDAO;
+        this.searchablePreferenceDAO = searchablePreferenceDAO;
     }
 
     public void persist(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
@@ -23,7 +26,7 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
-        return convertScreensToGraph(searchablePreferenceScreenDAO.loadAll());
+        return convertScreensToGraph(searchablePreferenceScreenDAO.loadAll(), searchablePreferenceDAO);
     }
 
     private void removePersistedGraph() {

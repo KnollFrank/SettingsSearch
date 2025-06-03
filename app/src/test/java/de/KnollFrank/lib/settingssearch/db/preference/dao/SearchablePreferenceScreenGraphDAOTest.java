@@ -28,7 +28,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     @Test
     public void shouldPersistSearchablePreferenceScreenGraph() {
         // Given
-        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO());
+        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO(), appDatabase.searchablePreferenceDAO());
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = createPojoGraph(PreferenceFragmentCompat.class);
 
         // When
@@ -42,7 +42,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     @Test
     public void shouldOverwritePersistedSearchablePreferenceScreenGraph() {
         // Given
-        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO());
+        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO(), appDatabase.searchablePreferenceDAO());
 
         // When
         dao.persist(createSingleNodePojoGraph(PreferenceFragmentCompat.class));
@@ -59,7 +59,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     @Test
     public void test_persistTwice_checkAllPreferences() {
         // Given
-        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO());
+        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO(), appDatabase.searchablePreferenceDAO());
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = createSingleNodePojoGraph(PreferenceFragmentCompat.class);
         final Set<SearchablePreference> allPreferences = getAllPreferencesOfSingleNode(graph);
 

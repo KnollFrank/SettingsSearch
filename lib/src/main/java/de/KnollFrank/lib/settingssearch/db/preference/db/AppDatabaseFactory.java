@@ -7,6 +7,7 @@ import androidx.room.Room;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 
 public class AppDatabaseFactory {
@@ -19,6 +20,10 @@ public class AppDatabaseFactory {
     public static synchronized AppDatabase getInstance(final Locale locale, final Context context) {
         setLocaleSpecificAppDatabase(locale, context);
         return localeSpecificAppDatabase.orElseThrow().appDatabase();
+    }
+
+    public static AppDatabase getInstanceForCurrentLocale(final Context context) {
+        return getInstance(Utils.geCurrentLocale(context.getResources()), context);
     }
 
     private static void setLocaleSpecificAppDatabase(final Locale locale, final Context context) {

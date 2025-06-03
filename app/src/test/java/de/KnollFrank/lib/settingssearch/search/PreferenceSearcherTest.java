@@ -132,7 +132,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
 
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                        return keyOfPreferenceToIncludeInSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost().getHost());
+                        return keyOfPreferenceToIncludeInSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(appDatabase.searchablePreferenceDAO().getHost(preference).getHost());
                     }
                 },
                 keyword,
@@ -166,7 +166,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
 
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost().getHost()));
+                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(appDatabase.searchablePreferenceDAO().getHost(preference).getHost()));
                     }
                 },
                 keyword,

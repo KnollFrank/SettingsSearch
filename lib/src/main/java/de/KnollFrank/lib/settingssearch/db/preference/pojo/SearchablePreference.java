@@ -202,10 +202,6 @@ public final class SearchablePreference {
         return visible;
     }
 
-    public SearchablePreferenceScreen getHost() {
-        return dao.orElseThrow().getHost(this);
-    }
-
     public PreferencePath getPreferencePath() {
         return getPreferencePathOfPredecessor().append(this);
     }
@@ -263,12 +259,12 @@ public final class SearchablePreference {
         return this
                 .getIconResourceIdOrIconPixelData()
                 .map(iconResourceIdOrIconPixelData ->
-                             iconResourceIdOrIconPixelData.join(
-                                     iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
-                                     iconPixelData ->
-                                             DrawableAndStringConverter.string2Drawable(
-                                                     iconPixelData,
-                                                     context.getResources())));
+                        iconResourceIdOrIconPixelData.join(
+                                iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
+                                iconPixelData ->
+                                        DrawableAndStringConverter.string2Drawable(
+                                                iconPixelData,
+                                                context.getResources())));
     }
 
     private PreferencePath getPreferencePathOfPredecessor() {
