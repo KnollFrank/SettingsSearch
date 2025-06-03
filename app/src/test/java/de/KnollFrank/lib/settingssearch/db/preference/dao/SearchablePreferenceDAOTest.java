@@ -136,13 +136,13 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreference parentFromDb = dao.findPreferenceById(parent.getId()).orElseThrow();
 
         // When
-        final Set<SearchablePreference> childrenFromDb = dao.getChildren(parentFromDb);
+        final Set<SearchablePreference> childrenFromDb = parentFromDb.getChildren(dao);
 
         // Then
         assertThat(childrenFromDb, contains(child));
 
         final SearchablePreference childFromDb = Iterables.getOnlyElement(childrenFromDb);
-        assertThat(dao.getChildren(childFromDb), is(empty()));
+        assertThat(childFromDb.getChildren(dao), is(empty()));
     }
 
     @Test

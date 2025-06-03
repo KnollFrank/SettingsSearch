@@ -206,6 +206,10 @@ public final class SearchablePreference {
         return getPreferencePathOfPredecessor(dbDataProvider).append(this);
     }
 
+    public Set<SearchablePreference> getChildren(final DbDataProvider dbDataProvider) {
+        return dbDataProvider.getChildren(this);
+    }
+
     public Optional<Integer> getParentId() {
         return parentId;
     }
