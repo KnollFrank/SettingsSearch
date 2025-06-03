@@ -92,10 +92,6 @@ public final class SearchablePreference {
         this.searchablePreferenceScreenId = searchablePreferenceScreenId;
     }
 
-    // FK-TODO: remove method
-    public void setDao(final DbDataProvider dao) {
-    }
-
     public int getId() {
         return id;
     }

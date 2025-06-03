@@ -32,7 +32,6 @@ import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 @Dao
 public abstract class SearchablePreferenceDAO implements SearchablePreference.DbDataProvider {
 
-    private final SearchablePreferenceDAOSetter daoSetter = new SearchablePreferenceDAOSetter(this);
     private final AppDatabase appDatabase;
     private Optional<Map<SearchablePreference, Optional<SearchablePreference>>> predecessorByPreference = Optional.empty();
     private Optional<Map<SearchablePreference, Set<SearchablePreference>>> childrenByPreference = Optional.empty();
@@ -42,11 +41,13 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
     }
 
     public Set<SearchablePreference> loadAll() {
-        return daoSetter.setDao(new HashSet<>(_loadAll()));
+        // FK-TODO: "inline" method
+        return new HashSet<>(_loadAll());
     }
 
     public Optional<SearchablePreference> findPreferenceById(final int id) {
-        return daoSetter.setDao(_findPreferenceById(id));
+        // FK-TODO: "inline" method
+        return _findPreferenceById(id);
     }
 
     public Set<PreferenceMatch> searchWithinTitleSummarySearchableInfo(final String needle,
@@ -61,22 +62,22 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
     }
 
     public void persist(final SearchablePreference... searchablePreferences) {
-        _persist(daoSetter.setDao(searchablePreferences));
+        _persist(searchablePreferences);
         invalidateCaches();
     }
 
     public void persist(final Collection<SearchablePreference> searchablePreferences) {
-        _persist(daoSetter.setDao(searchablePreferences));
+        _persist(searchablePreferences);
         invalidateCaches();
     }
 
     public void remove(final SearchablePreference... preferences) {
-        _remove(daoSetter.setDao(preferences));
+        _remove(preferences);
         invalidateCaches();
     }
 
     public void update(final SearchablePreference... preferences) {
-        _update(daoSetter.setDao(preferences));
+        _update(preferences);
         invalidateCaches();
     }
 
@@ -138,7 +139,7 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
     protected abstract void _update(SearchablePreference... preferences);
 
     private Set<SearchablePreference> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
-        return daoSetter.setDao(new HashSet<>(_searchWithinTitleSummarySearchableInfo(needle)));
+        return new HashSet<>(_searchWithinTitleSummarySearchableInfo(needle));
     }
 
     public Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference() {
@@ -150,8 +151,7 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
 
     private Map<SearchablePreference, Set<SearchablePreference>> computeChildrenByPreference() {
         return PreferenceAndChildrens.getChildrenByPreference(
-                daoSetter.__setDao(
-                        new HashSet<>(_getPreferencesAndChildren())));
+                new HashSet<>(_getPreferencesAndChildren()));
     }
 
     public Map<SearchablePreference, Optional<SearchablePreference>> getPredecessorByPreference() {
@@ -163,8 +163,7 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
 
     private Map<SearchablePreference, Optional<SearchablePreference>> computePredecessorByPreference() {
         return PreferenceAndPredecessors.getPredecessorByPreference(
-                daoSetter._setDao(
-                        new HashSet<>(_getPreferencesAndPredecessors())));
+                new HashSet<>(_getPreferencesAndPredecessors()));
     }
 
     private void invalidateCaches() {

@@ -48,10 +48,6 @@ public final class SearchablePreferenceScreen {
         this(id, host, title, summary, Optional.empty(), parentId);
     }
 
-    // FK-TODO: remove method
-    public void setDao(final DbDataProvider dao) {
-    }
-
     public String getId() {
         return id;
     }

@@ -24,16 +24,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public abstract class SearchablePreferenceScreenDAO implements SearchablePreferenceScreen.DbDataProvider {
 
     private final SearchablePreferenceDAO searchablePreferenceDAO;
-    private final SearchablePreferenceScreenDAOSetter daoSetter;
     private Optional<Map<SearchablePreferenceScreen, Set<SearchablePreference>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
     private Optional<Map<SearchablePreference, SearchablePreferenceScreen>> hostByPreference = Optional.empty();
 
     public SearchablePreferenceScreenDAO(final AppDatabase appDatabase) {
         this.searchablePreferenceDAO = appDatabase.searchablePreferenceDAO();
-        this.daoSetter =
-                new SearchablePreferenceScreenDAOSetter(
-                        this,
-                        new SearchablePreferenceDAOSetter(appDatabase.searchablePreferenceDAO()));
     }
 
     public void persist(final Collection<SearchablePreferenceScreen> searchablePreferenceScreens) {
@@ -56,21 +51,24 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
     public void persist(final SearchablePreferenceScreen searchablePreferenceScreen,
                         final SearchablePreferenceScreen.DbDataProvider dbDataProvider) {
         searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferences(dbDataProvider));
-        _persist(daoSetter.setDao(searchablePreferenceScreen));
+        _persist(searchablePreferenceScreen);
         invalidateCaches();
     }
 
     public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(final String id) {
-        return daoSetter.setDao(_findSearchablePreferenceScreenById(id));
+        // FK-TODO: "inline" method
+        return _findSearchablePreferenceScreenById(id);
     }
 
     public Set<SearchablePreferenceScreen> loadAll() {
-        return daoSetter.setDao(new HashSet<>(_loadAll()));
+        // FK-TODO: "inline" method
+        return new HashSet<>(_loadAll());
     }
 
     // FK-TODO: remove method?
     public Set<SearchablePreferenceScreen> findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host) {
-        return daoSetter.setDao(new HashSet<>(_findSearchablePreferenceScreensByHost(host)));
+        // FK-TODO: "inline" method
+        return new HashSet<>(_findSearchablePreferenceScreensByHost(host));
     }
 
     @Override
@@ -118,8 +116,7 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
 
     private Map<SearchablePreferenceScreen, Set<SearchablePreference>> computeAllPreferencesBySearchablePreferenceScreen() {
         return SearchablePreferenceScreenAndAllPreferencesHelper.getAllPreferencesBySearchablePreferenceScreen(
-                daoSetter.__setDao(
-                        new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences())));
+                new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
     }
 
     private Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference() {
@@ -131,8 +128,7 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
 
     private Map<SearchablePreference, SearchablePreferenceScreen> computeHostByPreference() {
         return SearchablePreferenceScreenAndAllPreferencesHelper.getHostByPreference(
-                daoSetter.__setDao(
-                        new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences())));
+                new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
     }
 
     DetachedDbDataProvider createDetachedDbDataProvider() {

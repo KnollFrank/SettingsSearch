@@ -23,17 +23,6 @@ class DetachedDbDataProvider implements SearchablePreferenceScreen.DbDataProvide
         this.hostByPreference = hostByPreference;
         this.predecessorByPreference = predecessorByPreference;
         this.childrenByPreference = childrenByPreference;
-        {
-            final SearchablePreferenceDAOSetter searchablePreferenceDAOSetter = new SearchablePreferenceDAOSetter(this);
-            final SearchablePreferenceScreenDAOSetter searchablePreferenceScreenDAOSetter =
-                    new SearchablePreferenceScreenDAOSetter(
-                            this,
-                            searchablePreferenceDAOSetter);
-            searchablePreferenceScreenDAOSetter._setDao(allPreferencesBySearchablePreferenceScreen);
-            searchablePreferenceScreenDAOSetter.setDao(hostByPreference);
-            searchablePreferenceDAOSetter._setDao(predecessorByPreference);
-            searchablePreferenceDAOSetter.setDao(childrenByPreference);
-        }
     }
 
     @Override
