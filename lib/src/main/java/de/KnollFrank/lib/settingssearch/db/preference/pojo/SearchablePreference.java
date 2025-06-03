@@ -45,11 +45,11 @@ public final class SearchablePreference {
 
     private final Optional<String> title;
     @Ignore
-    private Supplier<Optional<CharSequence>> highlightedTitleProvider;
+    private Supplier<Optional<CharSequence>> highlightedTitleProvider = Optional::empty;
 
     private Optional<String> summary;
     @Ignore
-    private Supplier<Optional<CharSequence>> highlightedSummaryProvider;
+    private Supplier<Optional<CharSequence>> highlightedSummaryProvider = Optional::empty;
 
     private final @LayoutRes int widgetLayoutResId;
     private final Optional<String> fragment;
@@ -57,7 +57,7 @@ public final class SearchablePreference {
     private final boolean visible;
     private final Optional<String> searchableInfo;
     @Ignore
-    private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider;
+    private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider = Optional::empty;
     private final Optional<Integer> parentId;
     private final Optional<Integer> predecessorId;
     private final String searchablePreferenceScreenId;
@@ -128,10 +128,6 @@ public final class SearchablePreference {
     }
 
     public Optional<CharSequence> getHighlightedSummary() {
-        // FK-FIXME: never use null !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (highlightedSummaryProvider == null) {
-            highlightedSummaryProvider = Optional::empty;
-        }
         return highlightedSummaryProvider.get();
     }
 
@@ -144,10 +140,6 @@ public final class SearchablePreference {
     }
 
     public Optional<CharSequence> getHighlightedTitle() {
-        // FK-FIXME: never use null !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (highlightedTitleProvider == null) {
-            highlightedTitleProvider = Optional::empty;
-        }
         return highlightedTitleProvider.get();
     }
 
@@ -160,10 +152,6 @@ public final class SearchablePreference {
     }
 
     public Optional<CharSequence> getHighlightedSearchableInfo() {
-        // FK-FIXME: never use null !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        if (highlightedSearchableInfoProvider == null) {
-            highlightedSearchableInfoProvider = Optional::empty;
-        }
         return highlightedSearchableInfoProvider.get();
     }
 
