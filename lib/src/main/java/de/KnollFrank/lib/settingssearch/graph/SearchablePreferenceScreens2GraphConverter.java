@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -17,11 +18,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class SearchablePreferenceScreens2GraphConverter {
 
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> convertScreensToGraph(final Set<SearchablePreferenceScreen> screens,
-                                                                                                    final SearchablePreference.DbDataProvider preferencedbDataProvider,
-                                                                                                    final SearchablePreferenceScreen.DbDataProvider screenDbDataProvider) {
+                                                                                                    final DbDataProviders dbDataProviders) {
         final var graphBuilder = DefaultDirectedGraph.<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class);
         addNodes(graphBuilder, screens);
-        addEdges(graphBuilder, getEdgeDescriptions(screens, preferencedbDataProvider, screenDbDataProvider));
+        addEdges(graphBuilder, getEdgeDescriptions(screens, dbDataProviders));
         return graphBuilder.build();
     }
 
@@ -31,14 +31,13 @@ public class SearchablePreferenceScreens2GraphConverter {
     }
 
     private static Set<EdgeDescription> getEdgeDescriptions(final Set<SearchablePreferenceScreen> screens,
-                                                            final SearchablePreference.DbDataProvider preferencedbDataProvider,
-                                                            final SearchablePreferenceScreen.DbDataProvider screenDbDataProvider) {
+                                                            final DbDataProviders dbDataProviders) {
         final ImmutableSet.Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableSet.builder();
         for (final SearchablePreferenceScreen targetScreen : screens) {
-            for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen, preferencedbDataProvider, screenDbDataProvider)) {
+            for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen, dbDataProviders)) {
                 edgeDescriptionsBuilder.add(
                         new EdgeDescription(
-                                sourcePreference.getHost(preferencedbDataProvider),
+                                sourcePreference.getHost(dbDataProviders.preferencedbDataProvider()),
                                 targetScreen,
                                 new SearchablePreferenceEdge(sourcePreference)));
             }
@@ -47,12 +46,11 @@ public class SearchablePreferenceScreens2GraphConverter {
     }
 
     private static Set<SearchablePreference> getSourcePreferences(final SearchablePreferenceScreen targetScreen,
-                                                                  final SearchablePreference.DbDataProvider preferencedbDataProvider,
-                                                                  final SearchablePreferenceScreen.DbDataProvider screenDbDataProvider) {
+                                                                  final DbDataProviders dbDataProviders) {
         return targetScreen
-                .getAllPreferences(screenDbDataProvider)
+                .getAllPreferences(dbDataProviders.screenDbDataProvider())
                 .stream()
-                .map(preference -> preference.getPredecessor(preferencedbDataProvider))
+                .map(preference -> preference.getPredecessor(dbDataProviders.preferencedbDataProvider()))
                 // Fk-TODO: use mapMulti() if API level is at least 34
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)
