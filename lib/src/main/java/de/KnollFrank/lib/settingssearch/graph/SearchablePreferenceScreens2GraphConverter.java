@@ -17,10 +17,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class SearchablePreferenceScreens2GraphConverter {
 
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> convertScreensToGraph(final Set<SearchablePreferenceScreen> screens,
-                                                                                                    final SearchablePreference.DbDataProvider dbDataProvider) {
+                                                                                                    final SearchablePreference.DbDataProvider preferencedbDataProvider,
+                                                                                                    final SearchablePreferenceScreen.DbDataProvider screenDbDataProvider) {
         final var graphBuilder = DefaultDirectedGraph.<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class);
         addNodes(graphBuilder, screens);
-        addEdges(graphBuilder, getEdgeDescriptions(screens, dbDataProvider));
+        addEdges(graphBuilder, getEdgeDescriptions(screens, preferencedbDataProvider, screenDbDataProvider));
         return graphBuilder.build();
     }
 
@@ -30,13 +31,14 @@ public class SearchablePreferenceScreens2GraphConverter {
     }
 
     private static Set<EdgeDescription> getEdgeDescriptions(final Set<SearchablePreferenceScreen> screens,
-                                                            final SearchablePreference.DbDataProvider dbDataProvider) {
+                                                            final SearchablePreference.DbDataProvider preferencedbDataProvider,
+                                                            final SearchablePreferenceScreen.DbDataProvider screenDbDataProvider) {
         final ImmutableSet.Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableSet.builder();
         for (final SearchablePreferenceScreen targetScreen : screens) {
-            for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen, dbDataProvider)) {
+            for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen, preferencedbDataProvider, screenDbDataProvider)) {
                 edgeDescriptionsBuilder.add(
                         new EdgeDescription(
-                                sourcePreference.getHost(dbDataProvider),
+                                sourcePreference.getHost(preferencedbDataProvider),
                                 targetScreen,
                                 new SearchablePreferenceEdge(sourcePreference)));
             }
@@ -45,11 +47,12 @@ public class SearchablePreferenceScreens2GraphConverter {
     }
 
     private static Set<SearchablePreference> getSourcePreferences(final SearchablePreferenceScreen targetScreen,
-                                                                  final SearchablePreference.DbDataProvider dbDataProvider) {
+                                                                  final SearchablePreference.DbDataProvider preferencedbDataProvider,
+                                                                  final SearchablePreferenceScreen.DbDataProvider screenDbDataProvider) {
         return targetScreen
-                .getAllPreferences()
+                .getAllPreferences(screenDbDataProvider)
                 .stream()
-                .map(preference -> preference.getPredecessor(dbDataProvider))
+                .map(preference -> preference.getPredecessor(preferencedbDataProvider))
                 // Fk-TODO: use mapMulti() if API level is at least 34
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)

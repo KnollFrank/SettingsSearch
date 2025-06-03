@@ -26,7 +26,10 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
-        return convertScreensToGraph(searchablePreferenceScreenDAO.loadAll(), searchablePreferenceDAO);
+        return convertScreensToGraph(
+                searchablePreferenceScreenDAO.loadAll(),
+                searchablePreferenceDAO,
+                searchablePreferenceScreenDAO);
     }
 
     private void removePersistedGraph() {

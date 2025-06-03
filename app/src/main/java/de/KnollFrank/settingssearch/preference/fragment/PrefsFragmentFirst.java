@@ -168,7 +168,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         getAppDatabase()
                                                 .searchablePreferenceScreenDAO()
                                                 .findSearchablePreferenceScreensByHost(host))
-                                .getAllPreferences();
+                                .getAllPreferences(getAppDatabase().searchablePreferenceScreenDAO());
                     }
 
                     private void setSummary(final SearchablePreference searchablePreference, final String summary) {

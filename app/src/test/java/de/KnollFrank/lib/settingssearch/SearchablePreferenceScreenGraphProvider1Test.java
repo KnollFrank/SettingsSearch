@@ -149,7 +149,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 preference -> hostOfPreference.equals(preference.getHost(appDatabase.searchablePreferenceDAO()).getHost()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
-    private static SearchablePreference getPreference(
+    private SearchablePreference getPreference(
             final Set<SearchablePreferenceScreen> searchablePreferenceScreens,
             final Predicate<SearchablePreference> predicate) {
         return searchablePreferenceScreens
@@ -157,7 +157,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 .flatMap(
                         searchablePreferenceScreen ->
                                 searchablePreferenceScreen
-                                        .getAllPreferences()
+                                        .getAllPreferences(appDatabase.searchablePreferenceScreenDAO())
                                         .stream()
                                         .filter(predicate))
                 .collect(MoreCollectors.onlyElement());

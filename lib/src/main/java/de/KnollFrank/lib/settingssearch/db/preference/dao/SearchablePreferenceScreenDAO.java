@@ -41,7 +41,7 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
     }
 
     public void persist(final SearchablePreferenceScreen searchablePreferenceScreen) {
-        searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferences());
+        searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferences(this));
         _persist(daoSetter.setDao(searchablePreferenceScreen));
         invalidateCaches();
     }

@@ -77,7 +77,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
         dao.persist(screen);
         final SearchablePreference preference =
                 SearchablePreferences
-                        .findPreferenceByKey(screen.getAllPreferences(), PARENT_KEY)
+                        .findPreferenceByKey(screen.getAllPreferences(dao), PARENT_KEY)
                         .orElseThrow();
 
         // When

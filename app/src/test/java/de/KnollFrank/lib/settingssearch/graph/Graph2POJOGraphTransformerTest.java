@@ -140,9 +140,9 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
         }
     }
 
-    private static PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
+    private PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected) {
-        final Set<SearchablePreference> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet());
+        final Set<SearchablePreference> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet(), appDatabase.searchablePreferenceScreenDAO());
         return new PreferenceAndExpectedPredecessorOfPreference(
                 getDstPreference(searchablePreferences),
                 getPreferenceConnectingSrc2Dst(searchablePreferences));

@@ -21,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen.DbDataProvider;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
@@ -59,22 +60,32 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     @Test
     public void test_persistTwice_checkAllPreferences() {
         // Given
-        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenDAO(), appDatabase.searchablePreferenceDAO());
+        final SearchablePreferenceScreenGraphDAO dao =
+                new SearchablePreferenceScreenGraphDAO(
+                        appDatabase.searchablePreferenceScreenDAO(),
+                        appDatabase.searchablePreferenceDAO());
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = createSingleNodePojoGraph(PreferenceFragmentCompat.class);
-        final Set<SearchablePreference> allPreferences = getAllPreferencesOfSingleNode(graph);
+        final Set<SearchablePreference> allPreferences =
+                getAllPreferencesOfSingleNode(
+                        graph,
+                        appDatabase.searchablePreferenceScreenDAO());
 
         // When
         dao.persist(graph);
         dao.persist(dao.load());
 
         // Then
-        final Set<SearchablePreference> allPreferencesFromDb = getAllPreferencesOfSingleNode(dao.load());
+        final Set<SearchablePreference> allPreferencesFromDb =
+                getAllPreferencesOfSingleNode(
+                        dao.load(),
+                        appDatabase.searchablePreferenceScreenDAO());
         assertThat(allPreferencesFromDb, is(allPreferences));
     }
 
-    private static Set<SearchablePreference> getAllPreferencesOfSingleNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+    private static Set<SearchablePreference> getAllPreferencesOfSingleNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+                                                                           final DbDataProvider dbDataProvider) {
         return Iterables
                 .getOnlyElement(graph.vertexSet())
-                .getAllPreferences();
+                .getAllPreferences(dbDataProvider);
     }
 }

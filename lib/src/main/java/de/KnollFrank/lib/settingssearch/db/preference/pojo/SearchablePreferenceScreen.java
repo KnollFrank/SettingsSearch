@@ -21,9 +21,6 @@ public final class SearchablePreferenceScreen {
         SearchablePreferenceScreen getHost(SearchablePreference preference);
     }
 
-    @Ignore
-    private Optional<DbDataProvider> dao = Optional.empty();
-
     @PrimaryKey
     @NonNull
     private final String id;
@@ -51,8 +48,8 @@ public final class SearchablePreferenceScreen {
         this(id, host, title, summary, Optional.empty(), parentId);
     }
 
+    // FK-TODO: remove method
     public void setDao(final DbDataProvider dao) {
-        this.dao = Optional.of(dao);
     }
 
     public String getId() {
@@ -75,8 +72,8 @@ public final class SearchablePreferenceScreen {
         return parentId;
     }
 
-    public Set<SearchablePreference> getAllPreferences() {
-        return allPreferences.orElseGet(this::getAllPreferencesFromDao);
+    public Set<SearchablePreference> getAllPreferences(final DbDataProvider dbDataProvider) {
+        return allPreferences.orElseGet(() -> dbDataProvider.getAllPreferences(this));
     }
 
     @Override
@@ -114,9 +111,5 @@ public final class SearchablePreferenceScreen {
         this.title = title;
         this.summary = summary;
         this.allPreferences = allPreferences;
-    }
-
-    private Set<SearchablePreference> getAllPreferencesFromDao() {
-        return dao.orElseThrow().getAllPreferences(this);
     }
 }
