@@ -109,7 +109,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
 
         // Then
         assertThat(predecessorFromDb, is(predecessor));
-        assertThat(predecessorFromDb.getPredecessor(), is(Optional.empty()));
+        assertThat(dao.getPredecessor(predecessorFromDb), is(Optional.empty()));
     }
 
     @Test
