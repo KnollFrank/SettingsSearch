@@ -55,19 +55,15 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
         invalidateCaches();
     }
 
-    public Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(final String id) {
-        // FK-TODO: "inline" method
-        return _findSearchablePreferenceScreenById(id);
-    }
+    @Query("SELECT * FROM SearchablePreferenceScreen WHERE id = :id")
+    public abstract Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(final String id);
 
     public Set<SearchablePreferenceScreen> loadAll() {
-        // FK-TODO: "inline" method
         return new HashSet<>(_loadAll());
     }
 
     // FK-TODO: remove method?
     public Set<SearchablePreferenceScreen> findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host) {
-        // FK-TODO: "inline" method
         return new HashSet<>(_findSearchablePreferenceScreensByHost(host));
     }
 
@@ -96,9 +92,6 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceScreen")
     protected abstract List<SearchablePreferenceScreenAndAllPreferences> _getSearchablePreferenceScreenAndAllPreferences();
-
-    @Query("SELECT * FROM SearchablePreferenceScreen WHERE id = :id")
-    protected abstract Optional<SearchablePreferenceScreen> _findSearchablePreferenceScreenById(final String id);
 
     // FK-TODO: remove method?
     @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host")

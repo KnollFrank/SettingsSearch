@@ -41,14 +41,11 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
     }
 
     public Set<SearchablePreference> loadAll() {
-        // FK-TODO: "inline" method
         return new HashSet<>(_loadAll());
     }
 
-    public Optional<SearchablePreference> findPreferenceById(final int id) {
-        // FK-TODO: "inline" method
-        return _findPreferenceById(id);
-    }
+    @Query("SELECT * FROM SearchablePreference WHERE id = :id")
+    public abstract Optional<SearchablePreference> findPreferenceById(final int id);
 
     public Set<PreferenceMatch> searchWithinTitleSummarySearchableInfo(final String needle,
                                                                        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
@@ -117,9 +114,6 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
 
     @Insert
     protected abstract void _persist(SearchablePreference... searchablePreferences);
-
-    @Query("SELECT * FROM SearchablePreference WHERE id = :id")
-    protected abstract Optional<SearchablePreference> _findPreferenceById(final int id);
 
     @Transaction
     @Query("SELECT * FROM SearchablePreference")
