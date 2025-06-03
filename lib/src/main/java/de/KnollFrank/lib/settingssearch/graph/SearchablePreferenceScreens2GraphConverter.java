@@ -49,7 +49,7 @@ public class SearchablePreferenceScreens2GraphConverter {
         return targetScreen
                 .getAllPreferences()
                 .stream()
-                .map(dbDataProvider::getPredecessor)
+                .map(preference -> preference.getPredecessor(dbDataProvider))
                 // Fk-TODO: use mapMulti() if API level is at least 34
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)

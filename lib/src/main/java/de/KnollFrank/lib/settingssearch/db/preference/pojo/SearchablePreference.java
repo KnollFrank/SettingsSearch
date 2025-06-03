@@ -210,6 +210,10 @@ public final class SearchablePreference {
         return dbDataProvider.getChildren(this);
     }
 
+    public Optional<SearchablePreference> getPredecessor(final DbDataProvider dbDataProvider) {
+        return dbDataProvider.getPredecessor(this);
+    }
+
     public Optional<Integer> getParentId() {
         return parentId;
     }
@@ -264,8 +268,8 @@ public final class SearchablePreference {
     }
 
     private PreferencePath getPreferencePathOfPredecessor(final DbDataProvider dbDataProvider) {
-        return dbDataProvider
-                .getPredecessor(this)
+        return this
+                .getPredecessor(dbDataProvider)
                 .map(searchablePreference -> searchablePreference.getPreferencePath(dbDataProvider))
                 .orElseGet(() -> new PreferencePath(List.of()));
     }

@@ -83,7 +83,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                     final SearchablePreference preference = data.preference();
                     final SearchablePreference expectedPredecessorOfPreference = data.expectedPredecessorOfPreference();
                     // check predecessor:
-                    assertThat("predecessor of " + preference, appDatabase.searchablePreferenceDAO().getPredecessor(preference), is(Optional.of(expectedPredecessorOfPreference)));
+                    assertThat("predecessor of " + preference, preference.getPredecessor(appDatabase.searchablePreferenceDAO()), is(Optional.of(expectedPredecessorOfPreference)));
                 }
             });
         }
