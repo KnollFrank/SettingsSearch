@@ -62,7 +62,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 .<SearchablePreferenceScreenEntity, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                 .addEdge(
                         createSrc(screenId, preferenceConnectingSrc2Dst, host),
-                        createDst(Optional.of(screenId), preferenceConnectingSrc2Dst),
+                        createDst(preferenceConnectingSrc2Dst),
                         new SearchablePreferenceEdge(preferenceConnectingSrc2Dst))
                 .build();
     }
@@ -123,12 +123,10 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 Optional.of(parent.getId()),
                                 Optional.empty(),
                                 screenId),
-                        preferenceConnectingSrc2Dst),
-                Optional.empty());
+                        preferenceConnectingSrc2Dst));
     }
 
-    private static SearchablePreferenceScreenEntity createDst(final Optional<String> parentScreenId,
-                                                              final SearchablePreferenceEntity predecessor) {
+    private static SearchablePreferenceScreenEntity createDst(final SearchablePreferenceEntity predecessor) {
         final String screenId = "2";
         final SearchablePreferenceEntity e1 =
                 new SearchablePreferenceEntity(
@@ -151,7 +149,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class,
                 Optional.empty(),
                 Optional.empty(),
-                Set.of(e1),
-                parentScreenId);
+                Set.of(e1));
     }
 }

@@ -25,7 +25,6 @@ public class PreferenceScreen2SearchablePreferenceScreenConverter {
             final PreferenceScreen preferenceScreen,
             final PreferenceFragmentCompat hostOfPreferenceScreen,
             final String id,
-            final Optional<String> parentId,
             final Optional<SearchablePreferenceEntity> predecessorOfPreferenceScreen) {
         final BiMap<SearchablePreferenceEntity, Preference> searchablePreferences =
                 preference2SearchablePreferenceConverter.convertPreferences(
@@ -40,8 +39,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverter {
                         hostOfPreferenceScreen.getClass(),
                         Strings.toString(Optional.ofNullable(preferenceScreen.getTitle())),
                         Strings.toString(Optional.ofNullable(preferenceScreen.getSummary())),
-                        searchablePreferences.keySet(),
-                        parentId),
+                        searchablePreferences.keySet()),
                 searchablePreferences);
     }
 }

@@ -14,7 +14,6 @@ public class SearchablePreferenceScreenEquality {
     public static void assertActualEqualsExpected(final SearchablePreferenceScreenEntity actual, final SearchablePreferenceScreenEntity expected) {
         assertThat(actual.getId(), is(expected.getId()));
         assertThat(actual.getHost(), Matchers.<Class<? extends PreferenceFragmentCompat>>is(expected.getHost()));
-        assertThat(actual.getParentId(), is(expected.getParentId()));
         assertThat(actual.getTitle(), is(expected.getTitle()));
         assertThat(actual.getSummary(), is(expected.getSummary()));
     }

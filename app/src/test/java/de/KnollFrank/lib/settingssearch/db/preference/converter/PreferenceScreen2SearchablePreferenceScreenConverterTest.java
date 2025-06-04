@@ -63,7 +63,6 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                                         getPreferenceScreen(preferenceFragment, activity),
                                         preferenceFragment,
                                         id,
-                                        Optional.empty(),
                                         Optional.empty())
                                 .searchablePreferenceScreen();
 
@@ -188,8 +187,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                                 Optional.empty(),
                                 Optional.of(1),
                                 Optional.empty(),
-                                id)),
-                Optional.empty());
+                                id)));
     }
 
     public static PreferenceScreen getPreferenceScreen(final PreferenceFragmentCompat preferenceFragment,

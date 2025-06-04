@@ -27,25 +27,23 @@ public final class SearchablePreferenceScreenEntity {
     private final Class<? extends PreferenceFragmentCompat> host;
     private final Optional<String> title;
     private final Optional<String> summary;
+    // FK-TODO: remove instance variable?
     @Ignore
     private final Optional<Set<SearchablePreferenceEntity>> allPreferences;
-    private final Optional<String> parentId;
 
     public SearchablePreferenceScreenEntity(final String id,
                                             final Class<? extends PreferenceFragmentCompat> host,
                                             final Optional<String> title,
                                             final Optional<String> summary,
-                                            final Set<SearchablePreferenceEntity> allPreferences,
-                                            final Optional<String> parentId) {
-        this(id, host, title, summary, Optional.of(allPreferences), parentId);
+                                            final Set<SearchablePreferenceEntity> allPreferences) {
+        this(id, host, title, summary, Optional.of(allPreferences));
     }
 
     public SearchablePreferenceScreenEntity(final String id,
                                             final Class<? extends PreferenceFragmentCompat> host,
                                             final Optional<String> title,
-                                            final Optional<String> summary,
-                                            final Optional<String> parentId) {
-        this(id, host, title, summary, Optional.empty(), parentId);
+                                            final Optional<String> summary) {
+        this(id, host, title, summary, Optional.empty());
     }
 
     public String getId() {
@@ -62,10 +60,6 @@ public final class SearchablePreferenceScreenEntity {
 
     public Optional<String> getSummary() {
         return summary;
-    }
-
-    public Optional<String> getParentId() {
-        return parentId;
     }
 
     public Set<SearchablePreferenceEntity> getAllPreferences(final DbDataProvider dbDataProvider) {
@@ -91,7 +85,6 @@ public final class SearchablePreferenceScreenEntity {
                 .add("host=" + host)
                 .add("title='" + title + "'")
                 .add("summary='" + summary + "'")
-                .add("parentId=" + parentId)
                 .toString();
     }
 
@@ -99,11 +92,9 @@ public final class SearchablePreferenceScreenEntity {
                                              final Class<? extends PreferenceFragmentCompat> host,
                                              final Optional<String> title,
                                              final Optional<String> summary,
-                                             final Optional<Set<SearchablePreferenceEntity>> allPreferences,
-                                             final Optional<String> parentId) {
+                                             final Optional<Set<SearchablePreferenceEntity>> allPreferences) {
         this.id = id;
         this.host = host;
-        this.parentId = parentId;
         this.title = title;
         this.summary = summary;
         this.allPreferences = allPreferences;
