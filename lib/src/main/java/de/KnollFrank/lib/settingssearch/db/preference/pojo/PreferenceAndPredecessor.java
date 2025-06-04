@@ -8,24 +8,24 @@ import java.util.Optional;
 public class PreferenceAndPredecessor {
 
     @Embedded
-    private final SearchablePreference preference;
+    private final SearchablePreferenceEntity preference;
 
     @Relation(
             parentColumn = "predecessorId",
             entityColumn = "id")
-    private final SearchablePreference predecessor;
+    private final SearchablePreferenceEntity predecessor;
 
-    public PreferenceAndPredecessor(final SearchablePreference preference,
-                                    final SearchablePreference predecessor) {
+    public PreferenceAndPredecessor(final SearchablePreferenceEntity preference,
+                                    final SearchablePreferenceEntity predecessor) {
         this.preference = preference;
         this.predecessor = predecessor;
     }
 
-    public SearchablePreference getPreference() {
+    public SearchablePreferenceEntity getPreference() {
         return preference;
     }
 
-    public Optional<SearchablePreference> getPredecessor() {
+    public Optional<SearchablePreferenceEntity> getPredecessor() {
         return Optional.ofNullable(predecessor);
     }
 }

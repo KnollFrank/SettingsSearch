@@ -10,7 +10,7 @@ import java.util.function.Function;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -56,7 +56,7 @@ public class SearchConfigBuilder {
                                         .searchablePreferenceDAO()));
     }
 
-    private static Function<SearchablePreference, PreferencePath> createGetPreferencePathFunction(final SearchablePreferenceDAO dbDataProvider) {
+    private static Function<SearchablePreferenceEntity, PreferencePath> createGetPreferencePathFunction(final SearchablePreferenceDAO dbDataProvider) {
         return searchablePreference -> searchablePreference.getPreferencePath(dbDataProvider);
     }
 

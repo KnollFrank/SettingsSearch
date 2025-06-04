@@ -20,7 +20,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -41,7 +41,7 @@ public class SearchablePreferenceScreenGraphProvider2Test {
                         FragmentConnectedToNonPreferenceFragment.class);
 
         // When
-        final Set<SearchablePreferenceScreen> preferenceScreens =
+        final Set<SearchablePreferenceScreenEntity> preferenceScreens =
                 result
                         .searchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())

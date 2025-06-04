@@ -21,12 +21,12 @@ public class SearchablePreferenceTest extends AppDatabaseTest {
     @Test
     public void shouldGetPreferencePath() {
         // Given
-        final SearchablePreference predecessor =
+        final SearchablePreferenceEntity predecessor =
                 createSearchablePreference(
                         "predecessor",
                         Optional.empty());
 
-        final SearchablePreference parent =
+        final SearchablePreferenceEntity parent =
                 createSearchablePreference(
                         "parent",
                         Optional.of(predecessor));

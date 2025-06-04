@@ -4,11 +4,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 public class SearchablePreferenceEquality {
 
-    public static void assertActualEqualsExpected(final SearchablePreference actual, final SearchablePreference expected) {
+    public static void assertActualEqualsExpected(final SearchablePreferenceEntity actual, final SearchablePreferenceEntity expected) {
         assertThat(actual.getId(), is(expected.getId()));
         assertThat(actual.getKey(), is(expected.getKey()));
         assertThat(actual.getIconResourceIdOrIconPixelData(), is(expected.getIconResourceIdOrIconPixelData()));

@@ -27,7 +27,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -52,7 +52,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                                 new DefaultMarkupsFactory(activity),
                                 preference -> true,
                                 new LexicographicalSearchResultsSorter());
-                final SearchablePreference preference =
+                final SearchablePreferenceEntity preference =
                         createSearchablePreference(
                                 Optional.of(title),
                                 Optional.of("some summary"),

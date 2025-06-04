@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Lists;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 // FK-TODO: remove PreferencePathNavigator and replace with adapted PreferencePath
 public class PreferencePathPointer {
@@ -26,7 +26,7 @@ public class PreferencePathPointer {
         this.indexWithinPreferencePath = indexWithinPreferencePath;
     }
 
-    public SearchablePreference dereference() {
+    public SearchablePreferenceEntity dereference() {
         return Lists
                 .getElementAtIndex(preferencePath.preferences(), indexWithinPreferencePath)
                 .orElseThrow();

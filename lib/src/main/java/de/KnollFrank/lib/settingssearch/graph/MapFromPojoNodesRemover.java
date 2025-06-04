@@ -5,11 +5,11 @@ import org.jgrapht.Graph;
 import de.KnollFrank.lib.settingssearch.common.graph.NodesTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 public class MapFromPojoNodesRemover {
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> removeMapFromPojoNodes(
+    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> removeMapFromPojoNodes(
             final Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> pojoGraph) {
         return NodesTransformer.transformNodes(
                 pojoGraph,
@@ -18,7 +18,7 @@ public class MapFromPojoNodesRemover {
                 edge -> new SearchablePreferenceEdge(edge.preference));
     }
 
-    public static SearchablePreferenceScreen removeMapFromPojoNode(final SearchablePreferenceScreenWithMap searchablePreferenceScreenWithMap) {
+    public static SearchablePreferenceScreenEntity removeMapFromPojoNode(final SearchablePreferenceScreenWithMap searchablePreferenceScreenWithMap) {
         return searchablePreferenceScreenWithMap.searchablePreferenceScreen();
     }
 }

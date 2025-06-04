@@ -17,7 +17,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 @RunWith(RobolectricTestRunner.class)
 public class DatabaseResetterTest {
@@ -61,7 +61,7 @@ public class DatabaseResetterTest {
     }
 
     private static void initialize(final AppDatabase appDatabase) {
-        final SearchablePreference preference =
+        final SearchablePreferenceEntity preference =
                 createSearchablePreference(
                         "some preference",
                         Optional.empty());

@@ -11,7 +11,7 @@ public class SearchablePreferenceTestFactory {
 
     private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
-    public static SearchablePreference createSearchablePreference(
+    public static SearchablePreferenceEntity createSearchablePreference(
             final int id,
             final Optional<String> title,
             final Optional<String> summary,
@@ -19,7 +19,7 @@ public class SearchablePreferenceTestFactory {
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
             final Optional<Integer> parentId,
             final Optional<Integer> predecessorId) {
-        return new SearchablePreference(
+        return new SearchablePreferenceEntity(
                 id,
                 "some key",
                 title,
@@ -36,10 +36,10 @@ public class SearchablePreferenceTestFactory {
                 "-1");
     }
 
-    public static SearchablePreference createSearchablePreference(
+    public static SearchablePreferenceEntity createSearchablePreference(
             final String title,
-            final Optional<SearchablePreference> predecessor) {
-        return new SearchablePreference(
+            final Optional<SearchablePreferenceEntity> predecessor) {
+        return new SearchablePreferenceEntity(
                 idGenerator.nextId(),
                 title,
                 Optional.of(title),
@@ -52,11 +52,11 @@ public class SearchablePreferenceTestFactory {
                 true,
                 Optional.empty(),
                 Optional.empty(),
-                predecessor.map(SearchablePreference::getId),
+                predecessor.map(SearchablePreferenceEntity::getId),
                 "-1");
     }
 
-    public static SearchablePreference createSearchablePreference(
+    public static SearchablePreferenceEntity createSearchablePreference(
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
@@ -70,14 +70,14 @@ public class SearchablePreferenceTestFactory {
                 Optional.empty());
     }
 
-    public static SearchablePreference createSearchablePreference(
+    public static SearchablePreferenceEntity createSearchablePreference(
             final int id,
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Optional<SearchablePreference> predecessor) {
-        return new SearchablePreference(
+            final Optional<SearchablePreferenceEntity> predecessor) {
+        return new SearchablePreferenceEntity(
                 id,
                 "some key",
                 title,
@@ -90,12 +90,12 @@ public class SearchablePreferenceTestFactory {
                 true,
                 searchableInfo,
                 Optional.empty(),
-                predecessor.map(SearchablePreference::getId),
+                predecessor.map(SearchablePreferenceEntity::getId),
                 "-1");
     }
 
-    public static SearchablePreference createSearchablePreference(final String key) {
-        return new SearchablePreference(
+    public static SearchablePreferenceEntity createSearchablePreference(final String key) {
+        return new SearchablePreferenceEntity(
                 1,
                 key,
                 Optional.empty(),
@@ -112,8 +112,8 @@ public class SearchablePreferenceTestFactory {
                 "-1");
     }
 
-    public static SearchablePreference copyPreferenceAndSetPredecessor(final SearchablePreference preference,
-                                                                       final Optional<SearchablePreference> predecessor) {
+    public static SearchablePreferenceEntity copyPreferenceAndSetPredecessor(final SearchablePreferenceEntity preference,
+                                                                             final Optional<SearchablePreferenceEntity> predecessor) {
         return createSearchablePreference(
                 preference.getTitle().orElseThrow(),
                 predecessor);

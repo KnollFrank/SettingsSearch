@@ -38,9 +38,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -69,7 +69,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                 new DefaultPreferenceFragmentIdProvider());
 
                 // When
-                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
+                final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> pojoGraph =
                         removeMapFromPojoNodes(
                                 graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                         entityGraph));
@@ -80,8 +80,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 assertThat(pojoGraph, is(createPojoGraph(preferenceFragment.getClass())));
                 {
                     final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph);
-                    final SearchablePreference preference = data.preference();
-                    final SearchablePreference expectedPredecessorOfPreference = data.expectedPredecessorOfPreference();
+                    final SearchablePreferenceEntity preference = data.preference();
+                    final SearchablePreferenceEntity expectedPredecessorOfPreference = data.expectedPredecessorOfPreference();
                     // check predecessor:
                     assertThat("predecessor of " + preference, preference.getPredecessor(appDatabase.searchablePreferenceDAO()), is(Optional.of(expectedPredecessorOfPreference)));
                 }
@@ -141,27 +141,28 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
     }
 
     private PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected) {
-        final Set<SearchablePreference> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet(), appDatabase.searchablePreferenceScreenDAO());
+            final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> pojoGraphExpected) {
+        final Set<SearchablePreferenceEntity> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet(), appDatabase.searchablePreferenceScreenDAO());
         return new PreferenceAndExpectedPredecessorOfPreference(
                 getDstPreference(searchablePreferences),
                 getPreferenceConnectingSrc2Dst(searchablePreferences));
     }
 
-    private record PreferenceAndExpectedPredecessorOfPreference(SearchablePreference preference,
-                                                                SearchablePreference expectedPredecessorOfPreference) {
+    private record PreferenceAndExpectedPredecessorOfPreference(
+            SearchablePreferenceEntity preference,
+            SearchablePreferenceEntity expectedPredecessorOfPreference) {
     }
 
-    private static SearchablePreference getPreferenceConnectingSrc2Dst(final Set<SearchablePreference> searchablePreferences) {
+    private static SearchablePreferenceEntity getPreferenceConnectingSrc2Dst(final Set<SearchablePreferenceEntity> searchablePreferences) {
         return getPreferenceById(searchablePreferences, PREFERENCE_CONNECTING_SRC_2_DST_ID);
     }
 
-    private static SearchablePreference getDstPreference(final Set<SearchablePreference> searchablePreferences) {
+    private static SearchablePreferenceEntity getDstPreference(final Set<SearchablePreferenceEntity> searchablePreferences) {
         return getPreferenceById(searchablePreferences, DST_PREFERENCE_ID);
     }
 
-    private static SearchablePreference getPreferenceById(final Set<SearchablePreference> searchablePreferences,
-                                                          final int id) {
+    private static SearchablePreferenceEntity getPreferenceById(final Set<SearchablePreferenceEntity> searchablePreferences,
+                                                                final int id) {
         return SearchablePreferences
                 .findPreferenceByPredicate(
                         searchablePreferences,

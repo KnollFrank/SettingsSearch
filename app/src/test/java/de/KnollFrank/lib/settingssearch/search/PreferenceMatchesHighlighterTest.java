@@ -15,7 +15,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 
@@ -25,7 +25,7 @@ public class PreferenceMatchesHighlighterTest {
     @Test
     public void shouldHighlightPreferenceMatches_title() {
         // Given
-        final SearchablePreference preference =
+        final SearchablePreferenceEntity preference =
                 createSearchablePreference(
                         Optional.of("title, title"),
                         Optional.empty(),
@@ -57,7 +57,7 @@ public class PreferenceMatchesHighlighterTest {
     @Test
     public void shouldHighlightPreferenceMatches_summary() {
         // Given
-        final SearchablePreference preference =
+        final SearchablePreferenceEntity preference =
                 createSearchablePreference(
                         Optional.empty(),
                         Optional.of("summary, summary"),
@@ -90,7 +90,7 @@ public class PreferenceMatchesHighlighterTest {
     public void shouldHighlightPreferenceMatches_searchableInfo() {
         // Given
         final String _searchableInfo = "info, info";
-        final SearchablePreference preference =
+        final SearchablePreferenceEntity preference =
                 createSearchablePreference(
                         Optional.empty(),
                         Optional.empty(),

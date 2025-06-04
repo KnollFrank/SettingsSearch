@@ -13,8 +13,8 @@ import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 public class Graph2POJOGraphTransformer {
 
@@ -68,7 +68,7 @@ public class Graph2POJOGraphTransformer {
             private SearchablePreferenceScreenWithMap convert2POJO(
                     final PreferenceScreenWithHost node,
                     final Optional<String> parentId,
-                    final Optional<SearchablePreference> predecessorOfNode) {
+                    final Optional<SearchablePreferenceEntity> predecessorOfNode) {
                 return preferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
@@ -77,7 +77,7 @@ public class Graph2POJOGraphTransformer {
                         predecessorOfNode);
             }
 
-            private static SearchablePreference getPredecessorOfNode(
+            private static SearchablePreferenceEntity getPredecessorOfNode(
                     final SearchablePreferenceScreenWithMap parentNode,
                     final PreferenceEdge edgeFromParentNode2Node) {
                 return getTransformedPreference(
@@ -85,7 +85,7 @@ public class Graph2POJOGraphTransformer {
                         parentNode);
             }
 
-            private static SearchablePreference getTransformedPreference(
+            private static SearchablePreferenceEntity getTransformedPreference(
                     final Preference preference,
                     final SearchablePreferenceScreenWithMap transformedParentNode) {
                 return transformedParentNode

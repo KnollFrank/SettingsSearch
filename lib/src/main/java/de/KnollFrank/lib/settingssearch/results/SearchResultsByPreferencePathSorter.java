@@ -9,25 +9,25 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 public class SearchResultsByPreferencePathSorter implements SearchResultsSorter {
 
-    private final Function<SearchablePreference, PreferencePath> getPreferencePath;
+    private final Function<SearchablePreferenceEntity, PreferencePath> getPreferencePath;
 
-    public SearchResultsByPreferencePathSorter(final Function<SearchablePreference, PreferencePath> getPreferencePath) {
+    public SearchResultsByPreferencePathSorter(final Function<SearchablePreferenceEntity, PreferencePath> getPreferencePath) {
         this.getPreferencePath = getPreferencePath;
     }
 
     @Override
-    public List<SearchablePreference> sort(final Collection<SearchablePreference> searchResults) {
+    public List<SearchablePreferenceEntity> sort(final Collection<SearchablePreferenceEntity> searchResults) {
         return searchResults
                 .stream()
                 .sorted(getPreferenceByPreferencePathComparator())
                 .collect(Collectors.toList());
     }
 
-    private Comparator<SearchablePreference> getPreferenceByPreferencePathComparator() {
+    private Comparator<SearchablePreferenceEntity> getPreferenceByPreferencePathComparator() {
         return Comparator.comparing(
                 getPreferencePath,
                 getPreferencePathComparator());

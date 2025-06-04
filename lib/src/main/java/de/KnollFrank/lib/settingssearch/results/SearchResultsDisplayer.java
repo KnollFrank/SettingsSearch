@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
@@ -36,14 +36,14 @@ public class SearchResultsDisplayer {
         return searchResultsFragment;
     }
 
-    private static Set<SearchablePreference> getPreferences(final Set<PreferenceMatch> preferenceMatches) {
+    private static Set<SearchablePreferenceEntity> getPreferences(final Set<PreferenceMatch> preferenceMatches) {
         return preferenceMatches
                 .stream()
                 .map(PreferenceMatch::preference)
                 .collect(Collectors.toSet());
     }
 
-    private Collection<SearchablePreference> filter(final Collection<SearchablePreference> preferences) {
+    private Collection<SearchablePreferenceEntity> filter(final Collection<SearchablePreferenceEntity> preferences) {
         return preferences
                 .stream()
                 .filter(searchResultsFilter::includePreferenceInSearchResults)

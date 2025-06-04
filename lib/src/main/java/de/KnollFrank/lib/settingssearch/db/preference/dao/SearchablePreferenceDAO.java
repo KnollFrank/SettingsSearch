@@ -24,28 +24,28 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildrens;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessors;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 
 @Dao
-public abstract class SearchablePreferenceDAO implements SearchablePreference.DbDataProvider {
+public abstract class SearchablePreferenceDAO implements SearchablePreferenceEntity.DbDataProvider {
 
     private final AppDatabase appDatabase;
-    private Optional<Map<SearchablePreference, Optional<SearchablePreference>>> predecessorByPreference = Optional.empty();
-    private Optional<Map<SearchablePreference, Set<SearchablePreference>>> childrenByPreference = Optional.empty();
+    private Optional<Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>> predecessorByPreference = Optional.empty();
+    private Optional<Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>> childrenByPreference = Optional.empty();
 
     public SearchablePreferenceDAO(final AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
     }
 
-    public Set<SearchablePreference> loadAll() {
+    public Set<SearchablePreferenceEntity> loadAll() {
         return new HashSet<>(_loadAll());
     }
 
-    @Query("SELECT * FROM SearchablePreference WHERE id = :id")
-    public abstract Optional<SearchablePreference> findPreferenceById(final int id);
+    @Query("SELECT * FROM SearchablePreferenceEntity WHERE id = :id")
+    public abstract Optional<SearchablePreferenceEntity> findPreferenceById(final int id);
 
     public Set<PreferenceMatch> searchWithinTitleSummarySearchableInfo(final String needle,
                                                                        final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
@@ -58,38 +58,38 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
                 .collect(Collectors.toSet());
     }
 
-    public void persist(final SearchablePreference... searchablePreferences) {
+    public void persist(final SearchablePreferenceEntity... searchablePreferences) {
         _persist(searchablePreferences);
         invalidateCaches();
     }
 
-    public void persist(final Collection<SearchablePreference> searchablePreferences) {
+    public void persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
         _persist(searchablePreferences);
         invalidateCaches();
     }
 
-    public void remove(final SearchablePreference... preferences) {
+    public void remove(final SearchablePreferenceEntity... preferences) {
         _remove(preferences);
         invalidateCaches();
     }
 
-    public void update(final SearchablePreference... preferences) {
+    public void update(final SearchablePreferenceEntity... preferences) {
         _update(preferences);
         invalidateCaches();
     }
 
     @Override
-    public Optional<SearchablePreference> getPredecessor(final SearchablePreference preference) {
+    public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
         return Maps.get(getPredecessorByPreference(), preference).orElseThrow();
     }
 
     @Override
-    public Set<SearchablePreference> getChildren(final SearchablePreference preference) {
+    public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
         return Maps.get(getChildrenByPreference(), preference).orElseThrow();
     }
 
     @Override
-    public SearchablePreferenceScreen getHost(final SearchablePreference preference) {
+    public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
         return appDatabase.searchablePreferenceScreenDAO().getHost(preference);
     }
 
@@ -98,64 +98,64 @@ public abstract class SearchablePreferenceDAO implements SearchablePreference.Db
         invalidateCaches();
     }
 
-    @Query("DELETE FROM SearchablePreference")
+    @Query("DELETE FROM SearchablePreferenceEntity")
     protected abstract void _removeAll();
 
-    @Query("SELECT MAX(id) FROM SearchablePreference")
+    @Query("SELECT MAX(id) FROM SearchablePreferenceEntity")
     public abstract Optional<Integer> getMaxId();
 
     @Insert
-    protected abstract void _persist(Collection<SearchablePreference> searchablePreferences);
+    protected abstract void _persist(Collection<SearchablePreferenceEntity> searchablePreferences);
 
     private static final String NEEDLE_PATTERN = "'%' || :needle || '%'";
 
-    @Query("SELECT * FROM SearchablePreference WHERE title LIKE " + NEEDLE_PATTERN + " OR summary LIKE " + NEEDLE_PATTERN + "OR searchableInfo LIKE " + NEEDLE_PATTERN)
-    protected abstract List<SearchablePreference> _searchWithinTitleSummarySearchableInfo(final Optional<String> needle);
+    @Query("SELECT * FROM SearchablePreferenceEntity WHERE title LIKE " + NEEDLE_PATTERN + " OR summary LIKE " + NEEDLE_PATTERN + "OR searchableInfo LIKE " + NEEDLE_PATTERN)
+    protected abstract List<SearchablePreferenceEntity> _searchWithinTitleSummarySearchableInfo(final Optional<String> needle);
 
     @Insert
-    protected abstract void _persist(SearchablePreference... searchablePreferences);
+    protected abstract void _persist(SearchablePreferenceEntity... searchablePreferences);
 
     @Transaction
-    @Query("SELECT * FROM SearchablePreference")
+    @Query("SELECT * FROM SearchablePreferenceEntity")
     protected abstract List<PreferenceAndPredecessor> _getPreferencesAndPredecessors();
 
-    @Query("SELECT * FROM SearchablePreference")
-    protected abstract List<SearchablePreference> _loadAll();
+    @Query("SELECT * FROM SearchablePreferenceEntity")
+    protected abstract List<SearchablePreferenceEntity> _loadAll();
 
     @Transaction
-    @Query("SELECT * FROM SearchablePreference")
+    @Query("SELECT * FROM SearchablePreferenceEntity")
     protected abstract List<PreferenceAndChildren> _getPreferencesAndChildren();
 
     @Delete
-    protected abstract void _remove(SearchablePreference... preferences);
+    protected abstract void _remove(SearchablePreferenceEntity... preferences);
 
     @Update
-    protected abstract void _update(SearchablePreference... preferences);
+    protected abstract void _update(SearchablePreferenceEntity... preferences);
 
-    private Set<SearchablePreference> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
+    private Set<SearchablePreferenceEntity> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
         return new HashSet<>(_searchWithinTitleSummarySearchableInfo(needle));
     }
 
-    public Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference() {
+    public Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference() {
         if (childrenByPreference.isEmpty()) {
             childrenByPreference = Optional.of(computeChildrenByPreference());
         }
         return childrenByPreference.orElseThrow();
     }
 
-    private Map<SearchablePreference, Set<SearchablePreference>> computeChildrenByPreference() {
+    private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> computeChildrenByPreference() {
         return PreferenceAndChildrens.getChildrenByPreference(
                 new HashSet<>(_getPreferencesAndChildren()));
     }
 
-    public Map<SearchablePreference, Optional<SearchablePreference>> getPredecessorByPreference() {
+    public Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> getPredecessorByPreference() {
         if (predecessorByPreference.isEmpty()) {
             predecessorByPreference = Optional.of(computePredecessorByPreference());
         }
         return predecessorByPreference.orElseThrow();
     }
 
-    private Map<SearchablePreference, Optional<SearchablePreference>> computePredecessorByPreference() {
+    private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> computePredecessorByPreference() {
         return PreferenceAndPredecessors.getPredecessorByPreference(
                 new HashSet<>(_getPreferencesAndPredecessors()));
     }

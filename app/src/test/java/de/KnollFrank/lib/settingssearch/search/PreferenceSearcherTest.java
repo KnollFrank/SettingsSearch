@@ -50,7 +50,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -131,7 +131,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceEntity preference) {
                         return keyOfPreferenceToIncludeInSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost(appDatabase.searchablePreferenceDAO()).getHost());
                     }
                 },
@@ -165,7 +165,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 new IncludePreferenceInSearchResultsPredicate() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceEntity preference) {
                         return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost(appDatabase.searchablePreferenceDAO()).getHost()));
                     }
                 },

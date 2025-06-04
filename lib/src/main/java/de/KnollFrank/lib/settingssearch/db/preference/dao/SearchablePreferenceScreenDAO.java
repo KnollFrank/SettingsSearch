@@ -15,28 +15,28 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 @Dao
-public abstract class SearchablePreferenceScreenDAO implements SearchablePreferenceScreen.DbDataProvider {
+public abstract class SearchablePreferenceScreenDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
 
     private final SearchablePreferenceDAO searchablePreferenceDAO;
-    private Optional<Map<SearchablePreferenceScreen, Set<SearchablePreference>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
-    private Optional<Map<SearchablePreference, SearchablePreferenceScreen>> hostByPreference = Optional.empty();
+    private Optional<Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
+    private Optional<Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity>> hostByPreference = Optional.empty();
 
     public SearchablePreferenceScreenDAO(final AppDatabase appDatabase) {
         this.searchablePreferenceDAO = appDatabase.searchablePreferenceDAO();
     }
 
-    public void persist(final Collection<SearchablePreferenceScreen> searchablePreferenceScreens) {
+    public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens) {
         persist(searchablePreferenceScreens, this);
     }
 
-    public void persist(final Collection<SearchablePreferenceScreen> searchablePreferenceScreens,
-                        final SearchablePreferenceScreen.DbDataProvider dbDataProvider) {
+    public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
+                        final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
         searchablePreferenceScreens.forEach(
                 searchablePreferenceScreen ->
                         persist(
@@ -44,36 +44,36 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
                                 dbDataProvider));
     }
 
-    public void persist(final SearchablePreferenceScreen searchablePreferenceScreen) {
+    public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen) {
         persist(searchablePreferenceScreen, this);
     }
 
-    public void persist(final SearchablePreferenceScreen searchablePreferenceScreen,
-                        final SearchablePreferenceScreen.DbDataProvider dbDataProvider) {
+    public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen,
+                        final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
         searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferences(dbDataProvider));
         _persist(searchablePreferenceScreen);
         invalidateCaches();
     }
 
-    @Query("SELECT * FROM SearchablePreferenceScreen WHERE id = :id")
-    public abstract Optional<SearchablePreferenceScreen> findSearchablePreferenceScreenById(final String id);
+    @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE id = :id")
+    public abstract Optional<SearchablePreferenceScreenEntity> findSearchablePreferenceScreenById(final String id);
 
-    public Set<SearchablePreferenceScreen> loadAll() {
+    public Set<SearchablePreferenceScreenEntity> loadAll() {
         return new HashSet<>(_loadAll());
     }
 
     // FK-TODO: remove method?
-    public Set<SearchablePreferenceScreen> findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host) {
+    public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host) {
         return new HashSet<>(_findSearchablePreferenceScreensByHost(host));
     }
 
     @Override
-    public Set<SearchablePreference> getAllPreferences(final SearchablePreferenceScreen screen) {
+    public Set<SearchablePreferenceEntity> getAllPreferences(final SearchablePreferenceScreenEntity screen) {
         return Maps.get(getAllPreferencesBySearchablePreferenceScreen(), screen).orElseThrow();
     }
 
     @Override
-    public SearchablePreferenceScreen getHost(final SearchablePreference preference) {
+    public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
         return Maps.get(getHostByPreference(), preference).orElseThrow();
     }
 
@@ -84,42 +84,42 @@ public abstract class SearchablePreferenceScreenDAO implements SearchablePrefere
     }
 
     @Insert
-    protected abstract void _persist(SearchablePreferenceScreen searchablePreferenceScreen);
+    protected abstract void _persist(SearchablePreferenceScreenEntity searchablePreferenceScreen);
 
-    @Query("SELECT * FROM SearchablePreferenceScreen")
-    protected abstract List<SearchablePreferenceScreen> _loadAll();
+    @Query("SELECT * FROM SearchablePreferenceScreenEntity")
+    protected abstract List<SearchablePreferenceScreenEntity> _loadAll();
 
     @Transaction
-    @Query("SELECT * FROM SearchablePreferenceScreen")
+    @Query("SELECT * FROM SearchablePreferenceScreenEntity")
     protected abstract List<SearchablePreferenceScreenAndAllPreferences> _getSearchablePreferenceScreenAndAllPreferences();
 
     // FK-TODO: remove method?
-    @Query("SELECT * FROM SearchablePreferenceScreen WHERE host = :host")
-    protected abstract List<SearchablePreferenceScreen> _findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host);
+    @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE host = :host")
+    protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host);
 
-    @Query("DELETE FROM SearchablePreferenceScreen")
+    @Query("DELETE FROM SearchablePreferenceScreenEntity")
     protected abstract void _removeAll();
 
-    private Map<SearchablePreferenceScreen, Set<SearchablePreference>> getAllPreferencesBySearchablePreferenceScreen() {
+    private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
             allPreferencesBySearchablePreferenceScreen = Optional.of(computeAllPreferencesBySearchablePreferenceScreen());
         }
         return allPreferencesBySearchablePreferenceScreen.orElseThrow();
     }
 
-    private Map<SearchablePreferenceScreen, Set<SearchablePreference>> computeAllPreferencesBySearchablePreferenceScreen() {
+    private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> computeAllPreferencesBySearchablePreferenceScreen() {
         return SearchablePreferenceScreenAndAllPreferencesHelper.getAllPreferencesBySearchablePreferenceScreen(
                 new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
     }
 
-    private Map<SearchablePreference, SearchablePreferenceScreen> getHostByPreference() {
+    private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {
         if (hostByPreference.isEmpty()) {
             hostByPreference = Optional.of(computeHostByPreference());
         }
         return hostByPreference.orElseThrow();
     }
 
-    private Map<SearchablePreference, SearchablePreferenceScreen> computeHostByPreference() {
+    private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference() {
         return SearchablePreferenceScreenAndAllPreferencesHelper.getHostByPreference(
                 new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
     }

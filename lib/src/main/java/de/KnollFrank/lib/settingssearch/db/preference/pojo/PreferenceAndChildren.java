@@ -7,9 +7,9 @@ import java.util.Set;
 
 public record PreferenceAndChildren(
         @Embedded
-        SearchablePreference preference,
+        SearchablePreferenceEntity preference,
         @Relation(
                 parentColumn = "id",
                 entityColumn = "parentId")
-        Set<SearchablePreference> children) {
+        Set<SearchablePreferenceEntity> children) {
 }

@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class PreferenceAndPredecessors {
 
-    public static Map<SearchablePreference, Optional<SearchablePreference>> getPredecessorByPreference(final Set<PreferenceAndPredecessor> preferencesAndPredecessors) {
+    public static Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> getPredecessorByPreference(final Set<PreferenceAndPredecessor> preferencesAndPredecessors) {
         return preferencesAndPredecessors
                 .stream()
                 .collect(

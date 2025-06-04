@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class PreferenceAndChildrens {
 
-    public static Map<SearchablePreference, Set<SearchablePreference>> getChildrenByPreference(final Set<PreferenceAndChildren> preferencesAndChildren) {
+    public static Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference(final Set<PreferenceAndChildren> preferencesAndChildren) {
         return preferencesAndChildren
                 .stream()
                 .collect(

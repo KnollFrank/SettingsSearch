@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 public class DefaultPreferencePathDisplayer implements PreferencePathDisplayer {
 
@@ -18,7 +18,7 @@ public class DefaultPreferencePathDisplayer implements PreferencePathDisplayer {
         return preferencePath
                 .preferences()
                 .stream()
-                .map(SearchablePreference::getTitle)
+                .map(SearchablePreferenceEntity::getTitle)
                 .map(title -> title.orElse("?"))
                 .collect(Collectors.joining(" > "));
     }

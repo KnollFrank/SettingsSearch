@@ -5,20 +5,20 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
-class DetachedDbDataProvider implements SearchablePreferenceScreen.DbDataProvider, SearchablePreference.DbDataProvider {
+class DetachedDbDataProvider implements SearchablePreferenceScreenEntity.DbDataProvider, SearchablePreferenceEntity.DbDataProvider {
 
-    private final Map<SearchablePreferenceScreen, Set<SearchablePreference>> allPreferencesBySearchablePreferenceScreen;
-    private final Map<SearchablePreference, SearchablePreferenceScreen> hostByPreference;
-    private final Map<SearchablePreference, Optional<SearchablePreference>> predecessorByPreference;
-    private final Map<SearchablePreference, Set<SearchablePreference>> childrenByPreference;
+    private final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen;
+    private final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference;
+    private final Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference;
+    private final Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference;
 
-    public DetachedDbDataProvider(final Map<SearchablePreferenceScreen, Set<SearchablePreference>> allPreferencesBySearchablePreferenceScreen,
-                                  final Map<SearchablePreference, SearchablePreferenceScreen> hostByPreference,
-                                  final Map<SearchablePreference, Optional<SearchablePreference>> predecessorByPreference,
-                                  final Map<SearchablePreference, Set<SearchablePreference>> childrenByPreference) {
+    public DetachedDbDataProvider(final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen,
+                                  final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference,
+                                  final Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference,
+                                  final Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference) {
         this.allPreferencesBySearchablePreferenceScreen = allPreferencesBySearchablePreferenceScreen;
         this.hostByPreference = hostByPreference;
         this.predecessorByPreference = predecessorByPreference;
@@ -26,22 +26,22 @@ class DetachedDbDataProvider implements SearchablePreferenceScreen.DbDataProvide
     }
 
     @Override
-    public Set<SearchablePreference> getAllPreferences(final SearchablePreferenceScreen screen) {
+    public Set<SearchablePreferenceEntity> getAllPreferences(final SearchablePreferenceScreenEntity screen) {
         return Maps.get(allPreferencesBySearchablePreferenceScreen, screen).orElseThrow();
     }
 
     @Override
-    public SearchablePreferenceScreen getHost(final SearchablePreference preference) {
+    public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
         return Maps.get(hostByPreference, preference).orElseThrow();
     }
 
     @Override
-    public Set<SearchablePreference> getChildren(final SearchablePreference preference) {
+    public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
         return Maps.get(childrenByPreference, preference).orElseThrow();
     }
 
     @Override
-    public Optional<SearchablePreference> getPredecessor(final SearchablePreference preference) {
+    public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
         return Maps.get(predecessorByPreference, preference).orElseThrow();
     }
 }

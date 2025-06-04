@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
@@ -23,24 +23,24 @@ public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
     @Test
     public void shouldSortSearchResultsByPreferencePath() {
         // Given
-        final SearchablePreference defaultSpeed =
+        final SearchablePreferenceEntity defaultSpeed =
                 createSearchablePreference(
                         "default speed",
                         Optional.empty());
 
-        final SearchablePreference car =
+        final SearchablePreferenceEntity car =
                 createSearchablePreference(
                         "car",
                         Optional.empty());
 
-        final SearchablePreference defaultSpeedOfCar = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(car));
+        final SearchablePreferenceEntity defaultSpeedOfCar = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(car));
 
-        final SearchablePreference walk =
+        final SearchablePreferenceEntity walk =
                 createSearchablePreference(
                         "walk",
                         Optional.empty());
 
-        final SearchablePreference defaultSpeedOfWalk = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(walk));
+        final SearchablePreferenceEntity defaultSpeedOfWalk = copyPreferenceAndSetPredecessor(defaultSpeed, Optional.of(walk));
 
         makeGetPreferencePathWorkOnPreferences(
                 List.of(car, walk, defaultSpeedOfWalk, defaultSpeed, defaultSpeedOfCar),
@@ -48,7 +48,7 @@ public class SearchResultsByPreferencePathSorterTest extends AppDatabaseTest {
         final SearchResultsSorter searchResultsSorter = new SearchResultsByPreferencePathSorter(searchablePreference -> searchablePreference.getPreferencePath(appDatabase.searchablePreferenceDAO()));
 
         // When
-        final List<SearchablePreference> sortedSearchResults =
+        final List<SearchablePreferenceEntity> sortedSearchResults =
                 searchResultsSorter.sort(
                         Set.of(
                                 defaultSpeedOfWalk,

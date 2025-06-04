@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.search.provider.IconProvider;
 
 public class Preference2SearchablePreferenceConverter {
@@ -36,25 +36,25 @@ public class Preference2SearchablePreferenceConverter {
         this.idGenerator = idGenerator;
     }
 
-    public record SearchablePreferenceWithMap(SearchablePreference searchablePreference,
-                                              BiMap<SearchablePreference, Preference> pojoEntityMap) {
+    public record SearchablePreferenceWithMap(SearchablePreferenceEntity searchablePreference,
+                                              BiMap<SearchablePreferenceEntity, Preference> pojoEntityMap) {
     }
 
     public SearchablePreferenceWithMap convertPreference(final Preference preference,
                                                          final String searchablePreferenceScreenId,
                                                          final PreferenceFragmentCompat hostOfPreference,
                                                          final Optional<Integer> parentIdOfPreference,
-                                                         final Optional<SearchablePreference> predecessorOfPreference) {
+                                                         final Optional<SearchablePreferenceEntity> predecessorOfPreference) {
         final int id = idGenerator.nextId();
-        final BiMap<SearchablePreference, Preference> searchablePreferences =
+        final BiMap<SearchablePreferenceEntity, Preference> searchablePreferences =
                 convertChildrenOfPreference(
                         preference,
                         searchablePreferenceScreenId,
                         hostOfPreference,
                         Optional.of(id),
                         predecessorOfPreference);
-        final SearchablePreference searchablePreference =
-                new SearchablePreference(
+        final SearchablePreferenceEntity searchablePreference =
+                new SearchablePreferenceEntity(
                         id,
                         preference.getKey(),
                         Strings.toString(Optional.ofNullable(preference.getTitle())),
@@ -67,22 +67,22 @@ public class Preference2SearchablePreferenceConverter {
                         preference.isVisible(),
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
                         parentIdOfPreference,
-                        predecessorOfPreference.map(SearchablePreference::getId),
+                        predecessorOfPreference.map(SearchablePreferenceEntity::getId),
                         searchablePreferenceScreenId);
         return new SearchablePreferenceWithMap(
                 searchablePreference,
                 ImmutableBiMap
-                        .<SearchablePreference, Preference>builder()
+                        .<SearchablePreferenceEntity, Preference>builder()
                         .putAll(searchablePreferences)
                         .put(searchablePreference, preference)
                         .buildOrThrow());
     }
 
-    public BiMap<SearchablePreference, Preference> convertPreferences(final List<Preference> preferences,
-                                                                      final String searchablePreferenceScreenId,
-                                                                      final PreferenceFragmentCompat hostOfPreferences,
-                                                                      final Optional<Integer> parentIdOfPreferences,
-                                                                      final Optional<SearchablePreference> predecessorOfPreferences) {
+    public BiMap<SearchablePreferenceEntity, Preference> convertPreferences(final List<Preference> preferences,
+                                                                            final String searchablePreferenceScreenId,
+                                                                            final PreferenceFragmentCompat hostOfPreferences,
+                                                                            final Optional<Integer> parentIdOfPreferences,
+                                                                            final Optional<SearchablePreferenceEntity> predecessorOfPreferences) {
         final List<SearchablePreferenceWithMap> pojoWithMapList =
                 preferences
                         .stream()
@@ -91,11 +91,11 @@ public class Preference2SearchablePreferenceConverter {
         return getPojoEntityMap(pojoWithMapList);
     }
 
-    private BiMap<SearchablePreference, Preference> convertChildrenOfPreference(final Preference preference,
-                                                                                final String searchablePreferenceScreenId,
-                                                                                final PreferenceFragmentCompat hostOfPreference,
-                                                                                final Optional<Integer> idOfPreference,
-                                                                                final Optional<SearchablePreference> predecessorOfPreference) {
+    private BiMap<SearchablePreferenceEntity, Preference> convertChildrenOfPreference(final Preference preference,
+                                                                                      final String searchablePreferenceScreenId,
+                                                                                      final PreferenceFragmentCompat hostOfPreference,
+                                                                                      final Optional<Integer> idOfPreference,
+                                                                                      final Optional<SearchablePreferenceEntity> predecessorOfPreference) {
         return preference instanceof final PreferenceGroup preferenceGroup ?
                 convertPreferences(
                         Preferences.getImmediateChildren(preferenceGroup),
@@ -103,7 +103,7 @@ public class Preference2SearchablePreferenceConverter {
                         hostOfPreference,
                         idOfPreference,
                         predecessorOfPreference) :
-                ImmutableBiMap.<SearchablePreference, Preference>builder().build();
+                ImmutableBiMap.<SearchablePreferenceEntity, Preference>builder().build();
     }
 
     private Optional<Either<Integer, String>> getIconResourceIdOrIconPixelData(final Preference preference,
@@ -116,7 +116,7 @@ public class Preference2SearchablePreferenceConverter {
                                      DrawableAndStringConverter::drawable2String));
     }
 
-    private static BiMap<SearchablePreference, Preference> getPojoEntityMap(final List<SearchablePreferenceWithMap> pojoWithMapList) {
+    private static BiMap<SearchablePreferenceEntity, Preference> getPojoEntityMap(final List<SearchablePreferenceWithMap> pojoWithMapList) {
         return Maps.mergeBiMaps(
                 pojoWithMapList
                         .stream()

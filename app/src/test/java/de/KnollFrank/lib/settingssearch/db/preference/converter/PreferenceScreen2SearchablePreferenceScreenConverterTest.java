@@ -23,8 +23,8 @@ import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -57,7 +57,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                 final String id = "some unique id";
 
                 // When
-                final SearchablePreferenceScreen pojo =
+                final SearchablePreferenceScreenEntity pojo =
                         preferenceScreen2SearchablePreferenceScreenConverter
                                 .convertPreferenceScreen(
                                         getPreferenceScreen(preferenceFragment, activity),
@@ -126,7 +126,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                 });
     }
 
-    private static SearchablePreferenceScreen getSearchablePreferenceScreenHavingParentWithTwoChildren(
+    private static SearchablePreferenceScreenEntity getSearchablePreferenceScreenHavingParentWithTwoChildren(
             final String id,
 
             final String parentKey,
@@ -136,8 +136,8 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
             final String keyOfChild2,
             final @LayoutRes int layoutResIdOfEachChild,
             final Class<? extends PreferenceFragmentCompat> host) {
-        final SearchablePreference parent =
-                new SearchablePreference(
+        final SearchablePreferenceEntity parent =
+                new SearchablePreferenceEntity(
                         1,
                         parentKey,
                         Optional.empty(),
@@ -152,14 +152,14 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty(),
                         Optional.empty(),
                         id);
-        return new SearchablePreferenceScreen(
+        return new SearchablePreferenceScreenEntity(
                 id,
                 host,
                 Optional.of("screen title"),
                 Optional.of("screen summary"),
                 Set.of(
                         parent,
-                        new SearchablePreference(
+                        new SearchablePreferenceEntity(
                                 2,
                                 keyOfChild1,
                                 Optional.empty(),
@@ -174,7 +174,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                                 Optional.of(1),
                                 Optional.empty(),
                                 id),
-                        new SearchablePreference(
+                        new SearchablePreferenceEntity(
                                 3,
                                 keyOfChild2,
                                 Optional.empty(),

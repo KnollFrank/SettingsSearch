@@ -11,30 +11,30 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 public class SearchablePreferenceScreens2GraphConverter {
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> convertScreensToGraph(final Set<SearchablePreferenceScreen> screens,
-                                                                                                    final DbDataProviders dbDataProviders) {
-        final var graphBuilder = DefaultDirectedGraph.<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class);
+    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> convertScreensToGraph(final Set<SearchablePreferenceScreenEntity> screens,
+                                                                                                          final DbDataProviders dbDataProviders) {
+        final var graphBuilder = DefaultDirectedGraph.<SearchablePreferenceScreenEntity, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class);
         addNodes(graphBuilder, screens);
         addEdges(graphBuilder, getEdgeDescriptions(screens, dbDataProviders));
         return graphBuilder.build();
     }
 
-    private record EdgeDescription(SearchablePreferenceScreen source,
-                                   SearchablePreferenceScreen target,
+    private record EdgeDescription(SearchablePreferenceScreenEntity source,
+                                   SearchablePreferenceScreenEntity target,
                                    SearchablePreferenceEdge edge) {
     }
 
-    private static Set<EdgeDescription> getEdgeDescriptions(final Set<SearchablePreferenceScreen> screens,
+    private static Set<EdgeDescription> getEdgeDescriptions(final Set<SearchablePreferenceScreenEntity> screens,
                                                             final DbDataProviders dbDataProviders) {
         final ImmutableSet.Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableSet.builder();
-        for (final SearchablePreferenceScreen targetScreen : screens) {
-            for (final SearchablePreference sourcePreference : getSourcePreferences(targetScreen, dbDataProviders)) {
+        for (final SearchablePreferenceScreenEntity targetScreen : screens) {
+            for (final SearchablePreferenceEntity sourcePreference : getSourcePreferences(targetScreen, dbDataProviders)) {
                 edgeDescriptionsBuilder.add(
                         new EdgeDescription(
                                 sourcePreference.getHost(dbDataProviders.preferencedbDataProvider()),
@@ -45,8 +45,8 @@ public class SearchablePreferenceScreens2GraphConverter {
         return edgeDescriptionsBuilder.build();
     }
 
-    private static Set<SearchablePreference> getSourcePreferences(final SearchablePreferenceScreen targetScreen,
-                                                                  final DbDataProviders dbDataProviders) {
+    private static Set<SearchablePreferenceEntity> getSourcePreferences(final SearchablePreferenceScreenEntity targetScreen,
+                                                                        final DbDataProviders dbDataProviders) {
         return targetScreen
                 .getAllPreferences(dbDataProviders.screenDbDataProvider())
                 .stream()
@@ -57,12 +57,12 @@ public class SearchablePreferenceScreens2GraphConverter {
                 .collect(Collectors.toSet());
     }
 
-    private static void addNodes(final GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> graphBuilder,
-                                 final Set<SearchablePreferenceScreen> nodes) {
+    private static void addNodes(final GraphBuilder<SearchablePreferenceScreenEntity, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge>> graphBuilder,
+                                 final Set<SearchablePreferenceScreenEntity> nodes) {
         nodes.forEach(graphBuilder::addVertex);
     }
 
-    private static void addEdges(final GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> graphBuilder,
+    private static void addEdges(final GraphBuilder<SearchablePreferenceScreenEntity, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge>> graphBuilder,
                                  final Set<EdgeDescription> edgeDescriptions) {
         edgeDescriptions.forEach(
                 edgeDescription ->
