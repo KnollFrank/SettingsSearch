@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -190,7 +190,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
 
     private void displayPreferencePath(final PreferenceViewHolder holder,
                                        final SearchablePreferenceEntity searchablePreference) {
-        final PreferencePath preferencePath = searchablePreference.getPreferencePath(dbDataProvider);
+        final PreferenceEntityPath preferencePath = searchablePreference.getPreferencePath(dbDataProvider);
         PreferencePathView.displayPreferencePath(
                 getPreferencePathView(holder),
                 preferencePath,

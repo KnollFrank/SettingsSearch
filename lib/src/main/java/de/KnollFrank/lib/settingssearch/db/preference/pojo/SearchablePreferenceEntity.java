@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 
@@ -186,7 +186,7 @@ public final class SearchablePreferenceEntity {
         return visible;
     }
 
-    public PreferencePath getPreferencePath(final DbDataProvider dbDataProvider) {
+    public PreferenceEntityPath getPreferencePath(final DbDataProvider dbDataProvider) {
         return getPreferencePathOfPredecessor(dbDataProvider).append(this);
     }
 
@@ -255,10 +255,10 @@ public final class SearchablePreferenceEntity {
                                                 context.getResources())));
     }
 
-    private PreferencePath getPreferencePathOfPredecessor(final DbDataProvider dbDataProvider) {
+    private PreferenceEntityPath getPreferencePathOfPredecessor(final DbDataProvider dbDataProvider) {
         return this
                 .getPredecessor(dbDataProvider)
                 .map(searchablePreference -> searchablePreference.getPreferencePath(dbDataProvider))
-                .orElseGet(() -> new PreferencePath(List.of()));
+                .orElseGet(() -> new PreferenceEntityPath(List.of()));
     }
 }

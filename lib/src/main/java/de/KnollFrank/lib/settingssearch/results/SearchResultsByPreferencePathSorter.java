@@ -6,16 +6,16 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 public class SearchResultsByPreferencePathSorter implements SearchResultsSorter {
 
-    private final Function<SearchablePreferenceEntity, PreferencePath> getPreferencePath;
+    private final Function<SearchablePreferenceEntity, PreferenceEntityPath> getPreferencePath;
 
-    public SearchResultsByPreferencePathSorter(final Function<SearchablePreferenceEntity, PreferencePath> getPreferencePath) {
+    public SearchResultsByPreferencePathSorter(final Function<SearchablePreferenceEntity, PreferenceEntityPath> getPreferencePath) {
         this.getPreferencePath = getPreferencePath;
     }
 
@@ -33,7 +33,7 @@ public class SearchResultsByPreferencePathSorter implements SearchResultsSorter 
                 getPreferencePathComparator());
     }
 
-    private static Comparator<PreferencePath> getPreferencePathComparator() {
+    private static Comparator<PreferenceEntityPath> getPreferencePathComparator() {
         return Comparator.comparing(
                 preferencePath -> Lists.reverse(preferencePath.preferences()),
                 ComparatorFactory.lexicographicalListComparator(SearchablePreferenceComparatorFactory.lexicographicalComparator()));

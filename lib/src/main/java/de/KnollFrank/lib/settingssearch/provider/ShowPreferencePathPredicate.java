@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.settingssearch.provider;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 
 @FunctionalInterface
 public interface ShowPreferencePathPredicate {
 
-    boolean showPreferencePath(PreferencePath preferencePath);
+    boolean showPreferencePath(PreferenceEntityPath preferencePath);
 }

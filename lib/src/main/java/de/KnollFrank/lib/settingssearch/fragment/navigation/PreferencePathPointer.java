@@ -3,24 +3,24 @@ package de.KnollFrank.lib.settingssearch.fragment.navigation;
 import java.util.Objects;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
 // FK-TODO: remove PreferencePathNavigator and replace with adapted PreferencePath
 public class PreferencePathPointer {
 
-    public final PreferencePath preferencePath;
+    public final PreferenceEntityPath preferencePath;
     public final int indexWithinPreferencePath;
 
-    public static PreferencePathPointer of(final PreferencePath preferencePath,
+    public static PreferencePathPointer of(final PreferenceEntityPath preferencePath,
                                            final int indexWithinPreferencePath) {
         return PreferencePathPointer
                 .tryCreatePreferencePathPointer(preferencePath, indexWithinPreferencePath)
                 .orElseThrow(IllegalArgumentException::new);
     }
 
-    private PreferencePathPointer(final PreferencePath preferencePath,
+    private PreferencePathPointer(final PreferenceEntityPath preferencePath,
                                   final int indexWithinPreferencePath) {
         this.preferencePath = preferencePath;
         this.indexWithinPreferencePath = indexWithinPreferencePath;
@@ -58,7 +58,7 @@ public class PreferencePathPointer {
     }
 
     private static Optional<PreferencePathPointer> tryCreatePreferencePathPointer(
-            final PreferencePath preferencePath,
+            final PreferenceEntityPath preferencePath,
             final int indexWithinPreferencePath) {
         return Lists.getElementAtIndex(preferencePath.preferences(), indexWithinPreferencePath).isPresent() ?
                 Optional.of(new PreferencePathPointer(preferencePath, indexWithinPreferencePath)) :

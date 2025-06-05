@@ -12,7 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
@@ -33,9 +33,9 @@ public class SearchablePreferenceTest extends AppDatabaseTest {
         makeGetPreferencePathWorkOnPreferences(List.of(parent, predecessor), appDatabase);
 
         // When
-        final PreferencePath preferencePath = parent.getPreferencePath(appDatabase.searchablePreferenceDAO());
+        final PreferenceEntityPath preferencePath = parent.getPreferencePath(appDatabase.searchablePreferenceDAO());
 
         // Then
-        assertThat(preferencePath, is(new PreferencePath(List.of(predecessor, parent))));
+        assertThat(preferencePath, is(new PreferenceEntityPath(List.of(predecessor, parent))));
     }
 }

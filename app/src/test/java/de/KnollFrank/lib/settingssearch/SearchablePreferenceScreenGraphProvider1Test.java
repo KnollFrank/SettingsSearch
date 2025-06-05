@@ -107,7 +107,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 assertThat(
                         preferenceOfFragment2PointingToFragment3.getPreferencePath(appDatabase.searchablePreferenceDAO()),
                         is(
-                                new PreferencePath(
+                                new PreferenceEntityPath(
                                         List.of(
                                                 preferenceOfFragment1PointingToFragment2,
                                                 preferenceOfFragment2PointingToFragment3))));

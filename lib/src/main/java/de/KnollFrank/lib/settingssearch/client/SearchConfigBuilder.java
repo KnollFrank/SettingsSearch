@@ -7,7 +7,7 @@ import androidx.annotation.IdRes;
 import java.util.Optional;
 import java.util.function.Function;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -56,7 +56,7 @@ public class SearchConfigBuilder {
                                         .searchablePreferenceDAO()));
     }
 
-    private static Function<SearchablePreferenceEntity, PreferencePath> createGetPreferencePathFunction(final SearchablePreferenceDAO dbDataProvider) {
+    private static Function<SearchablePreferenceEntity, PreferenceEntityPath> createGetPreferencePathFunction(final SearchablePreferenceDAO dbDataProvider) {
         return searchablePreference -> searchablePreference.getPreferencePath(dbDataProvider);
     }
 
