@@ -5,11 +5,11 @@ import org.jgrapht.graph.DefaultEdge;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-public class SearchablePreferenceEdge extends DefaultEdge {
+public class SearchablePreferenceEntityEdge extends DefaultEdge {
 
     public final SearchablePreferenceEntity preference;
 
-    public SearchablePreferenceEdge(final SearchablePreferenceEntity preference) {
+    public SearchablePreferenceEntityEdge(final SearchablePreferenceEntity preference) {
         this.preference = preference;
     }
 
@@ -17,7 +17,7 @@ public class SearchablePreferenceEdge extends DefaultEdge {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreferenceEdge that = (SearchablePreferenceEdge) o;
+        final SearchablePreferenceEntityEdge that = (SearchablePreferenceEntityEdge) o;
         return Objects.equals(getSource(), that.getSource()) && Objects.equals(getTarget(), that.getTarget()) && Objects.equals(preference, that.preference);
     }
 
@@ -28,7 +28,7 @@ public class SearchablePreferenceEdge extends DefaultEdge {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", SearchablePreferenceEdge.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", SearchablePreferenceEntityEdge.class.getSimpleName() + "[", "]")
                 .add("source=" + getSource())
                 .add("target=" + getTarget())
                 .add("preference=" + preference)

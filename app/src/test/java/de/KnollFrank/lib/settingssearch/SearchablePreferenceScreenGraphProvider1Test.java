@@ -35,8 +35,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
@@ -86,7 +86,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                 Fragment1ConnectedToFragment2AndFragment4.class);
 
                 // When
-                final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> pojoGraph =
+                final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> pojoGraph =
                         result
                                 .searchablePreferenceScreenGraphProvider()
                                 .getSearchablePreferenceScreenGraph(
@@ -233,7 +233,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
         }
     }
 
-    public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> graph,
+    public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph,
                                                         final AppDatabase appDatabase) {
         appDatabase.searchablePreferenceScreenGraphDAO().persist(graph);
     }

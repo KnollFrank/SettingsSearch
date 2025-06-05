@@ -16,7 +16,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
     public static final int PREFERENCE_CONNECTING_SRC_2_DST_ID = 4;
     public static final String PARENT_KEY = "parentKey";
 
-    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> createSingleNodePojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> createSingleNodePojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final String screenId = "1";
         final SearchablePreferenceEntity preferenceConnectingSrc2Dst =
                 new SearchablePreferenceEntity(
@@ -35,12 +35,12 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         screenId);
         return DefaultDirectedGraph
-                .<SearchablePreferenceScreenEntity, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                .<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>createBuilder(SearchablePreferenceEntityEdge.class)
                 .addVertex(createSrc(screenId, preferenceConnectingSrc2Dst, host))
                 .build();
     }
 
-    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
+    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> createPojoGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final String screenId = "1";
         final SearchablePreferenceEntity preferenceConnectingSrc2Dst =
                 new SearchablePreferenceEntity(
@@ -59,11 +59,11 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         screenId);
         return DefaultDirectedGraph
-                .<SearchablePreferenceScreenEntity, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                .<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>createBuilder(SearchablePreferenceEntityEdge.class)
                 .addEdge(
                         createSrc(screenId, preferenceConnectingSrc2Dst, host),
                         createDst(preferenceConnectingSrc2Dst),
-                        new SearchablePreferenceEdge(preferenceConnectingSrc2Dst))
+                        new SearchablePreferenceEntityEdge(preferenceConnectingSrc2Dst))
                 .build();
     }
 

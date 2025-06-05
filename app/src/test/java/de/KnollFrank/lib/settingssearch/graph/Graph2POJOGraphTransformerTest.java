@@ -38,8 +38,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -69,7 +69,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                 new DefaultPreferenceFragmentIdProvider());
 
                 // When
-                final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> pojoGraph =
+                final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> pojoGraph =
                         removeMapFromPojoNodes(
                                 graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                         entityGraph));
@@ -141,7 +141,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
     }
 
     private PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
-            final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEdge> pojoGraphExpected) {
+            final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> pojoGraphExpected) {
         final Set<SearchablePreferenceEntity> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet(), appDatabase.searchablePreferenceScreenDAO());
         return new PreferenceAndExpectedPredecessorOfPreference(
                 getDstPreference(searchablePreferences),

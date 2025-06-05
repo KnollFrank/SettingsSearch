@@ -13,8 +13,8 @@ import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 
 public class Graph2POJOGraphTransformer {
 
@@ -27,15 +27,15 @@ public class Graph2POJOGraphTransformer {
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
-    public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
+    public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEntityEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
-                SearchablePreferenceEdge.class,
+                SearchablePreferenceEntityEdge.class,
                 createGraphTransformer());
     }
 
-    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer() {
+    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEntityEdge> createGraphTransformer() {
         return new GraphTransformer<>() {
 
             @Override
@@ -56,9 +56,9 @@ public class Graph2POJOGraphTransformer {
             }
 
             @Override
-            public SearchablePreferenceEdge transformEdge(final PreferenceEdge edge,
-                                                          final SearchablePreferenceScreenWithMap transformedParentNode) {
-                return new SearchablePreferenceEdge(
+            public SearchablePreferenceEntityEdge transformEdge(final PreferenceEdge edge,
+                                                                final SearchablePreferenceScreenWithMap transformedParentNode) {
+                return new SearchablePreferenceEntityEdge(
                         getTransformedPreference(
                                 edge.preference,
                                 transformedParentNode));
