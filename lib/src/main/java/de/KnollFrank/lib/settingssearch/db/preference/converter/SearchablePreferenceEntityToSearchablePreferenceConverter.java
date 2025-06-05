@@ -17,21 +17,21 @@ public class SearchablePreferenceEntityToSearchablePreferenceConverter {
         this.dbDataProvider = dbDataProvider;
     }
 
-    public Set<SearchablePreference> convert(final Set<SearchablePreferenceEntity> entities) {
+    public Set<SearchablePreference> fromEntities(final Set<SearchablePreferenceEntity> entities) {
         return entities
                 .stream()
-                .map(this::convert)
+                .map(this::fromEntity)
                 .collect(Collectors.toSet());
     }
 
-    public SearchablePreference convert(final SearchablePreferenceEntity entity) {
+    public SearchablePreference fromEntity(final SearchablePreferenceEntity entity) {
         if (!pojoByEntityCache.containsKey(entity)) {
-            pojoByEntityCache.put(entity, _convert(entity));
+            pojoByEntityCache.put(entity, _fromEntity(entity));
         }
         return pojoByEntityCache.get(entity);
     }
 
-    private SearchablePreference _convert(final SearchablePreferenceEntity entity) {
+    private SearchablePreference _fromEntity(final SearchablePreferenceEntity entity) {
         return new SearchablePreference(
                 entity.getId(),
                 entity.getKey(),
@@ -44,7 +44,7 @@ public class SearchablePreferenceEntityToSearchablePreferenceConverter {
                 entity.getClassNameOfReferencedActivity(),
                 entity.isVisible(),
                 entity.getSearchableInfo(),
-                convert(entity.getChildren(dbDataProvider)),
-                entity.getPredecessor(dbDataProvider).map(this::convert));
+                fromEntities(entity.getChildren(dbDataProvider)),
+                entity.getPredecessor(dbDataProvider).map(this::fromEntity));
     }
 }
