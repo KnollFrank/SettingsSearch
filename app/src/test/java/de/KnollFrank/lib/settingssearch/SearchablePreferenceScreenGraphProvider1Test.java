@@ -105,7 +105,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                 Fragment2ConnectedToFragment3.class,
                                 pojoGraph.vertexSet());
                 assertThat(
-                        preferenceOfFragment2PointingToFragment3.getPreferencePath(appDatabase.searchablePreferenceDAO()),
+                        preferenceOfFragment2PointingToFragment3.getPreferencePath(appDatabase.searchablePreferenceEntityDAO()),
                         is(
                                 new PreferenceEntityPath(
                                         List.of(
@@ -146,7 +146,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
             final Set<SearchablePreferenceScreenEntity> preferenceScreenWithHostSet) {
         return getPreference(
                 preferenceScreenWithHostSet,
-                preference -> hostOfPreference.equals(preference.getHost(appDatabase.searchablePreferenceDAO()).getHost()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
+                preference -> hostOfPreference.equals(preference.getHost(appDatabase.searchablePreferenceEntityDAO()).getHost()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
     private SearchablePreferenceEntity getPreference(
@@ -157,7 +157,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 .flatMap(
                         searchablePreferenceScreen ->
                                 searchablePreferenceScreen
-                                        .getAllPreferences(appDatabase.searchablePreferenceScreenDAO())
+                                        .getAllPreferences(appDatabase.searchablePreferenceScreenEntityDAO())
                                         .stream()
                                         .filter(predicate))
                 .collect(MoreCollectors.onlyElement());
@@ -240,6 +240,6 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
 
     public static void makeGetPreferencePathWorkOnPreferences(final Collection<SearchablePreferenceEntity> preferences,
                                                               final AppDatabase appDatabase) {
-        appDatabase.searchablePreferenceDAO().persist(preferences);
+        appDatabase.searchablePreferenceEntityDAO().persist(preferences);
     }
 }

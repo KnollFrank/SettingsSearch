@@ -11,11 +11,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 // FK-TODO: make this class a @Dao and introduce a new @Entity named SearchablePreferenceScreenGraph which references it's root SearchablePreferenceScreen. Then remove SearchDatabaseStateDAO and SearchDatabaseState.
 public class SearchablePreferenceScreenGraphDAO {
 
-    private final SearchablePreferenceScreenDAO searchablePreferenceScreenDAO;
-    private final SearchablePreferenceDAO searchablePreferenceDAO;
+    private final SearchablePreferenceScreenEntityDAO searchablePreferenceScreenDAO;
+    private final SearchablePreferenceEntityDAO searchablePreferenceDAO;
 
-    public SearchablePreferenceScreenGraphDAO(final SearchablePreferenceScreenDAO searchablePreferenceScreenDAO,
-                                              final SearchablePreferenceDAO searchablePreferenceDAO) {
+    public SearchablePreferenceScreenGraphDAO(final SearchablePreferenceScreenEntityDAO searchablePreferenceScreenDAO,
+                                              final SearchablePreferenceEntityDAO searchablePreferenceDAO) {
         this.searchablePreferenceScreenDAO = searchablePreferenceScreenDAO;
         this.searchablePreferenceDAO = searchablePreferenceDAO;
     }

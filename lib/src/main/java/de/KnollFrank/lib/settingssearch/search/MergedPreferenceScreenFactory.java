@@ -14,7 +14,7 @@ import java.util.Map;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -118,7 +118,7 @@ public class MergedPreferenceScreenFactory {
                                 progressUpdateListener,
                                 instantiateAndInitializeFragment)
                         .getSearchDatabaseFilledWithPreferences(locale)
-                        .searchablePreferenceDAO(),
+                        .searchablePreferenceEntityDAO(),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 markupsFactory,
@@ -129,14 +129,14 @@ public class MergedPreferenceScreenFactory {
                 principalAndProxyProvider,
                 showSettingsFragmentAndHighlightSetting,
                 activity,
-                AppDatabaseFactory.getInstance(locale, activity).searchablePreferenceDAO());
+                AppDatabaseFactory.getInstance(locale, activity).searchablePreferenceEntityDAO());
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
             final PrepareShow prepareShow,
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PreferencePathDisplayer preferencePathDisplayer,
-            final SearchablePreferenceDAO searchablePreferenceDAO,
+            final SearchablePreferenceEntityDAO searchablePreferenceDAO,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final MarkupsFactory markupsFactory,

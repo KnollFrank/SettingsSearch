@@ -156,7 +156,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                                 return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                             }
                         },
-                        appDatabase.searchablePreferenceDAO());
+                        appDatabase.searchablePreferenceEntityDAO());
         PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment(
                 searchResultsFragment,
                 getInstantiateAndInitializeFragment(searchResultsFragment, activity));

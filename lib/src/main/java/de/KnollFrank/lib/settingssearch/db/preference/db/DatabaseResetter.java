@@ -15,7 +15,7 @@ public class DatabaseResetter {
     }
 
     public static void resetDatabase(final AppDatabase appDatabase) {
-        appDatabase.searchablePreferenceDAO().removeAll();
+        appDatabase.searchablePreferenceEntityDAO().removeAll();
         appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(false);
     }
 

@@ -30,13 +30,13 @@ import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResult
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 
 @Dao
-public abstract class SearchablePreferenceDAO implements SearchablePreferenceEntity.DbDataProvider {
+public abstract class SearchablePreferenceEntityDAO implements SearchablePreferenceEntity.DbDataProvider {
 
     private final AppDatabase appDatabase;
     private Optional<Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>> predecessorByPreference = Optional.empty();
     private Optional<Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>> childrenByPreference = Optional.empty();
 
-    public SearchablePreferenceDAO(final AppDatabase appDatabase) {
+    public SearchablePreferenceEntityDAO(final AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
     }
 
@@ -90,7 +90,7 @@ public abstract class SearchablePreferenceDAO implements SearchablePreferenceEnt
 
     @Override
     public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
-        return appDatabase.searchablePreferenceScreenDAO().getHost(preference);
+        return appDatabase.searchablePreferenceScreenEntityDAO().getHost(preference);
     }
 
     public void removeAll() {

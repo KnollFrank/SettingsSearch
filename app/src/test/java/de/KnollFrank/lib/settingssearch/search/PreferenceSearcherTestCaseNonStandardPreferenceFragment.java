@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
@@ -25,7 +25,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     private static final String KEY_OF_PREFERENCE = "key";
 
     public static void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(
-            final SearchablePreferenceDAO searchablePreferenceDAO,
+            final SearchablePreferenceEntityDAO searchablePreferenceDAO,
             final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         testSearch(
                 // Given a NonStandardPreferenceFragment
@@ -61,7 +61,7 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                                    final PrincipalAndProxyProvider principalAndProxyProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
-                                   final SearchablePreferenceDAO searchablePreferenceDAO,
+                                   final SearchablePreferenceEntityDAO searchablePreferenceDAO,
                                    final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         PreferenceSearcherTest.testSearch(
                 nonPreferenceFragment,

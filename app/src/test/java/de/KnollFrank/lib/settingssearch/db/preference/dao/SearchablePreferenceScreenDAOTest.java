@@ -28,7 +28,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     @Test
     public void shouldPersistAndFindSearchablePreferenceScreenById() {
         // Given
-        final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
+        final SearchablePreferenceScreenEntityDAO dao = appDatabase.searchablePreferenceScreenEntityDAO();
         final SearchablePreferenceScreenEntity screen = createSomeSearchablePreferenceScreen();
 
         // When
@@ -45,7 +45,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     @Test
     public void test_findSearchablePreferenceScreensByHost() {
         // Given
-        final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
+        final SearchablePreferenceScreenEntityDAO dao = appDatabase.searchablePreferenceScreenEntityDAO();
         final SearchablePreferenceScreenEntity screen = createSomeSearchablePreferenceScreen();
         dao.persist(screen);
 
@@ -59,7 +59,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     @Test
     public void test_findSearchablePreferenceScreensByHost_emptyDatabase() {
         // Given
-        final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
+        final SearchablePreferenceScreenEntityDAO dao = appDatabase.searchablePreferenceScreenEntityDAO();
         final Class<? extends PreferenceFragmentCompat> nonExistingHost = PreferenceFragmentCompat.class;
 
         // When
@@ -72,7 +72,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetHostOfPreferencesOfScreen() {
         // Given
-        final SearchablePreferenceScreenDAO dao = appDatabase.searchablePreferenceScreenDAO();
+        final SearchablePreferenceScreenEntityDAO dao = appDatabase.searchablePreferenceScreenEntityDAO();
         final SearchablePreferenceScreenEntity screen = createSomeSearchablePreferenceScreen();
         dao.persist(screen);
         final SearchablePreferenceEntity preference =
@@ -81,7 +81,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
                         .orElseThrow();
 
         // When
-        final SearchablePreferenceScreenEntity hostOfPreference = preference.getHost(appDatabase.searchablePreferenceDAO());
+        final SearchablePreferenceScreenEntity hostOfPreference = preference.getHost(appDatabase.searchablePreferenceEntityDAO());
 
         // Then
         assertThat(hostOfPreference, is(screen));

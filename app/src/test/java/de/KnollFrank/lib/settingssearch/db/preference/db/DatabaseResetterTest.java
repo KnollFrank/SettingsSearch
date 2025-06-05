@@ -65,12 +65,12 @@ public class DatabaseResetterTest {
                 createSearchablePreference(
                         "some preference",
                         Optional.empty());
-        appDatabase.searchablePreferenceDAO().persist(preference);
+        appDatabase.searchablePreferenceEntityDAO().persist(preference);
         appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(true);
     }
 
     private static void assertIsReset(final AppDatabase appDatabase) {
-        assertThat(appDatabase.searchablePreferenceDAO().loadAll(), is(empty()));
+        assertThat(appDatabase.searchablePreferenceEntityDAO().loadAll(), is(empty()));
         assertThat(appDatabase.searchDatabaseStateDAO().isSearchDatabaseInitialized(), is(false));
     }
 }

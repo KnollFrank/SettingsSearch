@@ -30,7 +30,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     @Test
     public void shouldPersistAndFindPreferenceById() {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
                         1,
@@ -57,7 +57,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final Optional<String> oldSummary = Optional.of("old summary");
         final Optional<String> newSummary = Optional.of("new summary");
 
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
                         1,
@@ -84,7 +84,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetPredecessorOfPersistedPreference() {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity predecessor =
                 createSomeSearchablePreference(
                         1,
@@ -115,7 +115,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetChildrenOfPersistedPreference() {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity parent =
                 createSomeSearchablePreference(
                         1,
@@ -148,7 +148,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     @Test
     public void shouldRemovePreference() {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
                         1,
@@ -194,7 +194,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                 Optional.of("title in summary"),
                 Optional.of("searchable info also has a title"));
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         dao.persist(preference);
 
         // When
@@ -219,7 +219,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     @Test
     public void shouldSearchWithinTitleSummarySearchableInfo_excludePreferenceFromSearchResults() {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final String needle = "title";
         final SearchablePreferenceEntity someSearchablePreference =
                 createSomeSearchablePreference(
@@ -246,7 +246,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetMaxId() {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final int maxId = 4711;
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
@@ -268,7 +268,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     @Test
     public void shouldGetMaxId_emptyDatabase() {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
 
         // When
         final Optional<Integer> maxId = dao.getMaxId();
@@ -329,7 +329,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                 Optional.empty(),
                 Optional.empty());
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         dao.persist(preference);
 
         // When
@@ -345,7 +345,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     @Test
     public void shouldSearchWithinTitleSummarySearchableInfo_emptyDatabase_findNothing() {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
 
         // When
         final Set<PreferenceMatch> preferenceMatches =
@@ -360,7 +360,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
     private void shouldSearchAndFindWithinTitleSummarySearchableInfo(final SearchablePreferenceEntity preference,
                                                                      final String needle) {
         // Given
-        final SearchablePreferenceDAO dao = appDatabase.searchablePreferenceDAO();
+        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         dao.persist(preference);
 
         // When

@@ -118,7 +118,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private SearchablePreferenceScreenEntity getPojoScreenRootedAt(final PrefsFragmentFirst preferenceFragment) {
                         return Iterables.getOnlyElement(
                                 getAppDatabase()
-                                        .searchablePreferenceScreenDAO()
+                                        .searchablePreferenceScreenEntityDAO()
                                         .findSearchablePreferenceScreensByHost(preferenceFragment.getClass()));
                     }
 
@@ -126,7 +126,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return SearchablePreferenceScreenGraphProviderFactory
                                 .createSearchablePreferenceScreenGraphProvider(
                                         PrefsFragmentFirst.this,
-                                        getAppDatabase().searchablePreferenceDAO(),
+                                        getAppDatabase().searchablePreferenceEntityDAO(),
                                         DUMMY_FRAGMENT_CONTAINER_VIEW,
                                         SearchDatabaseConfigFactory.createSearchDatabaseConfig())
                                 .getSearchablePreferenceScreenGraph(root);
@@ -166,14 +166,14 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return Iterables
                                 .getOnlyElement(
                                         getAppDatabase()
-                                                .searchablePreferenceScreenDAO()
+                                                .searchablePreferenceScreenEntityDAO()
                                                 .findSearchablePreferenceScreensByHost(host))
-                                .getAllPreferences(getAppDatabase().searchablePreferenceScreenDAO());
+                                .getAllPreferences(getAppDatabase().searchablePreferenceScreenEntityDAO());
                     }
 
                     private void setSummary(final SearchablePreferenceEntity searchablePreference, final String summary) {
                         searchablePreference.setSummary(Optional.of(summary));
-                        getAppDatabase().searchablePreferenceDAO().update(searchablePreference);
+                        getAppDatabase().searchablePreferenceEntityDAO().update(searchablePreference);
                     }
                 });
     }

@@ -5,8 +5,8 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchDatabaseStateDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchDatabaseState;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -38,14 +38,14 @@ public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
 
     @Override
     public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
-        return new SearchablePreferenceScreenGraphDAO(searchablePreferenceScreenDAO(), searchablePreferenceDAO());
+        return new SearchablePreferenceScreenGraphDAO(searchablePreferenceScreenEntityDAO(), searchablePreferenceEntityDAO());
     }
 
     @Override
-    public abstract SearchablePreferenceScreenDAO searchablePreferenceScreenDAO();
+    public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
 
     @Override
-    public abstract SearchablePreferenceDAO searchablePreferenceDAO();
+    public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
 
     public abstract SearchDatabaseStateDAO searchDatabaseStateDAO();
 }

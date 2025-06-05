@@ -21,14 +21,14 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 @Dao
-public abstract class SearchablePreferenceScreenDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
+public abstract class SearchablePreferenceScreenEntityDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
 
-    private final SearchablePreferenceDAO searchablePreferenceDAO;
+    private final SearchablePreferenceEntityDAO searchablePreferenceDAO;
     private Optional<Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
     private Optional<Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity>> hostByPreference = Optional.empty();
 
-    public SearchablePreferenceScreenDAO(final AppDatabase appDatabase) {
-        this.searchablePreferenceDAO = appDatabase.searchablePreferenceDAO();
+    public SearchablePreferenceScreenEntityDAO(final AppDatabase appDatabase) {
+        this.searchablePreferenceDAO = appDatabase.searchablePreferenceEntityDAO();
     }
 
     public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens) {

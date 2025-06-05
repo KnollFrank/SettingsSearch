@@ -83,7 +83,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                     final SearchablePreferenceEntity preference = data.preference();
                     final SearchablePreferenceEntity expectedPredecessorOfPreference = data.expectedPredecessorOfPreference();
                     // check predecessor:
-                    assertThat("predecessor of " + preference, preference.getPredecessor(appDatabase.searchablePreferenceDAO()), is(Optional.of(expectedPredecessorOfPreference)));
+                    assertThat("predecessor of " + preference, preference.getPredecessor(appDatabase.searchablePreferenceEntityDAO()), is(Optional.of(expectedPredecessorOfPreference)));
                 }
             });
         }
@@ -142,7 +142,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
 
     private PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
             final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> pojoGraphExpected) {
-        final Set<SearchablePreferenceEntity> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet(), appDatabase.searchablePreferenceScreenDAO());
+        final Set<SearchablePreferenceEntity> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet(), appDatabase.searchablePreferenceScreenEntityDAO());
         return new PreferenceAndExpectedPredecessorOfPreference(
                 getDstPreference(searchablePreferences),
                 getPreferenceConnectingSrc2Dst(searchablePreferences));
