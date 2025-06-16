@@ -9,7 +9,7 @@ import org.jgrapht.Graph;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class GraphEquality {
+class StringGraphEquality {
 
     public static void assertActualEqualsExpected(final Graph<StringVertex, StringEdge> actual,
                                                   final Graph<StringVertex, StringEdge> expected) {

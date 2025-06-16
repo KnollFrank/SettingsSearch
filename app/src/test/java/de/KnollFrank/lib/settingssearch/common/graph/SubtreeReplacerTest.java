@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import static de.KnollFrank.lib.settingssearch.common.graph.GraphEquality.assertActualEqualsExpected;
+import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphEquality.assertActualEqualsExpected;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
