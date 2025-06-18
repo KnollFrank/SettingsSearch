@@ -45,6 +45,7 @@ public class SearchablePreferenceEntityToSearchablePreferenceConverter {
                 entity.isVisible(),
                 entity.getSearchableInfo(),
                 fromEntities(entity.getChildren(dbDataProvider)),
+                // FK-FIXME: nicht gut diese erneute Konvertierung mit this::fromEntity. Lösung: der entity.getPredecessor() muß schon konvertiert sein und als Argument übergeben werden.
                 entity.getPredecessor(dbDataProvider).map(this::fromEntity));
     }
 }

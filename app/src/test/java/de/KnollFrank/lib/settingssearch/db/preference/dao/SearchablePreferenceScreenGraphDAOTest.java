@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createPojoGraph;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createSingleNodePojoGraph;
 import static de.KnollFrank.lib.settingssearch.test.GraphEquality.assertActualEqualsExpected;
 
 import androidx.preference.PreferenceFragmentCompat;
@@ -22,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity.DbDataProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
@@ -30,7 +29,11 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     public void shouldPersistSearchablePreferenceScreenGraph() {
         // Given
         final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenEntityDAO(), appDatabase.searchablePreferenceEntityDAO());
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph = createPojoGraph(PreferenceFragmentCompat.class);
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
+                SearchablePreferenceScreenGraphTestFactory
+                        .createPojoGraph(PreferenceFragmentCompat.class)
+                        .entityGraphAndDetachedDbDataProvider()
+                        .entityGraph();
 
         // When
         dao.persist(graph);
@@ -46,10 +49,18 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenEntityDAO(), appDatabase.searchablePreferenceEntityDAO());
 
         // When
-        dao.persist(createSingleNodePojoGraph(PreferenceFragmentCompat.class));
+        dao.persist(
+                SearchablePreferenceScreenGraphTestFactory
+                        .createSingleNodePojoGraph(PreferenceFragmentCompat.class)
+                        .entityGraphAndDetachedDbDataProvider()
+                        .entityGraph());
 
         // And
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph = createPojoGraph(PreferenceFragmentCompat.class);
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
+                SearchablePreferenceScreenGraphTestFactory
+                        .createPojoGraph(PreferenceFragmentCompat.class)
+                        .entityGraphAndDetachedDbDataProvider()
+                        .entityGraph();
         dao.persist(graph);
 
         // Then
@@ -64,7 +75,11 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
                 new SearchablePreferenceScreenGraphDAO(
                         appDatabase.searchablePreferenceScreenEntityDAO(),
                         appDatabase.searchablePreferenceEntityDAO());
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph = createSingleNodePojoGraph(PreferenceFragmentCompat.class);
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
+                SearchablePreferenceScreenGraphTestFactory
+                        .createSingleNodePojoGraph(PreferenceFragmentCompat.class)
+                        .entityGraphAndDetachedDbDataProvider()
+                        .entityGraph();
         final Set<SearchablePreferenceEntity> allPreferences =
                 getAllPreferencesOfSingleNode(
                         graph,

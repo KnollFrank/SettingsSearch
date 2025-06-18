@@ -8,12 +8,12 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
-class DetachedDbDataProvider implements SearchablePreferenceScreenEntity.DbDataProvider, SearchablePreferenceEntity.DbDataProvider {
+public class DetachedDbDataProvider implements SearchablePreferenceScreenEntity.DbDataProvider, SearchablePreferenceEntity.DbDataProvider {
 
-    private final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen;
-    private final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference;
-    private final Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference;
-    private final Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference;
+    protected final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen;
+    protected final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference;
+    protected final Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference;
+    protected final Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference;
 
     public DetachedDbDataProvider(final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen,
                                   final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference,

@@ -6,7 +6,6 @@ import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphPr
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.DST_PREFERENCE_ID;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.PREFERENCE_CONNECTING_SRC_2_DST_ID;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createPojoGraph;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
 
@@ -41,6 +40,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -77,7 +77,13 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 // Then
                 makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase);
                 // check graph:
-                assertThat(pojoGraph, is(createPojoGraph(preferenceFragment.getClass())));
+                assertThat(
+                        pojoGraph,
+                        is(
+                                SearchablePreferenceScreenGraphTestFactory
+                                        .createPojoGraph(preferenceFragment.getClass())
+                                        .entityGraphAndDetachedDbDataProvider()
+                                        .entityGraph()));
                 {
                     final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph);
                     final SearchablePreferenceEntity preference = data.preference();

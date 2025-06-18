@@ -44,6 +44,7 @@ public class EntityGraph2PojoGraphTransformer {
             @Override
             public SearchablePreferenceScreen transformInnerNode(final SearchablePreferenceScreenEntity innerNode,
                                                                  final ContextOfInnerNode<SearchablePreferenceEntityEdge, SearchablePreferenceScreen> contextOfInnerNode) {
+                // FK-FIXME: diese Converter "in Ordnung" bringen
                 return screenConverter.fromEntity(innerNode);
             }
 
