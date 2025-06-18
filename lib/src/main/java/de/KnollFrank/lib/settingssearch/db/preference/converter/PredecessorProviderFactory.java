@@ -18,7 +18,7 @@ class PredecessorProviderFactory {
             final Set<SearchablePreferenceEntity> entities) {
         return predecessorOfEntities
                 .map(_predecessorOfEntities -> createPredecessorProvider(_predecessorOfEntities, entities))
-                .orElse(_entity -> Optional.empty());
+                .orElse(entity -> Optional.empty());
     }
 
     private static PredecessorProvider createPredecessorProvider(
