@@ -29,6 +29,6 @@ public class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConvert
                 entity.getSummary(),
                 preferenceConverter.fromEntities(
                         searchablePreferenceEntities,
-                        PredecessorProvider.createGetPredecessor(predecessorOfEntity, searchablePreferenceEntities)));
+                        PredecessorProviderFactory.createPredecessorProvider(predecessorOfEntity, searchablePreferenceEntities)));
     }
 }

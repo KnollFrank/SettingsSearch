@@ -1,8 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -17,15 +15,15 @@ class SearchablePreferenceEntityToSearchablePreferenceConverter {
     }
 
     public Set<SearchablePreference> fromEntities(final Set<SearchablePreferenceEntity> entities,
-                                                  final Function<SearchablePreferenceEntity, Optional<SearchablePreference>> getPredecessor) {
+                                                  final PredecessorProvider predecessorProvider) {
         return entities
                 .stream()
-                .map(entity -> fromEntity(entity, getPredecessor))
+                .map(entity -> fromEntity(entity, predecessorProvider))
                 .collect(Collectors.toSet());
     }
 
     private SearchablePreference fromEntity(final SearchablePreferenceEntity entity,
-                                            final Function<SearchablePreferenceEntity, Optional<SearchablePreference>> getPredecessor) {
+                                            final PredecessorProvider predecessorProvider) {
         return new SearchablePreference(
                 entity.getId(),
                 entity.getKey(),
@@ -38,7 +36,7 @@ class SearchablePreferenceEntityToSearchablePreferenceConverter {
                 entity.getClassNameOfReferencedActivity(),
                 entity.isVisible(),
                 entity.getSearchableInfo(),
-                fromEntities(entity.getChildren(dbDataProvider), getPredecessor),
-                getPredecessor.apply(entity));
+                fromEntities(entity.getChildren(dbDataProvider), predecessorProvider),
+                predecessorProvider.getPredecessor(entity));
     }
 }
