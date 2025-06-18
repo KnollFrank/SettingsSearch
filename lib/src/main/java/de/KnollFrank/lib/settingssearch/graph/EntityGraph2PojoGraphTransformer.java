@@ -2,17 +2,21 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import org.jgrapht.Graph;
 
+import java.util.Optional;
+import java.util.Set;
+
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceEntityToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
-// FK-TODO: add test analogous to PreferenceScreen2SearchablePreferenceScreenConverterTest
 public class EntityGraph2PojoGraphTransformer {
 
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> toPojoGraph(
@@ -21,37 +25,42 @@ public class EntityGraph2PojoGraphTransformer {
         return GraphTransformerAlgorithm.transform(
                 entityGraph,
                 SearchablePreferenceEdge.class,
-                createGraphTransformer(dbDataProviders));
+                createGraphTransformer(createScreenConverter(dbDataProviders)));
     }
 
-    private static GraphTransformer<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge, SearchablePreferenceScreen, SearchablePreferenceEdge> createGraphTransformer(
-            final DbDataProviders dbDataProviders) {
-        return new GraphTransformer<>() {
+    private static SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter createScreenConverter(final DbDataProviders dbDataProviders) {
+        // FK-TODO: extract factory class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverterFactory and then make SearchablePreferenceEntityToSearchablePreferenceConverter package-private
+        return new SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter(
+                entity -> entity.getAllPreferences(dbDataProviders.screenDbDataProvider()),
+                new SearchablePreferenceEntityToSearchablePreferenceConverter(
+                        dbDataProviders.preferencedbDataProvider()));
+    }
 
-            private final SearchablePreferenceEntityToSearchablePreferenceConverter preferenceConverter =
-                    new SearchablePreferenceEntityToSearchablePreferenceConverter(
-                            dbDataProviders.preferencedbDataProvider());
-            private final SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter screenConverter =
-                    new SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter(
-                            entity -> entity.getAllPreferences(dbDataProviders.screenDbDataProvider()),
-                            preferenceConverter);
+    private static GraphTransformer<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge, SearchablePreferenceScreen, SearchablePreferenceEdge> createGraphTransformer(final SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter screenConverter) {
+        return new GraphTransformer<>() {
 
             @Override
             public SearchablePreferenceScreen transformRootNode(final SearchablePreferenceScreenEntity rootNode) {
-                return screenConverter.fromEntity(rootNode);
+                return screenConverter.fromEntity(rootNode, Optional.empty());
             }
 
             @Override
             public SearchablePreferenceScreen transformInnerNode(final SearchablePreferenceScreenEntity innerNode,
                                                                  final ContextOfInnerNode<SearchablePreferenceEntityEdge, SearchablePreferenceScreen> contextOfInnerNode) {
-                // FK-FIXME: diese Converter "in Ordnung" bringen
-                return screenConverter.fromEntity(innerNode);
+                return screenConverter.fromEntity(innerNode, Optional.of(contextOfInnerNode.transformedParentNode()));
             }
 
             @Override
             public SearchablePreferenceEdge transformEdge(final SearchablePreferenceEntityEdge edge,
                                                           final SearchablePreferenceScreen transformedParentNode) {
-                return new SearchablePreferenceEdge(preferenceConverter.fromEntity(edge.preference));
+                return new SearchablePreferenceEdge(getSearchablePreferenceForEntity(edge.preference, transformedParentNode.allPreferences()));
+            }
+
+            private static SearchablePreference getSearchablePreferenceForEntity(final SearchablePreferenceEntity entity,
+                                                                                 final Set<SearchablePreference> searchablePreferences) {
+                return SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter
+                        .getSearchablePreferenceById(searchablePreferences)
+                        .get(entity.getId());
             }
         };
     }

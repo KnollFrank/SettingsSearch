@@ -1,8 +1,8 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -11,27 +11,21 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 public class SearchablePreferenceEntityToSearchablePreferenceConverter {
 
     private final SearchablePreferenceEntity.DbDataProvider dbDataProvider;
-    private final Map<SearchablePreferenceEntity, SearchablePreference> pojoByEntityCache = new HashMap<>();
 
     public SearchablePreferenceEntityToSearchablePreferenceConverter(final SearchablePreferenceEntity.DbDataProvider dbDataProvider) {
         this.dbDataProvider = dbDataProvider;
     }
 
-    public Set<SearchablePreference> fromEntities(final Set<SearchablePreferenceEntity> entities) {
+    public Set<SearchablePreference> fromEntities(final Set<SearchablePreferenceEntity> entities,
+                                                  final Function<SearchablePreferenceEntity, Optional<SearchablePreference>> getPredecessor) {
         return entities
                 .stream()
-                .map(this::fromEntity)
+                .map(entity -> fromEntity(entity, getPredecessor))
                 .collect(Collectors.toSet());
     }
 
-    public SearchablePreference fromEntity(final SearchablePreferenceEntity entity) {
-        if (!pojoByEntityCache.containsKey(entity)) {
-            pojoByEntityCache.put(entity, _fromEntity(entity));
-        }
-        return pojoByEntityCache.get(entity);
-    }
-
-    private SearchablePreference _fromEntity(final SearchablePreferenceEntity entity) {
+    public SearchablePreference fromEntity(final SearchablePreferenceEntity entity,
+                                           final Function<SearchablePreferenceEntity, Optional<SearchablePreference>> getPredecessor) {
         return new SearchablePreference(
                 entity.getId(),
                 entity.getKey(),
@@ -44,8 +38,7 @@ public class SearchablePreferenceEntityToSearchablePreferenceConverter {
                 entity.getClassNameOfReferencedActivity(),
                 entity.isVisible(),
                 entity.getSearchableInfo(),
-                fromEntities(entity.getChildren(dbDataProvider)),
-                // FK-FIXME: nicht gut diese erneute Konvertierung mit this::fromEntity. Lösung: der entity.getPredecessor() muß schon konvertiert sein und als Argument übergeben werden.
-                entity.getPredecessor(dbDataProvider).map(this::fromEntity));
+                fromEntities(entity.getChildren(dbDataProvider), getPredecessor),
+                getPredecessor.apply(entity));
     }
 }
