@@ -14,19 +14,19 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter {
 
-    private final Function<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferences;
+    private final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider;
     private final SearchablePreferenceEntityToSearchablePreferenceConverter preferenceConverter;
 
     public SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter(
-            final Function<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferences,
+            final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider,
             final SearchablePreferenceEntityToSearchablePreferenceConverter preferenceConverter) {
-        this.getAllPreferences = getAllPreferences;
+        this.dbDataProvider = dbDataProvider;
         this.preferenceConverter = preferenceConverter;
     }
 
     public SearchablePreferenceScreen fromEntity(final SearchablePreferenceScreenEntity entity,
                                                  final Optional<SearchablePreferenceScreen> predecessorOfEntity) {
-        final Set<SearchablePreferenceEntity> searchablePreferenceEntities = getAllPreferences.apply(entity);
+        final Set<SearchablePreferenceEntity> searchablePreferenceEntities = entity.getAllPreferences(dbDataProvider);
         return new SearchablePreferenceScreen(
                 entity.getId(),
                 entity.getHost(),

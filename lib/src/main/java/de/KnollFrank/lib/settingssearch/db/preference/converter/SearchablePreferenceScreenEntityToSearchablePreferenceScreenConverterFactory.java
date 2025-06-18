@@ -6,7 +6,7 @@ public class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConvert
 
     public static SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter createScreenConverter(final DbDataProviders dbDataProviders) {
         return new SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter(
-                entity -> entity.getAllPreferences(dbDataProviders.screenDbDataProvider()),
+                dbDataProviders.screenDbDataProvider(),
                 new SearchablePreferenceEntityToSearchablePreferenceConverter(
                         dbDataProviders.preferencedbDataProvider()));
     }
