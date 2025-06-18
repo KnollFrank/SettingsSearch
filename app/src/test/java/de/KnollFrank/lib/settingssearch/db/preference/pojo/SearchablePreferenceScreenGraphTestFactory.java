@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import android.util.Pair;
-
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
@@ -33,6 +31,13 @@ public class SearchablePreferenceScreenGraphTestFactory {
     public record EntityGraphAndDetachedDbDataProvider(
             Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> entityGraph,
             DetachedDbDataProvider detachedDbDataProvider) {
+    }
+
+    private record Pair<F, S>(F first, S second) {
+
+        public static <A, B> Pair<A, B> create(final A a, final B b) {
+            return new Pair<>(a, b);
+        }
     }
 
     public static Graphs createSingleNodePojoGraph(final Class<? extends PreferenceFragmentCompat> host) {

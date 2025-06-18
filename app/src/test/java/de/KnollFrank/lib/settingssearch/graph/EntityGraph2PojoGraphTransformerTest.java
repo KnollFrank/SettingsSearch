@@ -7,8 +7,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -16,8 +14,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.EntityGraphAndDetachedDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
 
-// FK-TODO: remove RobolectricTestRunner
-@RunWith(RobolectricTestRunner.class)
 public class EntityGraph2PojoGraphTransformerTest {
 
     @Test
