@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverterFactory.createScreenConverter;
 
+import com.google.common.collect.MoreCollectors;
+
 import org.jgrapht.Graph;
 
 import java.util.Optional;
@@ -13,7 +15,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePrefer
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
@@ -46,14 +47,15 @@ public class EntityGraph2PojoGraphTransformer {
             @Override
             public SearchablePreferenceEdge transformEdge(final SearchablePreferenceEntityEdge edge,
                                                           final SearchablePreferenceScreen transformedParentNode) {
-                return new SearchablePreferenceEdge(getSearchablePreferenceForEntity(edge.preference, transformedParentNode.allPreferences()));
+                return new SearchablePreferenceEdge(getSearchablePreferenceById(transformedParentNode.allPreferences(), edge.preference.getId()));
             }
 
-            private static SearchablePreference getSearchablePreferenceForEntity(final SearchablePreferenceEntity entity,
-                                                                                 final Set<SearchablePreference> searchablePreferences) {
-                return SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter
-                        .getSearchablePreferenceById(searchablePreferences)
-                        .get(entity.getId());
+            private static SearchablePreference getSearchablePreferenceById(final Set<SearchablePreference> searchablePreferences,
+                                                                            final int id) {
+                return searchablePreferences
+                        .stream()
+                        .filter(searchablePreference -> searchablePreference.getId() == id)
+                        .collect(MoreCollectors.onlyElement());
             }
         };
     }
