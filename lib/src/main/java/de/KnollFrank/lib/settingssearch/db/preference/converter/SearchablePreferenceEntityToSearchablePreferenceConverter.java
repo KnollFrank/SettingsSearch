@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
-public class SearchablePreferenceEntityToSearchablePreferenceConverter {
+class SearchablePreferenceEntityToSearchablePreferenceConverter {
 
     private final SearchablePreferenceEntity.DbDataProvider dbDataProvider;
 

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverterFactory.createScreenConverter;
+
 import org.jgrapht.Graph;
 
 import java.util.Optional;
@@ -7,7 +9,6 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceEntityToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -26,14 +27,6 @@ public class EntityGraph2PojoGraphTransformer {
                 entityGraph,
                 SearchablePreferenceEdge.class,
                 createGraphTransformer(createScreenConverter(dbDataProviders)));
-    }
-
-    private static SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter createScreenConverter(final DbDataProviders dbDataProviders) {
-        // FK-TODO: extract factory class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverterFactory and then make SearchablePreferenceEntityToSearchablePreferenceConverter package-private
-        return new SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter(
-                entity -> entity.getAllPreferences(dbDataProviders.screenDbDataProvider()),
-                new SearchablePreferenceEntityToSearchablePreferenceConverter(
-                        dbDataProviders.preferencedbDataProvider()));
     }
 
     private static GraphTransformer<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge, SearchablePreferenceScreen, SearchablePreferenceEdge> createGraphTransformer(final SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter screenConverter) {
