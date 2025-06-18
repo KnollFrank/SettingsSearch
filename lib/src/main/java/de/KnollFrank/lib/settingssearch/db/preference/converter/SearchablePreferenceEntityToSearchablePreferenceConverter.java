@@ -24,8 +24,8 @@ class SearchablePreferenceEntityToSearchablePreferenceConverter {
                 .collect(Collectors.toSet());
     }
 
-    public SearchablePreference fromEntity(final SearchablePreferenceEntity entity,
-                                           final Function<SearchablePreferenceEntity, Optional<SearchablePreference>> getPredecessor) {
+    private SearchablePreference fromEntity(final SearchablePreferenceEntity entity,
+                                            final Function<SearchablePreferenceEntity, Optional<SearchablePreference>> getPredecessor) {
         return new SearchablePreference(
                 entity.getId(),
                 entity.getKey(),
