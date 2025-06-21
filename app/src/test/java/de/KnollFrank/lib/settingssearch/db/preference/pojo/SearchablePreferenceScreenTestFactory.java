@@ -10,7 +10,7 @@ public class SearchablePreferenceScreenTestFactory {
         return GraphUtils
                 .getRootNode(
                         SearchablePreferenceScreenGraphTestFactory
-                                .createPojoGraph(PreferenceFragmentCompat.class)
+                                .createGraph(PreferenceFragmentCompat.class)
                                 .entityGraphAndDetachedDbDataProvider()
                                 .entityGraph())
                 .orElseThrow();

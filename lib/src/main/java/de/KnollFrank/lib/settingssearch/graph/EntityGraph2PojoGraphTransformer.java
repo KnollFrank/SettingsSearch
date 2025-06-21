@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
+// FK-TODO: diese Klasse einsetzen, siehe auch PojoGraph2EntityGraphTransformer
 public class EntityGraph2PojoGraphTransformer {
 
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> toPojoGraph(

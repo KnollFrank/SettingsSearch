@@ -81,7 +81,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         pojoGraph,
                         is(
                                 SearchablePreferenceScreenGraphTestFactory
-                                        .createPojoGraph(preferenceFragment.getClass())
+                                        .createGraph(preferenceFragment.getClass())
                                         .entityGraphAndDetachedDbDataProvider()
                                         .entityGraph()));
                 {

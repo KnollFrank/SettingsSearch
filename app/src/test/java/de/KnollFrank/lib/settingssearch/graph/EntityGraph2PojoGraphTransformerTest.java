@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createPojoGraph;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createSingleNodePojoGraph;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createGraph;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph;
 
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -18,7 +18,7 @@ public class EntityGraph2PojoGraphTransformerTest {
 
     @Test
     public void test_toPojoGraph_singleNodeGraph() {
-        final Graphs graphs = createSingleNodePojoGraph(PreferenceFragmentCompat.class);
+        final Graphs graphs = createSingleNodeGraph(PreferenceFragmentCompat.class);
         test_toPojoGraph(
                 graphs.entityGraphAndDetachedDbDataProvider(),
                 graphs.pojoGraph());
@@ -26,7 +26,7 @@ public class EntityGraph2PojoGraphTransformerTest {
 
     @Test
     public void test_toPojoGraph_multiNodeGraph() {
-        final Graphs graphs = createPojoGraph(PreferenceFragmentCompat.class);
+        final Graphs graphs = createGraph(PreferenceFragmentCompat.class);
         test_toPojoGraph(
                 graphs.entityGraphAndDetachedDbDataProvider(),
                 graphs.pojoGraph());

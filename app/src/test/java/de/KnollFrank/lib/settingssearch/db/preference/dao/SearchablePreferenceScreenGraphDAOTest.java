@@ -31,7 +31,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenEntityDAO(), appDatabase.searchablePreferenceEntityDAO());
         final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
-                        .createPojoGraph(PreferenceFragmentCompat.class)
+                        .createGraph(PreferenceFragmentCompat.class)
                         .entityGraphAndDetachedDbDataProvider()
                         .entityGraph();
 
@@ -51,14 +51,14 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         // When
         dao.persist(
                 SearchablePreferenceScreenGraphTestFactory
-                        .createSingleNodePojoGraph(PreferenceFragmentCompat.class)
+                        .createSingleNodeGraph(PreferenceFragmentCompat.class)
                         .entityGraphAndDetachedDbDataProvider()
                         .entityGraph());
 
         // And
         final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
-                        .createPojoGraph(PreferenceFragmentCompat.class)
+                        .createGraph(PreferenceFragmentCompat.class)
                         .entityGraphAndDetachedDbDataProvider()
                         .entityGraph();
         dao.persist(graph);
@@ -77,7 +77,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
                         appDatabase.searchablePreferenceEntityDAO());
         final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
-                        .createSingleNodePojoGraph(PreferenceFragmentCompat.class)
+                        .createSingleNodeGraph(PreferenceFragmentCompat.class)
                         .entityGraphAndDetachedDbDataProvider()
                         .entityGraph();
         final Set<SearchablePreferenceEntity> allPreferences =
