@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -80,19 +81,20 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 .addVertex(src.first().first())
                                 .build(),
                         DetachedDbDataProviders.merge(
-                                src.first().second(),
-                                new DetachedDbDataProviderBuilder()
-                                        .withPredecessorByPreference(
-                                                ImmutableMap
-                                                        .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
-                                                        .put(preferenceConnectingSrc2Dst, Optional.empty())
-                                                        .build())
-                                        .withChildrenByPreference(
-                                                ImmutableMap
-                                                        .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
-                                                        .put(preferenceConnectingSrc2Dst, Set.of())
-                                                        .build())
-                                        .createDetachedDbDataProvider())),
+                                List.of(
+                                        src.first().second(),
+                                        new DetachedDbDataProviderBuilder()
+                                                .withPredecessorByPreference(
+                                                        ImmutableMap
+                                                                .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
+                                                                .put(preferenceConnectingSrc2Dst, Optional.empty())
+                                                                .build())
+                                                .withChildrenByPreference(
+                                                        ImmutableMap
+                                                                .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
+                                                                .put(preferenceConnectingSrc2Dst, Set.of())
+                                                                .build())
+                                                .createDetachedDbDataProvider()))),
                 DefaultDirectedGraph
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                         .addVertex(src.second())
@@ -152,21 +154,21 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                         new SearchablePreferenceEntityEdge(preferenceConnectingSrc2Dst))
                                 .build(),
                         DetachedDbDataProviders.merge(
-                                DetachedDbDataProviders.merge(
+                                List.of(
                                         src.first().second(),
-                                        dst.first().second()),
-                                new DetachedDbDataProviderBuilder()
-                                        .withPredecessorByPreference(
-                                                ImmutableMap
-                                                        .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
-                                                        .put(preferenceConnectingSrc2Dst, Optional.empty())
-                                                        .build())
-                                        .withChildrenByPreference(
-                                                ImmutableMap
-                                                        .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
-                                                        .put(preferenceConnectingSrc2Dst, Set.of())
-                                                        .build())
-                                        .createDetachedDbDataProvider())),
+                                        dst.first().second(),
+                                        new DetachedDbDataProviderBuilder()
+                                                .withPredecessorByPreference(
+                                                        ImmutableMap
+                                                                .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
+                                                                .put(preferenceConnectingSrc2Dst, Optional.empty())
+                                                                .build())
+                                                .withChildrenByPreference(
+                                                        ImmutableMap
+                                                                .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
+                                                                .put(preferenceConnectingSrc2Dst, Set.of())
+                                                                .build())
+                                                .createDetachedDbDataProvider()))),
                 DefaultDirectedGraph
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                         .addEdge(

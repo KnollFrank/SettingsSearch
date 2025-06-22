@@ -107,7 +107,7 @@ class EntityGraphEquality {
                 .add("parentId=" + entity.getParentId())
                 .add("predecessorId=" + entity.getPredecessorId())
                 .add("searchablePreferenceScreenId='" + entity.getSearchablePreferenceScreenId() + "'")
-                .add("children=" + entity.getChildren(dbDataProvider))
+                .add("children=" + toString(entity.getChildren(dbDataProvider), dbDataProvider))
                 .toString();
     }
 }

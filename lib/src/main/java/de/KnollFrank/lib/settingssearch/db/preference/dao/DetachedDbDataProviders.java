@@ -1,29 +1,33 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 
 public class DetachedDbDataProviders {
 
-    public static DetachedDbDataProvider merge(final DetachedDbDataProvider detachedDbDataProvider1,
-                                               final DetachedDbDataProvider detachedDbDataProvider2) {
+    public static DetachedDbDataProvider merge(final Collection<DetachedDbDataProvider> detachedDbDataProviders) {
         return new DetachedDbDataProvider(
                 Maps.merge(
-                        List.of(
-                                detachedDbDataProvider1.allPreferencesBySearchablePreferenceScreen,
-                                detachedDbDataProvider2.allPreferencesBySearchablePreferenceScreen)),
+                        detachedDbDataProviders
+                                .stream()
+                                .map(detachedDbDataProvider -> detachedDbDataProvider.allPreferencesBySearchablePreferenceScreen)
+                                .collect(Collectors.toSet())),
                 Maps.merge(
-                        List.of(
-                                detachedDbDataProvider1.hostByPreference,
-                                detachedDbDataProvider2.hostByPreference)),
+                        detachedDbDataProviders
+                                .stream()
+                                .map(detachedDbDataProvider -> detachedDbDataProvider.hostByPreference)
+                                .collect(Collectors.toSet())),
                 Maps.merge(
-                        List.of(
-                                detachedDbDataProvider1.predecessorByPreference,
-                                detachedDbDataProvider2.predecessorByPreference)),
+                        detachedDbDataProviders
+                                .stream()
+                                .map(detachedDbDataProvider -> detachedDbDataProvider.predecessorByPreference)
+                                .collect(Collectors.toSet())),
                 Maps.merge(
-                        List.of(
-                                detachedDbDataProvider1.childrenByPreference,
-                                detachedDbDataProvider2.childrenByPreference)));
+                        detachedDbDataProviders
+                                .stream()
+                                .map(detachedDbDataProvider -> detachedDbDataProvider.childrenByPreference)
+                                .collect(Collectors.toSet())));
     }
 }
