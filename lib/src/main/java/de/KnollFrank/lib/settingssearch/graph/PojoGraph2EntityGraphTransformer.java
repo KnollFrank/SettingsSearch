@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter.DetachedSearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
@@ -27,39 +28,39 @@ public class PojoGraph2EntityGraphTransformer {
     // FK-TODO: refactor
     public static EntityGraphAndDbDataProviders toEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
-        final Graph<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceEntityEdge> transformedGraph =
+        final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
                 GraphTransformerAlgorithm.transform(
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer());
-        final Set<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>> pairs = transformedGraph.vertexSet();
-        final DetachedDbDataProvider detachedDbDataProvider = DetachedDbDataProviders.merge(getDetachedDbDataProviders(pairs));
+        final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities = transformedGraph.vertexSet();
+        final DetachedDbDataProvider detachedDbDataProvider = DetachedDbDataProviders.merge(getDetachedDbDataProviders(detachedSearchablePreferenceScreenEntities));
         return new EntityGraphAndDbDataProviders(
                 removeDetachedDbDataProviders(transformedGraph),
                 new DbDataProviders(detachedDbDataProvider, detachedDbDataProvider));
     }
 
-    private static Set<DetachedDbDataProvider> getDetachedDbDataProviders(final Set<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>> pairs) {
-        return pairs
+    private static Set<DetachedDbDataProvider> getDetachedDbDataProviders(final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities) {
+        return detachedSearchablePreferenceScreenEntities
                 .stream()
-                .map(pair -> pair.second)
+                .map(DetachedSearchablePreferenceScreenEntity::detachedDbDataProvider)
                 .collect(Collectors.toSet());
     }
 
-    private static GraphTransformer<SearchablePreferenceScreen, SearchablePreferenceEdge, Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceEntityEdge> createGraphTransformer() {
+    private static GraphTransformer<SearchablePreferenceScreen, SearchablePreferenceEdge, DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> createGraphTransformer() {
         return new GraphTransformer<>() {
 
             @Override
-            public Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider> transformRootNode(final SearchablePreferenceScreen rootNode) {
+            public DetachedSearchablePreferenceScreenEntity transformRootNode(final SearchablePreferenceScreen rootNode) {
                 return SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter.toEntity(
                         rootNode,
                         Optional.empty());
             }
 
             @Override
-            public Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider> transformInnerNode(final SearchablePreferenceScreen innerNode,
-                                                                                                     final ContextOfInnerNode<SearchablePreferenceEdge, Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>> contextOfInnerNode) {
-                final Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider> predecessor = contextOfInnerNode.transformedParentNode();
+            public DetachedSearchablePreferenceScreenEntity transformInnerNode(final SearchablePreferenceScreen innerNode,
+                                                                               final ContextOfInnerNode<SearchablePreferenceEdge, DetachedSearchablePreferenceScreenEntity> contextOfInnerNode) {
+                final DetachedSearchablePreferenceScreenEntity predecessor = contextOfInnerNode.transformedParentNode();
                 final SearchablePreferenceEdge edgeFromPredecessor2InnerNode = contextOfInnerNode.edgeFromParentNode2InnerNode();
                 return SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter.toEntity(
                         innerNode,
@@ -68,10 +69,10 @@ public class PojoGraph2EntityGraphTransformer {
 
             @Override
             public SearchablePreferenceEntityEdge transformEdge(final SearchablePreferenceEdge edge,
-                                                                final Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider> transformedParentNode) {
+                                                                final DetachedSearchablePreferenceScreenEntity transformedParentNode) {
                 return new SearchablePreferenceEntityEdge(
                         getPreferenceById(
-                                transformedParentNode.first.getAllPreferences(transformedParentNode.second),
+                                transformedParentNode.searchablePreferenceScreenEntity().getAllPreferences(transformedParentNode.detachedDbDataProvider()),
                                 edge.preference.getId()));
             }
 
@@ -84,21 +85,21 @@ public class PojoGraph2EntityGraphTransformer {
         };
     }
 
-    private static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> removeDetachedDbDataProviders(final Graph<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceEntityEdge> graph) {
+    private static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> removeDetachedDbDataProviders(final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph) {
         return GraphTransformerAlgorithm.transform(
                 graph,
                 SearchablePreferenceEntityEdge.class,
                 new GraphTransformer<>() {
 
                     @Override
-                    public SearchablePreferenceScreenEntity transformRootNode(final Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider> rootNode) {
-                        return rootNode.first;
+                    public SearchablePreferenceScreenEntity transformRootNode(final DetachedSearchablePreferenceScreenEntity rootNode) {
+                        return rootNode.searchablePreferenceScreenEntity();
                     }
 
                     @Override
-                    public SearchablePreferenceScreenEntity transformInnerNode(final Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider> innerNode,
+                    public SearchablePreferenceScreenEntity transformInnerNode(final DetachedSearchablePreferenceScreenEntity innerNode,
                                                                                final ContextOfInnerNode<SearchablePreferenceEntityEdge, SearchablePreferenceScreenEntity> contextOfInnerNode) {
-                        return innerNode.first;
+                        return innerNode.searchablePreferenceScreenEntity();
                     }
 
                     @Override

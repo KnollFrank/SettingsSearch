@@ -27,10 +27,13 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter {
 
+    public record DetachedSearchablePreferenceScreenEntity(SearchablePreferenceScreenEntity searchablePreferenceScreenEntity, DetachedDbDataProvider detachedDbDataProvider) {
+    }
+
     // FK-TODO: refactor
-    public static Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider> toEntity(
+    public static DetachedSearchablePreferenceScreenEntity toEntity(
             final SearchablePreferenceScreen screenToConvertToEntity,
-            final Optional<Pair<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceEdge>> predecessor) {
+            final Optional<Pair<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEdge>> predecessor) {
         final SearchablePreferenceScreenEntity entity =
                 new SearchablePreferenceScreenEntity(
                         screenToConvertToEntity.id(),
@@ -56,7 +59,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                         .stream()
                         .map(preference -> preference.first)
                         .collect(Collectors.toSet());
-        return Pair.create(
+        return new DetachedSearchablePreferenceScreenEntity(
                 entity,
                 DetachedDbDataProviders.merge(
                         ImmutableSet
@@ -160,10 +163,10 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
     }
 
     // FK-TODO: refactor
-    private static Optional<SearchablePreferenceEntity> getSearchablePreferenceEntity(final Optional<Pair<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceEdge>> predecessor) {
+    private static Optional<SearchablePreferenceEntity> getSearchablePreferenceEntity(final Optional<Pair<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEdge>> predecessor) {
         return predecessor.map(
                 _predecessor -> {
-                    final Set<SearchablePreferenceEntity> allPreferences = _predecessor.first.first.getAllPreferences(_predecessor.first.second);
+                    final Set<SearchablePreferenceEntity> allPreferences = _predecessor.first.searchablePreferenceScreenEntity().getAllPreferences(_predecessor.first.detachedDbDataProvider());
                     final SearchablePreference searchablePreference = predecessor.orElseThrow().second.preference;
                     return allPreferences.stream().filter(_searchablePreference -> _searchablePreference.getId() == searchablePreference.getId()).collect(MoreCollectors.onlyElement());
                 });
