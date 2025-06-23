@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import android.util.Pair;
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -18,6 +16,7 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviderBuilder;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -37,7 +36,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                         screenToConvertToEntity.title(),
                         screenToConvertToEntity.summary());
         final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId = getParentPreferenceIdByPreferenceId(screenToConvertToEntity);
-        final Set<Pair<SearchablePreferenceEntity, DetachedDbDataProvider>> allPreferenceEntities =
+        final Set<DetachedSearchablePreferenceEntity> allPreferenceEntities =
                 screenToConvertToEntity
                         .allPreferences()
                         .stream()
@@ -52,7 +51,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
         final Set<SearchablePreferenceEntity> _allPreferenceEntities =
                 allPreferenceEntities
                         .stream()
-                        .map(preference -> preference.first)
+                        .map(DetachedSearchablePreferenceEntity::preference)
                         .collect(Collectors.toSet());
         return new DetachedSearchablePreferenceScreenEntity(
                 entity,
@@ -62,7 +61,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                 .addAll(
                                         allPreferenceEntities
                                                 .stream()
-                                                .map(preference -> preference.second)
+                                                .map(DetachedSearchablePreferenceEntity::detachedDbDataProvider)
                                                 .collect(Collectors.toSet()))
                                 .add(
                                         new DetachedDbDataProviderBuilder()
