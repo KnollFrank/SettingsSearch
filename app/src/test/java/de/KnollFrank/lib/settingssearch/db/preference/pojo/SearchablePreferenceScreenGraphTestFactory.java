@@ -15,6 +15,7 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDataBuilder;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDatas;
+import de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 
@@ -27,12 +28,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
     public record Graphs(
             EntityGraphAndDbDataProvider entityGraphAndDbDataProvider,
             Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
-    }
-
-    // FK-TODO: remove and replace with de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider
-    public record EntityGraphAndDbDataProvider(
-            Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> entityGraph,
-            DbDataProvider dbDataProvider) {
     }
 
     public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host) {

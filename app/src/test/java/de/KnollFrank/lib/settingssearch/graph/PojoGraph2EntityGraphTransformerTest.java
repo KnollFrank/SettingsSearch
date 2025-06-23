@@ -12,7 +12,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.EntityGraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
 
 @RunWith(RobolectricTestRunner.class)
@@ -23,7 +22,7 @@ public class PojoGraph2EntityGraphTransformerTest {
         final Graphs graphs = createSingleNodeGraph(PreferenceFragmentCompat.class);
         test_toEntityGraph(
                 graphs.pojoGraph(),
-                getEntityGraphAndDbDataProviders(graphs.entityGraphAndDbDataProvider()));
+                graphs.entityGraphAndDbDataProvider());
     }
 
     @Test
@@ -31,7 +30,7 @@ public class PojoGraph2EntityGraphTransformerTest {
         final Graphs graphs = createGraph(PreferenceFragmentCompat.class);
         test_toEntityGraph(
                 graphs.pojoGraph(),
-                getEntityGraphAndDbDataProviders(graphs.entityGraphAndDbDataProvider()));
+                graphs.entityGraphAndDbDataProvider());
     }
 
     private static void test_toEntityGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
@@ -44,11 +43,5 @@ public class PojoGraph2EntityGraphTransformerTest {
         EntityGraphEquality.assertActualEqualsExpected(
                 entityGraphAndDbDataProviderActual,
                 entityGraphAndDbDataProviderExpected);
-    }
-
-    private static de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider getEntityGraphAndDbDataProviders(final EntityGraphAndDbDataProvider entityGraphAndDbDataProvider) {
-        return new de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider(
-                entityGraphAndDbDataProvider.entityGraph(),
-                entityGraphAndDbDataProvider.dbDataProvider());
     }
 }
