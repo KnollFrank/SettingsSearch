@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.EntityGraphAndDetachedDbDataProvider;
@@ -36,22 +35,20 @@ public class PojoGraph2EntityGraphTransformerTest {
     }
 
     private static void test_toEntityGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
-                                           final EntityGraphAndDbDataProviders entityGraphAndDbDataProvidersExpected) {
+                                           final EntityGraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
         // When
-        final EntityGraphAndDbDataProviders entityGraphAndDbDataProvidersActual =
+        final EntityGraphAndDbDataProvider entityGraphAndDbDataProviderActual =
                 PojoGraph2EntityGraphTransformer.toEntityGraph(pojoGraph);
 
         // Then
         EntityGraphEquality.assertActualEqualsExpected(
-                entityGraphAndDbDataProvidersActual,
-                entityGraphAndDbDataProvidersExpected);
+                entityGraphAndDbDataProviderActual,
+                entityGraphAndDbDataProviderExpected);
     }
 
-    private static EntityGraphAndDbDataProviders getEntityGraphAndDbDataProviders(final EntityGraphAndDetachedDbDataProvider entityGraphAndDetachedDbDataProvider) {
-        return new EntityGraphAndDbDataProviders(
+    private static EntityGraphAndDbDataProvider getEntityGraphAndDbDataProviders(final EntityGraphAndDetachedDbDataProvider entityGraphAndDetachedDbDataProvider) {
+        return new EntityGraphAndDbDataProvider(
                 entityGraphAndDetachedDbDataProvider.entityGraph(),
-                new DbDataProviders(
-                        entityGraphAndDetachedDbDataProvider.detachedDbDataProvider(),
-                        entityGraphAndDetachedDbDataProvider.detachedDbDataProvider()));
+                entityGraphAndDetachedDbDataProvider.detachedDbDataProvider());
     }
 }

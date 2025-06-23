@@ -12,33 +12,33 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 class EntityGraphEquality {
 
-    public static void assertActualEqualsExpected(final EntityGraphAndDbDataProviders actual,
-                                                  final EntityGraphAndDbDataProviders expected) {
+    public static void assertActualEqualsExpected(final EntityGraphAndDbDataProvider actual,
+                                                  final EntityGraphAndDbDataProvider expected) {
         assertActualEqualsExpected(
                 Pair.create(
                         actual.entityGraph().vertexSet(),
-                        actual.dbDataProviders()),
+                        actual.dbDataProvider()),
                 Pair.create(
                         expected.entityGraph().vertexSet(),
-                        expected.dbDataProviders()));
+                        expected.dbDataProvider()));
         assertActualEdgesEqualsExpectedEdges(
                 Pair.create(
                         actual.entityGraph(),
-                        actual.dbDataProviders().preferencedbDataProvider()),
+                        actual.dbDataProvider()),
                 Pair.create(
                         expected.entityGraph(),
-                        expected.dbDataProviders().preferencedbDataProvider()));
+                        expected.dbDataProvider()));
     }
 
-    private static void assertActualEqualsExpected(final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProviders> nodesAndDbDataProvidersActual,
-                                                   final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProviders> nodesAndDbDataProvidersExpected) {
+    private static void assertActualEqualsExpected(final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> nodesAndDbDataProvidersActual,
+                                                   final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> nodesAndDbDataProvidersExpected) {
         assertThat(
                 nodes2String(nodesAndDbDataProvidersActual.first(), nodesAndDbDataProvidersActual.second()),
                 is(equalTo(nodes2String(nodesAndDbDataProvidersExpected.first(), nodesAndDbDataProvidersExpected.second()))));
@@ -54,11 +54,11 @@ class EntityGraphEquality {
     }
 
     private static String nodes2String(final Set<SearchablePreferenceScreenEntity> nodes,
-                                       final DbDataProviders dbDataProviders) {
+                                       final DbDataProvider dbDataProvider) {
         return nodes
                 .stream()
                 .sorted(Comparator.comparing(SearchablePreferenceScreenEntity::getId))
-                .map(node -> toString(node, dbDataProviders))
+                .map(node -> toString(node, dbDataProvider))
                 .collect(Collectors.joining(", "));
     }
 
@@ -72,7 +72,7 @@ class EntityGraphEquality {
     }
 
     private static String toString(final SearchablePreferenceScreenEntity entity,
-                                   final DbDataProviders dbDataProviders) {
+                                   final DbDataProvider dbDataProvider) {
         return new StringJoiner(", ", SearchablePreferenceScreenEntity.class.getSimpleName() + "[", "]")
                 .add("id='" + entity.getId() + "'")
                 .add("host=" + entity.getHost())
@@ -80,8 +80,8 @@ class EntityGraphEquality {
                 .add("summary=" + entity.getSummary())
                 .add("allPreferences=" +
                         toString(
-                                entity.getAllPreferences(dbDataProviders.screenDbDataProvider()),
-                                dbDataProviders.preferencedbDataProvider()))
+                                entity.getAllPreferences(dbDataProvider),
+                                dbDataProvider))
                 .toString();
     }
 

@@ -13,7 +13,6 @@ import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviders;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -24,7 +23,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class PojoGraph2EntityGraphTransformer {
 
     // FK-TODO: refactor
-    public static EntityGraphAndDbDataProviders toEntityGraph(
+    public static EntityGraphAndDbDataProvider toEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
         final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
                 GraphTransformerAlgorithm.transform(
@@ -33,9 +32,9 @@ public class PojoGraph2EntityGraphTransformer {
                         createGraphTransformer());
         final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities = transformedGraph.vertexSet();
         final DetachedDbDataProvider detachedDbDataProvider = DetachedDbDataProviders.merge(getDetachedDbDataProviders(detachedSearchablePreferenceScreenEntities));
-        return new EntityGraphAndDbDataProviders(
+        return new EntityGraphAndDbDataProvider(
                 removeDetachedDbDataProviders(transformedGraph),
-                new DbDataProviders(detachedDbDataProvider, detachedDbDataProvider));
+                detachedDbDataProvider);
     }
 
     private static Set<DetachedDbDataProvider> getDetachedDbDataProviders(final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities) {

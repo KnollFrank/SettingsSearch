@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
@@ -18,10 +18,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class SearchablePreferenceScreens2GraphConverter {
 
     public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> convertScreensToGraph(final Set<SearchablePreferenceScreenEntity> screens,
-                                                                                                                final DbDataProviders dbDataProviders) {
+                                                                                                                final DbDataProvider dbDataProvider) {
         final var graphBuilder = DefaultDirectedGraph.<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>createBuilder(SearchablePreferenceEntityEdge.class);
         addNodes(graphBuilder, screens);
-        addEdges(graphBuilder, getEdgeDescriptions(screens, dbDataProviders));
+        addEdges(graphBuilder, getEdgeDescriptions(screens, dbDataProvider));
         return graphBuilder.build();
     }
 
@@ -31,13 +31,13 @@ public class SearchablePreferenceScreens2GraphConverter {
     }
 
     private static Set<EdgeDescription> getEdgeDescriptions(final Set<SearchablePreferenceScreenEntity> screens,
-                                                            final DbDataProviders dbDataProviders) {
+                                                            final DbDataProvider dbDataProvider) {
         final ImmutableSet.Builder<EdgeDescription> edgeDescriptionsBuilder = ImmutableSet.builder();
         for (final SearchablePreferenceScreenEntity targetScreen : screens) {
-            for (final SearchablePreferenceEntity sourcePreference : getSourcePreferences(targetScreen, dbDataProviders)) {
+            for (final SearchablePreferenceEntity sourcePreference : getSourcePreferences(targetScreen, dbDataProvider)) {
                 edgeDescriptionsBuilder.add(
                         new EdgeDescription(
-                                sourcePreference.getHost(dbDataProviders.preferencedbDataProvider()),
+                                sourcePreference.getHost(dbDataProvider),
                                 targetScreen,
                                 new SearchablePreferenceEntityEdge(sourcePreference)));
             }
@@ -46,11 +46,11 @@ public class SearchablePreferenceScreens2GraphConverter {
     }
 
     private static Set<SearchablePreferenceEntity> getSourcePreferences(final SearchablePreferenceScreenEntity targetScreen,
-                                                                        final DbDataProviders dbDataProviders) {
+                                                                        final DbDataProvider dbDataProvider) {
         return targetScreen
-                .getAllPreferences(dbDataProviders.screenDbDataProvider())
+                .getAllPreferences(dbDataProvider)
                 .stream()
-                .map(preference -> preference.getPredecessor(dbDataProviders.preferencedbDataProvider()))
+                .map(preference -> preference.getPredecessor(dbDataProvider))
                 // Fk-TODO: use mapMulti() if API level is at least 34
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)

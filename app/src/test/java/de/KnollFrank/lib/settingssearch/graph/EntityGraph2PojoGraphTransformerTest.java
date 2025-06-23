@@ -8,7 +8,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import org.jgrapht.Graph;
 import org.junit.Test;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.EntityGraphAndDetachedDbDataProvider;
@@ -38,9 +37,7 @@ public class EntityGraph2PojoGraphTransformerTest {
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphActual =
                 EntityGraph2PojoGraphTransformer.toPojoGraph(
                         entityGraphAndDetachedDbDataProvider.entityGraph(),
-                        new DbDataProviders(
-                                entityGraphAndDetachedDbDataProvider.detachedDbDataProvider(),
-                                entityGraphAndDetachedDbDataProvider.detachedDbDataProvider()));
+                        entityGraphAndDetachedDbDataProvider.detachedDbDataProvider());
 
         // Then
         PojoGraphEquality.assertActualEqualsExpected(pojoGraphActual, pojoGraphExpected);

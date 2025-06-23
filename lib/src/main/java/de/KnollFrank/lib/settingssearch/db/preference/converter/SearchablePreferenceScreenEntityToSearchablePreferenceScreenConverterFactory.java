@@ -1,13 +1,12 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
 
 public class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverterFactory {
 
-    public static SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter createScreenConverter(final DbDataProviders dbDataProviders) {
+    public static SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter createScreenConverter(final DbDataProvider dbDataProvider) {
         return new SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter(
-                dbDataProviders.screenDbDataProvider(),
-                new SearchablePreferenceEntityToSearchablePreferenceConverter(
-                        dbDataProviders.preferencedbDataProvider()));
+                dbDataProvider,
+                new SearchablePreferenceEntityToSearchablePreferenceConverter(dbDataProvider));
     }
 }
