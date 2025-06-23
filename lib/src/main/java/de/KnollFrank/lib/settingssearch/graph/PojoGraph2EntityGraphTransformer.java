@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import android.util.Pair;
-
 import com.google.common.collect.MoreCollectors;
 
 import org.jgrapht.Graph;
@@ -13,10 +11,10 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter.DetachedSearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviders;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
@@ -60,11 +58,12 @@ public class PojoGraph2EntityGraphTransformer {
             @Override
             public DetachedSearchablePreferenceScreenEntity transformInnerNode(final SearchablePreferenceScreen innerNode,
                                                                                final ContextOfInnerNode<SearchablePreferenceEdge, DetachedSearchablePreferenceScreenEntity> contextOfInnerNode) {
-                final DetachedSearchablePreferenceScreenEntity predecessor = contextOfInnerNode.transformedParentNode();
-                final SearchablePreferenceEdge edgeFromPredecessor2InnerNode = contextOfInnerNode.edgeFromParentNode2InnerNode();
                 return SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter.toEntity(
                         innerNode,
-                        Optional.of(Pair.create(predecessor, edgeFromPredecessor2InnerNode)));
+                        Optional.of(
+                                getPreferenceById(
+                                        contextOfInnerNode.transformedParentNode(),
+                                        contextOfInnerNode.edgeFromParentNode2InnerNode().preference.getId())));
             }
 
             @Override
@@ -72,12 +71,14 @@ public class PojoGraph2EntityGraphTransformer {
                                                                 final DetachedSearchablePreferenceScreenEntity transformedParentNode) {
                 return new SearchablePreferenceEntityEdge(
                         getPreferenceById(
-                                transformedParentNode.searchablePreferenceScreenEntity().getAllPreferences(transformedParentNode.detachedDbDataProvider()),
+                                transformedParentNode,
                                 edge.preference.getId()));
             }
 
-            private static SearchablePreferenceEntity getPreferenceById(final Set<SearchablePreferenceEntity> preferences, final int id) {
-                return preferences
+            private static SearchablePreferenceEntity getPreferenceById(final DetachedSearchablePreferenceScreenEntity screen,
+                                                                        final int id) {
+                return screen
+                        .getAllPreferences()
                         .stream()
                         .filter(preference -> preference.getId() == id)
                         .collect(MoreCollectors.onlyElement());
@@ -93,13 +94,13 @@ public class PojoGraph2EntityGraphTransformer {
 
                     @Override
                     public SearchablePreferenceScreenEntity transformRootNode(final DetachedSearchablePreferenceScreenEntity rootNode) {
-                        return rootNode.searchablePreferenceScreenEntity();
+                        return rootNode.screen();
                     }
 
                     @Override
                     public SearchablePreferenceScreenEntity transformInnerNode(final DetachedSearchablePreferenceScreenEntity innerNode,
                                                                                final ContextOfInnerNode<SearchablePreferenceEntityEdge, SearchablePreferenceScreenEntity> contextOfInnerNode) {
-                        return innerNode.searchablePreferenceScreenEntity();
+                        return innerNode.screen();
                     }
 
                     @Override
