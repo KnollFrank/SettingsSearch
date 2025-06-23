@@ -15,6 +15,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
@@ -124,8 +125,8 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
                 new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
     }
 
-    DetachedDbDataProvider createDetachedDbDataProvider() {
-        return new DetachedDbDataProvider(
+    DbDataProviderData createDbDataProviderData() {
+        return new DbDataProviderData(
                 getAllPreferencesBySearchablePreferenceScreen(),
                 getHostByPreference(),
                 searchablePreferenceDAO.getPredecessorByPreference(),

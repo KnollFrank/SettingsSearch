@@ -4,6 +4,7 @@ import static de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreens
 
 import org.jgrapht.Graph;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
@@ -21,9 +22,9 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public void persist(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph) {
-        final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider = searchablePreferenceScreenDAO.createDetachedDbDataProvider();
+        final DbDataProviderData dbDataProviderData = searchablePreferenceScreenDAO.createDbDataProviderData();
         removePersistedGraph();
-        searchablePreferenceScreenDAO.persist(graph.vertexSet(), dbDataProvider);
+        searchablePreferenceScreenDAO.persist(graph.vertexSet(), DbDataProviderFactory.createDbDataProvider(dbDataProviderData));
     }
 
     public Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> load() {

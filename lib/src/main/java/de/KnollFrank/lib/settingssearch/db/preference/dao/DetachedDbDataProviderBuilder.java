@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
@@ -37,9 +38,10 @@ public class DetachedDbDataProviderBuilder {
 
     public DetachedDbDataProvider createDetachedDbDataProvider() {
         return new DetachedDbDataProvider(
-                allPreferencesBySearchablePreferenceScreen,
-                hostByPreference,
-                predecessorByPreference,
-                childrenByPreference);
+                new DbDataProviderData(
+                        allPreferencesBySearchablePreferenceScreen,
+                        hostByPreference,
+                        predecessorByPreference,
+                        childrenByPreference));
     }
 }
