@@ -34,9 +34,9 @@ public class PojoGraph2EntityGraphTransformerTest {
     }
 
     private static void test_toEntityGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
-                                           final de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
+                                           final EntityGraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
         // When
-        final de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider entityGraphAndDbDataProviderActual =
+        final EntityGraphAndDbDataProvider entityGraphAndDbDataProviderActual =
                 PojoGraph2EntityGraphTransformer.toEntityGraph(pojoGraph);
 
         // Then
