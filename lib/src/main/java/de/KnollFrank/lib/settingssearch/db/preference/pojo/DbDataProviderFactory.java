@@ -7,39 +7,6 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 
 public class DbDataProviderFactory {
 
-    public static DbDataProvider createDbDataProvider(final DbDataProviderData dbDataProviderData) {
-        return new DbDataProvider() {
-
-            @Override
-            public Set<SearchablePreferenceEntity> getAllPreferences(final SearchablePreferenceScreenEntity screen) {
-                return Maps
-                        .get(dbDataProviderData.allPreferencesBySearchablePreferenceScreen(), screen)
-                        .orElseThrow();
-            }
-
-            @Override
-            public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
-                return Maps
-                        .get(dbDataProviderData.hostByPreference(), preference)
-                        .orElseThrow();
-            }
-
-            @Override
-            public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
-                return Maps
-                        .get(dbDataProviderData.childrenByPreference(), preference)
-                        .orElseThrow();
-            }
-
-            @Override
-            public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
-                return Maps
-                        .get(dbDataProviderData.predecessorByPreference(), preference)
-                        .orElseThrow();
-            }
-        };
-    }
-
     public static DbDataProvider createDbDataProvider(final SearchablePreferenceScreenEntity.DbDataProvider screenDbDataProvider,
                                                       final SearchablePreferenceEntity.DbDataProvider preferencedbDataProvider) {
         return new DbDataProvider() {
@@ -62,6 +29,57 @@ public class DbDataProviderFactory {
             @Override
             public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
                 return preferencedbDataProvider.getPredecessor(preference);
+            }
+        };
+    }
+
+    public static DbDataProvider createDbDataProvider(final DbDataProviderData dbDataProviderData) {
+        return createDbDataProvider(
+                createScreenDbDataProvider(dbDataProviderData),
+                createPreferenceDataProvider(dbDataProviderData));
+    }
+
+    private static SearchablePreferenceScreenEntity.DbDataProvider createScreenDbDataProvider(final DbDataProviderData dbDataProviderData) {
+        return new SearchablePreferenceScreenEntity.DbDataProvider() {
+
+            @Override
+            public Set<SearchablePreferenceEntity> getAllPreferences(final SearchablePreferenceScreenEntity screen) {
+                return Maps
+                        .get(dbDataProviderData.allPreferencesBySearchablePreferenceScreen(), screen)
+                        .orElseThrow();
+            }
+
+            @Override
+            public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
+                return Maps
+                        .get(dbDataProviderData.hostByPreference(), preference)
+                        .orElseThrow();
+            }
+        };
+    }
+
+    private static SearchablePreferenceEntity.DbDataProvider createPreferenceDataProvider(final DbDataProviderData dbDataProviderData) {
+        return new SearchablePreferenceEntity.DbDataProvider() {
+
+            @Override
+            public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
+                return Maps
+                        .get(dbDataProviderData.childrenByPreference(), preference)
+                        .orElseThrow();
+            }
+
+            @Override
+            public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
+                return Maps
+                        .get(dbDataProviderData.predecessorByPreference(), preference)
+                        .orElseThrow();
+            }
+
+            @Override
+            public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
+                return Maps
+                        .get(dbDataProviderData.hostByPreference(), preference)
+                        .orElseThrow();
             }
         };
     }
