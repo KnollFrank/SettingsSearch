@@ -12,7 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.EntityGraphAndDetachedDbDataProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.EntityGraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
 
 @RunWith(RobolectricTestRunner.class)
@@ -23,7 +23,7 @@ public class PojoGraph2EntityGraphTransformerTest {
         final Graphs graphs = createSingleNodeGraph(PreferenceFragmentCompat.class);
         test_toEntityGraph(
                 graphs.pojoGraph(),
-                getEntityGraphAndDbDataProviders(graphs.entityGraphAndDetachedDbDataProvider()));
+                getEntityGraphAndDbDataProviders(graphs.entityGraphAndDbDataProvider()));
     }
 
     @Test
@@ -31,13 +31,13 @@ public class PojoGraph2EntityGraphTransformerTest {
         final Graphs graphs = createGraph(PreferenceFragmentCompat.class);
         test_toEntityGraph(
                 graphs.pojoGraph(),
-                getEntityGraphAndDbDataProviders(graphs.entityGraphAndDetachedDbDataProvider()));
+                getEntityGraphAndDbDataProviders(graphs.entityGraphAndDbDataProvider()));
     }
 
     private static void test_toEntityGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
-                                           final EntityGraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
+                                           final de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
         // When
-        final EntityGraphAndDbDataProvider entityGraphAndDbDataProviderActual =
+        final de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider entityGraphAndDbDataProviderActual =
                 PojoGraph2EntityGraphTransformer.toEntityGraph(pojoGraph);
 
         // Then
@@ -46,9 +46,9 @@ public class PojoGraph2EntityGraphTransformerTest {
                 entityGraphAndDbDataProviderExpected);
     }
 
-    private static EntityGraphAndDbDataProvider getEntityGraphAndDbDataProviders(final EntityGraphAndDetachedDbDataProvider entityGraphAndDetachedDbDataProvider) {
-        return new EntityGraphAndDbDataProvider(
-                entityGraphAndDetachedDbDataProvider.entityGraph(),
-                entityGraphAndDetachedDbDataProvider.detachedDbDataProvider());
+    private static de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider getEntityGraphAndDbDataProviders(final EntityGraphAndDbDataProvider entityGraphAndDbDataProvider) {
+        return new de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider(
+                entityGraphAndDbDataProvider.entityGraph(),
+                entityGraphAndDbDataProvider.dbDataProvider());
     }
 }

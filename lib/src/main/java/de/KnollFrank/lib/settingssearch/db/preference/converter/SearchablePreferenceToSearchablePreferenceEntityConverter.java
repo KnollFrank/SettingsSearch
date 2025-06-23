@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 import java.util.Map;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviderBuilder;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDataBuilder;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -34,9 +34,9 @@ public class SearchablePreferenceToSearchablePreferenceEntityConverter {
                         parentScreen.getId());
         return new DetachedSearchablePreferenceEntity(
                 entity,
-                new DetachedDbDataProviderBuilder()
+                new DbDataProviderDataBuilder()
                         .withHostByPreference(Map.of(entity, parentScreen))
                         .withPredecessorByPreference(Map.of(entity, predecessor))
-                        .createDetachedDbDataProvider());
+                        .createDbDataProviderData());
     }
 }

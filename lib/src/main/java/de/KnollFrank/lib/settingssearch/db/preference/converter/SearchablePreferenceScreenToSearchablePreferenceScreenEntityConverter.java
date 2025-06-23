@@ -13,9 +13,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviderBuilder;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDataBuilder;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDatas;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -55,22 +55,22 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                         .collect(Collectors.toSet());
         return new DetachedSearchablePreferenceScreenEntity(
                 entity,
-                DetachedDbDataProviders.merge(
+                DbDataProviderDatas.merge(
                         ImmutableSet
-                                .<DetachedDbDataProvider>builder()
+                                .<DbDataProviderData>builder()
                                 .addAll(
                                         allPreferenceEntities
                                                 .stream()
-                                                .map(DetachedSearchablePreferenceEntity::detachedDbDataProvider)
+                                                .map(DetachedSearchablePreferenceEntity::dbDataProviderData)
                                                 .collect(Collectors.toSet()))
                                 .add(
-                                        new DetachedDbDataProviderBuilder()
+                                        new DbDataProviderDataBuilder()
                                                 .withAllPreferencesBySearchablePreferenceScreen(
                                                         Map.of(
                                                                 entity,
                                                                 _allPreferenceEntities))
                                                 .withChildrenByPreference(getChildrenByPreference(parentPreferenceIdByPreferenceId, _allPreferenceEntities))
-                                                .createDetachedDbDataProvider())
+                                                .createDbDataProviderData())
                                 .build()));
     }
 

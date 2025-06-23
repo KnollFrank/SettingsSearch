@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.EntityGraphAndDetachedDbDataProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.EntityGraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
 
 public class EntityGraph2PojoGraphTransformerTest {
@@ -19,7 +19,7 @@ public class EntityGraph2PojoGraphTransformerTest {
     public void test_toPojoGraph_singleNodeGraph() {
         final Graphs graphs = createSingleNodeGraph(PreferenceFragmentCompat.class);
         test_toPojoGraph(
-                graphs.entityGraphAndDetachedDbDataProvider(),
+                graphs.entityGraphAndDbDataProvider(),
                 graphs.pojoGraph());
     }
 
@@ -27,17 +27,17 @@ public class EntityGraph2PojoGraphTransformerTest {
     public void test_toPojoGraph_multiNodeGraph() {
         final Graphs graphs = createGraph(PreferenceFragmentCompat.class);
         test_toPojoGraph(
-                graphs.entityGraphAndDetachedDbDataProvider(),
+                graphs.entityGraphAndDbDataProvider(),
                 graphs.pojoGraph());
     }
 
-    private static void test_toPojoGraph(final EntityGraphAndDetachedDbDataProvider entityGraphAndDetachedDbDataProvider,
+    private static void test_toPojoGraph(final EntityGraphAndDbDataProvider entityGraphAndDbDataProvider,
                                          final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected) {
         // When
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphActual =
                 EntityGraph2PojoGraphTransformer.toPojoGraph(
-                        entityGraphAndDetachedDbDataProvider.entityGraph(),
-                        entityGraphAndDetachedDbDataProvider.detachedDbDataProvider());
+                        entityGraphAndDbDataProvider.entityGraph(),
+                        entityGraphAndDbDataProvider.dbDataProvider());
 
         // Then
         PojoGraphEquality.assertActualEqualsExpected(pojoGraphActual, pojoGraphExpected);

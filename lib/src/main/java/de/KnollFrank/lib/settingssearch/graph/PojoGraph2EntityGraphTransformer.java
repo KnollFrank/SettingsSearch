@@ -11,8 +11,9 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDatas;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -31,16 +32,16 @@ public class PojoGraph2EntityGraphTransformer {
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer());
         final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities = transformedGraph.vertexSet();
-        final DetachedDbDataProvider detachedDbDataProvider = DetachedDbDataProviders.merge(getDetachedDbDataProviders(detachedSearchablePreferenceScreenEntities));
+        final DbDataProviderData dbDataProviderData = DbDataProviderDatas.merge(getDbDataProviderDatas(detachedSearchablePreferenceScreenEntities));
         return new EntityGraphAndDbDataProvider(
                 removeDetachedDbDataProviders(transformedGraph),
-                detachedDbDataProvider);
+                DbDataProviderFactory.createDbDataProvider(dbDataProviderData));
     }
 
-    private static Set<DetachedDbDataProvider> getDetachedDbDataProviders(final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities) {
+    private static Set<DbDataProviderData> getDbDataProviderDatas(final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities) {
         return detachedSearchablePreferenceScreenEntities
                 .stream()
-                .map(DetachedSearchablePreferenceScreenEntity::detachedDbDataProvider)
+                .map(DetachedSearchablePreferenceScreenEntity::dbDataProviderData)
                 .collect(Collectors.toSet());
     }
 

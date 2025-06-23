@@ -13,9 +13,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviderBuilder;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DetachedDbDataProviders;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDataBuilder;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 
@@ -26,13 +25,14 @@ public class SearchablePreferenceScreenGraphTestFactory {
     public static final String PARENT_KEY = "parentKey";
 
     public record Graphs(
-            EntityGraphAndDetachedDbDataProvider entityGraphAndDetachedDbDataProvider,
+            EntityGraphAndDbDataProvider entityGraphAndDbDataProvider,
             Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
     }
 
-    public record EntityGraphAndDetachedDbDataProvider(
+    // FK-TODO: remove and replace with de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider
+    public record EntityGraphAndDbDataProvider(
             Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> entityGraph,
-            DetachedDbDataProvider detachedDbDataProvider) {
+            DbDataProvider dbDataProvider) {
     }
 
     public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host) {
@@ -68,33 +68,34 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
-        final Pair<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceScreen> src =
+        final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
                         host);
         return new Graphs(
-                new EntityGraphAndDetachedDbDataProvider(
+                new EntityGraphAndDbDataProvider(
                         DefaultDirectedGraph
                                 .<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>createBuilder(SearchablePreferenceEntityEdge.class)
                                 .addVertex(src.first().first())
                                 .build(),
-                        DetachedDbDataProviders.merge(
-                                List.of(
-                                        src.first().second(),
-                                        new DetachedDbDataProviderBuilder()
-                                                .withPredecessorByPreference(
-                                                        ImmutableMap
-                                                                .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
-                                                                .put(preferenceConnectingSrc2Dst, Optional.empty())
-                                                                .build())
-                                                .withChildrenByPreference(
-                                                        ImmutableMap
-                                                                .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
-                                                                .put(preferenceConnectingSrc2Dst, Set.of())
-                                                                .build())
-                                                .createDetachedDbDataProvider()))),
+                        DbDataProviderFactory.createDbDataProvider(
+                                DbDataProviderDatas.merge(
+                                        List.of(
+                                                src.first().second(),
+                                                new DbDataProviderDataBuilder()
+                                                        .withPredecessorByPreference(
+                                                                ImmutableMap
+                                                                        .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
+                                                                        .put(preferenceConnectingSrc2Dst, Optional.empty())
+                                                                        .build())
+                                                        .withChildrenByPreference(
+                                                                ImmutableMap
+                                                                        .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
+                                                                        .put(preferenceConnectingSrc2Dst, Set.of())
+                                                                        .build())
+                                                        .createDbDataProviderData())))),
                 DefaultDirectedGraph
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                         .addVertex(src.second())
@@ -134,18 +135,18 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
-        final Pair<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceScreen> src =
+        final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
                         host);
-        final Pair<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceScreen> dst =
+        final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> dst =
                 createDst(
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst);
         return new Graphs(
-                new EntityGraphAndDetachedDbDataProvider(
+                new EntityGraphAndDbDataProvider(
                         DefaultDirectedGraph
                                 .<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>createBuilder(SearchablePreferenceEntityEdge.class)
                                 .addEdge(
@@ -153,22 +154,23 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                         dst.first().first(),
                                         new SearchablePreferenceEntityEdge(preferenceConnectingSrc2Dst))
                                 .build(),
-                        DetachedDbDataProviders.merge(
-                                List.of(
-                                        src.first().second(),
-                                        dst.first().second(),
-                                        new DetachedDbDataProviderBuilder()
-                                                .withPredecessorByPreference(
-                                                        ImmutableMap
-                                                                .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
-                                                                .put(preferenceConnectingSrc2Dst, Optional.empty())
-                                                                .build())
-                                                .withChildrenByPreference(
-                                                        ImmutableMap
-                                                                .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
-                                                                .put(preferenceConnectingSrc2Dst, Set.of())
-                                                                .build())
-                                                .createDetachedDbDataProvider()))),
+                        DbDataProviderFactory.createDbDataProvider(
+                                DbDataProviderDatas.merge(
+                                        List.of(
+                                                src.first().second(),
+                                                dst.first().second(),
+                                                new DbDataProviderDataBuilder()
+                                                        .withPredecessorByPreference(
+                                                                ImmutableMap
+                                                                        .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
+                                                                        .put(preferenceConnectingSrc2Dst, Optional.empty())
+                                                                        .build())
+                                                        .withChildrenByPreference(
+                                                                ImmutableMap
+                                                                        .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
+                                                                        .put(preferenceConnectingSrc2Dst, Set.of())
+                                                                        .build())
+                                                        .createDbDataProviderData())))),
                 DefaultDirectedGraph
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                         .addEdge(
@@ -178,7 +180,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         .build());
     }
 
-    private static Pair<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceScreen> createSrc(
+    private static Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> createSrc(
             final String screenId,
             final SearchablePreferenceEntity preferenceConnectingSrc2Dst,
             final SearchablePreference preferencePojoConnectingSrc2Dst,
@@ -286,7 +288,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
         return Pair.create(
                 Pair.create(
                         searchablePreferenceScreen,
-                        new DetachedDbDataProviderBuilder()
+                        new DbDataProviderDataBuilder()
                                 .withAllPreferencesBySearchablePreferenceScreen(
                                         Map.of(
                                                 searchablePreferenceScreen,
@@ -313,7 +315,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                 .put(child1, Set.of())
                                                 .put(child2, Set.of())
                                                 .build())
-                                .createDetachedDbDataProvider()),
+                                .createDbDataProviderData()),
                 new SearchablePreferenceScreen(
                         screenId,
                         host,
@@ -322,7 +324,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Set.of(parentPojo, child1Pojo, child2Pojo, preferencePojoConnectingSrc2Dst)));
     }
 
-    private static Pair<Pair<SearchablePreferenceScreenEntity, DetachedDbDataProvider>, SearchablePreferenceScreen> createDst(
+    private static Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> createDst(
             final SearchablePreferenceEntity predecessor,
             final SearchablePreference predecessorPojo) {
         final String screenId = "2";
@@ -367,7 +369,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
         return Pair.create(
                 Pair.create(
                         searchablePreferenceScreen,
-                        new DetachedDbDataProviderBuilder()
+                        new DbDataProviderDataBuilder()
                                 .withAllPreferencesBySearchablePreferenceScreen(
                                         Map.of(
                                                 searchablePreferenceScreen,
@@ -384,7 +386,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                         Map.of(
                                                 searchablePreference,
                                                 Set.of()))
-                                .createDetachedDbDataProvider()),
+                                .createDbDataProviderData()),
                 new SearchablePreferenceScreen(
                         screenId,
                         Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class,

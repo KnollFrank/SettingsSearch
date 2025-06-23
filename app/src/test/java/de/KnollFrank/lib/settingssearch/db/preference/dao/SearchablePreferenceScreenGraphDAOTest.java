@@ -32,7 +32,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(PreferenceFragmentCompat.class)
-                        .entityGraphAndDetachedDbDataProvider()
+                        .entityGraphAndDbDataProvider()
                         .entityGraph();
 
         // When
@@ -52,14 +52,14 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         dao.persist(
                 SearchablePreferenceScreenGraphTestFactory
                         .createSingleNodeGraph(PreferenceFragmentCompat.class)
-                        .entityGraphAndDetachedDbDataProvider()
+                        .entityGraphAndDbDataProvider()
                         .entityGraph());
 
         // And
         final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(PreferenceFragmentCompat.class)
-                        .entityGraphAndDetachedDbDataProvider()
+                        .entityGraphAndDbDataProvider()
                         .entityGraph();
         dao.persist(graph);
 
@@ -78,7 +78,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createSingleNodeGraph(PreferenceFragmentCompat.class)
-                        .entityGraphAndDetachedDbDataProvider()
+                        .entityGraphAndDbDataProvider()
                         .entityGraph();
         final Set<SearchablePreferenceEntity> allPreferences =
                 getAllPreferencesOfSingleNode(

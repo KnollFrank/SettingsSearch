@@ -11,7 +11,7 @@ public class SearchablePreferenceScreenTestFactory {
                 .getRootNode(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraph(PreferenceFragmentCompat.class)
-                                .entityGraphAndDetachedDbDataProvider()
+                                .entityGraphAndDbDataProvider()
                                 .entityGraph())
                 .orElseThrow();
     }
