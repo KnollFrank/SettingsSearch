@@ -32,10 +32,9 @@ public class PojoGraph2EntityGraphTransformer {
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer());
         final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities = transformedGraph.vertexSet();
-        final DbDataProviderData dbDataProviderData = DbDataProviderDatas.merge(getDbDataProviderDatas(detachedSearchablePreferenceScreenEntities));
         return new EntityGraphAndDbDataProvider(
                 removeDetachedDbDataProviders(transformedGraph),
-                DbDataProviderFactory.createDbDataProvider(dbDataProviderData));
+                DbDataProviderFactory.createDbDataProvider(DbDataProviderDatas.merge(getDbDataProviderDatas(detachedSearchablePreferenceScreenEntities))));
     }
 
     private static Set<DbDataProviderData> getDbDataProviderDatas(final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities) {
