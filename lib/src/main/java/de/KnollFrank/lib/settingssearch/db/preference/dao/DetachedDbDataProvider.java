@@ -5,10 +5,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
-public class DetachedDbDataProvider implements SearchablePreferenceScreenEntity.DbDataProvider, SearchablePreferenceEntity.DbDataProvider {
+public class DetachedDbDataProvider implements DbDataProvider {
 
     protected final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen;
     protected final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference;
