@@ -23,7 +23,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class PojoGraph2EntityGraphTransformer {
 
-    // FK-TODO: refactor
     public static EntityGraphAndDbDataProvider toEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
         final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
@@ -31,10 +30,9 @@ public class PojoGraph2EntityGraphTransformer {
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer());
-        final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities = transformedGraph.vertexSet();
         return new EntityGraphAndDbDataProvider(
                 removeDetachedDbDataProviders(transformedGraph),
-                DbDataProviderFactory.createDbDataProvider(DbDataProviderDatas.merge(getDbDataProviderDatas(detachedSearchablePreferenceScreenEntities))));
+                DbDataProviderFactory.createDbDataProvider(DbDataProviderDatas.merge(getDbDataProviderDatas(transformedGraph.vertexSet()))));
     }
 
     private static Set<DbDataProviderData> getDbDataProviderDatas(final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities) {
