@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.ParentPreferenceByPreferenceProvider.getParentPreferenceByPreference;
+
 import com.google.common.collect.ImmutableSet;
 
 import java.util.HashMap;
@@ -46,7 +48,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                             final SearchablePreferenceScreen screenToConvertToEntity,
                                                             final Optional<SearchablePreferenceEntity> predecessorEntity) {
         final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId =
-                getParentPreferenceIdByPreferenceId(screenToConvertToEntity);
+                mapToIds(getParentPreferenceByPreference(screenToConvertToEntity));
         final Set<DetachedSearchablePreferenceEntity> preferences =
                 toEntities(
                         screenToConvertToEntity.allPreferences(),
@@ -84,10 +86,6 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                 .stream()
                 .map(toEntity)
                 .collect(Collectors.toSet());
-    }
-
-    private static Map<Integer, Optional<Integer>> getParentPreferenceIdByPreferenceId(final SearchablePreferenceScreen screenToConvertToEntity) {
-        return mapToIds(ParentPreferenceByPreferenceProvider.getParentPreferenceByPreference(screenToConvertToEntity));
     }
 
     // FK-TODO: refactor
