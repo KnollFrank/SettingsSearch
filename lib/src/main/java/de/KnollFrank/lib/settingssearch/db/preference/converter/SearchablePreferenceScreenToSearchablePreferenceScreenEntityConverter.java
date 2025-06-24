@@ -1,11 +1,9 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -89,7 +87,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
     }
 
     private static Map<Integer, Optional<Integer>> getParentPreferenceIdByPreferenceId(final SearchablePreferenceScreen screenToConvertToEntity) {
-        return mapToIds(getParentPreferenceByPreference(screenToConvertToEntity));
+        return mapToIds(ParentPreferenceByPreferenceProvider.getParentPreferenceByPreference(screenToConvertToEntity));
     }
 
     // FK-TODO: refactor
@@ -125,56 +123,11 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                 .collect(Collectors.toSet())));
     }
 
-    private static Map<SearchablePreference, Optional<SearchablePreference>> getParentPreferenceByPreference(final SearchablePreferenceScreen screen) {
-        return getParentPreferenceByPreference(screen.allPreferences());
-    }
-
-    private static Map<SearchablePreference, Optional<SearchablePreference>> getParentPreferenceByPreference(final Set<SearchablePreference> searchablePreferences) {
-        final Map<SearchablePreference, SearchablePreference> parentPreferenceByPreference =
-                _getParentPreferenceByPreference(searchablePreferences);
-        return Maps.merge(
-                List.of(
-                        Maps.mapValues(
-                                parentPreferenceByPreference,
-                                Optional::of),
-                        Maps.mapEachKeyToValue(
-                                getPreferencesWithoutParent(
-                                        searchablePreferences,
-                                        parentPreferenceByPreference.keySet()),
-                                Optional.empty())));
-    }
-
-    private static Map<SearchablePreference, SearchablePreference> _getParentPreferenceByPreference(final Set<SearchablePreference> searchablePreferences) {
-        return Maps.merge(
-                searchablePreferences
-                        .stream()
-                        .map(SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter::getParentPreferenceByPreference)
-                        .collect(Collectors.toSet()));
-    }
-
-    private static Set<SearchablePreference> getPreferencesWithoutParent(final Set<SearchablePreference> allPreferences,
-                                                                         final Set<SearchablePreference> preferencesWithParent) {
-        return Sets.difference(allPreferences, preferencesWithParent);
-    }
-
-    private static Set<Integer> getIds(final Set<SearchablePreference> preferences) {
-        return preferences
-                .stream()
-                .map(SearchablePreference::getId)
-                .collect(Collectors.toSet());
-    }
-
     private static Map<Integer, Optional<Integer>> mapToIds(final Map<SearchablePreference, Optional<SearchablePreference>> map) {
         return Maps.mapKeysAndValues(
                 map,
                 SearchablePreference::getId,
                 searchablePreference -> searchablePreference.map(SearchablePreference::getId));
-    }
-
-    private static Map<SearchablePreference, SearchablePreference> getParentPreferenceByPreference(final SearchablePreference searchablePreference) {
-        return Maps.mapEachKeyToValue(
-                searchablePreference.getChildren(),
-                searchablePreference);
     }
 
     private static Set<DbDataProviderData> getDbDataProviderDatas(final Set<DetachedSearchablePreferenceEntity> preferences) {
