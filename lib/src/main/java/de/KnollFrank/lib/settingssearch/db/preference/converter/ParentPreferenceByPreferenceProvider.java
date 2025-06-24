@@ -33,11 +33,6 @@ class ParentPreferenceByPreferenceProvider {
                                 Optional.empty())));
     }
 
-    private static Set<SearchablePreference> getPreferencesWithoutParent(final Set<SearchablePreference> allPreferences,
-                                                                         final Set<SearchablePreference> preferencesWithParent) {
-        return Sets.difference(allPreferences, preferencesWithParent);
-    }
-
     private static Map<SearchablePreference, SearchablePreference> _getParentPreferenceByPreference(final Set<SearchablePreference> searchablePreferences) {
         return Maps.merge(
                 searchablePreferences
@@ -50,5 +45,10 @@ class ParentPreferenceByPreferenceProvider {
         return Maps.mapEachKeyToValue(
                 searchablePreference.getChildren(),
                 searchablePreference);
+    }
+
+    private static Set<SearchablePreference> getPreferencesWithoutParent(final Set<SearchablePreference> allPreferences,
+                                                                         final Set<SearchablePreference> preferencesWithParent) {
+        return Sets.difference(allPreferences, preferencesWithParent);
     }
 }
