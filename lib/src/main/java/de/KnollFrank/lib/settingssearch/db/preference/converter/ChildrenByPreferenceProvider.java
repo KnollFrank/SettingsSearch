@@ -18,32 +18,28 @@ class ChildrenByPreferenceProvider {
     public static Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference(
             final Set<SearchablePreferenceEntity> preferences,
             final Map<SearchablePreference, Optional<SearchablePreference>> parentPreferenceByPreference) {
-        final Map<Integer, SearchablePreferenceEntity> preferenceById =
-                preferences
-                        .stream()
-                        .collect(
-                                Collectors.toMap(
-                                        SearchablePreferenceEntity::getId,
-                                        Function.identity()));
+        final Function<SearchablePreference, SearchablePreferenceEntity> getSearchablePreferenceEntity = getSearchablePreferenceToSearchablePreferenceEntity(preferences);
         final Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference = new HashMap<>();
         for (final SearchablePreferenceEntity preference : preferences) {
             childrenByPreference.put(preference, new HashSet<>());
         }
         Maps
                 .filterPresentValues(parentPreferenceByPreference)
-                .forEach((preference, parentPreference) -> childrenByPreference.get(preferenceById.get(parentPreference.getId())).add(preferenceById.get(preference.getId())));
-        return childrenByPreference
-                .entrySet()
+                .forEach((preference, parentPreference) -> childrenByPreference.get(getSearchablePreferenceEntity.apply(parentPreference)).add(getSearchablePreferenceEntity.apply(preference)));
+        return childrenByPreference;
+    }
+
+    private static Function<SearchablePreference, SearchablePreferenceEntity> getSearchablePreferenceToSearchablePreferenceEntity(final Set<SearchablePreferenceEntity> preferences) {
+        final Map<Integer, SearchablePreferenceEntity> preferenceById = getPreferenceById(preferences);
+        return searchablePreference -> preferenceById.get(searchablePreference.getId());
+    }
+
+    private static Map<Integer, SearchablePreferenceEntity> getPreferenceById(final Set<SearchablePreferenceEntity> preferences) {
+        return preferences
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                preference_childPreferences ->
-                                        preferenceById.get(preference_childPreferences.getKey().getId()),
-                                preference_childPreferences ->
-                                        preference_childPreferences
-                                                .getValue()
-                                                .stream()
-                                                .map(childPreference -> preferenceById.get(childPreference.getId()))
-                                                .collect(Collectors.toSet())));
+                                SearchablePreferenceEntity::getId,
+                                Function.identity()));
     }
 }
