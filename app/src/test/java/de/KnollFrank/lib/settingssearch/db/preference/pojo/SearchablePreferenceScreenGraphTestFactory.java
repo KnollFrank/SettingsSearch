@@ -13,8 +13,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDataBuilder;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
@@ -90,7 +88,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                                         .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
                                                                         .put(preferenceConnectingSrc2Dst, Set.of())
                                                                         .build())
-                                                        .createDbDataProviderData())))),
+                                                        .build())))),
                 DefaultDirectedGraph
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                         .addVertex(src.second())
@@ -165,7 +163,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                                         .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
                                                                         .put(preferenceConnectingSrc2Dst, Set.of())
                                                                         .build())
-                                                        .createDbDataProviderData())))),
+                                                        .build())))),
                 DefaultDirectedGraph
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
                         .addEdge(
@@ -310,7 +308,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                 .put(child1, Set.of())
                                                 .put(child2, Set.of())
                                                 .build())
-                                .createDbDataProviderData()),
+                                .build()),
                 new SearchablePreferenceScreen(
                         screenId,
                         host,
@@ -381,7 +379,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                         Map.of(
                                                 searchablePreference,
                                                 Set.of()))
-                                .createDbDataProviderData()),
+                                .build()),
                 new SearchablePreferenceScreen(
                         screenId,
                         Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class,

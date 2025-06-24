@@ -9,4 +9,8 @@ public record DbDataProviderData(
         Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference,
         Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference,
         Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference) {
+
+    public static DbDataProviderDataBuilder builder() {
+        return new DbDataProviderDataBuilder();
+    }
 }

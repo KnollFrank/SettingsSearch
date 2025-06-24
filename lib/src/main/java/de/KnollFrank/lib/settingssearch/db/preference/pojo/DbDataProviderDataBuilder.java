@@ -1,13 +1,9 @@
-package de.KnollFrank.lib.settingssearch.db.preference.dao;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 public class DbDataProviderDataBuilder {
 
@@ -15,6 +11,9 @@ public class DbDataProviderDataBuilder {
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference = new HashMap<>();
     private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference = new HashMap<>();
     private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference = new HashMap<>();
+
+    protected DbDataProviderDataBuilder() {
+    }
 
     public DbDataProviderDataBuilder withAllPreferencesBySearchablePreferenceScreen(final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen) {
         this.allPreferencesBySearchablePreferenceScreen = allPreferencesBySearchablePreferenceScreen;
@@ -36,7 +35,7 @@ public class DbDataProviderDataBuilder {
         return this;
     }
 
-    public DbDataProviderData createDbDataProviderData() {
+    public DbDataProviderData build() {
         return new DbDataProviderData(
                 allPreferencesBySearchablePreferenceScreen,
                 hostByPreference,

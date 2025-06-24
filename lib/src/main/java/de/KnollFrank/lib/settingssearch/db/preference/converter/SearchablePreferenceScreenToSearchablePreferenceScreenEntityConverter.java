@@ -13,9 +13,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDataBuilder;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -64,13 +63,14 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                 .map(DetachedSearchablePreferenceEntity::dbDataProviderData)
                                                 .collect(Collectors.toSet()))
                                 .add(
-                                        new DbDataProviderDataBuilder()
+                                        DbDataProviderData
+                                                .builder()
                                                 .withAllPreferencesBySearchablePreferenceScreen(
                                                         Map.of(
                                                                 entity,
                                                                 _allPreferenceEntities))
                                                 .withChildrenByPreference(getChildrenByPreference(parentPreferenceIdByPreferenceId, _allPreferenceEntities))
-                                                .createDbDataProviderData())
+                                                .build())
                                 .build()));
     }
 

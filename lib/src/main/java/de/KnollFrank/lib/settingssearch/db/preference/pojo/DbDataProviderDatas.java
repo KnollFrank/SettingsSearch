@@ -1,10 +1,9 @@
-package de.KnollFrank.lib.settingssearch.db.preference.dao;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 
 public class DbDataProviderDatas {
 
