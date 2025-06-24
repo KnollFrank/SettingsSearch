@@ -68,8 +68,8 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                         getSearchablePreferenceEntities(preferences)))
                                         .withChildrenByPreference(
                                                 getChildrenByPreference(
-                                                        getSearchablePreferenceEntities(preferences), parentPreferenceIdByPreferenceId
-                                                                       ))
+                                                        getSearchablePreferenceEntities(preferences),
+                                                        parentPreferenceIdByPreferenceId))
                                         .build())
                         .build());
     }
