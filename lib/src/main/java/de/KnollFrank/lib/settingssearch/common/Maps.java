@@ -67,7 +67,7 @@ public class Maps {
                                 entry -> valueMapper.apply(entry.getValue())));
     }
 
-    public static <K, V> Map<K, V> mapKeysToValue(final Set<K> keys, final V value) {
+    public static <K, V> Map<K, V> mapEachKeyToValue(final Set<K> keys, final V value) {
         return keys
                 .stream()
                 .collect(
