@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceEntity;
@@ -26,8 +27,8 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
         return new DetachedSearchablePreferenceScreenEntity(
                 entity,
                 getDbDataProviderData(
-                        entity,
                         screenToConvertToEntity,
+                        entity,
                         predecessorEntity));
     }
 
@@ -39,21 +40,14 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                 screen.summary());
     }
 
-    private static DbDataProviderData getDbDataProviderData(final SearchablePreferenceScreenEntity entity,
-                                                            final SearchablePreferenceScreen screenToConvertToEntity,
+    private static DbDataProviderData getDbDataProviderData(final SearchablePreferenceScreen screenToConvertToEntity,
+                                                            final SearchablePreferenceScreenEntity entity,
                                                             final Optional<SearchablePreferenceEntity> predecessorEntity) {
-        final Map<SearchablePreference, Optional<SearchablePreference>> parentPreferenceByPreference = ParentPreferenceByPreferenceProvider.getParentPreferenceByPreference(screenToConvertToEntity);
         final Set<DetachedSearchablePreferenceEntity> detachedSearchablePreferenceEntities =
-                toEntities(
-                        screenToConvertToEntity.allPreferences(),
-                        preference ->
-                                SearchablePreferenceToSearchablePreferenceEntityConverter.toEntity(
-                                        preference,
-                                        parentPreferenceByPreference
-                                                .get(preference)
-                                                .map(SearchablePreference::getId),
-                                        entity,
-                                        predecessorEntity));
+                getDetachedSearchablePreferenceEntities(
+                        screenToConvertToEntity,
+                        entity,
+                        predecessorEntity);
         final Set<SearchablePreferenceEntity> searchablePreferenceEntities =
                 getSearchablePreferenceEntities(detachedSearchablePreferenceEntities);
         return DbDataProviderDatas.merge(
@@ -75,6 +69,25 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                                         screenToConvertToEntity.allPreferences())))
                                         .build())
                         .build());
+    }
+
+    private static Set<DetachedSearchablePreferenceEntity> getDetachedSearchablePreferenceEntities(
+            final SearchablePreferenceScreen screenToConvertToEntity,
+            final SearchablePreferenceScreenEntity entity,
+            final Optional<SearchablePreferenceEntity> predecessorEntity) {
+        final Map<SearchablePreference, SearchablePreference> parentPreferenceByPreference = ParentPreferenceByPreferenceProvider.getParentPreferenceByPreference(screenToConvertToEntity);
+        return toEntities(
+                screenToConvertToEntity.allPreferences(),
+                preference ->
+                        SearchablePreferenceToSearchablePreferenceEntityConverter.toEntity(
+                                preference,
+                                Maps
+                                        .get(
+                                                parentPreferenceByPreference,
+                                                preference)
+                                        .map(SearchablePreference::getId),
+                                entity,
+                                predecessorEntity));
     }
 
     private static Set<DetachedSearchablePreferenceEntity> toEntities(
