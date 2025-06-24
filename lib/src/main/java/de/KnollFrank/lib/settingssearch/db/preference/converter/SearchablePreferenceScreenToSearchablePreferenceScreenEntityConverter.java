@@ -49,7 +49,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                             final Optional<SearchablePreferenceEntity> predecessorEntity) {
         final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId =
                 mapToIds(getParentPreferenceByPreference(screenToConvertToEntity));
-        final Set<DetachedSearchablePreferenceEntity> preferences =
+        final Set<DetachedSearchablePreferenceEntity> detachedSearchablePreferenceEntities =
                 toEntities(
                         screenToConvertToEntity.allPreferences(),
                         preference ->
@@ -59,11 +59,11 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                         entity,
                                         predecessorEntity));
         final Set<SearchablePreferenceEntity> searchablePreferenceEntities =
-                getSearchablePreferenceEntities(preferences);
+                getSearchablePreferenceEntities(detachedSearchablePreferenceEntities);
         return DbDataProviderDatas.merge(
                 ImmutableSet
                         .<DbDataProviderData>builder()
-                        .addAll(getDbDataProviderDatas(preferences))
+                        .addAll(getDbDataProviderDatas(detachedSearchablePreferenceEntities))
                         .add(
                                 DbDataProviderData
                                         .builder()
