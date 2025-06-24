@@ -1,6 +1,8 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
@@ -9,26 +11,19 @@ public class DbDataProviderDatas {
 
     public static DbDataProviderData merge(final Collection<DbDataProviderData> dbDataProviderDatas) {
         return new DbDataProviderData(
-                Maps.merge(
-                        dbDataProviderDatas
-                                .stream()
-                                // FK-TODO: DRY with Maps.merge
-                                .map(DbDataProviderData::allPreferencesBySearchablePreferenceScreen)
-                                .collect(Collectors.toSet())),
-                Maps.merge(
-                        dbDataProviderDatas
-                                .stream()
-                                .map(DbDataProviderData::hostByPreference)
-                                .collect(Collectors.toSet())),
-                Maps.merge(
-                        dbDataProviderDatas
-                                .stream()
-                                .map(DbDataProviderData::predecessorByPreference)
-                                .collect(Collectors.toSet())),
-                Maps.merge(
-                        dbDataProviderDatas
-                                .stream()
-                                .map(DbDataProviderData::childrenByPreference)
-                                .collect(Collectors.toSet())));
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::allPreferencesBySearchablePreferenceScreen),
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::hostByPreference),
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::predecessorByPreference),
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::childrenByPreference));
+    }
+
+    private static <K, V> Map<K, V> mapThenMerge(
+            final Collection<DbDataProviderData> dbDataProviderDatas,
+            final Function<DbDataProviderData, Map<K, V>> mapper) {
+        return Maps.merge(
+                dbDataProviderDatas
+                        .stream()
+                        .map(mapper)
+                        .collect(Collectors.toSet()));
     }
 }
