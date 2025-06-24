@@ -72,7 +72,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                         .createTransformer(searchablePreferenceEntities)
                                                         .transform(
                                                                 ChildrenByPreferenceProvider.getChildrenByPreference(
-                                                                        parentPreferenceByPreference)))
+                                                                        screenToConvertToEntity.allPreferences())))
                                         .build())
                         .build());
     }
