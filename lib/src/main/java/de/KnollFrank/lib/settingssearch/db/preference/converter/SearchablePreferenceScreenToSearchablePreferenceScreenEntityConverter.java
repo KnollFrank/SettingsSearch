@@ -36,12 +36,12 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                         predecessorEntity));
     }
 
-    private static SearchablePreferenceScreenEntity toEntity(final SearchablePreferenceScreen screenToConvertToEntity) {
+    private static SearchablePreferenceScreenEntity toEntity(final SearchablePreferenceScreen screen) {
         return new SearchablePreferenceScreenEntity(
-                screenToConvertToEntity.id(),
-                screenToConvertToEntity.host(),
-                screenToConvertToEntity.title(),
-                screenToConvertToEntity.summary());
+                screen.id(),
+                screen.host(),
+                screen.title(),
+                screen.summary());
     }
 
     private static DbDataProviderData getDbDataProviderData(final SearchablePreferenceScreenEntity entity,
@@ -49,8 +49,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                             final Optional<SearchablePreferenceEntity> predecessorEntity) {
         final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId =
                 getParentPreferenceIdByPreferenceId(screenToConvertToEntity);
-        return getDbDataProviderData(
-                entity,
+        final Set<DetachedSearchablePreferenceEntity> preferences =
                 toEntities(
                         screenToConvertToEntity.allPreferences(),
                         preference ->
@@ -58,13 +57,9 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                         preference,
                                         parentPreferenceIdByPreferenceId.get(preference.getId()),
                                         entity,
-                                        predecessorEntity)),
-                parentPreferenceIdByPreferenceId);
-    }
-
-    private static DbDataProviderData getDbDataProviderData(final SearchablePreferenceScreenEntity entity,
-                                                            final Set<DetachedSearchablePreferenceEntity> preferences,
-                                                            final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId) {
+                                        predecessorEntity));
+        final Set<SearchablePreferenceEntity> searchablePreferenceEntities =
+                getSearchablePreferenceEntities(preferences);
         return DbDataProviderDatas.merge(
                 ImmutableSet
                         .<DbDataProviderData>builder()
@@ -75,17 +70,13 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                         .withAllPreferencesBySearchablePreferenceScreen(
                                                 Map.of(
                                                         entity,
-                                                        getSearchablePreferenceEntities(preferences)))
+                                                        searchablePreferenceEntities))
                                         .withChildrenByPreference(
                                                 getChildrenByPreference(
-                                                        getSearchablePreferenceEntities(preferences),
+                                                        searchablePreferenceEntities,
                                                         parentPreferenceIdByPreferenceId))
                                         .build())
                         .build());
-    }
-
-    private static Map<Integer, Optional<Integer>> getParentPreferenceIdByPreferenceId(final SearchablePreferenceScreen screenToConvertToEntity) {
-        return mapToIds(getParentPreferenceByPreference(screenToConvertToEntity));
     }
 
     private static Set<DetachedSearchablePreferenceEntity> toEntities(
@@ -95,6 +86,10 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                 .stream()
                 .map(toEntity)
                 .collect(Collectors.toSet());
+    }
+
+    private static Map<Integer, Optional<Integer>> getParentPreferenceIdByPreferenceId(final SearchablePreferenceScreen screenToConvertToEntity) {
+        return mapToIds(getParentPreferenceByPreference(screenToConvertToEntity));
     }
 
     // FK-TODO: refactor
@@ -169,11 +164,11 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                 .collect(Collectors.toSet());
     }
 
-    private static Map<Integer, Optional<Integer>> mapToIds(final Map<SearchablePreference, Optional<SearchablePreference>> searchablePreference) {
+    private static Map<Integer, Optional<Integer>> mapToIds(final Map<SearchablePreference, Optional<SearchablePreference>> map) {
         return Maps.mapKeysAndValues(
-                searchablePreference,
+                map,
                 SearchablePreference::getId,
-                _searchablePreference -> _searchablePreference.map(SearchablePreference::getId));
+                searchablePreference -> searchablePreference.map(SearchablePreference::getId));
     }
 
     private static Map<SearchablePreference, SearchablePreference> getParentPreferenceByPreference(final SearchablePreference searchablePreference) {
