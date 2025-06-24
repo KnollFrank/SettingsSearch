@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,5 +53,39 @@ public class Maps {
                 .stream()
                 .map(Map::entrySet)
                 .flatMap(Set::stream);
+    }
+
+    public static <Key, Value, ValueMapped> Map<Key, ValueMapped> mapValues(
+            final Map<Key, Value> map,
+            final Function<Value, ValueMapped> valueMapper) {
+        return map
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                Entry::getKey,
+                                entry -> valueMapper.apply(entry.getValue())));
+    }
+
+    public static <K, V> Map<K, V> mapKeysToValue(final Set<K> keys, final V value) {
+        return keys
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                Function.identity(),
+                                key -> value));
+    }
+
+    public static <K, V, KMapped, VMapped> Map<KMapped, VMapped> mapKeysAndValues(
+            final Map<K, V> map,
+            final Function<K, KMapped> keyMapper,
+            final Function<V, VMapped> valueMapper) {
+        return map
+                .entrySet()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                entry -> keyMapper.apply(entry.getKey()),
+                                entry -> valueMapper.apply(entry.getValue())));
     }
 }

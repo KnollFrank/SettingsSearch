@@ -120,49 +120,60 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
         return getParentPreferenceIdByPreferenceId(screen.allPreferences());
     }
 
-    // FK-TODO: refactor
     private static Map<Integer, Optional<Integer>> getParentPreferenceIdByPreferenceId(final Set<SearchablePreference> searchablePreferences) {
-        final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId =
-                Maps.merge(
-                        searchablePreferences
-                                .stream()
-                                .map(SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter::getParentPreferenceIdByPreferenceId)
-                                .collect(Collectors.toSet()));
+        final Map<Integer, Integer> parentPreferenceIdByPreferenceId =
+                _getParentPreferenceIdByPreferenceId(searchablePreferences);
         return Maps.merge(
                 List.of(
-                        parentPreferenceIdByPreferenceId,
-                        getParentPreferenceIdByPreferenceIdForUnmappedPreferenceIds(searchablePreferences, parentPreferenceIdByPreferenceId)));
+                        Maps.mapValues(
+                                parentPreferenceIdByPreferenceId,
+                                Optional::of),
+                        mapIdsToEmpty(
+                                getPreferenceIdsWithoutParent(
+                                        getIds(searchablePreferences),
+                                        parentPreferenceIdByPreferenceId.keySet()))));
     }
 
-    private static Map<Integer, Optional<Integer>> getParentPreferenceIdByPreferenceIdForUnmappedPreferenceIds(final Set<SearchablePreference> searchablePreferences,
-                                                                                                               final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId) {
-        return SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter
-                .getUnmappedPreferenceIds(searchablePreferences, parentPreferenceIdByPreferenceId)
+    private static Map<Integer, Integer> _getParentPreferenceIdByPreferenceId(final Set<SearchablePreference> searchablePreferences) {
+        return Maps.merge(
+                searchablePreferences
+                        .stream()
+                        .map(SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter::getParentPreferenceIdByPreferenceId)
+                        .collect(Collectors.toSet()));
+    }
+
+    private static Set<Integer> getPreferenceIdsWithoutParent(final Set<Integer> allPreferenceIds,
+                                                              final Set<Integer> preferenceIdsWithParent) {
+        return Sets.difference(allPreferenceIds, preferenceIdsWithParent);
+    }
+
+    private static Map<Integer, Optional<Integer>> mapIdsToEmpty(final Set<Integer> ids) {
+        return ids
                 .stream()
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                preferenceId -> Optional.empty()));
+                                key -> Optional.empty()));
     }
 
-    private static Set<Integer> getUnmappedPreferenceIds(final Set<SearchablePreference> searchablePreferences,
-                                                         final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId) {
-        return Sets.difference(
-                searchablePreferences
-                        .stream()
-                        .map(SearchablePreference::getId)
-                        .collect(Collectors.toSet()),
-                parentPreferenceIdByPreferenceId.keySet());
-    }
-
-    private static Map<Integer, Optional<Integer>> getParentPreferenceIdByPreferenceId(final SearchablePreference searchablePreference) {
-        return searchablePreference
-                .getChildren()
+    private static Set<Integer> getIds(final Set<SearchablePreference> preferences) {
+        return preferences
                 .stream()
-                .collect(
-                        Collectors.toMap(
-                                SearchablePreference::getId,
-                                child -> Optional.of(searchablePreference.getId())));
+                .map(SearchablePreference::getId)
+                .collect(Collectors.toSet());
+    }
+
+    private static Map<Integer, Integer> getParentPreferenceIdByPreferenceId(final SearchablePreference searchablePreference) {
+        return Maps.mapKeysAndValues(
+                getParentPreferenceByPreference(searchablePreference),
+                SearchablePreference::getId,
+                SearchablePreference::getId);
+    }
+
+    private static Map<SearchablePreference, SearchablePreference> getParentPreferenceByPreference(final SearchablePreference searchablePreference) {
+        return Maps.mapKeysToValue(
+                searchablePreference.getChildren(),
+                searchablePreference);
     }
 
     private static Set<DbDataProviderData> getDbDataProviderDatas(final Set<DetachedSearchablePreferenceEntity> preferences) {
