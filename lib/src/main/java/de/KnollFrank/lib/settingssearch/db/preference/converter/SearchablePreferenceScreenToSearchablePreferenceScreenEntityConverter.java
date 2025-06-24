@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceEntity;
@@ -43,15 +42,16 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
     private static DbDataProviderData getDbDataProviderData(final SearchablePreferenceScreenEntity entity,
                                                             final SearchablePreferenceScreen screenToConvertToEntity,
                                                             final Optional<SearchablePreferenceEntity> predecessorEntity) {
-        final Map<Integer, Optional<Integer>> parentPreferenceIdByPreferenceId =
-                mapToIds(ParentPreferenceByPreferenceProvider.getParentPreferenceByPreference(screenToConvertToEntity));
+        final Map<SearchablePreference, Optional<SearchablePreference>> parentPreferenceByPreference = ParentPreferenceByPreferenceProvider.getParentPreferenceByPreference(screenToConvertToEntity);
         final Set<DetachedSearchablePreferenceEntity> detachedSearchablePreferenceEntities =
                 toEntities(
                         screenToConvertToEntity.allPreferences(),
                         preference ->
                                 SearchablePreferenceToSearchablePreferenceEntityConverter.toEntity(
                                         preference,
-                                        parentPreferenceIdByPreferenceId.get(preference.getId()),
+                                        parentPreferenceByPreference
+                                                .get(preference)
+                                                .map(SearchablePreference::getId),
                                         entity,
                                         predecessorEntity));
         final Set<SearchablePreferenceEntity> searchablePreferenceEntities =
@@ -70,7 +70,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                         .withChildrenByPreference(
                                                 ChildrenByPreferenceProvider.getChildrenByPreference(
                                                         searchablePreferenceEntities,
-                                                        parentPreferenceIdByPreferenceId))
+                                                        parentPreferenceByPreference))
                                         .build())
                         .build());
     }
@@ -82,13 +82,6 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                 .stream()
                 .map(toEntity)
                 .collect(Collectors.toSet());
-    }
-
-    private static Map<Integer, Optional<Integer>> mapToIds(final Map<SearchablePreference, Optional<SearchablePreference>> map) {
-        return Maps.mapKeysAndValues(
-                map,
-                SearchablePreference::getId,
-                searchablePreference -> searchablePreference.map(SearchablePreference::getId));
     }
 
     private static Set<DbDataProviderData> getDbDataProviderDatas(final Set<DetachedSearchablePreferenceEntity> preferences) {
