@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
-class PojoGraphEquality {
+public class PojoGraphEquality {
 
     public static void assertActualEqualsExpected(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> actual,
                                                   final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> expected) {

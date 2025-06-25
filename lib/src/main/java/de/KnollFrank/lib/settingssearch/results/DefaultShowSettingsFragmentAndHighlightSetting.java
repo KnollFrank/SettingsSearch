@@ -11,7 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSettingsFragmentAndHighlightSetting {
 
@@ -24,7 +24,7 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
     @Override
     public void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity,
                                                         final Fragment settingsFragment,
-                                                        final SearchablePreferenceEntity setting2Highlight) {
+                                                        final SearchablePreference setting2Highlight) {
         showFragment(
                 settingsFragment,
                 _settingsFragment -> highlightSetting(_settingsFragment, asSetting(setting2Highlight)),
@@ -42,7 +42,7 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
         }
     }
 
-    private static Setting asSetting(final SearchablePreferenceEntity preference) {
+    private static Setting asSetting(final SearchablePreference preference) {
         return new Setting() {
 
             @Override

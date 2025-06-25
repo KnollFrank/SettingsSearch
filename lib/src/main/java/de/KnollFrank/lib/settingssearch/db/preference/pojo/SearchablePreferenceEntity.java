@@ -12,14 +12,12 @@ import androidx.room.PrimaryKey;
 
 import com.codepoetics.ambivalence.Either;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 
@@ -186,10 +184,6 @@ public final class SearchablePreferenceEntity {
         return visible;
     }
 
-    public PreferenceEntityPath getPreferencePath(final DbDataProvider dbDataProvider) {
-        return getPreferencePathOfPredecessor(dbDataProvider).append(this);
-    }
-
     public Set<SearchablePreferenceEntity> getChildren(final DbDataProvider dbDataProvider) {
         return dbDataProvider.getChildren(this);
     }
@@ -247,18 +241,11 @@ public final class SearchablePreferenceEntity {
         return this
                 .getIconResourceIdOrIconPixelData()
                 .map(iconResourceIdOrIconPixelData ->
-                        iconResourceIdOrIconPixelData.join(
-                                iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
-                                iconPixelData ->
-                                        DrawableAndStringConverter.string2Drawable(
-                                                iconPixelData,
-                                                context.getResources())));
-    }
-
-    private PreferenceEntityPath getPreferencePathOfPredecessor(final DbDataProvider dbDataProvider) {
-        return this
-                .getPredecessor(dbDataProvider)
-                .map(searchablePreference -> searchablePreference.getPreferencePath(dbDataProvider))
-                .orElseGet(() -> new PreferenceEntityPath(List.of()));
+                             iconResourceIdOrIconPixelData.join(
+                                     iconResourceId -> AppCompatResources.getDrawable(context, iconResourceId),
+                                     iconPixelData ->
+                                             DrawableAndStringConverter.string2Drawable(
+                                                     iconPixelData,
+                                                     context.getResources())));
     }
 }

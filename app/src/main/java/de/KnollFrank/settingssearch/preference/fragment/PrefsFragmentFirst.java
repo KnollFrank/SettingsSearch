@@ -29,12 +29,12 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.common.graph.GraphUtils;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
@@ -89,17 +89,18 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         checkBoxPreference.setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
 
-                    private final SubtreeReplacer<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> subtreeReplacer =
+                    private final SubtreeReplacer<SearchablePreferenceScreen, SearchablePreferenceEdge> subtreeReplacer =
                             new SubtreeReplacer<>(
-                                    () -> new DefaultDirectedGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>(SearchablePreferenceEntityEdge.class),
-                                    edge -> new SearchablePreferenceEntityEdge(edge.preference));
+                                    () -> new DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>(SearchablePreferenceEdge.class),
+                                    edge -> new SearchablePreferenceEdge(edge.preference));
 
                     @Override
                     public boolean onPreferenceClick(@NonNull final Preference preference) {
-                        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> newPojoGraph =
+                        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph = getPojoGraph();
+                        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                                 subtreeReplacer.replaceSubtreeWithTree(
-                                        getPojoGraph(),
-                                        getPojoScreenRootedAt(PrefsFragmentFirst.this),
+                                        pojoGraph,
+                                        GraphUtils.getRootNode(pojoGraph).orElseThrow(),
                                         getPojoGraphRootedAt(
                                                 // FK-TODO: dieser PreferenceScreenWithHost muß über einen SearchablePreferenceScreen berechnet werden können. Führe dazu eine neue Klasse ein.
                                                 new PreferenceScreenWithHost(
@@ -109,20 +110,13 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return true;
                     }
 
-                    private Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> getPojoGraph() {
+                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {
                         return getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
                                 .load();
                     }
 
-                    private SearchablePreferenceScreenEntity getPojoScreenRootedAt(final PrefsFragmentFirst preferenceFragment) {
-                        return Iterables.getOnlyElement(
-                                getAppDatabase()
-                                        .searchablePreferenceScreenEntityDAO()
-                                        .findSearchablePreferenceScreensByHost(preferenceFragment.getClass()));
-                    }
-
-                    private Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> getPojoGraphRootedAt(final PreferenceScreenWithHost root) {
+                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(final PreferenceScreenWithHost root) {
                         return SearchablePreferenceScreenGraphProviderFactory
                                 .createSearchablePreferenceScreenGraphProvider(
                                         PrefsFragmentFirst.this,
@@ -157,9 +151,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private Optional<SearchablePreferenceEntity> findSearchablePreference(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final String keyOfPreference) {
-                        return SearchablePreferences.findPreferenceByKey(
-                                getPreferences(hostOfPreference),
-                                keyOfPreference);
+                        return null;
+                        // FK-FIXME:
+//                        return SearchablePreferences.findPreferenceByKey(
+//                                getPreferences(hostOfPreference),
+//                                keyOfPreference);
                     }
 
                     private Set<SearchablePreferenceEntity> getPreferences(final Class<? extends PreferenceFragmentCompat> host) {

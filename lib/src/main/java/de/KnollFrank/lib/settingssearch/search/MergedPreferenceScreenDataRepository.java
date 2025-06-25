@@ -18,8 +18,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
@@ -67,8 +67,8 @@ public class MergedPreferenceScreenDataRepository {
         searchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraph);
     }
 
-    private Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> computeSearchablePreferenceScreenGraph() {
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> searchablePreferenceScreenGraph =
+    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> computeSearchablePreferenceScreenGraph() {
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenGraph(

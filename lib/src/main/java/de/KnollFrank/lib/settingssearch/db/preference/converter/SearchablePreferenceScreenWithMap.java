@@ -4,10 +4,10 @@ import androidx.preference.Preference;
 
 import com.google.common.collect.BiMap;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public record SearchablePreferenceScreenWithMap(
-        SearchablePreferenceScreenEntity searchablePreferenceScreen,
-        BiMap<SearchablePreferenceEntity, Preference> pojoEntityMap) {
+        SearchablePreferenceScreen searchablePreferenceScreen,
+        BiMap<SearchablePreference, Preference> pojoEntityMap) {
 }

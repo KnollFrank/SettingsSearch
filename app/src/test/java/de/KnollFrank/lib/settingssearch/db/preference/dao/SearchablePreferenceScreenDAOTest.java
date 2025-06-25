@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.PARENT_KEY;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createSomeSearchablePreferenceScreen;
-import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
+import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEntityEquality.assertActualEqualsExpected;
 
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -18,9 +18,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntities;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
@@ -76,7 +76,7 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
         final SearchablePreferenceScreenEntity screen = createSomeSearchablePreferenceScreen();
         dao.persist(screen);
         final SearchablePreferenceEntity preference =
-                SearchablePreferences
+                SearchablePreferenceEntities
                         .findPreferenceByKey(screen.getAllPreferences(dao), PARENT_KEY)
                         .orElseThrow();
 

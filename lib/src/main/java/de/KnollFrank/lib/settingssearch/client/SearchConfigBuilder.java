@@ -5,12 +5,7 @@ import android.content.Context;
 import androidx.annotation.IdRes;
 
 import java.util.Optional;
-import java.util.function.Function;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -48,16 +43,7 @@ public class SearchConfigBuilder {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.markupsFactory = new DefaultMarkupsFactory(context);
         this.showSettingsFragmentAndHighlightSetting = new DefaultShowSettingsFragmentAndHighlightSetting(fragmentContainerViewId);
-        this.searchResultsSorter =
-                new SearchResultsByPreferencePathSorter(
-                        createGetPreferencePathFunction(
-                                AppDatabaseFactory
-                                        .getInstanceForCurrentLocale(context)
-                                        .searchablePreferenceEntityDAO()));
-    }
-
-    private static Function<SearchablePreferenceEntity, PreferenceEntityPath> createGetPreferencePathFunction(final SearchablePreferenceEntityDAO dbDataProvider) {
-        return searchablePreference -> searchablePreference.getPreferencePath(dbDataProvider);
+        this.searchResultsSorter = new SearchResultsByPreferencePathSorter();
     }
 
     @SuppressWarnings("unused")

@@ -35,9 +35,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -57,7 +58,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                 Fragment1ConnectedToFragment2AndFragment4.class);
 
                 // When
-                final Set<SearchablePreferenceScreenEntity> preferenceScreens =
+                final Set<SearchablePreferenceScreen> preferenceScreens =
                         result
                                 .searchablePreferenceScreenGraphProvider()
                                 .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
@@ -86,7 +87,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                 Fragment1ConnectedToFragment2AndFragment4.class);
 
                 // When
-                final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> pojoGraph =
+                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
                         result
                                 .searchablePreferenceScreenGraphProvider()
                                 .getSearchablePreferenceScreenGraph(
@@ -94,20 +95,20 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
 
                 // Then
                 makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase);
-                final SearchablePreferenceEntity preferenceOfFragment2PointingToFragment3 =
+                final SearchablePreference preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3.class,
                                 Fragment3.class,
                                 pojoGraph.vertexSet());
-                final SearchablePreferenceEntity preferenceOfFragment1PointingToFragment2 =
+                final SearchablePreference preferenceOfFragment1PointingToFragment2 =
                         getPreference(
                                 Fragment1ConnectedToFragment2AndFragment4.class,
                                 Fragment2ConnectedToFragment3.class,
                                 pojoGraph.vertexSet());
                 assertThat(
-                        preferenceOfFragment2PointingToFragment3.getPreferencePath(appDatabase.searchablePreferenceEntityDAO()),
+                        preferenceOfFragment2PointingToFragment3.getPreferencePath(),
                         is(
-                                new PreferenceEntityPath(
+                                new PreferencePath(
                                         List.of(
                                                 preferenceOfFragment1PointingToFragment2,
                                                 preferenceOfFragment2PointingToFragment3))));
@@ -140,24 +141,24 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                         }));
     }
 
-    private SearchablePreferenceEntity getPreference(
+    private SearchablePreference getPreference(
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
             final Class<? extends PreferenceFragmentCompat> fragmentPointedTo,
-            final Set<SearchablePreferenceScreenEntity> preferenceScreenWithHostSet) {
+            final Set<SearchablePreferenceScreen> preferenceScreenWithHostSet) {
         return getPreference(
                 preferenceScreenWithHostSet,
-                preference -> hostOfPreference.equals(preference.getHost(appDatabase.searchablePreferenceEntityDAO()).getHost()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
+                preference -> hostOfPreference.equals(preference.getHost().orElseThrow().host()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
-    private SearchablePreferenceEntity getPreference(
-            final Set<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
-            final Predicate<SearchablePreferenceEntity> predicate) {
+    private SearchablePreference getPreference(
+            final Set<SearchablePreferenceScreen> searchablePreferenceScreens,
+            final Predicate<SearchablePreference> predicate) {
         return searchablePreferenceScreens
                 .stream()
                 .flatMap(
                         searchablePreferenceScreen ->
                                 searchablePreferenceScreen
-                                        .getAllPreferences(appDatabase.searchablePreferenceScreenEntityDAO())
+                                        .allPreferences()
                                         .stream()
                                         .filter(predicate))
                 .collect(MoreCollectors.onlyElement());
@@ -233,7 +234,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
         }
     }
 
-    public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph,
+    public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                                         final AppDatabase appDatabase) {
         appDatabase.searchablePreferenceScreenGraphDAO().persist(graph);
     }

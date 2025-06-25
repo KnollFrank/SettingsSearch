@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.test.GraphEquality.assertActualEqualsExpected;
 
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -16,11 +15,11 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity.DbDataProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
+import de.KnollFrank.lib.settingssearch.graph.PojoGraphEquality;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
@@ -29,18 +28,17 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     public void shouldPersistSearchablePreferenceScreenGraph() {
         // Given
         final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenEntityDAO(), appDatabase.searchablePreferenceEntityDAO());
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(PreferenceFragmentCompat.class)
-                        .entityGraphAndDbDataProvider()
-                        .entityGraph();
+                        .pojoGraph();
 
         // When
         dao.persist(graph);
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graphFromDb = dao.load();
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load();
 
         // Then
-        assertActualEqualsExpected(graphFromDb, graph);
+        PojoGraphEquality.assertActualEqualsExpected(graphFromDb, graph);
     }
 
     @Test
@@ -52,20 +50,18 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         dao.persist(
                 SearchablePreferenceScreenGraphTestFactory
                         .createSingleNodeGraph(PreferenceFragmentCompat.class)
-                        .entityGraphAndDbDataProvider()
-                        .entityGraph());
+                        .pojoGraph());
 
         // And
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(PreferenceFragmentCompat.class)
-                        .entityGraphAndDbDataProvider()
-                        .entityGraph();
+                        .pojoGraph();
         dao.persist(graph);
 
         // Then
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graphFromDb = dao.load();
-        assertActualEqualsExpected(graphFromDb, graph);
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load();
+        PojoGraphEquality.assertActualEqualsExpected(graphFromDb, graph);
     }
 
     @Test
@@ -75,32 +71,24 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
                 new SearchablePreferenceScreenGraphDAO(
                         appDatabase.searchablePreferenceScreenEntityDAO(),
                         appDatabase.searchablePreferenceEntityDAO());
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph =
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createSingleNodeGraph(PreferenceFragmentCompat.class)
-                        .entityGraphAndDbDataProvider()
-                        .entityGraph();
-        final Set<SearchablePreferenceEntity> allPreferences =
-                getAllPreferencesOfSingleNode(
-                        graph,
-                        appDatabase.searchablePreferenceScreenEntityDAO());
+                        .pojoGraph();
+        final Set<SearchablePreference> allPreferences = getAllPreferencesOfSingleNode(graph);
 
         // When
         dao.persist(graph);
         dao.persist(dao.load());
 
         // Then
-        final Set<SearchablePreferenceEntity> allPreferencesFromDb =
-                getAllPreferencesOfSingleNode(
-                        dao.load(),
-                        appDatabase.searchablePreferenceScreenEntityDAO());
+        final Set<SearchablePreference> allPreferencesFromDb = getAllPreferencesOfSingleNode(dao.load());
         assertThat(allPreferencesFromDb, is(allPreferences));
     }
 
-    private static Set<SearchablePreferenceEntity> getAllPreferencesOfSingleNode(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph,
-                                                                                 final DbDataProvider dbDataProvider) {
+    private static Set<SearchablePreference> getAllPreferencesOfSingleNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
         return Iterables
                 .getOnlyElement(graph.vertexSet())
-                .getAllPreferences(dbDataProvider);
+                .allPreferences();
     }
 }

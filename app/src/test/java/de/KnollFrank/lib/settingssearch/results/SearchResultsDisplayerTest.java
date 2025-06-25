@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnPreferences;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
@@ -21,13 +20,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferenceViewHolder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -52,13 +50,12 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                                 new DefaultMarkupsFactory(activity),
                                 preference -> true,
                                 new LexicographicalSearchResultsSorter());
-                final SearchablePreferenceEntity preference =
+                final SearchablePreference preference =
                         createSearchablePreference(
                                 Optional.of(title),
                                 Optional.of("some summary"),
                                 Optional.of("searchable info also has a title"),
                                 Optional.empty());
-                makeGetPreferencePathWorkOnPreferences(List.of(preference), appDatabase);
 
                 // When
                 searchResultsDisplayer.displaySearchResults(
@@ -127,7 +124,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                                         Set.of(new IndexRange(0, 5)),
                                         Set.of(),
                                         Set.of()))
-                );
+                                                           );
 
                 // Then
                 assertThat(

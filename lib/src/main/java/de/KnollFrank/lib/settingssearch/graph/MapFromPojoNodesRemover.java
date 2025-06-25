@@ -4,21 +4,21 @@ import org.jgrapht.Graph;
 
 import de.KnollFrank.lib.settingssearch.common.graph.NodesTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class MapFromPojoNodesRemover {
 
-    public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> removeMapFromPojoNodes(
-            final Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEntityEdge> pojoGraph) {
+    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> removeMapFromPojoNodes(
+            final Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> pojoGraph) {
         return NodesTransformer.transformNodes(
                 pojoGraph,
                 MapFromPojoNodesRemover::removeMapFromPojoNode,
-                SearchablePreferenceEntityEdge.class,
-                edge -> new SearchablePreferenceEntityEdge(edge.preference));
+                SearchablePreferenceEdge.class,
+                edge -> new SearchablePreferenceEdge(edge.preference));
     }
 
-    public static SearchablePreferenceScreenEntity removeMapFromPojoNode(final SearchablePreferenceScreenWithMap searchablePreferenceScreenWithMap) {
+    public static SearchablePreferenceScreen removeMapFromPojoNode(final SearchablePreferenceScreenWithMap searchablePreferenceScreenWithMap) {
         return searchablePreferenceScreenWithMap.searchablePreferenceScreen();
     }
 }

@@ -6,24 +6,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity.DbDataProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class PojoGraphs {
 
-    public static Set<SearchablePreferenceEntity> getPreferences(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> pojoGraph,
-                                                                 final DbDataProvider dbDataProvider) {
-        return getPreferences(pojoGraph.vertexSet(), dbDataProvider);
+    public static Set<SearchablePreference> getPreferences(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+        return getPreferences(pojoGraph.vertexSet());
     }
 
-    public static Set<SearchablePreferenceEntity> getPreferences(final Set<SearchablePreferenceScreenEntity> preferenceScreens,
-                                                                 final DbDataProvider dbDataProvider) {
+    public static Set<SearchablePreference> getPreferences(final Set<SearchablePreferenceScreen> preferenceScreens) {
         return Sets.union(
                 preferenceScreens
                         .stream()
-                        .map(searchablePreferenceScreen -> searchablePreferenceScreen.getAllPreferences(dbDataProvider))
+                        .map(SearchablePreferenceScreen::allPreferences)
                         .collect(Collectors.toSet()));
     }
 }

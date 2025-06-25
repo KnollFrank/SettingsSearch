@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.results;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -37,7 +37,7 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     }
 
     private void showSettingsFragmentAndHighlightSetting(final Fragment settingsFragment,
-                                                         final SearchablePreferenceEntity setting2Highlight) {
+                                                         final SearchablePreference setting2Highlight) {
         prepareShow.prepareShow(settingsFragment);
         showSettingsFragmentAndHighlightSetting.showSettingsFragmentAndHighlightSetting(activity, settingsFragment, setting2Highlight);
     }

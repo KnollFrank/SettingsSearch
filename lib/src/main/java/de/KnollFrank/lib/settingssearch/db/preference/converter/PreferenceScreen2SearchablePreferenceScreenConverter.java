@@ -10,8 +10,8 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.Strings;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class PreferenceScreen2SearchablePreferenceScreenConverter {
 
@@ -25,16 +25,15 @@ public class PreferenceScreen2SearchablePreferenceScreenConverter {
             final PreferenceScreen preferenceScreen,
             final PreferenceFragmentCompat hostOfPreferenceScreen,
             final String id,
-            final Optional<SearchablePreferenceEntity> predecessorOfPreferenceScreen) {
-        final BiMap<SearchablePreferenceEntity, Preference> searchablePreferences =
+            final Optional<SearchablePreference> predecessorOfPreferenceScreen) {
+        final BiMap<SearchablePreference, Preference> searchablePreferences =
                 preference2SearchablePreferenceConverter.convertPreferences(
                         Preferences.getImmediateChildren(preferenceScreen),
                         id,
                         hostOfPreferenceScreen,
-                        Optional.empty(),
                         predecessorOfPreferenceScreen);
         return new SearchablePreferenceScreenWithMap(
-                new SearchablePreferenceScreenEntity(
+                new SearchablePreferenceScreen(
                         id,
                         hostOfPreferenceScreen.getClass(),
                         Strings.toString(Optional.ofNullable(preferenceScreen.getTitle())),

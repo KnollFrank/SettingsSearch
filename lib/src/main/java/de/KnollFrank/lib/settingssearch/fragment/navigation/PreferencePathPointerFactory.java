@@ -6,11 +6,13 @@ class PreferencePathPointerFactory {
 
     public static PreferencePathPointer createPreferencePathPointer(final PreferencePathNavigatorData preferencePathNavigatorData,
                                                                     final SearchablePreferenceEntityDAO searchablePreferenceDAO) {
-        return PreferencePathPointer.of(
-                searchablePreferenceDAO
-                        .findPreferenceById(preferencePathNavigatorData.idOfSearchablePreference())
-                        .orElseThrow()
-                        .getPreferencePath(searchablePreferenceDAO),
-                preferencePathNavigatorData.indexWithinPreferencePath());
+        // FK-FIXME:
+        return null;
+//        return PreferencePathPointer.of(
+//                searchablePreferenceDAO
+//                        .findPreferenceById(preferencePathNavigatorData.idOfSearchablePreference())
+//                        .orElseThrow()
+//                        .getPreferencePath(searchablePreferenceDAO),
+//                preferencePathNavigatorData.indexWithinPreferencePath());
     }
 }

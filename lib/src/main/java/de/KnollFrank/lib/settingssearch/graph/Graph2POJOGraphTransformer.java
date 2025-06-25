@@ -13,8 +13,8 @@ import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 
 public class Graph2POJOGraphTransformer {
 
@@ -27,15 +27,15 @@ public class Graph2POJOGraphTransformer {
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
-    public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEntityEdge> transformGraph2POJOGraph(
+    public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
-                SearchablePreferenceEntityEdge.class,
+                SearchablePreferenceEdge.class,
                 createGraphTransformer());
     }
 
-    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEntityEdge> createGraphTransformer() {
+    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer() {
         return new GraphTransformer<>() {
 
             @Override
@@ -56,9 +56,9 @@ public class Graph2POJOGraphTransformer {
             }
 
             @Override
-            public SearchablePreferenceEntityEdge transformEdge(final PreferenceEdge edge,
-                                                                final SearchablePreferenceScreenWithMap transformedParentNode) {
-                return new SearchablePreferenceEntityEdge(
+            public SearchablePreferenceEdge transformEdge(final PreferenceEdge edge,
+                                                          final SearchablePreferenceScreenWithMap transformedParentNode) {
+                return new SearchablePreferenceEdge(
                         getTransformedPreference(
                                 edge.preference,
                                 transformedParentNode));
@@ -66,7 +66,7 @@ public class Graph2POJOGraphTransformer {
 
             private SearchablePreferenceScreenWithMap convert2POJO(
                     final PreferenceScreenWithHost node,
-                    final Optional<SearchablePreferenceEntity> predecessorOfNode) {
+                    final Optional<SearchablePreference> predecessorOfNode) {
                 return preferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
@@ -74,7 +74,7 @@ public class Graph2POJOGraphTransformer {
                         predecessorOfNode);
             }
 
-            private static SearchablePreferenceEntity getPredecessorOfNode(
+            private static SearchablePreference getPredecessorOfNode(
                     final SearchablePreferenceScreenWithMap parentNode,
                     final PreferenceEdge edgeFromParentNode2Node) {
                 return getTransformedPreference(
@@ -82,17 +82,13 @@ public class Graph2POJOGraphTransformer {
                         parentNode);
             }
 
-            private static SearchablePreferenceEntity getTransformedPreference(
+            private static SearchablePreference getTransformedPreference(
                     final Preference preference,
                     final SearchablePreferenceScreenWithMap transformedParentNode) {
                 return transformedParentNode
                         .pojoEntityMap()
                         .inverse()
                         .get(preference);
-            }
-
-            private static String getParentId(final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
-                return contextOfInnerNode.transformedParentNode().searchablePreferenceScreen().getId();
             }
         };
     }

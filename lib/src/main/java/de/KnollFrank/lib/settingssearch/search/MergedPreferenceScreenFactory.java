@@ -158,8 +158,8 @@ public class MergedPreferenceScreenFactory {
                                                 fragmentFactoryAndInitializer,
                                                 instantiateAndInitializeFragment,
                                                 activityInitializerByActivity,
-                                                principalAndProxyProvider,
-                                                dbDataProvider),
+                                                principalAndProxyProvider
+                                                                     ),
                                         prepareShow,
                                         showSettingsFragmentAndHighlightSetting,
                                         activity),

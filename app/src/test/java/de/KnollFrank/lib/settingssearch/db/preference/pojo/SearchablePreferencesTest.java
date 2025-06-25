@@ -15,10 +15,10 @@ public class SearchablePreferencesTest {
     public void shouldFindPreferenceByKey() {
         // Given
         final String key = "some key";
-        final SearchablePreferenceEntity preference = createSearchablePreference(key);
+        final SearchablePreference preference = createSearchablePreference(key);
 
         // When
-        final Optional<SearchablePreferenceEntity> preferenceActual =
+        final Optional<SearchablePreference> preferenceActual =
                 SearchablePreferences.findPreferenceByKey(
                         Set.of(preference),
                         key);
@@ -33,7 +33,7 @@ public class SearchablePreferencesTest {
         final String nonExistingKey = "nonExistingKey";
 
         // When
-        final Optional<SearchablePreferenceEntity> preferenceActual =
+        final Optional<SearchablePreference> preferenceActual =
                 SearchablePreferences.findPreferenceByKey(
                         Set.of(),
                         nonExistingKey);

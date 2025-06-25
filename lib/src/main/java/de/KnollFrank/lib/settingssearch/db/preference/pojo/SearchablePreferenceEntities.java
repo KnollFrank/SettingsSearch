@@ -6,18 +6,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class SearchablePreferences {
+public class SearchablePreferenceEntities {
 
-    public static Optional<SearchablePreference> findPreferenceByPredicate(
-            final Set<SearchablePreference> preferences,
-            final Predicate<SearchablePreference> predicate) {
+    public static Optional<SearchablePreferenceEntity> findPreferenceByPredicate(
+            final Set<SearchablePreferenceEntity> preferences,
+            final Predicate<SearchablePreferenceEntity> predicate) {
         return preferences
                 .stream()
                 .filter(predicate)
                 .collect(MoreCollectors.toOptional());
     }
 
-    public static Optional<SearchablePreference> findPreferenceByKey(final Set<SearchablePreference> preferences, final String key) {
+    public static Optional<SearchablePreferenceEntity> findPreferenceByKey(final Set<SearchablePreferenceEntity> preferences, final String key) {
         return findPreferenceByPredicate(
                 preferences,
                 searchablePreference -> searchablePreference.getKey().equals(key));

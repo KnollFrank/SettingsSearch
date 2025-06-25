@@ -29,30 +29,26 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEntityPath;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity.DbDataProvider;
+import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
 
 // adapted from androidx.preference.PreferenceGroupAdapter
 public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
-    private final List<SearchablePreferenceEntity> items = new ArrayList<>();
-    private final Consumer<SearchablePreferenceEntity> onPreferenceClickListener;
+    private final List<SearchablePreference> items = new ArrayList<>();
+    private final Consumer<SearchablePreference> onPreferenceClickListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PreferencePathDisplayer preferencePathDisplayer;
-    private final DbDataProvider dbDataProvider;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
 
-    public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreferenceEntity> onPreferenceClickListener,
+    public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreference> onPreferenceClickListener,
                                             final ShowPreferencePathPredicate showPreferencePathPredicate,
-                                            final PreferencePathDisplayer preferencePathDisplayer,
-                                            final DbDataProvider dbDataProvider) {
+                                            final PreferencePathDisplayer preferencePathDisplayer) {
         this.onPreferenceClickListener = onPreferenceClickListener;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.preferencePathDisplayer = preferencePathDisplayer;
-        this.dbDataProvider = dbDataProvider;
     }
 
     @Override
@@ -76,7 +72,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         return items.size();
     }
 
-    public void setItems(final List<SearchablePreferenceEntity> items) {
+    public void setItems(final List<SearchablePreference> items) {
         final DiffResult diffResult = DiffUtil.calculateDiff(getDiffUtilCallback(this.items, items));
         {
             this.items.clear();
@@ -85,14 +81,14 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         diffResult.dispatchUpdatesTo(this);
     }
 
-    private SearchablePreferenceEntity getItem(final int position) {
+    private SearchablePreference getItem(final int position) {
         return items.get(position);
     }
 
     private record ItemResourceDescriptor(@LayoutRes int layoutResId,
                                           @LayoutRes int widgetLayoutResId) {
 
-        public static ItemResourceDescriptor from(final SearchablePreferenceEntity searchablePreference) {
+        public static ItemResourceDescriptor from(final SearchablePreference searchablePreference) {
             return new ItemResourceDescriptor(
                     searchablePreference.getLayoutResId(),
                     searchablePreference.getWidgetLayoutResId());
@@ -154,7 +150,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         }
     }
 
-    private void onBindViewHolder(final PreferenceViewHolder viewHolder, final SearchablePreferenceEntity searchablePreference) {
+    private void onBindViewHolder(final PreferenceViewHolder viewHolder, final SearchablePreference searchablePreference) {
         viewHolder.resetState();
         viewHolder.itemView.setClickable(true);
         viewHolder.itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreference));
@@ -168,29 +164,29 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     }
 
     private static void displayTitle(final PreferenceViewHolder holder,
-                                     final SearchablePreferenceEntity searchablePreference) {
+                                     final SearchablePreference searchablePreference) {
         setOptionalTextOnOptionalTextView(
                 holder.findViewById(android.R.id.title),
                 searchablePreference.getHighlightedTitle());
     }
 
     private static void displaySummary(final PreferenceViewHolder holder,
-                                       final SearchablePreferenceEntity searchablePreference) {
+                                       final SearchablePreference searchablePreference) {
         setOptionalTextOnOptionalTextView(
                 holder.findViewById(android.R.id.summary),
                 searchablePreference.getHighlightedSummary());
     }
 
     private static void displaySearchableInfo(final PreferenceViewHolder holder,
-                                              final SearchablePreferenceEntity searchablePreference) {
+                                              final SearchablePreference searchablePreference) {
         setOptionalTextOnOptionalTextView(
                 getSearchableInfoView(holder),
                 searchablePreference.getHighlightedSearchableInfo());
     }
 
     private void displayPreferencePath(final PreferenceViewHolder holder,
-                                       final SearchablePreferenceEntity searchablePreference) {
-        final PreferenceEntityPath preferencePath = searchablePreference.getPreferencePath(dbDataProvider);
+                                       final SearchablePreference searchablePreference) {
+        final PreferencePath preferencePath = searchablePreference.getPreferencePath();
         PreferencePathView.displayPreferencePath(
                 getPreferencePathView(holder),
                 preferencePath,
@@ -198,7 +194,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
                 preferencePathDisplayer);
     }
 
-    private static void displayIcon(final PreferenceViewHolder holder, final SearchablePreferenceEntity searchablePreference, final boolean iconSpaceReserved) {
+    private static void displayIcon(final PreferenceViewHolder holder, final SearchablePreference searchablePreference, final boolean iconSpaceReserved) {
         final Optional<Drawable> icon = searchablePreference.getIcon(holder.itemView.getContext());
         holder
                 .<ImageView>findViewById(android.R.id.icon)
@@ -251,8 +247,8 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     }
 
     private static DiffUtil.Callback getDiffUtilCallback(
-            final List<SearchablePreferenceEntity> oldItems,
-            final List<SearchablePreferenceEntity> newItems) {
+            final List<SearchablePreference> oldItems,
+            final List<SearchablePreference> newItems) {
         return new DiffUtil.Callback() {
 
             @Override
