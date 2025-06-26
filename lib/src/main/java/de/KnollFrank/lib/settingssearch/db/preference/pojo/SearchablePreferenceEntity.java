@@ -45,6 +45,7 @@ public final class SearchablePreferenceEntity {
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedTitleProvider = Optional::empty;
 
+    // FK-TODO: make final, remove setter
     private Optional<String> summary;
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedSummaryProvider = Optional::empty;

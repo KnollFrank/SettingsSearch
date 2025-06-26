@@ -19,22 +19,21 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
-import com.google.common.collect.Iterables;
-
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphUtils;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
@@ -137,39 +136,21 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     @Override
                     public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
-                        setSummary(preference, getSummary((boolean) checked));
+                        final var graphDAO = getAppDatabase().searchablePreferenceScreenGraphDAO();
+                        final var pojoGraph = graphDAO.load();
+                        this
+                                .getSummaryChangingPreference(pojoGraph)
+                                .setSummary(Optional.of(getSummary((boolean) checked)));
+                        graphDAO.persist(pojoGraph);
                         return true;
                     }
 
-                    private void setSummary(final Preference preference, final String summary) {
-                        preference.setSummary(summary);
-                        setSummary(
-                                this
-                                        .findSearchablePreference(PrefsFragmentFirst.class, preference.getKey())
-                                        .orElseThrow(),
-                                summary);
-                    }
-
-                    private Optional<SearchablePreferenceEntity> findSearchablePreference(final Class<? extends PreferenceFragmentCompat> hostOfPreference, final String keyOfPreference) {
-                        return null;
-                        // FK-FIXME:
-//                        return SearchablePreferences.findPreferenceByKey(
-//                                getPreferences(hostOfPreference),
-//                                keyOfPreference);
-                    }
-
-                    private Set<SearchablePreferenceEntity> getPreferences(final Class<? extends PreferenceFragmentCompat> host) {
-                        return Iterables
-                                .getOnlyElement(
-                                        getAppDatabase()
-                                                .searchablePreferenceScreenEntityDAO()
-                                                .findSearchablePreferenceScreensByHost(host))
-                                .getAllPreferences(getAppDatabase().searchablePreferenceScreenEntityDAO());
-                    }
-
-                    private void setSummary(final SearchablePreferenceEntity searchablePreference, final String summary) {
-                        searchablePreference.setSummary(Optional.of(summary));
-                        getAppDatabase().searchablePreferenceEntityDAO().update(searchablePreference);
+                    private SearchablePreference getSummaryChangingPreference(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+                        return SearchablePreferences
+                                .findPreferenceByKey(
+                                        PojoGraphs.getPreferences(pojoGraph),
+                                        SUMMARY_CHANGING_PREFERENCE_KEY)
+                                .orElseThrow();
                     }
                 });
     }
