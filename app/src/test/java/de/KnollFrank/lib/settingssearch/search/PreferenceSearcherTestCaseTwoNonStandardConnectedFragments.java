@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 
@@ -30,7 +29,6 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
     private static final String KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "keyOfPreferenceOfConnectedFragment";
 
     public static void shouldSearchAndFindPreferenceOfNonStandardConnectedFragment(
-            final SearchablePreferenceEntityDAO searchablePreferenceDAO,
             final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         testSearch(
                 // Given a fragment with a non standard connected fragment
@@ -46,7 +44,6 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT)),
-                searchablePreferenceDAO,
                 searchablePreferenceScreenGraphDAO);
     }
 
@@ -83,7 +80,6 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                                    final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
-                                   final SearchablePreferenceEntityDAO searchablePreferenceDAO,
                                    final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         PreferenceSearcherTest.testSearch(
                 fragmentWithNonStandardConnection,
@@ -94,7 +90,6 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 checkPreferenceMatches,
-                searchablePreferenceDAO,
                 searchablePreferenceScreenGraphDAO);
     }
 }

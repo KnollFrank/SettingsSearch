@@ -14,7 +14,6 @@ import java.util.Map;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -119,7 +118,6 @@ public class MergedPreferenceScreenFactory {
                 prepareShow,
                 showPreferencePathPredicate,
                 preferencePathDisplayer,
-                searchDatabaseFilledWithPreferences.searchablePreferenceEntityDAO(),
                 searchDatabaseFilledWithPreferences.searchablePreferenceScreenGraphDAO(),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
@@ -137,7 +135,6 @@ public class MergedPreferenceScreenFactory {
             final PrepareShow prepareShow,
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PreferencePathDisplayer preferencePathDisplayer,
-            final SearchablePreferenceEntityDAO searchablePreferenceDAO,
             final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
@@ -150,7 +147,6 @@ public class MergedPreferenceScreenFactory {
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
             final FragmentActivity activity) {
         return new MergedPreferenceScreen(
-                searchablePreferenceDAO,
                 searchablePreferenceScreenGraphDAO,
                 new SearchResultsDisplayer(
                         new SearchResultsFragment(

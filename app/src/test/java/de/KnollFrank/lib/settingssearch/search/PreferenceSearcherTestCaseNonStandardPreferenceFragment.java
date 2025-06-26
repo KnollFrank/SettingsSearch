@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 
 class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
@@ -25,7 +24,6 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
     private static final String KEY_OF_PREFERENCE = "key";
 
     public static void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(
-            final SearchablePreferenceEntityDAO searchablePreferenceDAO,
             final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         testSearch(
                 // Given a NonStandardPreferenceFragment
@@ -38,7 +36,6 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(KEY_OF_PREFERENCE)),
-                searchablePreferenceDAO,
                 searchablePreferenceScreenGraphDAO);
     }
 
@@ -61,7 +58,6 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                                    final PrincipalAndProxyProvider principalAndProxyProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
-                                   final SearchablePreferenceEntityDAO searchablePreferenceDAO,
                                    final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
         PreferenceSearcherTest.testSearch(
                 nonPreferenceFragment,
@@ -72,7 +68,6 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 (preference, hostOfPreference) -> Optional.empty(),
                 principalAndProxyProvider,
                 checkPreferenceMatches,
-                searchablePreferenceDAO,
                 searchablePreferenceScreenGraphDAO);
     }
 }
