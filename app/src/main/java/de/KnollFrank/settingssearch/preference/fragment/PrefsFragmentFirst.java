@@ -138,9 +138,10 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
                         final var graphDAO = getAppDatabase().searchablePreferenceScreenGraphDAO();
                         final var pojoGraph = graphDAO.load();
-                        this
-                                .getSummaryChangingPreference(pojoGraph)
-                                .setSummary(Optional.of(getSummary((boolean) checked)));
+                        setSummaryOfPreferences(
+                                preference,
+                                getSummaryChangingPreference(pojoGraph),
+                                getSummary((boolean) checked));
                         graphDAO.persist(pojoGraph);
                         return true;
                     }
@@ -151,6 +152,13 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         PojoGraphs.getPreferences(pojoGraph),
                                         SUMMARY_CHANGING_PREFERENCE_KEY)
                                 .orElseThrow();
+                    }
+
+                    private void setSummaryOfPreferences(final Preference preference,
+                                                         final SearchablePreference searchablePreference,
+                                                         final String summary) {
+                        preference.setSummary(summary);
+                        searchablePreference.setSummary(Optional.of(summary));
                     }
                 });
     }
