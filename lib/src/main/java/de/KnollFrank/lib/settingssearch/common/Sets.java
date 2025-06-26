@@ -1,7 +1,11 @@
 package de.KnollFrank.lib.settingssearch.common;
 
+import com.google.common.collect.MoreCollectors;
+
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Sets {
@@ -11,5 +15,12 @@ public class Sets {
                 .stream()
                 .flatMap(Set::stream)
                 .collect(Collectors.toSet());
+    }
+
+    public static <T> Optional<T> findElementByPredicate(final Set<T> elements, final Predicate<T> predicate) {
+        return elements
+                .stream()
+                .filter(predicate)
+                .collect(MoreCollectors.toOptional());
     }
 }
