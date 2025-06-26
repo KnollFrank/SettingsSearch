@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.INavigatePreferencePathAndHighlightPreference;
@@ -25,20 +24,17 @@ public class SearchResultsFragment extends Fragment {
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
-    private final DbDataProvider dbDataProvider;
     private RecyclerView recyclerView;
 
     public SearchResultsFragment(final INavigatePreferencePathAndHighlightPreference navigatePreferencePathAndHighlightPreference,
                                  final ShowPreferencePathPredicate showPreferencePathPredicate,
                                  final PreferencePathDisplayer preferencePathDisplayer,
-                                 final SearchResultsFragmentUI searchResultsFragmentUI,
-                                 final DbDataProvider dbDataProvider) {
+                                 final SearchResultsFragmentUI searchResultsFragmentUI) {
         super(searchResultsFragmentUI.getRootViewId());
         this.navigatePreferencePathAndHighlightPreference = navigatePreferencePathAndHighlightPreference;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.preferencePathDisplayer = preferencePathDisplayer;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
-        this.dbDataProvider = dbDataProvider;
     }
 
     @Override

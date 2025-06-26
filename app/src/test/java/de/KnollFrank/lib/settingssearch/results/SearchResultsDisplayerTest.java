@@ -123,8 +123,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                                                 Optional.empty()),
                                         Set.of(new IndexRange(0, 5)),
                                         Set.of(),
-                                        Set.of()))
-                                                           );
+                                        Set.of())));
 
                 // Then
                 assertThat(
@@ -152,8 +151,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
                             public RecyclerView getSearchResultsView(View rootView) {
                                 return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                             }
-                        },
-                        appDatabase.searchablePreferenceEntityDAO());
+                        });
         PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment(
                 searchResultsFragment,
                 getInstantiateAndInitializeFragment(searchResultsFragment, activity));

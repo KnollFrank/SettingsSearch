@@ -834,8 +834,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 (activity, settingsFragment, setting2Highlight) -> {
                 },
-                fragmentActivity,
-                searchablePreferenceDAO);
+                fragmentActivity);
     }
 
     private static class PreferenceDialogAndSearchableInfoProvider implements de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider {

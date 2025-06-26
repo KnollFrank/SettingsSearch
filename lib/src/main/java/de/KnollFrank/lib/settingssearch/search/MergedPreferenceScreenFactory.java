@@ -16,9 +16,7 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
@@ -132,8 +130,7 @@ public class MergedPreferenceScreenFactory {
                 activityInitializerByActivity,
                 principalAndProxyProvider,
                 showSettingsFragmentAndHighlightSetting,
-                activity,
-                AppDatabaseFactory.getInstance(locale, activity).searchablePreferenceEntityDAO());
+                activity);
     }
 
     public static MergedPreferenceScreen createMergedPreferenceScreen(
@@ -151,8 +148,7 @@ public class MergedPreferenceScreenFactory {
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
-            final FragmentActivity activity,
-            final DbDataProvider dbDataProvider) {
+            final FragmentActivity activity) {
         return new MergedPreferenceScreen(
                 searchablePreferenceDAO,
                 searchablePreferenceScreenGraphDAO,
@@ -170,8 +166,7 @@ public class MergedPreferenceScreenFactory {
                                         activity),
                                 showPreferencePathPredicate,
                                 preferencePathDisplayer,
-                                searchResultsFragmentUI,
-                                dbDataProvider),
+                                searchResultsFragmentUI),
                         markupsFactory,
                         searchResultsFilter,
                         searchResultsSorter));
