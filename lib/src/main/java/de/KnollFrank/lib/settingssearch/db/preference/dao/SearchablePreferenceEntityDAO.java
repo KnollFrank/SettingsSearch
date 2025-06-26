@@ -20,11 +20,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildrens;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessors;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
-import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
 
 @Dao
 public abstract class SearchablePreferenceEntityDAO implements SearchablePreferenceEntity.DbDataProvider {
@@ -43,19 +40,6 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
 
     @Query("SELECT * FROM SearchablePreferenceEntity WHERE id = :id")
     public abstract Optional<SearchablePreferenceEntity> findPreferenceById(final int id);
-
-    public Set<PreferenceMatch> searchWithinTitleSummarySearchableInfo(final String needle,
-                                                                       final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
-        // FK-FIXME:
-        return Set.of();
-//        return this
-//                .searchWithinTitleSummarySearchableInfo(Optional.of(needle))
-//                .stream()
-//                .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
-//                .map(searchablePreference -> getPreferenceMatch(searchablePreference, needle))
-//                .flatMap(Optionals::streamOfPresentElements)
-//                .collect(Collectors.toSet());
-    }
 
     public void persist(final SearchablePreferenceEntity... searchablePreferences) {
         _persist(searchablePreferences);
@@ -106,11 +90,6 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     @Insert
     protected abstract void _persist(Collection<SearchablePreferenceEntity> searchablePreferences);
 
-    private static final String NEEDLE_PATTERN = "'%' || :needle || '%'";
-
-    @Query("SELECT * FROM SearchablePreferenceEntity WHERE title LIKE " + NEEDLE_PATTERN + " OR summary LIKE " + NEEDLE_PATTERN + "OR searchableInfo LIKE " + NEEDLE_PATTERN)
-    protected abstract List<SearchablePreferenceEntity> _searchWithinTitleSummarySearchableInfo(final Optional<String> needle);
-
     @Insert
     protected abstract void _persist(SearchablePreferenceEntity... searchablePreferences);
 
@@ -130,12 +109,6 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
 
     @Update
     protected abstract void _update(SearchablePreferenceEntity... preferences);
-
-    private Set<SearchablePreference> searchWithinTitleSummarySearchableInfo(final Optional<String> needle) {
-        // FK-TODO: FIXME
-        return Set.of();
-        // return new HashSet<>(_searchWithinTitleSummarySearchableInfo(needle));
-    }
 
     public Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference() {
         if (childrenByPreference.isEmpty()) {
