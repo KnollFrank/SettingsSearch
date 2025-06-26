@@ -33,6 +33,7 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
+        // FK-TODO: cache persisted and loaded graph?
         final DbDataProvider dbDataProvider = getDbDataProvider();
         final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> entityGraph =
                 convertScreensToGraph(

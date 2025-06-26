@@ -693,7 +693,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 searchablePreferenceScreenGraphDAO);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
-                                mergedPreferenceScreen.searchablePreferenceDAO(),
+                                mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
                                 includePreferenceInSearchResultsPredicate);
 
                 // When
@@ -812,6 +812,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                 preferencePath -> true,
                 new DefaultPreferencePathDisplayer(),
                 searchablePreferenceDAO,
+                searchablePreferenceScreenGraphDAO,
                 fragmentFactoryAndInitializer,
                 new SearchResultsFragmentUI() {
 

@@ -15,7 +15,9 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -104,10 +106,7 @@ public class MergedPreferenceScreenFactory {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         activity);
-        return createMergedPreferenceScreen(
-                prepareShow,
-                showPreferencePathPredicate,
-                preferencePathDisplayer,
+        final DAOProvider searchDatabaseFilledWithPreferences =
                 mergedPreferenceScreenDataRepositoryProvider
                         .createMergedPreferenceScreenDataRepository(
                                 PreferenceDialogsFactory.createPreferenceDialogs(
@@ -117,8 +116,13 @@ public class MergedPreferenceScreenFactory {
                                 activity,
                                 progressUpdateListener,
                                 instantiateAndInitializeFragment)
-                        .getSearchDatabaseFilledWithPreferences(locale)
-                        .searchablePreferenceEntityDAO(),
+                        .getSearchDatabaseFilledWithPreferences(locale);
+        return createMergedPreferenceScreen(
+                prepareShow,
+                showPreferencePathPredicate,
+                preferencePathDisplayer,
+                searchDatabaseFilledWithPreferences.searchablePreferenceEntityDAO(),
+                searchDatabaseFilledWithPreferences.searchablePreferenceScreenGraphDAO(),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 markupsFactory,
@@ -137,6 +141,7 @@ public class MergedPreferenceScreenFactory {
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PreferencePathDisplayer preferencePathDisplayer,
             final SearchablePreferenceEntityDAO searchablePreferenceDAO,
+            final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final MarkupsFactory markupsFactory,
@@ -150,6 +155,7 @@ public class MergedPreferenceScreenFactory {
             final DbDataProvider dbDataProvider) {
         return new MergedPreferenceScreen(
                 searchablePreferenceDAO,
+                searchablePreferenceScreenGraphDAO,
                 new SearchResultsDisplayer(
                         new SearchResultsFragment(
                                 new NavigatePreferencePathAndHighlightPreference(
