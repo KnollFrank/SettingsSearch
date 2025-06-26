@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverterFactory.createScreenConverter;
 
-import com.google.common.collect.MoreCollectors;
-
 import org.jgrapht.Graph;
 
 import java.util.Optional;
@@ -18,6 +16,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
 // FK-TODO: diese Klasse einsetzen, siehe auch PojoGraph2EntityGraphTransformer
 public class EntityGraph2PojoGraphTransformer {
@@ -53,10 +52,9 @@ public class EntityGraph2PojoGraphTransformer {
 
             private static SearchablePreference getSearchablePreferenceById(final Set<SearchablePreference> searchablePreferences,
                                                                             final int id) {
-                return searchablePreferences
-                        .stream()
-                        .filter(searchablePreference -> searchablePreference.getId() == id)
-                        .collect(MoreCollectors.onlyElement());
+                return SearchablePreferences
+                        .findPreferenceById(searchablePreferences, id)
+                        .orElseThrow();
             }
         };
     }

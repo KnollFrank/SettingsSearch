@@ -83,6 +83,6 @@ public class ContinueWithPreferencePathNavigation {
                 .navigatePreferencePathAndHighlightPreference(
                         PreferencePathPointerFactory.createPreferencePathPointer(
                                 preferencePathNavigatorData,
-                                mergedPreferenceScreen.searchablePreferenceDAO()));
+                                mergedPreferenceScreen.searchablePreferenceScreenGraphDAO()));
     }
 }

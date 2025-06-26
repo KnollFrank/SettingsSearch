@@ -169,9 +169,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
     private static SearchablePreference getPreferenceById(final Set<SearchablePreference> searchablePreferences,
                                                           final int id) {
         return SearchablePreferences
-                .findPreferenceByPredicate(
-                        searchablePreferences,
-                        searchablePreference -> searchablePreference.getId() == id)
+                .findPreferenceById(searchablePreferences, id)
                 .orElseThrow();
     }
 }

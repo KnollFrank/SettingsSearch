@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
+// FK-TODO: DRY with SearchablePreferences
 public class SearchablePreferenceEntities {
 
     public static Optional<SearchablePreferenceEntity> findPreferenceByPredicate(
@@ -21,5 +22,11 @@ public class SearchablePreferenceEntities {
         return findPreferenceByPredicate(
                 preferences,
                 searchablePreference -> searchablePreference.getKey().equals(key));
+    }
+
+    public static Optional<SearchablePreferenceEntity> findPreferenceById(final Set<SearchablePreferenceEntity> preferences, final int id) {
+        return findPreferenceByPredicate(
+                preferences,
+                searchablePreference -> searchablePreference.getId() == id);
     }
 }

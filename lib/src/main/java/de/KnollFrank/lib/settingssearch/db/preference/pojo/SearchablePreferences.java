@@ -22,4 +22,10 @@ public class SearchablePreferences {
                 preferences,
                 searchablePreference -> searchablePreference.getKey().equals(key));
     }
+
+    public static Optional<SearchablePreference> findPreferenceById(final Set<SearchablePreference> preferences, final int id) {
+        return findPreferenceByPredicate(
+                        preferences,
+                        searchablePreference -> searchablePreference.getId() == id);
+    }
 }

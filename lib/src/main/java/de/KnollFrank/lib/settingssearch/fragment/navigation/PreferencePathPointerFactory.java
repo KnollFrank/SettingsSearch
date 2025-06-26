@@ -1,18 +1,26 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
+import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 
 class PreferencePathPointerFactory {
 
     public static PreferencePathPointer createPreferencePathPointer(final PreferencePathNavigatorData preferencePathNavigatorData,
-                                                                    final SearchablePreferenceEntityDAO searchablePreferenceDAO) {
-        // FK-FIXME:
-        return null;
-//        return PreferencePathPointer.of(
-//                searchablePreferenceDAO
-//                        .findPreferenceById(preferencePathNavigatorData.idOfSearchablePreference())
-//                        .orElseThrow()
-//                        .getPreferencePath(searchablePreferenceDAO),
-//                preferencePathNavigatorData.indexWithinPreferencePath());
+                                                                    final SearchablePreferenceScreenGraphDAO graphDAO) {
+        return PreferencePathPointer.of(
+                getPreferencePath(preferencePathNavigatorData, graphDAO),
+                preferencePathNavigatorData.indexWithinPreferencePath());
+    }
+
+    private static PreferencePath getPreferencePath(final PreferencePathNavigatorData preferencePathNavigatorData,
+                                                    final SearchablePreferenceScreenGraphDAO graphDAO) {
+        return SearchablePreferences
+                .findPreferenceById(
+                        PojoGraphs.getPreferences(graphDAO.load()),
+                        preferencePathNavigatorData.idOfSearchablePreference())
+                .orElseThrow()
+                .getPreferencePath();
     }
 }
