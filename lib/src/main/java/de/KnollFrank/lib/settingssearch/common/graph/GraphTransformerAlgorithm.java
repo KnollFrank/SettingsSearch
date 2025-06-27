@@ -14,6 +14,7 @@ public class GraphTransformerAlgorithm {
             final Graph<VSrc, ESrc> graph,
             final Class<? extends EDst> transformedEdgeClass,
             final GraphTransformer<VSrc, ESrc, VDst, EDst> graphTransformer) {
+        // FK-TODO: use GraphBuilder for transformedGraph
         final Graph<VDst, EDst> transformedGraph = new DefaultDirectedGraph<>(transformedEdgeClass);
         final BreadthFirstGraphVisitor<VSrc, ESrc> graphVisitor =
                 new BreadthFirstGraphVisitor<>() {
