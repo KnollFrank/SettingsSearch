@@ -5,13 +5,11 @@ import static de.KnollFrank.lib.settingssearch.db.preference.converter.Searchabl
 import org.jgrapht.Graph;
 
 import java.util.Optional;
-import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -47,14 +45,10 @@ public class EntityGraph2PojoGraphTransformer {
             @Override
             public SearchablePreferenceEdge transformEdge(final SearchablePreferenceEntityEdge edge,
                                                           final SearchablePreferenceScreen transformedParentNode) {
-                return new SearchablePreferenceEdge(getSearchablePreferenceById(transformedParentNode.allPreferences(), edge.preference.getId()));
-            }
-
-            private static SearchablePreference getSearchablePreferenceById(final Set<SearchablePreference> searchablePreferences,
-                                                                            final int id) {
-                return SearchablePreferences
-                        .findPreferenceById(searchablePreferences, id)
-                        .orElseThrow();
+                return new SearchablePreferenceEdge(
+                        SearchablePreferences
+                                .findPreferenceById(transformedParentNode.allPreferences(), edge.preference.getId())
+                                .orElseThrow());
             }
         };
     }
