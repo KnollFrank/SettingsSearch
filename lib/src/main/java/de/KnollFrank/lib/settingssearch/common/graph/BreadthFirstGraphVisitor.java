@@ -8,7 +8,10 @@ import java.util.Optional;
 public abstract class BreadthFirstGraphVisitor<V, E> {
 
     public void visit(final Graph<V, E> graph) {
-        final BreadthFirstIterator<V, E> iterator = new BreadthFirstIterator<>(graph);
+        final BreadthFirstIterator<V, E> iterator =
+                new BreadthFirstIterator<>(
+                        graph,
+                        GraphUtils.getRootNode(graph).orElseThrow());
         while (iterator.hasNext()) {
             final V node = iterator.next();
             Optional
