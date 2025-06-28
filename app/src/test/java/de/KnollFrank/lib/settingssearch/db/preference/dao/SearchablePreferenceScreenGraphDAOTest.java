@@ -27,7 +27,11 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     @Test
     public void shouldPersistSearchablePreferenceScreenGraph() {
         // Given
-        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenEntityDAO(), appDatabase.searchablePreferenceEntityDAO());
+        final SearchablePreferenceScreenGraphDAO dao =
+                new SearchablePreferenceScreenGraphDAO(
+                        new SearchablePreferenceScreenEntityGraphDAO(
+                                appDatabase.searchablePreferenceScreenEntityDAO(),
+                                appDatabase.searchablePreferenceEntityDAO()));
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(PreferenceFragmentCompat.class)
@@ -44,7 +48,11 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     @Test
     public void shouldOverwritePersistedSearchablePreferenceScreenGraph() {
         // Given
-        final SearchablePreferenceScreenGraphDAO dao = new SearchablePreferenceScreenGraphDAO(appDatabase.searchablePreferenceScreenEntityDAO(), appDatabase.searchablePreferenceEntityDAO());
+        final SearchablePreferenceScreenGraphDAO dao =
+                new SearchablePreferenceScreenGraphDAO(
+                        new SearchablePreferenceScreenEntityGraphDAO(
+                                appDatabase.searchablePreferenceScreenEntityDAO(),
+                                appDatabase.searchablePreferenceEntityDAO()));
 
         // When
         dao.persist(
@@ -69,8 +77,9 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         // Given
         final SearchablePreferenceScreenGraphDAO dao =
                 new SearchablePreferenceScreenGraphDAO(
-                        appDatabase.searchablePreferenceScreenEntityDAO(),
-                        appDatabase.searchablePreferenceEntityDAO());
+                        new SearchablePreferenceScreenEntityGraphDAO(
+                                appDatabase.searchablePreferenceScreenEntityDAO(),
+                                appDatabase.searchablePreferenceEntityDAO()));
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createSingleNodeGraph(PreferenceFragmentCompat.class)
