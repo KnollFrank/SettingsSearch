@@ -16,6 +16,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEi
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
+import de.KnollFrank.lib.settingssearch.graph.GraphConverter;
 
 @Database(
         entities = {
@@ -40,6 +41,7 @@ public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
     @Override
     public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
         return new SearchablePreferenceScreenGraphDAO(
+                new GraphConverter(),
                 new SearchablePreferenceScreenEntityGraphDAO(
                         searchablePreferenceScreenEntityDAO(),
                         searchablePreferenceEntityDAO()));

@@ -19,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
+import de.KnollFrank.lib.settingssearch.graph.GraphConverter;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphEquality;
 
 @RunWith(RobolectricTestRunner.class)
@@ -29,6 +30,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         // Given
         final SearchablePreferenceScreenGraphDAO dao =
                 new SearchablePreferenceScreenGraphDAO(
+                        new GraphConverter(),
                         new SearchablePreferenceScreenEntityGraphDAO(
                                 appDatabase.searchablePreferenceScreenEntityDAO(),
                                 appDatabase.searchablePreferenceEntityDAO()));
@@ -50,6 +52,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         // Given
         final SearchablePreferenceScreenGraphDAO dao =
                 new SearchablePreferenceScreenGraphDAO(
+                        new GraphConverter(),
                         new SearchablePreferenceScreenEntityGraphDAO(
                                 appDatabase.searchablePreferenceScreenEntityDAO(),
                                 appDatabase.searchablePreferenceEntityDAO()));
@@ -77,6 +80,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         // Given
         final SearchablePreferenceScreenGraphDAO dao =
                 new SearchablePreferenceScreenGraphDAO(
+                        new GraphConverter(),
                         new SearchablePreferenceScreenEntityGraphDAO(
                                 appDatabase.searchablePreferenceScreenEntityDAO(),
                                 appDatabase.searchablePreferenceEntityDAO()));
