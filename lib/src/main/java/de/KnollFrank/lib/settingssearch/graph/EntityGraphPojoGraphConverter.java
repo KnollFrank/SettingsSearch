@@ -6,8 +6,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter;
 
-// Fk-TODO: flip arguments of Converter
-public class GraphConverter implements Converter<EntityGraphAndDbDataProvider, Graph<SearchablePreferenceScreen, SearchablePreferenceEdge>> {
+public class EntityGraphPojoGraphConverter implements Converter<EntityGraphAndDbDataProvider, Graph<SearchablePreferenceScreen, SearchablePreferenceEdge>> {
 
     @Override
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> doForward(final EntityGraphAndDbDataProvider entityGraphAndDbDataProvider) {
