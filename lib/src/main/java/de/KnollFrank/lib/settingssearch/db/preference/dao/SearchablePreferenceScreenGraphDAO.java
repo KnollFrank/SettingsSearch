@@ -7,9 +7,7 @@ import org.jgrapht.Graph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraph2PojoGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraph2EntityGraphTransformer;
@@ -27,28 +25,39 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public void persist(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        removePersistedGraph();
-        final EntityGraphAndDbDataProvider entityGraph = PojoGraph2EntityGraphTransformer.toEntityGraph(graph);
-        searchablePreferenceScreenDAO.persist(entityGraph.entityGraph().vertexSet(), entityGraph.dbDataProvider());
+        final var entityGraph = PojoGraph2EntityGraphTransformer.toEntityGraph(graph);
+        persist(entityGraph);
     }
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
         // FK-TODO: cache persisted and loaded graph?
-        final DbDataProvider dbDataProvider = getDbDataProvider();
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> entityGraph =
-                convertScreensToGraph(
-                        searchablePreferenceScreenDAO.loadAll(),
-                        dbDataProvider);
-        return EntityGraph2PojoGraphTransformer.toPojoGraph(entityGraph, dbDataProvider);
+        final var entityGraphAndDbDataProvider = _load();
+        return EntityGraph2PojoGraphTransformer.toPojoGraph(
+                entityGraphAndDbDataProvider.entityGraph(),
+                entityGraphAndDbDataProvider.dbDataProvider());
     }
 
-    public DbDataProvider getDbDataProvider() {
-        return DbDataProviderFactory.createDbDataProvider(
-                searchablePreferenceScreenDAO,
-                searchablePreferenceDAO);
+    private void persist(final EntityGraphAndDbDataProvider entityGraph) {
+        removePersistedGraph();
+        searchablePreferenceScreenDAO.persist(entityGraph.entityGraph().vertexSet(), entityGraph.dbDataProvider());
     }
 
     private void removePersistedGraph() {
         searchablePreferenceScreenDAO.removeAll();
+    }
+
+    private EntityGraphAndDbDataProvider _load() {
+        final DbDataProvider dbDataProvider = getDbDataProvider();
+        return new EntityGraphAndDbDataProvider(
+                convertScreensToGraph(
+                        searchablePreferenceScreenDAO.loadAll(),
+                        dbDataProvider),
+                dbDataProvider);
+    }
+
+    private DbDataProvider getDbDataProvider() {
+        return DbDataProviderFactory.createDbDataProvider(
+                searchablePreferenceScreenDAO,
+                searchablePreferenceDAO);
     }
 }
