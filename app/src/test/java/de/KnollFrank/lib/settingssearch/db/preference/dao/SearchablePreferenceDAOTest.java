@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
-import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEquality;
+import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEntityEquality;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceDAOTest extends AppDatabaseTest {
@@ -45,7 +45,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         assertThat(preferenceFromDb.isPresent(), is(true));
 
         // And the preference was persisted correctly
-        SearchablePreferenceEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
+        SearchablePreferenceEntityEquality.assertActualEqualsExpected(preferenceFromDb.orElseThrow(), preference);
     }
 
     @Test

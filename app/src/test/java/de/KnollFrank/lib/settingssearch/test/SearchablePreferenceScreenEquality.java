@@ -16,6 +16,6 @@ public class SearchablePreferenceScreenEquality {
         assertThat(actual.host(), Matchers.<Class<? extends PreferenceFragmentCompat>>is(expected.host()));
         assertThat(actual.title(), is(expected.title()));
         assertThat(actual.summary(), is(expected.summary()));
-        // FK-TODO: assert equality of children
+        SearchablePreferenceEquality.assertActualEqualsExpected(actual.allPreferences(), expected.allPreferences());
     }
 }
