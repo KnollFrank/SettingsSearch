@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER;
 
 import android.app.Activity;
 import android.content.Context;
@@ -487,7 +488,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
     @Test
     public void shouldSearchAndFindInPreferenceWithOnPreferenceClickListener() {
         final String keyword = "some text in a custom dialog";
-        final String keyOfPreference = "keyOfPreferenceWithOnPreferenceClickListener";
+        final String keyOfPreference = KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER;
         testSearch(
                 new PrefsFragmentFirst(),
                 (preference, hostOfPreference) -> true,
@@ -813,7 +814,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
 
         @Override
         public Optional<PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<?>> getPreferenceDialogAndSearchableInfoByPreferenceDialogProvider(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-            return preference instanceof CustomDialogPreference || "keyOfPreferenceWithOnPreferenceClickListener".equals(preference.getKey()) ?
+            return preference instanceof CustomDialogPreference || KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER.equals(preference.getKey()) ?
                     Optional.of(
                             new PreferenceDialogAndSearchableInfoByPreferenceDialogProvider<>(
                                     new CustomDialogFragment(),
