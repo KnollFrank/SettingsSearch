@@ -41,7 +41,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         dao.persist(preference);
 
         // Then the preference was persisted at all
-        final Optional<SearchablePreferenceEntity> preferenceFromDb = dao.findPreferenceById(preference.getId());
+        final Optional<SearchablePreferenceEntity> preferenceFromDb = dao.findPreferenceById(preference.id());
         assertThat(preferenceFromDb.isPresent(), is(true));
 
         // And the preference was persisted correctly
@@ -64,12 +64,12 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                 createSomeSearchablePreference(
                         2,
                         Optional.empty(),
-                        Optional.of(predecessor.getId()),
+                        Optional.of(predecessor.id()),
                         Optional.of("some title"),
                         Optional.of("some summary"),
                         Optional.of("some searchable info"));
         dao.persist(predecessor, preference);
-        final SearchablePreferenceEntity preferenceFromDb = dao.findPreferenceById(preference.getId()).orElseThrow();
+        final SearchablePreferenceEntity preferenceFromDb = dao.findPreferenceById(preference.id()).orElseThrow();
 
         // When
         final SearchablePreferenceEntity predecessorFromDb = preferenceFromDb.getPredecessor(dao).orElseThrow();
@@ -94,13 +94,13 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreferenceEntity child =
                 createSomeSearchablePreference(
                         2,
-                        Optional.of(parent.getId()),
+                        Optional.of(parent.id()),
                         Optional.empty(),
                         Optional.of("some title"),
                         Optional.of("some summary"),
                         Optional.of("some searchable info"));
         dao.persist(parent, child);
-        final SearchablePreferenceEntity parentFromDb = dao.findPreferenceById(parent.getId()).orElseThrow();
+        final SearchablePreferenceEntity parentFromDb = dao.findPreferenceById(parent.id()).orElseThrow();
 
         // When
         final Set<SearchablePreferenceEntity> childrenFromDb = parentFromDb.getChildren(dao);
@@ -132,7 +132,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         // Then
         final boolean removed =
                 dao
-                        .findPreferenceById(preference.getId())
+                        .findPreferenceById(preference.id())
                         .isEmpty();
         assertThat(removed, is(true));
     }
@@ -180,7 +180,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
             }
 
             private boolean isPreference2Exclude(final SearchablePreference preference) {
-                return preference.getId() == preference2Exclude.getId();
+                return preference.getId() == preference2Exclude.id();
             }
         };
     }

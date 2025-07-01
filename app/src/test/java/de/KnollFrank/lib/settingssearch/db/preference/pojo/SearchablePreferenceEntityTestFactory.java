@@ -52,7 +52,7 @@ public class SearchablePreferenceEntityTestFactory {
                 true,
                 Optional.empty(),
                 Optional.empty(),
-                predecessor.map(SearchablePreferenceEntity::getId),
+                predecessor.map(SearchablePreferenceEntity::id),
                 "-1");
     }
 
@@ -90,7 +90,7 @@ public class SearchablePreferenceEntityTestFactory {
                 true,
                 searchableInfo,
                 Optional.empty(),
-                predecessor.map(SearchablePreferenceEntity::getId),
+                predecessor.map(SearchablePreferenceEntity::id),
                 "-1");
     }
 
@@ -115,7 +115,7 @@ public class SearchablePreferenceEntityTestFactory {
     public static SearchablePreferenceEntity copyPreferenceAndSetPredecessor(final SearchablePreferenceEntity preference,
                                                                              final Optional<SearchablePreferenceEntity> predecessor) {
         return createSearchablePreference(
-                preference.getTitle().orElseThrow(),
+                preference.title().orElseThrow(),
                 predecessor);
     }
 }

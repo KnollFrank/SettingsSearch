@@ -207,7 +207,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         true,
                         Optional.empty(),
-                        Optional.of(parent.getId()),
+                        Optional.of(parent.id()),
                         Optional.empty(),
                         screenId);
         final SearchablePreference child1Pojo =
@@ -238,7 +238,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         true,
                         Optional.empty(),
-                        Optional.of(parent.getId()),
+                        Optional.of(parent.id()),
                         Optional.empty(),
                         screenId);
         final SearchablePreference child2Pojo =
@@ -335,7 +335,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         Optional.empty(),
                         Optional.empty(),
-                        Optional.of(predecessor.getId()),
+                        Optional.of(predecessor.id()),
                         screenId);
         final SearchablePreference searchablePreferencePojo =
                 new SearchablePreference(

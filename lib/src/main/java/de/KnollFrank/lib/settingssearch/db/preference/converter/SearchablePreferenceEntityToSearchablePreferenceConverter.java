@@ -25,17 +25,17 @@ class SearchablePreferenceEntityToSearchablePreferenceConverter {
     private SearchablePreference fromEntity(final SearchablePreferenceEntity entity,
                                             final PredecessorProvider predecessorProvider) {
         return new SearchablePreference(
-                entity.getId(),
-                entity.getKey(),
-                entity.getTitle(),
-                entity.getSummary(),
-                entity.getIconResourceIdOrIconPixelData(),
-                entity.getLayoutResId(),
-                entity.getWidgetLayoutResId(),
-                entity.getFragment(),
-                entity.getClassNameOfReferencedActivity(),
-                entity.isVisible(),
-                entity.getSearchableInfo(),
+                entity.id(),
+                entity.key(),
+                entity.title(),
+                entity.summary(),
+                entity.iconResourceIdOrIconPixelData(),
+                entity.layoutResId(),
+                entity.widgetLayoutResId(),
+                entity.fragment(),
+                entity.classNameOfReferencedActivity(),
+                entity.visible(),
+                entity.searchableInfo(),
                 fromEntities(entity.getChildren(dbDataProvider), predecessorProvider),
                 predecessorProvider.getPredecessor(entity));
     }

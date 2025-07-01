@@ -89,7 +89,7 @@ class EntityGraphEquality {
                                    final SearchablePreferenceEntity.DbDataProvider dbDataProvider) {
         return entities
                 .stream()
-                .sorted(Comparator.comparing(SearchablePreferenceEntity::getId))
+                .sorted(Comparator.comparing(SearchablePreferenceEntity::id))
                 .map(entity -> toString(entity, dbDataProvider))
                 .collect(Collectors.joining(", "));
     }
@@ -97,16 +97,16 @@ class EntityGraphEquality {
     private static String toString(final SearchablePreferenceEntity entity,
                                    final SearchablePreferenceEntity.DbDataProvider dbDataProvider) {
         return new StringJoiner(", ", SearchablePreferenceEntity.class.getSimpleName() + "[", "]")
-                .add("id=" + entity.getId())
-                .add("key='" + entity.getKey() + "'")
-                .add("title=" + entity.getTitle())
-                .add("summary=" + entity.getSummary())
-                .add("searchableInfo=" + entity.getSearchableInfo())
-                .add("fragment=" + entity.getFragment())
-                .add("visible=" + entity.isVisible())
-                .add("parentId=" + entity.getParentId())
-                .add("predecessorId=" + entity.getPredecessorId())
-                .add("searchablePreferenceScreenId='" + entity.getSearchablePreferenceScreenId() + "'")
+                .add("id=" + entity.id())
+                .add("key='" + entity.key() + "'")
+                .add("title=" + entity.title())
+                .add("summary=" + entity.summary())
+                .add("searchableInfo=" + entity.searchableInfo())
+                .add("fragment=" + entity.fragment())
+                .add("visible=" + entity.visible())
+                .add("parentId=" + entity.parentId())
+                .add("predecessorId=" + entity.predecessorId())
+                .add("searchablePreferenceScreenId='" + entity.searchablePreferenceScreenId() + "'")
                 .add("children=" + toString(entity.getChildren(dbDataProvider), dbDataProvider))
                 .toString();
     }

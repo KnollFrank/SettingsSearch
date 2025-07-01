@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 
+// FK-TODO: make record?
 @Entity
 public final class SearchablePreferenceScreenEntity {
 

@@ -39,7 +39,7 @@ class PredecessorProviderFactory {
                                 Function.identity(),
                                 entity ->
                                         Maps
-                                                .get(predecessorById, entity.getPredecessorId().orElseThrow())
+                                                .get(predecessorById, entity.predecessorId().orElseThrow())
                                                 .orElseThrow()));
     }
 

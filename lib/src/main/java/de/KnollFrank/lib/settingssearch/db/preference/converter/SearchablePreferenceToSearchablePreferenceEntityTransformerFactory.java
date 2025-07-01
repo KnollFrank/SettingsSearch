@@ -18,7 +18,7 @@ class SearchablePreferenceToSearchablePreferenceEntityTransformerFactory {
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                SearchablePreferenceEntity::getId,
+                                SearchablePreferenceEntity::id,
                                 Function.identity()));
     }
 }

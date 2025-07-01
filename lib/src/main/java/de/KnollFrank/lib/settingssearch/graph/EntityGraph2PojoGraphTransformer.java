@@ -46,7 +46,7 @@ public class EntityGraph2PojoGraphTransformer {
                                                           final SearchablePreferenceScreen transformedParentNode) {
                 return new SearchablePreferenceEdge(
                         SearchablePreferences
-                                .findPreferenceById(transformedParentNode.allPreferences(), edge.preference.getId())
+                                .findPreferenceById(transformedParentNode.allPreferences(), edge.preference.id())
                                 .orElseThrow());
             }
         };

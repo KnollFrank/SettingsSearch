@@ -30,7 +30,7 @@ public class SearchablePreferenceToSearchablePreferenceEntityConverter {
                         preferenceToConvertToEntity.isVisible(),
                         preferenceToConvertToEntity.getSearchableInfo(),
                         parentId,
-                        predecessor.map(SearchablePreferenceEntity::getId),
+                        predecessor.map(SearchablePreferenceEntity::id),
                         parentScreen.getId());
         return new DetachedSearchablePreferenceEntity(
                 entity,
