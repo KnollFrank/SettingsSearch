@@ -38,11 +38,6 @@ public record SearchablePreferenceEntity(@PrimaryKey int id,
         Objects.requireNonNull(key);
     }
 
-    @Override
-    public int id() {
-        return id;
-    }
-
     public Set<SearchablePreferenceEntity> getChildren(final DbDataProvider dbDataProvider) {
         return dbDataProvider.getChildren(this);
     }
