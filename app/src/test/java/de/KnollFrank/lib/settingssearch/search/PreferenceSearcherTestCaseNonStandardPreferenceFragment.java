@@ -68,6 +68,8 @@ class PreferenceSearcherTestCaseNonStandardPreferenceFragment {
                 (preference, hostOfPreference) -> Optional.empty(),
                 principalAndProxyProvider,
                 checkPreferenceMatches,
-                searchablePreferenceScreenGraphDAO);
+                searchablePreferenceScreenGraphDAO,
+                preferenceScreenGraph -> {
+                });
     }
 }

@@ -90,6 +90,8 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 checkPreferenceMatches,
-                searchablePreferenceScreenGraphDAO);
+                searchablePreferenceScreenGraphDAO,
+                preferenceScreenGraph -> {
+                });
     }
 }
