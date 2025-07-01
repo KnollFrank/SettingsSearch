@@ -14,8 +14,7 @@ public class GraphTransformerAlgorithm {
             final Graph<VSrc, ESrc> graph,
             final Class<? extends EDst> transformedEdgeClass,
             final GraphTransformer<VSrc, ESrc, VDst, EDst> graphTransformer) {
-        // FK-TODO: use GraphBuilder for transformedGraph
-        final Graph<VDst, EDst> transformedGraph = new DefaultDirectedGraph<>(transformedEdgeClass);
+        final var transformedGraphBuilder = DefaultDirectedGraph.<VDst, EDst>createBuilder(transformedEdgeClass);
         final BreadthFirstGraphVisitor<VSrc, ESrc> graphVisitor =
                 new BreadthFirstGraphVisitor<>() {
 
@@ -25,7 +24,7 @@ public class GraphTransformerAlgorithm {
                     protected void visitRootNode(final VSrc rootNode) {
                         final VDst transformedRootNode = graphTransformer.transformRootNode(rootNode);
                         transformedNodeByNode.put(rootNode, transformedRootNode);
-                        transformedGraph.addVertex(transformedRootNode);
+                        transformedGraphBuilder.addVertex(transformedRootNode);
                     }
 
                     @Override
@@ -37,14 +36,14 @@ public class GraphTransformerAlgorithm {
                                         innerNode,
                                         new ContextOfInnerNode<>(edge, transformedParentNode));
                         transformedNodeByNode.put(innerNode, transformedInnerNode);
-                        transformedGraph.addVertex(transformedInnerNode);
-                        transformedGraph.addEdge(
+                        transformedGraphBuilder.addVertex(transformedInnerNode);
+                        transformedGraphBuilder.addEdge(
                                 transformedParentNode,
                                 transformedInnerNode,
                                 graphTransformer.transformEdge(edge, transformedParentNode));
                     }
                 };
         graphVisitor.visit(graph);
-        return transformedGraph;
+        return transformedGraphBuilder.build();
     }
 }
