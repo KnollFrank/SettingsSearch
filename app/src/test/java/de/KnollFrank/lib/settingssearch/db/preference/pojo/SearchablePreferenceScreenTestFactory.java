@@ -2,18 +2,21 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphUtils;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider;
 
 public class SearchablePreferenceScreenTestFactory {
 
-    public static Pair<SearchablePreferenceScreenEntity, DbDataProvider> createSomeSearchablePreferenceScreen() {
+    public record SearchablePreferenceScreenEntityAndDbDataProvider(
+            SearchablePreferenceScreenEntity entity, DbDataProvider dbDataProvider) {
+    }
+
+    public static SearchablePreferenceScreenEntityAndDbDataProvider createSomeSearchablePreferenceScreen() {
         final EntityGraphAndDbDataProvider entityGraphAndDbDataProvider =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(PreferenceFragmentCompat.class)
                         .entityGraphAndDbDataProvider();
-        return Pair.create(
+        return new SearchablePreferenceScreenEntityAndDbDataProvider(
                 GraphUtils
                         .getRootNode(entityGraphAndDbDataProvider.entityGraph())
                         .orElseThrow(),
