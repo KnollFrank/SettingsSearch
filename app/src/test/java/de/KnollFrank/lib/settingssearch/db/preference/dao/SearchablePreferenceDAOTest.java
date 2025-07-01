@@ -16,9 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.test.SearchablePreferenceEntityEquality;
 
 @RunWith(RobolectricTestRunner.class)
@@ -169,20 +167,6 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
 
         // Then
         assertThat(maxId, is(Optional.empty()));
-    }
-
-    private static IncludePreferenceInSearchResultsPredicate excludePreferenceFromSearchResults(final SearchablePreferenceEntity preference2Exclude) {
-        return new IncludePreferenceInSearchResultsPredicate() {
-
-            @Override
-            public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                return !isPreference2Exclude(preference);
-            }
-
-            private boolean isPreference2Exclude(final SearchablePreference preference) {
-                return preference.getId() == preference2Exclude.id();
-            }
-        };
     }
 
     private static SearchablePreferenceEntity createSomeSearchablePreference(
