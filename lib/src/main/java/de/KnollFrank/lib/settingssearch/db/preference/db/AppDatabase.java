@@ -47,14 +47,10 @@ public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
                         searchablePreferenceEntityDAO()));
     }
 
-    // FK-TODO: hide from public API
-    @Override
     public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
 
-    // FK-TODO: hide from public API
     @Override
     public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
 
-    // FK-TODO: hide from public API
     public abstract SearchDatabaseStateDAO searchDatabaseStateDAO();
 }
