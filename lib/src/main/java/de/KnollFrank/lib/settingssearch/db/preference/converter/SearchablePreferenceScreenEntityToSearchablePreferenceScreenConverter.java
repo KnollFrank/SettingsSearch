@@ -23,10 +23,10 @@ public class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConvert
                                                  final Optional<SearchablePreferenceScreen> predecessorOfEntity) {
         final Set<SearchablePreferenceEntity> searchablePreferenceEntities = entity.getAllPreferences(dbDataProvider);
         return new SearchablePreferenceScreen(
-                entity.getId(),
-                entity.getHost(),
-                entity.getTitle(),
-                entity.getSummary(),
+                entity.id(),
+                entity.host(),
+                entity.title(),
+                entity.summary(),
                 preferenceConverter.fromEntities(
                         searchablePreferenceEntities,
                         PredecessorProviderFactory.createPredecessorProvider(predecessorOfEntity, searchablePreferenceEntities)));

@@ -276,8 +276,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId,
                         host,
                         Optional.of("screen title"),
-                        Optional.of("screen summary"),
-                        Set.of(parent, child1, child2, preferenceConnectingSrc2Dst));
+                        Optional.of("screen summary"));
         return Pair.create(
                 Pair.create(
                         searchablePreferenceScreen,
@@ -357,8 +356,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId,
                         PreferenceFragmentWithSinglePreference.class,
                         Optional.empty(),
-                        Optional.empty(),
-                        Set.of(searchablePreference));
+                        Optional.empty());
         return Pair.create(
                 Pair.create(
                         searchablePreferenceScreen,

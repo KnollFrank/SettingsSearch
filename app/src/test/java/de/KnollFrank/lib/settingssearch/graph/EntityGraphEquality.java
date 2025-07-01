@@ -57,7 +57,7 @@ class EntityGraphEquality {
                                        final DbDataProvider dbDataProvider) {
         return nodes
                 .stream()
-                .sorted(Comparator.comparing(SearchablePreferenceScreenEntity::getId))
+                .sorted(Comparator.comparing(SearchablePreferenceScreenEntity::id))
                 .map(node -> toString(node, dbDataProvider))
                 .collect(Collectors.joining(", "));
     }
@@ -67,17 +67,17 @@ class EntityGraphEquality {
         return graph
                 .edgeSet()
                 .stream()
-                .map(edge -> graph.getEdgeSource(edge).getId() + "->" + graph.getEdgeTarget(edge).getId() + ":" + toString(edge.preference, dbDataProvider))
+                .map(edge -> graph.getEdgeSource(edge).id() + "->" + graph.getEdgeTarget(edge).id() + ":" + toString(edge.preference, dbDataProvider))
                 .collect(Collectors.toSet());
     }
 
     private static String toString(final SearchablePreferenceScreenEntity entity,
                                    final DbDataProvider dbDataProvider) {
         return new StringJoiner(", ", SearchablePreferenceScreenEntity.class.getSimpleName() + "[", "]")
-                .add("id='" + entity.getId() + "'")
-                .add("host=" + entity.getHost())
-                .add("title=" + entity.getTitle())
-                .add("summary=" + entity.getSummary())
+                .add("id='" + entity.id() + "'")
+                .add("host=" + entity.host())
+                .add("title=" + entity.title())
+                .add("summary=" + entity.summary())
                 .add("allPreferences=" +
                         toString(
                                 entity.getAllPreferences(dbDataProvider),

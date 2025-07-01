@@ -12,9 +12,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class SearchablePreferenceScreenEntityEquality {
 
     public static void assertActualEqualsExpected(final SearchablePreferenceScreenEntity actual, final SearchablePreferenceScreenEntity expected) {
-        assertThat(actual.getId(), is(expected.getId()));
-        assertThat(actual.getHost(), Matchers.<Class<? extends PreferenceFragmentCompat>>is(expected.getHost()));
-        assertThat(actual.getTitle(), is(expected.getTitle()));
-        assertThat(actual.getSummary(), is(expected.getSummary()));
+        assertThat(actual.id(), is(expected.id()));
+        assertThat(actual.host(), Matchers.<Class<? extends PreferenceFragmentCompat>>is(expected.host()));
+        assertThat(actual.title(), is(expected.title()));
+        assertThat(actual.summary(), is(expected.summary()));
     }
 }
