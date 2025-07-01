@@ -45,8 +45,7 @@ public final class SearchablePreferenceEntity {
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedTitleProvider = Optional::empty;
 
-    // FK-TODO: make final, remove setter
-    private Optional<String> summary;
+    private final Optional<String> summary;
     @Ignore
     private Supplier<Optional<CharSequence>> highlightedSummaryProvider = Optional::empty;
 
@@ -103,6 +102,7 @@ public final class SearchablePreferenceEntity {
         return iconResourceIdOrIconPixelData;
     }
 
+    // FK-TODO: remove
     public Optional<Drawable> getIcon(final Context context) {
         if (iconCache.isEmpty()) {
             iconCache = Optional.of(_getIcon(context));
@@ -114,18 +114,16 @@ public final class SearchablePreferenceEntity {
         return layoutResId;
     }
 
-    public void setSummary(final Optional<String> summary) {
-        this.summary = summary;
-    }
-
     public Optional<String> getSummary() {
         return summary;
     }
 
+    // FK-TODO: remove
     public void setHighlightedSummaryProvider(final Supplier<Optional<CharSequence>> highlightedSummaryProvider) {
         this.highlightedSummaryProvider = highlightedSummaryProvider;
     }
 
+    // FK-TODO: remove
     public Optional<CharSequence> getHighlightedSummary() {
         return highlightedSummaryProvider.get();
     }
@@ -134,10 +132,12 @@ public final class SearchablePreferenceEntity {
         return title;
     }
 
+    // FK-TODO: remove
     public void setHighlightedTitleProvider(final Supplier<Optional<CharSequence>> highlightedTitleProvider) {
         this.highlightedTitleProvider = highlightedTitleProvider;
     }
 
+    // FK-TODO: remove
     public Optional<CharSequence> getHighlightedTitle() {
         return highlightedTitleProvider.get();
     }
@@ -146,6 +146,7 @@ public final class SearchablePreferenceEntity {
         return searchableInfo;
     }
 
+    // FK-TODO: remove
     public void setHighlightedSearchableInfoProvider(final Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider) {
         this.highlightedSearchableInfoProvider = highlightedSearchableInfoProvider;
     }
@@ -154,6 +155,7 @@ public final class SearchablePreferenceEntity {
         return highlightedSearchableInfoProvider.get();
     }
 
+    // FK-TODO: remove
     public boolean hasPreferenceMatchWithinSearchableInfo() {
         return getHighlightedSearchableInfo().isPresent();
     }
@@ -170,6 +172,7 @@ public final class SearchablePreferenceEntity {
         return classNameOfReferencedActivity;
     }
 
+    // FK-TODO: remove
     public Optional<Class<? extends Activity>> getClassOfReferencedActivity(final Context context) {
         return this
                 .getClassNameOfReferencedActivity()
