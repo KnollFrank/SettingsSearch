@@ -10,6 +10,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 
+// FK-TODO: use a single AppDatabase for all locales
 public class AppDatabaseFactory {
 
     record LocaleSpecificAppDatabase(Locale locale, AppDatabase appDatabase) {
