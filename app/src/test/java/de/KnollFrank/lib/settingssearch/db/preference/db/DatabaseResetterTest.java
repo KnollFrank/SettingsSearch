@@ -1,12 +1,11 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityTestFactory.createSearchablePreference;
 
 import android.content.Context;
 
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Test;
@@ -17,7 +16,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
 public class DatabaseResetterTest {
@@ -61,16 +60,17 @@ public class DatabaseResetterTest {
     }
 
     private static void initialize(final AppDatabase appDatabase) {
-        final SearchablePreferenceEntity preference =
-                createSearchablePreference(
-                        "some preference",
-                        Optional.empty());
-        appDatabase.searchablePreferenceEntityDAO().persist(preference);
+        appDatabase
+                .searchablePreferenceScreenGraphDAO()
+                .persist(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createSingleNodeGraph(PreferenceFragmentCompat.class)
+                                .pojoGraph());
         appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(true);
     }
 
     private static void assertIsReset(final AppDatabase appDatabase) {
-        assertThat(appDatabase.searchablePreferenceEntityDAO().loadAll(), is(empty()));
+        assertThat(appDatabase.searchablePreferenceScreenGraphDAO().load(), is(Optional.empty()));
         assertThat(appDatabase.searchDatabaseStateDAO().isSearchDatabaseInitialized(), is(false));
     }
 }

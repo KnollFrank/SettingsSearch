@@ -52,7 +52,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     @Query("DELETE FROM SearchablePreferenceScreenGraphEntity")
     protected abstract void _removeAll();
 
-    private void removePersistedGraph() {
+    public void removePersistedGraph() {
         screenDAO.removeAll();
         _removeAll();
     }
