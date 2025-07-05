@@ -31,9 +31,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         final SearchablePreferenceScreenGraphDAO dao =
                 new SearchablePreferenceScreenGraphDAO(
                         new EntityGraphPojoGraphConverter(),
-                        new SearchablePreferenceScreenEntityGraphDAO(
-                                appDatabase.searchablePreferenceScreenEntityDAO(),
-                                appDatabase.searchablePreferenceEntityDAO()));
+                        appDatabase.searchablePreferenceScreenGraphEntityDAO());
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(PreferenceFragmentCompat.class)
@@ -53,9 +51,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         final SearchablePreferenceScreenGraphDAO dao =
                 new SearchablePreferenceScreenGraphDAO(
                         new EntityGraphPojoGraphConverter(),
-                        new SearchablePreferenceScreenEntityGraphDAO(
-                                appDatabase.searchablePreferenceScreenEntityDAO(),
-                                appDatabase.searchablePreferenceEntityDAO()));
+                        appDatabase.searchablePreferenceScreenGraphEntityDAO());
 
         // When
         dao.persist(
@@ -81,9 +77,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         final SearchablePreferenceScreenGraphDAO dao =
                 new SearchablePreferenceScreenGraphDAO(
                         new EntityGraphPojoGraphConverter(),
-                        new SearchablePreferenceScreenEntityGraphDAO(
-                                appDatabase.searchablePreferenceScreenEntityDAO(),
-                                appDatabase.searchablePreferenceEntityDAO()));
+                        appDatabase.searchablePreferenceScreenGraphEntityDAO());
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createSingleNodeGraph(PreferenceFragmentCompat.class)

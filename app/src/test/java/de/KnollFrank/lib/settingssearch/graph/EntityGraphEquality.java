@@ -19,21 +19,23 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 class EntityGraphEquality {
 
-    public static void assertActualEqualsExpected(final EntityGraphAndDbDataProvider actual,
-                                                  final EntityGraphAndDbDataProvider expected) {
+    public static void assertActualEqualsExpected(final GraphAndDbDataProvider actual,
+                                                  final GraphAndDbDataProvider expected) {
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> actualGraph = actual.graph().asGraph(actual.dbDataProvider());
+        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> expectedGraph = expected.graph().asGraph(expected.dbDataProvider());
         assertActualEqualsExpected(
                 Pair.create(
-                        actual.entityGraph().vertexSet(),
+                        actualGraph.vertexSet(),
                         actual.dbDataProvider()),
                 Pair.create(
-                        expected.entityGraph().vertexSet(),
+                        expectedGraph.vertexSet(),
                         expected.dbDataProvider()));
         assertActualEdgesEqualsExpectedEdges(
                 Pair.create(
-                        actual.entityGraph(),
+                        actualGraph,
                         actual.dbDataProvider()),
                 Pair.create(
-                        expected.entityGraph(),
+                        expectedGraph,
                         expected.dbDataProvider()));
     }
 
@@ -79,9 +81,9 @@ class EntityGraphEquality {
                 .add("title=" + entity.title())
                 .add("summary=" + entity.summary())
                 .add("allPreferences=" +
-                        toString(
-                                entity.getAllPreferences(dbDataProvider),
-                                dbDataProvider))
+                             toString(
+                                     entity.getAllPreferences(dbDataProvider),
+                                     dbDataProvider))
                 .toString();
     }
 

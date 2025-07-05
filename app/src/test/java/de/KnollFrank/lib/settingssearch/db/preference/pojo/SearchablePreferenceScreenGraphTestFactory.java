@@ -13,9 +13,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
-import de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
+import de.KnollFrank.lib.settingssearch.graph.GraphAndDbDataProvider;
 
 public class SearchablePreferenceScreenGraphTestFactory {
 
@@ -24,7 +24,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
     public static final String PARENT_KEY = "parentKey";
 
     public record Graphs(
-            EntityGraphAndDbDataProvider entityGraphAndDbDataProvider,
+            GraphAndDbDataProvider entityGraphAndDbDataProvider,
             Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
     }
 
@@ -67,27 +67,29 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
                         host);
+        // FK-FIXME: 4711 is too special
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(4711);
         return new Graphs(
-                new EntityGraphAndDbDataProvider(
-                        DefaultDirectedGraph
-                                .<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>createBuilder(SearchablePreferenceEntityEdge.class)
-                                .addVertex(src.first().first())
-                                .build(),
+                new GraphAndDbDataProvider(
+                        graphEntity,
                         DbDataProviderFactory.createDbDataProvider(
                                 DbDataProviderDatas.merge(
                                         List.of(
                                                 src.first().second(),
-                                                new DbDataProviderDataBuilder()
+                                                DbDataProviderData
+                                                        .builder()
+                                                        .withNodesByGraph(
+                                                                Map.of(
+                                                                        graphEntity,
+                                                                        Set.of(src.first().first())))
                                                         .withPredecessorByPreference(
-                                                                ImmutableMap
-                                                                        .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
-                                                                        .put(preferenceConnectingSrc2Dst, Optional.empty())
-                                                                        .build())
+                                                                Map.of(
+                                                                        preferenceConnectingSrc2Dst,
+                                                                        Optional.empty()))
                                                         .withChildrenByPreference(
-                                                                ImmutableMap
-                                                                        .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
-                                                                        .put(preferenceConnectingSrc2Dst, Set.of())
-                                                                        .build())
+                                                                Map.of(
+                                                                        preferenceConnectingSrc2Dst,
+                                                                        Set.of()))
                                                         .build())))),
                 DefaultDirectedGraph
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
@@ -138,31 +140,32 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 createDst(
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst);
+        // FK-FIXME: 4711 is too special
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(4711);
         return new Graphs(
-                new EntityGraphAndDbDataProvider(
-                        DefaultDirectedGraph
-                                .<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>createBuilder(SearchablePreferenceEntityEdge.class)
-                                .addEdge(
-                                        src.first().first(),
-                                        dst.first().first(),
-                                        new SearchablePreferenceEntityEdge(preferenceConnectingSrc2Dst))
-                                .build(),
+                new GraphAndDbDataProvider(
+                        graphEntity,
                         DbDataProviderFactory.createDbDataProvider(
                                 DbDataProviderDatas.merge(
                                         List.of(
                                                 src.first().second(),
                                                 dst.first().second(),
-                                                new DbDataProviderDataBuilder()
+                                                DbDataProviderData
+                                                        .builder()
+                                                        .withNodesByGraph(
+                                                                Map.of(
+                                                                        graphEntity,
+                                                                        Set.of(
+                                                                                src.first().first(),
+                                                                                dst.first().first())))
                                                         .withPredecessorByPreference(
-                                                                ImmutableMap
-                                                                        .<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>builder()
-                                                                        .put(preferenceConnectingSrc2Dst, Optional.empty())
-                                                                        .build())
+                                                                Map.of(
+                                                                        preferenceConnectingSrc2Dst,
+                                                                        Optional.empty()))
                                                         .withChildrenByPreference(
-                                                                ImmutableMap
-                                                                        .<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>builder()
-                                                                        .put(preferenceConnectingSrc2Dst, Set.of())
-                                                                        .build())
+                                                                Map.of(
+                                                                        preferenceConnectingSrc2Dst,
+                                                                        Set.of()))
                                                         .build())))),
                 DefaultDirectedGraph
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)

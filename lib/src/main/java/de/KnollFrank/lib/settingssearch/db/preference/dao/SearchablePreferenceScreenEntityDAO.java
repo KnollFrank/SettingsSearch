@@ -15,7 +15,6 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
@@ -25,7 +24,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public abstract class SearchablePreferenceScreenEntityDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
 
     private final SearchablePreferenceEntityDAO searchablePreferenceDAO;
+    // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
+    // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity>> hostByPreference = Optional.empty();
 
     public SearchablePreferenceScreenEntityDAO(final AppDatabase appDatabase) {
@@ -101,7 +102,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     @Query("DELETE FROM SearchablePreferenceScreenEntity")
     protected abstract void _removeAll();
 
-    private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {
+    public Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
             allPreferencesBySearchablePreferenceScreen = Optional.of(computeAllPreferencesBySearchablePreferenceScreen());
         }
@@ -113,7 +114,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
                 new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
     }
 
-    private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {
+    public Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {
         if (hostByPreference.isEmpty()) {
             hostByPreference = Optional.of(computeHostByPreference());
         }
@@ -123,14 +124,6 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference() {
         return SearchablePreferenceScreenAndAllPreferencesHelper.getHostByPreference(
                 new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
-    }
-
-    DbDataProviderData createDbDataProviderData() {
-        return new DbDataProviderData(
-                getAllPreferencesBySearchablePreferenceScreen(),
-                getHostByPreference(),
-                searchablePreferenceDAO.getPredecessorByPreference(),
-                searchablePreferenceDAO.getChildrenByPreference());
     }
 
     private void invalidateCaches() {

@@ -7,9 +7,15 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 
 public class DbDataProviderFactory {
 
-    public static DbDataProvider createDbDataProvider(final SearchablePreferenceScreenEntity.DbDataProvider screenDbDataProvider,
-                                                      final SearchablePreferenceEntity.DbDataProvider preferencedbDataProvider) {
+    public static DbDataProvider createDbDataProvider(final SearchablePreferenceScreenGraphEntity.DbDataProvider graphDbDataProvider,
+                                                      final SearchablePreferenceScreenEntity.DbDataProvider screenDbDataProvider,
+                                                      final SearchablePreferenceEntity.DbDataProvider preferenceDbDataProvider) {
         return new DbDataProvider() {
+
+            @Override
+            public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenGraphEntity graph) {
+                return graphDbDataProvider.getNodes(graph);
+            }
 
             @Override
             public Set<SearchablePreferenceEntity> getAllPreferences(final SearchablePreferenceScreenEntity screen) {
@@ -23,20 +29,33 @@ public class DbDataProviderFactory {
 
             @Override
             public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
-                return preferencedbDataProvider.getChildren(preference);
+                return preferenceDbDataProvider.getChildren(preference);
             }
 
             @Override
             public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
-                return preferencedbDataProvider.getPredecessor(preference);
+                return preferenceDbDataProvider.getPredecessor(preference);
             }
         };
     }
 
     public static DbDataProvider createDbDataProvider(final DbDataProviderData dbDataProviderData) {
         return createDbDataProvider(
+                createGraphDbDataProvider(dbDataProviderData),
                 createScreenDbDataProvider(dbDataProviderData),
                 createPreferenceDataProvider(dbDataProviderData));
+    }
+
+    private static SearchablePreferenceScreenGraphEntity.DbDataProvider createGraphDbDataProvider(final DbDataProviderData dbDataProviderData) {
+        return new SearchablePreferenceScreenGraphEntity.DbDataProvider() {
+
+            @Override
+            public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenGraphEntity graph) {
+                return Maps
+                        .get(dbDataProviderData.nodesByGraph(), graph)
+                        .orElseThrow();
+            }
+        };
     }
 
     private static SearchablePreferenceScreenEntity.DbDataProvider createScreenDbDataProvider(final DbDataProviderData dbDataProviderData) {

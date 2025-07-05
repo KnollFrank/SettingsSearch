@@ -7,12 +7,18 @@ import java.util.Set;
 
 public class DbDataProviderDataBuilder {
 
+    private Map<SearchablePreferenceScreenGraphEntity, Set<SearchablePreferenceScreenEntity>> nodesByGraph = new HashMap<>();
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen = new HashMap<>();
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference = new HashMap<>();
     private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference = new HashMap<>();
     private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> childrenByPreference = new HashMap<>();
 
     protected DbDataProviderDataBuilder() {
+    }
+
+    public DbDataProviderDataBuilder withNodesByGraph(final Map<SearchablePreferenceScreenGraphEntity, Set<SearchablePreferenceScreenEntity>> nodesByGraph) {
+        this.nodesByGraph = nodesByGraph;
+        return this;
     }
 
     public DbDataProviderDataBuilder withAllPreferencesBySearchablePreferenceScreen(final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen) {
@@ -37,6 +43,7 @@ public class DbDataProviderDataBuilder {
 
     public DbDataProviderData build() {
         return new DbDataProviderData(
+                nodesByGraph,
                 allPreferencesBySearchablePreferenceScreen,
                 hostByPreference,
                 predecessorByPreference,

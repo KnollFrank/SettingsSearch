@@ -27,7 +27,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public abstract class SearchablePreferenceEntityDAO implements SearchablePreferenceEntity.DbDataProvider {
 
     private final AppDatabase appDatabase;
+    // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>> predecessorByPreference = Optional.empty();
+    // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>> childrenByPreference = Optional.empty();
 
     public SearchablePreferenceEntityDAO(final AppDatabase appDatabase) {

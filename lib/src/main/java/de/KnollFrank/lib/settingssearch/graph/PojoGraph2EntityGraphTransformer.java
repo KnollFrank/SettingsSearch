@@ -1,7 +1,10 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import com.google.common.collect.ImmutableSet;
+
 import org.jgrapht.Graph;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,19 +22,35 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
 
 public class PojoGraph2EntityGraphTransformer {
 
-    public static EntityGraphAndDbDataProvider toEntityGraph(
+    public static GraphAndDbDataProvider toEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
         final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
                 GraphTransformerAlgorithm.transform(
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer());
-        return new EntityGraphAndDbDataProvider(
-                removeDetachedDbDataProviders(transformedGraph),
-                DbDataProviderFactory.createDbDataProvider(DbDataProviderDatas.merge(getDbDataProviderDatas(transformedGraph.vertexSet()))));
+        // FK-FIXME: generalize hard coded id 4711
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(4711);
+        return new GraphAndDbDataProvider(
+                graphEntity,
+                DbDataProviderFactory.createDbDataProvider(
+                        DbDataProviderDatas.merge(
+                                ImmutableSet
+                                        .<DbDataProviderData>builder()
+                                        .addAll(getDbDataProviderDatas(transformedGraph.vertexSet()))
+                                        .add(
+                                                DbDataProviderData
+                                                        .builder()
+                                                        .withNodesByGraph(
+                                                                Map.of(
+                                                                        graphEntity,
+                                                                        removeDetachedDbDataProviders(transformedGraph).vertexSet()))
+                                                        .build())
+                                        .build())));
     }
 
     private static Set<DbDataProviderData> getDbDataProviderDatas(final Set<DetachedSearchablePreferenceScreenEntity> detachedSearchablePreferenceScreenEntities) {

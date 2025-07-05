@@ -4,16 +4,15 @@ import org.jgrapht.Graph;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.graph.EntityGraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
+import de.KnollFrank.lib.settingssearch.graph.GraphAndDbDataProvider;
 
-// FK-TODO: make this class a @Dao and introduce a new @Entity named SearchablePreferenceScreenGraph which references it's root SearchablePreferenceScreen. Then remove SearchDatabaseStateDAO and SearchDatabaseState.
 public class SearchablePreferenceScreenGraphDAO {
 
     private final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter;
-    private final SearchablePreferenceScreenEntityGraphDAO delegate;
+    private final SearchablePreferenceScreenGraphEntityDAO delegate;
 
-    public SearchablePreferenceScreenGraphDAO(final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter, final SearchablePreferenceScreenEntityGraphDAO delegate) {
+    public SearchablePreferenceScreenGraphDAO(final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter, final SearchablePreferenceScreenGraphEntityDAO delegate) {
         this.entityGraphPojoGraphConverter = entityGraphPojoGraphConverter;
         this.delegate = delegate;
     }
@@ -25,7 +24,7 @@ public class SearchablePreferenceScreenGraphDAO {
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> load() {
         // FK-TODO: cache persisted and loaded graph?
-        final EntityGraphAndDbDataProvider entityGraph = delegate.load();
+        final GraphAndDbDataProvider entityGraph = delegate.load();
         return entityGraphPojoGraphConverter.doForward(entityGraph);
     }
 }

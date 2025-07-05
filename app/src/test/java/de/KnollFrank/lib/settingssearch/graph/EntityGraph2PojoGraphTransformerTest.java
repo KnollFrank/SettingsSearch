@@ -30,12 +30,14 @@ public class EntityGraph2PojoGraphTransformerTest {
                 graphs.pojoGraph());
     }
 
-    private static void test_toPojoGraph(final EntityGraphAndDbDataProvider entityGraphAndDbDataProvider,
+    private static void test_toPojoGraph(final GraphAndDbDataProvider entityGraphAndDbDataProvider,
                                          final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected) {
         // When
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphActual =
                 EntityGraph2PojoGraphTransformer.toPojoGraph(
-                        entityGraphAndDbDataProvider.entityGraph(),
+                        entityGraphAndDbDataProvider
+                                .graph()
+                                .asGraph(entityGraphAndDbDataProvider.dbDataProvider()),
                         entityGraphAndDbDataProvider.dbDataProvider());
 
         // Then

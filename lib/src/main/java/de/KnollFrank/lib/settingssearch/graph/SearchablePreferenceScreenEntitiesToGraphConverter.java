@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
-public class SearchablePreferenceScreens2GraphConverter {
+public class SearchablePreferenceScreenEntitiesToGraphConverter {
 
     public static Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> convertScreensToGraph(final Set<SearchablePreferenceScreenEntity> screens,
                                                                                                                 final DbDataProvider dbDataProvider) {

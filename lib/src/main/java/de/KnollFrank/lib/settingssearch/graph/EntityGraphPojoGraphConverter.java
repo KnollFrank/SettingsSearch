@@ -6,17 +6,17 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter;
 
-public class EntityGraphPojoGraphConverter implements Converter<EntityGraphAndDbDataProvider, Graph<SearchablePreferenceScreen, SearchablePreferenceEdge>> {
+public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataProvider, Graph<SearchablePreferenceScreen, SearchablePreferenceEdge>> {
 
     @Override
-    public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> doForward(final EntityGraphAndDbDataProvider entityGraphAndDbDataProvider) {
+    public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> doForward(final GraphAndDbDataProvider graphAndDbDataProvider) {
         return EntityGraph2PojoGraphTransformer.toPojoGraph(
-                entityGraphAndDbDataProvider.entityGraph(),
-                entityGraphAndDbDataProvider.dbDataProvider());
+                graphAndDbDataProvider.graph().asGraph(graphAndDbDataProvider.dbDataProvider()),
+                graphAndDbDataProvider.dbDataProvider());
     }
 
     @Override
-    public EntityGraphAndDbDataProvider doBackward(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+    public GraphAndDbDataProvider doBackward(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
         return PojoGraph2EntityGraphTransformer.toEntityGraph(pojoGraph);
     }
 }
