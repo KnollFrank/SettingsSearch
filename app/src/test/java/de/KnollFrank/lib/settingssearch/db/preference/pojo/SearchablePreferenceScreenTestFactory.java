@@ -19,10 +19,7 @@ public class SearchablePreferenceScreenTestFactory {
                         .entityGraphAndDbDataProvider();
         return new SearchablePreferenceScreenEntityAndDbDataProvider(
                 GraphUtils
-                        .getRootNode(
-                                entityGraphAndDbDataProvider
-                                        .graph()
-                                        .asGraph(entityGraphAndDbDataProvider.dbDataProvider()))
+                        .getRootNode(entityGraphAndDbDataProvider.asGraph())
                         .orElseThrow(),
                 entityGraphAndDbDataProvider.dbDataProvider());
     }

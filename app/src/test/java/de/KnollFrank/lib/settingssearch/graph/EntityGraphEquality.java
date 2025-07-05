@@ -21,8 +21,8 @@ class EntityGraphEquality {
 
     public static void assertActualEqualsExpected(final GraphAndDbDataProvider actual,
                                                   final GraphAndDbDataProvider expected) {
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> actualGraph = actual.graph().asGraph(actual.dbDataProvider());
-        final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> expectedGraph = expected.graph().asGraph(expected.dbDataProvider());
+        final var actualGraph = actual.asGraph();
+        final var expectedGraph = expected.asGraph();
         assertActualEqualsExpected(
                 Pair.create(
                         actualGraph.vertexSet(),

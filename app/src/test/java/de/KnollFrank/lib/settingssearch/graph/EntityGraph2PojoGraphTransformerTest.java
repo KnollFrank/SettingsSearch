@@ -35,9 +35,7 @@ public class EntityGraph2PojoGraphTransformerTest {
         // When
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphActual =
                 EntityGraph2PojoGraphTransformer.toPojoGraph(
-                        entityGraphAndDbDataProvider
-                                .graph()
-                                .asGraph(entityGraphAndDbDataProvider.dbDataProvider()),
+                        entityGraphAndDbDataProvider.asGraph(),
                         entityGraphAndDbDataProvider.dbDataProvider());
 
         // Then
