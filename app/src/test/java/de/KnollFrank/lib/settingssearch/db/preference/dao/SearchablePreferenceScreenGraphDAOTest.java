@@ -39,7 +39,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
 
         // When
         dao.persist(graph);
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load();
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load().orElseThrow();
 
         // Then
         PojoGraphEquality.assertActualEqualsExpected(graphFromDb, graph);
@@ -67,7 +67,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         dao.persist(graph);
 
         // Then
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load();
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load().orElseThrow();
         PojoGraphEquality.assertActualEqualsExpected(graphFromDb, graph);
     }
 
@@ -86,10 +86,10 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
 
         // When
         dao.persist(graph);
-        dao.persist(dao.load());
+        dao.persist(dao.load().orElseThrow());
 
         // Then
-        final Set<SearchablePreference> allPreferencesFromDb = getAllPreferencesOfSingleNode(dao.load());
+        final Set<SearchablePreference> allPreferencesFromDb = getAllPreferencesOfSingleNode(dao.load().orElseThrow());
         assertThat(allPreferencesFromDb, is(allPreferences));
     }
 

@@ -111,7 +111,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {
                         return getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
-                                .load();
+                                .load()
+                                .orElseThrow();
                     }
 
                     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(final PreferenceScreenWithHost root) {
@@ -136,7 +137,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     @Override
                     public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
                         final var graphDAO = getAppDatabase().searchablePreferenceScreenGraphDAO();
-                        final var pojoGraph = graphDAO.load();
+                        final var pojoGraph = graphDAO.load().orElseThrow();
                         setSummaryOfPreferences(
                                 preference,
                                 getSummaryChangingPreference(pojoGraph),

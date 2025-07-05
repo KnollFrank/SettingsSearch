@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,8 +21,10 @@ class PreferenceSearcher {
     }
 
     public Set<PreferenceMatch> searchFor(final String needle) {
-        return PojoGraphs
-                .getPreferences(graphDAO.load())
+        return graphDAO
+                .load()
+                .map(PojoGraphs::getPreferences)
+                .orElseGet(Collections::emptySet)
                 .stream()
                 .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
                 .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))

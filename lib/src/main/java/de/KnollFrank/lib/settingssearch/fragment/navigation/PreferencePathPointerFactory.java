@@ -18,7 +18,7 @@ class PreferencePathPointerFactory {
                                                     final SearchablePreferenceScreenGraphDAO graphDAO) {
         return SearchablePreferences
                 .findPreferenceById(
-                        PojoGraphs.getPreferences(graphDAO.load()),
+                        PojoGraphs.getPreferences(graphDAO.load().orElseThrow()),
                         preferencePathNavigatorData.idOfSearchablePreference())
                 .orElseThrow()
                 .getPreferencePath();

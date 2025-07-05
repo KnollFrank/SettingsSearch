@@ -29,10 +29,13 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         _persist(graphAndDbDataProvider);
     }
 
-    public GraphAndDbDataProvider load() {
-        return new GraphAndDbDataProvider(
-                _load().orElseThrow(),
-                DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO));
+    public Optional<GraphAndDbDataProvider> load() {
+        return this
+                ._load()
+                .map(graph ->
+                             new GraphAndDbDataProvider(
+                                     graph,
+                                     DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO)));
     }
 
     @Override
