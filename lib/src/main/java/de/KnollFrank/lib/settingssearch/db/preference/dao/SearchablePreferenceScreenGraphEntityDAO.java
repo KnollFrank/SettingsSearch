@@ -4,13 +4,10 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
@@ -35,7 +32,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     public GraphAndDbDataProvider load() {
         return new GraphAndDbDataProvider(
                 _load().orElseThrow(),
-                getDbDataProvider());
+                DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO));
     }
 
     @Override
@@ -64,24 +61,5 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
                         .getNodes(graphAndDbDataProvider.dbDataProvider()),
                 graphAndDbDataProvider.dbDataProvider());
         persist(graphAndDbDataProvider.graph());
-    }
-
-    private DbDataProvider getDbDataProvider() {
-        return DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO);
-    }
-
-    // FK-TODO: remove method and make called methods private again?
-    DbDataProviderData createDbDataProviderData() {
-        return new DbDataProviderData(
-                nodesByGraph(),
-                screenDAO.getAllPreferencesBySearchablePreferenceScreen(),
-                screenDAO.getHostByPreference(),
-                preferenceDAO.getPredecessorByPreference(),
-                preferenceDAO.getChildrenByPreference());
-    }
-
-    private Map<SearchablePreferenceScreenGraphEntity, Set<SearchablePreferenceScreenEntity>> nodesByGraph() {
-        final SearchablePreferenceScreenGraphEntity graph = _load().orElseThrow();
-        return Map.of(graph, graph.getNodes(this));
     }
 }

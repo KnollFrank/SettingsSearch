@@ -102,7 +102,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     @Query("DELETE FROM SearchablePreferenceScreenEntity")
     protected abstract void _removeAll();
 
-    public Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {
+    private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
             allPreferencesBySearchablePreferenceScreen = Optional.of(computeAllPreferencesBySearchablePreferenceScreen());
         }
@@ -114,7 +114,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
                 new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
     }
 
-    public Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {
+    private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {
         if (hostByPreference.isEmpty()) {
             hostByPreference = Optional.of(computeHostByPreference());
         }

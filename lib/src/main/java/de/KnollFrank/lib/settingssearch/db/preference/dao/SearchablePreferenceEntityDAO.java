@@ -112,7 +112,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     @Update
     protected abstract void _update(SearchablePreferenceEntity... preferences);
 
-    public Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference() {
+    private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference() {
         if (childrenByPreference.isEmpty()) {
             childrenByPreference = Optional.of(computeChildrenByPreference());
         }
@@ -124,7 +124,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
                 new HashSet<>(_getPreferencesAndChildren()));
     }
 
-    public Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> getPredecessorByPreference() {
+    private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> getPredecessorByPreference() {
         if (predecessorByPreference.isEmpty()) {
             predecessorByPreference = Optional.of(computePredecessorByPreference());
         }
