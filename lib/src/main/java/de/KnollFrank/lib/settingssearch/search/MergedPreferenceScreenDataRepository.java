@@ -14,7 +14,6 @@ import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
@@ -52,19 +51,14 @@ public class MergedPreferenceScreenDataRepository {
     public DAOProvider getSearchDatabaseFilledWithPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final AppDatabase appDatabase = AppDatabaseFactory.getInstance(locale, context);
-            if (!appDatabase.searchDatabaseStateDAO().isSearchDatabaseInitialized()) {
-                computeAndPersistSearchablePreferenceScreenGraph(appDatabase.searchablePreferenceScreenGraphDAO());
-                appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(true);
+            if (appDatabase.searchablePreferenceScreenGraphDAO().load().isEmpty()) {
+                // FK-TODO: show progressBar only for computePreferences() and not for load()?
+                final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
+                progressUpdateListener.onProgressUpdate("persisting search database");
+                appDatabase.searchablePreferenceScreenGraphDAO().persist(searchablePreferenceScreenGraph);
             }
             return appDatabase;
         }
-    }
-
-    private void computeAndPersistSearchablePreferenceScreenGraph(final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
-        // FK-TODO: show progressBar only for computePreferences() and not for load()?
-        final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
-        progressUpdateListener.onProgressUpdate("persisting search database");
-        searchablePreferenceScreenGraphDAO.persist(searchablePreferenceScreenGraph);
     }
 
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> computeSearchablePreferenceScreenGraph() {

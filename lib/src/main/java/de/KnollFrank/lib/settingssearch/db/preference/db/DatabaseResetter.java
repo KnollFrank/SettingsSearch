@@ -16,7 +16,6 @@ public class DatabaseResetter {
 
     public static void resetDatabase(final AppDatabase appDatabase) {
         appDatabase.searchablePreferenceScreenGraphEntityDAO().removePersistedGraph();
-        appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(false);
     }
 
     private static Collection<AppDatabase> getDatabases(final Context context) {

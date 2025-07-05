@@ -8,7 +8,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 
-// FK-TODO: remove SearchDatabaseStateDAO and SearchDatabaseState
 public class SearchablePreferenceScreenGraphDAO {
 
     private final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter;

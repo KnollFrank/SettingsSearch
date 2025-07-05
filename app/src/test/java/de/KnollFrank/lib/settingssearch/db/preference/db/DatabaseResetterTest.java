@@ -66,11 +66,9 @@ public class DatabaseResetterTest {
                         SearchablePreferenceScreenGraphTestFactory
                                 .createSingleNodeGraph(PreferenceFragmentCompat.class)
                                 .pojoGraph());
-        appDatabase.searchDatabaseStateDAO().setSearchDatabaseInitialized(true);
     }
 
     private static void assertIsReset(final AppDatabase appDatabase) {
         assertThat(appDatabase.searchablePreferenceScreenGraphDAO().load(), is(Optional.empty()));
-        assertThat(appDatabase.searchDatabaseStateDAO().isSearchDatabaseInitialized(), is(false));
     }
 }
