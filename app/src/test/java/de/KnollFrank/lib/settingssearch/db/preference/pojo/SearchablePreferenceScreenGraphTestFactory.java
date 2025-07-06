@@ -13,6 +13,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.lib.settingssearch.graph.GraphAndDbDataProvider;
@@ -27,6 +29,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
             GraphAndDbDataProvider entityGraphAndDbDataProvider,
             Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
     }
+
+    private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
     public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final String screenId = "1";
@@ -67,8 +71,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
                         host);
-        // FK-FIXME: 4711 is too special
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(4711);
+        final SearchablePreferenceScreenGraphEntity graphEntity = createGraphEntity();
         return new Graphs(
                 new GraphAndDbDataProvider(
                         graphEntity,
@@ -140,8 +143,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 createDst(
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst);
-        // FK-FIXME: 4711 is too special
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(4711);
+        final SearchablePreferenceScreenGraphEntity graphEntity = createGraphEntity();
         return new Graphs(
                 new GraphAndDbDataProvider(
                         graphEntity,
@@ -387,5 +389,9 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         Set.of(searchablePreferencePojo)));
+    }
+
+    private static SearchablePreferenceScreenGraphEntity createGraphEntity() {
+        return new SearchablePreferenceScreenGraphEntity(idGenerator.nextId());
     }
 }
