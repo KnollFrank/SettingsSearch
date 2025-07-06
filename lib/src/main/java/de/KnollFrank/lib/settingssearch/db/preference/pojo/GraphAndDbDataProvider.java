@@ -1,11 +1,8 @@
-package de.KnollFrank.lib.settingssearch.graph;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import org.jgrapht.Graph;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenEntitiesToGraphConverter;
 
 public record GraphAndDbDataProvider(
         SearchablePreferenceScreenGraphEntity graph,

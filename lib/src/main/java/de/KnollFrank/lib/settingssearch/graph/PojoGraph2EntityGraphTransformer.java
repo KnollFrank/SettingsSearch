@@ -17,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntities;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;

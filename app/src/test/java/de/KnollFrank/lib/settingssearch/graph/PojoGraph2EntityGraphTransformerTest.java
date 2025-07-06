@@ -12,6 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;

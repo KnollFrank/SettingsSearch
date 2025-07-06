@@ -9,9 +9,9 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
-import de.KnollFrank.lib.settingssearch.graph.GraphAndDbDataProvider;
 
 @Dao
 public abstract class SearchablePreferenceScreenGraphEntityDAO implements SearchablePreferenceScreenGraphEntity.DbDataProvider {

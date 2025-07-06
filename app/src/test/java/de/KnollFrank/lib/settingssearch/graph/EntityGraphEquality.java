@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;

@@ -16,7 +16,6 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
-import de.KnollFrank.lib.settingssearch.graph.GraphAndDbDataProvider;
 
 public class SearchablePreferenceScreenGraphTestFactory {
 

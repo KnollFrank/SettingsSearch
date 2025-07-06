@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter;
 
 public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataProvider, GraphForLocale> {
