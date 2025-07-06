@@ -11,6 +11,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.LocaleDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.Locale;
 
+// FK-TODO: remove
 @Database(
         entities = {Locale.class},
         version = 1,

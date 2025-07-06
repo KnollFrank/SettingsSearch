@@ -11,6 +11,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.Locale;
 
+// FK-TODO: remove
 @Dao
 public abstract class LocaleDAO {
 
