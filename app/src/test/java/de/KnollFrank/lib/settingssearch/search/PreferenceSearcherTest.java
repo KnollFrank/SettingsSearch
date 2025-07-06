@@ -31,6 +31,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -65,6 +66,7 @@ import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
+import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -819,12 +821,14 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 preferenceScreenWithHost -> {
                                 }));
         searchablePreferenceScreenGraphDAO.persist(
-                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
-                        preferenceScreenWithHostProvider
-                                .getPreferenceScreenWithHostOfFragment(
-                                        preferenceFragment.getClass(),
-                                        Optional.empty())
-                                .orElseThrow()));
+                new GraphForLocale(
+                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
+                                preferenceScreenWithHostProvider
+                                        .getPreferenceScreenWithHostOfFragment(
+                                                preferenceFragment.getClass(),
+                                                Optional.empty())
+                                        .orElseThrow()),
+                        Locale.GERMAN));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 fragment -> {
                 },

@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 
@@ -21,14 +23,20 @@ class PreferenceSearcher {
     }
 
     public Set<PreferenceMatch> searchFor(final String needle) {
-        return graphDAO
-                .load()
-                .map(PojoGraphs::getPreferences)
-                .orElseGet(Collections::emptySet)
+        return this
+                .getPreferences()
                 .stream()
                 .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
                 .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::streamOfPresentElements)
                 .collect(Collectors.toSet());
+    }
+
+    private Set<SearchablePreference> getPreferences() {
+        return graphDAO
+                .load()
+                .map(GraphForLocale::graph)
+                .map(PojoGraphs::getPreferences)
+                .orElseGet(Collections::emptySet);
     }
 }

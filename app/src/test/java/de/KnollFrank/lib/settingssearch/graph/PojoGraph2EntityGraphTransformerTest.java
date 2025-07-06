@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Locale;
+
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
@@ -37,7 +39,9 @@ public class PojoGraph2EntityGraphTransformerTest {
                                            final GraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
         // When
         final GraphAndDbDataProvider entityGraphAndDbDataProviderActual =
-                PojoGraph2EntityGraphTransformer.toEntityGraph(pojoGraph);
+                PojoGraph2EntityGraphTransformer.toEntityGraph(
+                        pojoGraph,
+                        Locale.GERMAN);
 
         // Then
         EntityGraphEquality.assertActualEqualsExpected(

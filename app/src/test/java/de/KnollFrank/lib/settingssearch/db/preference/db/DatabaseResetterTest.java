@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
+import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 
 @RunWith(RobolectricTestRunner.class)
 public class DatabaseResetterTest {
@@ -60,12 +61,13 @@ public class DatabaseResetterTest {
     }
 
     private static void initialize(final AppDatabase appDatabase) {
+        final var singleNodeGraph = SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(PreferenceFragmentCompat.class);
         appDatabase
                 .searchablePreferenceScreenGraphDAO()
                 .persist(
-                        SearchablePreferenceScreenGraphTestFactory
-                                .createSingleNodeGraph(PreferenceFragmentCompat.class)
-                                .pojoGraph());
+                        new GraphForLocale(
+                                singleNodeGraph.pojoGraph(),
+                                singleNodeGraph.entityGraphAndDbDataProvider().graph().locale()));
     }
 
     private static void assertIsReset(final AppDatabase appDatabase) {

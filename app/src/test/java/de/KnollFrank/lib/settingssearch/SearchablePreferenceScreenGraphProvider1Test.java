@@ -24,6 +24,7 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -40,6 +41,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
+import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -236,7 +238,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
 
     public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                                         final AppDatabase appDatabase) {
-        appDatabase.searchablePreferenceScreenGraphDAO().persist(graph);
+        appDatabase.searchablePreferenceScreenGraphDAO().persist(new GraphForLocale(graph, Locale.GERMAN));
     }
 
     public static void makeGetPreferencePathWorkOnPreferences(final Collection<SearchablePreferenceEntity> preferences,

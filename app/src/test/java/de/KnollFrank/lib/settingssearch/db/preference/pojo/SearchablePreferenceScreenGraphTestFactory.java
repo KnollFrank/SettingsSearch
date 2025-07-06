@@ -389,7 +389,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
     }
 
     private static SearchablePreferenceScreenGraphEntity createGraphEntity() {
-        // FK-FIXME: generalize hard coded locale Locale.GERMAN
         return new SearchablePreferenceScreenGraphEntity(Locale.GERMAN);
     }
 }

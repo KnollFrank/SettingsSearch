@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Locale;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
@@ -20,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
+import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphEquality;
 
 @RunWith(RobolectricTestRunner.class)
@@ -32,17 +34,19 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
                 new SearchablePreferenceScreenGraphDAO(
                         new EntityGraphPojoGraphConverter(),
                         appDatabase.searchablePreferenceScreenGraphEntityDAO());
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraph(PreferenceFragmentCompat.class)
-                        .pojoGraph();
+        final GraphForLocale graphForLocale =
+                new GraphForLocale(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraph(PreferenceFragmentCompat.class)
+                                .pojoGraph(),
+                        Locale.GERMAN);
 
         // When
-        dao.persist(graph);
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load().orElseThrow();
+        dao.persist(graphForLocale);
+        final GraphForLocale graphForLocaleFromDb = dao.load().orElseThrow();
 
         // Then
-        PojoGraphEquality.assertActualEqualsExpected(graphFromDb, graph);
+        assertActualEqualsExpected(graphForLocaleFromDb, graphForLocale);
     }
 
     @Test
@@ -55,20 +59,24 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
 
         // When
         dao.persist(
-                SearchablePreferenceScreenGraphTestFactory
-                        .createSingleNodeGraph(PreferenceFragmentCompat.class)
-                        .pojoGraph());
+                new GraphForLocale(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createSingleNodeGraph(PreferenceFragmentCompat.class)
+                                .pojoGraph(),
+                        Locale.GERMAN));
 
         // And
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraph(PreferenceFragmentCompat.class)
-                        .pojoGraph();
-        dao.persist(graph);
+        final GraphForLocale graphForLocale =
+                new GraphForLocale(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraph(PreferenceFragmentCompat.class)
+                                .pojoGraph(),
+                        Locale.CHINESE);
+        dao.persist(graphForLocale);
 
         // Then
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb = dao.load().orElseThrow();
-        PojoGraphEquality.assertActualEqualsExpected(graphFromDb, graph);
+        final GraphForLocale graphForLocaleFromDb = dao.load().orElseThrow();
+        assertActualEqualsExpected(graphForLocaleFromDb, graphForLocale);
     }
 
     @Test
@@ -85,11 +93,11 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         final Set<SearchablePreference> allPreferences = getAllPreferencesOfSingleNode(graph);
 
         // When
-        dao.persist(graph);
+        dao.persist(new GraphForLocale(graph, Locale.GERMAN));
         dao.persist(dao.load().orElseThrow());
 
         // Then
-        final Set<SearchablePreference> allPreferencesFromDb = getAllPreferencesOfSingleNode(dao.load().orElseThrow());
+        final Set<SearchablePreference> allPreferencesFromDb = getAllPreferencesOfSingleNode(dao.load().orElseThrow().graph());
         assertThat(allPreferencesFromDb, is(allPreferences));
     }
 
@@ -97,5 +105,10 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
         return Iterables
                 .getOnlyElement(graph.vertexSet())
                 .allPreferences();
+    }
+
+    private static void assertActualEqualsExpected(final GraphForLocale actual, final GraphForLocale expected) {
+        PojoGraphEquality.assertActualEqualsExpected(actual.graph(), expected.graph());
+        assertThat(actual.locale(), is(expected.locale()));
     }
 }

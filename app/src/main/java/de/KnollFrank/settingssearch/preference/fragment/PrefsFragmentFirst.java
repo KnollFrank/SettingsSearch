@@ -33,6 +33,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
@@ -95,20 +96,25 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     @Override
                     public boolean onPreferenceClick(@NonNull final Preference preference) {
-                        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph = getPojoGraph();
+                        final GraphForLocale pojoGraph = getPojoGraph();
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                                 subtreeReplacer.replaceSubtreeWithTree(
-                                        pojoGraph,
-                                        GraphUtils.getRootNode(pojoGraph).orElseThrow(),
+                                        pojoGraph.graph(),
+                                        GraphUtils.getRootNode(pojoGraph.graph()).orElseThrow(),
                                         getPojoGraphRootedAt(
                                                 new PreferenceScreenWithHost(
                                                         getPreferenceScreen(),
                                                         PrefsFragmentFirst.this)));
-                        getAppDatabase().searchablePreferenceScreenGraphDAO().persist(newPojoGraph);
+                        getAppDatabase()
+                                .searchablePreferenceScreenGraphDAO()
+                                .persist(
+                                        new GraphForLocale(
+                                                newPojoGraph,
+                                                pojoGraph.locale()));
                         return true;
                     }
 
-                    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraph() {
+                    private GraphForLocale getPojoGraph() {
                         return getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
                                 .load()
@@ -140,7 +146,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final var pojoGraph = graphDAO.load().orElseThrow();
                         setSummaryOfPreferences(
                                 preference,
-                                getSummaryChangingPreference(pojoGraph),
+                                getSummaryChangingPreference(pojoGraph.graph()),
                                 getSummary((boolean) checked));
                         graphDAO.persist(pojoGraph);
                         return true;

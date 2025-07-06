@@ -28,14 +28,14 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class PojoGraph2EntityGraphTransformer {
 
     public static GraphAndDbDataProvider toEntityGraph(
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
+            final Locale locale) {
         final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
                 GraphTransformerAlgorithm.transform(
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer());
-        // FK-FIXME: generalize hard coded locale Locale.GERMAN
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(Locale.GERMAN);
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale);
         return new GraphAndDbDataProvider(
                 graphEntity,
                 DbDataProviderFactory.createDbDataProvider(
