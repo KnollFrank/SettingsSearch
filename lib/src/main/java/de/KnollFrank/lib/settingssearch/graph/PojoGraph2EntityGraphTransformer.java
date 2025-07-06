@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 
 import org.jgrapht.Graph;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -33,8 +34,8 @@ public class PojoGraph2EntityGraphTransformer {
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer());
-        // FK-FIXME: generalize hard coded id 4711
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(4711);
+        // FK-FIXME: generalize hard coded locale Locale.GERMAN
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(Locale.GERMAN);
         return new GraphAndDbDataProvider(
                 graphEntity,
                 DbDataProviderFactory.createDbDataProvider(

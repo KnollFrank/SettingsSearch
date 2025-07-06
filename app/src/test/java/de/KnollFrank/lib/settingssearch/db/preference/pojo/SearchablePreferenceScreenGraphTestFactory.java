@@ -8,6 +8,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -392,6 +393,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
     }
 
     private static SearchablePreferenceScreenGraphEntity createGraphEntity() {
-        return new SearchablePreferenceScreenGraphEntity(idGenerator.nextId());
+        // FK-FIXME: generalize hard coded locale Locale.GERMAN
+        return new SearchablePreferenceScreenGraphEntity(Locale.GERMAN);
     }
 }
