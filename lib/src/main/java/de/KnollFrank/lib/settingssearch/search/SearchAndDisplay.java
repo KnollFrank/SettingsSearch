@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import java.util.Locale;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
@@ -15,8 +16,8 @@ class SearchAndDisplay {
         this.searchResultsDisplayer = searchResultsDisplayer;
     }
 
-    public void searchForQueryAndDisplayResults(final String query) {
-        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query);
+    public void searchForQueryAndDisplayResults(final String query, final Locale locale) {
+        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(query, locale);
         searchResultsDisplayer.displaySearchResults(preferenceMatches);
     }
 }

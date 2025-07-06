@@ -4,8 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.makeGetPreferencePathWorkOnGraph;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.getInstantiateAndInitializeFragment;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.DST_PREFERENCE_ID;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.PREFERENCE_CONNECTING_SRC_2_DST_ID;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
 
@@ -24,13 +22,14 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -57,6 +56,17 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 final InstantiateAndInitializeFragment instantiateAndInitializeFragment = getInstantiateAndInitializeFragment(preferenceFragment, activity);
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
                         PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, instantiateAndInitializeFragment, activity);
+                final SearchablePreferenceScreenGraphTestFactory.Data _data =
+                        new SearchablePreferenceScreenGraphTestFactory.Data(
+                                5,
+                                4,
+                                "parentKey",
+                                1,
+                                2,
+                                3,
+                                "singleNodeGraph-screen1",
+                                "graph-screen1",
+                                "graph-screen2");
                 final Graph2POJOGraphTransformer graph2POJOGraphTransformer =
                         new Graph2POJOGraphTransformer(
                                 new PreferenceScreen2SearchablePreferenceScreenConverter(
@@ -66,7 +76,19 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                                         preference -> Optional.empty(),
                                                         (preference, hostOfPreference) -> Optional.empty()),
                                                 IdGeneratorFactory.createIdGeneratorStartingAt(1))),
-                                new DefaultPreferenceFragmentIdProvider());
+                                new PreferenceFragmentIdProvider() {
+
+                                    @Override
+                                    public String getId(final PreferenceFragmentCompat preferenceFragment) {
+                                        if (PreferenceFragmentWithSinglePreference.class.equals(preferenceFragment.getClass())) {
+                                            return _data.singleNodeScreenId();
+                                        } else if (PreferenceFragmentTemplate.class.equals(preferenceFragment.getClass())) {
+                                            return _data.twoNodeScreen1Id();
+                                        } else {
+                                            return _data.twoNodeScreen2Id();
+                                        }
+                                    }
+                                });
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
@@ -75,16 +97,20 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                         entityGraph));
 
                 // Then
-                makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase);
+                final Locale locale = Locale.GERMAN;
+                makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase, locale);
                 // check graph:
                 assertThat(
                         pojoGraph,
                         is(
                                 SearchablePreferenceScreenGraphTestFactory
-                                        .createGraph(preferenceFragment.getClass())
+                                        .createGraph(
+                                                preferenceFragment.getClass(),
+                                                locale,
+                                                _data)
                                         .pojoGraph()));
                 {
-                    final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph);
+                    final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph, _data);
                     final SearchablePreference preference = data.preference();
                     final SearchablePreference expectedPredecessorOfPreference = data.expectedPredecessorOfPreference();
                     // check predecessor:
@@ -146,11 +172,12 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
     }
 
     private PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected) {
+            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected,
+            final SearchablePreferenceScreenGraphTestFactory.Data data) {
         final Set<SearchablePreference> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet());
         return new PreferenceAndExpectedPredecessorOfPreference(
-                getDstPreference(searchablePreferences),
-                getPreferenceConnectingSrc2Dst(searchablePreferences));
+                getDstPreference(searchablePreferences, data.DST_PREFERENCE_ID()),
+                getPreferenceConnectingSrc2Dst(searchablePreferences, data.PREFERENCE_CONNECTING_SRC_2_DST_ID()));
     }
 
     private record PreferenceAndExpectedPredecessorOfPreference(
@@ -158,11 +185,13 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
             SearchablePreference expectedPredecessorOfPreference) {
     }
 
-    private static SearchablePreference getPreferenceConnectingSrc2Dst(final Set<SearchablePreference> searchablePreferences) {
+    private static SearchablePreference getPreferenceConnectingSrc2Dst(final Set<SearchablePreference> searchablePreferences,
+                                                                       final int PREFERENCE_CONNECTING_SRC_2_DST_ID) {
         return getPreferenceById(searchablePreferences, PREFERENCE_CONNECTING_SRC_2_DST_ID);
     }
 
-    private static SearchablePreference getDstPreference(final Set<SearchablePreference> searchablePreferences) {
+    private static SearchablePreference getDstPreference(final Set<SearchablePreference> searchablePreferences,
+                                                         final int DST_PREFERENCE_ID) {
         return getPreferenceById(searchablePreferences, DST_PREFERENCE_ID);
     }
 

@@ -22,10 +22,12 @@ import androidx.preference.SwitchPreference;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphUtils;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
@@ -59,8 +61,9 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+        final Locale locale = Utils.geCurrentLocale(getResources());
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
-        getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference());
+        getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference(locale));
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
         {
@@ -70,7 +73,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         }
         getPreferenceScreen().findPreference("preferenceWithIntent").setIntent(createIntent(SettingsActivity.class, createExtrasForSettingsActivity()));
         getPreferenceScreen().findPreference("preferenceWithIntent3").setIntent(new Intent(getContext(), SettingsActivity3.class));
-        configureSummaryChangingPreference();
+        configureSummaryChangingPreference(locale);
         setOnPreferenceClickListeners();
     }
 
@@ -82,7 +85,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 true);
     }
 
-    private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference() {
+    private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference(final Locale locale) {
         final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(requireContext());
         checkBoxPreference.setKey(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
         checkBoxPreference.setTitle("add preference to P1");
@@ -96,7 +99,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     @Override
                     public boolean onPreferenceClick(@NonNull final Preference preference) {
-                        final GraphForLocale pojoGraph = getPojoGraph();
+                        final GraphForLocale pojoGraph = getPojoGraph(locale);
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                                 subtreeReplacer.replaceSubtreeWithTree(
                                         pojoGraph.graph(),
@@ -107,17 +110,14 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                                         PrefsFragmentFirst.this)));
                         getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
-                                .persist(
-                                        new GraphForLocale(
-                                                newPojoGraph,
-                                                pojoGraph.locale()));
+                                .persist(new GraphForLocale(newPojoGraph, pojoGraph.locale()));
                         return true;
                     }
 
-                    private GraphForLocale getPojoGraph() {
+                    private GraphForLocale getPojoGraph(final Locale locale) {
                         return getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
-                                .load()
+                                .findGraphById(locale)
                                 .orElseThrow();
                     }
 
@@ -134,7 +134,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         return checkBoxPreference;
     }
 
-    private void configureSummaryChangingPreference() {
+    private void configureSummaryChangingPreference(final Locale locale) {
         final SwitchPreference summaryChangingPreference = getPreferenceScreen().findPreference(SUMMARY_CHANGING_PREFERENCE_KEY);
         summaryChangingPreference.setSummary(getSummary(summaryChangingPreference.isChecked()));
         summaryChangingPreference.setOnPreferenceChangeListener(
@@ -143,7 +143,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     @Override
                     public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
                         final var graphDAO = getAppDatabase().searchablePreferenceScreenGraphDAO();
-                        final var pojoGraph = graphDAO.load().orElseThrow();
+                        final var pojoGraph = graphDAO.findGraphById(locale).orElseThrow();
                         setSummaryOfPreferences(
                                 preference,
                                 getSummaryChangingPreference(pojoGraph.graph()),

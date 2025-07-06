@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -45,6 +46,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier;
     private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
+    private final Locale locale;
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider, MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask;
 
@@ -54,7 +56,8 @@ public class SearchPreferenceFragment extends Fragment {
                                     final OnUiThreadRunner onUiThreadRunner,
                                     final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
                                     final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
-                                    final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
+                                    final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
+                                    final Locale locale) {
         this.queryHint = queryHint;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
@@ -62,6 +65,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
+        this.locale = locale;
     }
 
     @Nullable
@@ -148,12 +152,15 @@ public class SearchPreferenceFragment extends Fragment {
                                 mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
                                 includePreferenceInSearchResultsPredicate),
                         mergedPreferenceScreen.searchResultsDisplayer());
-        SearchViewConfigurer.configureSearchView(searchView, queryHint, searchAndDisplay);
+        SearchViewConfigurer.configureSearchView(searchView, queryHint, searchAndDisplay, locale);
         selectSearchView(searchView);
         searchView.setQuery(searchView.getQuery(), true);
         searchPreferenceFragmentUI.onSearchReady(
                 getView(),
-                new SearchForQueryAndDisplayResultsCommand(searchAndDisplay, searchView));
+                new SearchForQueryAndDisplayResultsCommand(
+                        searchAndDisplay,
+                        searchView,
+                        locale));
     }
 
     private void selectSearchView(final SearchView searchView) {

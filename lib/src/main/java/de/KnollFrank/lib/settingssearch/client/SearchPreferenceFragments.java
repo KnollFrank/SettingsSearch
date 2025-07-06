@@ -78,7 +78,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                         onUiThreadRunner,
                         createSearchDatabaseTaskSupplier,
                         searchConfig.searchPreferenceFragmentUI,
-                        onMergedPreferenceScreenAvailable),
+                        onMergedPreferenceScreenAvailable,
+                        locale),
                 searchPreferenceFragment -> {
                 },
                 true,

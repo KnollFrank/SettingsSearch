@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
@@ -52,16 +53,12 @@ public class MergedPreferenceScreenDataRepository {
     public DAOProvider getSearchDatabaseFilledWithPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final AppDatabase appDatabase = AppDatabaseFactory.getInstance(locale, context);
-            if (appDatabase.searchablePreferenceScreenGraphDAO().load().isEmpty()) {
+            final SearchablePreferenceScreenGraphDAO graphDAO = appDatabase.searchablePreferenceScreenGraphDAO();
+            if (graphDAO.findGraphById(locale).isEmpty()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
                 progressUpdateListener.onProgressUpdate("persisting search database");
-                appDatabase
-                        .searchablePreferenceScreenGraphDAO()
-                        .persist(
-                                new GraphForLocale(
-                                        searchablePreferenceScreenGraph,
-                                        locale));
+                graphDAO.persist(new GraphForLocale(searchablePreferenceScreenGraph, locale));
             }
             return appDatabase;
         }

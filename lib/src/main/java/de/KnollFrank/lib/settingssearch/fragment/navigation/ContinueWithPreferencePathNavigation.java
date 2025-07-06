@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -19,27 +20,32 @@ public class ContinueWithPreferencePathNavigation {
     private final ViewGroup parent;
     private final @IdRes int fragmentContainerViewId;
     private final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments;
+    private final Locale locale;
 
     private ContinueWithPreferencePathNavigation(final FragmentActivity activity,
                                                  final ViewGroup parent,
                                                  final @IdRes int fragmentContainerViewId,
-                                                 final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments) {
+                                                 final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments,
+                                                 final Locale locale) {
         this.activity = activity;
         this.parent = parent;
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.createSearchPreferenceFragments = createSearchPreferenceFragments;
+        this.locale = locale;
     }
 
     public static void continueWithPreferencePathNavigation(final FragmentActivity activity,
                                                             final ViewGroup parent,
                                                             final @IdRes int fragmentContainerViewId,
-                                                            final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments) {
+                                                            final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments,
+                                                            final Locale locale) {
         final var continueWithPreferencePathNavigation =
                 new ContinueWithPreferencePathNavigation(
                         activity,
                         parent,
                         fragmentContainerViewId,
-                        createSearchPreferenceFragments);
+                        createSearchPreferenceFragments,
+                        locale);
         continueWithPreferencePathNavigation.continueWithPreferencePathNavigation();
     }
 
@@ -83,6 +89,7 @@ public class ContinueWithPreferencePathNavigation {
                 .navigatePreferencePathAndHighlightPreference(
                         PreferencePathPointerFactory.createPreferencePathPointer(
                                 preferencePathNavigatorData,
-                                mergedPreferenceScreen.searchablePreferenceScreenGraphDAO()));
+                                mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
+                                locale));
     }
 }

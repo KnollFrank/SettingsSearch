@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
@@ -19,10 +20,10 @@ public class SearchablePreferenceScreenGraphDAO {
         delegate.persist(entityGraphPojoGraphConverter.doBackward(graphForLocale));
     }
 
-    public Optional<GraphForLocale> load() {
+    public Optional<GraphForLocale> findGraphById(final Locale id) {
         // FK-TODO: cache persisted and loaded graph?
         return delegate
-                .load()
+                .findGraphById(id)
                 .map(entityGraphPojoGraphConverter::doForward);
     }
 }

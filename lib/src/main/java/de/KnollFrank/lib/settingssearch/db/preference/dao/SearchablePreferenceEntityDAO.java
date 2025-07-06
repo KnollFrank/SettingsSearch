@@ -23,6 +23,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredeces
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
+// FK-TODO: order methods
 @Dao
 public abstract class SearchablePreferenceEntityDAO implements SearchablePreferenceEntity.DbDataProvider {
 
@@ -36,10 +37,6 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
         this.appDatabase = appDatabase;
     }
 
-    public Set<SearchablePreferenceEntity> loadAll() {
-        return new HashSet<>(_loadAll());
-    }
-
     @Query("SELECT * FROM SearchablePreferenceEntity WHERE id = :id")
     public abstract Optional<SearchablePreferenceEntity> findPreferenceById(final int id);
 
@@ -50,6 +47,11 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
 
     public void persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
         _persist(searchablePreferences);
+        invalidateCaches();
+    }
+
+    public void remove(final Collection<SearchablePreferenceEntity> preferences) {
+        _remove(preferences);
         invalidateCaches();
     }
 
@@ -99,15 +101,15 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     @Query("SELECT * FROM SearchablePreferenceEntity")
     protected abstract List<PreferenceAndPredecessor> _getPreferencesAndPredecessors();
 
-    @Query("SELECT * FROM SearchablePreferenceEntity")
-    protected abstract List<SearchablePreferenceEntity> _loadAll();
-
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceEntity")
     protected abstract List<PreferenceAndChildren> _getPreferencesAndChildren();
 
     @Delete
     protected abstract void _remove(SearchablePreferenceEntity... preferences);
+
+    @Delete
+    public abstract void _remove(final Collection<SearchablePreferenceEntity> preferences);
 
     @Update
     protected abstract void _update(SearchablePreferenceEntity... preferences);

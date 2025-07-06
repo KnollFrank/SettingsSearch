@@ -25,35 +25,39 @@ public class DatabaseResetterTest {
     @Test
     public void shouldResetDatabases() {
         // Given
-        final AppDatabase germanAppDatabase = getAppDatabase(Locale.GERMAN);
+        final Locale german = Locale.GERMAN;
+        final AppDatabase germanAppDatabase = getAppDatabase(german);
         initialize(germanAppDatabase);
 
-        final AppDatabase chineseAppDatabase = getAppDatabase(Locale.CHINESE);
+        final Locale chinese = Locale.CHINESE;
+        final AppDatabase chineseAppDatabase = getAppDatabase(chinese);
         initialize(chineseAppDatabase);
 
         // When
         DatabaseResetter.resetDatabases(Set.of(germanAppDatabase, chineseAppDatabase));
 
         // Then
-        assertIsReset(germanAppDatabase);
-        assertIsReset(chineseAppDatabase);
+        assertIsReset(germanAppDatabase, german);
+        assertIsReset(chineseAppDatabase, chinese);
     }
 
     @Test
     public void shouldResetAllDatabases() {
         // Given
-        final AppDatabase germanAppDatabase = getAppDatabase(Locale.GERMAN);
+        final Locale german = Locale.GERMAN;
+        final AppDatabase germanAppDatabase = getAppDatabase(german);
         initialize(germanAppDatabase);
 
-        final AppDatabase chineseAppDatabase = getAppDatabase(Locale.CHINESE);
+        final Locale chinese = Locale.CHINESE;
+        final AppDatabase chineseAppDatabase = getAppDatabase(chinese);
         initialize(chineseAppDatabase);
 
         // When
         DatabaseResetter.resetDatabases(ApplicationProvider.<Context>getApplicationContext());
 
         // Then
-        assertIsReset(germanAppDatabase);
-        assertIsReset(chineseAppDatabase);
+        assertIsReset(germanAppDatabase, german);
+        assertIsReset(chineseAppDatabase, chinese);
     }
 
     private static AppDatabase getAppDatabase(final Locale locale) {
@@ -61,7 +65,20 @@ public class DatabaseResetterTest {
     }
 
     private static void initialize(final AppDatabase appDatabase) {
-        final var singleNodeGraph = SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(PreferenceFragmentCompat.class);
+        final var singleNodeGraph =
+                SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
+                        PreferenceFragmentCompat.class,
+                        Locale.GERMAN,
+                        new SearchablePreferenceScreenGraphTestFactory.Data(
+                                5,
+                                4,
+                                "parentKey",
+                                10,
+                                20,
+                                30,
+                                "singleNodeGraph-screen1",
+                                "graph-screen1",
+                                "graph-screen2"));
         appDatabase
                 .searchablePreferenceScreenGraphDAO()
                 .persist(
@@ -70,7 +87,7 @@ public class DatabaseResetterTest {
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().id()));
     }
 
-    private static void assertIsReset(final AppDatabase appDatabase) {
-        assertThat(appDatabase.searchablePreferenceScreenGraphDAO().load(), is(Optional.empty()));
+    private static void assertIsReset(final AppDatabase appDatabase, final Locale locale) {
+        assertThat(appDatabase.searchablePreferenceScreenGraphDAO().findGraphById(locale), is(Optional.empty()));
     }
 }

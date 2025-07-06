@@ -1,6 +1,8 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import java.util.Collections;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,9 +24,9 @@ class PreferenceSearcher {
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
     }
 
-    public Set<PreferenceMatch> searchFor(final String needle) {
+    public Set<PreferenceMatch> searchFor(final String needle, final Locale locale) {
         return this
-                .getPreferences()
+                .getPreferences(graphDAO.findGraphById(locale))
                 .stream()
                 .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
                 .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))
@@ -32,9 +34,8 @@ class PreferenceSearcher {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreference> getPreferences() {
-        return graphDAO
-                .load()
+    private Set<SearchablePreference> getPreferences(final Optional<GraphForLocale> graph) {
+        return graph
                 .map(GraphForLocale::graph)
                 .map(PojoGraphs::getPreferences)
                 .orElseGet(Collections::emptySet);

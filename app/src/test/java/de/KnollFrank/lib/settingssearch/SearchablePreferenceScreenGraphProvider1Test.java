@@ -96,7 +96,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                         result.preferenceScreenWithHost());
 
                 // Then
-                makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase);
+                makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase, Locale.GERMAN);
                 final SearchablePreference preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3.class,
@@ -237,8 +237,9 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
     }
 
     public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-                                                        final AppDatabase appDatabase) {
-        appDatabase.searchablePreferenceScreenGraphDAO().persist(new GraphForLocale(graph, Locale.GERMAN));
+                                                        final AppDatabase appDatabase,
+                                                        final Locale locale) {
+        appDatabase.searchablePreferenceScreenGraphDAO().persist(new GraphForLocale(graph, locale));
     }
 
     public static void makeGetPreferencePathWorkOnPreferences(final Collection<SearchablePreferenceEntity> preferences,

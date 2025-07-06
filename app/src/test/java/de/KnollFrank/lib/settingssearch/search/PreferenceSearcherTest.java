@@ -701,6 +701,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
+                final Locale locale = Locale.GERMAN;
                 final MergedPreferenceScreen mergedPreferenceScreen =
                         getMergedPreferenceScreen(
                                 preferenceFragment,
@@ -712,14 +713,15 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 principalAndProxyProvider,
                                 emptyComputePreferencesListener(),
                                 searchablePreferenceScreenGraphDAO,
-                                preferenceScreenGraphAvailableListener);
+                                preferenceScreenGraphAvailableListener,
+                                locale);
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
                                 includePreferenceInSearchResultsPredicate);
 
                 // When
-                final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword);
+                final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword, locale);
 
                 // Then
                 checkPreferenceMatches.accept(preferenceMatches);
@@ -766,7 +768,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ComputePreferencesListener computePreferencesListener,
             final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
-            final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
+            final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
+            final Locale locale) {
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
@@ -828,7 +831,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                                 preferenceFragment.getClass(),
                                                 Optional.empty())
                                         .orElseThrow()),
-                        Locale.GERMAN));
+                        locale));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 fragment -> {
                 },

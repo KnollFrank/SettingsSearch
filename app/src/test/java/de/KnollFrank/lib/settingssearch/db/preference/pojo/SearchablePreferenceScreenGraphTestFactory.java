@@ -19,20 +19,29 @@ import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.Pre
 
 public class SearchablePreferenceScreenGraphTestFactory {
 
-    public static final int DST_PREFERENCE_ID = 5;
-    public static final int PREFERENCE_CONNECTING_SRC_2_DST_ID = 4;
-    public static final String PARENT_KEY = "parentKey";
+    public record Data(int DST_PREFERENCE_ID,
+                       int PREFERENCE_CONNECTING_SRC_2_DST_ID,
+                       String PARENT_KEY,
+                       int parentId,
+                       int child1Id,
+                       int child2Id,
+                       String singleNodeScreenId,
+                       String twoNodeScreen1Id,
+                       String twoNodeScreen2Id) {
+    }
 
     public record Graphs(
             GraphAndDbDataProvider entityGraphAndDbDataProvider,
             Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
     }
 
-    public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host) {
-        final String screenId = "1";
+    public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host,
+                                               final Locale locale,
+                                               final Data data) {
+        final String screenId = data.singleNodeScreenId();
         final SearchablePreferenceEntity preferenceConnectingSrc2Dst =
                 new SearchablePreferenceEntity(
-                        PREFERENCE_CONNECTING_SRC_2_DST_ID,
+                        data.PREFERENCE_CONNECTING_SRC_2_DST_ID(),
                         "some key",
                         Optional.of("preference connected to TestPreferenceFragment"),
                         Optional.empty(),
@@ -48,7 +57,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId);
         final SearchablePreference preferencePojoConnectingSrc2Dst =
                 new SearchablePreference(
-                        PREFERENCE_CONNECTING_SRC_2_DST_ID,
+                        data.PREFERENCE_CONNECTING_SRC_2_DST_ID(),
                         "some key",
                         Optional.of("preference connected to TestPreferenceFragment"),
                         Optional.empty(),
@@ -61,14 +70,15 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
-        final SearchablePreferenceScreenGraphEntity graphEntity = createGraphEntity();
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale);
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
                         host,
-                        graphEntity.id());
+                        graphEntity.id(),
+                        data);
         return new Graphs(
                 new GraphAndDbDataProvider(
                         graphEntity,
@@ -97,11 +107,13 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         .build());
     }
 
-    public static Graphs createGraph(final Class<? extends PreferenceFragmentCompat> host) {
-        final String screenId = "1";
+    public static Graphs createGraph(final Class<? extends PreferenceFragmentCompat> host,
+                                     final Locale locale,
+                                     final Data data) {
+        final String screenId = data.twoNodeScreen1Id();
         final SearchablePreferenceEntity preferenceConnectingSrc2Dst =
                 new SearchablePreferenceEntity(
-                        PREFERENCE_CONNECTING_SRC_2_DST_ID,
+                        data.PREFERENCE_CONNECTING_SRC_2_DST_ID(),
                         "some key",
                         Optional.of("preference connected to TestPreferenceFragment"),
                         Optional.empty(),
@@ -117,7 +129,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId);
         final SearchablePreference preferencePojoConnectingSrc2Dst =
                 new SearchablePreference(
-                        PREFERENCE_CONNECTING_SRC_2_DST_ID,
+                        data.PREFERENCE_CONNECTING_SRC_2_DST_ID(),
                         "some key",
                         Optional.of("preference connected to TestPreferenceFragment"),
                         Optional.empty(),
@@ -130,19 +142,21 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
-        final SearchablePreferenceScreenGraphEntity graphEntity = createGraphEntity();
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale);
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
                         host,
-                        graphEntity.id());
+                        graphEntity.id(),
+                        data);
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> dst =
                 createDst(
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
-                        graphEntity.id());
+                        graphEntity.id(),
+                        data);
         return new Graphs(
                 new GraphAndDbDataProvider(
                         graphEntity,
@@ -182,11 +196,12 @@ public class SearchablePreferenceScreenGraphTestFactory {
             final SearchablePreferenceEntity preferenceConnectingSrc2Dst,
             final SearchablePreference preferencePojoConnectingSrc2Dst,
             final Class<? extends PreferenceFragmentCompat> host,
-            final Locale graphId) {
+            final Locale graphId,
+            final Data data) {
         final SearchablePreferenceEntity parent =
                 new SearchablePreferenceEntity(
-                        1,
-                        PARENT_KEY,
+                        data.parentId(),
+                        data.PARENT_KEY(),
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty(),
@@ -201,7 +216,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId);
         final SearchablePreferenceEntity child1 =
                 new SearchablePreferenceEntity(
-                        2,
+                        data.child1Id(),
                         "some child key 1",
                         Optional.empty(),
                         Optional.empty(),
@@ -217,7 +232,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId);
         final SearchablePreference child1Pojo =
                 new SearchablePreference(
-                        2,
+                        data.child1Id(),
                         "some child key 1",
                         Optional.empty(),
                         Optional.empty(),
@@ -232,7 +247,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty());
         final SearchablePreferenceEntity child2 =
                 new SearchablePreferenceEntity(
-                        3,
+                        data.child2Id(),
                         "some child key 2",
                         Optional.empty(),
                         Optional.empty(),
@@ -248,7 +263,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId);
         final SearchablePreference child2Pojo =
                 new SearchablePreference(
-                        3,
+                        data.child2Id(),
                         "some child key 2",
                         Optional.empty(),
                         Optional.empty(),
@@ -263,8 +278,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty());
         final SearchablePreference parentPojo =
                 new SearchablePreference(
-                        1,
-                        PARENT_KEY,
+                        data.parentId(),
+                        data.PARENT_KEY(),
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty(),
@@ -325,11 +340,12 @@ public class SearchablePreferenceScreenGraphTestFactory {
     private static Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> createDst(
             final SearchablePreferenceEntity predecessor,
             final SearchablePreference predecessorPojo,
-            final Locale graphId) {
-        final String screenId = "2";
+            final Locale graphId,
+            final Data data) {
+        final String screenId = data.twoNodeScreen2Id();
         final SearchablePreferenceEntity searchablePreference =
                 new SearchablePreferenceEntity(
-                        DST_PREFERENCE_ID,
+                        data.DST_PREFERENCE_ID(),
                         "some dst key",
                         Optional.of("some title for dst key"),
                         Optional.empty(),
@@ -345,7 +361,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId);
         final SearchablePreference searchablePreferencePojo =
                 new SearchablePreference(
-                        DST_PREFERENCE_ID,
+                        data.DST_PREFERENCE_ID(),
                         "some dst key",
                         Optional.of("some title for dst key"),
                         Optional.empty(),
@@ -392,9 +408,5 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         Set.of(searchablePreferencePojo)));
-    }
-
-    private static SearchablePreferenceScreenGraphEntity createGraphEntity() {
-        return new SearchablePreferenceScreenGraphEntity(Locale.GERMAN);
     }
 }

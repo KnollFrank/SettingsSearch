@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.PARENT_KEY;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.SearchablePreferenceScreenEntityAndDbDataProvider;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createSomeSearchablePreferenceScreen;
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEntityEquality.assertActualEqualsExpected;
@@ -22,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntities;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
@@ -30,7 +30,18 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     public void shouldPersistAndFindSearchablePreferenceScreenById() {
         // Given
         final SearchablePreferenceScreenEntityDAO dao = appDatabase.searchablePreferenceScreenEntityDAO();
-        final SearchablePreferenceScreenEntityAndDbDataProvider screen = createSomeSearchablePreferenceScreen();
+        final SearchablePreferenceScreenEntityAndDbDataProvider screen =
+                createSomeSearchablePreferenceScreen(
+                        new SearchablePreferenceScreenGraphTestFactory.Data(
+                                5,
+                                4,
+                                "parentKey",
+                                1,
+                                2,
+                                3,
+                                "singleNodeGraph-screen1",
+                                "graph-screen1",
+                                "graph-screen2"));
 
         // When
         dao.persist(screen.entity(), screen.dbDataProvider());
@@ -47,7 +58,18 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     public void test_findSearchablePreferenceScreensByHost() {
         // Given
         final SearchablePreferenceScreenEntityDAO dao = appDatabase.searchablePreferenceScreenEntityDAO();
-        final SearchablePreferenceScreenEntityAndDbDataProvider screen = createSomeSearchablePreferenceScreen();
+        final SearchablePreferenceScreenEntityAndDbDataProvider screen =
+                createSomeSearchablePreferenceScreen(
+                        new SearchablePreferenceScreenGraphTestFactory.Data(
+                                5,
+                                4,
+                                "parentKey",
+                                1,
+                                2,
+                                3,
+                                "singleNodeGraph-screen1",
+                                "graph-screen1",
+                                "graph-screen2"));
         dao.persist(screen.entity(), screen.dbDataProvider());
 
         // When
@@ -74,11 +96,22 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
     public void shouldGetHostOfPreferencesOfScreen() {
         // Given
         final SearchablePreferenceScreenEntityDAO dao = appDatabase.searchablePreferenceScreenEntityDAO();
-        final SearchablePreferenceScreenEntityAndDbDataProvider screen = createSomeSearchablePreferenceScreen();
+        final SearchablePreferenceScreenGraphTestFactory.Data data =
+                new SearchablePreferenceScreenGraphTestFactory.Data(
+                        5,
+                        4,
+                        "parentKey",
+                        1,
+                        2,
+                        3,
+                        "singleNodeGraph-screen1",
+                        "graph-screen1",
+                        "graph-screen2");
+        final SearchablePreferenceScreenEntityAndDbDataProvider screen = createSomeSearchablePreferenceScreen(data);
         dao.persist(screen.entity(), screen.dbDataProvider());
         final SearchablePreferenceEntity preference =
                 SearchablePreferenceEntities
-                        .findPreferenceByKey(screen.entity().getAllPreferences(dao), PARENT_KEY)
+                        .findPreferenceByKey(screen.entity().getAllPreferences(dao), data.PARENT_KEY())
                         .orElseThrow();
 
         // When

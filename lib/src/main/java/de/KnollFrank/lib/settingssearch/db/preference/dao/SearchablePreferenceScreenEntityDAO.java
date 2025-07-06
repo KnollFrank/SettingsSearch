@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
@@ -9,6 +10,7 @@ import androidx.room.Transaction;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -20,6 +22,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
+// FK-TODO: order methods
 @Dao
 public abstract class SearchablePreferenceScreenEntityDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
 
@@ -39,16 +42,20 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
                         final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
-        searchablePreferenceScreens.forEach(
-                searchablePreferenceScreen ->
-                        persist(
-                                searchablePreferenceScreen,
-                                dbDataProvider));
+        searchablePreferenceScreens.forEach(searchablePreferenceScreen -> persist(searchablePreferenceScreen, dbDataProvider));
     }
 
     public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen) {
         persist(searchablePreferenceScreen, this);
     }
+
+    public void remove(final SearchablePreferenceScreenEntity screen) {
+        searchablePreferenceDAO.remove(screen.getAllPreferences(this));
+        _remove(screen);
+    }
+
+    @Delete
+    protected abstract void _remove(SearchablePreferenceScreenEntity screen);
 
     public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen,
                         final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
@@ -60,9 +67,12 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE id = :id")
     public abstract Optional<SearchablePreferenceScreenEntity> findSearchablePreferenceScreenById(final String id);
 
-    public Set<SearchablePreferenceScreenEntity> loadAll() {
-        return new HashSet<>(_loadAll());
+    public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByGraphId(final Locale graphId) {
+        return new HashSet<>(_findSearchablePreferenceScreensByGraphId(graphId));
     }
+
+    @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE graphId = :graphId")
+    protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final Locale graphId);
 
     // FK-TODO: remove method?
     public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host) {
@@ -87,9 +97,6 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     @Insert
     protected abstract void _persist(SearchablePreferenceScreenEntity searchablePreferenceScreen);
-
-    @Query("SELECT * FROM SearchablePreferenceScreenEntity")
-    protected abstract List<SearchablePreferenceScreenEntity> _loadAll();
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceScreenEntity")
