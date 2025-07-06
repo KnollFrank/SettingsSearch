@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import org.jgrapht.Graph;
@@ -39,20 +38,18 @@ class EntityGraphEquality {
                         expected.dbDataProvider()));
     }
 
-    private static void assertActualEqualsExpected(final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> nodesAndDbDataProvidersActual,
-                                                   final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> nodesAndDbDataProvidersExpected) {
+    private static void assertActualEqualsExpected(final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> actual,
+                                                   final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> expected) {
         assertThat(
-                nodes2String(nodesAndDbDataProvidersActual.first(), nodesAndDbDataProvidersActual.second()),
-                is(equalTo(nodes2String(nodesAndDbDataProvidersExpected.first(), nodesAndDbDataProvidersExpected.second()))));
+                nodes2String(actual.first(), actual.second()),
+                is(nodes2String(expected.first(), expected.second())));
     }
 
     private static void assertActualEdgesEqualsExpectedEdges(final Pair<Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>, SearchablePreferenceEntity.DbDataProvider> actual,
                                                              final Pair<Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>, SearchablePreferenceEntity.DbDataProvider> expected) {
-        final Set<String> expectedEdgesRepr = edgesAsStrings(expected.first(), expected.second());
-        final Set<String> actualEdgesRepr = edgesAsStrings(actual.first(), actual.second());
         assertThat(
-                actualEdgesRepr,
-                is(equalTo(expectedEdgesRepr)));
+                edgesAsStrings(actual.first(), actual.second()),
+                is(edgesAsStrings(expected.first(), expected.second())));
     }
 
     private static String nodes2String(final Set<SearchablePreferenceScreenEntity> nodes,

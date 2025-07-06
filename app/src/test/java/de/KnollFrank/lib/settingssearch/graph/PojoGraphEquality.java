@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import org.jgrapht.Graph;
@@ -24,19 +23,11 @@ public class PojoGraphEquality {
     }
 
     private static void assertActualEqualsExpected(final Set<SearchablePreferenceScreen> nodesActual, final Set<SearchablePreferenceScreen> nodesExpected) {
-        assertThat(
-                "Vertex sets should be equal. Expected: [" + nodes2String(nodesExpected) + "], Actual: [" + nodes2String(nodesActual) + "]",
-                nodes2String(nodesActual),
-                is(equalTo(nodes2String(nodesExpected))));
+        assertThat(nodes2String(nodesActual), is(nodes2String(nodesExpected)));
     }
 
     private static void assertActualEdgesEqualsExpectedEdges(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> actual, final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> expected) {
-        final Set<String> expectedEdgesRepr = edgesAsStrings(expected);
-        final Set<String> actualEdgesRepr = edgesAsStrings(actual);
-        assertThat(
-                "Edge representations should be equal. Expected: " + expectedEdgesRepr + ", Actual: " + actualEdgesRepr,
-                actualEdgesRepr,
-                is(equalTo(expectedEdgesRepr)));
+        assertThat(edgesAsStrings(actual), is(edgesAsStrings(expected)));
     }
 
     private static String nodes2String(final Set<SearchablePreferenceScreen> nodes) {
