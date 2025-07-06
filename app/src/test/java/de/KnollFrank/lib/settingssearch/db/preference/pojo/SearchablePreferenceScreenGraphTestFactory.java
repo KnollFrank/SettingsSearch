@@ -14,8 +14,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGenerator;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.lib.settingssearch.graph.GraphAndDbDataProvider;
@@ -30,8 +28,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
             GraphAndDbDataProvider entityGraphAndDbDataProvider,
             Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
     }
-
-    private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
     public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host) {
         final String screenId = "1";
