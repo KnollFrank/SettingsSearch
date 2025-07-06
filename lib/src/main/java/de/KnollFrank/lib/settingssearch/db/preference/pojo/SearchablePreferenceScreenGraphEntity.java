@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.Set;
 
 @Entity
-public record SearchablePreferenceScreenGraphEntity(@PrimaryKey @NonNull Locale locale) {
+public record SearchablePreferenceScreenGraphEntity(@PrimaryKey @NonNull Locale id) {
 
     public interface DbDataProvider {
 

@@ -5,6 +5,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -13,7 +14,8 @@ import java.util.Set;
 public record SearchablePreferenceScreenEntity(@PrimaryKey @NonNull String id,
                                                Class<? extends PreferenceFragmentCompat> host,
                                                Optional<String> title,
-                                               Optional<String> summary) {
+                                               Optional<String> summary,
+                                               Locale graphId) {
 
     public interface DbDataProvider {
 

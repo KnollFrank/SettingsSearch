@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 
 import org.jgrapht.Graph;
 
+// FK-TODO: remove?
 public class GraphEquality {
 
     public static <V, E> void assertActualEqualsExpected(final Graph<V, E> actual, final Graph<V, E> expected) {

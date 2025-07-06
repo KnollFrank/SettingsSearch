@@ -67,7 +67,7 @@ public class DatabaseResetterTest {
                 .persist(
                         new GraphForLocale(
                                 singleNodeGraph.pojoGraph(),
-                                singleNodeGraph.entityGraphAndDbDataProvider().graph().locale()));
+                                singleNodeGraph.entityGraphAndDbDataProvider().graph().id()));
     }
 
     private static void assertIsReset(final AppDatabase appDatabase) {

@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
 import com.google.common.collect.ImmutableSet;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -22,8 +23,9 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
 
     public static DetachedSearchablePreferenceScreenEntity toEntity(
             final SearchablePreferenceScreen screenToConvertToEntity,
-            final Optional<SearchablePreferenceEntity> predecessorEntity) {
-        final SearchablePreferenceScreenEntity entity = toEntity(screenToConvertToEntity);
+            final Optional<SearchablePreferenceEntity> predecessorEntity,
+            final Locale graphId) {
+        final SearchablePreferenceScreenEntity entity = toEntity(screenToConvertToEntity, graphId);
         return new DetachedSearchablePreferenceScreenEntity(
                 entity,
                 getDbDataProviderData(
@@ -32,12 +34,15 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                         predecessorEntity));
     }
 
-    private static SearchablePreferenceScreenEntity toEntity(final SearchablePreferenceScreen screen) {
+    private static SearchablePreferenceScreenEntity toEntity(
+            final SearchablePreferenceScreen screenToConvertToEntity,
+            final Locale graphId) {
         return new SearchablePreferenceScreenEntity(
-                screen.id(),
-                screen.host(),
-                screen.title(),
-                screen.summary());
+                screenToConvertToEntity.id(),
+                screenToConvertToEntity.host(),
+                screenToConvertToEntity.title(),
+                screenToConvertToEntity.summary(),
+                graphId);
     }
 
     private static DbDataProviderData getDbDataProviderData(final SearchablePreferenceScreen screenToConvertToEntity,

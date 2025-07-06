@@ -29,13 +29,13 @@ public class PojoGraph2EntityGraphTransformer {
 
     public static GraphAndDbDataProvider toEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
-            final Locale locale) {
+            final Locale graphId) {
         final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
                 GraphTransformerAlgorithm.transform(
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
-                        createGraphTransformer());
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale);
+                        createGraphTransformer(graphId));
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(graphId);
         return new GraphAndDbDataProvider(
                 graphEntity,
                 DbDataProviderFactory.createDbDataProvider(
@@ -61,14 +61,15 @@ public class PojoGraph2EntityGraphTransformer {
                 .collect(Collectors.toSet());
     }
 
-    private static GraphTransformer<SearchablePreferenceScreen, SearchablePreferenceEdge, DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> createGraphTransformer() {
+    private static GraphTransformer<SearchablePreferenceScreen, SearchablePreferenceEdge, DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> createGraphTransformer(final Locale graphId) {
         return new GraphTransformer<>() {
 
             @Override
             public DetachedSearchablePreferenceScreenEntity transformRootNode(final SearchablePreferenceScreen rootNode) {
                 return SearchablePreferenceScreenToSearchablePreferenceScreenEntityConverter.toEntity(
                         rootNode,
-                        Optional.empty());
+                        Optional.empty(),
+                        graphId);
             }
 
             @Override
@@ -79,7 +80,8 @@ public class PojoGraph2EntityGraphTransformer {
                         Optional.of(
                                 getPreferenceById(
                                         contextOfInnerNode.transformedParentNode(),
-                                        contextOfInnerNode.edgeFromParentNode2InnerNode().preference.getId())));
+                                        contextOfInnerNode.edgeFromParentNode2InnerNode().preference.getId())),
+                        graphId);
             }
 
             @Override

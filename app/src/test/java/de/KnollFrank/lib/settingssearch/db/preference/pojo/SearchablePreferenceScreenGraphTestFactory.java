@@ -62,13 +62,14 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
+        final SearchablePreferenceScreenGraphEntity graphEntity = createGraphEntity();
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
-                        host);
-        final SearchablePreferenceScreenGraphEntity graphEntity = createGraphEntity();
+                        host,
+                        graphEntity.id());
         return new Graphs(
                 new GraphAndDbDataProvider(
                         graphEntity,
@@ -130,17 +131,19 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
+        final SearchablePreferenceScreenGraphEntity graphEntity = createGraphEntity();
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
                         preferenceConnectingSrc2Dst,
                         preferencePojoConnectingSrc2Dst,
-                        host);
+                        host,
+                        graphEntity.id());
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> dst =
                 createDst(
                         preferenceConnectingSrc2Dst,
-                        preferencePojoConnectingSrc2Dst);
-        final SearchablePreferenceScreenGraphEntity graphEntity = createGraphEntity();
+                        preferencePojoConnectingSrc2Dst,
+                        graphEntity.id());
         return new Graphs(
                 new GraphAndDbDataProvider(
                         graphEntity,
@@ -179,7 +182,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
             final String screenId,
             final SearchablePreferenceEntity preferenceConnectingSrc2Dst,
             final SearchablePreference preferencePojoConnectingSrc2Dst,
-            final Class<? extends PreferenceFragmentCompat> host) {
+            final Class<? extends PreferenceFragmentCompat> host,
+            final Locale graphId) {
         final SearchablePreferenceEntity parent =
                 new SearchablePreferenceEntity(
                         1,
@@ -278,7 +282,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId,
                         host,
                         Optional.of("screen title"),
-                        Optional.of("screen summary"));
+                        Optional.of("screen summary"),
+                        graphId);
         return Pair.create(
                 Pair.create(
                         searchablePreferenceScreen,
@@ -320,7 +325,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
 
     private static Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> createDst(
             final SearchablePreferenceEntity predecessor,
-            final SearchablePreference predecessorPojo) {
+            final SearchablePreference predecessorPojo,
+            final Locale graphId) {
         final String screenId = "2";
         final SearchablePreferenceEntity searchablePreference =
                 new SearchablePreferenceEntity(
@@ -358,7 +364,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         screenId,
                         PreferenceFragmentWithSinglePreference.class,
                         Optional.empty(),
-                        Optional.empty());
+                        Optional.empty(),
+                        graphId);
         return Pair.create(
                 Pair.create(
                         searchablePreferenceScreen,

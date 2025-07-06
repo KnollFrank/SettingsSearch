@@ -10,7 +10,7 @@ public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataPr
                 EntityGraph2PojoGraphTransformer.toPojoGraph(
                         graphAndDbDataProvider.asGraph(),
                         graphAndDbDataProvider.dbDataProvider()),
-                graphAndDbDataProvider.graph().locale());
+                graphAndDbDataProvider.graph().id());
     }
 
     @Override
