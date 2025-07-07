@@ -5,7 +5,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
-import androidx.room.Update;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -23,7 +22,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredeces
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
-// FK-TODO: order methods
 @Dao
 public abstract class SearchablePreferenceEntityDAO implements SearchablePreferenceEntity.DbDataProvider {
 
@@ -37,14 +35,6 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
         this.appDatabase = appDatabase;
     }
 
-    @Query("SELECT * FROM SearchablePreferenceEntity WHERE id = :id")
-    public abstract Optional<SearchablePreferenceEntity> findPreferenceById(final int id);
-
-    public void persist(final SearchablePreferenceEntity... searchablePreferences) {
-        _persist(searchablePreferences);
-        invalidateCaches();
-    }
-
     public void persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
         _persist(searchablePreferences);
         invalidateCaches();
@@ -52,16 +42,6 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
 
     public void remove(final Collection<SearchablePreferenceEntity> preferences) {
         _remove(preferences);
-        invalidateCaches();
-    }
-
-    public void remove(final SearchablePreferenceEntity... preferences) {
-        _remove(preferences);
-        invalidateCaches();
-    }
-
-    public void update(final SearchablePreferenceEntity... preferences) {
-        _update(preferences);
         invalidateCaches();
     }
 
@@ -85,17 +65,17 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
         invalidateCaches();
     }
 
-    @Query("DELETE FROM SearchablePreferenceEntity")
-    protected abstract void _removeAll();
+    @Query("SELECT * FROM SearchablePreferenceEntity WHERE id = :id")
+    public abstract Optional<SearchablePreferenceEntity> findPreferenceById(final int id);
 
     @Query("SELECT MAX(id) FROM SearchablePreferenceEntity")
     public abstract Optional<Integer> getMaxId();
 
-    @Insert
-    protected abstract void _persist(Collection<SearchablePreferenceEntity> searchablePreferences);
+    @Query("DELETE FROM SearchablePreferenceEntity")
+    protected abstract void _removeAll();
 
     @Insert
-    protected abstract void _persist(SearchablePreferenceEntity... searchablePreferences);
+    protected abstract void _persist(Collection<SearchablePreferenceEntity> searchablePreferences);
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceEntity")
@@ -106,13 +86,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     protected abstract List<PreferenceAndChildren> _getPreferencesAndChildren();
 
     @Delete
-    protected abstract void _remove(SearchablePreferenceEntity... preferences);
-
-    @Delete
     public abstract void _remove(final Collection<SearchablePreferenceEntity> preferences);
-
-    @Update
-    protected abstract void _update(SearchablePreferenceEntity... preferences);
 
     private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference() {
         if (childrenByPreference.isEmpty()) {

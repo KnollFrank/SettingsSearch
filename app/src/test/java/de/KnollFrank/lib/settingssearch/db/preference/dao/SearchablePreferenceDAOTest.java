@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                         Optional.of("some searchable info"));
 
         // When
-        dao.persist(preference);
+        dao.persist(List.of(preference));
 
         // Then the preference was persisted at all
         final Optional<SearchablePreferenceEntity> preferenceFromDb = dao.findPreferenceById(preference.id());
@@ -66,7 +67,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                         Optional.of("some title"),
                         Optional.of("some summary"),
                         Optional.of("some searchable info"));
-        dao.persist(predecessor, preference);
+        dao.persist(List.of(predecessor, preference));
         final SearchablePreferenceEntity preferenceFromDb = dao.findPreferenceById(preference.id()).orElseThrow();
 
         // When
@@ -97,7 +98,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                         Optional.of("some title"),
                         Optional.of("some summary"),
                         Optional.of("some searchable info"));
-        dao.persist(parent, child);
+        dao.persist(List.of(parent, child));
         final SearchablePreferenceEntity parentFromDb = dao.findPreferenceById(parent.id()).orElseThrow();
 
         // When
@@ -124,8 +125,8 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                         Optional.of("some searchable info"));
 
         // When
-        dao.persist(preference);
-        dao.remove(preference);
+        dao.persist(List.of(preference));
+        dao.remove(List.of(preference));
 
         // Then
         final boolean removed =
@@ -148,7 +149,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty());
-        dao.persist(preference);
+        dao.persist(List.of(preference));
 
         // When
         final Optional<Integer> maxIdActual = dao.getMaxId();
