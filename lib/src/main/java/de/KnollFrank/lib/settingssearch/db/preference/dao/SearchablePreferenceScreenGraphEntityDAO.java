@@ -5,9 +5,11 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
@@ -35,6 +37,14 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         return _findGraphById(id).map(this::createGraphAndDbDataProvider);
     }
 
+    public Set<GraphAndDbDataProvider> loadAll() {
+        return this
+                ._loadAll()
+                .stream()
+                .map(this::createGraphAndDbDataProvider)
+                .collect(Collectors.toSet());
+    }
+
     @Override
     public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenGraphEntity graph) {
         // FK-TODO: add cache?
@@ -57,6 +67,9 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
 
     @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity WHERE id = :id")
     protected abstract Optional<SearchablePreferenceScreenGraphEntity> _findGraphById(final Locale id);
+
+    @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity")
+    protected abstract List<SearchablePreferenceScreenGraphEntity> _loadAll();
 
     private GraphAndDbDataProvider createGraphAndDbDataProvider(final SearchablePreferenceScreenGraphEntity graph) {
         return new GraphAndDbDataProvider(

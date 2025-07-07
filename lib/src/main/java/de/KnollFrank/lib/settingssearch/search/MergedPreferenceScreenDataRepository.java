@@ -52,7 +52,7 @@ public class MergedPreferenceScreenDataRepository {
 
     public DAOProvider getSearchDatabaseFilledWithPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
-            final AppDatabase appDatabase = AppDatabaseFactory.getInstance(locale, context);
+            final AppDatabase appDatabase = AppDatabaseFactory.getInstance(context);
             final SearchablePreferenceScreenGraphDAO graphDAO = appDatabase.searchablePreferenceScreenGraphDAO();
             if (graphDAO.findGraphById(locale).isEmpty()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?

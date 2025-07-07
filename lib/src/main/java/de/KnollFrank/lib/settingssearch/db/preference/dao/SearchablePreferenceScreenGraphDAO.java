@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
@@ -25,5 +27,17 @@ public class SearchablePreferenceScreenGraphDAO {
         return delegate
                 .findGraphById(id)
                 .map(entityGraphPojoGraphConverter::doForward);
+    }
+
+    public Set<GraphForLocale> loadAll() {
+        return delegate
+                .loadAll()
+                .stream()
+                .map(entityGraphPojoGraphConverter::doForward)
+                .collect(Collectors.toSet());
+    }
+
+    public void removeAll() {
+        delegate.removeAll();
     }
 }
