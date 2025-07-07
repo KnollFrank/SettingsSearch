@@ -27,7 +27,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     }
 
     public void persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
-        removeIfPresent(graphAndDbDataProvider);
+        removeIfPresent(graphAndDbDataProvider.graph());
         _persist(graphAndDbDataProvider);
     }
 
@@ -64,9 +64,9 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
                 DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO));
     }
 
-    private void removeIfPresent(final GraphAndDbDataProvider graphAndDbDataProvider) {
+    private void removeIfPresent(final SearchablePreferenceScreenGraphEntity graph) {
         this
-                .findGraphById(graphAndDbDataProvider.graph().id())
+                .findGraphById(graph.id())
                 .map(GraphAndDbDataProvider::graph)
                 .ifPresent(this::remove);
     }

@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -22,7 +21,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
-// FK-TODO: order methods
 @Dao
 public abstract class SearchablePreferenceScreenEntityDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
 
@@ -36,27 +34,12 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         this.searchablePreferenceDAO = appDatabase.searchablePreferenceEntityDAO();
     }
 
-    public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens) {
-        persist(searchablePreferenceScreens, this);
-    }
-
     public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
                         final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
-        searchablePreferenceScreens.forEach(searchablePreferenceScreen -> persist(searchablePreferenceScreen, dbDataProvider));
+        for (final var searchablePreferenceScreen : searchablePreferenceScreens) {
+            persist(searchablePreferenceScreen, dbDataProvider);
+        }
     }
-
-    public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen) {
-        persist(searchablePreferenceScreen, this);
-    }
-
-    public void remove(final SearchablePreferenceScreenEntity screen) {
-        searchablePreferenceDAO.remove(screen.getAllPreferences(this));
-        _remove(screen);
-        invalidateCaches();
-    }
-
-    @Delete
-    protected abstract void _remove(SearchablePreferenceScreenEntity screen);
 
     public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen,
                         final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
@@ -65,19 +48,15 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         invalidateCaches();
     }
 
-    @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE id = :id")
-    public abstract Optional<SearchablePreferenceScreenEntity> findSearchablePreferenceScreenById(final String id);
-
-    public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByGraphId(final Locale graphId) {
-        return new HashSet<>(_findSearchablePreferenceScreensByGraphId(graphId));
+    public void remove(final SearchablePreferenceScreenEntity screen) {
+        searchablePreferenceDAO.remove(screen.getAllPreferences(this));
+        _remove(screen);
+        invalidateCaches();
     }
 
-    @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE graphId = :graphId")
-    protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final Locale graphId);
-
-    // FK-TODO: remove method?
-    public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host) {
-        return new HashSet<>(_findSearchablePreferenceScreensByHost(host));
+    public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByGraphId(final Locale graphId) {
+        // FK-TODO: add cache?
+        return new HashSet<>(_findSearchablePreferenceScreensByGraphId(graphId));
     }
 
     @Override
@@ -96,16 +75,18 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         invalidateCaches();
     }
 
+    @Delete
+    protected abstract void _remove(SearchablePreferenceScreenEntity screen);
+
+    @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE graphId = :graphId")
+    protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final Locale graphId);
+
     @Insert
     protected abstract void _persist(SearchablePreferenceScreenEntity searchablePreferenceScreen);
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceScreenEntity")
     protected abstract List<SearchablePreferenceScreenAndAllPreferences> _getSearchablePreferenceScreenAndAllPreferences();
-
-    // FK-TODO: remove method?
-    @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE host = :host")
-    protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByHost(final Class<? extends PreferenceFragmentCompat> host);
 
     @Query("DELETE FROM SearchablePreferenceScreenEntity")
     protected abstract void _removeAll();
