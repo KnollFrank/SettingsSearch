@@ -15,7 +15,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvide
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
 
-// FK-TODO: order methods
 @Dao
 public abstract class SearchablePreferenceScreenGraphEntityDAO implements SearchablePreferenceScreenGraphEntity.DbDataProvider {
 
@@ -28,34 +27,19 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     }
 
     public void persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
-        this
-                .findGraphById(graphAndDbDataProvider.graph().id())
-                .map(GraphAndDbDataProvider::graph)
-                .ifPresent(this::remove);
+        removeIfPresent(graphAndDbDataProvider);
         _persist(graphAndDbDataProvider);
     }
 
-    public void remove(final SearchablePreferenceScreenGraphEntity graph) {
-        graph.getNodes(this).forEach(screenDAO::remove);
-        _remove(graph);
-    }
-
     public Optional<GraphAndDbDataProvider> findGraphById(final Locale id) {
-        return this
-                ._findGraphById(id)
-                .map(graph ->
-                             new GraphAndDbDataProvider(
-                                     graph,
-                                     DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO)));
+        return _findGraphById(id).map(this::createGraphAndDbDataProvider);
     }
 
     @Override
     public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenGraphEntity graph) {
+        // FK-TODO: add cache?
         return screenDAO.findSearchablePreferenceScreensByGraphId(graph.id());
     }
-
-    @Delete
-    protected abstract void _remove(SearchablePreferenceScreenGraphEntity graph);
 
     public void removeAll() {
         screenDAO.removeAll();
@@ -65,11 +49,32 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     @Insert
     protected abstract void persist(SearchablePreferenceScreenGraphEntity graph);
 
-    @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity WHERE id = :id")
-    protected abstract Optional<SearchablePreferenceScreenGraphEntity> _findGraphById(final Locale id);
+    @Delete
+    protected abstract void _remove(SearchablePreferenceScreenGraphEntity graph);
 
     @Query("DELETE FROM SearchablePreferenceScreenGraphEntity")
     protected abstract void _removeAll();
+
+    @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity WHERE id = :id")
+    protected abstract Optional<SearchablePreferenceScreenGraphEntity> _findGraphById(final Locale id);
+
+    private GraphAndDbDataProvider createGraphAndDbDataProvider(final SearchablePreferenceScreenGraphEntity graph) {
+        return new GraphAndDbDataProvider(
+                graph,
+                DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO));
+    }
+
+    private void removeIfPresent(final GraphAndDbDataProvider graphAndDbDataProvider) {
+        this
+                .findGraphById(graphAndDbDataProvider.graph().id())
+                .map(GraphAndDbDataProvider::graph)
+                .ifPresent(this::remove);
+    }
+
+    private void remove(final SearchablePreferenceScreenGraphEntity graph) {
+        graph.getNodes(this).forEach(screenDAO::remove);
+        _remove(graph);
+    }
 
     private void _persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
         screenDAO.persist(

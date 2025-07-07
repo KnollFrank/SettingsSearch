@@ -52,6 +52,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     public void remove(final SearchablePreferenceScreenEntity screen) {
         searchablePreferenceDAO.remove(screen.getAllPreferences(this));
         _remove(screen);
+        invalidateCaches();
     }
 
     @Delete
