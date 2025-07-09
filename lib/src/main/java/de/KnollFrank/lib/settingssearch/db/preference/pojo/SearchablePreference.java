@@ -22,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConver
 
 public final class SearchablePreference {
 
-    private final int id;
+    private final String id;
     private final String key;
     private final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData;
     private Optional<Optional<Drawable>> iconCache = Optional.empty();
@@ -41,7 +41,7 @@ public final class SearchablePreference {
     private final Optional<SearchablePreference> predecessor;
     private Optional<SearchablePreferenceScreen> host = Optional.empty();
 
-    public SearchablePreference(final int id,
+    public SearchablePreference(final String id,
                                 final String key,
                                 final Optional<String> title,
                                 final Optional<String> summary,
@@ -69,7 +69,7 @@ public final class SearchablePreference {
         this.predecessor = predecessor;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -185,10 +185,9 @@ public final class SearchablePreference {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final SearchablePreference that = (SearchablePreference) o;
-        return id == that.id;
+        return Objects.equals(id, that.id);
     }
 
     @Override

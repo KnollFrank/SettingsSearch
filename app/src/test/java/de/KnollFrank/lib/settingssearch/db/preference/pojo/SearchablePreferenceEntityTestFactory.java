@@ -12,13 +12,13 @@ public class SearchablePreferenceEntityTestFactory {
     private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
     public static SearchablePreferenceEntity createSearchablePreference(
-            final int id,
+            final String id,
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Optional<Integer> parentId,
-            final Optional<Integer> predecessorId) {
+            final Optional<String> parentId,
+            final Optional<String> predecessorId) {
         return new SearchablePreferenceEntity(
                 id,
                 "some key",
@@ -62,7 +62,7 @@ public class SearchablePreferenceEntityTestFactory {
             final Optional<String> searchableInfo,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
         return createSearchablePreference(
-                1,
+                "1",
                 title,
                 summary,
                 searchableInfo,
@@ -71,7 +71,7 @@ public class SearchablePreferenceEntityTestFactory {
     }
 
     public static SearchablePreferenceEntity createSearchablePreference(
-            final int id,
+            final String id,
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
@@ -96,7 +96,7 @@ public class SearchablePreferenceEntityTestFactory {
 
     public static SearchablePreferenceEntity createSearchablePreference(final String key) {
         return new SearchablePreferenceEntity(
-                1,
+                "1",
                 key,
                 Optional.empty(),
                 Optional.empty(),
@@ -110,12 +110,5 @@ public class SearchablePreferenceEntityTestFactory {
                 Optional.empty(),
                 Optional.empty(),
                 "-1");
-    }
-
-    public static SearchablePreferenceEntity copyPreferenceAndSetPredecessor(final SearchablePreferenceEntity preference,
-                                                                             final Optional<SearchablePreferenceEntity> predecessor) {
-        return createSearchablePreference(
-                preference.title().orElseThrow(),
-                predecessor);
     }
 }

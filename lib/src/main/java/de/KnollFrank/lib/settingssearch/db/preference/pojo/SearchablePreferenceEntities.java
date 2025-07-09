@@ -13,9 +13,10 @@ public class SearchablePreferenceEntities {
                 searchablePreference -> searchablePreference.key().equals(key));
     }
 
-    public static Optional<SearchablePreferenceEntity> findPreferenceById(final Set<SearchablePreferenceEntity> preferences, final int id) {
+    public static Optional<SearchablePreferenceEntity> findPreferenceById(final Set<SearchablePreferenceEntity> preferences,
+                                                                          final String id) {
         return Sets.findElementByPredicate(
                 preferences,
-                searchablePreference -> searchablePreference.id() == id);
+                searchablePreference -> searchablePreference.id().equals(id));
     }
 }

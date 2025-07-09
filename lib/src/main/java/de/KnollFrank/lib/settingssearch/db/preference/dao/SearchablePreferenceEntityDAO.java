@@ -66,10 +66,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     }
 
     @Query("SELECT * FROM SearchablePreferenceEntity WHERE id = :id")
-    public abstract Optional<SearchablePreferenceEntity> findPreferenceById(final int id);
-
-    @Query("SELECT MAX(id) FROM SearchablePreferenceEntity")
-    public abstract Optional<Integer> getMaxId();
+    public abstract Optional<SearchablePreferenceEntity> findPreferenceById(final String id);
 
     @Query("DELETE FROM SearchablePreferenceEntity")
     protected abstract void _removeAll();

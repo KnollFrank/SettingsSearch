@@ -8,8 +8,8 @@ public class IdGeneratorFactory {
             private int id = startId;
 
             @Override
-            public int nextId() {
-                return id++;
+            public String nextId() {
+                return String.valueOf(id++);
             }
         };
     }

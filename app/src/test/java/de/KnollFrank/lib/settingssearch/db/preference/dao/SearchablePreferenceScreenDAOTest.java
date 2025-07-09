@@ -24,12 +24,12 @@ public class SearchablePreferenceScreenDAOTest extends AppDatabaseTest {
         final SearchablePreferenceScreenEntityDAO dao = appDatabase.searchablePreferenceScreenEntityDAO();
         final SearchablePreferenceScreenGraphTestFactory.Data data =
                 new SearchablePreferenceScreenGraphTestFactory.Data(
-                        5,
-                        4,
+                        "5",
+                        "4",
                         "parentKey",
-                        1,
-                        2,
-                        3,
+                        "1",
+                        "2",
+                        "3",
                         "singleNodeGraph-screen1",
                         "graph-screen1",
                         "graph-screen2");

@@ -7,15 +7,17 @@ import de.KnollFrank.lib.settingssearch.common.Sets;
 
 public class SearchablePreferences {
 
-    public static Optional<SearchablePreference> findPreferenceByKey(final Set<SearchablePreference> preferences, final String key) {
+    public static Optional<SearchablePreference> findPreferenceByKey(final Set<SearchablePreference> preferences,
+                                                                     final String key) {
         return Sets.findElementByPredicate(
                 preferences,
                 searchablePreference -> searchablePreference.getKey().equals(key));
     }
 
-    public static Optional<SearchablePreference> findPreferenceById(final Set<SearchablePreference> preferences, final int id) {
+    public static Optional<SearchablePreference> findPreferenceById(final Set<SearchablePreference> preferences,
+                                                                    final String id) {
         return Sets.findElementByPredicate(
                 preferences,
-                searchablePreference -> searchablePreference.getId() == id);
+                searchablePreference -> searchablePreference.getId().equals(id));
     }
 }

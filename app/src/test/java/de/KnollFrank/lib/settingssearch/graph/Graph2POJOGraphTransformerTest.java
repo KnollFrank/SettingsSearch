@@ -58,12 +58,12 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, instantiateAndInitializeFragment, activity);
                 final SearchablePreferenceScreenGraphTestFactory.Data _data =
                         new SearchablePreferenceScreenGraphTestFactory.Data(
-                                5,
-                                4,
+                                "5",
+                                "4",
                                 "parentKey",
-                                1,
-                                2,
-                                3,
+                                "1",
+                                "2",
+                                "3",
                                 "singleNodeGraph-screen1",
                                 "graph-screen1",
                                 "graph-screen2");
@@ -186,17 +186,17 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
     }
 
     private static SearchablePreference getPreferenceConnectingSrc2Dst(final Set<SearchablePreference> searchablePreferences,
-                                                                       final int PREFERENCE_CONNECTING_SRC_2_DST_ID) {
+                                                                       final String PREFERENCE_CONNECTING_SRC_2_DST_ID) {
         return getPreferenceById(searchablePreferences, PREFERENCE_CONNECTING_SRC_2_DST_ID);
     }
 
     private static SearchablePreference getDstPreference(final Set<SearchablePreference> searchablePreferences,
-                                                         final int DST_PREFERENCE_ID) {
+                                                         final String DST_PREFERENCE_ID) {
         return getPreferenceById(searchablePreferences, DST_PREFERENCE_ID);
     }
 
     private static SearchablePreference getPreferenceById(final Set<SearchablePreference> searchablePreferences,
-                                                          final int id) {
+                                                          final String id) {
         return SearchablePreferences
                 .findPreferenceById(searchablePreferences, id)
                 .orElseThrow();

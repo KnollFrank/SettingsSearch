@@ -95,7 +95,7 @@ public class PojoGraph2EntityGraphTransformer {
             }
 
             private static SearchablePreferenceEntity getPreferenceById(final DetachedSearchablePreferenceScreenEntity screen,
-                                                                        final int id) {
+                                                                        final String id) {
                 return SearchablePreferenceEntities
                         .findPreferenceById(screen.getAllPreferences(), id)
                         .orElseThrow();

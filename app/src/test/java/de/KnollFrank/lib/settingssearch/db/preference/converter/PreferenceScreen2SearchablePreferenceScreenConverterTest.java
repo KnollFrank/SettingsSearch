@@ -137,7 +137,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
             final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference child1 =
                 new SearchablePreference(
-                        2,
+                        "2",
                         keyOfChild1,
                         Optional.empty(),
                         Optional.empty(),
@@ -152,7 +152,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty());
         final SearchablePreference child2 =
                 new SearchablePreference(
-                        3,
+                        "3",
                         keyOfChild2,
                         Optional.empty(),
                         Optional.empty(),
@@ -167,7 +167,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty());
         final SearchablePreference parent =
                 new SearchablePreference(
-                        1,
+                        "1",
                         parentKey,
                         Optional.empty(),
                         Optional.empty(),

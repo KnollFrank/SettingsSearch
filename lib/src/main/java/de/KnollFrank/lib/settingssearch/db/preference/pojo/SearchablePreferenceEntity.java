@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Entity
-public record SearchablePreferenceEntity(@PrimaryKey int id,
+public record SearchablePreferenceEntity(@PrimaryKey @NonNull String id,
                                          String key,
                                          Optional<String> title,
                                          Optional<String> summary,
@@ -21,8 +22,8 @@ public record SearchablePreferenceEntity(@PrimaryKey int id,
                                          Optional<String> fragment,
                                          Optional<String> classNameOfReferencedActivity,
                                          boolean visible, Optional<String> searchableInfo,
-                                         Optional<Integer> parentId,
-                                         Optional<Integer> predecessorId,
+                                         Optional<String> parentId,
+                                         Optional<String> predecessorId,
                                          String searchablePreferenceScreenId) {
 
     public interface DbDataProvider {
@@ -52,10 +53,9 @@ public record SearchablePreferenceEntity(@PrimaryKey int id,
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final SearchablePreferenceEntity that = (SearchablePreferenceEntity) o;
-        return id == that.id;
+        return Objects.equals(id, that.id);
     }
 
     @Override

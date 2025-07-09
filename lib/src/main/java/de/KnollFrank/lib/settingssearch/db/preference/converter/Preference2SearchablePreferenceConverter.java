@@ -44,7 +44,7 @@ public class Preference2SearchablePreferenceConverter {
                                                          final String searchablePreferenceScreenId,
                                                          final PreferenceFragmentCompat hostOfPreference,
                                                          final Optional<SearchablePreference> predecessorOfPreference) {
-        final int id = idGenerator.nextId();
+        final String id = idGenerator.nextId();
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 convertChildrenOfPreference(
                         preference,

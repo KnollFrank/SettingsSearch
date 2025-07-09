@@ -13,7 +13,7 @@ public class SearchablePreferenceToSearchablePreferenceEntityConverter {
 
     public static DetachedSearchablePreferenceEntity toEntity(
             final SearchablePreference preferenceToConvertToEntity,
-            final Optional<Integer> parentId,
+            final Optional<String> parentId,
             final SearchablePreferenceScreenEntity parentScreen,
             final Optional<SearchablePreferenceEntity> predecessor) {
         final SearchablePreferenceEntity entity =

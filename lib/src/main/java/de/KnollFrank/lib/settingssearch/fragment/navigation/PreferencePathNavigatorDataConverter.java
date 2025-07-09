@@ -28,7 +28,7 @@ class PreferencePathNavigatorDataConverter {
         @Override
         public Bundle doForward(final PreferencePathNavigatorData preferencePathNavigatorData) {
             final Bundle bundle = new Bundle();
-            bundle.putInt(ID_OF_SEARCHABLE_PREFERENCE, preferencePathNavigatorData.idOfSearchablePreference());
+            bundle.putString(ID_OF_SEARCHABLE_PREFERENCE, preferencePathNavigatorData.idOfSearchablePreference());
             bundle.putInt(INDEX_WITHIN_PREFERENCE_PATH, preferencePathNavigatorData.indexWithinPreferencePath());
             return bundle;
         }
@@ -36,7 +36,7 @@ class PreferencePathNavigatorDataConverter {
         @Override
         public PreferencePathNavigatorData doBackward(final Bundle bundle) {
             return new PreferencePathNavigatorData(
-                    bundle.getInt(ID_OF_SEARCHABLE_PREFERENCE),
+                    bundle.getString(ID_OF_SEARCHABLE_PREFERENCE),
                     bundle.getInt(INDEX_WITHIN_PREFERENCE_PATH));
         }
     }

@@ -13,7 +13,7 @@ class SearchablePreferenceToSearchablePreferenceEntityTransformerFactory {
         return new SearchablePreferenceToSearchablePreferenceEntityTransformer(getPreferenceById(preferences));
     }
 
-    private static Map<Integer, SearchablePreferenceEntity> getPreferenceById(final Set<SearchablePreferenceEntity> preferences) {
+    private static Map<String, SearchablePreferenceEntity> getPreferenceById(final Set<SearchablePreferenceEntity> preferences) {
         return preferences
                 .stream()
                 .collect(

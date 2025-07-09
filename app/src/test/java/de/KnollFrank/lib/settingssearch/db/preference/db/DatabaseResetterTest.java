@@ -42,12 +42,12 @@ public class DatabaseResetterTest {
                         PreferenceFragmentCompat.class,
                         Locale.GERMAN,
                         new SearchablePreferenceScreenGraphTestFactory.Data(
-                                5,
-                                4,
+                                "5",
+                                "4",
                                 "parentKey",
-                                10,
-                                20,
-                                30,
+                                "10",
+                                "20",
+                                "30",
                                 "singleNodeGraph-screen1",
                                 "graph-screen1",
                                 "graph-screen2"));

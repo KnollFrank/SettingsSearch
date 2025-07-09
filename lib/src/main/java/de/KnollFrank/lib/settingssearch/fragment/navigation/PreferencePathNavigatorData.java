@@ -1,5 +1,5 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
-record PreferencePathNavigatorData(int idOfSearchablePreference,
+record PreferencePathNavigatorData(String idOfSearchablePreference,
                                    int indexWithinPreferencePath) {
 }

@@ -19,12 +19,12 @@ import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.Pre
 
 public class SearchablePreferenceScreenGraphTestFactory {
 
-    public record Data(int DST_PREFERENCE_ID,
-                       int PREFERENCE_CONNECTING_SRC_2_DST_ID,
+    public record Data(String DST_PREFERENCE_ID,
+                       String PREFERENCE_CONNECTING_SRC_2_DST_ID,
                        String PARENT_KEY,
-                       int parentId,
-                       int child1Id,
-                       int child2Id,
+                       String parentId,
+                       String child1Id,
+                       String child2Id,
                        String singleNodeScreenId,
                        String twoNodeScreen1Id,
                        String twoNodeScreen2Id) {

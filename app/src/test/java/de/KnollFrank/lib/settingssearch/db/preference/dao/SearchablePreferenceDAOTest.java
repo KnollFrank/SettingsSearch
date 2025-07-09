@@ -29,7 +29,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
-                        1,
+                        "1",
                         Optional.empty(),
                         Optional.empty(),
                         Optional.of("some title"),
@@ -53,7 +53,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity predecessor =
                 createSomeSearchablePreference(
-                        1,
+                        "1",
                         Optional.empty(),
                         Optional.empty(),
                         Optional.of("some title"),
@@ -61,7 +61,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                         Optional.of("some searchable info"));
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
-                        2,
+                        "2",
                         Optional.empty(),
                         Optional.of(predecessor.id()),
                         Optional.of("some title"),
@@ -84,7 +84,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity parent =
                 createSomeSearchablePreference(
-                        1,
+                        "1",
                         Optional.empty(),
                         Optional.empty(),
                         Optional.of("some title"),
@@ -92,7 +92,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
                         Optional.of("some searchable info"));
         final SearchablePreferenceEntity child =
                 createSomeSearchablePreference(
-                        2,
+                        "2",
                         Optional.of(parent.id()),
                         Optional.empty(),
                         Optional.of("some title"),
@@ -117,7 +117,7 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
         final SearchablePreferenceEntity preference =
                 createSomeSearchablePreference(
-                        1,
+                        "1",
                         Optional.empty(),
                         Optional.empty(),
                         Optional.of("some title"),
@@ -136,44 +136,10 @@ public class SearchablePreferenceDAOTest extends AppDatabaseTest {
         assertThat(removed, is(true));
     }
 
-    @Test
-    public void shouldGetMaxId() {
-        // Given
-        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
-        final int maxId = 4711;
-        final SearchablePreferenceEntity preference =
-                createSomeSearchablePreference(
-                        maxId,
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty());
-        dao.persist(List.of(preference));
-
-        // When
-        final Optional<Integer> maxIdActual = dao.getMaxId();
-
-        // Then
-        assertThat(maxIdActual, is(Optional.of(maxId)));
-    }
-
-    @Test
-    public void shouldGetMaxId_emptyDatabase() {
-        // Given
-        final SearchablePreferenceEntityDAO dao = appDatabase.searchablePreferenceEntityDAO();
-
-        // When
-        final Optional<Integer> maxId = dao.getMaxId();
-
-        // Then
-        assertThat(maxId, is(Optional.empty()));
-    }
-
     private static SearchablePreferenceEntity createSomeSearchablePreference(
-            final int id,
-            final Optional<Integer> parentId,
-            final Optional<Integer> predecessorId,
+            final String id,
+            final Optional<String> parentId,
+            final Optional<String> predecessorId,
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo) {

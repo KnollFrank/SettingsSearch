@@ -10,9 +10,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 
 class SearchablePreferenceToSearchablePreferenceEntityTransformer {
 
-    private final Map<Integer, SearchablePreferenceEntity> preferenceById;
+    private final Map<String, SearchablePreferenceEntity> preferenceById;
 
-    SearchablePreferenceToSearchablePreferenceEntityTransformer(final Map<Integer, SearchablePreferenceEntity> preferenceById) {
+    SearchablePreferenceToSearchablePreferenceEntityTransformer(final Map<String, SearchablePreferenceEntity> preferenceById) {
         this.preferenceById = preferenceById;
     }
 

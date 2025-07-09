@@ -13,7 +13,7 @@ public class SearchablePreferenceTestFactory {
     private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
     public static SearchablePreference createSearchablePreference(
-            final int id,
+            final String id,
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
@@ -61,7 +61,7 @@ public class SearchablePreferenceTestFactory {
             final Optional<String> searchableInfo,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
         return createSearchablePreference(
-                1,
+                "1",
                 title,
                 summary,
                 searchableInfo,
@@ -70,7 +70,7 @@ public class SearchablePreferenceTestFactory {
     }
 
     public static SearchablePreference createSearchablePreference(
-            final int id,
+            final String id,
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
@@ -94,7 +94,7 @@ public class SearchablePreferenceTestFactory {
 
     public static SearchablePreference createSearchablePreference(final String key) {
         return new SearchablePreference(
-                1,
+                "1",
                 key,
                 Optional.empty(),
                 Optional.empty(),
