@@ -81,12 +81,12 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                     @Override
                                     public String getId(final PreferenceFragmentCompat preferenceFragment) {
                                         if (PreferenceFragmentWithSinglePreference.class.equals(preferenceFragment.getClass())) {
-                                            return _data.singleNodeScreenId();
-                                        } else if (PreferenceFragmentTemplate.class.equals(preferenceFragment.getClass())) {
-                                            return _data.twoNodeScreen1Id();
-                                        } else {
                                             return _data.twoNodeScreen2Id();
                                         }
+                                        if (PreferenceFragmentTemplate.class.equals(preferenceFragment.getClass())) {
+                                            return _data.twoNodeScreen1Id();
+                                        }
+                                        throw new IllegalStateException();
                                     }
                                 });
 
@@ -100,15 +100,14 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 final Locale locale = Locale.GERMAN;
                 makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase, locale);
                 // check graph:
-                assertThat(
+                PojoGraphEquality.assertActualEqualsExpected(
                         pojoGraph,
-                        is(
-                                SearchablePreferenceScreenGraphTestFactory
-                                        .createGraph(
-                                                preferenceFragment.getClass(),
-                                                locale,
-                                                _data)
-                                        .pojoGraph()));
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraph(
+                                        preferenceFragment.getClass(),
+                                        locale,
+                                        _data)
+                                .pojoGraph());
                 {
                     final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph, _data);
                     final SearchablePreference preference = data.preference();
@@ -128,8 +127,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 {
                     final PreferenceCategory preference = createParent(context);
                     screen.addPreference(preference);
-                    preference.addPreference(createChild(context));
-                    preference.addPreference(createChild(context));
+                    preference.addPreference(createChild(context, "some child key 1"));
+                    preference.addPreference(createChild(context, "some child key 2"));
                 }
                 screen.addPreference(createConnectionToFragment(PreferenceFragmentWithSinglePreference.class, context));
             }
@@ -141,9 +140,9 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 return preferenceCategory;
             }
 
-            private static Preference createChild(final Context context) {
+            private static Preference createChild(final Context context, final String key) {
                 final Preference child = new Preference(context);
-                child.setKey("some child key");
+                child.setKey(key);
                 child.setLayoutResource(16);
                 return child;
             }

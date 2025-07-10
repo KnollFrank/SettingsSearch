@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
@@ -111,16 +112,17 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                      final Locale locale,
                                      final Data data) {
         final String screenId = data.twoNodeScreen1Id();
+        final Class<? extends Fragment> fragment = PreferenceFragmentWithSinglePreference.class;
         final SearchablePreferenceEntity preferenceConnectingSrc2Dst =
                 new SearchablePreferenceEntity(
                         data.PREFERENCE_CONNECTING_SRC_2_DST_ID(),
                         "some key",
-                        Optional.of("preference connected to TestPreferenceFragment"),
+                        Optional.of("preference connected to " + fragment.getSimpleName()),
                         Optional.empty(),
                         Optional.empty(),
                         2131427444,
                         0,
-                        Optional.of(Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
+                        Optional.of(fragment.getName()),
                         Optional.empty(),
                         true,
                         Optional.empty(),
@@ -131,12 +133,12 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 new SearchablePreference(
                         data.PREFERENCE_CONNECTING_SRC_2_DST_ID(),
                         "some key",
-                        Optional.of("preference connected to TestPreferenceFragment"),
+                        Optional.of("preference connected to " + fragment.getSimpleName()),
                         Optional.empty(),
                         Optional.empty(),
                         2131427444,
                         0,
-                        Optional.of(Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
+                        Optional.of(fragment.getName()),
                         Optional.empty(),
                         true,
                         Optional.empty(),
@@ -378,8 +380,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 new SearchablePreferenceScreenEntity(
                         screenId,
                         PreferenceFragmentWithSinglePreference.class,
-                        Optional.empty(),
-                        Optional.empty(),
+                        Optional.of("screen title"),
+                        Optional.of("screen summary"),
                         graphId);
         return Pair.create(
                 Pair.create(
@@ -405,8 +407,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                 new SearchablePreferenceScreen(
                         screenId,
                         Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class,
-                        Optional.empty(),
-                        Optional.empty(),
+                        Optional.of("screen title"),
+                        Optional.of("screen summary"),
                         Set.of(searchablePreferencePojo)));
     }
 }
