@@ -119,6 +119,73 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
         }
     }
 
+    @Test
+    public void shouldCreateAndPersistTwoGraphsForDifferentLocales() {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
+            scenario.onActivity(activity -> {
+                // Given
+                final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
+                final InstantiateAndInitializeFragment instantiateAndInitializeFragment = getInstantiateAndInitializeFragment(preferenceFragment, activity);
+                final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
+                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, instantiateAndInitializeFragment, activity);
+                final SearchablePreferenceScreenGraphTestFactory.Data _data =
+                        new SearchablePreferenceScreenGraphTestFactory.Data(
+                                "5",
+                                "4",
+                                "parentKey",
+                                "1",
+                                "2",
+                                "3",
+                                "singleNodeGraph-screen1",
+                                "graph-screen1",
+                                "graph-screen2");
+                final Graph2POJOGraphTransformer graph2POJOGraphTransformer =
+                        new Graph2POJOGraphTransformer(
+                                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                                        new Preference2SearchablePreferenceConverter(
+                                                (preference, hostOfPreference) -> Optional.empty(),
+                                                new SearchableInfoAndDialogInfoProvider(
+                                                        preference -> Optional.empty(),
+                                                        (preference, hostOfPreference) -> Optional.empty()),
+                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                new PreferenceFragmentIdProvider() {
+
+                                    @Override
+                                    public String getId(final PreferenceFragmentCompat preferenceFragment) {
+                                        if (PreferenceFragmentWithSinglePreference.class.equals(preferenceFragment.getClass())) {
+                                            return _data.twoNodeScreen2Id();
+                                        }
+                                        if (PreferenceFragmentTemplate.class.equals(preferenceFragment.getClass())) {
+                                            return _data.twoNodeScreen1Id();
+                                        }
+                                        throw new IllegalStateException();
+                                    }
+                                });
+
+                // When
+                final GraphForLocale germanPojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.GERMAN);
+                appDatabase.searchablePreferenceScreenGraphDAO().persist(germanPojoGraph);
+
+                // And
+                final GraphForLocale chinesePojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.CHINESE);
+                appDatabase.searchablePreferenceScreenGraphDAO().persist(chinesePojoGraph);
+
+                // Then no exception was thrown
+            });
+        }
+    }
+
+    private static GraphForLocale transformGraph2POJOGraph(
+            final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph,
+            final Graph2POJOGraphTransformer graph2POJOGraphTransformer,
+            final Locale locale) {
+        return new GraphForLocale(
+                removeMapFromPojoNodes(
+                        graph2POJOGraphTransformer.transformGraph2POJOGraph(
+                                entityGraph)),
+                locale);
+    }
+
     private static BiConsumer<PreferenceScreen, Context> getAddPreferences2Screen() {
         return new BiConsumer<>() {
 
