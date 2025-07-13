@@ -17,7 +17,6 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
@@ -28,7 +27,6 @@ public class SearchablePreferenceScreenGraphProviderFactory {
 
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
             final Fragment fragment,
-            final SearchablePreferenceEntityDAO searchablePreferenceDAO,
             final @IdRes int containerViewId,
             final SearchDatabaseConfig searchDatabaseConfig,
             final Locale locale) {
@@ -39,7 +37,6 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                 fragment.getChildFragmentManager(),
                 fragment.requireContext(),
                 searchDatabaseConfig,
-                searchablePreferenceDAO,
                 locale);
     }
 
@@ -50,8 +47,6 @@ public class SearchablePreferenceScreenGraphProviderFactory {
             final FragmentManager childFragmentManager,
             final Context context,
             final SearchDatabaseConfig searchDatabaseConfig,
-            // FK-TODO: remove searchablePreferenceDAO
-            final SearchablePreferenceEntityDAO searchablePreferenceDAO,
             final Locale locale) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 view,

@@ -125,7 +125,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return SearchablePreferenceScreenGraphProviderFactory
                                 .createSearchablePreferenceScreenGraphProvider(
                                         PrefsFragmentFirst.this,
-                                        getAppDatabase().searchablePreferenceEntityDAO(),
                                         DUMMY_FRAGMENT_CONTAINER_VIEW,
                                         SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                                         locale)
