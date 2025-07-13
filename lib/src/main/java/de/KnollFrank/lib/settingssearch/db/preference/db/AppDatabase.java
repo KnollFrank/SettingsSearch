@@ -50,6 +50,5 @@ public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
 
     public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
 
-    @Override
     public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
 }
