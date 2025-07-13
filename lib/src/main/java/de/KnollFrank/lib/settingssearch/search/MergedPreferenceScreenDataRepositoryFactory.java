@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
 
+import java.util.Locale;
+
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
@@ -18,7 +20,8 @@ public class MergedPreferenceScreenDataRepositoryFactory {
             final PreferenceDialogs preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
-            final Context context) {
+            final Context context,
+            final Locale locale) {
         return new MergedPreferenceScreenDataRepository(
                 createPreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
@@ -27,7 +30,8 @@ public class MergedPreferenceScreenDataRepositoryFactory {
                 preferenceDialogs,
                 searchDatabaseConfig,
                 progressUpdateListener,
-                context);
+                context,
+                locale);
     }
 
     private static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(

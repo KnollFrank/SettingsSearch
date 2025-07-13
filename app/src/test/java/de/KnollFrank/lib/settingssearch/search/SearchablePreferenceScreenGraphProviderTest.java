@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
@@ -124,6 +125,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                         activityClass -> Optional.empty(),
                         fragmentActivity,
                         preferenceScreenWithHost -> {
-                        }));
+                        }),
+                Locale.GERMAN);
     }
 }

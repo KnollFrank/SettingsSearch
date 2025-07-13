@@ -36,18 +36,21 @@ public class MergedPreferenceScreenDataRepository {
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
     private final Context context;
+    private final Locale locale;
 
     MergedPreferenceScreenDataRepository(
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final PreferenceDialogs preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
-            final Context context) {
+            final Context context,
+            final Locale locale) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
         this.context = context;
+        this.locale = locale;
     }
 
     public DAOProvider getSearchDatabaseFilledWithPreferences(final Locale locale) {
@@ -102,6 +105,7 @@ public class MergedPreferenceScreenDataRepository {
                             public void preferenceScreenWithHostAdded(final PreferenceScreenWithHost preferenceScreenWithHost) {
                                 progressUpdateListener.onProgressUpdate(ProgressProvider.getProgress(preferenceScreenWithHost));
                             }
-                        }));
+                        }),
+                locale);
     }
 }

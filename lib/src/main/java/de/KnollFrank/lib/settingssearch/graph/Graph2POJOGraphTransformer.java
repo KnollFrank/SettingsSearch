@@ -4,6 +4,7 @@ import androidx.preference.Preference;
 
 import org.jgrapht.Graph;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
@@ -28,14 +29,16 @@ public class Graph2POJOGraphTransformer {
     }
 
     public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
-            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
+            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
+            final Locale locale) {
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 SearchablePreferenceEdge.class,
-                createGraphTransformer());
+                createGraphTransformer(locale));
     }
 
-    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer() {
+    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer(
+            final Locale locale) {
         return new GraphTransformer<>() {
 
             @Override
@@ -70,8 +73,9 @@ public class Graph2POJOGraphTransformer {
                 return preferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
-                        preferenceFragmentIdProvider.getId(node.host()),
-                        predecessorOfNode);
+                        locale.getLanguage() + "-" + preferenceFragmentIdProvider.getId(node.host()),
+                        predecessorOfNode,
+                        locale);
             }
 
             private static SearchablePreference getPredecessorOfNode(

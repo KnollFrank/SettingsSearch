@@ -198,14 +198,14 @@ public final class SearchablePreference {
     @Override
     public String toString() {
         return new StringJoiner(", ", SearchablePreference.class.getSimpleName() + "[", "]")
-                .add("id=" + id)
+                .add("id='" + id + "'")
                 .add("key='" + key + "'")
                 .add("title=" + title)
                 .add("summary=" + summary)
                 .add("searchableInfo=" + searchableInfo)
                 .add("fragment=" + fragment)
                 .add("visible=" + visible)
-                .add("predecessorId=" + predecessor.map(SearchablePreference::getId))
+                .add("predecessorId='" + predecessor.map(SearchablePreference::getId) + "'")
                 .toString();
     }
 

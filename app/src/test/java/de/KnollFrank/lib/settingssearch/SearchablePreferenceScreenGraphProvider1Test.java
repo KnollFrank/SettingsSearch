@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -38,7 +37,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
@@ -140,7 +138,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                         classNameOfActivity -> Optional.empty(),
                         activity,
                         preferenceScreenWithHost -> {
-                        }));
+                        }),
+                Locale.GERMAN);
     }
 
     private SearchablePreference getPreference(
@@ -240,10 +239,5 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                                         final AppDatabase appDatabase,
                                                         final Locale locale) {
         appDatabase.searchablePreferenceScreenGraphDAO().persist(new GraphForLocale(graph, locale));
-    }
-
-    public static void makeGetPreferencePathWorkOnPreferences(final Collection<SearchablePreferenceEntity> preferences,
-                                                              final AppDatabase appDatabase) {
-        appDatabase.searchablePreferenceEntityDAO().persist(preferences);
     }
 }

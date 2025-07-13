@@ -822,7 +822,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 },
                                 fragmentActivity,
                                 preferenceScreenWithHost -> {
-                                }));
+                                }),
+                        locale);
         searchablePreferenceScreenGraphDAO.persist(
                 new GraphForLocale(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(

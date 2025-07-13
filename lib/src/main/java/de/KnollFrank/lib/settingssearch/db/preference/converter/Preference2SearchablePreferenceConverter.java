@@ -9,6 +9,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,14 +44,16 @@ public class Preference2SearchablePreferenceConverter {
     public SearchablePreferenceWithMap convertPreference(final Preference preference,
                                                          final String searchablePreferenceScreenId,
                                                          final PreferenceFragmentCompat hostOfPreference,
-                                                         final Optional<SearchablePreference> predecessorOfPreference) {
-        final String id = idGenerator.nextId();
+                                                         final Optional<SearchablePreference> predecessorOfPreference,
+                                                         final Locale locale) {
+        final String id = locale.getLanguage() + "-" + idGenerator.nextId();
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 convertChildrenOfPreference(
                         preference,
                         searchablePreferenceScreenId,
                         hostOfPreference,
-                        predecessorOfPreference);
+                        predecessorOfPreference,
+                        locale);
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
                         id,
@@ -78,11 +81,12 @@ public class Preference2SearchablePreferenceConverter {
     public BiMap<SearchablePreference, Preference> convertPreferences(final List<Preference> preferences,
                                                                       final String searchablePreferenceScreenId,
                                                                       final PreferenceFragmentCompat hostOfPreferences,
-                                                                      final Optional<SearchablePreference> predecessorOfPreferences) {
+                                                                      final Optional<SearchablePreference> predecessorOfPreferences,
+                                                                      final Locale locale) {
         final List<SearchablePreferenceWithMap> pojoWithMapList =
                 preferences
                         .stream()
-                        .map(preference -> convertPreference(preference, searchablePreferenceScreenId, hostOfPreferences, predecessorOfPreferences))
+                        .map(preference -> convertPreference(preference, searchablePreferenceScreenId, hostOfPreferences, predecessorOfPreferences, locale))
                         .collect(Collectors.toList());
         return getPojoEntityMap(pojoWithMapList);
     }
@@ -90,13 +94,15 @@ public class Preference2SearchablePreferenceConverter {
     private BiMap<SearchablePreference, Preference> convertChildrenOfPreference(final Preference preference,
                                                                                 final String searchablePreferenceScreenId,
                                                                                 final PreferenceFragmentCompat hostOfPreference,
-                                                                                final Optional<SearchablePreference> predecessorOfPreference) {
+                                                                                final Optional<SearchablePreference> predecessorOfPreference,
+                                                                                final Locale locale) {
         return preference instanceof final PreferenceGroup preferenceGroup ?
                 convertPreferences(
                         Preferences.getImmediateChildren(preferenceGroup),
                         searchablePreferenceScreenId,
                         hostOfPreference,
-                        predecessorOfPreference) :
+                        predecessorOfPreference,
+                        locale) :
                 ImmutableBiMap.<SearchablePreference, Preference>builder().build();
     }
 

@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import java.util.Locale;
+
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
@@ -28,7 +30,8 @@ public class SearchablePreferenceScreenGraphProviderFactory {
             final Fragment fragment,
             final SearchablePreferenceEntityDAO searchablePreferenceDAO,
             final @IdRes int containerViewId,
-            final SearchDatabaseConfig searchDatabaseConfig) {
+            final SearchDatabaseConfig searchDatabaseConfig,
+            final Locale locale) {
         return createSearchablePreferenceScreenGraphProvider(
                 containerViewId,
                 (ViewGroup) fragment.requireView(),
@@ -36,7 +39,8 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                 fragment.getChildFragmentManager(),
                 fragment.requireContext(),
                 searchDatabaseConfig,
-                searchablePreferenceDAO);
+                searchablePreferenceDAO,
+                locale);
     }
 
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
@@ -46,7 +50,9 @@ public class SearchablePreferenceScreenGraphProviderFactory {
             final FragmentManager childFragmentManager,
             final Context context,
             final SearchDatabaseConfig searchDatabaseConfig,
-            final SearchablePreferenceEntityDAO searchablePreferenceDAO) {
+            // FK-TODO: remove searchablePreferenceDAO
+            final SearchablePreferenceEntityDAO searchablePreferenceDAO,
+            final Locale locale) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 view,
                 containerViewId);
@@ -76,6 +82,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
                         context,
                         preferenceScreenWithHost -> {
-                        }));
+                        }),
+                locale);
     }
 }

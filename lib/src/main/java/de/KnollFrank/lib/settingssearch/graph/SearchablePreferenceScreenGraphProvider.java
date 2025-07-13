@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import org.jgrapht.Graph;
 
+import java.util.Locale;
+
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -14,15 +16,18 @@ public class SearchablePreferenceScreenGraphProvider {
     private final ComputePreferencesListener computePreferencesListener;
     private final Graph2POJOGraphTransformer graph2POJOGraphTransformer;
     private final PreferenceScreenGraphProvider preferenceScreenGraphProvider;
+    private final Locale locale;
 
     public SearchablePreferenceScreenGraphProvider(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                                    final ComputePreferencesListener computePreferencesListener,
                                                    final Graph2POJOGraphTransformer graph2POJOGraphTransformer,
-                                                   final PreferenceScreenGraphProvider preferenceScreenGraphProvider) {
+                                                   final PreferenceScreenGraphProvider preferenceScreenGraphProvider,
+                                                   final Locale locale) {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.computePreferencesListener = computePreferencesListener;
         this.graph2POJOGraphTransformer = graph2POJOGraphTransformer;
         this.preferenceScreenGraphProvider = preferenceScreenGraphProvider;
+        this.locale = locale;
     }
 
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getSearchablePreferenceScreenGraph(final PreferenceScreenWithHost root) {
@@ -41,6 +46,6 @@ public class SearchablePreferenceScreenGraphProvider {
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
-                graph2POJOGraphTransformer.transformGraph2POJOGraph(preferenceScreenGraph));
+                graph2POJOGraphTransformer.transformGraph2POJOGraph(preferenceScreenGraph, locale));
     }
 }

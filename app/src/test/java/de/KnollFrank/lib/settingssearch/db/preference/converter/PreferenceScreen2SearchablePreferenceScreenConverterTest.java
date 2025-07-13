@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import static de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.addLocaleToId;
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
 
 import android.content.Context;
@@ -17,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -55,6 +57,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
 
                 final PreferenceFragmentCompat preferenceFragment = createPreferenceFragmentHavingParentWithTwoChildren(parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild);
                 final String id = "some unique id";
+                final Locale locale = Locale.GERMAN;
 
                 // When
                 final SearchablePreferenceScreen pojo =
@@ -63,7 +66,8 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                                         getPreferenceScreen(preferenceFragment, activity),
                                         preferenceFragment,
                                         id,
-                                        Optional.empty())
+                                        Optional.empty(),
+                                        locale)
                                 .searchablePreferenceScreen();
 
                 // Then
@@ -77,7 +81,8 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                                 keyOfChild1,
                                 keyOfChild2,
                                 layoutResIdOfEachChild,
-                                preferenceFragment.getClass()));
+                                preferenceFragment.getClass(),
+                                locale));
             });
         }
     }
@@ -134,10 +139,11 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
             final String keyOfChild1,
             final String keyOfChild2,
             final @LayoutRes int layoutResIdOfEachChild,
-            final Class<? extends PreferenceFragmentCompat> host) {
+            final Class<? extends PreferenceFragmentCompat> host,
+            final Locale locale) {
         final SearchablePreference child1 =
                 new SearchablePreference(
-                        "2",
+                        addLocaleToId(locale, "2"),
                         keyOfChild1,
                         Optional.empty(),
                         Optional.empty(),
@@ -152,7 +158,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty());
         final SearchablePreference child2 =
                 new SearchablePreference(
-                        "3",
+                        addLocaleToId(locale, "3"),
                         keyOfChild2,
                         Optional.empty(),
                         Optional.empty(),
@@ -167,7 +173,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty());
         final SearchablePreference parent =
                 new SearchablePreference(
-                        "1",
+                        addLocaleToId(locale, "1"),
                         parentKey,
                         Optional.empty(),
                         Optional.empty(),

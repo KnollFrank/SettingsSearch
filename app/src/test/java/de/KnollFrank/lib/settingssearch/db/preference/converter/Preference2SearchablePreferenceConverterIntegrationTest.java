@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -69,7 +70,12 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
                                 (_preference, _hostOfPreference) -> Optional.empty()),
                         IdGeneratorFactory.createIdGeneratorStartingAt(1));
         return preference2SearchablePreferenceConverter
-                .convertPreference(preference, "-1", hostOfPreference, Optional.empty())
+                .convertPreference(
+                        preference,
+                        "-1",
+                        hostOfPreference,
+                        Optional.empty(),
+                        Locale.GERMAN)
                 .searchablePreference();
     }
 

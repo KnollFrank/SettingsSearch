@@ -145,7 +145,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 preferenceDialogs,
                 searchDatabaseConfig,
                 progressUpdateListener,
-                context);
+                context,
+                locale);
     }
 
     private static Optional<SearchPreferenceFragment> findSearchPreferenceFragment(final FragmentManager fragmentManager) {
