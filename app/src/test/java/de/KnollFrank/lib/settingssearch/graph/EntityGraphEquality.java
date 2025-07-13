@@ -16,7 +16,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvide
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Locale2Converter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 
 class EntityGraphEquality {
 
@@ -79,7 +79,7 @@ class EntityGraphEquality {
                 .add("host=" + entity.host())
                 .add("title=" + entity.title())
                 .add("summary=" + entity.summary())
-                .add("graphId=" + new Locale2Converter().doBackward(entity.graphId()))
+                .add("graphId=" + new LocaleConverter().doBackward(entity.graphId()))
                 .add("allPreferences=" +
                              toString(
                                      entity.getAllPreferences(dbDataProvider),

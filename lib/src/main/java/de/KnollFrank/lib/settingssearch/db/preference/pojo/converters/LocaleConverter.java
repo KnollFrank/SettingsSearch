@@ -5,8 +5,7 @@ import androidx.room.TypeConverter;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// FK-TODO: rename to LocaleConverter
-public class Locale2Converter implements Converter<String, java.util.Locale> {
+public class LocaleConverter implements Converter<String, java.util.Locale> {
 
     @TypeConverter
     @Override
