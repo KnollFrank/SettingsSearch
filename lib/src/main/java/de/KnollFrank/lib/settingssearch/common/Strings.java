@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.OptionalInt;
 
@@ -51,5 +52,9 @@ public class Strings {
 
     public static Optional<String> toString(final Optional<CharSequence> charSequence) {
         return charSequence.map(CharSequence::toString);
+    }
+
+    public static String addLocaleToId(final Locale locale, final String id) {
+        return locale.getLanguage() + "-" + id;
     }
 }

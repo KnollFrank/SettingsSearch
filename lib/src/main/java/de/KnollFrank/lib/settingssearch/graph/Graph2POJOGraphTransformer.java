@@ -10,6 +10,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
@@ -73,7 +74,7 @@ public class Graph2POJOGraphTransformer {
                 return preferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
-                        locale.getLanguage() + "-" + preferenceFragmentIdProvider.getId(node.host()),
+                        Strings.addLocaleToId(locale, preferenceFragmentIdProvider.getId(node.host())),
                         predecessorOfNode,
                         locale);
             }
