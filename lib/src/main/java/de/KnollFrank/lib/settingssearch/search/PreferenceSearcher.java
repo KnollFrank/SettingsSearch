@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 
@@ -34,9 +34,9 @@ class PreferenceSearcher {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreference> getPreferences(final Optional<GraphForLocale> graph) {
+    private Set<SearchablePreference> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
         return graph
-                .map(GraphForLocale::graph)
+                .map(SearchablePreferenceScreenGraph::graph)
                 .map(PojoGraphs::getPreferences)
                 .orElseGet(Collections::emptySet);
     }

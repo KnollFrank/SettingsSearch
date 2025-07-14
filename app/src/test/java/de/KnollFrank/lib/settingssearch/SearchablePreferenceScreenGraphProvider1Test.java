@@ -38,8 +38,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
-import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -238,6 +238,6 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
     public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                                         final AppDatabase appDatabase,
                                                         final Locale locale) {
-        appDatabase.searchablePreferenceScreenGraphDAO().persist(new GraphForLocale(graph, locale));
+        appDatabase.searchablePreferenceScreenGraphDAO().persist(new SearchablePreferenceScreenGraph(graph, locale));
     }
 }

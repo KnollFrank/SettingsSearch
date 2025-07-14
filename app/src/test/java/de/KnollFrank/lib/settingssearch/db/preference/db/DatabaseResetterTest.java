@@ -13,8 +13,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
-import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 
 @RunWith(RobolectricTestRunner.class)
 public class DatabaseResetterTest {
@@ -54,7 +54,7 @@ public class DatabaseResetterTest {
         appDatabase
                 .searchablePreferenceScreenGraphDAO()
                 .persist(
-                        new GraphForLocale(
+                        new SearchablePreferenceScreenGraph(
                                 singleNodeGraph.pojoGraph(),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().id()));
     }

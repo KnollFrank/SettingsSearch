@@ -56,6 +56,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -66,7 +67,6 @@ import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
-import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
@@ -825,7 +825,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 }),
                         locale);
         searchablePreferenceScreenGraphDAO.persist(
-                new GraphForLocale(
+                new SearchablePreferenceScreenGraph(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(

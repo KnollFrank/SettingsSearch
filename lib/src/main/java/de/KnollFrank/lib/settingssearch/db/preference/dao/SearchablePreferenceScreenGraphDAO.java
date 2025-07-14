@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
-import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 
 public class SearchablePreferenceScreenGraphDAO {
 
@@ -18,18 +18,18 @@ public class SearchablePreferenceScreenGraphDAO {
         this.delegate = delegate;
     }
 
-    public void persist(final GraphForLocale graphForLocale) {
-        delegate.persist(entityGraphPojoGraphConverter.doBackward(graphForLocale));
+    public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
+        delegate.persist(entityGraphPojoGraphConverter.doBackward(searchablePreferenceScreenGraph));
     }
 
-    public Optional<GraphForLocale> findGraphById(final Locale id) {
+    public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id) {
         // FK-TODO: cache persisted and loaded graph?
         return delegate
                 .findGraphById(id)
                 .map(entityGraphPojoGraphConverter::doForward);
     }
 
-    public Set<GraphForLocale> loadAll() {
+    public Set<SearchablePreferenceScreenGraph> loadAll() {
         return delegate
                 .loadAll()
                 .stream()

@@ -20,9 +20,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
-import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -61,7 +61,7 @@ public class MergedPreferenceScreenDataRepository {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
                 progressUpdateListener.onProgressUpdate("persisting search database");
-                graphDAO.persist(new GraphForLocale(searchablePreferenceScreenGraph, locale));
+                graphDAO.persist(new SearchablePreferenceScreenGraph(searchablePreferenceScreenGraph, locale));
             }
             return appDatabase;
         }

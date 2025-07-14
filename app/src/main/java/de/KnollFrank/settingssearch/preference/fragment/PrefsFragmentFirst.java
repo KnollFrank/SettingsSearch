@@ -34,8 +34,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
-import de.KnollFrank.lib.settingssearch.graph.GraphForLocale;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
@@ -99,7 +99,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     @Override
                     public boolean onPreferenceClick(@NonNull final Preference preference) {
-                        final GraphForLocale pojoGraph = getPojoGraph(locale);
+                        final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale);
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                                 subtreeReplacer.replaceSubtreeWithTree(
                                         pojoGraph.graph(),
@@ -110,11 +110,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                                         PrefsFragmentFirst.this)));
                         getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
-                                .persist(new GraphForLocale(newPojoGraph, pojoGraph.locale()));
+                                .persist(new SearchablePreferenceScreenGraph(newPojoGraph, pojoGraph.locale()));
                         return true;
                     }
 
-                    private GraphForLocale getPojoGraph(final Locale locale) {
+                    private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {
                         return getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
                                 .findGraphById(locale)

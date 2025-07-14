@@ -39,6 +39,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -155,11 +156,11 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                 });
 
                 // When
-                final GraphForLocale germanPojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.GERMAN);
+                final SearchablePreferenceScreenGraph germanPojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.GERMAN);
                 appDatabase.searchablePreferenceScreenGraphDAO().persist(germanPojoGraph);
 
                 // And
-                final GraphForLocale chinesePojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.CHINESE);
+                final SearchablePreferenceScreenGraph chinesePojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.CHINESE);
                 appDatabase.searchablePreferenceScreenGraphDAO().persist(chinesePojoGraph);
 
                 // Then no exception was thrown
@@ -171,11 +172,11 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
         return locale.getLanguage() + "-" + id;
     }
 
-    private static GraphForLocale transformGraph2POJOGraph(
+    private static SearchablePreferenceScreenGraph transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph,
             final Graph2POJOGraphTransformer graph2POJOGraphTransformer,
             final Locale locale) {
-        return new GraphForLocale(
+        return new SearchablePreferenceScreenGraph(
                 removeMapFromPojoNodes(
                         graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                 entityGraph,
