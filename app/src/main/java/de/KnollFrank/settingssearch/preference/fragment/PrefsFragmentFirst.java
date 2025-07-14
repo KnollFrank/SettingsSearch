@@ -114,13 +114,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return true;
                     }
 
-                    private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {
-                        return getAppDatabase()
-                                .searchablePreferenceScreenGraphDAO()
-                                .findGraphById(locale)
-                                .orElseThrow();
-                    }
-
                     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(final PreferenceScreenWithHost root) {
                         return SearchablePreferenceScreenGraphProviderFactory
                                 .createSearchablePreferenceScreenGraphProvider(
@@ -134,6 +127,13 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         return checkBoxPreference;
     }
 
+    private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {
+        return getAppDatabase()
+                .searchablePreferenceScreenGraphDAO()
+                .findGraphById(locale)
+                .orElseThrow();
+    }
+
     private void configureSummaryChangingPreference(final Locale locale) {
         final SwitchPreference summaryChangingPreference = getPreferenceScreen().findPreference(SUMMARY_CHANGING_PREFERENCE_KEY);
         summaryChangingPreference.setSummary(getSummary(summaryChangingPreference.isChecked()));
@@ -142,13 +142,12 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     @Override
                     public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
-                        final var graphDAO = getAppDatabase().searchablePreferenceScreenGraphDAO();
-                        final var pojoGraph = graphDAO.findGraphById(locale).orElseThrow();
+                        final var pojoGraph = getPojoGraph(locale);
                         setSummaryOfPreferences(
                                 preference,
                                 getSummaryChangingPreference(pojoGraph.graph()),
                                 getSummary((boolean) checked));
-                        graphDAO.persist(pojoGraph);
+                        getAppDatabase().searchablePreferenceScreenGraphDAO().persist(pojoGraph);
                         return true;
                     }
 
