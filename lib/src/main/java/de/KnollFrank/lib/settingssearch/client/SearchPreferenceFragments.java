@@ -18,8 +18,8 @@ import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DatabaseResetter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -115,7 +115,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     }
 
     public void rebuildSearchDatabase() {
-        DatabaseResetter.resetDatabase(AppDatabaseFactory.getInstance(activity));
+        DatabaseResetter.resetDatabase(DAOProviderFactory.getDAOProvider(activity));
     }
 
     @Override
