@@ -25,12 +25,14 @@ import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmen
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.SUMMARY_CHANGING_PREFERENCE_KEY;
 
+import android.content.Context;
 import android.view.View;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.hamcrest.Matcher;
 import org.hamcrest.core.IsInstanceOf;
@@ -108,7 +110,7 @@ public class PreferenceSearchExampleTest {
 
     @Test
     public void shouldSearchAndFindListPreference() {
-        final String entryOfSomeListPreference = "Home";
+        final String entryOfSomeListPreference = getEmailAddressTypes()[0];
         onView(searchButton()).perform(click());
         // When searching for an entry of a ListPreference
         onView(searchView()).perform(replaceText(entryOfSomeListPreference), closeSoftKeyboard());
@@ -116,6 +118,7 @@ public class PreferenceSearchExampleTest {
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(entryOfSomeListPreference)));
     }
 
+    // FK-FIXME: fails
     @Test
     public void shouldSearchAndNotFindInvisiblePreference() {
         onView(searchButton()).perform(click());
@@ -303,5 +306,15 @@ public class PreferenceSearchExampleTest {
                         childAtPosition(
                                 withId(android.R.id.list_container),
                                 0)));
+    }
+
+    private static String[] getEmailAddressTypes() {
+        return getTargetContext()
+                .getResources()
+                .getStringArray(android.R.array.emailAddressTypes);
+    }
+
+    private static Context getTargetContext() {
+        return InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 }
