@@ -118,7 +118,7 @@ public class PreferenceSearchExampleTest {
         onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(entryOfSomeListPreference)));
     }
 
-    // FK-FIXME: fails
+    // FK-FIXME: only passes when run as a single test
     @Test
     public void shouldSearchAndNotFindInvisiblePreference() {
         onView(searchButton()).perform(click());
