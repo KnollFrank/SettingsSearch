@@ -108,7 +108,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                                 new PreferenceScreenWithHost(
                                                         getPreferenceScreen(),
                                                         PrefsFragmentFirst.this)));
-                        getAppDatabase()
+                        PrefsFragmentFirst.this
+                                .getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
                                 .persist(new SearchablePreferenceScreenGraph(newPojoGraph, pojoGraph.locale()));
                         return true;
