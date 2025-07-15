@@ -103,8 +103,10 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                                 subtreeReplacer.replaceSubtreeWithTree(
                                         pojoGraph.graph(),
+                                        // FK-TODO: verwende nicht getRootNode(), sondern den noch einzuführenden Tag PrefsFragmentFirst.this.getTag(), um den rootNodeOfSubtreeToReplace zu bestimmen.
                                         GraphUtils.getRootNode(pojoGraph.graph()).orElseThrow(),
                                         getPojoGraphRootedAt(
+                                                // FK-TODO: nicht direkt PreferenceScreenWithHost erzeugen, sondern mit Hilfe des PreferencePathNavigator
                                                 new PreferenceScreenWithHost(
                                                         getPreferenceScreen(),
                                                         PrefsFragmentFirst.this)));
