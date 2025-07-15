@@ -83,6 +83,9 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         preference.getExtras().putBoolean(
                 preference.getKey() + ": " + src.getClass().getName() + " -> " + dst.getName(),
                 true);
+        // FK-TODO: remove "src" and "dst"
+        preference.getExtras().putString("src", src.getClass().getName());
+        preference.getExtras().putString("dst", dst.getName());
     }
 
     private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference(final Locale locale) {

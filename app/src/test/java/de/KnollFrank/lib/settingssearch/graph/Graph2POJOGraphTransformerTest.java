@@ -10,6 +10,7 @@ import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
 import android.content.Context;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -72,14 +73,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                 addLocaleToId(locale, twoNodeScreen1Id),
                                 addLocaleToId(locale, twoNodeScreen2Id));
                 final Graph2POJOGraphTransformer graph2POJOGraphTransformer =
-                        new Graph2POJOGraphTransformer(
-                                new PreferenceScreen2SearchablePreferenceScreenConverter(
-                                        new Preference2SearchablePreferenceConverter(
-                                                (preference, hostOfPreference) -> Optional.empty(),
-                                                new SearchableInfoAndDialogInfoProvider(
-                                                        preference -> Optional.empty(),
-                                                        (preference, hostOfPreference) -> Optional.empty()),
-                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                        createGraph2POJOGraphTransformer(
                                 new PreferenceFragmentIdProvider() {
 
                                     @Override
@@ -123,6 +117,30 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
         }
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void test_transformGraph2POJOGraph_nonUniqueId_fail() {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
+            scenario.onActivity(activity -> {
+                // Given
+                final PreferenceFragmentIdProvider preferenceFragmentIdProviderCreatingNonUniqueId =
+                        new PreferenceFragmentIdProvider() {
+
+                            @Override
+                            public String getId(final PreferenceFragmentCompat preferenceFragment) {
+                                return "non unique id";
+                            }
+                        };
+                final Graph2POJOGraphTransformer graph2POJOGraphTransformer =
+                        createGraph2POJOGraphTransformer(preferenceFragmentIdProviderCreatingNonUniqueId);
+
+                // When
+                graph2POJOGraphTransformer.transformGraph2POJOGraph(
+                        createSomeEntityGraph(activity),
+                        Locale.GERMAN);
+            });
+        }
+    }
+
     @Test
     public void shouldCreateAndPersistTwoGraphsForDifferentLocales() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
@@ -133,14 +151,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
                         PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, instantiateAndInitializeFragment, activity);
                 final Graph2POJOGraphTransformer graph2POJOGraphTransformer =
-                        new Graph2POJOGraphTransformer(
-                                new PreferenceScreen2SearchablePreferenceScreenConverter(
-                                        new Preference2SearchablePreferenceConverter(
-                                                (preference, hostOfPreference) -> Optional.empty(),
-                                                new SearchableInfoAndDialogInfoProvider(
-                                                        preference -> Optional.empty(),
-                                                        (preference, hostOfPreference) -> Optional.empty()),
-                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                        createGraph2POJOGraphTransformer(
                                 new PreferenceFragmentIdProvider() {
 
                                     @Override
@@ -264,5 +275,25 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
         return SearchablePreferences
                 .findPreferenceById(searchablePreferences, id)
                 .orElseThrow();
+    }
+
+    private static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityGraph(final FragmentActivity activity) {
+        final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
+        return PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(
+                preferenceFragment,
+                getInstantiateAndInitializeFragment(preferenceFragment, activity),
+                activity);
+    }
+
+    private static Graph2POJOGraphTransformer createGraph2POJOGraphTransformer(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+        return new Graph2POJOGraphTransformer(
+                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                        new Preference2SearchablePreferenceConverter(
+                                (preference, hostOfPreference) -> Optional.empty(),
+                                new SearchableInfoAndDialogInfoProvider(
+                                        preference -> Optional.empty(),
+                                        (preference, hostOfPreference) -> Optional.empty()),
+                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                preferenceFragmentIdProvider);
     }
 }
