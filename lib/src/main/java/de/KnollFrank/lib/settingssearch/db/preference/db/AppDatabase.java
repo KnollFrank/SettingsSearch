@@ -4,6 +4,8 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import java.util.Optional;
+
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
@@ -36,14 +38,17 @@ import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
         })
 public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
 
+    private Optional<SearchablePreferenceScreenGraphDAO> searchablePreferenceScreenGraphDAO = Optional.empty();
+
     protected AppDatabase() {
     }
 
     @Override
     public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
-        return new SearchablePreferenceScreenGraphDAO(
-                new EntityGraphPojoGraphConverter(),
-                searchablePreferenceScreenGraphEntityDAO());
+        if (searchablePreferenceScreenGraphDAO.isEmpty()) {
+            searchablePreferenceScreenGraphDAO = Optional.of(creaetSearchablePreferenceScreenGraphDAO());
+        }
+        return searchablePreferenceScreenGraphDAO.orElseThrow();
     }
 
     public abstract SearchablePreferenceScreenGraphEntityDAO searchablePreferenceScreenGraphEntityDAO();
@@ -51,4 +56,10 @@ public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
     public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
 
     public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
+
+    private SearchablePreferenceScreenGraphDAO creaetSearchablePreferenceScreenGraphDAO() {
+        return new SearchablePreferenceScreenGraphDAO(
+                new EntityGraphPojoGraphConverter(),
+                searchablePreferenceScreenGraphEntityDAO());
+    }
 }
