@@ -120,8 +120,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -156,8 +155,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreferenceToIncludeInSearchResults)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -192,8 +190,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 not(hasItem(keyOfPreferenceToExcludeFromSearchResults))),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -220,8 +217,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -253,8 +249,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfNestedPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -281,8 +276,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 not(hasItem(keyOfPreference))),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -309,8 +303,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -340,8 +333,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -372,8 +364,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -402,8 +393,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -432,8 +422,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -463,8 +452,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -492,8 +480,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -532,8 +519,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItems(keyOfPreference1, keyOfPreference2)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -553,8 +539,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
-                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected,
-                new DefaultPreferenceFragmentIdProvider());
+                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
     @Test
@@ -574,8 +559,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
-                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected,
-                new DefaultPreferenceFragmentIdProvider());
+                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
     @Test
@@ -595,8 +579,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
-                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected,
-                new DefaultPreferenceFragmentIdProvider());
+                PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
     @Test
@@ -626,8 +609,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -658,8 +640,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 hasItem(keyOfPreference)),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -687,8 +668,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 not(hasItem(keyOfPreference))),
                 appDatabase.searchablePreferenceScreenGraphDAO(),
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 
     @Test
@@ -718,8 +698,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                            final PrincipalAndProxyProvider principalAndProxyProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
                            final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
-                           final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
-                           final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+                           final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -737,7 +716,7 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                 searchablePreferenceScreenGraphDAO,
                                 preferenceScreenGraphAvailableListener,
                                 locale,
-                                preferenceFragmentIdProvider);
+                                new DefaultPreferenceFragmentIdProvider());
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),

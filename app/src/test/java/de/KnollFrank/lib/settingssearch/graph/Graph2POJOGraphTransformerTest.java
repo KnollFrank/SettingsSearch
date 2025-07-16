@@ -84,7 +84,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                         if (PreferenceFragmentTemplate.class.equals(preferenceFragment.getClass())) {
                                             return twoNodeScreen1Id;
                                         }
-                                        throw new IllegalStateException();
+                                        throw new IllegalArgumentException();
                                     }
                                 });
 
@@ -162,7 +162,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                         if (PreferenceFragmentTemplate.class.equals(preferenceFragment.getClass())) {
                                             return "graph-screen1";
                                         }
-                                        throw new IllegalStateException();
+                                        throw new IllegalArgumentException();
                                     }
                                 });
 

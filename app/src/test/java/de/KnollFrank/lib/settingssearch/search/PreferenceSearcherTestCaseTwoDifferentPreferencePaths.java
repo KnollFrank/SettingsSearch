@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 
@@ -28,7 +27,6 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
 
     private static final String KEYWORD_OR_TITLE_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "some preference of connected fragment";
     private static final String KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "keyOfPreferenceOfConnectedFragment";
-    private static final String SOME_ARGUMENT = "someArgument";
 
     public static void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths(
             final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
@@ -52,18 +50,19 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
             screen.setTitle("screen with connection");
+            final String someArgument = "someArgument";
             {
                 final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, context);
                 preference.setTitle("first preference connected to " + PreferenceFragmentWithSinglePreference.class.getSimpleName());
                 preference.setKey("key1");
-                preference.getExtras().putString(SOME_ARGUMENT, "1");
+                preference.getExtras().putString(someArgument, "1");
                 screen.addPreference(preference);
             }
             {
                 final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, context);
                 preference.setTitle("second preference connected to " + PreferenceFragmentWithSinglePreference.class.getSimpleName());
                 preference.setKey("key2");
-                preference.getExtras().putString(SOME_ARGUMENT, "2");
+                preference.getExtras().putString(someArgument, "2");
                 screen.addPreference(preference);
             }
             setPreferenceScreen(screen);
@@ -104,20 +103,6 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 checkPreferenceMatches,
                 searchablePreferenceScreenGraphDAO,
                 preferenceScreenGraph -> {
-                },
-                new PreferenceFragmentIdProvider() {
-
-                    @Override
-                    public String getId(final PreferenceFragmentCompat preferenceFragment) {
-                        // FK-TODO: just append arguments of preferenceFragment as a string
-                        return preferenceFragment.getClass().getName() + getSomeArgument(preferenceFragment).orElse("");
-                    }
-
-                    private static Optional<String> getSomeArgument(final PreferenceFragmentCompat preferenceFragment) {
-                        return Optional
-                                .ofNullable(preferenceFragment.getArguments())
-                                .map(arguments -> arguments.getString(SOME_ARGUMENT));
-                    }
                 });
     }
 }

@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
@@ -55,8 +55,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 final var result =
                         createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
                                 activity,
-                                Fragment1ConnectedToFragment2AndFragment4.class,
-                                createPreferenceFragmentIdProviderForFragment1ConnectedToFragment2AndFragment4());
+                                Fragment1ConnectedToFragment2AndFragment4.class);
 
                 // When
                 final Set<SearchablePreferenceScreen> preferenceScreens =
@@ -85,8 +84,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                 final var result =
                         createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
                                 activity,
-                                Fragment1ConnectedToFragment2AndFragment4.class,
-                                createPreferenceFragmentIdProviderForFragment1ConnectedToFragment2AndFragment4());
+                                Fragment1ConnectedToFragment2AndFragment4.class);
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
@@ -120,8 +118,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
 
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
             final FragmentActivity activity,
-            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-            final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
         return new SearchablePreferenceScreenGraphProvider(
                 preferenceScreenGraph -> {
                 },
@@ -134,7 +131,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                                 preference -> Optional.empty(),
                                                 (preference, hostOfPreference) -> Optional.empty()),
                                         IdGeneratorFactory.createIdGeneratorStartingAt(1))),
-                        preferenceFragmentIdProvider),
+                        new DefaultPreferenceFragmentIdProvider()),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
@@ -143,19 +140,6 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                         preferenceScreenWithHost -> {
                         }),
                 Locale.GERMAN);
-    }
-
-    private static PreferenceFragmentIdProvider createPreferenceFragmentIdProviderForFragment1ConnectedToFragment2AndFragment4() {
-        return new PreferenceFragmentIdProvider() {
-
-            @Override
-            public String getId(final PreferenceFragmentCompat preferenceFragment) {
-                // FK-TODO: just append arguments of preferenceFragment as a string
-                return preferenceFragment instanceof Fragment4 ?
-                        preferenceFragment.getClass().getName() + preferenceFragment.requireArguments().getString("src") :
-                        preferenceFragment.getClass().getName();
-            }
-        };
     }
 
     private SearchablePreference getPreference(
@@ -183,8 +167,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
 
     public static SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
             final FragmentActivity activity,
-            final Class<? extends Fragment> root,
-            final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+            final Class<? extends Fragment> root) {
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
                 new PreferenceScreenWithHostProvider(
                         InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity),
@@ -193,8 +176,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
         return new SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(
                 createSearchablePreferenceScreenGraphProvider(
                         activity,
-                        preferenceScreenWithHostProvider,
-                        preferenceFragmentIdProvider),
+                        preferenceScreenWithHostProvider),
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
                                 root,

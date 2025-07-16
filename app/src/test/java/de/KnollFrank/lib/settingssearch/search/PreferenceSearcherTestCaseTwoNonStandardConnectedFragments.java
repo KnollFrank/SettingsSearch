@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
-import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
@@ -93,7 +92,6 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 checkPreferenceMatches,
                 searchablePreferenceScreenGraphDAO,
                 preferenceScreenGraph -> {
-                },
-                new DefaultPreferenceFragmentIdProvider());
+                });
     }
 }
