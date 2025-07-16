@@ -4,10 +4,8 @@ import androidx.preference.Preference;
 
 import org.jgrapht.Graph;
 
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
@@ -23,17 +21,18 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 public class Graph2POJOGraphTransformer {
 
     private final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter;
-    private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
+    private final UniqueIdCheckingPreferenceFragmentIdProvider uniqueIdCheckingPreferenceFragmentIdProvider;
 
     public Graph2POJOGraphTransformer(final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
                                       final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.preferenceScreen2SearchablePreferenceScreenConverter = preferenceScreen2SearchablePreferenceScreenConverter;
-        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
+        this.uniqueIdCheckingPreferenceFragmentIdProvider = new UniqueIdCheckingPreferenceFragmentIdProvider(preferenceFragmentIdProvider);
     }
 
     public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
             final Locale locale) {
+        uniqueIdCheckingPreferenceFragmentIdProvider.reset();
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 SearchablePreferenceEdge.class,
@@ -43,8 +42,6 @@ public class Graph2POJOGraphTransformer {
     private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer(
             final Locale locale) {
         return new GraphTransformer<>() {
-
-            private final Set<String> ids = new HashSet<>();
 
             @Override
             public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {
@@ -75,16 +72,10 @@ public class Graph2POJOGraphTransformer {
             private SearchablePreferenceScreenWithMap convert2POJO(
                     final PreferenceScreenWithHost node,
                     final Optional<SearchablePreference> predecessorOfNode) {
-                // FK-TODO: wrap preferenceFragmentIdProvider and check inside its getUniqueId() method
-                final String id = preferenceFragmentIdProvider.getId(node.host());
-                if (ids.contains(id)) {
-                    throw new IllegalStateException("Duplicate id: " + id);
-                }
-                ids.add(id);
                 return preferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
-                        Strings.addLocaleToId(locale, id),
+                        Strings.addLocaleToId(locale, uniqueIdCheckingPreferenceFragmentIdProvider.getId(node.host())),
                         predecessorOfNode,
                         locale);
             }
