@@ -46,7 +46,7 @@ public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
     @Override
     public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
         if (searchablePreferenceScreenGraphDAO.isEmpty()) {
-            searchablePreferenceScreenGraphDAO = Optional.of(creaetSearchablePreferenceScreenGraphDAO());
+            searchablePreferenceScreenGraphDAO = Optional.of(createSearchablePreferenceScreenGraphDAO());
         }
         return searchablePreferenceScreenGraphDAO.orElseThrow();
     }
@@ -57,7 +57,7 @@ public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
 
     public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
 
-    private SearchablePreferenceScreenGraphDAO creaetSearchablePreferenceScreenGraphDAO() {
+    private SearchablePreferenceScreenGraphDAO createSearchablePreferenceScreenGraphDAO() {
         return new SearchablePreferenceScreenGraphDAO(
                 new EntityGraphPojoGraphConverter(),
                 searchablePreferenceScreenGraphEntityDAO());
