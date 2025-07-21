@@ -20,6 +20,7 @@ class TextViews {
     public static void setTextOnOptionalTextView(
             final Optional<TextView> optionalTextView,
             final CharSequence text) {
+        // FK-TODO: refactor by invoking setOptionalTextOnOptionalTextView()
         optionalTextView.ifPresent(
                 textView -> {
                     textView.setText(text);
