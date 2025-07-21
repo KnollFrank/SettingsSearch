@@ -22,6 +22,7 @@ public class FragmentFactoryAndInitializer {
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
                                                                    final Optional<PreferenceWithHost> src,
                                                                    final Context context,
+                                                                   // FK-TODO: make InstantiateAndInitializeFragment an instance variable?
                                                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         final T fragment = fragmentFactory.instantiate(fragmentClass, src, context, instantiateAndInitializeFragment);
         fragmentInitializer.initialize(fragment);
