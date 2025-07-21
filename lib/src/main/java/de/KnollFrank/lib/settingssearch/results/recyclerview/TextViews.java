@@ -7,9 +7,8 @@ import java.util.Optional;
 
 class TextViews {
 
-    public static void setOptionalTextOnOptionalTextView(
-            final Optional<TextView> optionalTextView,
-            final Optional<CharSequence> optionalText) {
+    public static void setOptionalTextOnOptionalTextView(final Optional<TextView> optionalTextView,
+                                                         final Optional<CharSequence> optionalText) {
         optionalTextView.ifPresent(
                 textView -> {
                     optionalText.ifPresent(textView::setText);
@@ -17,14 +16,8 @@ class TextViews {
                 });
     }
 
-    public static void setTextOnOptionalTextView(
-            final Optional<TextView> optionalTextView,
-            final CharSequence text) {
-        // FK-TODO: refactor by invoking setOptionalTextOnOptionalTextView()
-        optionalTextView.ifPresent(
-                textView -> {
-                    textView.setText(text);
-                    textView.setVisibility(View.VISIBLE);
-                });
+    public static void setTextOnOptionalTextView(final Optional<TextView> optionalTextView,
+                                                 final CharSequence text) {
+        setOptionalTextOnOptionalTextView(optionalTextView, Optional.of(text));
     }
 }
