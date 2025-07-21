@@ -78,7 +78,6 @@ public class PreferenceSearchExampleTest {
         onView(dialogTitle()).check(matches(withText(query)));
     }
 
-    // FK-FIXME: fails
     @Test
     public void shouldSearchAndFindPreferenceFromTwoActivitiesApart() {
         final String query = "Your signature2";

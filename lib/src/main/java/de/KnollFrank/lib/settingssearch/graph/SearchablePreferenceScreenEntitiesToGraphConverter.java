@@ -51,7 +51,7 @@ public class SearchablePreferenceScreenEntitiesToGraphConverter {
                 .getAllPreferences(dbDataProvider)
                 .stream()
                 .map(preference -> preference.getPredecessor(dbDataProvider))
-                // Fk-TODO: use mapMulti() if API level is at least 34
+                // FK-TODO: use mapMulti() if API level is at least 34
                 .filter(Optional::isPresent)
                 .map(Optional::orElseThrow)
                 .collect(Collectors.toSet());
