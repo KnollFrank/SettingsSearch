@@ -2,9 +2,11 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.Locale;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
 
@@ -17,10 +19,12 @@ public class SearchablePreferenceScreenFinder {
     }
 
     public SearchablePreferenceScreen find(final PreferenceFragmentCompat preferenceFragmentToFind,
-                                           final Set<SearchablePreferenceScreen> screensToSearchIn) {
+                                           final Set<SearchablePreferenceScreen> screensToSearchIn,
+                                           final Locale locale) {
         return SearchablePreferenceScreens
-                // FK-FIXME: "de-"
-                .findSearchablePreferenceScreenById(screensToSearchIn, "de-" + preferenceFragmentIdProvider.getId(preferenceFragmentToFind))
+                .findSearchablePreferenceScreenById(
+                        screensToSearchIn,
+                        Strings.addLocaleToId(locale, preferenceFragmentIdProvider.getId(preferenceFragmentToFind)))
                 .orElseThrow();
     }
 }

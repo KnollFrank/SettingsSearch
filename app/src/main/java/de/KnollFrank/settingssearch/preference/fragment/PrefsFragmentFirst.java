@@ -126,7 +126,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 new SearchablePreferenceScreenFinder(searchDatabaseConfig.preferenceFragmentIdProvider)
                                         .find(
                                                 PrefsFragmentFirst.this,
-                                                pojoGraph.graph().vertexSet());
+                                                pojoGraph.graph().vertexSet(),
+                                                locale);
                         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                                 new FragmentFactoryAndInitializer(
                                         searchDatabaseConfig.fragmentFactory,
