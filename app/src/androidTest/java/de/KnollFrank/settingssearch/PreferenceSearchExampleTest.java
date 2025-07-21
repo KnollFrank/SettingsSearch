@@ -75,14 +75,15 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFindPreferenceFromAnotherActivity() {
         final String query = "Your signature";
         searchForQueryThenClickSearchResultAtPosition(query, 0);
-        onView(titleOfPreference(query)).check(matches(withText(query)));
+        onView(dialogTitle()).check(matches(withText(query)));
     }
 
+    // FK-FIXME: fails
     @Test
     public void shouldSearchAndFindPreferenceFromTwoActivitiesApart() {
         final String query = "Your signature2";
         searchForQueryThenClickSearchResultAtPosition(query, 0);
-        onView(titleOfPreference(query)).check(matches(withText(query)));
+        onView(dialogTitle()).check(matches(withText(query)));
     }
 
     @Test
