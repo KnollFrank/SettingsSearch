@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphUtils;
@@ -48,6 +49,7 @@ import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNaviga
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigatorFactory;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceFragmentLocalizedIdProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenFinder;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
@@ -123,11 +125,10 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale);
                         final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
                         final SearchablePreferenceScreen searchablePreferenceScreen =
-                                new SearchablePreferenceScreenFinder(searchDatabaseConfig.preferenceFragmentIdProvider)
-                                        .find(
-                                                PrefsFragmentFirst.this,
-                                                pojoGraph.graph().vertexSet(),
-                                                locale);
+                                findSearchablePreferenceScreen(
+                                        pojoGraph,
+                                        PrefsFragmentFirst.this,
+                                        searchDatabaseConfig.preferenceFragmentIdProvider);
                         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                                 new FragmentFactoryAndInitializer(
                                         searchDatabaseConfig.fragmentFactory,
@@ -193,6 +194,18 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
                 });
         return checkBoxPreference;
+    }
+
+    private static SearchablePreferenceScreen findSearchablePreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn,
+                                                                             final PrefsFragmentFirst preferenceFragmentToFind,
+                                                                             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+        return new SearchablePreferenceScreenFinder(
+                new PreferenceFragmentLocalizedIdProvider(
+                        graphToSearchIn.locale(),
+                        preferenceFragmentIdProvider))
+                .find(
+                        preferenceFragmentToFind,
+                        graphToSearchIn.graph().vertexSet());
     }
 
     private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {

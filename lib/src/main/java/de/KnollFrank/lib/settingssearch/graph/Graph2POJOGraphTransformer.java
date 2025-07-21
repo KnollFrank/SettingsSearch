@@ -10,7 +10,6 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
@@ -21,18 +20,17 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 public class Graph2POJOGraphTransformer {
 
     private final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter;
-    private final UniqueIdCheckingPreferenceFragmentIdProvider uniqueIdCheckingPreferenceFragmentIdProvider;
+    private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
 
     public Graph2POJOGraphTransformer(final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
                                       final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.preferenceScreen2SearchablePreferenceScreenConverter = preferenceScreen2SearchablePreferenceScreenConverter;
-        this.uniqueIdCheckingPreferenceFragmentIdProvider = new UniqueIdCheckingPreferenceFragmentIdProvider(preferenceFragmentIdProvider);
+        this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
     public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
             final Locale locale) {
-        uniqueIdCheckingPreferenceFragmentIdProvider.reset();
         return GraphTransformerAlgorithm.transform(
                 preferenceScreenGraph,
                 SearchablePreferenceEdge.class,
@@ -41,6 +39,7 @@ public class Graph2POJOGraphTransformer {
 
     private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer(
             final Locale locale) {
+        final PreferenceFragmentIdProvider preferenceFragmentIdProvider = createPreferenceFragmentUniqueLocalizedIdProvider(locale);
         return new GraphTransformer<>() {
 
             @Override
@@ -75,7 +74,7 @@ public class Graph2POJOGraphTransformer {
                 return preferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
-                        Strings.addLocaleToId(locale, uniqueIdCheckingPreferenceFragmentIdProvider.getId(node.host())),
+                        preferenceFragmentIdProvider.getId(node.host()),
                         predecessorOfNode,
                         locale);
             }
@@ -97,5 +96,11 @@ public class Graph2POJOGraphTransformer {
                         .get(preference);
             }
         };
+    }
+
+    private PreferenceFragmentLocalizedIdProvider createPreferenceFragmentUniqueLocalizedIdProvider(final Locale locale) {
+        return new PreferenceFragmentLocalizedIdProvider(
+                locale,
+                new UniqueIdCheckingPreferenceFragmentIdProvider(preferenceFragmentIdProvider));
     }
 }

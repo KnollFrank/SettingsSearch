@@ -23,10 +23,6 @@ class UniqueIdCheckingPreferenceFragmentIdProvider implements PreferenceFragment
         return id;
     }
 
-    public void reset() {
-        ids.clear();
-    }
-
     private void assertUnique(final String id) {
         if (ids.contains(id)) {
             throw new IllegalStateException("Duplicate id: " + id);
