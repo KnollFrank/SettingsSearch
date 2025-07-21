@@ -175,14 +175,12 @@ public final class SearchablePreference {
         return predecessor;
     }
 
-    // FK-TODO: make return value a SearchablePreferenceScreen and "return host.orElseThrow(IllegalStateException::new);"
-    public Optional<SearchablePreferenceScreen> getHost() {
-        return host;
+    public SearchablePreferenceScreen getHost() {
+        return host.orElseThrow(IllegalStateException::new);
     }
 
-    // FK-TODO: make param a SearchablePreferenceScreen
-    public void setHost(final Optional<SearchablePreferenceScreen> host) {
-        this.host = host;
+    public void setHost(final SearchablePreferenceScreen host) {
+        this.host = Optional.of(host);
     }
 
     @Override

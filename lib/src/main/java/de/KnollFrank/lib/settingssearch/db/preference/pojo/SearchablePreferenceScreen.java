@@ -13,7 +13,7 @@ public record SearchablePreferenceScreen(String id,
                                          Set<SearchablePreference> allPreferences) {
 
     public SearchablePreferenceScreen {
-        allPreferences.forEach(preference -> preference.setHost(Optional.of(this)));
+        allPreferences.forEach(preference -> preference.setHost(this));
     }
 
     @Override
