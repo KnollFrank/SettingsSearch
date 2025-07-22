@@ -164,7 +164,10 @@ public final class SearchablePreference {
     }
 
     public PreferencePath getPreferencePath() {
-        return getPreferencePathOfPredecessor().append(this);
+        return predecessor
+                .map(SearchablePreference::getPreferencePath)
+                .map(preferencePathOfPredecessor -> preferencePathOfPredecessor.append(this))
+                .orElseGet(() -> new PreferencePath(List.of(this)));
     }
 
     public Set<SearchablePreference> getChildren() {
@@ -219,12 +222,5 @@ public final class SearchablePreference {
                                              DrawableAndStringConverter.string2Drawable(
                                                      iconPixelData,
                                                      context.getResources())));
-    }
-
-    private PreferencePath getPreferencePathOfPredecessor() {
-        return this
-                .predecessor
-                .map(SearchablePreference::getPreferencePath)
-                .orElseGet(() -> new PreferencePath(List.of()));
     }
 }

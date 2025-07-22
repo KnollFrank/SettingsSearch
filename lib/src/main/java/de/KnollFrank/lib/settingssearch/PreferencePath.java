@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
@@ -10,20 +11,23 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 public record PreferencePath(List<SearchablePreference> preferences) {
 
-    // FK-TODO: make non-Optional?
-    public Optional<SearchablePreference> getStart() {
-        return Lists.getElementAtIndex(preferences, 0);
+    public PreferencePath {
+        Preconditions.checkArgument(!preferences.isEmpty());
     }
 
-    // FK-TODO: make non-Optional?
-    public Optional<SearchablePreference> getEnd() {
-        return Lists.getLastElement(preferences);
+    public SearchablePreference getStart() {
+        return Lists.getHead(preferences).orElseThrow();
     }
 
-    public Optional<PreferencePath> getNonEmptyTail() {
-        return preferences.size() > 1 ?
-                Optional.of(new PreferencePath(preferences.subList(1, preferences.size()))) :
-                Optional.empty();
+    public SearchablePreference getEnd() {
+        return Lists.getLastElement(preferences).orElseThrow();
+    }
+
+    public Optional<PreferencePath> getTail() {
+        final List<SearchablePreference> tailOfPreferences = Lists.getTail(preferences).orElseThrow();
+        return tailOfPreferences.isEmpty() ?
+                Optional.empty() :
+                Optional.of(new PreferencePath(tailOfPreferences));
     }
 
     public PreferencePath append(final SearchablePreference preference) {

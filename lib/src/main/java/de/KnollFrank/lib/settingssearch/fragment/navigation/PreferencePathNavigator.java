@@ -36,7 +36,6 @@ public class PreferencePathNavigator {
         final Optional<Class<? extends Activity>> activity =
                 preferencePath
                         .getStart()
-                        .orElseThrow()
                         .getClassOfReferencedActivity(context);
         return activity.isPresent() ?
                 continueNavigationInActivity.continueNavigationInActivity(
@@ -44,8 +43,8 @@ public class PreferencePathNavigator {
                         preferencePath,
                         src) :
                 navigatePreferences(
-                        preferencePath.getNonEmptyTail(),
-                        preferenceWithHostProvider.getPreferenceWithHost(preferencePath.getStart().orElseThrow(), src));
+                        preferencePath.getTail(),
+                        preferenceWithHostProvider.getPreferenceWithHost(preferencePath.getStart(), src));
     }
 
     private Optional<PreferenceWithHost> navigatePreferences(final Optional<PreferencePath> preferencePath,

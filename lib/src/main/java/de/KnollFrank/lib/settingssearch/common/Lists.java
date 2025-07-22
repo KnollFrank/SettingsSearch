@@ -26,6 +26,16 @@ public class Lists {
         return getElementAtIndex(ts, ts.size() - 1);
     }
 
+    public static <T> Optional<T> getHead(final List<T> ts) {
+        return getElementAtIndex(ts, 0);
+    }
+
+    public static <T> Optional<List<T>> getTail(final List<T> ts) {
+        return ts.isEmpty() ?
+                Optional.empty() :
+                Optional.of(ts.subList(1, ts.size()));
+    }
+
     public static <T> List<T> reverse(final List<T> ts) {
         return com.google.common.collect.Lists.reverse(ts);
     }

@@ -35,13 +35,13 @@ class ContinueNavigationInActivity {
     public Optional<PreferenceWithHost> continueNavigationInActivity(final Class<? extends Activity> activity,
                                                                      final PreferencePath preferencePath,
                                                                      final Optional<PreferenceWithHost> src) {
-        final Optional<PreferencePath> tail = preferencePath.getNonEmptyTail();
+        final Optional<PreferencePath> tailPreferencePath = preferencePath.getTail();
         final PreferenceWithHost preferenceWithHost =
                 preferenceWithHostProvider.getPreferenceWithHost(
-                        preferencePath.getStart().orElseThrow(),
+                        preferencePath.getStart(),
                         src);
-        if (tail.isPresent()) {
-            continueNavigationInActivity(activity, preferenceWithHost.host(), tail.orElseThrow());
+        if (tailPreferencePath.isPresent()) {
+            continueNavigationInActivity(activity, preferenceWithHost.host(), tailPreferencePath.orElseThrow());
             return Optional.empty();
         }
         return Optional.of(preferenceWithHost);
