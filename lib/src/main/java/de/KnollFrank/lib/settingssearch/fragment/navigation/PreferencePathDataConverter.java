@@ -11,7 +11,6 @@ class PreferencePathDataConverter {
 
     public static Bundle toBundle(final PreferencePathData preferencePathData) {
         final Bundle bundle = new Bundle();
-        // FK-TODO: inline nested bundle
         bundle.putBundle(PREFERENCE_PATH_DATA, new Converter().doForward(preferencePathData));
         return bundle;
     }
