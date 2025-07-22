@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 
 public class PreferencePathNavigator {
@@ -26,31 +27,32 @@ public class PreferencePathNavigator {
         this.principalProvider = principalProvider;
     }
 
-    public Optional<? extends Fragment> navigatePreferencePath(final PreferencePathPointer preferencePathPointer) {
-        return tryGetPrincipalOfHost(navigatePreferences(preferencePathPointer, Optional.empty()));
+    public Optional<? extends Fragment> navigatePreferencePath(final PreferencePath preferencePath) {
+        return tryGetPrincipalOfHost(navigatePreferences(preferencePath, Optional.empty()));
     }
 
-    private Optional<PreferenceWithHost> navigatePreferences(final PreferencePathPointer preferencePathPointer,
+    private Optional<PreferenceWithHost> navigatePreferences(final PreferencePath preferencePath,
                                                              final Optional<PreferenceWithHost> src) {
         final Optional<Class<? extends Activity>> activity =
-                preferencePathPointer
-                        .dereference()
+                preferencePath
+                        .getStart()
+                        .orElseThrow()
                         .getClassOfReferencedActivity(context);
         return activity.isPresent() ?
                 continueNavigationInActivity.continueNavigationInActivity(
                         activity.orElseThrow(),
-                        preferencePathPointer,
+                        preferencePath,
                         src) :
                 navigatePreferences(
-                        preferencePathPointer.next(),
-                        preferenceWithHostProvider.getPreferenceWithHost(preferencePathPointer.dereference(), src));
+                        preferencePath.getNonEmptyTail(),
+                        preferenceWithHostProvider.getPreferenceWithHost(preferencePath.getStart().orElseThrow(), src));
     }
 
-    private Optional<PreferenceWithHost> navigatePreferences(final Optional<PreferencePathPointer> preferencePathPointer,
+    private Optional<PreferenceWithHost> navigatePreferences(final Optional<PreferencePath> preferencePath,
                                                              final PreferenceWithHost src) {
-        return preferencePathPointer.isEmpty() ?
+        return preferencePath.isEmpty() ?
                 Optional.of(src) :
-                navigatePreferences(preferencePathPointer.orElseThrow(), Optional.of(src));
+                navigatePreferences(preferencePath.orElseThrow(), Optional.of(src));
     }
 
     private Optional<Fragment> tryGetPrincipalOfHost(final Optional<PreferenceWithHost> preferenceWithHost) {

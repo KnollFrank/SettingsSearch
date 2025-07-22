@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 
 @FunctionalInterface
 public interface INavigatePreferencePathAndHighlightPreference {
 
-    void navigatePreferencePathAndHighlightPreference(PreferencePathPointer preferencePathPointer);
+    void navigatePreferencePathAndHighlightPreference(PreferencePath preferencePath);
 }

@@ -47,7 +47,6 @@ import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigatorFactory;
-import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceFragmentLocalizedIdProvider;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenFinder;
@@ -159,10 +158,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 searchablePreference.isPresent() ?
                                         (PreferenceFragmentCompat)
                                                 preferencePathNavigator
-                                                        .navigatePreferencePath(
-                                                                PreferencePathPointer.of(
-                                                                        searchablePreference.orElseThrow().getPreferencePath(),
-                                                                        0))
+                                                        .navigatePreferencePath(searchablePreference.orElseThrow().getPreferencePath())
                                                         .orElseThrow() :
                                         fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
                                                 GraphUtils.getRootNode(pojoGraph.graph()).orElseThrow().host(),

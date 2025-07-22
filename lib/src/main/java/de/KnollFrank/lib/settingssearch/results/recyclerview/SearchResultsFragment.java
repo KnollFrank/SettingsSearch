@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.INavigatePreferencePathAndHighlightPreference;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
@@ -69,9 +68,7 @@ public class SearchResultsFragment extends Fragment {
                 new SearchResultsRecyclerViewAdapter(
                         preference ->
                                 navigatePreferencePathAndHighlightPreference.navigatePreferencePathAndHighlightPreference(
-                                        PreferencePathPointer.of(
-                                                preference.getPreferencePath(),
-                                                0)),
+                                        preference.getPreferencePath()),
                         showPreferencePathPredicate,
                         preferencePathDisplayer);
         recyclerView.setAdapter(searchResultsRecyclerViewAdapter);

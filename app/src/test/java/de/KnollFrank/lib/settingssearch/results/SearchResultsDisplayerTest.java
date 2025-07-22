@@ -136,7 +136,7 @@ public class SearchResultsDisplayerTest extends AppDatabaseTest {
     private SearchResultsFragment getInitializedSearchResultsFragment(final FragmentActivity activity) {
         final SearchResultsFragment searchResultsFragment =
                 new SearchResultsFragment(
-                        preferencePathPointer -> {
+                        preferencePath -> {
                         },
                         preferencePath -> true,
                         new DefaultPreferencePathDisplayer(),

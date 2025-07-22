@@ -3,9 +3,9 @@ package de.KnollFrank.lib.settingssearch.results;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigator;
-import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathPointer;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 
 public class NavigatePreferencePathAndHighlightPreference implements INavigatePreferencePathAndHighlightPreference {
@@ -26,14 +26,14 @@ public class NavigatePreferencePathAndHighlightPreference implements INavigatePr
     }
 
     @Override
-    public void navigatePreferencePathAndHighlightPreference(final PreferencePathPointer preferencePathPointer) {
+    public void navigatePreferencePathAndHighlightPreference(final PreferencePath preferencePath) {
         preferencePathNavigator
-                .navigatePreferencePath(preferencePathPointer)
+                .navigatePreferencePath(preferencePath)
                 .ifPresent(
                         fragmentOfPreferenceScreen ->
                                 showSettingsFragmentAndHighlightSetting(
                                         fragmentOfPreferenceScreen,
-                                        preferencePathPointer.preferencePath.getPreference()));
+                                        preferencePath.getEnd().orElseThrow()));
     }
 
     private void showSettingsFragmentAndHighlightSetting(final Fragment settingsFragment,

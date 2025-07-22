@@ -55,13 +55,13 @@ public class ContinueWithPreferencePathNavigation {
                 .ifPresent(this::showPreferenceScreenAndHighlightPreference);
     }
 
-    private Optional<PreferencePathNavigatorData> getPreferencePathNavigatorData() {
+    private Optional<PreferencePathData> getPreferencePathNavigatorData() {
         return Optional
                 .ofNullable(activity.getIntent().getExtras())
-                .flatMap(PreferencePathNavigatorDataConverter::fromBundle);
+                .flatMap(PreferencePathDataConverter::fromBundle);
     }
 
-    private void showPreferenceScreenAndHighlightPreference(final PreferencePathNavigatorData preferencePathNavigatorData) {
+    private void showPreferenceScreenAndHighlightPreference(final PreferencePathData preferencePathData) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 parent,
                 fragmentContainerViewId);
@@ -69,14 +69,14 @@ public class ContinueWithPreferencePathNavigation {
                 createSearchPreferenceFragments.apply(
                         mergedPreferenceScreen ->
                                 showPreferenceScreenAndHighlightPreferenceOnce(
-                                        preferencePathNavigatorData,
+                                        preferencePathData,
                                         mergedPreferenceScreen));
         searchPreferenceFragments.showSearchPreferenceFragment();
     }
 
     private boolean showPreferenceScreenAndHighlightPreferenceAlreadyExecuted = false;
 
-    private void showPreferenceScreenAndHighlightPreferenceOnce(final PreferencePathNavigatorData preferencePathNavigatorData,
+    private void showPreferenceScreenAndHighlightPreferenceOnce(final PreferencePathData preferencePathData,
                                                                 final MergedPreferenceScreen mergedPreferenceScreen) {
         if (showPreferenceScreenAndHighlightPreferenceAlreadyExecuted) {
             return;
@@ -87,8 +87,8 @@ public class ContinueWithPreferencePathNavigation {
                 .getSearchResultsFragment()
                 .navigatePreferencePathAndHighlightPreference
                 .navigatePreferencePathAndHighlightPreference(
-                        PreferencePathPointerFactory.createPreferencePathPointer(
-                                preferencePathNavigatorData,
+                        PreferencePathFactory.createPreferencePath(
+                                preferencePathData,
                                 mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
                                 locale));
     }

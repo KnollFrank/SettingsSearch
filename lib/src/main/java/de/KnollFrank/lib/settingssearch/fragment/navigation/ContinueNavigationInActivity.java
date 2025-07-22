@@ -9,10 +9,13 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Bundles;
 import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 
 class ContinueNavigationInActivity {
@@ -30,15 +33,15 @@ class ContinueNavigationInActivity {
     }
 
     public Optional<PreferenceWithHost> continueNavigationInActivity(final Class<? extends Activity> activity,
-                                                                     final PreferencePathPointer preferencePathPointer,
+                                                                     final PreferencePath preferencePath,
                                                                      final Optional<PreferenceWithHost> src) {
-        final Optional<PreferencePathPointer> nextPreferencePathPointer = preferencePathPointer.next();
+        final Optional<PreferencePath> tail = preferencePath.getNonEmptyTail();
         final PreferenceWithHost preferenceWithHost =
                 preferenceWithHostProvider.getPreferenceWithHost(
-                        preferencePathPointer.dereference(),
+                        preferencePath.getStart().orElseThrow(),
                         src);
-        if (nextPreferencePathPointer.isPresent()) {
-            continueNavigationInActivity(activity, preferenceWithHost.host(), nextPreferencePathPointer.orElseThrow());
+        if (tail.isPresent()) {
+            continueNavigationInActivity(activity, preferenceWithHost.host(), tail.orElseThrow());
             return Optional.empty();
         }
         return Optional.of(preferenceWithHost);
@@ -46,9 +49,9 @@ class ContinueNavigationInActivity {
 
     private void continueNavigationInActivity(final Class<? extends Activity> activity,
                                               final PreferenceFragmentCompat src,
-                                              final PreferencePathPointer preferencePathPointer) {
+                                              final PreferencePath preferencePath) {
         beforeStartActivity(activity, src);
-        startActivity(activity, src, preferencePathPointer);
+        startActivity(activity, src, preferencePath);
     }
 
     private <T extends PreferenceFragmentCompat> void beforeStartActivity(final Class<? extends Activity> activity,
@@ -60,18 +63,18 @@ class ContinueNavigationInActivity {
 
     private void startActivity(final Class<? extends Activity> activity,
                                final PreferenceFragmentCompat src,
-                               final PreferencePathPointer preferencePathPointer) {
-        context.startActivity(createIntent(activity, src, preferencePathPointer));
+                               final PreferencePath preferencePath) {
+        context.startActivity(createIntent(activity, src, preferencePath));
     }
 
     private <T extends PreferenceFragmentCompat> Intent createIntent(final Class<? extends Activity> activity,
                                                                      final T src,
-                                                                     final PreferencePathPointer preferencePathPointer) {
+                                                                     final PreferencePath preferencePath) {
         final Intent intent = new Intent(context, activity);
         intent.putExtras(
                 Bundles.merge(
                         createExtras4Activity(activity, src),
-                        getPreferencePathNavigatorData(preferencePathPointer)));
+                        getPreferencePathData(preferencePath)));
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
     }
@@ -84,10 +87,13 @@ class ContinueNavigationInActivity {
                 .orElseGet(Bundle::new);
     }
 
-    private static Bundle getPreferencePathNavigatorData(final PreferencePathPointer preferencePathPointer) {
-        return PreferencePathNavigatorDataConverter.toBundle(
-                new PreferencePathNavigatorData(
-                        preferencePathPointer.preferencePath.getPreference().getId(),
-                        preferencePathPointer.indexWithinPreferencePath));
+    private static Bundle getPreferencePathData(final PreferencePath preferencePath) {
+        return PreferencePathDataConverter.toBundle(
+                new PreferencePathData(
+                        preferencePath
+                                .preferences()
+                                .stream()
+                                .map(SearchablePreference::getId)
+                                .collect(Collectors.toList())));
     }
 }
