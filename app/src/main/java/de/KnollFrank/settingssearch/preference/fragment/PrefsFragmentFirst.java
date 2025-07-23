@@ -129,49 +129,16 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                         pojoGraph,
                                         PrefsFragmentFirst.this,
                                         searchDatabaseConfig.preferenceFragmentIdProvider);
-                        final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
-                                new FragmentFactoryAndInitializer(
-                                        searchDatabaseConfig.fragmentFactory,
-                                        FragmentInitializerFactory.createFragmentInitializer(
-                                                getChildFragmentManager(),
-                                                DUMMY_FRAGMENT_CONTAINER_VIEW,
-                                                OnUiThreadRunnerFactory.fromActivity(requireActivity())));
-                        final Fragments instantiateAndInitializeFragment =
-                                new Fragments(
-                                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                                        requireContext());
-                        final PreferencePathNavigator preferencePathNavigator =
-                                PreferencePathNavigatorFactory.createPreferencePathNavigator(
-                                        requireContext(),
-                                        fragmentFactoryAndInitializer,
-                                        instantiateAndInitializeFragment,
-                                        searchDatabaseConfig.activityInitializerByActivity,
-                                        searchDatabaseConfig.principalAndProxyProvider);
-                        // FK-TODO: PreferencePathNavigator should be able to navigate an empty PreferencePath simply by instantiating the root preference fragment.
-                        final PreferenceFragmentCompat preferenceFragment =
-                                PrefsFragmentFirst
-                                        .getPreferencePathLeadingToSearchablePreferenceScreen(
-                                                searchablePreferenceScreen,
-                                                pojoGraph.graph())
-                                        .map(preferencePath ->
-                                                     (PreferenceFragmentCompat)
-                                                             preferencePathNavigator
-                                                                     .navigatePreferencePath(preferencePath)
-                                                                     .orElseThrow())
-                                        .orElseGet(() ->
-                                                           fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
-                                                                   GraphUtils.getRootNode(pojoGraph.graph()).orElseThrow().host(),
-                                                                   Optional.empty(),
-                                                                   requireContext(),
-                                                                   instantiateAndInitializeFragment));
                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                                 subtreeReplacer.replaceSubtreeWithTree(
                                         pojoGraph.graph(),
                                         searchablePreferenceScreen,
                                         getPojoGraphRootedAt(
-                                                new PreferenceScreenWithHost(
-                                                        preferenceFragment.getPreferenceScreen(),
-                                                        preferenceFragment)));
+                                                asPreferenceScreenWithHost(
+                                                        instantiateSearchablePreferenceScreen(
+                                                                searchablePreferenceScreen,
+                                                                pojoGraph.graph(),
+                                                                searchDatabaseConfig))));
                         getAppDatabase()
                                 .searchablePreferenceScreenGraphDAO()
                                 .persist(new SearchablePreferenceScreenGraph(newPojoGraph, pojoGraph.locale()));
@@ -189,6 +156,52 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
                 });
         return checkBoxPreference;
+    }
+
+    private static PreferenceScreenWithHost asPreferenceScreenWithHost(final PreferenceFragmentCompat preferenceFragment) {
+        return new PreferenceScreenWithHost(
+                preferenceFragment.getPreferenceScreen(),
+                preferenceFragment);
+    }
+
+    private PreferenceFragmentCompat instantiateSearchablePreferenceScreen(
+            final SearchablePreferenceScreen searchablePreferenceScreen,
+            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+            final SearchDatabaseConfig searchDatabaseConfig) {
+        final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
+                new FragmentFactoryAndInitializer(
+                        searchDatabaseConfig.fragmentFactory,
+                        FragmentInitializerFactory.createFragmentInitializer(
+                                getChildFragmentManager(),
+                                DUMMY_FRAGMENT_CONTAINER_VIEW,
+                                OnUiThreadRunnerFactory.fromActivity(requireActivity())));
+        final Fragments instantiateAndInitializeFragment =
+                new Fragments(
+                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
+                        requireContext());
+        final PreferencePathNavigator preferencePathNavigator =
+                PreferencePathNavigatorFactory.createPreferencePathNavigator(
+                        requireContext(),
+                        fragmentFactoryAndInitializer,
+                        instantiateAndInitializeFragment,
+                        searchDatabaseConfig.activityInitializerByActivity,
+                        searchDatabaseConfig.principalAndProxyProvider);
+        // FK-TODO: PreferencePathNavigator should be able to navigate an empty PreferencePath simply by instantiating the root preference fragment.
+        return PrefsFragmentFirst
+                .getPreferencePathLeadingToSearchablePreferenceScreen(
+                        searchablePreferenceScreen,
+                        graph)
+                .map(preferencePath ->
+                             (PreferenceFragmentCompat)
+                                     preferencePathNavigator
+                                             .navigatePreferencePath(preferencePath)
+                                             .orElseThrow())
+                .orElseGet(() ->
+                                   fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
+                                           GraphUtils.getRootNode(graph).orElseThrow().host(),
+                                           Optional.empty(),
+                                           requireContext(),
+                                           instantiateAndInitializeFragment));
     }
 
     private static Optional<PreferencePath> getPreferencePathLeadingToSearchablePreferenceScreen(
