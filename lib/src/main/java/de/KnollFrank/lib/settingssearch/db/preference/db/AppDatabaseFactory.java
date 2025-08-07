@@ -20,7 +20,7 @@ public class AppDatabaseFactory {
     private static AppDatabase createInstance(final Context context) {
         return Room
                 .databaseBuilder(
-                        context,
+                        context.getApplicationContext(),
                         AppDatabase.class,
                         "searchable_preferences.db")
                 .createFromAsset("database/searchable_preferences_prepackaged.db")
