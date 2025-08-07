@@ -8,19 +8,27 @@ import java.io.InputStream;
 
 public class AssetsUtils {
 
-    public static InputStream open(final AssetManager assets, final File filename) {
+    public static InputStream open(final AssetManager assetManager, final File assetFile) {
         try {
-            return assets.open(filename.getPath());
+            return assetManager.open(assetFile.getPath());
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
     }
 
-    public static String[] list(final AssetManager assets, final File path) {
+    public static String[] list(final AssetManager assetManager, final File path) {
         try {
-            return assets.list(path.getPath());
+            return assetManager.list(path.getPath());
         } catch (IOException e) {
             throw new IllegalStateException(e);
+        }
+    }
+
+    public static boolean assetExists(final AssetManager assetManager, final File assetFile) {
+        try (final InputStream ignored = assetManager.open(assetFile.getPath())) {
+            return true;
+        } catch (final IOException e) {
+            return false;
         }
     }
 }
