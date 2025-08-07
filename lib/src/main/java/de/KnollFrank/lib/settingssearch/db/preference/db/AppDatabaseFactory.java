@@ -22,7 +22,8 @@ public class AppDatabaseFactory {
                 .databaseBuilder(
                         context,
                         AppDatabase.class,
-                        "searchable_preferences")
+                        "searchable_preferences.db")
+                .createFromAsset("database/searchable_preferences_prepackaged.db")
                 // FK-TODO: remove allowMainThreadQueries()
                 .allowMainThreadQueries()
                 .build();
