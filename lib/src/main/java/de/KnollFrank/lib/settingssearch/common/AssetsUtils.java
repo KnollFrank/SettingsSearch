@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 public class AssetsUtils {
 
-    public static InputStream open(final AssetManager assetManager, final File assetFile) {
+    public static InputStream open(final File assetFile, final AssetManager assetManager) {
         try {
             return assetManager.open(assetFile.getPath());
         } catch (IOException e) {
@@ -16,7 +16,7 @@ public class AssetsUtils {
         }
     }
 
-    public static String[] list(final AssetManager assetManager, final File path) {
+    public static String[] list(final File path, final AssetManager assetManager) {
         try {
             return assetManager.list(path.getPath());
         } catch (IOException e) {
@@ -24,7 +24,7 @@ public class AssetsUtils {
         }
     }
 
-    public static boolean assetExists(final AssetManager assetManager, final File assetFile) {
+    public static boolean assetExists(final File assetFile, final AssetManager assetManager) {
         try (final InputStream ignored = assetManager.open(assetFile.getPath())) {
             return true;
         } catch (final IOException e) {

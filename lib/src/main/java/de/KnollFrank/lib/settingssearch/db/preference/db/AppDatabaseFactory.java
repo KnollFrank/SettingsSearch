@@ -41,7 +41,7 @@ public class AppDatabaseFactory {
     private static void addDatabaseFileIfExists(final Builder<AppDatabase> appDatabaseBuilder,
                                                 final File databaseFile,
                                                 final AssetManager assetManager) {
-        if (AssetsUtils.assetExists(assetManager, databaseFile)) {
+        if (AssetsUtils.assetExists(databaseFile, assetManager)) {
             appDatabaseBuilder.createFromAsset(databaseFile.getPath());
         }
     }
