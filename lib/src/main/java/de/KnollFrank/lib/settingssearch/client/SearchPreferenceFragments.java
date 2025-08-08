@@ -103,6 +103,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.markupsFactory,
                 activity,
                 locale,
+                searchDatabaseConfig.appDatabaseConfig,
                 onUiThreadRunner,
                 this,
                 searchConfig.searchResultsFragmentUI,
@@ -115,7 +116,10 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     }
 
     public void rebuildSearchDatabase() {
-        DatabaseResetter.resetDatabase(DAOProviderFactory.getDAOProvider(activity));
+        DatabaseResetter.resetDatabase(
+                DAOProviderFactory.getDAOProvider(
+                        searchDatabaseConfig.appDatabaseConfig,
+                        activity));
     }
 
     @Override

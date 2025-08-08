@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
@@ -23,7 +24,8 @@ public class CreateSearchDatabaseTaskProvider {
     public static AsyncTaskWithProgressUpdateListeners<Void, DAOProvider> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
-            final Consumer<DAOProvider> appDatabaseConsumer) {
+            final Consumer<DAOProvider> appDatabaseConsumer,
+            final AppDatabaseConfig appDatabaseConfig) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
@@ -33,20 +35,24 @@ public class CreateSearchDatabaseTaskProvider {
                         createSearchDatabase(
                                 mergedPreferenceScreenDataRepositoryProvider,
                                 activity,
-                                progressUpdateListener),
+                                progressUpdateListener,
+                                appDatabaseConfig),
                 appDatabaseConsumer);
     }
 
     private static DAOProvider createSearchDatabase(
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
-            final ProgressUpdateListener progressUpdateListener) {
+            final ProgressUpdateListener progressUpdateListener,
+            final AppDatabaseConfig appDatabaseConfig) {
         return mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(
                         FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID),
                         PreferenceDialogsFactory.createPreferenceDialogs(activity, FRAGMENT_CONTAINER_VIEW_ID),
                         activity,
                         progressUpdateListener)
-                .getSearchDatabaseFilledWithPreferences(Utils.geCurrentLocale(activity.getResources()));
+                .getSearchDatabaseFilledWithPreferences(
+                        Utils.geCurrentLocale(activity.getResources()),
+                        appDatabaseConfig);
     }
 }

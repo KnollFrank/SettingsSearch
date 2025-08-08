@@ -11,6 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.io.File;
+import java.util.Optional;
+
 @RunWith(RobolectricTestRunner.class)
 public class AppDatabaseFactoryTest {
 
@@ -19,7 +22,12 @@ public class AppDatabaseFactoryTest {
         // Given
 
         // When
-        final AppDatabase appDatabase = AppDatabaseFactory.getInstance(ApplicationProvider.getApplicationContext());
+        final AppDatabase appDatabase =
+                AppDatabaseFactory.getInstance(
+                        new AppDatabaseConfig(
+                                "searchable_preferences.db",
+                                Optional.of(new File("database/searchable_preferences_prepackaged.db"))),
+                        ApplicationProvider.getApplicationContext());
 
         // Then
         assertThat(appDatabase, is(not(nullValue())));

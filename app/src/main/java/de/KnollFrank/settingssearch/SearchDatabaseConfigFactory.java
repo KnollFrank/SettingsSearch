@@ -13,6 +13,7 @@ import com.google.common.collect.ImmutableMap;
 
 import org.jgrapht.Graph;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,6 +24,7 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySear
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Classes;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
@@ -47,7 +49,11 @@ public class SearchDatabaseConfigFactory {
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
         return SearchDatabaseConfig
-                .builder(PrefsFragmentFirst.class)
+                .builder(
+                        PrefsFragmentFirst.class,
+                        new AppDatabaseConfig(
+                                "searchable_preferences.db",
+                                Optional.of(new File("database/searchable_preferences_prepackaged.db"))))
                 .withFragmentFactory(
                         new FragmentFactory() {
 

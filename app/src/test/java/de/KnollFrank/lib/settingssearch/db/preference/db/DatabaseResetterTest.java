@@ -11,7 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.io.File;
 import java.util.Locale;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
@@ -33,7 +35,11 @@ public class DatabaseResetterTest {
     }
 
     private static AppDatabase getAppDatabase() {
-        return AppDatabaseFactory.getInstance(ApplicationProvider.getApplicationContext());
+        return AppDatabaseFactory.getInstance(
+                new AppDatabaseConfig(
+                        "searchable_preferences.db",
+                        Optional.of(new File("database/searchable_preferences_prepackaged.db"))),
+                ApplicationProvider.getApplicationContext());
     }
 
     private static void initialize(final AppDatabase appDatabase) {

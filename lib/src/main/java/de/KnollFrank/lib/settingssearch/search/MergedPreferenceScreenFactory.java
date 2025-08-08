@@ -15,6 +15,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -45,6 +46,7 @@ public class MergedPreferenceScreenFactory {
     private final MarkupsFactory markupsFactory;
     private final FragmentActivity activity;
     private final Locale locale;
+    private final AppDatabaseConfig appDatabaseConfig;
     private final OnUiThreadRunner onUiThreadRunner;
     private final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
@@ -62,6 +64,7 @@ public class MergedPreferenceScreenFactory {
             final MarkupsFactory markupsFactory,
             final FragmentActivity activity,
             final Locale locale,
+            final AppDatabaseConfig appDatabaseConfig,
             final OnUiThreadRunner onUiThreadRunner,
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final SearchResultsFragmentUI searchResultsFragmentUI,
@@ -77,6 +80,7 @@ public class MergedPreferenceScreenFactory {
         this.markupsFactory = markupsFactory;
         this.activity = activity;
         this.locale = locale;
+        this.appDatabaseConfig = appDatabaseConfig;
         this.onUiThreadRunner = onUiThreadRunner;
         this.mergedPreferenceScreenDataRepositoryProvider = mergedPreferenceScreenDataRepositoryProvider;
         this.searchResultsFragmentUI = searchResultsFragmentUI;
@@ -113,7 +117,7 @@ public class MergedPreferenceScreenFactory {
                                 activity,
                                 progressUpdateListener,
                                 instantiateAndInitializeFragment)
-                        .getSearchDatabaseFilledWithPreferences(locale);
+                        .getSearchDatabaseFilledWithPreferences(locale, appDatabaseConfig);
         return createMergedPreferenceScreen(
                 prepareShow,
                 showPreferencePathPredicate,

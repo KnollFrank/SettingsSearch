@@ -51,7 +51,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
                                 createSearchPreferenceFragments(),
                                 this,
-                                this::setAppDatabase));
+                                this::setAppDatabase,
+                                SearchDatabaseConfigFactory.createSearchDatabaseConfig().appDatabaseConfig));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 

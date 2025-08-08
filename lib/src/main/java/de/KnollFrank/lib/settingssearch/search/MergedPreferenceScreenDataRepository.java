@@ -15,6 +15,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFacto
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -52,9 +53,9 @@ public class MergedPreferenceScreenDataRepository {
         this.locale = locale;
     }
 
-    public DAOProvider getSearchDatabaseFilledWithPreferences(final Locale locale) {
+    public DAOProvider getSearchDatabaseFilledWithPreferences(final Locale locale, final AppDatabaseConfig appDatabaseConfig) {
         synchronized (LockingSupport.searchDatabaseLock) {
-            final DAOProvider daoProvider = DAOProviderFactory.getDAOProvider(context);
+            final DAOProvider daoProvider = DAOProviderFactory.getDAOProvider(appDatabaseConfig, context);
             final SearchablePreferenceScreenGraphDAO graphDAO = daoProvider.searchablePreferenceScreenGraphDAO();
             if (graphDAO.findGraphById(locale).isEmpty()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
