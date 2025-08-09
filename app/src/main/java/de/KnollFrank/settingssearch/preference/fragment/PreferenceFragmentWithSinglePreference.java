@@ -7,6 +7,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
+import java.util.Optional;
+
 public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCompat {
 
     public static final String TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS = "title of dst preference coming from src with extras";
@@ -20,27 +22,28 @@ public class PreferenceFragmentWithSinglePreference extends PreferenceFragmentCo
         final Context context = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
         screen.setTitle("PreferenceFragmentWithSinglePreference");
-        final Bundle arguments = getArguments();
-        if (arguments != null) {
-            if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS)) {
-                screen.addPreference(
-                        createPreference(
-                                "keyOfPreferenceOfConnectedFragment1",
-                                TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS,
-                                arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS),
-                                context));
-            }
-            if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS)) {
-                screen.addPreference(
-                        createPreference("keyOfPreferenceOfConnectedFragment2",
-                                         TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS,
-                                         arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS),
-                                         context));
-            }
-            if (arguments.getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false)) {
-                screen.addPreference(createAdditionalPreference(context));
-            }
-        }
+        Optional
+                .ofNullable(getArguments())
+                .ifPresent(arguments -> {
+                    if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS)) {
+                        screen.addPreference(
+                                createPreference(
+                                        "keyOfPreferenceOfConnectedFragment1",
+                                        TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITH_EXTRAS,
+                                        arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS),
+                                        context));
+                    }
+                    if (arguments.containsKey(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS)) {
+                        screen.addPreference(
+                                createPreference("keyOfPreferenceOfConnectedFragment2",
+                                        TITLE_OF_DST_PREFERENCE_COMING_FROM_SRC_WITHOUT_EXTRAS,
+                                        arguments.getString(PrefsFragmentFirst.BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS),
+                                        context));
+                    }
+                    if (arguments.getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false)) {
+                        screen.addPreference(createAdditionalPreference(context));
+                    }
+                });
         setPreferenceScreen(screen);
     }
 
