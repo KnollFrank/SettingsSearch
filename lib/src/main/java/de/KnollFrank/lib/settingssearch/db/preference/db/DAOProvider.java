@@ -5,4 +5,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 public interface DAOProvider {
 
     SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO();
+
+    void close();
 }

@@ -10,7 +10,10 @@ public class DefaultPreferenceFragmentIdProvider implements PreferenceFragmentId
 
     @Override
     public String getId(final PreferenceFragmentCompat preferenceFragment) {
-        return preferenceFragment.getClass().getName() + getArguments(preferenceFragment);
+        return String.join(
+                " ",
+                preferenceFragment.getClass().getName(),
+                getArguments(preferenceFragment));
     }
 
     private static String getArguments(final PreferenceFragmentCompat preferenceFragment) {
