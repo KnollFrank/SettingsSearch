@@ -21,14 +21,14 @@ public class SettingsSearchApplication extends Application {
         if (daoProvider.isEmpty()) {
             synchronized (LOCK) {
                 if (daoProvider.isEmpty()) {
-                    daoProvider = Optional.of(creatDAOProvider());
+                    daoProvider = Optional.of(createDAOProvider());
                 }
             }
         }
         return daoProvider.orElseThrow();
     }
 
-    private DAOProvider creatDAOProvider() {
+    private DAOProvider createDAOProvider() {
         return DAOProviderFactory.createDAOProvider(
                 AppDatabaseConfigFactory.createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                 this);
