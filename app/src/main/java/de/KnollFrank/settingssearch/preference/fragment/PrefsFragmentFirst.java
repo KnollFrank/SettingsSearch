@@ -53,11 +53,11 @@ import de.KnollFrank.lib.settingssearch.graph.PreferenceFragmentLocalizedIdProvi
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenFinder;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
-import de.KnollFrank.settingssearch.PreferenceSearchExample;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 import de.KnollFrank.settingssearch.SettingsActivity;
 import de.KnollFrank.settingssearch.SettingsActivity3;
+import de.KnollFrank.settingssearch.SettingsSearchApplication;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 
 public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPreferenceClickListener {
@@ -192,16 +192,16 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         searchablePreferenceScreen,
                         graph)
                 .map(preferencePath ->
-                             (PreferenceFragmentCompat)
-                                     preferencePathNavigator
-                                             .navigatePreferencePath(preferencePath)
-                                             .orElseThrow())
+                        (PreferenceFragmentCompat)
+                                preferencePathNavigator
+                                        .navigatePreferencePath(preferencePath)
+                                        .orElseThrow())
                 .orElseGet(() ->
-                                   fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
-                                           GraphUtils.getRootNode(graph).orElseThrow().host(),
-                                           Optional.empty(),
-                                           requireContext(),
-                                           instantiateAndInitializeFragment));
+                        fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
+                                GraphUtils.getRootNode(graph).orElseThrow().host(),
+                                Optional.empty(),
+                                requireContext(),
+                                instantiateAndInitializeFragment));
     }
 
     private static Optional<PreferencePath> getPreferencePathLeadingToSearchablePreferenceScreen(
@@ -268,9 +268,9 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     }
 
     private DAOProvider getAppDatabase() {
-        return ((PreferenceSearchExample) requireActivity())
-                .getAppDatabase()
-                .orElseThrow();
+        return SettingsSearchApplication
+                .getInstanceFromContext(requireContext())
+                .getDAOProvider();
     }
 
     public static String getSummary(final boolean checked) {

@@ -5,8 +5,6 @@ import android.view.View;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
-import java.util.function.Consumer;
-
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
@@ -23,7 +21,6 @@ public class CreateSearchDatabaseTaskProvider {
     public static AsyncTaskWithProgressUpdateListeners<Void, DAOProvider> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
-            final Consumer<DAOProvider> appDatabaseConsumer,
             final DAOProvider daoProvider) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
@@ -36,7 +33,8 @@ public class CreateSearchDatabaseTaskProvider {
                                 activity,
                                 progressUpdateListener,
                                 daoProvider),
-                appDatabaseConsumer);
+                _daoProvider -> {
+                });
     }
 
     private static DAOProvider createSearchDatabase(
