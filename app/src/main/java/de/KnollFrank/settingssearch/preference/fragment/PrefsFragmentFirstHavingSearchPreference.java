@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsFactory;
+import de.KnollFrank.settingssearch.SettingsSearchApplication;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 
 public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragmentCompat implements OnPreferenceClickListener {
@@ -46,7 +47,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
     }
 
     private Preference createPreferenceConnectedToPreferenceFragmentWithSinglePreference() {
-        final Preference preference = new Preference(getContext());
+        final Preference preference = new Preference(requireContext());
         preference.setFragment(PreferenceFragmentWithSinglePreference.class.getName());
         preference.setTitle("preference from src to dst");
         preference.setKey("keyOfSrcPreference");
@@ -62,11 +63,14 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                 requireActivity(),
                 Optional::empty,
                 mergedPreferenceScreen -> {
-                });
+                },
+                SettingsSearchApplication
+                        .getInstanceFromContext(requireContext())
+                        .getDAOProvider());
     }
 
     private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {
-        final SearchPreference searchPreference = new SearchPreference(getContext());
+        final SearchPreference searchPreference = new SearchPreference(requireContext());
         searchPreference.setOrder(-1);
         searchPreferenceFragments.searchConfig.queryHint.ifPresent(searchPreference::setQueryHint);
         searchPreference.setOnPreferenceClickListener(

@@ -67,7 +67,10 @@ public class SettingsActivity extends AppCompatActivity {
                 fragmentContainerViewId,
                 activity,
                 Optional::empty,
-                onMergedPreferenceScreenAvailable);
+                onMergedPreferenceScreenAvailable,
+                SettingsSearchApplication
+                        .getInstanceFromContext(activity)
+                        .getDAOProvider());
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {

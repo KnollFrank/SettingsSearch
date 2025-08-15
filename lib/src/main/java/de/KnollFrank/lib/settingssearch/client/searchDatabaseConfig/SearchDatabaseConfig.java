@@ -34,6 +34,7 @@ public class SearchDatabaseConfig {
     public final PrincipalAndProxyProvider principalAndProxyProvider;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     public final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
+    // FK-TODO: remove appDatabaseConfig
     public final AppDatabaseConfig appDatabaseConfig;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,

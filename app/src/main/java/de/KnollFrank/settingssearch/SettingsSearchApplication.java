@@ -1,6 +1,7 @@
 package de.KnollFrank.settingssearch;
 
 import android.app.Application;
+import android.content.Context;
 
 import java.util.Optional;
 
@@ -12,6 +13,10 @@ public class SettingsSearchApplication extends Application {
 
     private Optional<DAOProvider> daoProvider = Optional.empty();
     private static final Object LOCK = new Object();
+
+    public static SettingsSearchApplication getInstanceFromContext(final Context context) {
+        return (SettingsSearchApplication) context.getApplicationContext();
+    }
 
     public DAOProvider getDAOProvider() {
         if (daoProvider.isEmpty()) {

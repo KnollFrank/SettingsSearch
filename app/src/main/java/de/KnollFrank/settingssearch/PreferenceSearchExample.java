@@ -89,6 +89,9 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 this,
                 () -> createSearchDatabaseTask,
                 mergedPreferenceScreen -> {
-                });
+                },
+                SettingsSearchApplication
+                        .getInstanceFromContext(this)
+                        .getDAOProvider());
     }
 }

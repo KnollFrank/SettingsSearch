@@ -18,12 +18,14 @@ public class SearchPreferenceFragmentsFactory {
             final @IdRes int fragmentContainerViewId,
             final FragmentActivity activity,
             final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
-            final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
+            final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
+            final DAOProvider daoProvider) {
         return SearchPreferenceFragments
                 .builder(
                         SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                         SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
-                        activity)
+                        activity,
+                        daoProvider)
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withOnMergedPreferenceScreenAvailable(onMergedPreferenceScreenAvailable)
                 .build();
