@@ -27,28 +27,30 @@ public class CreateSearchDatabaseTaskProvider {
                 FRAGMENT_CONTAINER_VIEW_ID);
         // FK-FIXME: koordiniere diesen Task (1.) mit dem Task (2.) in SearchPreferenceFragment und mit (3.) SearchPreferenceFragments.rebuildSearchDatabase()
         return new AsyncTaskWithProgressUpdateListeners<>(
-                (_void, progressUpdateListener) ->
-                        createSearchDatabase(
-                                mergedPreferenceScreenDataRepositoryProvider,
-                                activity,
-                                progressUpdateListener,
-                                daoProvider),
+                (_void, progressUpdateListener) -> {
+                    fillSearchDatabaseWithPreferences(
+                            mergedPreferenceScreenDataRepositoryProvider,
+                            activity,
+                            progressUpdateListener,
+                            daoProvider);
+                    return daoProvider;
+                },
                 _daoProvider -> {
                 });
     }
 
-    private static DAOProvider createSearchDatabase(
+    private static void fillSearchDatabaseWithPreferences(
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener,
             final DAOProvider daoProvider) {
-        return mergedPreferenceScreenDataRepositoryProvider
+        mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(
                         FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID),
                         PreferenceDialogsFactory.createPreferenceDialogs(activity, FRAGMENT_CONTAINER_VIEW_ID),
                         activity,
                         daoProvider,
                         progressUpdateListener)
-                .getSearchDatabaseFilledWithPreferences(Utils.geCurrentLocale(activity.getResources()));
+                .fillSearchDatabaseWithPreferences(Utils.geCurrentLocale(activity.getResources()));
     }
 }

@@ -54,8 +54,7 @@ public class MergedPreferenceScreenDataRepository {
         this.locale = locale;
     }
 
-    // FK-TODO: remove return value?
-    public DAOProvider getSearchDatabaseFilledWithPreferences(final Locale locale) {
+    public void fillSearchDatabaseWithPreferences(final Locale locale) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final SearchablePreferenceScreenGraphDAO graphDAO = daoProvider.searchablePreferenceScreenGraphDAO();
             if (graphDAO.findGraphById(locale).isEmpty()) {
@@ -64,7 +63,6 @@ public class MergedPreferenceScreenDataRepository {
                 progressUpdateListener.onProgressUpdate("persisting search database");
                 graphDAO.persist(new SearchablePreferenceScreenGraph(searchablePreferenceScreenGraph, locale));
             }
-            return daoProvider;
         }
     }
 

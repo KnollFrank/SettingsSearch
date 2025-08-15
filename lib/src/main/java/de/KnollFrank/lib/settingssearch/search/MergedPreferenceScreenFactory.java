@@ -106,23 +106,22 @@ public class MergedPreferenceScreenFactory {
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
                         activity);
-        final DAOProvider searchDatabaseFilledWithPreferences =
-                mergedPreferenceScreenDataRepositoryProvider
-                        .createMergedPreferenceScreenDataRepository(
-                                PreferenceDialogsFactory.createPreferenceDialogs(
-                                        childFragmentManager,
-                                        containerViewId,
-                                        onUiThreadRunner),
-                                activity,
-                                daoProvider,
-                                progressUpdateListener,
-                                instantiateAndInitializeFragment)
-                        .getSearchDatabaseFilledWithPreferences(locale);
+        mergedPreferenceScreenDataRepositoryProvider
+                .createMergedPreferenceScreenDataRepository(
+                        PreferenceDialogsFactory.createPreferenceDialogs(
+                                childFragmentManager,
+                                containerViewId,
+                                onUiThreadRunner),
+                        activity,
+                        daoProvider,
+                        progressUpdateListener,
+                        instantiateAndInitializeFragment)
+                .fillSearchDatabaseWithPreferences(locale);
         return createMergedPreferenceScreen(
                 prepareShow,
                 showPreferencePathPredicate,
                 preferencePathDisplayer,
-                searchDatabaseFilledWithPreferences.searchablePreferenceScreenGraphDAO(),
+                daoProvider.searchablePreferenceScreenGraphDAO(),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 markupsFactory,
