@@ -71,7 +71,6 @@ public class PreferenceSearchExampleTest {
         onView(summaryOfPreference()).check(matches(withText(summaryOfPreferenceOfFullyInstantiatedPreferenceFragment)));
     }
 
-    // FK-FIXME: fails
     @Test
     public void shouldSearchAndFindPreferenceFromAnotherActivity() {
         final String query = "Your signature";
@@ -79,7 +78,6 @@ public class PreferenceSearchExampleTest {
         onView(dialogTitle()).check(matches(withText(query)));
     }
 
-    // FK-FIXME: fails
     @Test
     public void shouldSearchAndFindPreferenceFromTwoActivitiesApart() {
         final String query = "Your signature2";

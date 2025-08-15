@@ -56,6 +56,7 @@ public class MergedPreferenceScreenFactory {
     private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
+    private final DAOProvider daoProvider;
 
     public MergedPreferenceScreenFactory(
             final ShowPreferencePathPredicate showPreferencePathPredicate,
@@ -73,7 +74,8 @@ public class MergedPreferenceScreenFactory {
             final PreferencePathDisplayer preferencePathDisplayer,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
             final PrincipalAndProxyProvider principalAndProxyProvider,
-            final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting) {
+            final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
+            final DAOProvider daoProvider) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.fragmentFactory = fragmentFactory;
@@ -90,6 +92,7 @@ public class MergedPreferenceScreenFactory {
         this.activityInitializerByActivity = activityInitializerByActivity;
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
+        this.daoProvider = daoProvider;
     }
 
     public MergedPreferenceScreen getMergedPreferenceScreen(
@@ -115,6 +118,7 @@ public class MergedPreferenceScreenFactory {
                                         containerViewId,
                                         onUiThreadRunner),
                                 activity,
+                                daoProvider,
                                 progressUpdateListener,
                                 instantiateAndInitializeFragment)
                         .getSearchDatabaseFilledWithPreferences(locale, appDatabaseConfig);

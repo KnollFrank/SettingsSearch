@@ -24,6 +24,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
 
     private Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>> createSearchDatabaseTask = Optional.empty();
+    // FK-TODO: remove appDatabase, use SettingsSearchApplication
     private Optional<DAOProvider> appDatabase = Optional.empty();
 
     public void setAppDatabase(final DAOProvider appDatabase) {
@@ -52,7 +53,10 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 createSearchPreferenceFragments(),
                                 this,
                                 this::setAppDatabase,
-                                SearchDatabaseConfigFactory.createSearchDatabaseConfig().appDatabaseConfig));
+                                SearchDatabaseConfigFactory.createSearchDatabaseConfig().appDatabaseConfig,
+                                SettingsSearchApplication
+                                        .getInstanceFromContext(this)
+                                        .getDAOProvider()));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 

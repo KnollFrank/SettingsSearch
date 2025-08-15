@@ -25,7 +25,8 @@ public class CreateSearchDatabaseTaskProvider {
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final Consumer<DAOProvider> appDatabaseConsumer,
-            final AppDatabaseConfig appDatabaseConfig) {
+            final AppDatabaseConfig appDatabaseConfig,
+            final DAOProvider daoProvider) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
@@ -36,7 +37,8 @@ public class CreateSearchDatabaseTaskProvider {
                                 mergedPreferenceScreenDataRepositoryProvider,
                                 activity,
                                 progressUpdateListener,
-                                appDatabaseConfig),
+                                appDatabaseConfig,
+                                daoProvider),
                 appDatabaseConsumer);
     }
 
@@ -44,12 +46,14 @@ public class CreateSearchDatabaseTaskProvider {
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener,
-            final AppDatabaseConfig appDatabaseConfig) {
+            final AppDatabaseConfig appDatabaseConfig,
+            final DAOProvider daoProvider) {
         return mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(
                         FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID),
                         PreferenceDialogsFactory.createPreferenceDialogs(activity, FRAGMENT_CONTAINER_VIEW_ID),
                         activity,
+                        daoProvider,
                         progressUpdateListener)
                 .getSearchDatabaseFilledWithPreferences(
                         Utils.geCurrentLocale(activity.getResources()),

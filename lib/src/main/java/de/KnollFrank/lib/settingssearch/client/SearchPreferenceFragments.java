@@ -116,7 +116,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.preferencePathDisplayer,
                 searchDatabaseConfig.activityInitializerByActivity,
                 searchDatabaseConfig.principalAndProxyProvider,
-                searchConfig.showSettingsFragmentAndHighlightSetting);
+                searchConfig.showSettingsFragmentAndHighlightSetting,
+                daoProvider);
     }
 
     public void rebuildSearchDatabase() {
@@ -128,10 +129,12 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
             final FragmentInitializer fragmentInitializer,
             final PreferenceDialogs preferenceDialogs,
             final Context context,
+            final DAOProvider daoProvider,
             final ProgressUpdateListener progressUpdateListener) {
         return createMergedPreferenceScreenDataRepository(
                 preferenceDialogs,
                 context,
+                daoProvider,
                 progressUpdateListener,
                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                         searchDatabaseConfig.fragmentFactory,
@@ -143,6 +146,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     public MergedPreferenceScreenDataRepository createMergedPreferenceScreenDataRepository(
             final PreferenceDialogs preferenceDialogs,
             final Context context,
+            final DAOProvider daoProvider,
             final ProgressUpdateListener progressUpdateListener,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return MergedPreferenceScreenDataRepositoryFactory.createMergedPreferenceScreenDataRepository(
@@ -151,6 +155,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchDatabaseConfig,
                 progressUpdateListener,
                 context,
+                daoProvider,
                 locale);
     }
 
