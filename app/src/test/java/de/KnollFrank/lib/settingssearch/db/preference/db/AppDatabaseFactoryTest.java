@@ -14,6 +14,8 @@ import org.robolectric.RobolectricTestRunner;
 import java.io.File;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig.JournalMode;
+
 @RunWith(RobolectricTestRunner.class)
 public class AppDatabaseFactoryTest {
 
@@ -23,10 +25,11 @@ public class AppDatabaseFactoryTest {
 
         // When
         final AppDatabase appDatabase =
-                AppDatabaseFactory.getInstance(
+                AppDatabaseFactory.createAppDatabase(
                         new AppDatabaseConfig(
                                 "searchable_preferences.db",
-                                Optional.of(new File("database/searchable_preferences_prepackaged.db"))),
+                                Optional.of(new File("database/searchable_preferences_prepackaged.db")),
+                                JournalMode.AUTOMATIC),
                         ApplicationProvider.getApplicationContext());
 
         // Then

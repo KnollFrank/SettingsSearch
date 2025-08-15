@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig.JournalMode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
@@ -35,10 +36,11 @@ public class DatabaseResetterTest {
     }
 
     private static AppDatabase getAppDatabase() {
-        return AppDatabaseFactory.getInstance(
+        return AppDatabaseFactory.createAppDatabase(
                 new AppDatabaseConfig(
                         "searchable_preferences.db",
-                        Optional.of(new File("database/searchable_preferences_prepackaged.db"))),
+                        Optional.of(new File("database/searchable_preferences_prepackaged.db")),
+                        JournalMode.AUTOMATIC),
                 ApplicationProvider.getApplicationContext());
     }
 

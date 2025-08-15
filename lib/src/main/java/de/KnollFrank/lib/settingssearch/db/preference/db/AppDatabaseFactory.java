@@ -6,20 +6,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomDatabase.Builder;
 
-import java.util.Optional;
-
 public class AppDatabaseFactory {
 
-    private static volatile Optional<AppDatabase> appDatabase = Optional.empty();
-
-    public static synchronized AppDatabase getInstance(final AppDatabaseConfig appDatabaseConfig, final Context context) {
-        if (appDatabase.isEmpty()) {
-            appDatabase = Optional.of(createInstance(appDatabaseConfig, context));
-        }
-        return appDatabase.orElseThrow();
-    }
-
-    private static AppDatabase createInstance(final AppDatabaseConfig appDatabaseConfig, final Context context) {
+    public static AppDatabase createAppDatabase(final AppDatabaseConfig appDatabaseConfig, final Context context) {
         final Builder<AppDatabase> appDatabaseBuilder =
                 Room
                         .databaseBuilder(
