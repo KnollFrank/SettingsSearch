@@ -30,7 +30,7 @@ public class SettingsSearchApplication extends Application {
     }
 
     private DAOProvider creatDAOProvider() {
-        return DAOProviderFactory.getDAOProvider(
+        return DAOProviderFactory.createDAOProvider(
                 new AppDatabaseConfig(
                         "settings_search.db",
                         Optional.empty(),
