@@ -7,7 +7,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
@@ -34,8 +33,6 @@ public class SearchDatabaseConfig {
     public final PrincipalAndProxyProvider principalAndProxyProvider;
     public final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     public final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
-    // FK-TODO: remove appDatabaseConfig
-    public final AppDatabaseConfig appDatabaseConfig;
 
     SearchDatabaseConfig(final FragmentFactory fragmentFactory,
                          final IconResourceIdProvider iconResourceIdProvider,
@@ -49,8 +46,7 @@ public class SearchDatabaseConfig {
                          final PreferenceSearchablePredicate preferenceSearchablePredicate,
                          final PrincipalAndProxyProvider principalAndProxyProvider,
                          final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
-                         final PreferenceFragmentIdProvider preferenceFragmentIdProvider,
-                         final AppDatabaseConfig appDatabaseConfig) {
+                         final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.fragmentFactory = fragmentFactory;
         this.iconResourceIdProvider = iconResourceIdProvider;
         this.searchableInfoProvider = searchableInfoProvider;
@@ -64,11 +60,9 @@ public class SearchDatabaseConfig {
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.activityInitializerByActivity = activityInitializerByActivity;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
-        this.appDatabaseConfig = appDatabaseConfig;
     }
 
-    public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
-                                                      final AppDatabaseConfig appDatabaseConfig) {
-        return new SearchDatabaseConfigBuilder(rootPreferenceFragment, appDatabaseConfig);
+    public static SearchDatabaseConfigBuilder builder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
+        return new SearchDatabaseConfigBuilder(rootPreferenceFragment);
     }
 }

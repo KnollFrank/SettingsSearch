@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
@@ -26,7 +25,6 @@ import de.KnollFrank.lib.settingssearch.search.provider.SearchableInfoProvider;
 public class SearchDatabaseConfigBuilder {
 
     private final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment;
-    private final AppDatabaseConfig appDatabaseConfig;
     private FragmentFactory fragmentFactory = new DefaultFragmentFactory();
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
@@ -49,10 +47,8 @@ public class SearchDatabaseConfigBuilder {
     private Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity = Map.of();
     private PreferenceFragmentIdProvider preferenceFragmentIdProvider = new DefaultPreferenceFragmentIdProvider();
 
-    SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment,
-                                final AppDatabaseConfig appDatabaseConfig) {
+    SearchDatabaseConfigBuilder(final Class<? extends PreferenceFragmentCompat> rootPreferenceFragment) {
         this.rootPreferenceFragment = rootPreferenceFragment;
-        this.appDatabaseConfig = appDatabaseConfig;
     }
 
     @SuppressWarnings("unused")
@@ -136,7 +132,6 @@ public class SearchDatabaseConfigBuilder {
                 preferenceSearchablePredicate,
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),
                 activityInitializerByActivity,
-                preferenceFragmentIdProvider,
-                appDatabaseConfig);
+                preferenceFragmentIdProvider);
     }
 }

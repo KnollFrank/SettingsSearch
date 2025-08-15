@@ -53,7 +53,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 createSearchPreferenceFragments(),
                                 this,
                                 this::setAppDatabase,
-                                SearchDatabaseConfigFactory.createSearchDatabaseConfig().appDatabaseConfig,
                                 SettingsSearchApplication
                                         .getInstanceFromContext(this)
                                         .getDAOProvider()));

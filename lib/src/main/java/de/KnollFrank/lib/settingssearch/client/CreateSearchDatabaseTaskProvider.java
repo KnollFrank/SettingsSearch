@@ -9,7 +9,6 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
@@ -25,7 +24,6 @@ public class CreateSearchDatabaseTaskProvider {
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final Consumer<DAOProvider> appDatabaseConsumer,
-            final AppDatabaseConfig appDatabaseConfig,
             final DAOProvider daoProvider) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
@@ -37,7 +35,6 @@ public class CreateSearchDatabaseTaskProvider {
                                 mergedPreferenceScreenDataRepositoryProvider,
                                 activity,
                                 progressUpdateListener,
-                                appDatabaseConfig,
                                 daoProvider),
                 appDatabaseConsumer);
     }
@@ -46,7 +43,6 @@ public class CreateSearchDatabaseTaskProvider {
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener,
-            final AppDatabaseConfig appDatabaseConfig,
             final DAOProvider daoProvider) {
         return mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(
@@ -55,8 +51,6 @@ public class CreateSearchDatabaseTaskProvider {
                         activity,
                         daoProvider,
                         progressUpdateListener)
-                .getSearchDatabaseFilledWithPreferences(
-                        Utils.geCurrentLocale(activity.getResources()),
-                        appDatabaseConfig);
+                .getSearchDatabaseFilledWithPreferences(Utils.geCurrentLocale(activity.getResources()));
     }
 }

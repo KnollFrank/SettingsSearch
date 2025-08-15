@@ -47,9 +47,7 @@ public class SearchDatabaseConfigFactory {
 
     public static SearchDatabaseConfig createSearchDatabaseConfig() {
         return SearchDatabaseConfig
-                .builder(
-                        PrefsFragmentFirst.class,
-                        AppDatabaseConfigFactory.createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile())
+                .builder(PrefsFragmentFirst.class)
                 .withFragmentFactory(
                         new FragmentFactory() {
 
