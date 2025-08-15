@@ -5,7 +5,6 @@ import android.content.Context;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProviderFactory;
 
@@ -31,10 +30,7 @@ public class SettingsSearchApplication extends Application {
 
     private DAOProvider creatDAOProvider() {
         return DAOProviderFactory.createDAOProvider(
-                new AppDatabaseConfig(
-                        "settings_search.db",
-                        Optional.empty(),
-                        AppDatabaseConfig.JournalMode.WRITE_AHEAD_LOGGING),
+                AppDatabaseConfigFactory.createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                 this);
     }
 }
