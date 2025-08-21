@@ -7,7 +7,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 
 class AppDatabaseConfigFactory {
 
-    private static final String SEARCHABLE_PREFERENCES_DB = "searchable_preferences.db";
+    public static final String SEARCHABLE_PREFERENCES_DB = "searchable_preferences.db";
 
     public static AppDatabaseConfig createDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() {
         return new AppDatabaseConfig(
