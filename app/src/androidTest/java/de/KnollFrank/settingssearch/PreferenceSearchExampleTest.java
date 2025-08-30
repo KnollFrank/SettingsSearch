@@ -249,41 +249,6 @@ public class PreferenceSearchExampleTest {
         test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(true);
     }
 
-    private static void test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(final boolean shallFindAdditionalPreference) {
-        // FK-TODO: ensure precondition for this test: prepackagedDatabaseAssetFile must have an entry for the current locale of the phone, on which this test runs.
-        setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
-        PreferenceSearchExampleTest
-                .getSharedPreferences()
-                .edit()
-                .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
-                .commit();
-        try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
-            onView(searchButton()).perform(click());
-            onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
-            if (shallFindAdditionalPreference) {
-                onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
-            } else {
-                onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
-            }
-        }
-    }
-
-    private static void deleteDatabaseFile(final Context context, String dbName) {
-        final File dbFile = context.getDatabasePath(dbName);
-        if (dbFile.exists()) {
-            dbFile.delete();
-        }
-
-        final File shmFile = new File(dbFile.getParent(), dbName + "-shm");
-        if (shmFile.exists()) {
-            shmFile.delete();
-        }
-        final File walFile = new File(dbFile.getParent(), dbName + "-wal");
-        if (walFile.exists()) {
-            walFile.delete();
-        }
-    }
-
     @Test
     public void shouldSearchAndFindSummaryChangingPreferenceIsON() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
@@ -416,5 +381,45 @@ public class PreferenceSearchExampleTest {
 
     private static SharedPreferences getSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(ApplicationProvider.getApplicationContext());
+    }
+
+    private static void test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(final boolean shallFindAdditionalPreference) {
+        // FK-TODO: ensure precondition for this test: prepackagedDatabaseAssetFile must have an entry for the current locale of the phone, on which this test runs.
+        setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
+        PreferenceSearchExampleTest
+                .getSharedPreferences()
+                .edit()
+                .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
+                .commit();
+        try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
+            onView(searchButton()).perform(click());
+            onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
+            if (shallFindAdditionalPreference) {
+                onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
+            } else {
+                onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
+            }
+        }
+    }
+
+    private static void deleteDatabaseFile(final Context context, String dbName) {
+        final File dbFile = context.getDatabasePath(dbName);
+        deleteIfExists(dbFile);
+        deleteIfExists(getShmFile(dbName, dbFile));
+        deleteIfExists(getWalFile(dbName, dbFile));
+    }
+
+    private static File getShmFile(final String dbName, final File dbFile) {
+        return new File(dbFile.getParent(), dbName + "-shm");
+    }
+
+    private static File getWalFile(final String dbName, final File dbFile) {
+        return new File(dbFile.getParent(), dbName + "-wal");
+    }
+
+    private static void deleteIfExists(final File dbFile) {
+        if (dbFile.exists()) {
+            dbFile.delete();
+        }
     }
 }
