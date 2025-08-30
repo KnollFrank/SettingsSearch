@@ -36,6 +36,7 @@ import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
                 OptionalIntegerConverter.class,
                 LocaleConverter.class
         })
+// FK-TODO: rename to SearchDatabase and all classes containing "AppDatabase" to "SearchDatabase"
 public abstract class AppDatabase extends RoomDatabase implements DAOProvider {
 
     private Optional<SearchablePreferenceScreenGraphDAO> searchablePreferenceScreenGraphDAO = Optional.empty();
