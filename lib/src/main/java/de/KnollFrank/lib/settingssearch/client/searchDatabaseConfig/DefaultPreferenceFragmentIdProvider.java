@@ -10,6 +10,7 @@ public class DefaultPreferenceFragmentIdProvider implements PreferenceFragmentId
 
     @Override
     public String getId(final PreferenceFragmentCompat preferenceFragment) {
+        // FK-TODO-0815: falls getArguments(preferenceFragment) = "", dann kein " " am Ende hinzufügen!
         return String.join(
                 " ",
                 preferenceFragment.getClass().getName(),
