@@ -96,8 +96,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         graphToSearchIn.graph().vertexSet(),
-                        // FK-TODO: sobald FK-TODO-0815 erledigt ist, dann + " " entfernen
-                        Strings.addLocaleToId(locale, PrefsFragmentFirst.class.getName()) + " ")
+                        Strings.addLocaleToId(locale, PrefsFragmentFirst.class.getName()))
                 .orElseThrow();
     }
 
@@ -129,16 +128,16 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                         searchablePreferenceScreen,
                         graph)
                 .map(preferencePath ->
-                             (PreferenceFragmentCompat)
-                                     preferencePathNavigator
-                                             .navigatePreferencePath(preferencePath)
-                                             .orElseThrow())
+                        (PreferenceFragmentCompat)
+                                preferencePathNavigator
+                                        .navigatePreferencePath(preferencePath)
+                                        .orElseThrow())
                 .orElseGet(() ->
-                                   fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
-                                           GraphUtils.getRootNode(graph).orElseThrow().host(),
-                                           Optional.empty(),
-                                           activity,
-                                           instantiateAndInitializeFragment));
+                        fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
+                                GraphUtils.getRootNode(graph).orElseThrow().host(),
+                                Optional.empty(),
+                                activity,
+                                instantiateAndInitializeFragment));
     }
 
     private Optional<PreferencePath> getPreferencePathLeadingToSearchablePreferenceScreen(
