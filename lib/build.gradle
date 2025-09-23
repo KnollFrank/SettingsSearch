@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.google.guava:guava:33.5.0-android'
     // FK-TODO: remove threetenbp dependency and use java.time package instead when minSdkVersion > 24
     // https://mvnrepository.com/artifact/org.threeten/threetenbp
-    implementation 'org.threeten:threetenbp:1.7.0'
+    implementation 'org.threeten:threetenbp:1.7.2'
     // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-core
     implementation 'org.jgrapht:jgrapht-core:1.5.2'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
