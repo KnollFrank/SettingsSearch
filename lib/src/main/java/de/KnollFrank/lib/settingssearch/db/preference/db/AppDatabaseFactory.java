@@ -34,14 +34,14 @@ public class AppDatabaseFactory {
                 });
         appDatabaseConfig
                 .prepackagedAppDatabase()
-                .map(PrepackagedAppDatabase::prepackagedDatabaseAssetFile)
-                .ifPresent(prepackagedDatabaseAssetFile -> appDatabaseBuilder.createFromAsset(prepackagedDatabaseAssetFile.getPath()));
+                .map(PrepackagedAppDatabase::databaseAssetFile)
+                .ifPresent(databaseAssetFile -> appDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
         final AppDatabase appDatabase = appDatabaseBuilder.build();
         if (databaseCreated.get()) {
             appDatabaseConfig
                     .prepackagedAppDatabase()
-                    .map(PrepackagedAppDatabase::prepackagedAppDatabaseProcessor)
-                    .ifPresent(prepackagedAppDatabaseProcessor -> prepackagedAppDatabaseProcessor.processAppDatabase(appDatabase, activityContext));
+                    .map(PrepackagedAppDatabase::appDatabaseProcessor)
+                    .ifPresent(appDatabaseProcessor -> appDatabaseProcessor.processAppDatabase(appDatabase, activityContext));
         }
         return appDatabase;
     }
