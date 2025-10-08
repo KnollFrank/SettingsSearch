@@ -45,9 +45,9 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
     public void adaptSearchDatabaseRootedAtPrefsFragmentFirst(final Locale locale,
                                                               // FK-TODO: make appDatabase an instance variable
                                                               final DAOProvider appDatabase,
-                                                              final FragmentActivity activity) {
+                                                              final FragmentActivity activityContext) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
-                activity.findViewById(android.R.id.content),
+                activityContext.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
         final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale, appDatabase);
         final SearchablePreferenceScreen searchablePreferenceScreen = findSearchablePreferenceScreen(pojoGraph, locale);
@@ -61,9 +61,9 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                                                 searchablePreferenceScreen,
                                                 pojoGraph.graph(),
                                                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
-                                                activity)),
+                                                activityContext)),
                                 locale,
-                                activity));
+                                activityContext));
         appDatabase
                 .searchablePreferenceScreenGraphDAO()
                 .persist(new SearchablePreferenceScreenGraph(newPojoGraph, pojoGraph.locale()));
@@ -72,13 +72,13 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(
             final PreferenceScreenWithHost root,
             final Locale locale,
-            final FragmentActivity activity) {
+            final FragmentActivity activityContext) {
         return SearchablePreferenceScreenGraphProviderFactory.createSearchablePreferenceScreenGraphProvider(
                         FRAGMENT_CONTAINER_VIEW_ID,
-                        activity.findViewById(android.R.id.content),
-                        activity,
-                        activity.getSupportFragmentManager(),
-                        activity,
+                        activityContext.findViewById(android.R.id.content),
+                        activityContext,
+                        activityContext.getSupportFragmentManager(),
+                        activityContext,
                         SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                         locale)
                 .getSearchablePreferenceScreenGraph(root);
@@ -104,20 +104,20 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
             final SearchablePreferenceScreen searchablePreferenceScreen,
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
             final SearchDatabaseConfig searchDatabaseConfig,
-            final FragmentActivity activity) {
+            final FragmentActivity activityContext) {
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(
                         searchDatabaseConfig.fragmentFactory,
                         FragmentInitializerFactory.createFragmentInitializer(
-                                activity,
+                                activityContext,
                                 FRAGMENT_CONTAINER_VIEW_ID));
         final Fragments instantiateAndInitializeFragment =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        activity);
+                        activityContext);
         final PreferencePathNavigator preferencePathNavigator =
                 PreferencePathNavigatorFactory.createPreferencePathNavigator(
-                        activity,
+                        activityContext,
                         fragmentFactoryAndInitializer,
                         instantiateAndInitializeFragment,
                         searchDatabaseConfig.activityInitializerByActivity,
@@ -136,7 +136,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                         fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
                                 GraphUtils.getRootNode(graph).orElseThrow().host(),
                                 Optional.empty(),
-                                activity,
+                                activityContext,
                                 instantiateAndInitializeFragment));
     }
 

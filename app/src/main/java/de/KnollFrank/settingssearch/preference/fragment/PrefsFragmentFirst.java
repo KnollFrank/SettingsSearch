@@ -146,7 +146,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     private DAOProvider getAppDatabase() {
         return SettingsSearchApplication
                 .getInstanceFromContext(requireContext())
-                .getDAOProvider();
+                .getDAOProvider(requireActivity());
     }
 
     public static String getSummary(final boolean checked) {

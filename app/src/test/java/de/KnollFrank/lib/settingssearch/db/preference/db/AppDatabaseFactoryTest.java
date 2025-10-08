@@ -4,8 +4,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-
-import androidx.test.core.app.ApplicationProvider;
+import static de.KnollFrank.lib.settingssearch.test.TestHelper.doWithFragmentActivity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,18 +20,25 @@ public class AppDatabaseFactoryTest {
 
     @Test
     public void shouldGetAppDatabase() {
-        // Given
+        doWithFragmentActivity(
+                fragmentActivity -> {
+                    // Given
 
-        // When
-        final AppDatabase appDatabase =
-                AppDatabaseFactory.createAppDatabase(
-                        new AppDatabaseConfig(
-                                "searchable_preferences.db",
-                                Optional.of(new File("database/searchable_preferences_prepackaged.db")),
-                                JournalMode.AUTOMATIC),
-                        ApplicationProvider.getApplicationContext());
+                    // When
+                    final AppDatabase appDatabase =
+                            AppDatabaseFactory.createAppDatabase(
+                                    new AppDatabaseConfig(
+                                            "searchable_preferences.db",
+                                            Optional.of(
+                                                    new PrepackagedAppDatabase(
+                                                            new File("database/searchable_preferences_prepackaged.db"),
+                                                            (_appDatabase, _activity) -> {
+                                                            })),
+                                            JournalMode.AUTOMATIC),
+                                    fragmentActivity);
 
-        // Then
-        assertThat(appDatabase, is(not(nullValue())));
+                    // Then
+                    assertThat(appDatabase, is(not(nullValue())));
+                });
     }
 }

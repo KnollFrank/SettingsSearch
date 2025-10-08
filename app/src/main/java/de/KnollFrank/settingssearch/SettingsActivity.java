@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
                 onMergedPreferenceScreenAvailable,
                 SettingsSearchApplication
                         .getInstanceFromContext(activity)
-                        .getDAOProvider());
+                        .getDAOProvider(activity));
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {

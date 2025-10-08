@@ -3,6 +3,8 @@ package de.KnollFrank.settingssearch;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.fragment.app.FragmentActivity;
+
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
@@ -17,20 +19,20 @@ public class SettingsSearchApplication extends Application {
         return (SettingsSearchApplication) context.getApplicationContext();
     }
 
-    public DAOProvider getDAOProvider() {
+    public DAOProvider getDAOProvider(final FragmentActivity activity) {
         if (daoProvider.isEmpty()) {
             synchronized (LOCK) {
                 if (daoProvider.isEmpty()) {
-                    daoProvider = Optional.of(createDAOProvider());
+                    daoProvider = Optional.of(createDAOProvider(activity));
                 }
             }
         }
         return daoProvider.orElseThrow();
     }
 
-    private DAOProvider createDAOProvider() {
+    private DAOProvider createDAOProvider(final FragmentActivity activity) {
         return DAOProviderFactory.createDAOProvider(
-                AppDatabaseConfigFactory.createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
-                this);
+                AppDatabaseConfigFactory.createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile(getApplicationContext()),
+                activity);
     }
 }

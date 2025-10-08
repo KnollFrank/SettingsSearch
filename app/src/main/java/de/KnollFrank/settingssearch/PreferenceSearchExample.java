@@ -44,7 +44,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 this,
                                 SettingsSearchApplication
                                         .getInstanceFromContext(this)
-                                        .getDAOProvider()));
+                                        .getDAOProvider(this)));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 
@@ -84,6 +84,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 },
                 SettingsSearchApplication
                         .getInstanceFromContext(this)
-                        .getDAOProvider());
+                        .getDAOProvider(this));
     }
 }

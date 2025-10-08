@@ -3,9 +3,10 @@ package de.KnollFrank.lib.settingssearch.db.preference.db;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static de.KnollFrank.lib.settingssearch.test.TestHelper.doWithFragmentActivity;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,24 +25,31 @@ public class DatabaseResetterTest {
 
     @Test
     public void shouldResetDatabase() {
-        // Given
-        final AppDatabase appDatabase = getAppDatabase();
-        initialize(appDatabase);
+        doWithFragmentActivity(
+                fragmentActivity -> {
+                    // Given
+                    final AppDatabase appDatabase = getAppDatabase(fragmentActivity);
+                    initialize(appDatabase);
 
-        // When
-        DatabaseResetter.resetDatabase(appDatabase);
+                    // When
+                    DatabaseResetter.resetDatabase(appDatabase);
 
-        // Then
-        assertIsReset(appDatabase);
+                    // Then
+                    assertIsReset(appDatabase);
+                });
     }
 
-    private static AppDatabase getAppDatabase() {
+    private static AppDatabase getAppDatabase(final FragmentActivity activity) {
         return AppDatabaseFactory.createAppDatabase(
                 new AppDatabaseConfig(
                         "searchable_preferences.db",
-                        Optional.of(new File("database/searchable_preferences_prepackaged.db")),
+                        Optional.of(
+                                new PrepackagedAppDatabase(
+                                        new File("database/searchable_preferences_prepackaged.db"),
+                                        (appDatabase, _activity) -> {
+                                        })),
                         JournalMode.AUTOMATIC),
-                ApplicationProvider.getApplicationContext());
+                activity);
     }
 
     private static void initialize(final AppDatabase appDatabase) {

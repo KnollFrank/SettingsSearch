@@ -1,10 +1,9 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
-import java.io.File;
 import java.util.Optional;
 
 public record AppDatabaseConfig(String databaseFileName,
-                                Optional<File> prepackagedDatabaseAssetFile,
+                                Optional<PrepackagedAppDatabase> prepackagedAppDatabase,
                                 JournalMode journalMode) {
 
     public enum JournalMode {
