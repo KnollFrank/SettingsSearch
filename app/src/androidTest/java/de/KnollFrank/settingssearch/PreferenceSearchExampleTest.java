@@ -137,7 +137,6 @@ public class PreferenceSearchExampleTest {
         }
     }
 
-    // FK-FIXME: only passes when run as a single test
     @Test
     public void shouldSearchAndNotFindInvisiblePreference() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
