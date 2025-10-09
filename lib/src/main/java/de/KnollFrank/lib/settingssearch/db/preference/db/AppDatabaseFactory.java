@@ -1,18 +1,26 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+
 import androidx.fragment.app.FragmentActivity;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AppDatabaseFactory {
 
-    public static AppDatabase createAppDatabase(
-            final AppDatabaseConfig appDatabaseConfig,
-            final FragmentActivity activityContext) {
+    public static AppDatabase createAppDatabase(final AppDatabaseConfig appDatabaseConfig,
+                                                final FragmentActivity activityContext) {
+        return createAppDatabase(
+                appDatabaseConfig,
+                activityContext,
+                isDatabaseNew(
+                        appDatabaseConfig.databaseFileName(),
+                        activityContext.getApplicationContext()));
+    }
+
+    private static AppDatabase createAppDatabase(final AppDatabaseConfig appDatabaseConfig,
+                                                 final FragmentActivity activityContext,
+                                                 final boolean isDatabaseNew) {
         final RoomDatabase.Builder<AppDatabase> appDatabaseBuilder =
                 Room.databaseBuilder(
                                 activityContext.getApplicationContext(),
@@ -21,29 +29,28 @@ public class AppDatabaseFactory {
                         .setJournalMode(asRoomJournalMode(appDatabaseConfig.journalMode()))
                         // FK-TODO: remove allowMainThreadQueries()
                         .allowMainThreadQueries();
-        final AtomicBoolean databaseCreated = new AtomicBoolean(false);
-        // FK-TODO: extract method
-        appDatabaseBuilder.addCallback(
-                new RoomDatabase.Callback() {
-
-                    @Override
-                    public void onCreate(@NonNull final SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-                        databaseCreated.set(true);
-                    }
-                });
         appDatabaseConfig
                 .prepackagedAppDatabase()
                 .map(PrepackagedAppDatabase::databaseAssetFile)
                 .ifPresent(databaseAssetFile -> appDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
         final AppDatabase appDatabase = appDatabaseBuilder.build();
-        if (databaseCreated.get()) {
+        if (isDatabaseNew) {
             appDatabaseConfig
                     .prepackagedAppDatabase()
                     .map(PrepackagedAppDatabase::appDatabaseProcessor)
                     .ifPresent(appDatabaseProcessor -> appDatabaseProcessor.processAppDatabase(appDatabase, activityContext));
         }
         return appDatabase;
+    }
+
+    private static boolean isDatabaseNew(final String databaseFileName, final Context context) {
+        return !databaseExists(databaseFileName, context);
+    }
+
+    private static boolean databaseExists(final String databaseFileName, final Context context) {
+        return context
+                .getDatabasePath(databaseFileName)
+                .exists();
     }
 
     private static RoomDatabase.JournalMode asRoomJournalMode(final AppDatabaseConfig.JournalMode journalMode) {
