@@ -56,7 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 this,
                                 onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId),
-                Utils.getCurrentLocale(getResources()));
+                Utils.getCurrentLanguageLocale(getResources()));
     }
 
     static SearchPreferenceFragments createSearchPreferenceFragments(

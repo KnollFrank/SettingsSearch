@@ -51,6 +51,6 @@ public class CreateSearchDatabaseTaskProvider {
                         activity,
                         daoProvider,
                         progressUpdateListener)
-                .fillSearchDatabaseWithPreferences(Utils.getCurrentLocale(activity.getResources()));
+                .fillSearchDatabaseWithPreferences(Utils.getCurrentLanguageLocale(activity.getResources()));
     }
 }

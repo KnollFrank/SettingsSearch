@@ -36,7 +36,7 @@ class AppDatabaseConfigFactory {
                                     @Override
                                     public void processAppDatabase(final DAOProvider appDatabase, final FragmentActivity activityContext) {
                                         new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
-                                                Utils.getCurrentLocale(context.getResources()),
+                                                Utils.getCurrentLanguageLocale(context.getResources()),
                                                 appDatabase,
                                                 activityContext);
                                     }
