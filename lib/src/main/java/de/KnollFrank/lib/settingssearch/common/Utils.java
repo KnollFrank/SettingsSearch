@@ -13,7 +13,7 @@ public class Utils {
         return Suppliers.memoize(supplier::get)::get;
     }
 
-    public static Locale geCurrentLocale(final Resources resources) {
+    public static Locale getCurrentLocale(final Resources resources) {
         return resources.getConfiguration().getLocales().get(0);
     }
 }

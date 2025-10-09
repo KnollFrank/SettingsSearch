@@ -50,7 +50,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         return new SearchPreferenceFragmentsBuilder(
                 searchDatabaseConfig,
                 searchConfig,
-                Utils.geCurrentLocale(activity.getResources()),
+                Utils.getCurrentLocale(activity.getResources()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
                 activity,
                 daoProvider);
