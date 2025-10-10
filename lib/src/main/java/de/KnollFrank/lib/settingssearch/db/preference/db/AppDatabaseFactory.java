@@ -22,7 +22,8 @@ public class AppDatabaseFactory {
                                                  final FragmentActivity activityContext,
                                                  final boolean isDatabaseNew) {
         final RoomDatabase.Builder<AppDatabase> appDatabaseBuilder =
-                Room.databaseBuilder(
+                Room
+                        .databaseBuilder(
                                 activityContext.getApplicationContext(),
                                 AppDatabase.class,
                                 appDatabaseConfig.databaseFileName())
