@@ -42,10 +42,11 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                     () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
                     edge -> new SearchablePreferenceEdge(edge.preference));
 
-    public void adaptSearchDatabaseRootedAtPrefsFragmentFirst(final Locale locale,
-                                                              // FK-TODO: make appDatabase an instance variable
-                                                              final DAOProvider appDatabase,
-                                                              final FragmentActivity activityContext) {
+    public void adaptSearchDatabaseRootedAtPrefsFragmentFirst(
+            // FK-TODO: make appDatabase an instance variable
+            final DAOProvider appDatabase,
+            final Locale locale,
+            final FragmentActivity activityContext) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activityContext.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
