@@ -14,10 +14,14 @@ public class Utils {
     }
 
     public static Locale getCurrentLanguageLocale(final Resources resources) {
-        return new Locale(getDeviceLocale(resources).getLanguage());
+        return getLanguageLocale(getCurrentLocale(resources));
     }
 
-    private static Locale getDeviceLocale(final Resources resources) {
+    private static Locale getCurrentLocale(final Resources resources) {
         return resources.getConfiguration().getLocales().get(0);
+    }
+
+    private static Locale getLanguageLocale(final Locale locale) {
+        return new Locale(locale.getLanguage());
     }
 }
