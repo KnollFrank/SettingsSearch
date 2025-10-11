@@ -47,6 +47,13 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
             final DAOProvider appDatabase,
             final SearchablePreferenceScreenGraph graph,
             final FragmentActivity activityContext) {
+        appDatabase
+                .searchablePreferenceScreenGraphDAO()
+                .persist(getAdaptedGraph(graph, activityContext));
+    }
+
+    private SearchablePreferenceScreenGraph getAdaptedGraph(final SearchablePreferenceScreenGraph graph,
+                                                            final FragmentActivity activityContext) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activityContext.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
@@ -64,13 +71,10 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                                                 activityContext)),
                                 graph.locale(),
                                 activityContext));
-        appDatabase
-                .searchablePreferenceScreenGraphDAO()
-                .persist(
-                        new SearchablePreferenceScreenGraph(
-                                newPojoGraph,
-                                graph.locale(),
-                                false));
+        return new SearchablePreferenceScreenGraph(
+                newPojoGraph,
+                graph.locale(),
+                false);
     }
 
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(
