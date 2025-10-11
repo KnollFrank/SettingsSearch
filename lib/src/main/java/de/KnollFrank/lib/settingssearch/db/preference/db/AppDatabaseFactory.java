@@ -7,9 +7,8 @@ import androidx.room.RoomDatabase;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphEntityDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 
 public class AppDatabaseFactory {
 
@@ -30,34 +29,31 @@ public class AppDatabaseFactory {
                 .map(PrepackagedAppDatabase::databaseAssetFile)
                 .ifPresent(databaseAssetFile -> appDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
         final AppDatabase appDatabase = appDatabaseBuilder.build();
-        processAppDatabase(
-                activityContext,
-                locale,
-                appDatabase,
+        processAndPersistGraph(
                 appDatabaseConfig
                         .prepackagedAppDatabase()
-                        .map(PrepackagedAppDatabase::appDatabaseProcessor));
+                        .map(PrepackagedAppDatabase::graphProcessor),
+                appDatabase
+                        .searchablePreferenceScreenGraphDAO()
+                        .findGraphById(locale),
+                activityContext,
+                appDatabase.searchablePreferenceScreenGraphDAO());
         return appDatabase;
     }
 
-    private static void processAppDatabase(final FragmentActivity activityContext,
-                                           final Locale locale,
-                                           final AppDatabase appDatabase,
-                                           final Optional<AppDatabaseProcessor> appDatabaseProcessor) {
-        final SearchablePreferenceScreenGraphEntityDAO graphDAO = appDatabase.searchablePreferenceScreenGraphEntityDAO();
-        graphDAO
-                .findGraphById(locale)
-                .map(GraphAndDbDataProvider::graph)
-                .ifPresent(
-                        graph -> {
-                            if (!graph.processed()) {
-                                appDatabaseProcessor.ifPresent(_appDatabaseProcessor -> _appDatabaseProcessor.processAppDatabase(appDatabase, locale, activityContext));
-                                graphDAO.update(
-                                        new SearchablePreferenceScreenGraphEntity(
-                                                graph.id(),
-                                                true));
-                            }
-                        });
+    private static void processAndPersistGraph(final Optional<GraphProcessor> graphProcessor,
+                                               final Optional<SearchablePreferenceScreenGraph> graph,
+                                               final FragmentActivity activityContext,
+                                               final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
+        graph.ifPresent(
+                _graph -> {
+                    if (!_graph.processed()) {
+                        searchablePreferenceScreenGraphDAO.persist(
+                                graphProcessor
+                                        .map(_graphProcessor -> _graphProcessor.processGraph(_graph, activityContext))
+                                        .orElseGet(_graph::asProcessedGraph));
+                    }
+                });
     }
 
     private static RoomDatabase.JournalMode asRoomJournalMode(final AppDatabaseConfig.JournalMode journalMode) {

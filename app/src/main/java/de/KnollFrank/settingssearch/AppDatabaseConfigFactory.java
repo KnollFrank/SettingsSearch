@@ -3,13 +3,12 @@ package de.KnollFrank.settingssearch;
 import androidx.fragment.app.FragmentActivity;
 
 import java.io.File;
-import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseProcessor;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.GraphProcessor;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PrepackagedAppDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFirstAdapter;
 
 class AppDatabaseConfigFactory {
@@ -29,17 +28,13 @@ class AppDatabaseConfigFactory {
                 Optional.of(
                         new PrepackagedAppDatabase(
                                 new File("database/searchable_preferences_prepackaged.db"),
-                                new AppDatabaseProcessor() {
+                                new GraphProcessor() {
 
                                     @Override
-                                    public void processAppDatabase(final DAOProvider appDatabase, final Locale locale, final FragmentActivity activityContext) {
-                                        new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
-                                                appDatabase,
-                                                appDatabase
-                                                        .searchablePreferenceScreenGraphDAO()
-                                                        .findGraphById(locale)
-                                                        .orElseThrow(),
-                                                activityContext);
+                                    public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph, final FragmentActivity activityContext) {
+                                        return new SearchDatabaseRootedAtPrefsFragmentFirstAdapter()
+                                                .getAdaptedGraph(graph, activityContext)
+                                                .asProcessedGraph();
                                     }
                                 })),
                 AppDatabaseConfig.JournalMode.AUTOMATIC);

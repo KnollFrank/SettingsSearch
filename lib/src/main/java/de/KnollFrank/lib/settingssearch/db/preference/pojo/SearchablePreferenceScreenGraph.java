@@ -17,4 +17,8 @@ public record SearchablePreferenceScreenGraph(
         Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
         Locale locale,
         boolean processed) {
+
+    public SearchablePreferenceScreenGraph asProcessedGraph() {
+        return new SearchablePreferenceScreenGraph(graph, locale, true);
+    }
 }

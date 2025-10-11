@@ -33,8 +33,7 @@ public class AppDatabaseFactoryTest {
                                             Optional.of(
                                                     new PrepackagedAppDatabase(
                                                             new File("database/searchable_preferences_prepackaged.db"),
-                                                            (_appDatabase, _locale, _activity) -> {
-                                                            })),
+                                                            (graph, activityContext) -> graph.asProcessedGraph())),
                                             JournalMode.AUTOMATIC),
                                     fragmentActivity,
                                     Locale.GERMAN);

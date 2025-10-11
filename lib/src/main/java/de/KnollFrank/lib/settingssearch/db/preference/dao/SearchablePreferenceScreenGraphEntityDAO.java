@@ -4,7 +4,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import java.util.List;
 import java.util.Locale;
@@ -59,9 +58,6 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
 
     @Insert
     protected abstract void persist(SearchablePreferenceScreenGraphEntity graph);
-
-    @Update
-    public abstract void update(SearchablePreferenceScreenGraphEntity graph);
 
     @Delete
     protected abstract void _remove(SearchablePreferenceScreenGraphEntity graph);
