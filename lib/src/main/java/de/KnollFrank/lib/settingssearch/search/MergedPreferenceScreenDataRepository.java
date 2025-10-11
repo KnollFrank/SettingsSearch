@@ -61,7 +61,11 @@ public class MergedPreferenceScreenDataRepository {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
                 progressUpdateListener.onProgressUpdate("persisting search database");
-                graphDAO.persist(new SearchablePreferenceScreenGraph(searchablePreferenceScreenGraph, locale));
+                graphDAO.persist(
+                        new SearchablePreferenceScreenGraph(
+                                searchablePreferenceScreenGraph,
+                                locale,
+                                false));
             }
         }
     }

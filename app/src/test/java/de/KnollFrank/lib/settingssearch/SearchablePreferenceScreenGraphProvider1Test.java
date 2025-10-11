@@ -238,6 +238,6 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
     public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                                         final AppDatabase appDatabase,
                                                         final Locale locale) {
-        appDatabase.searchablePreferenceScreenGraphDAO().persist(new SearchablePreferenceScreenGraph(graph, locale));
+        appDatabase.searchablePreferenceScreenGraphDAO().persist(new SearchablePreferenceScreenGraph(graph, locale, false));
     }
 }

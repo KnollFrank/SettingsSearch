@@ -30,13 +30,14 @@ public class PojoGraph2EntityGraphTransformer {
 
     public static GraphAndDbDataProvider toEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
-            final Locale graphId) {
+            final Locale graphId,
+            final boolean processed) {
         final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
                 GraphTransformerAlgorithm.transform(
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer(graphId));
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(graphId);
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(graphId, processed);
         return new GraphAndDbDataProvider(
                 graphEntity,
                 DbDataProviderFactory.createDbDataProvider(

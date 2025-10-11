@@ -15,5 +15,6 @@ FK-TODO:
 */
 public record SearchablePreferenceScreenGraph(
         Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-        Locale locale) {
+        Locale locale,
+        boolean processed) {
 }

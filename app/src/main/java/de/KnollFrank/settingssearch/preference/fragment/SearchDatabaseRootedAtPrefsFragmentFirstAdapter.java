@@ -66,7 +66,11 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                                 activityContext));
         appDatabase
                 .searchablePreferenceScreenGraphDAO()
-                .persist(new SearchablePreferenceScreenGraph(newPojoGraph, pojoGraph.locale()));
+                .persist(
+                        new SearchablePreferenceScreenGraph(
+                                newPojoGraph,
+                                pojoGraph.locale(),
+                                true));
     }
 
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(
@@ -128,16 +132,16 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                         searchablePreferenceScreen,
                         graph)
                 .map(preferencePath ->
-                        (PreferenceFragmentCompat)
-                                preferencePathNavigator
-                                        .navigatePreferencePath(preferencePath)
-                                        .orElseThrow())
+                             (PreferenceFragmentCompat)
+                                     preferencePathNavigator
+                                             .navigatePreferencePath(preferencePath)
+                                             .orElseThrow())
                 .orElseGet(() ->
-                        fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
-                                GraphUtils.getRootNode(graph).orElseThrow().host(),
-                                Optional.empty(),
-                                activityContext,
-                                instantiateAndInitializeFragment));
+                                   fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
+                                           GraphUtils.getRootNode(graph).orElseThrow().host(),
+                                           Optional.empty(),
+                                           activityContext,
+                                           instantiateAndInitializeFragment));
     }
 
     private Optional<PreferencePath> getPreferencePathLeadingToSearchablePreferenceScreen(

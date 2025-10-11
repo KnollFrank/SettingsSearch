@@ -28,8 +28,9 @@ public class DatabaseResetterTest {
         doWithFragmentActivity(
                 fragmentActivity -> {
                     // Given
-                    final AppDatabase appDatabase = getAppDatabase(fragmentActivity);
-                    initialize(appDatabase);
+                    final Locale locale = Locale.GERMAN;
+                    final AppDatabase appDatabase = getAppDatabase(fragmentActivity, locale);
+                    initialize(appDatabase, locale);
 
                     // When
                     DatabaseResetter.resetDatabase(appDatabase);
@@ -39,24 +40,25 @@ public class DatabaseResetterTest {
                 });
     }
 
-    private static AppDatabase getAppDatabase(final FragmentActivity activity) {
+    private static AppDatabase getAppDatabase(final FragmentActivity activity, final Locale locale) {
         return AppDatabaseFactory.createAppDatabase(
                 new AppDatabaseConfig(
                         "searchable_preferences.db",
                         Optional.of(
                                 new PrepackagedAppDatabase(
                                         new File("database/searchable_preferences_prepackaged.db"),
-                                        (appDatabase, _activity) -> {
+                                        (appDatabase, _locale, activityContext) -> {
                                         })),
                         JournalMode.AUTOMATIC),
-                activity);
+                activity,
+                locale);
     }
 
-    private static void initialize(final AppDatabase appDatabase) {
+    private static void initialize(final AppDatabase appDatabase, final Locale locale) {
         final var singleNodeGraph =
                 SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
                         PreferenceFragmentCompat.class,
-                        Locale.GERMAN,
+                        locale,
                         new SearchablePreferenceScreenGraphTestFactory.Data(
                                 "5",
                                 "4",
@@ -72,7 +74,8 @@ public class DatabaseResetterTest {
                 .persist(
                         new SearchablePreferenceScreenGraph(
                                 singleNodeGraph.pojoGraph(),
-                                singleNodeGraph.entityGraphAndDbDataProvider().graph().id()));
+                                singleNodeGraph.entityGraphAndDbDataProvider().graph().id(),
+                                singleNodeGraph.entityGraphAndDbDataProvider().graph().processed()));
     }
 
     private static void assertIsReset(final AppDatabase appDatabase) {

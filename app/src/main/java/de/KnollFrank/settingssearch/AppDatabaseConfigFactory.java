@@ -1,13 +1,11 @@
 package de.KnollFrank.settingssearch;
 
-import android.content.Context;
-
 import androidx.fragment.app.FragmentActivity;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseProcessor;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
@@ -25,7 +23,7 @@ class AppDatabaseConfigFactory {
                 AppDatabaseConfig.JournalMode.TRUNCATE);
     }
 
-    public static AppDatabaseConfig createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile(final Context context) {
+    public static AppDatabaseConfig createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile() {
         return new AppDatabaseConfig(
                 SEARCHABLE_PREFERENCES_DB,
                 Optional.of(
@@ -34,11 +32,8 @@ class AppDatabaseConfigFactory {
                                 new AppDatabaseProcessor() {
 
                                     @Override
-                                    public void processAppDatabase(final DAOProvider appDatabase, final FragmentActivity activityContext) {
-                                        new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
-                                                Utils.getCurrentLanguageLocale(context.getResources()),
-                                                appDatabase,
-                                                activityContext);
+                                    public void processAppDatabase(final DAOProvider appDatabase, final Locale locale, final FragmentActivity activityContext) {
+                                        new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(locale, appDatabase, activityContext);
                                     }
                                 })),
                 AppDatabaseConfig.JournalMode.AUTOMATIC);

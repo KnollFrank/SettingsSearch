@@ -71,7 +71,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale);
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale, false);
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
@@ -144,7 +144,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale);
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale, false);
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,

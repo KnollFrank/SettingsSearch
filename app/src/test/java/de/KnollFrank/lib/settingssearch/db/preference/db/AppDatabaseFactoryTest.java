@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig.JournalMode;
@@ -32,10 +33,11 @@ public class AppDatabaseFactoryTest {
                                             Optional.of(
                                                     new PrepackagedAppDatabase(
                                                             new File("database/searchable_preferences_prepackaged.db"),
-                                                            (_appDatabase, _activity) -> {
+                                                            (_appDatabase, _locale, _activity) -> {
                                                             })),
                                             JournalMode.AUTOMATIC),
-                                    fragmentActivity);
+                                    fragmentActivity,
+                                    Locale.GERMAN);
 
                     // Then
                     assertThat(appDatabase, is(not(nullValue())));

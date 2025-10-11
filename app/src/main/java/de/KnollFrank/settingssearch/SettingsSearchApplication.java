@@ -32,7 +32,7 @@ public class SettingsSearchApplication extends Application {
 
     private DAOProvider createDAOProvider(final FragmentActivity activity) {
         return DAOProviderFactory.createDAOProvider(
-                AppDatabaseConfigFactory.createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile(getApplicationContext()),
+                AppDatabaseConfigFactory.createAppDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                 activity);
     }
 }

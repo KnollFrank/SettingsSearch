@@ -1,26 +1,21 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
-import android.content.Context;
-
 import androidx.fragment.app.FragmentActivity;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import java.util.Locale;
+import java.util.Optional;
+
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphEntityDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+
 public class AppDatabaseFactory {
 
     public static AppDatabase createAppDatabase(final AppDatabaseConfig appDatabaseConfig,
-                                                final FragmentActivity activityContext) {
-        return createAppDatabase(
-                appDatabaseConfig,
-                activityContext,
-                isDatabaseNew(
-                        appDatabaseConfig.databaseFileName(),
-                        activityContext.getApplicationContext()));
-    }
-
-    private static AppDatabase createAppDatabase(final AppDatabaseConfig appDatabaseConfig,
-                                                 final FragmentActivity activityContext,
-                                                 final boolean isDatabaseNew) {
+                                                final FragmentActivity activityContext,
+                                                final Locale locale) {
         final RoomDatabase.Builder<AppDatabase> appDatabaseBuilder =
                 Room
                         .databaseBuilder(
@@ -35,23 +30,34 @@ public class AppDatabaseFactory {
                 .map(PrepackagedAppDatabase::databaseAssetFile)
                 .ifPresent(databaseAssetFile -> appDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
         final AppDatabase appDatabase = appDatabaseBuilder.build();
-        if (isDatabaseNew) {
-            appDatabaseConfig
-                    .prepackagedAppDatabase()
-                    .map(PrepackagedAppDatabase::appDatabaseProcessor)
-                    .ifPresent(appDatabaseProcessor -> appDatabaseProcessor.processAppDatabase(appDatabase, activityContext));
-        }
+        processAppDatabase(
+                activityContext,
+                locale,
+                appDatabase,
+                appDatabaseConfig
+                        .prepackagedAppDatabase()
+                        .map(PrepackagedAppDatabase::appDatabaseProcessor));
         return appDatabase;
     }
 
-    private static boolean isDatabaseNew(final String databaseFileName, final Context context) {
-        return !databaseExists(databaseFileName, context);
-    }
-
-    private static boolean databaseExists(final String databaseFileName, final Context context) {
-        return context
-                .getDatabasePath(databaseFileName)
-                .exists();
+    private static void processAppDatabase(final FragmentActivity activityContext,
+                                           final Locale locale,
+                                           final AppDatabase appDatabase,
+                                           final Optional<AppDatabaseProcessor> appDatabaseProcessor) {
+        final SearchablePreferenceScreenGraphEntityDAO graphDAO = appDatabase.searchablePreferenceScreenGraphEntityDAO();
+        graphDAO
+                .findGraphById(locale)
+                .map(GraphAndDbDataProvider::graph)
+                .ifPresent(
+                        graph -> {
+                            if (!graph.processed()) {
+                                appDatabaseProcessor.ifPresent(_appDatabaseProcessor -> _appDatabaseProcessor.processAppDatabase(appDatabase, locale, activityContext));
+                                graphDAO.update(
+                                        new SearchablePreferenceScreenGraphEntity(
+                                                graph.id(),
+                                                true));
+                            }
+                        });
     }
 
     private static RoomDatabase.JournalMode asRoomJournalMode(final AppDatabaseConfig.JournalMode journalMode) {

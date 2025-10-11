@@ -192,7 +192,8 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                         graph2POJOGraphTransformer.transformGraph2POJOGraph(
                                 entityGraph,
                                 locale)),
-                locale);
+                locale,
+                false);
     }
 
     private static BiConsumer<PreferenceScreen, Context> getAddPreferences2Screen() {
