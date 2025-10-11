@@ -51,7 +51,8 @@ public class AppDatabaseFactory {
                         searchablePreferenceScreenGraphDAO.persist(
                                 graphProcessor
                                         .map(_graphProcessor -> _graphProcessor.processGraph(_graph, activityContext))
-                                        .orElseGet(_graph::asProcessedGraph));
+                                        .orElse(_graph)
+                                        .asProcessedGraph());
                     }
                 });
     }
