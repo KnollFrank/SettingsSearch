@@ -57,11 +57,11 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         _removeAll();
     }
 
-    @Update
-    public abstract void update(SearchablePreferenceScreenGraphEntity graph);
-
     @Insert
     protected abstract void persist(SearchablePreferenceScreenGraphEntity graph);
+
+    @Update
+    public abstract void update(SearchablePreferenceScreenGraphEntity graph);
 
     @Delete
     protected abstract void _remove(SearchablePreferenceScreenGraphEntity graph);
