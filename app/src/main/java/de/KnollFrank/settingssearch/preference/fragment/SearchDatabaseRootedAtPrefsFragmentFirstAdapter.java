@@ -78,7 +78,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
             final PreferenceScreenWithHost root,
             final Locale locale,
             final FragmentActivity activityContext) {
-        return SearchablePreferenceScreenGraphProviderFactory.createSearchablePreferenceScreenGraphProvider(
+        return SearchablePreferenceScreenGraphProviderFactory
+                .createSearchablePreferenceScreenGraphProvider(
                         FRAGMENT_CONTAINER_VIEW_ID,
                         activityContext.findViewById(android.R.id.content),
                         activityContext,
