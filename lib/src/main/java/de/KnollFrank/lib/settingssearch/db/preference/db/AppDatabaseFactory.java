@@ -5,10 +5,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import java.util.Locale;
-import java.util.Optional;
-
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 
 public class AppDatabaseFactory {
 
@@ -29,32 +25,21 @@ public class AppDatabaseFactory {
                 .map(PrepackagedAppDatabase::databaseAssetFile)
                 .ifPresent(databaseAssetFile -> appDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
         final AppDatabase appDatabase = appDatabaseBuilder.build();
-        processAndPersistGraph(
-                appDatabaseConfig
-                        .prepackagedAppDatabase()
-                        .map(PrepackagedAppDatabase::graphProcessor),
-                appDatabase
-                        .searchablePreferenceScreenGraphDAO()
-                        .findGraphById(locale),
-                activityContext,
-                appDatabase.searchablePreferenceScreenGraphDAO());
+        appDatabase
+                .searchablePreferenceScreenGraphDAO()
+                .findGraphById(locale)
+                .ifPresent(
+                        graph -> {
+                            final InitialGraphProcessor initialGraphProcessor =
+                                    new InitialGraphProcessor(
+                                            appDatabaseConfig
+                                                    .prepackagedAppDatabase()
+                                                    .map(PrepackagedAppDatabase::graphProcessor),
+                                            appDatabase.searchablePreferenceScreenGraphDAO(),
+                                            activityContext);
+                            initialGraphProcessor.processAndPersist(graph);
+                        });
         return appDatabase;
-    }
-
-    private static void processAndPersistGraph(final Optional<GraphProcessor> graphProcessor,
-                                               final Optional<SearchablePreferenceScreenGraph> graph,
-                                               final FragmentActivity activityContext,
-                                               final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
-        graph.ifPresent(
-                _graph -> {
-                    if (!_graph.processed()) {
-                        searchablePreferenceScreenGraphDAO.persist(
-                                graphProcessor
-                                        .map(_graphProcessor -> _graphProcessor.processGraph(_graph, activityContext))
-                                        .orElse(_graph)
-                                        .asProcessedGraph());
-                    }
-                });
     }
 
     private static RoomDatabase.JournalMode asRoomJournalMode(final AppDatabaseConfig.JournalMode journalMode) {
