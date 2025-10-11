@@ -45,32 +45,31 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
     public void adaptSearchDatabaseRootedAtPrefsFragmentFirst(
             // FK-TODO: make appDatabase an instance variable
             final DAOProvider appDatabase,
-            final Locale locale,
+            final SearchablePreferenceScreenGraph graph,
             final FragmentActivity activityContext) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activityContext.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
-        final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale, appDatabase);
-        final SearchablePreferenceScreen searchablePreferenceScreen = findSearchablePreferenceScreen(pojoGraph, locale);
+        final SearchablePreferenceScreen searchablePreferenceScreen = findSearchablePreferenceScreen(graph);
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        pojoGraph.graph(),
+                        graph.graph(),
                         searchablePreferenceScreen,
                         getPojoGraphRootedAt(
                                 asPreferenceScreenWithHost(
                                         instantiateSearchablePreferenceScreen(
                                                 searchablePreferenceScreen,
-                                                pojoGraph.graph(),
+                                                graph.graph(),
                                                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                                                 activityContext)),
-                                locale,
+                                graph.locale(),
                                 activityContext));
         appDatabase
                 .searchablePreferenceScreenGraphDAO()
                 .persist(
                         new SearchablePreferenceScreenGraph(
                                 newPojoGraph,
-                                pojoGraph.locale(),
+                                graph.locale(),
                                 true));
     }
 
@@ -90,19 +89,11 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                 .getSearchablePreferenceScreenGraph(root);
     }
 
-    private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale, final DAOProvider appDatabase) {
-        return appDatabase
-                .searchablePreferenceScreenGraphDAO()
-                .findGraphById(locale)
-                .orElseThrow();
-    }
-
-    private SearchablePreferenceScreen findSearchablePreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn,
-                                                                      final Locale locale) {
+    private SearchablePreferenceScreen findSearchablePreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn) {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         graphToSearchIn.graph().vertexSet(),
-                        Strings.addLocaleToId(locale, PrefsFragmentFirst.class.getName()))
+                        Strings.addLocaleToId(graphToSearchIn.locale(), PrefsFragmentFirst.class.getName()))
                 .orElseThrow();
     }
 

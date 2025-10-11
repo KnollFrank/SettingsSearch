@@ -96,7 +96,10 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         checkBoxPreference.setTitle("add preference to P1");
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
-                    new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(getAppDatabase(), locale, requireActivity());
+                    new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
+                            getAppDatabase(),
+                            getPojoGraph(locale),
+                            requireActivity());
                     return true;
                 });
         return checkBoxPreference;

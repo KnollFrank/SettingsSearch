@@ -33,7 +33,13 @@ class AppDatabaseConfigFactory {
 
                                     @Override
                                     public void processAppDatabase(final DAOProvider appDatabase, final Locale locale, final FragmentActivity activityContext) {
-                                        new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(appDatabase, locale, activityContext);
+                                        new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
+                                                appDatabase,
+                                                appDatabase
+                                                        .searchablePreferenceScreenGraphDAO()
+                                                        .findGraphById(locale)
+                                                        .orElseThrow(),
+                                                activityContext);
                                     }
                                 })),
                 AppDatabaseConfig.JournalMode.AUTOMATIC);
