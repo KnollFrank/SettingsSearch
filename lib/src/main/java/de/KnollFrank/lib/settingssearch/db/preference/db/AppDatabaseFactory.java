@@ -5,6 +5,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import java.util.Locale;
+import java.util.Optional;
+
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 
 public class AppDatabaseFactory {
 
@@ -25,21 +29,27 @@ public class AppDatabaseFactory {
                 .map(PrepackagedAppDatabase::databaseAssetFile)
                 .ifPresent(databaseAssetFile -> appDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
         final AppDatabase appDatabase = appDatabaseBuilder.build();
-        appDatabase
-                .searchablePreferenceScreenGraphDAO()
-                .findGraphById(locale)
-                .ifPresent(
-                        graph -> {
-                            final InitialGraphProcessor initialGraphProcessor =
-                                    new InitialGraphProcessor(
-                                            appDatabaseConfig
-                                                    .prepackagedAppDatabase()
-                                                    .map(PrepackagedAppDatabase::graphProcessor),
-                                            appDatabase.searchablePreferenceScreenGraphDAO(),
-                                            activityContext);
-                            initialGraphProcessor.processAndPersist(graph);
-                        });
+        processAndPersistGraph(
+                appDatabase
+                        .searchablePreferenceScreenGraphDAO()
+                        .findGraphById(locale),
+                appDatabaseConfig
+                        .prepackagedAppDatabase()
+                        .map(PrepackagedAppDatabase::graphProcessor),
+                appDatabase.searchablePreferenceScreenGraphDAO(),
+                activityContext);
         return appDatabase;
+    }
+
+    private static void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
+                                               final Optional<GraphProcessor> graphProcessor,
+                                               final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO, final FragmentActivity activityContext) {
+        final InitialGraphProcessor initialGraphProcessor =
+                new InitialGraphProcessor(
+                        graphProcessor,
+                        searchablePreferenceScreenGraphDAO,
+                        activityContext);
+        initialGraphProcessor.processAndPersist(graph);
     }
 
     private static RoomDatabase.JournalMode asRoomJournalMode(final AppDatabaseConfig.JournalMode journalMode) {

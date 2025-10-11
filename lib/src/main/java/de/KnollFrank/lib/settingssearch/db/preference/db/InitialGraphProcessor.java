@@ -21,10 +21,13 @@ class InitialGraphProcessor {
         this.activityContext = activityContext;
     }
 
-    public void processAndPersist(final SearchablePreferenceScreenGraph graph) {
-        if (!graph.processed()) {
-            searchablePreferenceScreenGraphDAO.persist(process(graph));
-        }
+    public void processAndPersist(final Optional<SearchablePreferenceScreenGraph> graph) {
+        graph.ifPresent(
+                _graph -> {
+                    if (!_graph.processed()) {
+                        searchablePreferenceScreenGraphDAO.persist(process(_graph));
+                    }
+                });
     }
 
     private SearchablePreferenceScreenGraph process(final SearchablePreferenceScreenGraph graph) {
