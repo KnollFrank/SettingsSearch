@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
@@ -30,8 +30,8 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity>> hostByPreference = Optional.empty();
 
-    public SearchablePreferenceScreenEntityDAO(final AppDatabase appDatabase) {
-        this.searchablePreferenceDAO = appDatabase.searchablePreferenceEntityDAO();
+    public SearchablePreferenceScreenEntityDAO(final PreferencesDatabase preferencesDatabase) {
+        this.searchablePreferenceDAO = preferencesDatabase.searchablePreferenceEntityDAO();
     }
 
     public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,

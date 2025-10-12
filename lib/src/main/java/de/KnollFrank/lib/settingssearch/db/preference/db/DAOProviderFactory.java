@@ -6,9 +6,9 @@ import de.KnollFrank.lib.settingssearch.common.Utils;
 
 public class DAOProviderFactory {
 
-    public static DAOProvider createDAOProvider(final AppDatabaseConfig appDatabaseConfig, final FragmentActivity activityContext) {
-        return AppDatabaseFactory.createAppDatabase(
-                appDatabaseConfig,
+    public static DAOProvider createDAOProvider(final PreferencesDatabaseConfig preferencesDatabaseConfig, final FragmentActivity activityContext) {
+        return PreferencesDatabaseFactory.createPreferencesDatabase(
+                preferencesDatabaseConfig,
                 activityContext,
                 Utils.getCurrentLanguageLocale(activityContext.getResources()));
     }

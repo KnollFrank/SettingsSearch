@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
@@ -23,9 +23,9 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     private final SearchablePreferenceScreenEntityDAO screenDAO;
     private final SearchablePreferenceEntityDAO preferenceDAO;
 
-    public SearchablePreferenceScreenGraphEntityDAO(final AppDatabase appDatabase) {
-        this.screenDAO = appDatabase.searchablePreferenceScreenEntityDAO();
-        this.preferenceDAO = appDatabase.searchablePreferenceEntityDAO();
+    public SearchablePreferenceScreenGraphEntityDAO(final PreferencesDatabase preferencesDatabase) {
+        this.screenDAO = preferencesDatabase.searchablePreferenceScreenEntityDAO();
+        this.preferenceDAO = preferencesDatabase.searchablePreferenceEntityDAO();
     }
 
     public void persist(final GraphAndDbDataProvider graphAndDbDataProvider) {

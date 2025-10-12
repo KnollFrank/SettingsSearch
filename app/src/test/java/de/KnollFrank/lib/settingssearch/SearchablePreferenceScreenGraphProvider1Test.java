@@ -33,8 +33,8 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -45,7 +45,7 @@ import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphPro
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTest {
+public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDatabaseTest {
 
     @Test
     public void shouldGetSearchablePreferenceScreenGraph() {
@@ -94,7 +94,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
                                         result.preferenceScreenWithHost());
 
                 // Then
-                makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase, Locale.GERMAN);
+                makeGetPreferencePathWorkOnGraph(pojoGraph, preferencesDatabase, Locale.GERMAN);
                 final SearchablePreference preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3ConnectedToFragment4.class,
@@ -236,8 +236,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends AppDatabaseTes
     }
 
     public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-                                                        final AppDatabase appDatabase,
+                                                        final PreferencesDatabase preferencesDatabase,
                                                         final Locale locale) {
-        appDatabase.searchablePreferenceScreenGraphDAO().persist(new SearchablePreferenceScreenGraph(graph, locale, false));
+        preferencesDatabase.searchablePreferenceScreenGraphDAO().persist(new SearchablePreferenceScreenGraph(graph, locale, false));
     }
 }

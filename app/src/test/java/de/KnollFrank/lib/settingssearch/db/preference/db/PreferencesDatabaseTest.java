@@ -6,23 +6,23 @@ import androidx.test.core.app.ApplicationProvider;
 import org.junit.After;
 import org.junit.Before;
 
-public abstract class AppDatabaseTest {
+public abstract class PreferencesDatabaseTest {
 
-    protected AppDatabase appDatabase;
+    protected PreferencesDatabase preferencesDatabase;
 
     @Before
-    public void createAppDatabase() {
-        appDatabase =
+    public void createPreferencesDatabase() {
+        preferencesDatabase =
                 Room
                         .inMemoryDatabaseBuilder(
                                 ApplicationProvider.getApplicationContext(),
-                                AppDatabase.class)
+                                PreferencesDatabase.class)
                         .allowMainThreadQueries()
                         .build();
     }
 
     @After
-    public void closeAppDatabase() {
-        appDatabase.close();
+    public void closePreferencesDatabase() {
+        preferencesDatabase.close();
     }
 }

@@ -36,7 +36,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFacto
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -47,7 +47,7 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
+public class Graph2POJOGraphTransformerTest extends PreferencesDatabaseTest {
 
     @Test
     public void shouldTransformGraph2POJOGraph() {
@@ -96,7 +96,7 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
                                         locale));
 
                 // Then
-                makeGetPreferencePathWorkOnGraph(pojoGraph, appDatabase, locale);
+                makeGetPreferencePathWorkOnGraph(pojoGraph, preferencesDatabase, locale);
                 // check graph:
                 PojoGraphEquality.assertActualEqualsExpected(
                         pojoGraph,
@@ -168,11 +168,11 @@ public class Graph2POJOGraphTransformerTest extends AppDatabaseTest {
 
                 // When
                 final SearchablePreferenceScreenGraph germanPojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.GERMAN);
-                appDatabase.searchablePreferenceScreenGraphDAO().persist(germanPojoGraph);
+                preferencesDatabase.searchablePreferenceScreenGraphDAO().persist(germanPojoGraph);
 
                 // And
                 final SearchablePreferenceScreenGraph chinesePojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.CHINESE);
-                appDatabase.searchablePreferenceScreenGraphDAO().persist(chinesePojoGraph);
+                preferencesDatabase.searchablePreferenceScreenGraphDAO().persist(chinesePojoGraph);
 
                 // Then no exception was thrown
             });

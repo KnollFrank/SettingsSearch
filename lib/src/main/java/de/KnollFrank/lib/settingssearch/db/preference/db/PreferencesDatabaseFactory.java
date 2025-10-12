@@ -10,35 +10,35 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 
-public class AppDatabaseFactory {
+public class PreferencesDatabaseFactory {
 
-    public static AppDatabase createAppDatabase(final AppDatabaseConfig appDatabaseConfig,
-                                                final FragmentActivity activityContext,
-                                                final Locale locale) {
-        final RoomDatabase.Builder<AppDatabase> appDatabaseBuilder =
+    public static PreferencesDatabase createPreferencesDatabase(final PreferencesDatabaseConfig preferencesDatabaseConfig,
+                                                                final FragmentActivity activityContext,
+                                                                final Locale locale) {
+        final RoomDatabase.Builder<PreferencesDatabase> preferencesDatabaseBuilder =
                 Room
                         .databaseBuilder(
                                 activityContext.getApplicationContext(),
-                                AppDatabase.class,
-                                appDatabaseConfig.databaseFileName())
-                        .setJournalMode(asRoomJournalMode(appDatabaseConfig.journalMode()))
+                                PreferencesDatabase.class,
+                                preferencesDatabaseConfig.databaseFileName())
+                        .setJournalMode(asRoomJournalMode(preferencesDatabaseConfig.journalMode()))
                         // FK-TODO: remove allowMainThreadQueries()
                         .allowMainThreadQueries();
-        appDatabaseConfig
-                .prepackagedAppDatabase()
-                .map(PrepackagedAppDatabase::databaseAssetFile)
-                .ifPresent(databaseAssetFile -> appDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
-        final AppDatabase appDatabase = appDatabaseBuilder.build();
+        preferencesDatabaseConfig
+                .prepackagedPreferencesDatabase()
+                .map(PrepackagedPreferencesDatabase::databaseAssetFile)
+                .ifPresent(databaseAssetFile -> preferencesDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
+        final PreferencesDatabase preferencesDatabase = preferencesDatabaseBuilder.build();
         processAndPersistGraph(
-                appDatabase
+                preferencesDatabase
                         .searchablePreferenceScreenGraphDAO()
                         .findGraphById(locale),
-                appDatabaseConfig
-                        .prepackagedAppDatabase()
-                        .map(PrepackagedAppDatabase::graphProcessor),
-                appDatabase.searchablePreferenceScreenGraphDAO(),
+                preferencesDatabaseConfig
+                        .prepackagedPreferencesDatabase()
+                        .map(PrepackagedPreferencesDatabase::graphProcessor),
+                preferencesDatabase.searchablePreferenceScreenGraphDAO(),
                 activityContext);
-        return appDatabase;
+        return preferencesDatabase;
     }
 
     private static void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
@@ -52,7 +52,7 @@ public class AppDatabaseFactory {
         initialGraphProcessor.processAndPersist(graph);
     }
 
-    private static RoomDatabase.JournalMode asRoomJournalMode(final AppDatabaseConfig.JournalMode journalMode) {
+    private static RoomDatabase.JournalMode asRoomJournalMode(final PreferencesDatabaseConfig.JournalMode journalMode) {
         return switch (journalMode) {
             case AUTOMATIC -> RoomDatabase.JournalMode.AUTOMATIC;
             case TRUNCATE -> RoomDatabase.JournalMode.TRUNCATE;

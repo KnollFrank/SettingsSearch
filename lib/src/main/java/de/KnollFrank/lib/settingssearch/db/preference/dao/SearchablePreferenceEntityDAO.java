@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildren;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndChildrens;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceAndPredecessor;
@@ -25,14 +25,14 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 @Dao
 public abstract class SearchablePreferenceEntityDAO implements SearchablePreferenceEntity.DbDataProvider {
 
-    private final AppDatabase appDatabase;
+    private final PreferencesDatabase preferencesDatabase;
     // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>>> predecessorByPreference = Optional.empty();
     // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>>> childrenByPreference = Optional.empty();
 
-    public SearchablePreferenceEntityDAO(final AppDatabase appDatabase) {
-        this.appDatabase = appDatabase;
+    public SearchablePreferenceEntityDAO(final PreferencesDatabase preferencesDatabase) {
+        this.preferencesDatabase = preferencesDatabase;
     }
 
     public void persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
@@ -57,7 +57,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
 
     @Override
     public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
-        return appDatabase.searchablePreferenceScreenEntityDAO().getHost(preference);
+        return preferencesDatabase.searchablePreferenceScreenEntityDAO().getHost(preference);
     }
 
     public void removeAll() {

@@ -13,14 +13,14 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphEquality;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
+public class SearchablePreferenceScreenGraphDAOTest extends PreferencesDatabaseTest {
 
     @Test
     public void shouldNotFindGraphById_emptyDb() {
@@ -160,7 +160,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     private SearchablePreferenceScreenGraphDAO createGraphDAO() {
         return new SearchablePreferenceScreenGraphDAO(
                 new EntityGraphPojoGraphConverter(),
-                appDatabase.searchablePreferenceScreenGraphEntityDAO());
+                preferencesDatabase.searchablePreferenceScreenGraphEntityDAO());
     }
 
     private static void testFindGraphById(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph,

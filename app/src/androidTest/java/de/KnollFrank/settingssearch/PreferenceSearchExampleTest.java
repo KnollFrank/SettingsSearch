@@ -375,7 +375,7 @@ public class PreferenceSearchExampleTest {
     private static void setupToEnsureCreateFromPrepackagedDatabaseAssetFile() {
         deleteDatabaseFile(
                 getTargetContext(),
-                AppDatabaseConfigFactory.SEARCHABLE_PREFERENCES_DB);
+                PreferencesDatabaseFactory.SEARCHABLE_PREFERENCES_DB);
     }
 
     private static SharedPreferences getSharedPreferences() {

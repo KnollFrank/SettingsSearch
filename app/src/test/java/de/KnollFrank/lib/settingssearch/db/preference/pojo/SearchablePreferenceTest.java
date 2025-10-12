@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceTest extends AppDatabaseTest {
+public class SearchablePreferenceTest extends PreferencesDatabaseTest {
 
     @Test
     public void shouldGetPreferencePath() {

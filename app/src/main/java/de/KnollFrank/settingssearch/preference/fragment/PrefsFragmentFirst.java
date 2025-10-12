@@ -97,7 +97,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
                     new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
-                            getAppDatabase(),
+                            getPreferencesDatabase(),
                             getPojoGraph(locale),
                             requireActivity());
                     return true;
@@ -106,7 +106,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     }
 
     private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {
-        return getAppDatabase()
+        return getPreferencesDatabase()
                 .searchablePreferenceScreenGraphDAO()
                 .findGraphById(locale)
                 .orElseThrow();
@@ -125,7 +125,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 preference,
                                 getSummaryChangingPreference(pojoGraph.graph()),
                                 getSummary((boolean) checked));
-                        getAppDatabase().searchablePreferenceScreenGraphDAO().persist(pojoGraph);
+                        getPreferencesDatabase().searchablePreferenceScreenGraphDAO().persist(pojoGraph);
                         return true;
                     }
 
@@ -146,7 +146,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 });
     }
 
-    private DAOProvider getAppDatabase() {
+    private DAOProvider getPreferencesDatabase() {
         return SettingsSearchApplication
                 .getInstanceFromContext(requireContext())
                 .getDAOProvider(requireActivity());

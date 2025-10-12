@@ -14,24 +14,24 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.AppDatabaseConfig.JournalMode;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
 
 @RunWith(RobolectricTestRunner.class)
-public class AppDatabaseFactoryTest {
+public class PreferencesDatabaseFactoryTest {
 
     @Test
-    public void shouldGetAppDatabase() {
+    public void shouldGetPreferencesDatabase() {
         doWithFragmentActivity(
                 fragmentActivity -> {
                     // Given
 
                     // When
-                    final AppDatabase appDatabase =
-                            AppDatabaseFactory.createAppDatabase(
-                                    new AppDatabaseConfig(
+                    final PreferencesDatabase preferencesDatabase =
+                            PreferencesDatabaseFactory.createPreferencesDatabase(
+                                    new PreferencesDatabaseConfig(
                                             "searchable_preferences.db",
                                             Optional.of(
-                                                    new PrepackagedAppDatabase(
+                                                    new PrepackagedPreferencesDatabase(
                                                             new File("database/searchable_preferences_prepackaged.db"),
                                                             (graph, activityContext) -> graph.asProcessedGraph())),
                                             JournalMode.AUTOMATIC),
@@ -39,7 +39,7 @@ public class AppDatabaseFactoryTest {
                                     Locale.GERMAN);
 
                     // Then
-                    assertThat(appDatabase, is(not(nullValue())));
+                    assertThat(preferencesDatabase, is(not(nullValue())));
                 });
     }
 }
