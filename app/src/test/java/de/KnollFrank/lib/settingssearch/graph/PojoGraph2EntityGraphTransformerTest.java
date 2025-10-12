@@ -69,7 +69,8 @@ public class PojoGraph2EntityGraphTransformerTest {
         final GraphAndDbDataProvider entityGraphAndDbDataProviderActual =
                 PojoGraph2EntityGraphTransformer.toEntityGraph(
                         pojoGraph,
-                        Locale.GERMAN);
+                        Locale.GERMAN,
+                        entityGraphAndDbDataProviderExpected.graph().processed());
 
         // Then
         EntityGraphEquality.assertActualEqualsExpected(

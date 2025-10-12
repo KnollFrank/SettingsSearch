@@ -1,30 +1,62 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
-import android.content.Context;
-
+import androidx.fragment.app.FragmentActivity;
 import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
+import java.util.Locale;
 import java.util.Optional;
+
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 
 public class AppDatabaseFactory {
 
-    private static volatile Optional<AppDatabase> appDatabase = Optional.empty();
-
-    public static synchronized AppDatabase getInstance(final Context context) {
-        if (appDatabase.isEmpty()) {
-            appDatabase = Optional.of(createInstance(context));
-        }
-        return appDatabase.orElseThrow();
+    public static AppDatabase createAppDatabase(final AppDatabaseConfig appDatabaseConfig,
+                                                final FragmentActivity activityContext,
+                                                final Locale locale) {
+        final RoomDatabase.Builder<AppDatabase> appDatabaseBuilder =
+                Room
+                        .databaseBuilder(
+                                activityContext.getApplicationContext(),
+                                AppDatabase.class,
+                                appDatabaseConfig.databaseFileName())
+                        .setJournalMode(asRoomJournalMode(appDatabaseConfig.journalMode()))
+                        // FK-TODO: remove allowMainThreadQueries()
+                        .allowMainThreadQueries();
+        appDatabaseConfig
+                .prepackagedAppDatabase()
+                .map(PrepackagedAppDatabase::databaseAssetFile)
+                .ifPresent(databaseAssetFile -> appDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
+        final AppDatabase appDatabase = appDatabaseBuilder.build();
+        processAndPersistGraph(
+                appDatabase
+                        .searchablePreferenceScreenGraphDAO()
+                        .findGraphById(locale),
+                appDatabaseConfig
+                        .prepackagedAppDatabase()
+                        .map(PrepackagedAppDatabase::graphProcessor),
+                appDatabase.searchablePreferenceScreenGraphDAO(),
+                activityContext);
+        return appDatabase;
     }
 
-    private static AppDatabase createInstance(final Context context) {
-        return Room
-                .databaseBuilder(
-                        context.getApplicationContext(),
-                        AppDatabase.class,
-                        "searchable_preferences")
-                // FK-TODO: remove allowMainThreadQueries()
-                .allowMainThreadQueries()
-                .build();
+    private static void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
+                                               final Optional<GraphProcessor> graphProcessor,
+                                               final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO, final FragmentActivity activityContext) {
+        final InitialGraphProcessor initialGraphProcessor =
+                new InitialGraphProcessor(
+                        graphProcessor,
+                        searchablePreferenceScreenGraphDAO,
+                        activityContext);
+        initialGraphProcessor.processAndPersist(graph);
+    }
+
+    private static RoomDatabase.JournalMode asRoomJournalMode(final AppDatabaseConfig.JournalMode journalMode) {
+        return switch (journalMode) {
+            case AUTOMATIC -> RoomDatabase.JournalMode.AUTOMATIC;
+            case TRUNCATE -> RoomDatabase.JournalMode.TRUNCATE;
+            case WRITE_AHEAD_LOGGING -> RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING;
+        };
     }
 }

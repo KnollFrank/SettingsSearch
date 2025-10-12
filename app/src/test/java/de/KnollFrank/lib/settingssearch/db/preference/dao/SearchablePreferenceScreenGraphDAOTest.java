@@ -55,7 +55,8 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
                                                 "graph-screen1",
                                                 "graph-screen2"))
                                 .pojoGraph(),
-                        Locale.GERMAN);
+                        Locale.GERMAN,
+                        false);
 
         // When
         dao.persist(searchablePreferenceScreenGraph);
@@ -179,6 +180,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends AppDatabaseTest {
     private static SearchablePreferenceScreenGraph asSearchablePreferenceScreenGraph(final Graphs graphs) {
         return new SearchablePreferenceScreenGraph(
                 graphs.pojoGraph(),
-                graphs.entityGraphAndDbDataProvider().graph().id());
+                graphs.entityGraphAndDbDataProvider().graph().id(),
+                graphs.entityGraphAndDbDataProvider().graph().processed());
     }
 }

@@ -24,15 +24,6 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
 
     private Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>> createSearchDatabaseTask = Optional.empty();
-    private Optional<DAOProvider> appDatabase = Optional.empty();
-
-    public void setAppDatabase(final DAOProvider appDatabase) {
-        this.appDatabase = Optional.of(appDatabase);
-    }
-
-    public Optional<DAOProvider> getAppDatabase() {
-        return appDatabase;
-    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -51,7 +42,9 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
                                 createSearchPreferenceFragments(),
                                 this,
-                                this::setAppDatabase));
+                                SettingsSearchApplication
+                                        .getInstanceFromContext(this)
+                                        .getDAOProvider(this)));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 
@@ -88,6 +81,9 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 this,
                 () -> createSearchDatabaseTask,
                 mergedPreferenceScreen -> {
-                });
+                },
+                SettingsSearchApplication
+                        .getInstanceFromContext(this)
+                        .getDAOProvider(this));
     }
 }

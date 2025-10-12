@@ -39,10 +39,10 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.2.1'
     // https://mvnrepository.com/artifact/com.google.guava/guava
-    implementation 'com.google.guava:guava:33.4.8-android'
+    implementation 'com.google.guava:guava:33.5.0-android'
     // FK-TODO: remove threetenbp dependency and use java.time package instead when minSdkVersion > 24
     // https://mvnrepository.com/artifact/org.threeten/threetenbp
-    implementation 'org.threeten:threetenbp:1.7.0'
+    implementation 'org.threeten:threetenbp:1.7.2'
     implementation project(":lib")
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.activity:activity:1.9.3'
@@ -61,7 +61,7 @@ dependencies {
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
     testImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     // https://mvnrepository.com/artifact/com.google.guava/guava-testlib
-    testImplementation("com.google.guava:guava-testlib:33.4.8-android")
+    testImplementation("com.google.guava:guava-testlib:33.5.0-android")
 
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'org.mockito:mockito-android:5.7.0'
@@ -75,7 +75,7 @@ dependencies {
     // https://mvnrepository.com/artifact/com.codepoetics/ambivalence
     implementation 'com.codepoetics:ambivalence:0.2'
 
-    def room_version = "2.7.1"
+    def room_version = "2.8.1"
     androidTestImplementation "androidx.room:room-runtime:$room_version"
     androidTestImplementation "androidx.room:room-runtime-android:$room_version"
     androidTestAnnotationProcessor "androidx.room:room-compiler:$room_version"

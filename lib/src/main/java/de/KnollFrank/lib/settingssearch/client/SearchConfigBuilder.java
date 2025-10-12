@@ -6,6 +6,7 @@ import androidx.annotation.IdRes;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
@@ -27,7 +28,7 @@ public class SearchConfigBuilder {
 
     private final @IdRes int fragmentContainerViewId;
     private Optional<String> queryHint = Optional.empty();
-    private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = preference -> true;
+    private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = SearchablePreference::isVisible;
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> true;
     private PrepareShow prepareShow = fragment -> {
     };

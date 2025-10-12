@@ -12,13 +12,15 @@ public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataPr
                 EntityGraph2PojoGraphTransformer.toPojoGraph(
                         graphAndDbDataProvider.asGraph(),
                         graphAndDbDataProvider.dbDataProvider()),
-                graphAndDbDataProvider.graph().id());
+                graphAndDbDataProvider.graph().id(),
+                graphAndDbDataProvider.graph().processed());
     }
 
     @Override
     public GraphAndDbDataProvider doBackward(final SearchablePreferenceScreenGraph pojoGraph) {
         return PojoGraph2EntityGraphTransformer.toEntityGraph(
                 pojoGraph.graph(),
-                pojoGraph.locale());
+                pojoGraph.locale(),
+                pojoGraph.processed());
     }
 }

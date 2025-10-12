@@ -835,7 +835,8 @@ public class PreferenceSearcherTest extends AppDatabaseTest {
                                                 preferenceFragment.getClass(),
                                                 Optional.empty())
                                         .orElseThrow()),
-                        locale));
+                        locale,
+                        false));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 fragment -> {
                 },

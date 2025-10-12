@@ -19,7 +19,6 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DatabaseResetter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -42,16 +41,19 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final FragmentActivity activity;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
+    private final DAOProvider daoProvider;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchDatabaseConfig searchDatabaseConfig,
                                                            final SearchConfig searchConfig,
-                                                           final FragmentActivity activity) {
+                                                           final FragmentActivity activity,
+                                                           final DAOProvider daoProvider) {
         return new SearchPreferenceFragmentsBuilder(
                 searchDatabaseConfig,
                 searchConfig,
-                Utils.geCurrentLocale(activity.getResources()),
+                Utils.getCurrentLanguageLocale(activity.getResources()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
-                activity);
+                activity,
+                daoProvider);
     }
 
     protected SearchPreferenceFragments(final SearchDatabaseConfig searchDatabaseConfig,
@@ -60,7 +62,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final FragmentActivity activity,
                                         final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
-                                        final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
+                                        final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
+                                        final DAOProvider daoProvider) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
         this.locale = locale;
@@ -68,6 +71,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         this.activity = activity;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
+        this.daoProvider = daoProvider;
     }
 
     public void showSearchPreferenceFragment() {
@@ -111,11 +115,12 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchConfig.preferencePathDisplayer,
                 searchDatabaseConfig.activityInitializerByActivity,
                 searchDatabaseConfig.principalAndProxyProvider,
-                searchConfig.showSettingsFragmentAndHighlightSetting);
+                searchConfig.showSettingsFragmentAndHighlightSetting,
+                daoProvider);
     }
 
     public void rebuildSearchDatabase() {
-        DatabaseResetter.resetDatabase(DAOProviderFactory.getDAOProvider(activity));
+        DatabaseResetter.resetDatabase(daoProvider);
     }
 
     @Override
@@ -123,10 +128,12 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
             final FragmentInitializer fragmentInitializer,
             final PreferenceDialogs preferenceDialogs,
             final Context context,
+            final DAOProvider daoProvider,
             final ProgressUpdateListener progressUpdateListener) {
         return createMergedPreferenceScreenDataRepository(
                 preferenceDialogs,
                 context,
+                daoProvider,
                 progressUpdateListener,
                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                         searchDatabaseConfig.fragmentFactory,
@@ -138,6 +145,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     public MergedPreferenceScreenDataRepository createMergedPreferenceScreenDataRepository(
             final PreferenceDialogs preferenceDialogs,
             final Context context,
+            final DAOProvider daoProvider,
             final ProgressUpdateListener progressUpdateListener,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return MergedPreferenceScreenDataRepositoryFactory.createMergedPreferenceScreenDataRepository(
@@ -146,6 +154,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 searchDatabaseConfig,
                 progressUpdateListener,
                 context,
+                daoProvider,
                 locale);
     }
 

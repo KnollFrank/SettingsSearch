@@ -19,6 +19,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
+    private final DAOProvider daoProvider;
     private final SearchConfig searchConfig;
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
@@ -29,12 +30,14 @@ public class SearchPreferenceFragmentsBuilder {
                                                final SearchConfig searchConfig,
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
-                                               final FragmentActivity activity) {
+                                               final FragmentActivity activity,
+                                               final DAOProvider daoProvider) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.activity = activity;
+        this.daoProvider = daoProvider;
     }
 
     public SearchPreferenceFragmentsBuilder withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier) {
@@ -55,6 +58,7 @@ public class SearchPreferenceFragmentsBuilder {
                 onUiThreadRunner,
                 activity,
                 createSearchDatabaseTaskSupplier,
-                onMergedPreferenceScreenAvailable);
+                onMergedPreferenceScreenAvailable,
+                daoProvider);
     }
 }

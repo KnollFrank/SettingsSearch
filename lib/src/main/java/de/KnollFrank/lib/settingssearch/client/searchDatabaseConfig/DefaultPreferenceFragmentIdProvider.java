@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
-import android.os.Bundle;
-
 import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
@@ -10,13 +8,10 @@ public class DefaultPreferenceFragmentIdProvider implements PreferenceFragmentId
 
     @Override
     public String getId(final PreferenceFragmentCompat preferenceFragment) {
-        return preferenceFragment.getClass().getName() + getArguments(preferenceFragment);
-    }
-
-    private static String getArguments(final PreferenceFragmentCompat preferenceFragment) {
+        final String className = preferenceFragment.getClass().getName();
         return Optional
                 .ofNullable(preferenceFragment.getArguments())
-                .map(Bundle::toString)
-                .orElse("");
+                .map(arguments -> className + " " + arguments)
+                .orElse(className);
     }
 }

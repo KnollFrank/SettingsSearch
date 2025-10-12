@@ -47,7 +47,7 @@ public class SettingsActivity2 extends AppCompatActivity {
                                 this,
                                 onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId),
-                Utils.geCurrentLocale(getResources()));
+                Utils.getCurrentLanguageLocale(getResources()));
     }
 
     public static class SettingsFragment2 extends PreferenceFragmentCompat {

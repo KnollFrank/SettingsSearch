@@ -66,7 +66,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     protected abstract void _removeAll();
 
     @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity WHERE id = :id")
-    protected abstract Optional<SearchablePreferenceScreenGraphEntity> _findGraphById(final Locale id);
+    protected abstract Optional<SearchablePreferenceScreenGraphEntity> _findGraphById(Locale id);
 
     @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity")
     protected abstract List<SearchablePreferenceScreenGraphEntity> _loadAll();
