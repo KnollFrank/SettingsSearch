@@ -43,7 +43,6 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                     edge -> new SearchablePreferenceEdge(edge.preference));
 
     public void adaptSearchDatabaseRootedAtPrefsFragmentFirst(
-            // FK-TODO: make preferencesDatabase an instance variable
             final DAOProvider preferencesDatabase,
             final SearchablePreferenceScreenGraph graph,
             final FragmentActivity activityContext) {
