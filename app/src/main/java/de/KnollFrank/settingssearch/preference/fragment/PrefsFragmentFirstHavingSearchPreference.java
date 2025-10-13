@@ -66,7 +66,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                 },
                 SettingsSearchApplication
                         .getInstanceFromContext(requireContext())
-                        .getDAOProvider(requireActivity()));
+                        .daoProviderManager
+                        .getDAOProvider());
     }
 
     private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {

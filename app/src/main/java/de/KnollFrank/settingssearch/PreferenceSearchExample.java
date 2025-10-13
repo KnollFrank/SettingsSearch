@@ -16,6 +16,7 @@ import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProviderManager;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
@@ -37,14 +38,17 @@ public class PreferenceSearchExample extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        this
+                .getDaoProviderManager()
+                .initDAOProvider(
+                        PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
+                        this);
         createSearchDatabaseTask =
                 Optional.of(
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
                                 createSearchPreferenceFragments(),
                                 this,
-                                SettingsSearchApplication
-                                        .getInstanceFromContext(this)
-                                        .getDAOProvider(this)));
+                                getDaoProviderManager().getDAOProvider()));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 
@@ -82,8 +86,12 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 () -> createSearchDatabaseTask,
                 mergedPreferenceScreen -> {
                 },
-                SettingsSearchApplication
-                        .getInstanceFromContext(this)
-                        .getDAOProvider(this));
+                getDaoProviderManager().getDAOProvider());
+    }
+
+    private DAOProviderManager getDaoProviderManager() {
+        return SettingsSearchApplication
+                .getInstanceFromContext(this)
+                .daoProviderManager;
     }
 }
