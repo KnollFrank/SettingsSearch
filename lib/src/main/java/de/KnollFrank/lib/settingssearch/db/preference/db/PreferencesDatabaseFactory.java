@@ -43,7 +43,8 @@ public class PreferencesDatabaseFactory {
 
     private static void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
                                                final Optional<SearchablePreferenceScreenGraphProcessor> graphProcessor,
-                                               final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO, final FragmentActivity activityContext) {
+                                               final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
+                                               final FragmentActivity activityContext) {
         final InitialGraphProcessor initialGraphProcessor =
                 new InitialGraphProcessor(
                         graphProcessor,
