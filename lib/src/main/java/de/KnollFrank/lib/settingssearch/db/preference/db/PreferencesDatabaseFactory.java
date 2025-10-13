@@ -35,14 +35,14 @@ public class PreferencesDatabaseFactory {
                         .findGraphById(locale),
                 preferencesDatabaseConfig
                         .prepackagedPreferencesDatabase()
-                        .map(PrepackagedPreferencesDatabase::graphProcessor),
+                        .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenGraphProcessor),
                 preferencesDatabase.searchablePreferenceScreenGraphDAO(),
                 activityContext);
         return preferencesDatabase;
     }
 
     private static void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
-                                               final Optional<GraphProcessor> graphProcessor,
+                                               final Optional<SearchablePreferenceScreenGraphProcessor> graphProcessor,
                                                final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO, final FragmentActivity activityContext) {
         final InitialGraphProcessor initialGraphProcessor =
                 new InitialGraphProcessor(

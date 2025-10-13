@@ -9,11 +9,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 class InitialGraphProcessor {
 
-    private final Optional<GraphProcessor> graphProcessor;
+    private final Optional<SearchablePreferenceScreenGraphProcessor> graphProcessor;
     private final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO;
     private final FragmentActivity activityContext;
 
-    public InitialGraphProcessor(final Optional<GraphProcessor> graphProcessor,
+    public InitialGraphProcessor(final Optional<SearchablePreferenceScreenGraphProcessor> graphProcessor,
                                  final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
                                  final FragmentActivity activityContext) {
         this.graphProcessor = graphProcessor;

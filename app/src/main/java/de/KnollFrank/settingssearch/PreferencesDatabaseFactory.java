@@ -5,9 +5,9 @@ import androidx.fragment.app.FragmentActivity;
 import java.io.File;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.GraphProcessor;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PrepackagedPreferencesDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphProcessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFirstAdapter;
 
@@ -28,7 +28,7 @@ class PreferencesDatabaseFactory {
                 Optional.of(
                         new PrepackagedPreferencesDatabase(
                                 new File("database/searchable_preferences_prepackaged.db"),
-                                new GraphProcessor() {
+                                new SearchablePreferenceScreenGraphProcessor() {
 
                                     @Override
                                     public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph, final FragmentActivity activityContext) {

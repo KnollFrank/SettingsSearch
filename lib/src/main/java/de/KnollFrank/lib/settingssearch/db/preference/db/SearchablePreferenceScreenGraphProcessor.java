@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 
 @FunctionalInterface
-public interface GraphProcessor {
+public interface SearchablePreferenceScreenGraphProcessor {
 
     SearchablePreferenceScreenGraph processGraph(SearchablePreferenceScreenGraph graph, FragmentActivity activityContext);
 }
