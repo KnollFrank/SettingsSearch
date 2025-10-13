@@ -30,7 +30,7 @@ public class SettingsSearchApplication extends Application {
         return daoProvider.orElseThrow();
     }
 
-    private DAOProvider createDAOProvider(final FragmentActivity activity) {
+    private static DAOProvider createDAOProvider(final FragmentActivity activity) {
         return DAOProviderFactory.createDAOProvider(
                 PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                 activity);
