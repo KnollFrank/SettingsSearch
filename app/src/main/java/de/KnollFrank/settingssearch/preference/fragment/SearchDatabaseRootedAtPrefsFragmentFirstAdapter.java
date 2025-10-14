@@ -96,7 +96,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         graphToSearchIn.graph().vertexSet(),
-                        Strings.addLocaleToId(graphToSearchIn.locale(), PrefsFragmentFirst.class.getName()))
+                        Strings.prefixIdWithLanguage(PrefsFragmentFirst.class.getName(), graphToSearchIn.locale()))
                 .orElseThrow();
     }
 

@@ -54,7 +54,7 @@ public class Strings {
         return charSequence.map(CharSequence::toString);
     }
 
-    public static String addLocaleToId(final Locale locale, final String id) {
+    public static String prefixIdWithLanguage(final String id, final Locale locale) {
         return locale.getLanguage() + "-" + id;
     }
 }

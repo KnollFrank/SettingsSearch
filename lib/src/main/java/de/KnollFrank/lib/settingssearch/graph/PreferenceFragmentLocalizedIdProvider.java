@@ -19,6 +19,6 @@ public class PreferenceFragmentLocalizedIdProvider implements PreferenceFragment
 
     @Override
     public String getId(final PreferenceFragmentCompat preferenceFragment) {
-        return Strings.addLocaleToId(locale, delegate.getId(preferenceFragment));
+        return Strings.prefixIdWithLanguage(delegate.getId(preferenceFragment), locale);
     }
 }

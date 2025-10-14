@@ -46,7 +46,7 @@ public class Preference2SearchablePreferenceConverter {
                                                          final PreferenceFragmentCompat hostOfPreference,
                                                          final Optional<SearchablePreference> predecessorOfPreference,
                                                          final Locale locale) {
-        final String id = Strings.addLocaleToId(locale, idGenerator.nextId());
+        final String id = Strings.prefixIdWithLanguage(idGenerator.nextId(), locale);
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 convertChildrenOfPreference(
                         preference,
