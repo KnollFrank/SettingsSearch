@@ -8,43 +8,33 @@ import androidx.room.TypeConverter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 public class PersistableBundleConverter implements Converter<PersistableBundle, String> {
+
+    private static final Charset CHARSET = StandardCharsets.UTF_8;
 
     @Override
     @TypeConverter
     @SuppressLint("NewApi")
     public String doForward(final PersistableBundle bundle) {
-        return Optional
-                .ofNullable(bundle)
-                .map(
-                        _bundle -> {
-                            try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                                _bundle.writeToStream(outputStream);
-                                return outputStream.toString(StandardCharsets.UTF_8);
-                            } catch (final IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        })
-                .orElse(null);
+        try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            bundle.writeToStream(outputStream);
+            return outputStream.toString(CHARSET);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     @TypeConverter
     @SuppressLint("NewApi")
     public PersistableBundle doBackward(final String xmlString) {
-        return Optional
-                .ofNullable(xmlString)
-                .map(
-                        _xmlString -> {
-                            try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(_xmlString.getBytes(StandardCharsets.UTF_8))) {
-                                return PersistableBundle.readFromStream(inputStream);
-                            } catch (final IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        })
-                .orElse(null);
+        try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(xmlString.getBytes(CHARSET))) {
+            return PersistableBundle.readFromStream(inputStream);
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
