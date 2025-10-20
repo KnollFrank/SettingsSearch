@@ -39,7 +39,7 @@ public class SearchablePreferenceScreenGraphProvider {
 
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> _getSearchablePreferenceScreenGraph(final PreferenceScreenWithHost root) {
         final var preferenceScreenGraph = preferenceScreenGraphProvider.getPreferenceScreenGraph(root);
-        preferenceScreenGraphAvailableListener.onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(preferenceScreenGraph);
+        preferenceScreenGraphAvailableListener.onPreferenceScreenGraphAvailable(preferenceScreenGraph);
         return transformGraph2POJOGraph(preferenceScreenGraph);
     }
 

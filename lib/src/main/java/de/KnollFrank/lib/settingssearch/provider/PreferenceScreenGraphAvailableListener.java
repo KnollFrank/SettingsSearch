@@ -8,5 +8,5 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 @FunctionalInterface
 public interface PreferenceScreenGraphAvailableListener {
 
-	void onPreferenceScreenGraphWithoutInvisibleAndNonSearchablePreferencesAvailable(Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph);
+	void onPreferenceScreenGraphAvailable(Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph);
 }
