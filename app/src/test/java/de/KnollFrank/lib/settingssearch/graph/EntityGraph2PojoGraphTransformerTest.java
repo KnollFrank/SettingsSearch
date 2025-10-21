@@ -7,6 +7,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.jgrapht.Graph;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.Locale;
 
@@ -16,6 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
 
+@RunWith(RobolectricTestRunner.class)
 public class EntityGraph2PojoGraphTransformerTest {
 
     @Test

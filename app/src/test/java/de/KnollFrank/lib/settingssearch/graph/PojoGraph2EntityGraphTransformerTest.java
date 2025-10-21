@@ -17,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
 public class PojoGraph2EntityGraphTransformerTest {
@@ -70,6 +71,7 @@ public class PojoGraph2EntityGraphTransformerTest {
                 PojoGraph2EntityGraphTransformer.toEntityGraph(
                         pojoGraph,
                         Locale.GERMAN,
+                        PersistableBundleTestFactory.createSomePersistableBundle(),
                         entityGraphAndDbDataProviderExpected.graph().processed());
 
         // Then

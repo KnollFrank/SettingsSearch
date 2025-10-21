@@ -58,6 +58,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -836,6 +837,7 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                                                 Optional.empty())
                                         .orElseThrow()),
                         locale,
+                        PersistableBundleTestFactory.createSomePersistableBundle(),
                         false));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 fragment -> {

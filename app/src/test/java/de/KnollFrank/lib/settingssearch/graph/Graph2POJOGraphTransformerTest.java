@@ -43,6 +43,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -193,6 +194,7 @@ public class Graph2POJOGraphTransformerTest extends PreferencesDatabaseTest {
                                 entityGraph,
                                 locale)),
                 locale,
+                PersistableBundleTestFactory.createSomePersistableBundle(),
                 false);
     }
 

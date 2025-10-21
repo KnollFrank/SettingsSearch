@@ -17,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConv
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 
@@ -34,7 +35,8 @@ import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
                 OptionalEitherIntegerOrStringConverter.class,
                 OptionalStringConverter.class,
                 OptionalIntegerConverter.class,
-                LocaleConverter.class
+                LocaleConverter.class,
+                PersistableBundleConverter.class
         })
 public abstract class PreferencesDatabase extends RoomDatabase implements DAOProvider {
 

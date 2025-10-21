@@ -16,12 +16,15 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvide
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleMatchers;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 
 class EntityGraphEquality {
 
     public static void assertActualEqualsExpected(final GraphAndDbDataProvider actual,
                                                   final GraphAndDbDataProvider expected) {
+        assertActualEqualsExpected(actual.graph(), expected.graph());
         final var actualGraph = actual.asGraph();
         final var expectedGraph = expected.asGraph();
         assertActualEqualsExpected(
@@ -38,6 +41,12 @@ class EntityGraphEquality {
                 Pair.create(
                         expectedGraph,
                         expected.dbDataProvider()));
+    }
+
+    private static void assertActualEqualsExpected(final SearchablePreferenceScreenGraphEntity actual, final SearchablePreferenceScreenGraphEntity expected) {
+        assertThat(actual.id(), is(expected.id()));
+        assertThat(actual.params(), BundleMatchers.isEqualTo(expected.params()));
+        assertThat(actual.processed(), is(expected.processed()));
     }
 
     private static void assertActualEqualsExpected(final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> actual,

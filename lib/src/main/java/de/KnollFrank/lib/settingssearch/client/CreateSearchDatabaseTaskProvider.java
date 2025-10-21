@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import android.os.PersistableBundle;
 import android.view.View;
 
 import androidx.annotation.IdRes;
@@ -51,6 +52,9 @@ public class CreateSearchDatabaseTaskProvider {
                         activity,
                         daoProvider,
                         progressUpdateListener)
-                .fillSearchDatabaseWithPreferences(Utils.getCurrentLanguageLocale(activity.getResources()));
+                .fillSearchDatabaseWithPreferences(
+                        Utils.getCurrentLanguageLocale(activity.getResources()),
+                        // FK-TODO: replace
+                        new PersistableBundle());
     }
 }

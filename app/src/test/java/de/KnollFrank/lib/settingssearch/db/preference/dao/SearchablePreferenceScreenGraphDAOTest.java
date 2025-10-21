@@ -16,6 +16,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphEquality;
 
@@ -56,6 +57,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesDatabaseT
                                                 "graph-screen2"))
                                 .pojoGraph(),
                         Locale.GERMAN,
+                        PersistableBundleTestFactory.createSomePersistableBundle(),
                         false);
 
         // When
@@ -181,6 +183,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesDatabaseT
         return new SearchablePreferenceScreenGraph(
                 graphs.pojoGraph(),
                 graphs.entityGraphAndDbDataProvider().graph().id(),
+                graphs.entityGraphAndDbDataProvider().graph().params(),
                 graphs.entityGraphAndDbDataProvider().graph().processed());
     }
 }

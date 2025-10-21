@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import android.os.PersistableBundle;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -9,6 +11,7 @@ import java.util.Set;
 
 @Entity
 public record SearchablePreferenceScreenGraphEntity(@PrimaryKey @NonNull Locale id,
+                                                    PersistableBundle params,
                                                     boolean processed) {
 
     public interface DbDataProvider {

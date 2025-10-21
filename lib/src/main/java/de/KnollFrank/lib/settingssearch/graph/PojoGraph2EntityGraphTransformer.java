@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import android.os.PersistableBundle;
+
 import com.google.common.collect.ImmutableSet;
 
 import org.jgrapht.Graph;
@@ -31,13 +33,14 @@ public class PojoGraph2EntityGraphTransformer {
     public static GraphAndDbDataProvider toEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
             final Locale graphId,
+            final PersistableBundle params,
             final boolean processed) {
         final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
                 GraphTransformerAlgorithm.transform(
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer(graphId));
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(graphId, processed);
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(graphId, params, processed);
         return new GraphAndDbDataProvider(
                 graphEntity,
                 DbDataProviderFactory.createDbDataProvider(

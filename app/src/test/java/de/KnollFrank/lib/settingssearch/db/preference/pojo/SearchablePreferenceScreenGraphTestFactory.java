@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 
@@ -71,7 +72,11 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale, false);
+        final SearchablePreferenceScreenGraphEntity graphEntity =
+                new SearchablePreferenceScreenGraphEntity(
+                        locale,
+                        PersistableBundleTestFactory.createSomePersistableBundle(),
+                        false);
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
@@ -144,7 +149,11 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(locale, false);
+        final SearchablePreferenceScreenGraphEntity graphEntity =
+                new SearchablePreferenceScreenGraphEntity(
+                        locale,
+                        PersistableBundleTestFactory.createSomePersistableBundle(),
+                        false);
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,

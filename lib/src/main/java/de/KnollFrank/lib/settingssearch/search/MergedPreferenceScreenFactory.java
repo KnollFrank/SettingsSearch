@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.search;
 import static de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigatorFactory.createPreferencePathNavigator;
 
 import android.app.Activity;
+import android.os.PersistableBundle;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
@@ -116,7 +117,7 @@ public class MergedPreferenceScreenFactory {
                         daoProvider,
                         progressUpdateListener,
                         instantiateAndInitializeFragment)
-                .fillSearchDatabaseWithPreferences(locale);
+                .fillSearchDatabaseWithPreferences(locale, /* FK-TODO: replace */ new PersistableBundle());
         return createMergedPreferenceScreen(
                 prepareShow,
                 showPreferencePathPredicate,

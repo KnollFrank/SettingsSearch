@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search;
 
 import android.content.Context;
+import android.os.PersistableBundle;
 
 import org.jgrapht.Graph;
 
@@ -54,7 +55,7 @@ public class MergedPreferenceScreenDataRepository {
         this.locale = locale;
     }
 
-    public void fillSearchDatabaseWithPreferences(final Locale locale) {
+    public void fillSearchDatabaseWithPreferences(final Locale locale, final PersistableBundle params) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final SearchablePreferenceScreenGraphDAO graphDAO = daoProvider.searchablePreferenceScreenGraphDAO();
             if (graphDAO.findGraphById(locale).isEmpty()) {
@@ -65,6 +66,7 @@ public class MergedPreferenceScreenDataRepository {
                         new SearchablePreferenceScreenGraph(
                                 searchablePreferenceScreenGraph,
                                 locale,
+                                params,
                                 false));
             }
         }

@@ -39,6 +39,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -238,6 +239,11 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
     public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                                         final PreferencesDatabase preferencesDatabase,
                                                         final Locale locale) {
-        preferencesDatabase.searchablePreferenceScreenGraphDAO().persist(new SearchablePreferenceScreenGraph(graph, locale, false));
+        preferencesDatabase.searchablePreferenceScreenGraphDAO().persist(
+                new SearchablePreferenceScreenGraph(
+                        graph,
+                        locale,
+                        PersistableBundleTestFactory.createSomePersistableBundle(),
+                        false));
     }
 }
