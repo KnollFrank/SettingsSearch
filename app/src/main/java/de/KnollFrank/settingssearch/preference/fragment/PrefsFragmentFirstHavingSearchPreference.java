@@ -11,7 +11,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
-import de.KnollFrank.settingssearch.ConfigurationProvider;
+import de.KnollFrank.settingssearch.ConfigurationFactory;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsFactory;
 import de.KnollFrank.settingssearch.SettingsSearchApplication;
@@ -69,7 +69,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                         .getInstanceFromContext(requireContext())
                         .daoProviderManager
                         .getDAOProvider(),
-                ConfigurationProvider.createConfiguration(requireContext()));
+                ConfigurationFactory.createConfiguration(requireContext()));
     }
 
     private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {

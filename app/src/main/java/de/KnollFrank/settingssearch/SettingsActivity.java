@@ -72,7 +72,7 @@ public class SettingsActivity extends AppCompatActivity {
                         .getInstanceFromContext(activity)
                         .daoProviderManager
                         .getDAOProvider(),
-                ConfigurationProvider.createConfiguration(activity));
+                ConfigurationFactory.createConfiguration(activity));
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {

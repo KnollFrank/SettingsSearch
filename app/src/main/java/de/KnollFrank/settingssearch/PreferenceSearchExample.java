@@ -1,7 +1,6 @@
 package de.KnollFrank.settingssearch;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -45,14 +44,14 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                         this);
         final DAOProvider daoProvider = getDaoProviderManager().getDAOProvider();
-        final PersistableBundle configuration = ConfigurationProvider.createConfiguration(this);
+        final Configuration configuration = ConfigurationFactory.createConfiguration(this);
         createSearchDatabaseTask =
                 Optional.of(
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
                                 createSearchPreferenceFragments(daoProvider, configuration),
                                 this,
                                 daoProvider,
-                                configuration));
+                                new ConfigurationBundleConverter().doForward(configuration)));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 
@@ -83,12 +82,12 @@ public class PreferenceSearchExample extends AppCompatActivity {
         final SearchPreferenceFragments searchPreferenceFragments =
                 createSearchPreferenceFragments(
                         getDaoProviderManager().getDAOProvider(),
-                        ConfigurationProvider.createConfiguration(this));
+                        ConfigurationFactory.createConfiguration(this));
         searchPreferenceFragments.showSearchPreferenceFragment();
     }
 
     private SearchPreferenceFragments createSearchPreferenceFragments(final DAOProvider daoProvider,
-                                                                      final PersistableBundle configuration) {
+                                                                      final Configuration configuration) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 FRAGMENT_CONTAINER_VIEW_ID,
                 this,
