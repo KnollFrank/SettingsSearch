@@ -74,7 +74,7 @@ public class DatabaseResetterTest {
                         new SearchablePreferenceScreenGraph(
                                 singleNodeGraph.pojoGraph(),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().id(),
-                                singleNodeGraph.entityGraphAndDbDataProvider().graph().params(),
+                                singleNodeGraph.entityGraphAndDbDataProvider().graph().configuration(),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().processed()));
     }
 

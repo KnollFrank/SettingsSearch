@@ -183,7 +183,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesDatabaseT
         return new SearchablePreferenceScreenGraph(
                 graphs.pojoGraph(),
                 graphs.entityGraphAndDbDataProvider().graph().id(),
-                graphs.entityGraphAndDbDataProvider().graph().params(),
+                graphs.entityGraphAndDbDataProvider().graph().configuration(),
                 graphs.entityGraphAndDbDataProvider().graph().processed());
     }
 }

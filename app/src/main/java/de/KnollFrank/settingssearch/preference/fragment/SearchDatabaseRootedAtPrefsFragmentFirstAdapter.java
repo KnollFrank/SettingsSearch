@@ -73,7 +73,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
         return new SearchablePreferenceScreenGraph(
                 newPojoGraph,
                 graph.locale(),
-                graph.params(),
+                graph.configuration(),
                 graph.processed());
     }
 

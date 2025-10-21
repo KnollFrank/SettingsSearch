@@ -13,7 +13,7 @@ public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataPr
                         graphAndDbDataProvider.asGraph(),
                         graphAndDbDataProvider.dbDataProvider()),
                 graphAndDbDataProvider.graph().id(),
-                graphAndDbDataProvider.graph().params(),
+                graphAndDbDataProvider.graph().configuration(),
                 graphAndDbDataProvider.graph().processed());
     }
 
@@ -22,7 +22,7 @@ public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataPr
         return PojoGraph2EntityGraphTransformer.toEntityGraph(
                 pojoGraph.graph(),
                 pojoGraph.locale(),
-                pojoGraph.params(),
+                pojoGraph.configuration(),
                 pojoGraph.processed());
     }
 }

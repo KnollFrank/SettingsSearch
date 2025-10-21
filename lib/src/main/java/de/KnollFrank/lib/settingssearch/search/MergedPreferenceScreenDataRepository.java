@@ -55,7 +55,7 @@ public class MergedPreferenceScreenDataRepository {
         this.locale = locale;
     }
 
-    public void fillSearchDatabaseWithPreferences(final Locale locale, final PersistableBundle params) {
+    public void fillSearchDatabaseWithPreferences(final Locale locale, final PersistableBundle configuration) {
         synchronized (LockingSupport.searchDatabaseLock) {
             final SearchablePreferenceScreenGraphDAO graphDAO = daoProvider.searchablePreferenceScreenGraphDAO();
             if (graphDAO.findGraphById(locale).isEmpty()) {
@@ -66,7 +66,7 @@ public class MergedPreferenceScreenDataRepository {
                         new SearchablePreferenceScreenGraph(
                                 searchablePreferenceScreenGraph,
                                 locale,
-                                params,
+                                configuration,
                                 false));
             }
         }

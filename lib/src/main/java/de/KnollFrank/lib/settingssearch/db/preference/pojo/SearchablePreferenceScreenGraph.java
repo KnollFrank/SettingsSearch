@@ -18,10 +18,10 @@ FK-TODO:
 public record SearchablePreferenceScreenGraph(
         Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
         Locale locale,
-        PersistableBundle params,
+        PersistableBundle configuration,
         boolean processed) {
 
     public SearchablePreferenceScreenGraph asProcessedGraph() {
-        return new SearchablePreferenceScreenGraph(graph, locale, params, true);
+        return new SearchablePreferenceScreenGraph(graph, locale, configuration, true);
     }
 }
