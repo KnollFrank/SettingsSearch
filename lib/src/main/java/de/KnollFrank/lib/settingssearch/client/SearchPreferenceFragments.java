@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.client;
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import android.content.Context;
+import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -42,18 +43,21 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
     private final DAOProvider daoProvider;
+    private final PersistableBundle configuration;
 
     public static SearchPreferenceFragmentsBuilder builder(final SearchDatabaseConfig searchDatabaseConfig,
                                                            final SearchConfig searchConfig,
                                                            final FragmentActivity activity,
-                                                           final DAOProvider daoProvider) {
+                                                           final DAOProvider daoProvider,
+                                                           final PersistableBundle configuration) {
         return new SearchPreferenceFragmentsBuilder(
                 searchDatabaseConfig,
                 searchConfig,
                 Utils.getCurrentLanguageLocale(activity.getResources()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
                 activity,
-                daoProvider);
+                daoProvider,
+                configuration);
     }
 
     protected SearchPreferenceFragments(final SearchDatabaseConfig searchDatabaseConfig,
@@ -63,7 +67,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                                         final FragmentActivity activity,
                                         final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
                                         final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
-                                        final DAOProvider daoProvider) {
+                                        final DAOProvider daoProvider,
+                                        final PersistableBundle configuration) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
         this.locale = locale;
@@ -72,6 +77,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
         this.daoProvider = daoProvider;
+        this.configuration = configuration;
     }
 
     public void showSearchPreferenceFragment() {
@@ -84,7 +90,8 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                         createSearchDatabaseTaskSupplier,
                         searchConfig.searchPreferenceFragmentUI,
                         onMergedPreferenceScreenAvailable,
-                        locale),
+                        locale,
+                        configuration),
                 searchPreferenceFragment -> {
                 },
                 true,

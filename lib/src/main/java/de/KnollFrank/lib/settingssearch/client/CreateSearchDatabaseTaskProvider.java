@@ -22,7 +22,8 @@ public class CreateSearchDatabaseTaskProvider {
     public static AsyncTaskWithProgressUpdateListeners<Void, DAOProvider> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
-            final DAOProvider daoProvider) {
+            final DAOProvider daoProvider,
+            final PersistableBundle configuration) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
@@ -33,7 +34,8 @@ public class CreateSearchDatabaseTaskProvider {
                             mergedPreferenceScreenDataRepositoryProvider,
                             activity,
                             progressUpdateListener,
-                            daoProvider);
+                            daoProvider,
+                            configuration);
                     return daoProvider;
                 },
                 _daoProvider -> {
@@ -44,7 +46,8 @@ public class CreateSearchDatabaseTaskProvider {
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener,
-            final DAOProvider daoProvider) {
+            final DAOProvider daoProvider,
+            final PersistableBundle configuration) {
         mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(
                         FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID),
@@ -54,7 +57,6 @@ public class CreateSearchDatabaseTaskProvider {
                         progressUpdateListener)
                 .fillSearchDatabaseWithPreferences(
                         Utils.getCurrentLanguageLocale(activity.getResources()),
-                        // FK-TODO: replace
-                        new PersistableBundle());
+                        configuration);
     }
 }

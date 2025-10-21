@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch;
 
+import android.os.PersistableBundle;
+
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
@@ -19,13 +21,15 @@ public class SearchPreferenceFragmentsFactory {
             final FragmentActivity activity,
             final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
             final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
-            final DAOProvider daoProvider) {
+            final DAOProvider daoProvider,
+            final PersistableBundle configuration) {
         return SearchPreferenceFragments
                 .builder(
                         SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                         SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
                         activity,
-                        daoProvider)
+                        daoProvider,
+                        configuration)
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withOnMergedPreferenceScreenAvailable(onMergedPreferenceScreenAvailable)
                 .build();

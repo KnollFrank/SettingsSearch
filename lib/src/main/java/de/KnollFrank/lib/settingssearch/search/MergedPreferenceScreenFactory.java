@@ -95,7 +95,8 @@ public class MergedPreferenceScreenFactory {
     public MergedPreferenceScreen getMergedPreferenceScreen(
             final FragmentManager childFragmentManager,
             final ProgressUpdateListener progressUpdateListener,
-            final @IdRes int containerViewId) {
+            final @IdRes int containerViewId,
+            final PersistableBundle configuration) {
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
                 new FragmentFactoryAndInitializer(
                         fragmentFactory,
@@ -117,7 +118,7 @@ public class MergedPreferenceScreenFactory {
                         daoProvider,
                         progressUpdateListener,
                         instantiateAndInitializeFragment)
-                .fillSearchDatabaseWithPreferences(locale, /* FK-TODO: replace */ new PersistableBundle());
+                .fillSearchDatabaseWithPreferences(locale, configuration);
         return createMergedPreferenceScreen(
                 prepareShow,
                 showPreferencePathPredicate,

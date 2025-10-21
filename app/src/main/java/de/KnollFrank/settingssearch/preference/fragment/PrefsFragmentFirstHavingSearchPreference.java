@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
+import de.KnollFrank.settingssearch.ConfigurationProvider;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsFactory;
 import de.KnollFrank.settingssearch.SettingsSearchApplication;
@@ -29,7 +30,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
     }
 
     @Override
-    public void onDisplayPreferenceDialog(final Preference preference) {
+    public void onDisplayPreferenceDialog(@NonNull final Preference preference) {
         if (preference instanceof CustomDialogPreference) {
             CustomDialogFragment.showInstance(getParentFragmentManager());
         } else {
@@ -67,7 +68,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                 SettingsSearchApplication
                         .getInstanceFromContext(requireContext())
                         .daoProviderManager
-                        .getDAOProvider());
+                        .getDAOProvider(),
+                ConfigurationProvider.createConfiguration(requireContext()));
     }
 
     private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {

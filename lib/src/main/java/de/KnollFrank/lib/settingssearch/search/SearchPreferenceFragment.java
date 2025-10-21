@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.search;
 import static de.KnollFrank.lib.settingssearch.fragment.Fragments.showFragment;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class SearchPreferenceFragment extends Fragment {
     private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
     private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
     private final Locale locale;
+    private final PersistableBundle configuration;
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider, MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask;
 
@@ -57,7 +59,8 @@ public class SearchPreferenceFragment extends Fragment {
                                     final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
                                     final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
                                     final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
-                                    final Locale locale) {
+                                    final Locale locale,
+                                    final PersistableBundle configuration) {
         this.queryHint = queryHint;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
@@ -66,6 +69,7 @@ public class SearchPreferenceFragment extends Fragment {
         this.searchPreferenceFragmentUI = searchPreferenceFragmentUI;
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
         this.locale = locale;
+        this.configuration = configuration;
     }
 
     @Nullable
@@ -89,7 +93,7 @@ public class SearchPreferenceFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final ProgressDisplayer progressDisplayer = createProgressDisplayer();
-        getMergedPreferenceScreenAndShowSearchResultsTask = createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer);
+        getMergedPreferenceScreenAndShowSearchResultsTask = createGetMergedPreferenceScreenAndShowSearchResultsTask(progressDisplayer, configuration);
         Tasks.asynchronouslyWaitForTask1ThenExecuteTask2(
                 createSearchDatabaseTaskSupplier.get(),
                 progressDisplayer,
@@ -110,10 +114,11 @@ public class SearchPreferenceFragment extends Fragment {
     }
 
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider, MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask(
-            final ProgressUpdateListener progressUpdateListener) {
+            final ProgressUpdateListener progressUpdateListener,
+            final PersistableBundle configuration) {
         final AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider, MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask =
                 new AsyncTaskWithProgressUpdateListenersAndProgressContainer<>(
-                        (searchablePreferenceDAO, _progressUpdateListener) -> getMergedPreferenceScreen(_progressUpdateListener),
+                        (searchablePreferenceDAO, _progressUpdateListener) -> getMergedPreferenceScreen(_progressUpdateListener, configuration),
                         mergedPreferenceScreen -> {
                             showSearchResultsFragment(
                                     mergedPreferenceScreen.searchResultsDisplayer().getSearchResultsFragment(),
@@ -126,11 +131,13 @@ public class SearchPreferenceFragment extends Fragment {
         return getMergedPreferenceScreenAndShowSearchResultsTask;
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(final ProgressUpdateListener progressUpdateListener) {
+    private MergedPreferenceScreen getMergedPreferenceScreen(final ProgressUpdateListener progressUpdateListener,
+                                                             final PersistableBundle configuration) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
                 progressUpdateListener,
-                DUMMY_FRAGMENT_CONTAINER_VIEW);
+                DUMMY_FRAGMENT_CONTAINER_VIEW,
+                configuration);
     }
 
     private void showSearchResultsFragment(final SearchResultsFragment searchResultsFragment,

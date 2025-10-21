@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.client;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.Locale;
@@ -21,6 +23,7 @@ public class SearchPreferenceFragmentsBuilder {
     private final FragmentActivity activity;
     private final DAOProvider daoProvider;
     private final SearchConfig searchConfig;
+    private final PersistableBundle configuration;
     private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
@@ -31,13 +34,15 @@ public class SearchPreferenceFragmentsBuilder {
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
                                                final FragmentActivity activity,
-                                               final DAOProvider daoProvider) {
+                                               final DAOProvider daoProvider,
+                                               final PersistableBundle configuration) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.activity = activity;
         this.daoProvider = daoProvider;
+        this.configuration = configuration;
     }
 
     public SearchPreferenceFragmentsBuilder withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier) {
@@ -59,6 +64,7 @@ public class SearchPreferenceFragmentsBuilder {
                 activity,
                 createSearchDatabaseTaskSupplier,
                 onMergedPreferenceScreenAvailable,
-                daoProvider);
+                daoProvider,
+                configuration);
     }
 }

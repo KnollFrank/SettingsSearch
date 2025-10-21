@@ -1,6 +1,7 @@
 package de.KnollFrank.settingssearch;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -43,12 +44,15 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 .initDAOProvider(
                         PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                         this);
+        final DAOProvider daoProvider = getDaoProviderManager().getDAOProvider();
+        final PersistableBundle configuration = ConfigurationProvider.createConfiguration(this);
         createSearchDatabaseTask =
                 Optional.of(
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
-                                createSearchPreferenceFragments(),
+                                createSearchPreferenceFragments(daoProvider, configuration),
                                 this,
-                                getDaoProviderManager().getDAOProvider()));
+                                daoProvider,
+                                configuration));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 
@@ -76,17 +80,23 @@ public class PreferenceSearchExample extends AppCompatActivity {
     }
 
     private void showSearchPreferenceFragment() {
-        createSearchPreferenceFragments().showSearchPreferenceFragment();
+        final SearchPreferenceFragments searchPreferenceFragments =
+                createSearchPreferenceFragments(
+                        getDaoProviderManager().getDAOProvider(),
+                        ConfigurationProvider.createConfiguration(this));
+        searchPreferenceFragments.showSearchPreferenceFragment();
     }
 
-    private SearchPreferenceFragments createSearchPreferenceFragments() {
+    private SearchPreferenceFragments createSearchPreferenceFragments(final DAOProvider daoProvider,
+                                                                      final PersistableBundle configuration) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 FRAGMENT_CONTAINER_VIEW_ID,
                 this,
                 () -> createSearchDatabaseTask,
                 mergedPreferenceScreen -> {
                 },
-                getDaoProviderManager().getDAOProvider());
+                daoProvider,
+                configuration);
     }
 
     private DAOProviderManager getDaoProviderManager() {
