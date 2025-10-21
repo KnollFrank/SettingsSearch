@@ -42,8 +42,6 @@ import org.hamcrest.core.IsInstanceOf;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
-
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
@@ -373,7 +371,7 @@ public class PreferenceSearchExampleTest {
     }
 
     private static void setupToEnsureCreateFromPrepackagedDatabaseAssetFile() {
-        deleteDatabaseFile(
+        DatabaseFileDeleter.deleteDatabaseFile(
                 getTargetContext(),
                 PreferencesDatabaseFactory.SEARCHABLE_PREFERENCES_DB);
     }
@@ -398,27 +396,6 @@ public class PreferenceSearchExampleTest {
             } else {
                 onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
             }
-        }
-    }
-
-    private static void deleteDatabaseFile(final Context context, String dbName) {
-        final File dbFile = context.getDatabasePath(dbName);
-        deleteIfExists(dbFile);
-        deleteIfExists(getShmFile(dbName, dbFile));
-        deleteIfExists(getWalFile(dbName, dbFile));
-    }
-
-    private static File getShmFile(final String dbName, final File dbFile) {
-        return new File(dbFile.getParent(), dbName + "-shm");
-    }
-
-    private static File getWalFile(final String dbName, final File dbFile) {
-        return new File(dbFile.getParent(), dbName + "-wal");
-    }
-
-    private static void deleteIfExists(final File dbFile) {
-        if (dbFile.exists()) {
-            dbFile.delete();
         }
     }
 }
