@@ -4,7 +4,7 @@ import android.os.PersistableBundle;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter;
 
-class ConfigurationBundleConverter implements Converter<Configuration, PersistableBundle> {
+public class ConfigurationBundleConverter implements Converter<Configuration, PersistableBundle> {
 
     private static final String ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE = "addPreferenceToPreferenceFragmentWithSinglePreference";
     private static final String SUMMARY_CHANGING_PREFERENCE = "summaryChangingPreference";

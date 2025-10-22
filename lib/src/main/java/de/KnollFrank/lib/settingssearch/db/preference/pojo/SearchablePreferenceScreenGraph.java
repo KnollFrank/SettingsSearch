@@ -24,4 +24,8 @@ public record SearchablePreferenceScreenGraph(
     public SearchablePreferenceScreenGraph asProcessedGraph() {
         return new SearchablePreferenceScreenGraph(graph, locale, configuration, true);
     }
+
+    public SearchablePreferenceScreenGraph asGraphHavingConfiguration(final PersistableBundle configuration) {
+        return new SearchablePreferenceScreenGraph(graph, locale, configuration, processed);
+    }
 }
