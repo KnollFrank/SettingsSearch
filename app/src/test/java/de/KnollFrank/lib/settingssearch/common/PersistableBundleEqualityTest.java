@@ -58,19 +58,8 @@ public class PersistableBundleEqualityTest {
     @Test
     public void shouldReturnTrueForEqualBundlesWithSimpleTypes() {
         // Given
-        final PersistableBundle one = new PersistableBundle();
-        one.putString("string", "hello");
-        one.putInt("int", 123);
-        one.putLong("long", 456L);
-        one.putDouble("double", 78.9);
-        one.putBoolean("boolean", true);
-
-        final PersistableBundle two = new PersistableBundle();
-        two.putString("string", "hello");
-        two.putInt("int", 123);
-        two.putLong("long", 456L);
-        two.putDouble("double", 78.9);
-        two.putBoolean("boolean", true);
+        final PersistableBundle one = createPersistableBundleWithSimpleTypes();
+        final PersistableBundle two = createPersistableBundleWithSimpleTypes();
 
         // Then
         assertThat(PersistableBundleEquality.areBundlesEqual(one, two), is(true));
@@ -92,19 +81,8 @@ public class PersistableBundleEqualityTest {
     @Test
     public void shouldReturnTrueForEqualBundlesWithArrays() {
         // Given
-        final PersistableBundle one = new PersistableBundle();
-        one.putStringArray("strings", new String[]{"a", "b"});
-        one.putIntArray("ints", new int[]{1, 2});
-        one.putLongArray("longs", new long[]{3L, 4L});
-        one.putDoubleArray("doubles", new double[]{5.5, 6.6});
-        one.putBooleanArray("booleans", new boolean[]{true, false});
-
-        final PersistableBundle two = new PersistableBundle();
-        two.putStringArray("strings", new String[]{"a", "b"});
-        two.putIntArray("ints", new int[]{1, 2});
-        two.putLongArray("longs", new long[]{3L, 4L});
-        two.putDoubleArray("doubles", new double[]{5.5, 6.6});
-        two.putBooleanArray("booleans", new boolean[]{true, false});
+        final PersistableBundle one = createPersistableBundleWithArrays();
+        final PersistableBundle two = createPersistableBundleWithArrays();
 
         // Then
         assertThat(PersistableBundleEquality.areBundlesEqual(one, two), is(true));
@@ -126,15 +104,8 @@ public class PersistableBundleEqualityTest {
     @Test
     public void shouldReturnTrueForEqualNestedBundles() {
         // Given
-        final PersistableBundle one = new PersistableBundle();
-        final PersistableBundle nestedOne = new PersistableBundle();
-        nestedOne.putString("nestedKey", "nestedValue");
-        one.putPersistableBundle("nestedBundle", nestedOne);
-
-        final PersistableBundle two = new PersistableBundle();
-        final PersistableBundle nestedTwo = new PersistableBundle();
-        nestedTwo.putString("nestedKey", "nestedValue");
-        two.putPersistableBundle("nestedBundle", nestedTwo);
+        final PersistableBundle one = createPersistableBundleWithNestedBundle();
+        final PersistableBundle two = createPersistableBundleWithNestedBundle();
 
         // Then
         assertThat(PersistableBundleEquality.areBundlesEqual(one, two), is(true));
@@ -143,17 +114,46 @@ public class PersistableBundleEqualityTest {
     @Test
     public void shouldReturnFalseForDifferentNestedBundles() {
         // Given
-        final PersistableBundle one = new PersistableBundle();
         final PersistableBundle nestedOne = new PersistableBundle();
         nestedOne.putString("nestedKey", "nestedValue1");
+        final PersistableBundle one = new PersistableBundle();
         one.putPersistableBundle("nestedBundle", nestedOne);
 
-        final PersistableBundle two = new PersistableBundle();
         final PersistableBundle nestedTwo = new PersistableBundle();
         nestedTwo.putString("nestedKey", "nestedValue2"); // different value
+        final PersistableBundle two = new PersistableBundle();
         two.putPersistableBundle("nestedBundle", nestedTwo);
 
         // Then
         assertThat(PersistableBundleEquality.areBundlesEqual(one, two), is(false));
+    }
+
+    private static PersistableBundle createPersistableBundleWithSimpleTypes() {
+        final PersistableBundle bundle = new PersistableBundle();
+        bundle.putString("string", "hello");
+        bundle.putInt("int", 123);
+        bundle.putLong("long", 456L);
+        bundle.putDouble("double", 78.9);
+        bundle.putBoolean("boolean", true);
+        return bundle;
+    }
+
+    private static PersistableBundle createPersistableBundleWithArrays() {
+        final PersistableBundle bundle = new PersistableBundle();
+        bundle.putStringArray("strings", new String[]{"a", "b"});
+        bundle.putIntArray("ints", new int[]{1, 2});
+        bundle.putLongArray("longs", new long[]{3L, 4L});
+        bundle.putDoubleArray("doubles", new double[]{5.5, 6.6});
+        bundle.putBooleanArray("booleans", new boolean[]{true, false});
+        return bundle;
+    }
+
+    private static PersistableBundle createPersistableBundleWithNestedBundle() {
+        final PersistableBundle nestedBundle = new PersistableBundle();
+        nestedBundle.putString("nestedKey", "nestedValue");
+
+        final PersistableBundle bundle = new PersistableBundle();
+        bundle.putPersistableBundle("nestedBundle", nestedBundle);
+        return bundle;
     }
 }
