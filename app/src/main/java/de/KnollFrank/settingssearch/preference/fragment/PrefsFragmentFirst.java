@@ -102,9 +102,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
                             getPreferencesDatabase(),
                             getPojoGraph(locale),
-                            ConfigurationProvider
-                                    .getConfiguration(requireContext())
-                                    .asConfigurationHavingAddPreferenceToPreferenceFragmentWithSinglePreference(checkBoxPreference.isChecked()),
+                            new Configuration(
+                                    checkBoxPreference.isChecked(),
+                                    ConfigurationProvider
+                                            .getConfiguration(requireContext())
+                                            .summaryChangingPreference()),
                             requireActivity());
                     return true;
                 });
@@ -140,9 +142,11 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 .persist(
                                         getGraphHavingConfiguration(
                                                 pojoGraph,
-                                                ConfigurationProvider
-                                                        .getConfiguration(requireContext())
-                                                        .asConfigurationHavingSummaryChangingPreference(checked)));
+                                                new Configuration(
+                                                        ConfigurationProvider
+                                                                .getConfiguration(requireContext())
+                                                                .addPreferenceToPreferenceFragmentWithSinglePreference(),
+                                                        checked)));
                         return true;
                     }
 
