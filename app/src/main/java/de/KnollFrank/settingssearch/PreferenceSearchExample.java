@@ -38,7 +38,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        final Configuration configuration = ConfigurationProvider.getConfiguration(this);
+        final Configuration configuration = ConfigurationProvider.getActualConfiguration(this);
         this
                 .getDaoProviderManager()
                 .initDAOProvider(
@@ -83,7 +83,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         final SearchPreferenceFragments searchPreferenceFragments =
                 createSearchPreferenceFragments(
                         getDaoProviderManager().getDAOProvider(),
-                        ConfigurationProvider.getConfiguration(this));
+                        ConfigurationProvider.getActualConfiguration(this));
         searchPreferenceFragments.showSearchPreferenceFragment();
     }
 

@@ -69,7 +69,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                         .getInstanceFromContext(requireContext())
                         .daoProviderManager
                         .getDAOProvider(),
-                ConfigurationProvider.getConfiguration(requireContext()));
+                ConfigurationProvider.getActualConfiguration(requireContext()));
     }
 
     private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {

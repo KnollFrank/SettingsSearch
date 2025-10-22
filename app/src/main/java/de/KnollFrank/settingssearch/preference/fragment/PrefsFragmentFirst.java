@@ -105,7 +105,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                             new Configuration(
                                     checkBoxPreference.isChecked(),
                                     ConfigurationProvider
-                                            .getConfiguration(requireContext())
+                                            .getActualConfiguration(requireContext())
                                             .summaryChangingPreference()),
                             requireActivity());
                     return true;
@@ -144,7 +144,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                                 pojoGraph,
                                                 new Configuration(
                                                         ConfigurationProvider
-                                                                .getConfiguration(requireContext())
+                                                                .getActualConfiguration(requireContext())
                                                                 .addPreferenceToPreferenceFragmentWithSinglePreference(),
                                                         checked)));
                         return true;
