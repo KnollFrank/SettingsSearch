@@ -71,8 +71,7 @@ public class PojoGraph2EntityGraphTransformerTest {
                 PojoGraph2EntityGraphTransformer.toEntityGraph(
                         pojoGraph,
                         Locale.GERMAN,
-                        PersistableBundleTestFactory.createSomePersistableBundle(),
-                        entityGraphAndDbDataProviderExpected.graph().processed());
+                        PersistableBundleTestFactory.createSomePersistableBundle());
 
         // Then
         EntityGraphEquality.assertActualEqualsExpected(

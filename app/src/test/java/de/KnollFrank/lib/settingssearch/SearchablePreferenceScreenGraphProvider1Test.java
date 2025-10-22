@@ -243,7 +243,6 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
                 new SearchablePreferenceScreenGraph(
                         graph,
                         locale,
-                        PersistableBundleTestFactory.createSomePersistableBundle(),
-                        false));
+                        PersistableBundleTestFactory.createSomePersistableBundle()));
     }
 }

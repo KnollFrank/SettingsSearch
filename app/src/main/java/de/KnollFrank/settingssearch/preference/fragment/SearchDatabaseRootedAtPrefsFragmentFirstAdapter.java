@@ -77,8 +77,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
         return new SearchablePreferenceScreenGraph(
                 newPojoGraph,
                 graph.locale(),
-                new ConfigurationBundleConverter().doForward(newConfiguration),
-                graph.processed());
+                new ConfigurationBundleConverter().doForward(newConfiguration));
     }
 
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(

@@ -11,8 +11,7 @@ import java.util.Set;
 
 @Entity
 public record SearchablePreferenceScreenGraphEntity(@PrimaryKey @NonNull Locale id,
-                                                    PersistableBundle configuration,
-                                                    boolean processed) {
+                                                    PersistableBundle configuration) {
 
     public interface DbDataProvider {
 

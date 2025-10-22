@@ -38,7 +38,6 @@ class InitialGraphProcessor {
         return graphProcessor
                 .map(_graphProcessor -> _graphProcessor.processGraph(graph, activityContext))
                 .orElse(graph)
-                .asProcessedGraph()
                 .asGraphHavingConfiguration(configuration);
     }
 }

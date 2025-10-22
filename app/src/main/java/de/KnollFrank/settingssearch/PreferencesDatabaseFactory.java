@@ -36,8 +36,7 @@ class PreferencesDatabaseFactory {
                                                 .getAdaptedGraph(
                                                         graph,
                                                         ConfigurationProvider.getConfiguration(activityContext),
-                                                        activityContext)
-                                                .asProcessedGraph();
+                                                        activityContext);
                                     }
                                 })),
                 PreferencesDatabaseConfig.JournalMode.AUTOMATIC);

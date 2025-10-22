@@ -33,14 +33,13 @@ public class PojoGraph2EntityGraphTransformer {
     public static GraphAndDbDataProvider toEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
             final Locale graphId,
-            final PersistableBundle configuration,
-            final boolean processed) {
+            final PersistableBundle configuration) {
         final Graph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> transformedGraph =
                 GraphTransformerAlgorithm.transform(
                         pojoGraph,
                         SearchablePreferenceEntityEdge.class,
                         createGraphTransformer(graphId));
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(graphId, configuration, processed);
+        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(graphId, configuration);
         return new GraphAndDbDataProvider(
                 graphEntity,
                 DbDataProviderFactory.createDbDataProvider(

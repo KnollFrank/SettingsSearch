@@ -57,8 +57,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesDatabaseT
                                                 "graph-screen2"))
                                 .pojoGraph(),
                         Locale.GERMAN,
-                        PersistableBundleTestFactory.createSomePersistableBundle(),
-                        false);
+                        PersistableBundleTestFactory.createSomePersistableBundle());
 
         // When
         dao.persist(searchablePreferenceScreenGraph);
@@ -183,7 +182,6 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesDatabaseT
         return new SearchablePreferenceScreenGraph(
                 graphs.pojoGraph(),
                 graphs.entityGraphAndDbDataProvider().graph().id(),
-                graphs.entityGraphAndDbDataProvider().graph().configuration(),
-                graphs.entityGraphAndDbDataProvider().graph().processed());
+                graphs.entityGraphAndDbDataProvider().graph().configuration());
     }
 }

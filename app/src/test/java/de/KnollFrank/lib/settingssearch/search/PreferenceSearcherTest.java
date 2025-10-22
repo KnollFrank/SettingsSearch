@@ -837,8 +837,7 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                                                 Optional.empty())
                                         .orElseThrow()),
                         locale,
-                        PersistableBundleTestFactory.createSomePersistableBundle(),
-                        false));
+                        PersistableBundleTestFactory.createSomePersistableBundle()));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
                 fragment -> {
                 },

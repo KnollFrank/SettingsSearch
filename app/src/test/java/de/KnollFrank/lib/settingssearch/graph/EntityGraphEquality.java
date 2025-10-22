@@ -46,7 +46,6 @@ class EntityGraphEquality {
     private static void assertActualEqualsExpected(final SearchablePreferenceScreenGraphEntity actual, final SearchablePreferenceScreenGraphEntity expected) {
         assertThat(actual.id(), is(expected.id()));
         assertThat(actual.configuration(), BundleMatchers.isEqualTo(expected.configuration()));
-        assertThat(actual.processed(), is(expected.processed()));
     }
 
     private static void assertActualEqualsExpected(final Pair<Set<SearchablePreferenceScreenEntity>, DbDataProvider> actual,

@@ -194,8 +194,7 @@ public class Graph2POJOGraphTransformerTest extends PreferencesDatabaseTest {
                                 entityGraph,
                                 locale)),
                 locale,
-                PersistableBundleTestFactory.createSomePersistableBundle(),
-                false);
+                PersistableBundleTestFactory.createSomePersistableBundle());
     }
 
     private static BiConsumer<PreferenceScreen, Context> getAddPreferences2Screen() {

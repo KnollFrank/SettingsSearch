@@ -75,8 +75,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
         final SearchablePreferenceScreenGraphEntity graphEntity =
                 new SearchablePreferenceScreenGraphEntity(
                         locale,
-                        PersistableBundleTestFactory.createSomePersistableBundle(),
-                        false);
+                        PersistableBundleTestFactory.createSomePersistableBundle());
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,
@@ -152,8 +151,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
         final SearchablePreferenceScreenGraphEntity graphEntity =
                 new SearchablePreferenceScreenGraphEntity(
                         locale,
-                        PersistableBundleTestFactory.createSomePersistableBundle(),
-                        false);
+                        PersistableBundleTestFactory.createSomePersistableBundle());
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
                 createSrc(
                         screenId,

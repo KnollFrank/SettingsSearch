@@ -48,7 +48,7 @@ public class DatabaseResetterTest {
                         Optional.of(
                                 new PrepackagedPreferencesDatabase(
                                         new File("database/searchable_preferences_prepackaged.db"),
-                                        (graph, activityContext) -> graph.asProcessedGraph())),
+                                        (graph, activityContext) -> graph)),
                         JournalMode.AUTOMATIC),
                 activity,
                 locale,
@@ -76,8 +76,7 @@ public class DatabaseResetterTest {
                         new SearchablePreferenceScreenGraph(
                                 singleNodeGraph.pojoGraph(),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().id(),
-                                singleNodeGraph.entityGraphAndDbDataProvider().graph().configuration(),
-                                singleNodeGraph.entityGraphAndDbDataProvider().graph().processed()));
+                                singleNodeGraph.entityGraphAndDbDataProvider().graph().configuration()));
     }
 
     private static void assertIsReset(final PreferencesDatabase preferencesDatabase) {

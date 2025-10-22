@@ -66,8 +66,7 @@ public class MergedPreferenceScreenDataRepository {
                         new SearchablePreferenceScreenGraph(
                                 searchablePreferenceScreenGraph,
                                 locale,
-                                configuration,
-                                false));
+                                configuration));
             }
         }
     }
