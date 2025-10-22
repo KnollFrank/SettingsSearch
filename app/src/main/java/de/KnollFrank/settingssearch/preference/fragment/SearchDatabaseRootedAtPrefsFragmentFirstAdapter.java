@@ -31,6 +31,8 @@ import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNaviga
 import de.KnollFrank.lib.settingssearch.fragment.navigation.PreferencePathNavigatorFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
+import de.KnollFrank.settingssearch.Configuration;
+import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 
 public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
@@ -45,13 +47,15 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
     public void adaptSearchDatabaseRootedAtPrefsFragmentFirst(
             final DAOProvider preferencesDatabase,
             final SearchablePreferenceScreenGraph graph,
+            final Configuration newConfiguration,
             final FragmentActivity activityContext) {
         preferencesDatabase
                 .searchablePreferenceScreenGraphDAO()
-                .persist(getAdaptedGraph(graph, activityContext));
+                .persist(getAdaptedGraph(graph, newConfiguration, activityContext));
     }
 
     public SearchablePreferenceScreenGraph getAdaptedGraph(final SearchablePreferenceScreenGraph graph,
+                                                           final Configuration newConfiguration,
                                                            final FragmentActivity activityContext) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activityContext.findViewById(android.R.id.content),
@@ -73,7 +77,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
         return new SearchablePreferenceScreenGraph(
                 newPojoGraph,
                 graph.locale(),
-                graph.configuration(),
+                new ConfigurationBundleConverter().doForward(newConfiguration),
                 graph.processed());
     }
 

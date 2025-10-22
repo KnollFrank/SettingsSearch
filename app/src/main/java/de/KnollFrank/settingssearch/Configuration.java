@@ -8,4 +8,10 @@ public record Configuration(boolean addPreferenceToPreferenceFragmentWithSingleP
                 addPreferenceToPreferenceFragmentWithSinglePreference,
                 summaryChangingPreference);
     }
+
+    public Configuration asConfigurationHavingAddPreferenceToPreferenceFragmentWithSinglePreference(final boolean addPreferenceToPreferenceFragmentWithSinglePreference) {
+        return new Configuration(
+                addPreferenceToPreferenceFragmentWithSinglePreference,
+                summaryChangingPreference);
+    }
 }
