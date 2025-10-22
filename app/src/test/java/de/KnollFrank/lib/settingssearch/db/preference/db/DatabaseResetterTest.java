@@ -48,7 +48,7 @@ public class DatabaseResetterTest {
                         Optional.of(
                                 new PrepackagedPreferencesDatabase(
                                         new File("database/searchable_preferences_prepackaged.db"),
-                                        (graph, activityContext) -> graph)),
+                                        (graph, actualConfiguration, activityContext) -> graph)),
                         JournalMode.AUTOMATIC),
                 activity,
                 locale,

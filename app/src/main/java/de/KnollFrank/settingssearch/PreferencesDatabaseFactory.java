@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 
 import java.io.File;
@@ -31,11 +33,13 @@ class PreferencesDatabaseFactory {
                                 new SearchablePreferenceScreenGraphProcessor() {
 
                                     @Override
-                                    public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph, final FragmentActivity activityContext) {
+                                    public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph,
+                                                                                        final PersistableBundle actualConfiguration,
+                                                                                        final FragmentActivity activityContext) {
                                         return new SearchDatabaseRootedAtPrefsFragmentFirstAdapter()
                                                 .getAdaptedGraph(
                                                         graph,
-                                                        ConfigurationProvider.getConfiguration(activityContext),
+                                                        new ConfigurationBundleConverter().doBackward(actualConfiguration),
                                                         activityContext);
                                     }
                                 })),

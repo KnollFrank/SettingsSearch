@@ -34,7 +34,7 @@ public class PreferencesDatabaseFactoryTest {
                                             Optional.of(
                                                     new PrepackagedPreferencesDatabase(
                                                             new File("database/searchable_preferences_prepackaged.db"),
-                                                            (graph, activityContext) -> graph)),
+                                                            (graph, actualConfiguration, activityContext) -> graph)),
                                             JournalMode.AUTOMATIC),
                                     fragmentActivity,
                                     Locale.GERMAN,

@@ -36,7 +36,7 @@ class InitialGraphProcessor {
     private SearchablePreferenceScreenGraph process(final SearchablePreferenceScreenGraph graph,
                                                     final PersistableBundle configuration) {
         return graphProcessor
-                .map(_graphProcessor -> _graphProcessor.processGraph(graph, activityContext))
+                .map(_graphProcessor -> _graphProcessor.processGraph(graph, configuration, activityContext))
                 .orElse(graph)
                 .asGraphHavingConfiguration(configuration);
     }
