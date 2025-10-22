@@ -36,6 +36,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
+import de.KnollFrank.settingssearch.Configuration;
+import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
+import de.KnollFrank.settingssearch.ConfigurationProvider;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SettingsActivity;
 import de.KnollFrank.settingssearch.SettingsActivity3;
@@ -119,14 +122,36 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 new Preference.OnPreferenceChangeListener() {
 
                     @Override
-                    public boolean onPreferenceChange(@NonNull final Preference preference, final Object checked) {
-                        final var pojoGraph = getPojoGraph(locale);
+                    public boolean onPreferenceChange(final @NonNull Preference preference, final Object checked) {
+                        return onPreferenceChange(preference, (boolean) checked);
+                    }
+
+                    private boolean onPreferenceChange(final @NonNull Preference preference, final boolean checked) {
+                        final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale);
                         setSummaryOfPreferences(
                                 preference,
                                 getSummaryChangingPreference(pojoGraph.graph()),
-                                getSummary((boolean) checked));
-                        getPreferencesDatabase().searchablePreferenceScreenGraphDAO().persist(pojoGraph);
+                                getSummary(checked));
+                        getPreferencesDatabase()
+                                .searchablePreferenceScreenGraphDAO()
+                                .persist(
+                                        getGraphHavingConfiguration(
+                                                pojoGraph,
+                                                new Configuration(
+                                                        getActualAddPreferenceToPreferenceFragmentWithSinglePreference(),
+                                                        checked)));
                         return true;
+                    }
+
+                    private SearchablePreferenceScreenGraph getGraphHavingConfiguration(final SearchablePreferenceScreenGraph graph,
+                                                                                        final Configuration configuration) {
+                        return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().doForward(configuration));
+                    }
+
+                    private boolean getActualAddPreferenceToPreferenceFragmentWithSinglePreference() {
+                        return ConfigurationProvider
+                                .getConfiguration(requireContext())
+                                .addPreferenceToPreferenceFragmentWithSinglePreference();
                     }
 
                     private SearchablePreference getSummaryChangingPreference(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
