@@ -44,7 +44,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                         this);
         final DAOProvider daoProvider = getDaoProviderManager().getDAOProvider();
-        final Configuration configuration = ConfigurationFactory.createConfiguration(this);
+        final Configuration configuration = ConfigurationProvider.getConfiguration(this);
         createSearchDatabaseTask =
                 Optional.of(
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
@@ -82,7 +82,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         final SearchPreferenceFragments searchPreferenceFragments =
                 createSearchPreferenceFragments(
                         getDaoProviderManager().getDAOProvider(),
-                        ConfigurationFactory.createConfiguration(this));
+                        ConfigurationProvider.getConfiguration(this));
         searchPreferenceFragments.showSearchPreferenceFragment();
     }
 

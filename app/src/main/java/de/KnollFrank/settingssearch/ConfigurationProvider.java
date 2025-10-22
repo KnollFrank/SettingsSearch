@@ -7,13 +7,13 @@ import androidx.preference.PreferenceManager;
 
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
-public class ConfigurationFactory {
+public class ConfigurationProvider {
 
-    public static Configuration createConfiguration(final Context context) {
-        return createConfiguration(PreferenceManager.getDefaultSharedPreferences(context));
+    public static Configuration getConfiguration(final Context context) {
+        return getConfiguration(PreferenceManager.getDefaultSharedPreferences(context));
     }
 
-    private static Configuration createConfiguration(final SharedPreferences preferences) {
+    private static Configuration getConfiguration(final SharedPreferences preferences) {
         return new Configuration(
                 preferences.getBoolean(PrefsFragmentFirst.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, false),
                 preferences.getBoolean(PrefsFragmentFirst.SUMMARY_CHANGING_PREFERENCE_KEY, false));
