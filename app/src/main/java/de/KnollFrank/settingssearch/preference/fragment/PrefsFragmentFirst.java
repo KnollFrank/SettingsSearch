@@ -137,21 +137,15 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 .persist(
                                         getGraphHavingConfiguration(
                                                 pojoGraph,
-                                                new Configuration(
-                                                        getActualAddPreferenceToPreferenceFragmentWithSinglePreference(),
-                                                        checked)));
+                                                ConfigurationProvider
+                                                        .getConfiguration(requireContext())
+                                                        .asConfigurationHavingSummaryChangingPreference(checked)));
                         return true;
                     }
 
                     private SearchablePreferenceScreenGraph getGraphHavingConfiguration(final SearchablePreferenceScreenGraph graph,
                                                                                         final Configuration configuration) {
                         return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().doForward(configuration));
-                    }
-
-                    private boolean getActualAddPreferenceToPreferenceFragmentWithSinglePreference() {
-                        return ConfigurationProvider
-                                .getConfiguration(requireContext())
-                                .addPreferenceToPreferenceFragmentWithSinglePreference();
                     }
 
                     private SearchablePreference getSummaryChangingPreference(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
