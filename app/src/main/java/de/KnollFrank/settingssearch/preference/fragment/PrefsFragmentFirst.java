@@ -102,6 +102,9 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
                             getPreferencesDatabase(),
                             getPojoGraph(locale),
+                            ConfigurationProvider
+                                    .getConfiguration(requireContext())
+                                    .asConfigurationHavingAddPreferenceToPreferenceFragmentWithSinglePreference(checkBoxPreference.isChecked()),
                             requireActivity());
                     return true;
                 });

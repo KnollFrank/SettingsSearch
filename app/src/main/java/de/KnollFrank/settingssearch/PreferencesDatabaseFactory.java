@@ -33,7 +33,10 @@ class PreferencesDatabaseFactory {
                                     @Override
                                     public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph, final FragmentActivity activityContext) {
                                         return new SearchDatabaseRootedAtPrefsFragmentFirstAdapter()
-                                                .getAdaptedGraph(graph, activityContext)
+                                                .getAdaptedGraph(
+                                                        graph,
+                                                        ConfigurationProvider.getConfiguration(activityContext),
+                                                        activityContext)
                                                 .asProcessedGraph();
                                     }
                                 })),
