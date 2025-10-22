@@ -2,14 +2,18 @@ package de.KnollFrank.lib.settingssearch.common;
 
 import android.os.PersistableBundle;
 
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
 
-// FK-TODO: adapt to null values which are by definition allowed in PersistableBundle
 public class PersistableBundleEquality {
 
-    public static boolean areBundlesEqual(final PersistableBundle one, final PersistableBundle two) {
+    public static boolean areBundlesEqual(@Nullable final PersistableBundle one, @Nullable final PersistableBundle two) {
         if (one == two) {
             return true;
+        }
+        if (one == null || two == null) {
+            return false;
         }
         if (one.size() != two.size()) {
             return false;
@@ -25,9 +29,12 @@ public class PersistableBundleEquality {
         return true;
     }
 
-    private static boolean areObjectsEqual(final Object a, final Object b) {
+    private static boolean areObjectsEqual(@Nullable final Object a, @Nullable final Object b) {
         if (a == b) {
             return true;
+        }
+        if (a == null || b == null) {
+            return false;
         }
         if (a.getClass().isArray() && b.getClass().isArray()) {
             if (a instanceof final int[] intsA && b instanceof final int[] intsB) {
