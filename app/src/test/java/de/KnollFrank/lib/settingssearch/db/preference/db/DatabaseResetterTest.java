@@ -19,6 +19,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
 public class DatabaseResetterTest {
@@ -50,7 +51,8 @@ public class DatabaseResetterTest {
                                         (graph, activityContext) -> graph.asProcessedGraph())),
                         JournalMode.AUTOMATIC),
                 activity,
-                locale);
+                locale,
+                PersistableBundleTestFactory.createSomePersistableBundle());
     }
 
     private static void initialize(final PreferencesDatabase preferencesDatabase, final Locale locale) {

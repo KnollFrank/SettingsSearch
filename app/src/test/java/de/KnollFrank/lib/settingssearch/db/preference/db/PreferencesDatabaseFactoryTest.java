@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
 public class PreferencesDatabaseFactoryTest {
@@ -36,7 +37,8 @@ public class PreferencesDatabaseFactoryTest {
                                                             (graph, activityContext) -> graph.asProcessedGraph())),
                                             JournalMode.AUTOMATIC),
                                     fragmentActivity,
-                                    Locale.GERMAN);
+                                    Locale.GERMAN,
+                                    PersistableBundleTestFactory.createSomePersistableBundle());
 
                     // Then
                     assertThat(preferencesDatabase, is(not(nullValue())));

@@ -1,15 +1,20 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 
 import de.KnollFrank.lib.settingssearch.common.Utils;
 
 public class DAOProviderFactory {
 
-    public static DAOProvider createDAOProvider(final PreferencesDatabaseConfig preferencesDatabaseConfig, final FragmentActivity activityContext) {
+    public static DAOProvider createDAOProvider(final PreferencesDatabaseConfig preferencesDatabaseConfig,
+                                                final PersistableBundle configuration,
+                                                final FragmentActivity activityContext) {
         return PreferencesDatabaseFactory.createPreferencesDatabase(
                 preferencesDatabaseConfig,
                 activityContext,
-                Utils.getCurrentLanguageLocale(activityContext.getResources()));
+                Utils.getCurrentLanguageLocale(activityContext.getResources()),
+                configuration);
     }
 }

@@ -1,10 +1,11 @@
-package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
+package de.KnollFrank.lib.settingssearch.common;
 
 import android.os.PersistableBundle;
 
 import java.util.Arrays;
 
-class BundleUtils {
+// FK-TODO: adapt to null values which are by definition allowed in PersistableBundle
+public class PersistableBundleEquality {
 
     public static boolean areBundlesEqual(final PersistableBundle one, final PersistableBundle two) {
         if (one == two) {

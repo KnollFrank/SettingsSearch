@@ -38,13 +38,14 @@ public class PreferenceSearchExample extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        final Configuration configuration = ConfigurationProvider.getConfiguration(this);
         this
                 .getDaoProviderManager()
                 .initDAOProvider(
                         PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
+                        new ConfigurationBundleConverter().doForward(configuration),
                         this);
         final DAOProvider daoProvider = getDaoProviderManager().getDAOProvider();
-        final Configuration configuration = ConfigurationProvider.getConfiguration(this);
         createSearchDatabaseTask =
                 Optional.of(
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.FragmentActivity;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -14,7 +16,8 @@ public class PreferencesDatabaseFactory {
 
     public static PreferencesDatabase createPreferencesDatabase(final PreferencesDatabaseConfig preferencesDatabaseConfig,
                                                                 final FragmentActivity activityContext,
-                                                                final Locale locale) {
+                                                                final Locale locale,
+                                                                final PersistableBundle configuration) {
         final RoomDatabase.Builder<PreferencesDatabase> preferencesDatabaseBuilder =
                 Room
                         .databaseBuilder(
@@ -37,6 +40,7 @@ public class PreferencesDatabaseFactory {
                         .prepackagedPreferencesDatabase()
                         .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenGraphProcessor),
                 preferencesDatabase.searchablePreferenceScreenGraphDAO(),
+                configuration,
                 activityContext);
         return preferencesDatabase;
     }
@@ -44,13 +48,14 @@ public class PreferencesDatabaseFactory {
     private static void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
                                                final Optional<SearchablePreferenceScreenGraphProcessor> graphProcessor,
                                                final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
+                                               final PersistableBundle configuration,
                                                final FragmentActivity activityContext) {
         final InitialGraphProcessor initialGraphProcessor =
                 new InitialGraphProcessor(
                         graphProcessor,
                         searchablePreferenceScreenGraphDAO,
                         activityContext);
-        initialGraphProcessor.processAndPersist(graph);
+        initialGraphProcessor.processAndPersist(graph, configuration);
     }
 
     private static RoomDatabase.JournalMode asRoomJournalMode(final PreferencesDatabaseConfig.JournalMode journalMode) {

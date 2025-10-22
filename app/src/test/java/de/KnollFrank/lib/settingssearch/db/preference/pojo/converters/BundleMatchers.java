@@ -6,6 +6,8 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+import de.KnollFrank.lib.settingssearch.common.PersistableBundleEquality;
+
 public class BundleMatchers {
 
     public static Matcher<PersistableBundle> isEqualTo(final PersistableBundle expectedBundle) {
@@ -13,7 +15,7 @@ public class BundleMatchers {
 
             @Override
             protected boolean matchesSafely(final PersistableBundle actualBundle) {
-                return BundleUtils.areBundlesEqual(actualBundle, expectedBundle);
+                return PersistableBundleEquality.areBundlesEqual(actualBundle, expectedBundle);
             }
 
             @Override
