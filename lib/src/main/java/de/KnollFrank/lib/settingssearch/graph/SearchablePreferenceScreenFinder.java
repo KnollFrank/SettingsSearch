@@ -8,6 +8,7 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFr
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
 
+// FK-TODO: remove?
 public class SearchablePreferenceScreenFinder {
 
     private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;

@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
-import android.os.PersistableBundle;
-
 import androidx.fragment.app.FragmentActivity;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -11,13 +9,15 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 public class PreferencesDatabaseFactory {
 
-    public static PreferencesDatabase createPreferencesDatabase(final PreferencesDatabaseConfig preferencesDatabaseConfig,
-                                                                final FragmentActivity activityContext,
-                                                                final Locale locale,
-                                                                final PersistableBundle configuration) {
+    public static <C> PreferencesDatabase createPreferencesDatabase(final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
+                                                                    final FragmentActivity activityContext,
+                                                                    final Locale locale,
+                                                                    final C configuration,
+                                                                    final ConfigurationBundleConverter<C> configurationBundleConverter) {
         final RoomDatabase.Builder<PreferencesDatabase> preferencesDatabaseBuilder =
                 Room
                         .databaseBuilder(
@@ -41,20 +41,23 @@ public class PreferencesDatabaseFactory {
                         .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenGraphProcessor),
                 preferencesDatabase.searchablePreferenceScreenGraphDAO(),
                 configuration,
+                configurationBundleConverter,
                 activityContext);
         return preferencesDatabase;
     }
 
-    private static void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
-                                               final Optional<SearchablePreferenceScreenGraphProcessor> graphProcessor,
-                                               final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
-                                               final PersistableBundle configuration,
-                                               final FragmentActivity activityContext) {
-        final InitialGraphProcessor initialGraphProcessor =
-                new InitialGraphProcessor(
+    private static <C> void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
+                                                   final Optional<SearchablePreferenceScreenGraphProcessor<C>> graphProcessor,
+                                                   final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
+                                                   final C configuration,
+                                                   final ConfigurationBundleConverter<C> configurationBundleConverter,
+                                                   final FragmentActivity activityContext) {
+        final InitialGraphProcessor<C> initialGraphProcessor =
+                new InitialGraphProcessor<>(
                         graphProcessor,
                         searchablePreferenceScreenGraphDAO,
-                        activityContext);
+                        activityContext,
+                        configurationBundleConverter);
         initialGraphProcessor.processAndPersist(graph, configuration);
     }
 

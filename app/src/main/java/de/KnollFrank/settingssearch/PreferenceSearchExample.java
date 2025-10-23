@@ -43,7 +43,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 .getDaoProviderManager()
                 .initDAOProvider(
                         PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
-                        new ConfigurationBundleConverter().doForward(configuration),
+                        configuration,
+                        new ConfigurationBundleConverter(),
                         this);
         final DAOProvider daoProvider = getDaoProviderManager().getDAOProvider();
         createSearchDatabaseTask =
@@ -99,7 +100,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 configuration);
     }
 
-    private DAOProviderManager getDaoProviderManager() {
+    private DAOProviderManager<Configuration> getDaoProviderManager() {
         return SettingsSearchApplication
                 .getInstanceFromContext(this)
                 .daoProviderManager;

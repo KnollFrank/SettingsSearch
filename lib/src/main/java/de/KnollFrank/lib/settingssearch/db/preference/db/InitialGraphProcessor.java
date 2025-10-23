@@ -1,43 +1,45 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
-import android.os.PersistableBundle;
-
 import androidx.fragment.app.FragmentActivity;
 
+import java.util.Objects;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.PersistableBundleEquality;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
-class InitialGraphProcessor {
+class InitialGraphProcessor<C> {
 
-    private final Optional<SearchablePreferenceScreenGraphProcessor> graphProcessor;
+    private final Optional<SearchablePreferenceScreenGraphProcessor<C>> graphProcessor;
     private final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO;
     private final FragmentActivity activityContext;
+    private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
-    public InitialGraphProcessor(final Optional<SearchablePreferenceScreenGraphProcessor> graphProcessor,
+    public InitialGraphProcessor(final Optional<SearchablePreferenceScreenGraphProcessor<C>> graphProcessor,
                                  final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
-                                 final FragmentActivity activityContext) {
+                                 final FragmentActivity activityContext,
+                                 final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.graphProcessor = graphProcessor;
         this.searchablePreferenceScreenGraphDAO = searchablePreferenceScreenGraphDAO;
         this.activityContext = activityContext;
+        this.configurationBundleConverter = configurationBundleConverter;
     }
 
-    public void processAndPersist(final Optional<SearchablePreferenceScreenGraph> graph, final PersistableBundle configuration) {
+    public void processAndPersist(final Optional<SearchablePreferenceScreenGraph> graph, final C configuration) {
         graph.ifPresent(
                 _graph -> {
-                    if (!PersistableBundleEquality.areBundlesEqual(_graph.configuration(), configuration)) {
+                    if (!Objects.equals(configuration, configurationBundleConverter.doBackward(_graph.configuration()))) {
                         searchablePreferenceScreenGraphDAO.persist(process(_graph, configuration));
                     }
                 });
     }
 
     private SearchablePreferenceScreenGraph process(final SearchablePreferenceScreenGraph graph,
-                                                    final PersistableBundle configuration) {
+                                                    final C configuration) {
         return graphProcessor
                 .map(_graphProcessor -> _graphProcessor.processGraph(graph, configuration, activityContext))
                 .orElse(graph)
-                .asGraphHavingConfiguration(configuration);
+                .asGraphHavingConfiguration(configurationBundleConverter.doForward(configuration));
     }
 }

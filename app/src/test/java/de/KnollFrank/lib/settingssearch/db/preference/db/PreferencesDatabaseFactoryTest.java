@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
+import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 
 @RunWith(RobolectricTestRunner.class)
 public class PreferencesDatabaseFactoryTest {
@@ -29,16 +30,17 @@ public class PreferencesDatabaseFactoryTest {
                     // When
                     final PreferencesDatabase preferencesDatabase =
                             PreferencesDatabaseFactory.createPreferencesDatabase(
-                                    new PreferencesDatabaseConfig(
+                                    new PreferencesDatabaseConfig<>(
                                             "searchable_preferences.db",
                                             Optional.of(
-                                                    new PrepackagedPreferencesDatabase(
+                                                    new PrepackagedPreferencesDatabase<>(
                                                             new File("database/searchable_preferences_prepackaged.db"),
                                                             (graph, actualConfiguration, activityContext) -> graph)),
                                             JournalMode.AUTOMATIC),
                                     fragmentActivity,
                                     Locale.GERMAN,
-                                    PersistableBundleTestFactory.createSomePersistableBundle());
+                                    PersistableBundleTestFactory.createSomeConfiguration(),
+                                    new ConfigurationBundleConverter());
 
                     // Then
                     assertThat(preferencesDatabase, is(not(nullValue())));

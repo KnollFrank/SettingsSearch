@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 
+// FK-TODO: remove?
 public class PersistableBundleEquality {
 
     public static boolean areBundlesEqual(@Nullable final PersistableBundle one, @Nullable final PersistableBundle two) {

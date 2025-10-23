@@ -20,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConf
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
+import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 
 @RunWith(RobolectricTestRunner.class)
 public class DatabaseResetterTest {
@@ -43,16 +44,17 @@ public class DatabaseResetterTest {
 
     private static PreferencesDatabase getPreferencesDatabase(final FragmentActivity activity, final Locale locale) {
         return PreferencesDatabaseFactory.createPreferencesDatabase(
-                new PreferencesDatabaseConfig(
+                new PreferencesDatabaseConfig<>(
                         "searchable_preferences.db",
                         Optional.of(
-                                new PrepackagedPreferencesDatabase(
+                                new PrepackagedPreferencesDatabase<>(
                                         new File("database/searchable_preferences_prepackaged.db"),
                                         (graph, actualConfiguration, activityContext) -> graph)),
                         JournalMode.AUTOMATIC),
                 activity,
                 locale,
-                PersistableBundleTestFactory.createSomePersistableBundle());
+                PersistableBundleTestFactory.createSomeConfiguration(),
+                new ConfigurationBundleConverter());
     }
 
     private static void initialize(final PreferencesDatabase preferencesDatabase, final Locale locale) {

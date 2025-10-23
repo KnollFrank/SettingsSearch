@@ -43,6 +43,7 @@ dependencies {
     implementation 'org.jgrapht:jgrapht-core:1.5.2'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.19.0'
+    // FK-TODO: update version of commons-lang3
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation 'org.apache.commons:commons-lang3:3.18.0'
     // https://mvnrepository.com/artifact/com.codepoetics/ambivalence

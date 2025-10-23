@@ -1,23 +1,30 @@
 package de.KnollFrank.lib.settingssearch.db.preference.db;
 
-import android.os.PersistableBundle;
-
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.Optional;
 
-public class DAOProviderManager {
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
+
+public class DAOProviderManager<C> {
 
     private Optional<DAOProvider> daoProvider = Optional.empty();
     private static final Object LOCK = new Object();
 
-    public void initDAOProvider(final PreferencesDatabaseConfig preferencesDatabaseConfig,
-                                final PersistableBundle configuration,
+    public void initDAOProvider(final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
+                                final C configuration,
+                                final ConfigurationBundleConverter<C> configurationBundleConverter,
                                 final FragmentActivity activityContext) {
         if (daoProvider.isEmpty()) {
             synchronized (LOCK) {
                 if (daoProvider.isEmpty()) {
-                    daoProvider = Optional.of(DAOProviderFactory.createDAOProvider(preferencesDatabaseConfig, configuration, activityContext));
+                    daoProvider =
+                            Optional.of(
+                                    DAOProviderFactory.createDAOProvider(
+                                            preferencesDatabaseConfig,
+                                            configuration,
+                                            configurationBundleConverter,
+                                            activityContext));
                 }
             }
         }

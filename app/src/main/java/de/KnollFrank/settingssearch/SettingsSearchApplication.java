@@ -7,7 +7,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProviderManager;
 
 public class SettingsSearchApplication extends Application {
 
-    public final DAOProviderManager daoProviderManager = new DAOProviderManager();
+    public final DAOProviderManager<Configuration> daoProviderManager = new DAOProviderManager<>();
 
     public static SettingsSearchApplication getInstanceFromContext(final Context context) {
         return (SettingsSearchApplication) context.getApplicationContext();

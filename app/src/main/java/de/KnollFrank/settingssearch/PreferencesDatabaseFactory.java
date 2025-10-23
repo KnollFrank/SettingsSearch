@@ -1,7 +1,5 @@
 package de.KnollFrank.settingssearch;
 
-import android.os.PersistableBundle;
-
 import androidx.fragment.app.FragmentActivity;
 
 import java.io.File;
@@ -17,29 +15,29 @@ class PreferencesDatabaseFactory {
 
     public static final String SEARCHABLE_PREFERENCES_DB = "searchable_preferences.db";
 
-    public static PreferencesDatabaseConfig createPreferencesDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() {
-        return new PreferencesDatabaseConfig(
+    public static PreferencesDatabaseConfig<Configuration> createPreferencesDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() {
+        return new PreferencesDatabaseConfig<>(
                 SEARCHABLE_PREFERENCES_DB,
                 Optional.empty(),
                 PreferencesDatabaseConfig.JournalMode.TRUNCATE);
     }
 
-    public static PreferencesDatabaseConfig createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile() {
-        return new PreferencesDatabaseConfig(
+    public static PreferencesDatabaseConfig<Configuration> createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile() {
+        return new PreferencesDatabaseConfig<>(
                 SEARCHABLE_PREFERENCES_DB,
                 Optional.of(
-                        new PrepackagedPreferencesDatabase(
+                        new PrepackagedPreferencesDatabase<>(
                                 new File("database/searchable_preferences_prepackaged.db"),
-                                new SearchablePreferenceScreenGraphProcessor() {
+                                new SearchablePreferenceScreenGraphProcessor<>() {
 
                                     @Override
                                     public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph,
-                                                                                        final PersistableBundle actualConfiguration,
+                                                                                        final Configuration actualConfiguration,
                                                                                         final FragmentActivity activityContext) {
                                         return new SearchDatabaseRootedAtPrefsFragmentFirstAdapter()
                                                 .getAdaptedGraph(
                                                         graph,
-                                                        new ConfigurationBundleConverter().doBackward(actualConfiguration),
+                                                        actualConfiguration,
                                                         activityContext);
                                     }
                                 })),

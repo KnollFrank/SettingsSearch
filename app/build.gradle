@@ -77,11 +77,13 @@ dependencies {
 
     def room_version = "2.8.1"
     androidTestImplementation "androidx.room:room-runtime:$room_version"
+    // FK-TODO: update version of romm
     androidTestImplementation "androidx.room:room-runtime-android:$room_version"
     androidTestAnnotationProcessor "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
 
     testImplementation "androidx.room:room-runtime:$room_version"
+    // FK-TODO: update version of romm
     testImplementation "androidx.room:room-runtime-android:$room_version"
     testAnnotationProcessor "androidx.room:room-compiler:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
