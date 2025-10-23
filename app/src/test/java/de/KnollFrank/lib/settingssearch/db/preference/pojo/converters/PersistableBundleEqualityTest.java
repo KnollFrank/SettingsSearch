@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.common;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

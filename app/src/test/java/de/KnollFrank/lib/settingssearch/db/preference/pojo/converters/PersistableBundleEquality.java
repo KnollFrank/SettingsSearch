@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.common;
+package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
 import android.os.PersistableBundle;
 
@@ -6,8 +6,7 @@ import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 
-// FK-TODO: remove?
-public class PersistableBundleEquality {
+class PersistableBundleEquality {
 
     public static boolean areBundlesEqual(@Nullable final PersistableBundle one, @Nullable final PersistableBundle two) {
         if (one == two) {
