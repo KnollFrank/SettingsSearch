@@ -58,7 +58,7 @@ tasks.register('updatePrepackagedDatabase', Exec) {
     // CONFIGURE HERE: These values are static and safe to define here.
     // ====================================================================
     ext {
-        dbNameOnDevice = "searchable_preferences_prepackaged.db"
+        dbNameOnDevice = "searchable_preferences.db"
         assetPathAndName = "database/searchable_preferences_prepackaged.db"
         testClassName = "de.KnollFrank.settingssearch.GenerateDatabaseTest"
     }
