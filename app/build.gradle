@@ -54,6 +54,8 @@ tasks.register('updatePrepackagedDatabase', Exec) {
 
     dependsOn tasks.named('installForDbGeneration')
 
+    notCompatibleWithConfigurationCache("This task dynamically sets a project property which must be evaluated during configuration.")
+
     // ====================================================================
     // CONFIGURE HERE: These values are static and safe to define here.
     // ====================================================================
