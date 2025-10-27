@@ -42,7 +42,9 @@ public class PreferenceSearchExample extends AppCompatActivity {
         this
                 .getDaoProviderManager()
                 .initDAOProvider(
-                        PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
+                        BuildConfig.GENERATE_DATABASE_FOR_ASSET ?
+                                PreferencesDatabaseFactory.createPreferencesDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() :
+                                PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                         configuration,
                         new ConfigurationBundleConverter(),
                         this);

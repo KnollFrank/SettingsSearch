@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
+import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
 import de.KnollFrank.lib.settingssearch.common.Utils;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
@@ -27,16 +28,22 @@ public class CreateSearchDatabaseTaskProvider {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
+        // FK-TODO: Abhängigkeit zu espresso doch besser aus dem Produktivcode entfernen?
+        EspressoIdlingResource.increment();
         // FK-FIXME: koordiniere diesen Task (1.) mit dem Task (2.) in SearchPreferenceFragment und mit (3.) SearchPreferenceFragments.rebuildSearchDatabase()
         return new AsyncTaskWithProgressUpdateListeners<>(
                 (_void, progressUpdateListener) -> {
-                    fillSearchDatabaseWithPreferences(
-                            mergedPreferenceScreenDataRepositoryProvider,
-                            activity,
-                            progressUpdateListener,
-                            daoProvider,
-                            configuration);
-                    return daoProvider;
+                    try {
+                        fillSearchDatabaseWithPreferences(
+                                mergedPreferenceScreenDataRepositoryProvider,
+                                activity,
+                                progressUpdateListener,
+                                daoProvider,
+                                configuration);
+                        return daoProvider;
+                    } finally {
+                        EspressoIdlingResource.decrement();
+                    }
                 },
                 _daoProvider -> {
                 });

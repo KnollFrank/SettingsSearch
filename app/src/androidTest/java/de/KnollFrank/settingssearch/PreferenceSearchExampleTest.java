@@ -276,7 +276,7 @@ public class PreferenceSearchExampleTest {
         onView(searchResultsView()).perform(actionOnItemAtPosition(position, click()));
     }
 
-    private static Matcher<View> searchButton() {
+    public static Matcher<View> searchButton() {
         return allOf(
                 withId(de.KnollFrank.settingssearch.R.id.search_action),
                 withContentDescription("title"),
@@ -288,7 +288,7 @@ public class PreferenceSearchExampleTest {
                 isDisplayed());
     }
 
-    private static Matcher<View> searchView() {
+    public static Matcher<View> searchView() {
         return allOf(
                 withClassName(is("android.widget.SearchView$SearchAutoComplete")),
                 childAtPosition(
