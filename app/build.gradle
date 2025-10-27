@@ -52,6 +52,7 @@ tasks.register('installForDbGeneration') {
     dependsOn 'installDebug', 'installDebugAndroidTest'
 }
 
+// execute this task using: ./gradlew updatePrepackagedDatabase -PgenerateDb=true
 tasks.register('updatePrepackagedDatabase', Exec) {
     group = "Database"
     description = "Runs the test, copies the database, and cleans up. Must be called with '-PgenerateDb=true'."
