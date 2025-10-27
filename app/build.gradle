@@ -11,9 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         buildConfigField "boolean", "GENERATE_DATABASE_FOR_ASSET", "false"
-
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -28,6 +26,12 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
     testOptions {
         unitTests.includeAndroidResources = true
     }
@@ -37,65 +41,46 @@ android {
     }
 }
 
-afterEvaluate { project ->
+if (project.hasProperty('generateDb') && project.property('generateDb') == 'true') {
+    println ">>> '-PgenerateDb=true' detected. Configuring 'debug' build for DB generation."
+    android.buildTypes.debug.buildConfigField "boolean", "GENERATE_DATABASE_FOR_ASSET", "true"
+}
 
-    tasks.register('installForDbGeneration') {
-        group = "Database"
-        description = "Builds and installs the debug app and test app."
-        dependsOn 'installDebug', 'installDebugAndroidTest'
+tasks.register('installForDbGeneration') {
+    group = "Database"
+    description = "Builds and installs the debug app and test app."
+    dependsOn 'installDebug', 'installDebugAndroidTest'
+}
+
+tasks.register('updatePrepackagedDatabase', Exec) {
+    group = "Database"
+    description = "Runs the test, copies the database, and cleans up. Must be called with '-PgenerateDb=true'."
+    dependsOn tasks.named('installForDbGeneration')
+    ext {
+        dbNameOnDevice = "searchable_preferences.db"
+        assetPathAndName = "database/searchable_preferences_prepackaged.db"
+        testClassName = "de.KnollFrank.settingssearch.GenerateDatabaseTest"
     }
-
-    tasks.register('updatePrepackagedDatabase', Exec) {
-        group = "Database"
-        description = "Generates the database on device, pulls it, and cleans up."
-
-        dependsOn tasks.named('installForDbGeneration')
-
-        notCompatibleWithConfigurationCache("This task dynamically modifies the build configuration.")
-
-        ext {
-            dbNameOnDevice = "searchable_preferences.db"
-            assetPathAndName = "database/searchable_preferences_prepackaged.db"
-            testClassName = "de.KnollFrank.settingssearch.GenerateDatabaseTest"
-        }
-
-        workingDir project.rootDir
-        commandLine 'sh', '-c', """
-            set -e
-
-            appPackage="${android.defaultConfig.applicationId}"
-            adb="${android.sdkDirectory}/platform-tools/adb"
-            dbNameOnDevice="${ext.dbNameOnDevice}"
-            assetPathAndName="${ext.assetPathAndName}"
-            testClassName="${ext.testClassName}"
-
-            deviceDbPath="/data/data/\${appPackage}/databases/\${dbNameOnDevice}"
-            absoluteLocalAssetPath="${project.file("src/main/assets/\${assetPathAndName}")}"
-
-            mkdir -p "\$(dirname "\${absoluteLocalAssetPath}")"
-
-            echo ">>> Apps installed. Starting test to create database..."
-            "\${adb}" shell am instrument -w -e class \${testClassName} \${appPackage}.test/androidx.test.runner.AndroidJUnitRunner
-
-            echo ">>> Test finished. Pulling database from device to assets folder..."
-            echo ">>> Source on device: \${deviceDbPath}"
-            echo ">>> Target in assets: \${absoluteLocalAssetPath}"
-            "\${adb}" exec-out run-as \${appPackage} cat "databases/\${dbNameOnDevice}" > "\${absoluteLocalAssetPath}"
-
-            echo ">>> Cleaning up: Uninstalling apps..."
-            "\${adb}" uninstall "\${appPackage}"
-            "\${adb}" uninstall "\${appPackage}.test"
-
-            echo ">>> Database update process completed successfully!"
-        """
-    }
-
-    gradle.taskGraph.whenReady { taskGraph ->
-        if (taskGraph.hasTask(':app:updatePrepackagedDatabase')) {
-            println ">>> 'updatePrepackagedDatabase' task detected. Configuring 'debug' build for DB generation..."
-            android.buildTypes.debug.buildConfigField "boolean", "GENERATE_DATABASE_FOR_ASSET", "true"
-        }
-    }
+    workingDir project.rootDir
+    commandLine 'sh', '-c', """
+        set -e
+        appPackage="${android.defaultConfig.applicationId}"
+        adb="${android.sdkDirectory}/platform-tools/adb"
+        dbNameOnDevice="${ext.dbNameOnDevice}"
+        assetPathAndName="${ext.assetPathAndName}"
+        testClassName="${ext.testClassName}"
+        deviceDbPath="/data/data/\${appPackage}/databases/\${dbNameOnDevice}"
+        absoluteLocalAssetPath="${project.file("src/main/assets/\${assetPathAndName}")}"
+        mkdir -p "\$(dirname "\${absoluteLocalAssetPath}")"
+        echo ">>> Apps installed. Starting test to create database..."
+        "\${adb}" shell am instrument -w -e class \${testClassName} \${appPackage}.test/androidx.test.runner.AndroidJUnitRunner
+        echo ">>> Test finished. Pulling database from device to assets folder..."
+        "\${adb}" exec-out run-as \${appPackage} cat "databases/\${dbNameOnDevice}" > "\${absoluteLocalAssetPath}"
+        echo ">>> Cleaning up: Uninstalling apps..."
+        "\${adb}" uninstall "\${appPackage}"
+        "\${adb}" uninstall "\${appPackage}.test"
+        echo ">>> Database update process completed successfully!"
+    """
 }
 
 dependencies {
