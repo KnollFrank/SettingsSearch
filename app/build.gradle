@@ -37,66 +37,64 @@ android {
     }
 }
 
-if (project.hasProperty('generateDb') && project.property('generateDb') == 'true') {
-    android.buildTypes.debug.buildConfigField "boolean", "GENERATE_DATABASE_FOR_ASSET", "true"
-}
+afterEvaluate { project ->
 
-tasks.register('installForDbGeneration') {
-    group = "Database"
-    description = "Builds and installs the debug app and test app for DB generation."
-    dependsOn 'installDebug'
-    dependsOn 'installDebugAndroidTest'
-}
-
-tasks.register('updatePrepackagedDatabase', Exec) {
-    group = "Database"
-    description = "Generates the database on device, pulls it, and cleans up."
-
-    dependsOn tasks.named('installForDbGeneration')
-
-    notCompatibleWithConfigurationCache("This task dynamically sets a project property which must be evaluated during configuration.")
-
-    // ====================================================================
-    // CONFIGURE HERE: These values are static and safe to define here.
-    // ====================================================================
-    ext {
-        dbNameOnDevice = "searchable_preferences.db"
-        assetPathAndName = "database/searchable_preferences_prepackaged.db"
-        testClassName = "de.KnollFrank.settingssearch.GenerateDatabaseTest"
+    tasks.register('installForDbGeneration') {
+        group = "Database"
+        description = "Builds and installs the debug app and test app."
+        dependsOn 'installDebug', 'installDebugAndroidTest'
     }
-    // ====================================================================
-    // End of configuration
-    // ====================================================================
 
-    workingDir project.rootDir
+    tasks.register('updatePrepackagedDatabase', Exec) {
+        group = "Database"
+        description = "Generates the database on device, pulls it, and cleans up."
 
-    doFirst {
-        project.ext.generateDb = 'true'
+        dependsOn tasks.named('installForDbGeneration')
 
-        def appPackage = android.defaultConfig.applicationId
-        def adb = "${android.sdkDirectory}/platform-tools/adb"
-        def deviceDbPath = "/data/data/${appPackage}/databases/${ext.dbNameOnDevice}"
-        def absoluteLocalAssetPath = project.file("src/main/assets/${ext.assetPathAndName}")
+        notCompatibleWithConfigurationCache("This task dynamically modifies the build configuration.")
 
-        absoluteLocalAssetPath.parentFile.mkdirs()
+        ext {
+            dbNameOnDevice = "searchable_preferences.db"
+            assetPathAndName = "database/searchable_preferences_prepackaged.db"
+            testClassName = "de.KnollFrank.settingssearch.GenerateDatabaseTest"
+        }
 
+        workingDir project.rootDir
         commandLine 'sh', '-c', """
             set -e
 
+            appPackage="${android.defaultConfig.applicationId}"
+            adb="${android.sdkDirectory}/platform-tools/adb"
+            dbNameOnDevice="${ext.dbNameOnDevice}"
+            assetPathAndName="${ext.assetPathAndName}"
+            testClassName="${ext.testClassName}"
+
+            deviceDbPath="/data/data/\${appPackage}/databases/\${dbNameOnDevice}"
+            absoluteLocalAssetPath="${project.file("src/main/assets/\${assetPathAndName}")}"
+
+            mkdir -p "\$(dirname "\${absoluteLocalAssetPath}")"
+
             echo ">>> Apps installed. Starting test to create database..."
-            "$adb" shell am instrument -w -e class ${ext.testClassName} ${appPackage}.test/androidx.test.runner.AndroidJUnitRunner
+            "\${adb}" shell am instrument -w -e class \${testClassName} \${appPackage}.test/androidx.test.runner.AndroidJUnitRunner
 
             echo ">>> Test finished. Pulling database from device to assets folder..."
-            echo ">>> Source on device: ${deviceDbPath}"
-            echo ">>> Target in assets: ${absoluteLocalAssetPath}"
-            "$adb" exec-out run-as ${appPackage} cat databases/${ext.dbNameOnDevice} > "${absoluteLocalAssetPath}"
+            echo ">>> Source on device: \${deviceDbPath}"
+            echo ">>> Target in assets: \${absoluteLocalAssetPath}"
+            "\${adb}" exec-out run-as \${appPackage} cat "databases/\${dbNameOnDevice}" > "\${absoluteLocalAssetPath}"
 
             echo ">>> Cleaning up: Uninstalling apps..."
-            "$adb" uninstall "${appPackage}"
-            "$adb" uninstall "${appPackage}.test"
+            "\${adb}" uninstall "\${appPackage}"
+            "\${adb}" uninstall "\${appPackage}.test"
 
             echo ">>> Database update process completed successfully!"
         """
+    }
+
+    gradle.taskGraph.whenReady { taskGraph ->
+        if (taskGraph.hasTask(':app:updatePrepackagedDatabase')) {
+            println ">>> 'updatePrepackagedDatabase' task detected. Configuring 'debug' build for DB generation..."
+            android.buildTypes.debug.buildConfigField "boolean", "GENERATE_DATABASE_FOR_ASSET", "true"
+        }
     }
 }
 
@@ -104,16 +102,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.preference:preference:1.2.1'
-    // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation 'com.google.guava:guava:33.5.0-android'
-    // FK-TODO: remove threetenbp dependency and use java.time package instead when minSdkVersion > 24
-    // https://mvnrepository.com/artifact/org.threeten/threetenbp
     implementation 'org.threeten:threetenbp:1.7.2'
     implementation project(":lib")
     implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.activity:activity:1.9.3'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
-    // https://mvnrepository.com/artifact/org.jgrapht/jgrapht-io
     implementation 'org.jgrapht:jgrapht-io:1.5.2'
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -122,16 +116,13 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.test:core:1.6.1'
     testImplementation 'org.mockito:mockito-core:5.7.0'
-    // https://mvnrepository.com/artifact/org.robolectric/robolectric
     testImplementation 'org.robolectric:robolectric:4.13'
     testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
     testImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    // https://mvnrepository.com/artifact/com.google.guava/guava-testlib
     testImplementation("com.google.guava:guava-testlib:33.5.0-android")
 
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'org.mockito:mockito-android:5.7.0'
-    // https://mvnrepository.com/artifact/com.github.npathai/hamcrest-optional
     androidTestImplementation group: 'com.github.npathai', name: 'hamcrest-optional', version: '2.0.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
     androidTestImplementation 'androidx.test:runner:1.6.2'
@@ -139,7 +130,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.6.1'
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.6.1'
     implementation 'androidx.test.espresso:espresso-idling-resource:3.6.1'
-    // https://mvnrepository.com/artifact/com.codepoetics/ambivalence
     implementation 'com.codepoetics:ambivalence:0.2'
 
     def room_version = "2.8.1"
