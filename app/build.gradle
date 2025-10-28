@@ -58,7 +58,9 @@ tasks.register('updatePrepackagedDatabase', Exec) {
     description = "Runs the test, copies the database, and cleans up. Must be called with '-PgenerateDb=true'."
     dependsOn tasks.named('installForDbGeneration')
     ext {
+        // dbNameOnDevice MUST match PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile().databaseFileName()
         dbNameOnDevice = "searchable_preferences.db"
+        // assetPathAndName MUST match PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile().prepackagedPreferencesDatabase().get().databaseAssetFile().getPath()
         assetPathAndName = "database/searchable_preferences_prepackaged.db"
         testClassName = "de.KnollFrank.settingssearch.GenerateDatabaseTest"
     }
@@ -72,6 +74,7 @@ tasks.register('updatePrepackagedDatabase', Exec) {
         testClassName="${ext.testClassName}"
         deviceDbPath="/data/data/\${appPackage}/databases/\${dbNameOnDevice}"
         absoluteLocalAssetPath="${project.file("src/main/assets/\${assetPathAndName}")}"
+
         mkdir -p "\$(dirname "\${absoluteLocalAssetPath}")"
         echo ">>> Apps installed. Starting test to create database..."
         "\${adb}" shell am instrument -w -e class \${testClassName} \${appPackage}.test/androidx.test.runner.AndroidJUnitRunner
