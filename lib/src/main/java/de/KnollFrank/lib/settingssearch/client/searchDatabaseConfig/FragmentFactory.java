@@ -37,9 +37,7 @@ class FragmentFactory implements de.KnollFrank.lib.settingssearch.fragment.Fragm
         return preferenceFragmentFactories
                 .stream()
                 .map(preferenceFragmentFactory -> preferenceFragmentFactory.createPreferenceFragmentForClass(fragmentClass, src, context, instantiateAndInitializeFragment))
-                // FK-TODO: use mapMulti() if API level is at least 34
-                .filter(Optional::isPresent)
-                .map(Optional::orElseThrow)
+                .flatMap(Optional::stream)
                 .findFirst();
     }
 }

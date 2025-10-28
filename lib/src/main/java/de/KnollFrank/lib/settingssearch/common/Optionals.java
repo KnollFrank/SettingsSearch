@@ -14,9 +14,7 @@ public class Optionals {
     public static <T> Stream<T> streamOfPresentElements(final Optional<T>... elements) {
         return Arrays
                 .stream(elements)
-                // FK-TODO: use mapMulti() if API level is at least 34
-                .filter(Optional::isPresent)
-                .map(Optional::orElseThrow);
+                .flatMap(Optional::stream);
     }
 
     public static <T> List<T> asList(final Optional<T[]> elements) {
