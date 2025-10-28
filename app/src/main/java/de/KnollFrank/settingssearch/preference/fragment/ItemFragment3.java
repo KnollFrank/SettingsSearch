@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.threeten.bp.Duration;
-
+import java.time.Duration;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;

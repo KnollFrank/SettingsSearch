@@ -7,7 +7,7 @@ import android.view.View;
 
 import androidx.annotation.ColorInt;
 
-import org.threeten.bp.Duration;
+import java.time.Duration;
 
 import de.KnollFrank.lib.settingssearch.common.Attributes;
 

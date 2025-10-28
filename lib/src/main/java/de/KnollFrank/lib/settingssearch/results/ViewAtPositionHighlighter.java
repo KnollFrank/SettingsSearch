@@ -4,8 +4,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.threeten.bp.Duration;
-
+import java.time.Duration;
 import java.util.Optional;
 
 class ViewAtPositionHighlighter {

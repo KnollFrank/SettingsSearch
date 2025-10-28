@@ -5,7 +5,7 @@ import android.os.Handler;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.threeten.bp.Duration;
+import java.time.Duration;
 
 public class ItemOfRecyclerViewHighlighter implements SettingHighlighter {
 
