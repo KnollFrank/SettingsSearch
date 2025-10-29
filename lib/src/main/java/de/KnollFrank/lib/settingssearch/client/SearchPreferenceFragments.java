@@ -30,6 +30,7 @@ import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataReposit
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryFactory;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryProvider;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenFactory;
+import de.KnollFrank.lib.settingssearch.search.PreferenceMatcher;
 import de.KnollFrank.lib.settingssearch.search.SearchPreferenceFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
@@ -85,6 +86,7 @@ public class SearchPreferenceFragments implements MergedPreferenceScreenDataRepo
                 new SearchPreferenceFragment(
                         searchConfig.queryHint,
                         searchConfig.includePreferenceInSearchResultsPredicate,
+                        new PreferenceMatcher(searchConfig.stringMatcher),
                         getMergedPreferenceScreenFactory(),
                         onUiThreadRunner,
                         createSearchDatabaseTaskSupplier,

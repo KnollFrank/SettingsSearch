@@ -17,11 +17,14 @@ class PreferenceSearcher {
 
     private final SearchablePreferenceScreenGraphDAO graphDAO;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
+    private final PreferenceMatcher preferenceMatcher;
 
     public PreferenceSearcher(final SearchablePreferenceScreenGraphDAO graphDAO,
-                              final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
+                              final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
+                              final PreferenceMatcher preferenceMatcher) {
         this.graphDAO = graphDAO;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
+        this.preferenceMatcher = preferenceMatcher;
     }
 
     public Set<PreferenceMatch> searchFor(final String needle, final Locale locale) {
@@ -29,7 +32,7 @@ class PreferenceSearcher {
                 .getPreferences(graphDAO.findGraphById(locale))
                 .stream()
                 .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
-                .map(searchablePreference -> PreferenceMatcher.getPreferenceMatch(searchablePreference, needle))
+                .map(searchablePreference -> preferenceMatcher.getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::streamOfPresentElements)
                 .collect(Collectors.toSet());
     }

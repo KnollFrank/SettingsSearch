@@ -28,16 +28,18 @@ public class PreferenceMatcherTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
+                final PreferenceMatcher preferenceMatcher = new PreferenceMatcher(new CaseInsensitiveSubstringMatcher());
                 final SearchablePreference searchablePreference =
                         createSearchablePreference(
                                 Optional.of("Title, title part"),
                                 Optional.of("title in summary"),
                                 Optional.of("searchable info also has a title"),
+                                // FK-TODO: braucht man wirklich ein Smiley und eine activity?
                                 Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null)))));
 
                 // When
                 final Optional<PreferenceMatch> preferenceMatch =
-                        PreferenceMatcher.getPreferenceMatch(
+                        preferenceMatcher.getPreferenceMatch(
                                 searchablePreference,
                                 "title");
 

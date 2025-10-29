@@ -721,7 +721,8 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
-                                includePreferenceInSearchResultsPredicate);
+                                includePreferenceInSearchResultsPredicate,
+                                new PreferenceMatcher(new CaseInsensitiveSubstringMatcher()));
 
                 // When
                 final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword, locale);

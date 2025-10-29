@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.results.ShowSettingsFragmentAndHighlightSetting;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
+import de.KnollFrank.lib.settingssearch.search.StringMatcher;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
@@ -24,6 +25,7 @@ public class SearchConfig {
     public final int fragmentContainerViewId;
     public final Optional<String> queryHint;
     public final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
+    public final StringMatcher stringMatcher;
     public final ShowPreferencePathPredicate showPreferencePathPredicate;
     public final PrepareShow prepareShow;
     public final PreferencePathDisplayer preferencePathDisplayer;
@@ -37,6 +39,7 @@ public class SearchConfig {
     SearchConfig(final @IdRes int fragmentContainerViewId,
                  final Optional<String> queryHint,
                  final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
+                 final StringMatcher stringMatcher,
                  final ShowPreferencePathPredicate showPreferencePathPredicate,
                  final PrepareShow prepareShow,
                  final PreferencePathDisplayer preferencePathDisplayer,
@@ -49,6 +52,7 @@ public class SearchConfig {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.queryHint = queryHint;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
+        this.stringMatcher = stringMatcher;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
         this.preferencePathDisplayer = preferencePathDisplayer;

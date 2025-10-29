@@ -19,6 +19,8 @@ import de.KnollFrank.lib.settingssearch.results.SearchResultsSorter;
 import de.KnollFrank.lib.settingssearch.results.ShowSettingsFragmentAndHighlightSetting;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.PreferencePathDisplayer;
+import de.KnollFrank.lib.settingssearch.search.CaseInsensitiveSubstringMatcher;
+import de.KnollFrank.lib.settingssearch.search.StringMatcher;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.DefaultSearchResultsFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
@@ -29,6 +31,7 @@ public class SearchConfigBuilder {
     private final @IdRes int fragmentContainerViewId;
     private Optional<String> queryHint = Optional.empty();
     private IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate = SearchablePreference::isVisible;
+    private StringMatcher stringMatcher = new CaseInsensitiveSubstringMatcher();
     private ShowPreferencePathPredicate showPreferencePathPredicate = preferencePath -> true;
     private PrepareShow prepareShow = fragment -> {
     };
@@ -56,6 +59,12 @@ public class SearchConfigBuilder {
     @SuppressWarnings("unused")
     public SearchConfigBuilder withIncludePreferenceInSearchResultsPredicate(final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate) {
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
+        return this;
+    }
+
+    @SuppressWarnings("unused")
+    public SearchConfigBuilder withStringMatcher(final StringMatcher stringMatcher) {
+        this.stringMatcher = stringMatcher;
         return this;
     }
 
@@ -118,6 +127,7 @@ public class SearchConfigBuilder {
                 fragmentContainerViewId,
                 queryHint,
                 includePreferenceInSearchResultsPredicate,
+                stringMatcher,
                 showPreferencePathPredicate,
                 prepareShow,
                 preferencePathDisplayer,

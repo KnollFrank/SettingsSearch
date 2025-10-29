@@ -42,6 +42,7 @@ public class SearchPreferenceFragment extends Fragment {
 
     private final Optional<String> queryHint;
     private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
+    private final PreferenceMatcher preferenceMatcher;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
     private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier;
@@ -54,6 +55,7 @@ public class SearchPreferenceFragment extends Fragment {
 
     public SearchPreferenceFragment(final Optional<String> queryHint,
                                     final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
+                                    final PreferenceMatcher preferenceMatcher,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
                                     final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
@@ -63,6 +65,7 @@ public class SearchPreferenceFragment extends Fragment {
                                     final PersistableBundle configuration) {
         this.queryHint = queryHint;
         this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
+        this.preferenceMatcher = preferenceMatcher;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.onUiThreadRunner = onUiThreadRunner;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
@@ -157,7 +160,8 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchAndDisplay(
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
-                                includePreferenceInSearchResultsPredicate),
+                                includePreferenceInSearchResultsPredicate,
+                                preferenceMatcher),
                         mergedPreferenceScreen.searchResultsDisplayer());
         SearchViewConfigurer.configureSearchView(searchView, queryHint, searchAndDisplay, locale);
         selectSearchView(searchView);
