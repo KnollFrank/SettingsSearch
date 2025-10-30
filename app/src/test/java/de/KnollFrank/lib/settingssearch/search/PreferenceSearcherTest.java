@@ -71,7 +71,6 @@ import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
-import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
@@ -80,6 +79,7 @@ import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivit
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
 import de.KnollFrank.lib.settingssearch.results.DefaultMarkupsFactory;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsByPreferencePathSorter;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
 import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
@@ -139,7 +139,7 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
         testSearch(
                 preferenceFragment,
                 (preference, hostOfPreference) -> true,
-                new IncludePreferenceInSearchResultsPredicate() {
+                new SearchResultsFilter() {
 
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
@@ -174,7 +174,7 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
         testSearch(
                 preferenceFragment,
                 (preference, hostOfPreference) -> true,
-                new IncludePreferenceInSearchResultsPredicate() {
+                new SearchResultsFilter() {
 
                     @Override
                     public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
@@ -692,7 +692,7 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
 
     static void testSearch(final Fragment preferenceFragment,
                            final PreferenceSearchablePredicate preferenceSearchablePredicate,
-                           final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
+                           final SearchResultsFilter searchResultsFilter,
                            final String keyword,
                            final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
@@ -721,7 +721,7 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                 final PreferenceSearcher preferenceSearcher =
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
-                                includePreferenceInSearchResultsPredicate,
+                                searchResultsFilter,
                                 new PreferenceMatcher(new CaseInsensitiveSubstringMatcher()));
 
                 // When
@@ -859,7 +859,6 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                     }
                 },
                 new DefaultMarkupsFactory(fragmentActivity),
-                preference -> true,
                 new SearchResultsByPreferencePathSorter(),
                 instantiateAndInitializeFragment,
                 Map.of(),

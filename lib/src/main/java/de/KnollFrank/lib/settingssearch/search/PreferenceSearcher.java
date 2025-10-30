@@ -11,19 +11,19 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
-import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 
 class PreferenceSearcher {
 
     private final SearchablePreferenceScreenGraphDAO graphDAO;
-    private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
+    private final SearchResultsFilter searchResultsFilter;
     private final PreferenceMatcher preferenceMatcher;
 
     public PreferenceSearcher(final SearchablePreferenceScreenGraphDAO graphDAO,
-                              final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
+                              final SearchResultsFilter searchResultsFilter,
                               final PreferenceMatcher preferenceMatcher) {
         this.graphDAO = graphDAO;
-        this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
+        this.searchResultsFilter = searchResultsFilter;
         this.preferenceMatcher = preferenceMatcher;
     }
 
@@ -31,7 +31,8 @@ class PreferenceSearcher {
         return this
                 .getPreferences(graphDAO.findGraphById(locale))
                 .stream()
-                .filter(includePreferenceInSearchResultsPredicate::includePreferenceInSearchResults)
+                .filter(SearchablePreference::isVisible)
+                .filter(searchResultsFilter::includePreferenceInSearchResults)
                 .map(searchablePreference -> preferenceMatcher.getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::streamOfPresentElements)
                 .collect(Collectors.toSet());

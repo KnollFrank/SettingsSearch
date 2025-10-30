@@ -1,11 +1,9 @@
 package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.getInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
-import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItemCount;
 
 import android.view.View;
 import android.widget.TextView;
@@ -48,7 +46,6 @@ public class SearchResultsDisplayerTest extends PreferencesDatabaseTest {
                         new SearchResultsDisplayer(
                                 searchResultsFragment,
                                 new DefaultMarkupsFactory(activity),
-                                preference -> true,
                                 new LexicographicalSearchResultsSorter());
                 final SearchablePreference preference =
                         createSearchablePreference(
@@ -95,42 +92,6 @@ public class SearchResultsDisplayerTest extends PreferencesDatabaseTest {
                         .toString();
             }
         };
-    }
-
-    @Test
-    public void shouldDisplayFilteredSearchResults() {
-        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(activity -> {
-                // Given
-                final SearchResultsFilter searchResultsFilterRemovingAllSearchResults = preference -> false;
-
-                final SearchResultsFragment searchResultsFragment = getInitializedSearchResultsFragment(activity);
-                final SearchResultsDisplayer searchResultsDisplayer =
-                        new SearchResultsDisplayer(
-                                searchResultsFragment,
-                                new DefaultMarkupsFactory(activity),
-                                searchResultsFilterRemovingAllSearchResults,
-                                new LexicographicalSearchResultsSorter());
-
-                // When
-                searchResultsDisplayer.displaySearchResults(
-                        Set.of(
-                                new PreferenceMatch(
-                                        createSearchablePreference(
-                                                Optional.of("Title, title part"),
-                                                Optional.of("some summary"),
-                                                Optional.of("searchable info also has a title"),
-                                                Optional.empty()),
-                                        Set.of(new IndexRange(0, 5)),
-                                        Set.of(),
-                                        Set.of())));
-
-                // Then
-                assertThat(
-                        searchResultsFragment.getRecyclerView(),
-                        recyclerViewHasItemCount(equalTo(0)));
-            });
-        }
     }
 
     private SearchResultsFragment getInitializedSearchResultsFragment(final FragmentActivity activity) {

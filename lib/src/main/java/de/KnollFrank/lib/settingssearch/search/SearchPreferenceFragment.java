@@ -26,7 +26,7 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
-import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
+import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressDisplayer;
@@ -41,7 +41,7 @@ public class SearchPreferenceFragment extends Fragment {
     private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
     private final Optional<String> queryHint;
-    private final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
+    private final SearchResultsFilter searchResultsFilter;
     private final PreferenceMatcher preferenceMatcher;
     private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
@@ -54,7 +54,7 @@ public class SearchPreferenceFragment extends Fragment {
     private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider, MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask;
 
     public SearchPreferenceFragment(final Optional<String> queryHint,
-                                    final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
+                                    final SearchResultsFilter searchResultsFilter,
                                     final PreferenceMatcher preferenceMatcher,
                                     final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
@@ -64,7 +64,7 @@ public class SearchPreferenceFragment extends Fragment {
                                     final Locale locale,
                                     final PersistableBundle configuration) {
         this.queryHint = queryHint;
-        this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
+        this.searchResultsFilter = searchResultsFilter;
         this.preferenceMatcher = preferenceMatcher;
         this.mergedPreferenceScreenFactory = mergedPreferenceScreenFactory;
         this.onUiThreadRunner = onUiThreadRunner;
@@ -160,7 +160,7 @@ public class SearchPreferenceFragment extends Fragment {
                 new SearchAndDisplay(
                         new PreferenceSearcher(
                                 mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
-                                includePreferenceInSearchResultsPredicate,
+                                searchResultsFilter,
                                 preferenceMatcher),
                         mergedPreferenceScreen.searchResultsDisplayer());
         SearchViewConfigurer.configureSearchView(searchView, queryHint, searchAndDisplay, locale);

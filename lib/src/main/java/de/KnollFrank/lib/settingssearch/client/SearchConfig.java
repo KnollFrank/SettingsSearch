@@ -6,7 +6,6 @@ import androidx.annotation.IdRes;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.provider.IncludePreferenceInSearchResultsPredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
@@ -24,7 +23,6 @@ public class SearchConfig {
     @IdRes
     public final int fragmentContainerViewId;
     public final Optional<String> queryHint;
-    public final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate;
     public final StringMatcher stringMatcher;
     public final ShowPreferencePathPredicate showPreferencePathPredicate;
     public final PrepareShow prepareShow;
@@ -38,7 +36,6 @@ public class SearchConfig {
 
     SearchConfig(final @IdRes int fragmentContainerViewId,
                  final Optional<String> queryHint,
-                 final IncludePreferenceInSearchResultsPredicate includePreferenceInSearchResultsPredicate,
                  final StringMatcher stringMatcher,
                  final ShowPreferencePathPredicate showPreferencePathPredicate,
                  final PrepareShow prepareShow,
@@ -51,7 +48,6 @@ public class SearchConfig {
                  final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting) {
         this.fragmentContainerViewId = fragmentContainerViewId;
         this.queryHint = queryHint;
-        this.includePreferenceInSearchResultsPredicate = includePreferenceInSearchResultsPredicate;
         this.stringMatcher = stringMatcher;
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
