@@ -1,11 +1,10 @@
 package de.KnollFrank.lib.settingssearch.results;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatch;
+import de.KnollFrank.lib.settingssearch.search.PreferenceMatches;
 import de.KnollFrank.lib.settingssearch.search.PreferenceMatchesHighlighter;
 
 public class SearchResultsDisplayer {
@@ -25,17 +24,10 @@ public class SearchResultsDisplayer {
     public void displaySearchResults(final Set<PreferenceMatch> preferenceMatches) {
         new PreferenceMatchesHighlighter(markupsFactory).highlight(preferenceMatches);
         searchResultsFragment.setSearchResults(
-                searchResultsSorter.sort(getPreferences(preferenceMatches)));
+                searchResultsSorter.sort(PreferenceMatches.getPreferences(preferenceMatches)));
     }
 
     public SearchResultsFragment getSearchResultsFragment() {
         return searchResultsFragment;
-    }
-
-    private static Set<SearchablePreference> getPreferences(final Set<PreferenceMatch> preferenceMatches) {
-        return preferenceMatches
-                .stream()
-                .map(PreferenceMatch::preference)
-                .collect(Collectors.toSet());
     }
 }
