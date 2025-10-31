@@ -8,12 +8,12 @@ import java.util.Optional;
 
 import de.KnollFrank.settingssearch.PreferenceSearchExample;
 
-public class LocaleTestActivity extends PreferenceSearchExample {
+public class LocalePreferenceSearchExample extends PreferenceSearchExample {
 
     private static volatile Optional<Locale> locale = Optional.empty();
 
     public static void setLocale(final Locale locale) {
-        LocaleTestActivity.locale = Optional.of(locale);
+        LocalePreferenceSearchExample.locale = Optional.of(locale);
     }
 
     public static void unsetLocale() {

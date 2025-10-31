@@ -52,7 +52,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
-import de.KnollFrank.settingssearch.test.LocaleTestActivity;
+import de.KnollFrank.settingssearch.test.LocalePreferenceSearchExample;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -60,12 +60,12 @@ public class PreferenceSearchExampleTest {
 
     @Before
     public void setUp() {
-        LocaleTestActivity.unsetLocale();
+        LocalePreferenceSearchExample.unsetLocale();
     }
 
     @After
     public void tearDown() {
-        LocaleTestActivity.unsetLocale();
+        LocalePreferenceSearchExample.unsetLocale();
     }
 
     @Test
@@ -400,14 +400,14 @@ public class PreferenceSearchExampleTest {
     }
 
     private static void test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(final boolean shallFindAdditionalPreference) {
-        LocaleTestActivity.setLocale(getSomeLocaleFromPrepackagedDatabase());
+        LocalePreferenceSearchExample.setLocale(getSomeLocaleFromPrepackagedDatabase());
         setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
         PreferenceSearchExampleTest
                 .getSharedPreferences()
                 .edit()
                 .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
                 .commit();
-        try (final ActivityScenario<LocaleTestActivity> scenario = ActivityScenario.launch(LocaleTestActivity.class)) {
+        try (final ActivityScenario<LocalePreferenceSearchExample> scenario = ActivityScenario.launch(LocalePreferenceSearchExample.class)) {
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
             if (shallFindAdditionalPreference) {

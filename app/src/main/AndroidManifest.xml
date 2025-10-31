@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".test.LocaleTestActivity"
+            android:name=".test.LocalePreferenceSearchExample"
             android:exported="true"
             android:label="LocaleTestActivity"
             android:theme="@style/AppTheme" />
