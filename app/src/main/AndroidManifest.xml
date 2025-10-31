@@ -44,6 +44,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".test.LocaleTestActivity"
+            android:exported="true"
+            android:label="LocaleTestActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

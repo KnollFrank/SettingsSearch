@@ -30,6 +30,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 
 import androidx.preference.PreferenceManager;
+import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
@@ -37,17 +38,37 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.google.common.collect.Iterables;
+
 import org.hamcrest.Matcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Locale;
+
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
+import de.KnollFrank.settingssearch.test.LocaleTestActivity;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class PreferenceSearchExampleTest {
+
+    @Before
+    public void setUp() {
+        LocaleTestActivity.overrideLocale = null;
+    }
+
+    @After
+    public void tearDown() {
+        LocaleTestActivity.overrideLocale = null;
+    }
 
     @Test
     public void shouldSearchAndFindPreference() {
@@ -381,14 +402,14 @@ public class PreferenceSearchExampleTest {
     }
 
     private static void test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(final boolean shallFindAdditionalPreference) {
-        // FK-TODO: ensure precondition for this test: prepackagedDatabaseAssetFile must have an entry for the current locale of the phone, on which this test runs.
+        LocaleTestActivity.overrideLocale = getLocaleFromPrepackagedDatabase();
         setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
         PreferenceSearchExampleTest
                 .getSharedPreferences()
                 .edit()
                 .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
                 .commit();
-        try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
+        try (final ActivityScenario<LocaleTestActivity> scenario = ActivityScenario.launch(LocaleTestActivity.class)) {
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
             if (shallFindAdditionalPreference) {
@@ -397,5 +418,22 @@ public class PreferenceSearchExampleTest {
                 onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
             }
         }
+    }
+
+    // FK-TODO: refactor
+    private static Locale getLocaleFromPrepackagedDatabase() {
+        final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
+        final PreferencesDatabase db =
+                Room
+                        .databaseBuilder(
+                                ApplicationProvider.getApplicationContext(),
+                                PreferencesDatabase.class,
+                                preferencesDatabaseConfig.databaseFileName())
+                        .createFromAsset(preferencesDatabaseConfig.prepackagedPreferencesDatabase().orElseThrow().databaseAssetFile().getPath())
+                        .allowMainThreadQueries()
+                        .build();
+        final SearchablePreferenceScreenGraph graph = Iterables.getOnlyElement(db.searchablePreferenceScreenGraphDAO().loadAll());
+        db.close();
+        return graph.locale();
     }
 }
