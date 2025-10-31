@@ -62,12 +62,12 @@ public class PreferenceSearchExampleTest {
 
     @Before
     public void setUp() {
-        LocaleTestActivity.overrideLocale = null;
+        LocaleTestActivity.unsetLocale();
     }
 
     @After
     public void tearDown() {
-        LocaleTestActivity.overrideLocale = null;
+        LocaleTestActivity.unsetLocale();
     }
 
     @Test
@@ -402,7 +402,7 @@ public class PreferenceSearchExampleTest {
     }
 
     private static void test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(final boolean shallFindAdditionalPreference) {
-        LocaleTestActivity.overrideLocale = getLocaleFromPrepackagedDatabase();
+        LocaleTestActivity.setLocale(getLocaleFromPrepackagedDatabase());
         setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
         PreferenceSearchExampleTest
                 .getSharedPreferences()
