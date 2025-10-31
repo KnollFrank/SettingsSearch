@@ -38,8 +38,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.google.common.collect.Iterables;
-
 import org.hamcrest.Matcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.After;
@@ -47,11 +45,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.test.LocaleTestActivity;
@@ -402,7 +400,7 @@ public class PreferenceSearchExampleTest {
     }
 
     private static void test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(final boolean shallFindAdditionalPreference) {
-        LocaleTestActivity.setLocale(getLocaleFromPrepackagedDatabase());
+        LocaleTestActivity.setLocale(getSomeLocaleFromPrepackagedDatabase());
         setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
         PreferenceSearchExampleTest
                 .getSharedPreferences()
@@ -420,20 +418,36 @@ public class PreferenceSearchExampleTest {
         }
     }
 
-    // FK-TODO: refactor
-    private static Locale getLocaleFromPrepackagedDatabase() {
-        final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
-        final PreferencesDatabase db =
-                Room
-                        .databaseBuilder(
-                                ApplicationProvider.getApplicationContext(),
-                                PreferencesDatabase.class,
-                                preferencesDatabaseConfig.databaseFileName())
-                        .createFromAsset(preferencesDatabaseConfig.prepackagedPreferencesDatabase().orElseThrow().databaseAssetFile().getPath())
-                        .allowMainThreadQueries()
-                        .build();
-        final SearchablePreferenceScreenGraph graph = Iterables.getOnlyElement(db.searchablePreferenceScreenGraphDAO().loadAll());
-        db.close();
-        return graph.locale();
+    private static Locale getSomeLocaleFromPrepackagedDatabase() {
+        final PreferencesDatabaseConfig<?> preferencesDatabaseConfig = PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
+        final PreferencesDatabase preferencesDatabase =
+                getPreferencesDatabase(
+                        preferencesDatabaseConfig.databaseFileName(),
+                        preferencesDatabaseConfig
+                                .prepackagedPreferencesDatabase()
+                                .orElseThrow()
+                                .databaseAssetFile());
+        final Locale locale =
+                preferencesDatabase
+                        .searchablePreferenceScreenGraphDAO()
+                        .loadAll()
+                        .stream()
+                        .findAny()
+                        .orElseThrow()
+                        .locale();
+        preferencesDatabase.close();
+        return locale;
+    }
+
+    private static PreferencesDatabase getPreferencesDatabase(final String databaseFileName,
+                                                              final File databasedAssetFile) {
+        return Room
+                .databaseBuilder(
+                        ApplicationProvider.getApplicationContext(),
+                        PreferencesDatabase.class,
+                        databaseFileName)
+                .createFromAsset(databasedAssetFile.getPath())
+                .allowMainThreadQueries()
+                .build();
     }
 }
