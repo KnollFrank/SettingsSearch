@@ -16,7 +16,6 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
 
 import org.jgrapht.Graph;
 import org.junit.Test;
@@ -296,8 +295,7 @@ public class Graph2POJOGraphTransformerTest extends PreferencesDatabaseTest {
                                 new SearchableInfoAndDialogInfoProvider(
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()),
-                                IdGeneratorFactory.createIdGeneratorStartingAt(1),
-                                ApplicationProvider.getApplicationContext().getPackageManager())),
+                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                 preferenceFragmentIdProvider);
     }
 }

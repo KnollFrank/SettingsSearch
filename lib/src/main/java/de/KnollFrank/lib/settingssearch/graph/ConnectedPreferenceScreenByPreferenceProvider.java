@@ -78,7 +78,7 @@ class ConnectedPreferenceScreenByPreferenceProvider {
 
     private Optional<Class<? extends PreferenceFragmentCompat>> getRootPreferenceFragment(final Optional<Intent> intent) {
         return intent
-                .flatMap(_intent -> Intents.getClassName(_intent, context.getPackageManager()))
+                .flatMap(Intents::getClassName)
                 .flatMap(this::asActivityClass)
                 .flatMap(rootPreferenceFragmentOfActivityProvider::getRootPreferenceFragmentOfActivity);
     }

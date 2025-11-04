@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -69,8 +68,7 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
                         new SearchableInfoAndDialogInfoProvider(
                                 _preference -> Optional.empty(),
                                 (_preference, _hostOfPreference) -> Optional.empty()),
-                        IdGeneratorFactory.createIdGeneratorStartingAt(1),
-                        ApplicationProvider.getApplicationContext().getPackageManager());
+                        IdGeneratorFactory.createIdGeneratorStartingAt(1));
         return preference2SearchablePreferenceConverter
                 .convertPreference(
                         preference,

@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
 
 import com.google.common.collect.ImmutableBiMap;
 
@@ -118,8 +117,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                                                 fragmentActivity,
                                                                 TestActivity.FRAGMENT_CONTAINER_VIEW),
                                                         (preference, hostOfPreference) -> Optional.empty())),
-                                        IdGeneratorFactory.createIdGeneratorStartingAt(1),
-                                        ApplicationProvider.getApplicationContext().getPackageManager())),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                         new DefaultPreferenceFragmentIdProvider()),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
