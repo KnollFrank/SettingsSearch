@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import android.content.pm.PackageManager;
+
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
@@ -11,7 +13,8 @@ public class Preference2SearchablePreferenceConverterFactory {
     public static Preference2SearchablePreferenceConverter createPreference2SearchablePreferenceConverter(
             final SearchDatabaseConfig searchDatabaseConfig,
             final PreferenceDialogs preferenceDialogs,
-            final IdGenerator idGenerator) {
+            final IdGenerator idGenerator,
+            final PackageManager packageManager) {
         return new Preference2SearchablePreferenceConverter(
                 new IconProvider(searchDatabaseConfig.iconResourceIdProvider),
                 new SearchableInfoAndDialogInfoProvider(
@@ -19,6 +22,7 @@ public class Preference2SearchablePreferenceConverterFactory {
                         new SearchableDialogInfoOfProvider(
                                 preferenceDialogs,
                                 searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider)),
-                idGenerator);
+                idGenerator,
+                packageManager);
     }
 }

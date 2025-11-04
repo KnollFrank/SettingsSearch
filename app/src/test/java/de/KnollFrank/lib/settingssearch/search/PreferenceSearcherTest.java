@@ -22,6 +22,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.google.common.collect.ImmutableBiMap;
 
@@ -807,7 +808,8 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                                                                         fragmentActivity,
                                                                         TestActivity.FRAGMENT_CONTAINER_VIEW),
                                                                 preferenceDialogAndSearchableInfoProvider)),
-                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                                IdGeneratorFactory.createIdGeneratorStartingAt(1),
+                                                ApplicationProvider.getApplicationContext().getPackageManager())),
                                 preferenceFragmentIdProvider),
                         PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                                 preferenceScreenWithHostProvider,

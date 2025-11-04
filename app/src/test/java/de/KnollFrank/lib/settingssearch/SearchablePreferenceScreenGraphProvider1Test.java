@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.MoreCollectors;
@@ -131,7 +132,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
                                         new SearchableInfoAndDialogInfoProvider(
                                                 preference -> Optional.empty(),
                                                 (preference, hostOfPreference) -> Optional.empty()),
-                                        IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(1),
+                                        ApplicationProvider.getApplicationContext().getPackageManager())),
                         new DefaultPreferenceFragmentIdProvider()),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,

@@ -59,7 +59,8 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId),
-                                        IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(1),
+                                        context.getPackageManager())),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         new PreferenceScreenWithHostProvider(

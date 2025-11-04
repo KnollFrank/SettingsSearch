@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
+import android.content.pm.PackageManager;
+
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceGroup;
@@ -28,13 +30,16 @@ public class Preference2SearchablePreferenceConverter {
     private final IconProvider iconProvider;
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
     private final IdGenerator idGenerator;
+    private final PackageManager packageManager;
 
     public Preference2SearchablePreferenceConverter(final IconProvider iconProvider,
                                                     final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
-                                                    final IdGenerator idGenerator) {
+                                                    final IdGenerator idGenerator,
+                                                    final PackageManager packageManager) {
         this.iconProvider = iconProvider;
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
         this.idGenerator = idGenerator;
+        this.packageManager = packageManager;
     }
 
     public record SearchablePreferenceWithMap(SearchablePreference searchablePreference,
@@ -64,7 +69,7 @@ public class Preference2SearchablePreferenceConverter {
                         preference.getLayoutResource(),
                         preference.getWidgetLayoutResource(),
                         Optional.ofNullable(preference.getFragment()),
-                        getClassNameOfReferencedActivity(preference),
+                        getClassNameOfReferencedActivity(preference, packageManager),
                         preference.isVisible(),
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
                         searchablePreferences.keySet(),
@@ -124,9 +129,10 @@ public class Preference2SearchablePreferenceConverter {
                         .collect(Collectors.toList()));
     }
 
-    private static Optional<String> getClassNameOfReferencedActivity(final Preference preference) {
+    private static Optional<String> getClassNameOfReferencedActivity(final Preference preference,
+                                                                     final PackageManager packageManager) {
         return Optional
                 .ofNullable(preference.getIntent())
-                .map(Intents::getClassName);
+                .flatMap(intent -> Intents.getClassName(intent, packageManager));
     }
 }

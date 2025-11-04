@@ -13,6 +13,7 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -93,7 +94,8 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                 new SearchableInfoAndDialogInfoProvider(
                         preference -> Optional.empty(),
                         (preference, hostOfPreference) -> Optional.empty()),
-                IdGeneratorFactory.createIdGeneratorStartingAt(1));
+                IdGeneratorFactory.createIdGeneratorStartingAt(1),
+                ApplicationProvider.getApplicationContext().getPackageManager());
     }
 
     private static PreferenceFragmentCompat createPreferenceFragmentHavingParentWithTwoChildren(

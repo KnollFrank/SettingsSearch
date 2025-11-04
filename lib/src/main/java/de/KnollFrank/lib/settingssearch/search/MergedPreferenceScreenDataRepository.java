@@ -94,7 +94,8 @@ public class MergedPreferenceScreenDataRepository {
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         preferenceDialogs,
-                                        IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                        IdGeneratorFactory.createIdGeneratorStartingAt(1),
+                                        context.getPackageManager())),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,
