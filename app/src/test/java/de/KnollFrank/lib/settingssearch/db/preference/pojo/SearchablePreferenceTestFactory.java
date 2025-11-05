@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import android.os.PersistableBundle;
+
 import com.codepoetics.ambivalence.Either;
 
 import java.util.Optional;
@@ -31,6 +33,7 @@ public class SearchablePreferenceTestFactory {
                 Optional.of("some fragment"),
                 Optional.empty(),
                 true,
+                new PersistableBundle(),
                 searchableInfo,
                 children,
                 predecessor);
@@ -50,6 +53,7 @@ public class SearchablePreferenceTestFactory {
                 Optional.empty(),
                 Optional.empty(),
                 true,
+                new PersistableBundle(),
                 Optional.empty(),
                 Set.of(),
                 predecessor);
@@ -87,6 +91,7 @@ public class SearchablePreferenceTestFactory {
                 Optional.of("some fragment"),
                 Optional.empty(),
                 true,
+                new PersistableBundle(),
                 searchableInfo,
                 Set.of(),
                 predecessor);
@@ -104,6 +109,7 @@ public class SearchablePreferenceTestFactory {
                 Optional.empty(),
                 Optional.empty(),
                 true,
+                new PersistableBundle(),
                 Optional.empty(),
                 Set.of(),
                 Optional.empty());

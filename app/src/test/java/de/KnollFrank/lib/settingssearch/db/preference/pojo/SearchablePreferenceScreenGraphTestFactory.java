@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import android.os.PersistableBundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -53,6 +55,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.of(Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty(),
@@ -69,6 +72,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.of(Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
@@ -129,6 +133,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.of(fragment.getName()),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty(),
@@ -145,6 +150,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.of(fragment.getName()),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
@@ -219,6 +225,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty(),
@@ -235,6 +242,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Optional.of(parent.id()),
                         Optional.empty(),
@@ -251,6 +259,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
@@ -266,6 +275,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Optional.of(parent.id()),
                         Optional.empty(),
@@ -282,6 +292,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
@@ -297,6 +308,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(child1Pojo, child2Pojo),
                         Optional.empty());
@@ -364,6 +376,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Optional.empty(),
                         Optional.of(predecessor.id()),
@@ -380,6 +393,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(),
                         Optional.of(predecessorPojo));

@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.PersistableBundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -35,6 +36,7 @@ public final class SearchablePreference {
     private final Optional<String> fragment;
     private final Optional<String> classNameOfReferencedActivity;
     private final boolean visible;
+    private final PersistableBundle extras;
     private final Optional<String> searchableInfo;
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider = Optional::empty;
     private final Set<SearchablePreference> children;
@@ -51,6 +53,7 @@ public final class SearchablePreference {
                                 final Optional<String> fragment,
                                 final Optional<String> classNameOfReferencedActivity,
                                 final boolean visible,
+                                final PersistableBundle extras,
                                 final Optional<String> searchableInfo,
                                 final Set<SearchablePreference> children,
                                 final Optional<SearchablePreference> predecessor) {
@@ -64,6 +67,7 @@ public final class SearchablePreference {
         this.fragment = fragment;
         this.classNameOfReferencedActivity = classNameOfReferencedActivity;
         this.visible = visible;
+        this.extras = extras;
         this.searchableInfo = searchableInfo;
         this.children = children;
         this.predecessor = predecessor;
@@ -163,6 +167,10 @@ public final class SearchablePreference {
         return visible;
     }
 
+    public PersistableBundle getExtras() {
+        return extras;
+    }
+
     public PreferencePath getPreferencePath() {
         return predecessor
                 .map(SearchablePreference::getPreferencePath)
@@ -205,6 +213,7 @@ public final class SearchablePreference {
                 .add("key='" + key + "'")
                 .add("title=" + title)
                 .add("summary=" + summary)
+                .add("extras=" + extras)
                 .add("searchableInfo=" + searchableInfo)
                 .add("fragment=" + fragment)
                 .add("visible=" + visible)

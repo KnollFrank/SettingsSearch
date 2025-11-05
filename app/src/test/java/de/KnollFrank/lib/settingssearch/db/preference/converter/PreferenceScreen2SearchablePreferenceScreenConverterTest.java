@@ -4,6 +4,7 @@ import static de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerT
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
 
 import android.content.Context;
+import android.os.PersistableBundle;
 
 import androidx.annotation.LayoutRes;
 import androidx.fragment.app.Fragment;
@@ -153,6 +154,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
@@ -168,6 +170,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(),
                         Optional.empty());
@@ -183,6 +186,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty(),
                         Optional.empty(),
                         true,
+                        new PersistableBundle(),
                         Optional.empty(),
                         Set.of(child1, child2),
                         Optional.empty());

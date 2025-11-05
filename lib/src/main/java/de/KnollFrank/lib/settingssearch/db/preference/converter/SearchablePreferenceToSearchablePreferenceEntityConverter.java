@@ -28,6 +28,7 @@ public class SearchablePreferenceToSearchablePreferenceEntityConverter {
                         preferenceToConvertToEntity.getFragment(),
                         preferenceToConvertToEntity.getClassNameOfReferencedActivity(),
                         preferenceToConvertToEntity.isVisible(),
+                        preferenceToConvertToEntity.getExtras(),
                         preferenceToConvertToEntity.getSearchableInfo(),
                         parentId,
                         predecessor.map(SearchablePreferenceEntity::id),

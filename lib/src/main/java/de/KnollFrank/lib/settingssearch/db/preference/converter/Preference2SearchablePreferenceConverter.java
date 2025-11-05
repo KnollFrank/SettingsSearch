@@ -18,6 +18,7 @@ import de.KnollFrank.lib.settingssearch.common.Intents;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.common.Strings;
+import de.KnollFrank.lib.settingssearch.common.converter.BundleConverter;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -66,6 +67,7 @@ public class Preference2SearchablePreferenceConverter {
                         Optional.ofNullable(preference.getFragment()),
                         getClassNameOfReferencedActivity(preference),
                         preference.isVisible(),
+                        BundleConverter.toPersistableBundle(preference.getExtras()),
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
                         searchablePreferences.keySet(),
                         predecessorOfPreference);
