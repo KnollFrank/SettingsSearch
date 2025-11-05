@@ -14,13 +14,15 @@ public class BundleConverter {
     public static PersistableBundle toPersistableBundle(final Bundle bundle) {
         final PersistableBundle persistableBundle = new PersistableBundle();
         for (final String key : bundle.keySet()) {
-            Optional
-                    .ofNullable(bundle.get(key))
-                    .ifPresentOrElse(
-                            value -> putValueForKeyIntoBundle(key, value, persistableBundle),
-                            () -> persistableBundle.putString(key, "<null>"));
+            putValueForKeyIntoBundle(key, getValue(bundle, key), persistableBundle);
         }
         return persistableBundle;
+    }
+
+    private static Object getValue(final Bundle bundle, final String key) {
+        return Optional
+                .ofNullable(bundle.get(key))
+                .orElse("<null>");
     }
 
     private static void putValueForKeyIntoBundle(final String key,
