@@ -31,6 +31,6 @@ public class DAOProviderManager<C> {
     }
 
     public DAOProvider getDAOProvider() {
-        return daoProvider.orElseThrow(() -> new IllegalStateException("DAOProviderManager is not initialized. Call init() first."));
+        return daoProvider.orElseThrow(() -> new IllegalStateException("DAOProviderManager is not initialized. Call initDAOProvider() first."));
     }
 }
