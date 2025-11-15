@@ -10,7 +10,7 @@ public class FragmentInitializer {
         this.fragmentAdderRemover = fragmentAdderRemover;
     }
 
-    public void initialize(Fragment fragment) {
+    public void initialize(final Fragment fragment) {
         fragmentAdderRemover.add(fragment);
         fragmentAdderRemover.remove(fragment);
     }
