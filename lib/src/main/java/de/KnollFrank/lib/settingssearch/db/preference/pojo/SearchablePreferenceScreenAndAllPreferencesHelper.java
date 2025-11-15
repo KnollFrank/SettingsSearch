@@ -9,30 +9,30 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 
 public class SearchablePreferenceScreenAndAllPreferencesHelper {
 
-    public static Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen(final Set<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesSet) {
-        return searchablePreferenceScreenAndAllPreferencesSet
+    public static Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen(final Set<SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy> searchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchySet) {
+        return searchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchySet
                 .stream()
                 .collect(
                         Collectors.toMap(
-                                SearchablePreferenceScreenAndAllPreferences::searchablePreferenceScreen,
-                                SearchablePreferenceScreenAndAllPreferences::allPreferences));
+                                SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy::searchablePreferenceScreen,
+                                SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy::allPreferencesOfPreferenceHierarchy));
     }
 
-    public static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference(final Set<SearchablePreferenceScreenAndAllPreferences> searchablePreferenceScreenAndAllPreferencesSet) {
+    public static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference(final Set<SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy> searchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchySet) {
         return Maps.merge(
-                searchablePreferenceScreenAndAllPreferencesSet
+                searchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchySet
                         .stream()
                         .map(SearchablePreferenceScreenAndAllPreferencesHelper::getHostByPreference)
                         .collect(Collectors.toSet()));
     }
 
-    private static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference(final SearchablePreferenceScreenAndAllPreferences searchablePreferenceScreenAndAllPreferences) {
-        return searchablePreferenceScreenAndAllPreferences
-                .allPreferences()
+    private static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference(final SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy searchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy) {
+        return searchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy
+                .allPreferencesOfPreferenceHierarchy()
                 .stream()
                 .collect(
                         Collectors.toMap(
                                 Function.identity(),
-                                searchablePreference -> searchablePreferenceScreenAndAllPreferences.searchablePreferenceScreen()));
+                                searchablePreference -> searchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy.searchablePreferenceScreen()));
     }
 }

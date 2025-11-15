@@ -12,7 +12,7 @@ class ParentPreferenceByPreferenceProvider {
     public static Map<SearchablePreference, SearchablePreference> getParentPreferenceByPreference(final SearchablePreferenceScreen screen) {
             return Maps.merge(
                 screen
-                        .allPreferences()
+                        .allPreferencesOfPreferenceHierarchy()
                         .stream()
                         .map(ParentPreferenceByPreferenceProvider::getParentPreferenceByPreference)
                         .collect(Collectors.toSet()));

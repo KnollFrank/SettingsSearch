@@ -17,8 +17,8 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 @Dao
@@ -43,13 +43,13 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen,
                         final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
-        searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferences(dbDataProvider));
+        searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferencesOfPreferenceHierarchy(dbDataProvider));
         _persist(searchablePreferenceScreen);
         invalidateCaches();
     }
 
     public void remove(final SearchablePreferenceScreenEntity screen) {
-        searchablePreferenceDAO.remove(screen.getAllPreferences(this));
+        searchablePreferenceDAO.remove(screen.getAllPreferencesOfPreferenceHierarchy(this));
         _remove(screen);
         invalidateCaches();
     }
@@ -60,7 +60,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     }
 
     @Override
-    public Set<SearchablePreferenceEntity> getAllPreferences(final SearchablePreferenceScreenEntity screen) {
+    public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final SearchablePreferenceScreenEntity screen) {
         return Maps.get(getAllPreferencesBySearchablePreferenceScreen(), screen).orElseThrow();
     }
 
@@ -86,7 +86,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceScreenEntity")
-    protected abstract List<SearchablePreferenceScreenAndAllPreferences> _getSearchablePreferenceScreenAndAllPreferences();
+    protected abstract List<SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy> _getSearchablePreferenceScreenAndAllPreferences();
 
     @Query("DELETE FROM SearchablePreferenceScreenEntity")
     protected abstract void _removeAll();

@@ -48,7 +48,7 @@ public class SearchablePreferenceScreenEntitiesToGraphConverter {
     private static Set<SearchablePreferenceEntity> getSourcePreferences(final SearchablePreferenceScreenEntity targetScreen,
                                                                         final DbDataProvider dbDataProvider) {
         return targetScreen
-                .getAllPreferences(dbDataProvider)
+                .getAllPreferencesOfPreferenceHierarchy(dbDataProvider)
                 .stream()
                 .map(preference -> preference.getPredecessor(dbDataProvider))
                 .flatMap(Optional::stream)

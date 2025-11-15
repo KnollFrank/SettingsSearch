@@ -71,7 +71,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
                                                         .createTransformer(searchablePreferenceEntities)
                                                         .transform(
                                                                 ChildrenByPreferenceProvider.getChildrenByPreference(
-                                                                        screenToConvertToEntity.allPreferences())))
+                                                                        screenToConvertToEntity.allPreferencesOfPreferenceHierarchy())))
                                         .build())
                         .build());
     }
@@ -82,7 +82,7 @@ public class SearchablePreferenceScreenToSearchablePreferenceScreenEntityConvert
             final Optional<SearchablePreferenceEntity> predecessorEntity) {
         final Map<SearchablePreference, SearchablePreference> parentPreferenceByPreference = ParentPreferenceByPreferenceProvider.getParentPreferenceByPreference(screenToConvertToEntity);
         return toEntities(
-                screenToConvertToEntity.allPreferences(),
+                screenToConvertToEntity.allPreferencesOfPreferenceHierarchy(),
                 preference ->
                         SearchablePreferenceToSearchablePreferenceEntityConverter.toEntity(
                                 preference,

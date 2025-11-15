@@ -160,7 +160,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
                 .flatMap(
                         searchablePreferenceScreen ->
                                 searchablePreferenceScreen
-                                        .allPreferences()
+                                        .allPreferencesOfPreferenceHierarchy()
                                         .stream()
                                         .filter(predicate))
                 .collect(MoreCollectors.onlyElement());

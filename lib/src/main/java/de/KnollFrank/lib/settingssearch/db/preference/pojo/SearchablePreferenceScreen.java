@@ -10,10 +10,10 @@ public record SearchablePreferenceScreen(String id,
                                          Class<? extends PreferenceFragmentCompat> host,
                                          Optional<String> title,
                                          Optional<String> summary,
-                                         Set<SearchablePreference> allPreferences) {
+                                         Set<SearchablePreference> allPreferencesOfPreferenceHierarchy) {
 
     public SearchablePreferenceScreen {
-        allPreferences.forEach(preference -> preference.setHost(this));
+        allPreferencesOfPreferenceHierarchy.forEach(preference -> preference.setHost(this));
     }
 
     @Override

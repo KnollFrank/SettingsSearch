@@ -88,9 +88,9 @@ class EntityGraphEquality {
                 .add("title=" + entity.title())
                 .add("summary=" + entity.summary())
                 .add("graphId=" + new LocaleConverter().doBackward(entity.graphId()))
-                .add("allPreferences=" +
+                .add("allPreferencesOfPreferenceHierarchy=" +
                              toString(
-                                     entity.getAllPreferences(dbDataProvider),
+                                     entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider),
                                      dbDataProvider))
                 .toString();
     }

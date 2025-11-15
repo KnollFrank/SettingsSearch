@@ -37,7 +37,7 @@ public class SearchablePreferenceScreenDAOTest extends PreferencesDatabaseTest {
         dao.persist(screen.entity(), screen.dbDataProvider());
         final SearchablePreferenceEntity preference =
                 SearchablePreferenceEntities
-                        .findPreferenceByKey(screen.entity().getAllPreferences(dao), data.PARENT_KEY())
+                        .findPreferenceByKey(screen.entity().getAllPreferencesOfPreferenceHierarchy(dao), data.PARENT_KEY())
                         .orElseThrow();
 
         // When

@@ -16,6 +16,6 @@ public class SearchablePreferenceScreenEquality {
         assertThat(actual.host(), Matchers.<Class<? extends PreferenceFragmentCompat>>is(expected.host()));
         assertThat(actual.title(), is(expected.title()));
         assertThat(actual.summary(), is(expected.summary()));
-        SearchablePreferenceEquality.assertActualEqualsExpected(actual.allPreferences(), expected.allPreferences());
+        SearchablePreferenceEquality.assertActualEqualsExpected(actual.allPreferencesOfPreferenceHierarchy(), expected.allPreferencesOfPreferenceHierarchy());
     }
 }

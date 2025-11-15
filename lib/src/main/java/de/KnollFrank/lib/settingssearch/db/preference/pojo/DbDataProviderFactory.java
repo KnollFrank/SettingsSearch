@@ -18,8 +18,8 @@ public class DbDataProviderFactory {
             }
 
             @Override
-            public Set<SearchablePreferenceEntity> getAllPreferences(final SearchablePreferenceScreenEntity screen) {
-                return screenDbDataProvider.getAllPreferences(screen);
+            public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final SearchablePreferenceScreenEntity screen) {
+                return screenDbDataProvider.getAllPreferencesOfPreferenceHierarchy(screen);
             }
 
             @Override
@@ -62,7 +62,7 @@ public class DbDataProviderFactory {
         return new SearchablePreferenceScreenEntity.DbDataProvider() {
 
             @Override
-            public Set<SearchablePreferenceEntity> getAllPreferences(final SearchablePreferenceScreenEntity screen) {
+            public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final SearchablePreferenceScreenEntity screen) {
                 return Maps
                         .get(dbDataProviderData.allPreferencesBySearchablePreferenceScreen(), screen)
                         .orElseThrow();

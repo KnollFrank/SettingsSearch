@@ -31,7 +31,7 @@ class PredecessorProviderFactory {
     private static Map<SearchablePreferenceEntity, SearchablePreference> getPredecessorByEntity(
             final SearchablePreferenceScreen predecessorOfEntities,
             final Set<SearchablePreferenceEntity> entities) {
-        final Map<String, SearchablePreference> predecessorById = getSearchablePreferenceById(predecessorOfEntities.allPreferences());
+        final Map<String, SearchablePreference> predecessorById = getSearchablePreferenceById(predecessorOfEntities.allPreferencesOfPreferenceHierarchy());
         return entities
                 .stream()
                 .collect(

@@ -52,7 +52,7 @@ public class PojoGraphEquality {
                 .add("host=" + searchablePreferenceScreen.host())
                 .add("title=" + searchablePreferenceScreen.title())
                 .add("summary=" + searchablePreferenceScreen.summary())
-                .add("allPreferences=" + toString(searchablePreferenceScreen.allPreferences()))
+                .add("allPreferencesOfPreferenceHierarchy=" + toString(searchablePreferenceScreen.allPreferencesOfPreferenceHierarchy()))
                 .toString();
     }
 

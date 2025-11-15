@@ -6,7 +6,7 @@ public record DetachedSearchablePreferenceScreenEntity(
         SearchablePreferenceScreenEntity screen,
         DbDataProviderData dbDataProviderData) {
 
-    public Set<SearchablePreferenceEntity> getAllPreferences() {
-        return screen.getAllPreferences(DbDataProviderFactory.createDbDataProvider(dbDataProviderData));
+    public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy() {
+        return screen.getAllPreferencesOfPreferenceHierarchy(DbDataProviderFactory.createDbDataProvider(dbDataProviderData));
     }
 }

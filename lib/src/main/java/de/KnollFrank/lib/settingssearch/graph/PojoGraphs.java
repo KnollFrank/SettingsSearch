@@ -20,7 +20,7 @@ public class PojoGraphs {
         return Sets.union(
                 preferenceScreens
                         .stream()
-                        .map(SearchablePreferenceScreen::allPreferences)
+                        .map(SearchablePreferenceScreen::allPreferencesOfPreferenceHierarchy)
                         .collect(Collectors.toSet()));
     }
 }

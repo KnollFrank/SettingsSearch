@@ -19,13 +19,13 @@ public record SearchablePreferenceScreenEntity(@PrimaryKey @NonNull String id,
 
     public interface DbDataProvider {
 
-        Set<SearchablePreferenceEntity> getAllPreferences(SearchablePreferenceScreenEntity screen);
+        Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(SearchablePreferenceScreenEntity screen);
 
         SearchablePreferenceScreenEntity getHost(SearchablePreferenceEntity preference);
     }
 
-    public Set<SearchablePreferenceEntity> getAllPreferences(final DbDataProvider dbDataProvider) {
-        return dbDataProvider.getAllPreferences(this);
+    public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final DbDataProvider dbDataProvider) {
+        return dbDataProvider.getAllPreferencesOfPreferenceHierarchy(this);
     }
 
     @Override
