@@ -114,7 +114,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                         searchDatabaseConfig.fragmentFactory,
                         FragmentInitializerFactory.createFragmentInitializer(
                                 activityContext,
-                                FRAGMENT_CONTAINER_VIEW_ID));
+                                FRAGMENT_CONTAINER_VIEW_ID,
+                                searchDatabaseConfig.preferenceSearchablePredicate));
         final Fragments instantiateAndInitializeFragment =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),

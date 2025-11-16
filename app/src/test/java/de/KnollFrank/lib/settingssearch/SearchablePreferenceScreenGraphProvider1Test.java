@@ -172,7 +172,6 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
                 new PreferenceScreenWithHostProvider(
                         InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity),
-                        PreferenceFragmentCompat::getPreferenceScreen,
                         new PrincipalAndProxyProvider(ImmutableBiMap.of()));
         return new SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(
                 createSearchablePreferenceScreenGraphProvider(

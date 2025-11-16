@@ -1,11 +1,11 @@
-package de.KnollFrank.lib.settingssearch.search;
+package de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
-public class PreferenceVisibleAndSearchablePredicate implements PreferenceSearchablePredicate {
+class PreferenceVisibleAndSearchablePredicate implements PreferenceSearchablePredicate {
 
     private final PreferenceSearchablePredicate delegate;
 

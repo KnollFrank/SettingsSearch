@@ -25,7 +25,6 @@ public class PojoGraphTestFactory {
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
                 new PreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
-                        PreferenceFragmentCompat::getPreferenceScreen,
                         new PrincipalAndProxyProvider(ImmutableBiMap.of()));
         PreferenceScreenGraphProvider preferenceScreenGraphProvider =
                 PreferenceScreenGraphProviderFactory

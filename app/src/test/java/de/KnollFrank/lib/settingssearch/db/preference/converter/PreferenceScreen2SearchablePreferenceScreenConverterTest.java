@@ -216,7 +216,8 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                                 createFragmentFactoryReturning(fragment),
                                 FragmentInitializerFactory.createFragmentInitializer(
                                         activity,
-                                        TestActivity.FRAGMENT_CONTAINER_VIEW))),
+                                        TestActivity.FRAGMENT_CONTAINER_VIEW,
+                                        (preference, hostOfPreference) -> preference.isVisible()))),
                 activity);
     }
 

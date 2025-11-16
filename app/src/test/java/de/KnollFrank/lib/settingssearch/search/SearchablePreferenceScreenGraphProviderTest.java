@@ -20,7 +20,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
@@ -90,11 +89,9 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                         createFragmentFactoryReturning(preferenceFragment),
                                         FragmentInitializerFactory.createFragmentInitializer(
                                                 fragmentActivity,
-                                                TestActivity.FRAGMENT_CONTAINER_VIEW))),
+                                                TestActivity.FRAGMENT_CONTAINER_VIEW,
+                                                (preference, hostOfPreference) -> preference.isVisible()))),
                         fragmentActivity),
-                new SearchablePreferenceScreenProvider(
-                        new PreferenceVisibleAndSearchablePredicate(
-                                (preference, hostOfPreference) -> true)),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 
@@ -115,7 +112,8 @@ public class SearchablePreferenceScreenGraphProviderTest {
                                                 new SearchableDialogInfoOfProvider(
                                                         PreferenceDialogsFactory.createPreferenceDialogs(
                                                                 fragmentActivity,
-                                                                TestActivity.FRAGMENT_CONTAINER_VIEW),
+                                                                TestActivity.FRAGMENT_CONTAINER_VIEW,
+                                                                (preference, hostOfPreference) -> preference.isVisible()),
                                                         (preference, hostOfPreference) -> Optional.empty())),
                                         IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                         new DefaultPreferenceFragmentIdProvider()),

@@ -12,6 +12,7 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.search.MergedPreferenceScreenDataRepositoryProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
@@ -24,7 +25,8 @@ public class CreateSearchDatabaseTaskProvider {
             final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final DAOProvider daoProvider,
-            final PersistableBundle configuration) {
+            final PersistableBundle configuration,
+            final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activity.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
@@ -39,7 +41,8 @@ public class CreateSearchDatabaseTaskProvider {
                                 activity,
                                 progressUpdateListener,
                                 daoProvider,
-                                configuration);
+                                configuration,
+                                preferenceSearchablePredicate);
                         return daoProvider;
                     } finally {
                         EspressoIdlingResource.decrement();
@@ -54,11 +57,12 @@ public class CreateSearchDatabaseTaskProvider {
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener,
             final DAOProvider daoProvider,
-            final PersistableBundle configuration) {
+            final PersistableBundle configuration,
+            final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(
-                        FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID),
-                        PreferenceDialogsFactory.createPreferenceDialogs(activity, FRAGMENT_CONTAINER_VIEW_ID),
+                        FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID, preferenceSearchablePredicate),
+                        PreferenceDialogsFactory.createPreferenceDialogs(activity, FRAGMENT_CONTAINER_VIEW_ID, preferenceSearchablePredicate),
                         activity,
                         daoProvider,
                         progressUpdateListener)

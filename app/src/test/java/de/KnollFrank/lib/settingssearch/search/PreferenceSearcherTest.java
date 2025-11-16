@@ -45,7 +45,6 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
@@ -780,7 +779,8 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                         fragmentFactory,
                         FragmentInitializerFactory.createFragmentInitializer(
                                 fragmentActivity,
-                                TestActivity.FRAGMENT_CONTAINER_VIEW));
+                                TestActivity.FRAGMENT_CONTAINER_VIEW,
+                                preferenceSearchablePredicate));
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
@@ -788,9 +788,6 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
                 new PreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
-                        new SearchablePreferenceScreenProvider(
-                                new PreferenceVisibleAndSearchablePredicate(
-                                        preferenceSearchablePredicate)),
                         principalAndProxyProvider);
         final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
                 new SearchablePreferenceScreenGraphProvider(
@@ -805,7 +802,8 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                                                         new SearchableDialogInfoOfProvider(
                                                                 PreferenceDialogsFactory.createPreferenceDialogs(
                                                                         fragmentActivity,
-                                                                        TestActivity.FRAGMENT_CONTAINER_VIEW),
+                                                                        TestActivity.FRAGMENT_CONTAINER_VIEW,
+                                                                        preferenceSearchablePredicate),
                                                                 preferenceDialogAndSearchableInfoProvider)),
                                                 IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                                 preferenceFragmentIdProvider),

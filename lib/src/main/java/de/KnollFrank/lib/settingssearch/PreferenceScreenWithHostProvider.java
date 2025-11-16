@@ -10,14 +10,11 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 public class PreferenceScreenWithHostProvider {
 
     private final InstantiateAndInitializeFragment instantiateAndInitializeFragment;
-    private final PreferenceScreenProvider preferenceScreenProvider;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
 
     public PreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-                                            final PreferenceScreenProvider preferenceScreenProvider,
                                             final PrincipalAndProxyProvider principalAndProxyProvider) {
         this.instantiateAndInitializeFragment = instantiateAndInitializeFragment;
-        this.preferenceScreenProvider = preferenceScreenProvider;
         this.principalAndProxyProvider = principalAndProxyProvider;
     }
 
@@ -42,7 +39,7 @@ public class PreferenceScreenWithHostProvider {
 
     private PreferenceScreenWithHost getPreferenceScreenWithHost(final PreferenceFragmentCompat preferenceFragment) {
         return new PreferenceScreenWithHost(
-                preferenceScreenProvider.getPreferenceScreen(preferenceFragment),
+                preferenceFragment.getPreferenceScreen(),
                 preferenceFragment);
     }
 }

@@ -56,7 +56,7 @@ public class SearchDatabaseConfig {
         this.rootPreferenceFragmentOfActivityProvider = rootPreferenceFragmentOfActivityProvider;
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.computePreferencesListener = computePreferencesListener;
-        this.preferenceSearchablePredicate = preferenceSearchablePredicate;
+        this.preferenceSearchablePredicate = new PreferenceVisibleAndSearchablePredicate(preferenceSearchablePredicate);
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.activityInitializerByActivity = activityInitializerByActivity;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;

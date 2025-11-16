@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentManager;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
@@ -21,7 +20,6 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
-import de.KnollFrank.lib.settingssearch.search.PreferenceVisibleAndSearchablePredicate;
 
 public class SearchablePreferenceScreenGraphProviderFactory {
 
@@ -58,7 +56,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                         new PreferenceScreen2SearchablePreferenceScreenConverter(
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,
-                                        PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId),
+                                        PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId, searchDatabaseConfig.preferenceSearchablePredicate),
                                         IdGeneratorFactory.createIdGeneratorStartingAt(1))),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
@@ -68,10 +66,9 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                                         FragmentInitializerFactory.createFragmentInitializer(
                                                 childFragmentManager,
                                                 containerViewId,
-                                                OnUiThreadRunnerFactory.fromActivity(fragmentActivity)),
+                                                OnUiThreadRunnerFactory.fromActivity(fragmentActivity),
+                                                searchDatabaseConfig.preferenceSearchablePredicate),
                                         context),
-                                new SearchablePreferenceScreenProvider(
-                                        new PreferenceVisibleAndSearchablePredicate(searchDatabaseConfig.preferenceSearchablePredicate)),
                                 searchDatabaseConfig.principalAndProxyProvider),
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,

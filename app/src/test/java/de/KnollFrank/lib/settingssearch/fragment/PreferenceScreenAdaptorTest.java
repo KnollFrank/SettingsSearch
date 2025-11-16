@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch;
+package de.KnollFrank.lib.settingssearch.fragment;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -21,33 +21,33 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenProviderTest {
+public class PreferenceScreenAdaptorTest {
 
     @Test
     public void test_getPreferenceScreen_searchablePreference() {
         test_getPreferenceScreen(
-                SearchablePreferenceScreenProviderTest::addSinglePreferencesScreen,
+                PreferenceScreenAdaptorTest::addSinglePreferencesScreen,
                 true);
     }
 
     @Test
     public void test_getPreferenceScreen_nonSearchablePreference() {
         test_getPreferenceScreen(
-                SearchablePreferenceScreenProviderTest::addSinglePreferencesScreen,
+                PreferenceScreenAdaptorTest::addSinglePreferencesScreen,
                 false);
     }
 
     @Test
     public void test_getPreferenceScreen_nestedSearchablePreference() {
         test_getPreferenceScreen(
-                SearchablePreferenceScreenProviderTest::addNestedPreference2Screen,
+                PreferenceScreenAdaptorTest::addNestedPreference2Screen,
                 true);
     }
 
     @Test
     public void test_getPreferenceScreen_nestedNonSearchablePreference() {
         test_getPreferenceScreen(
-                SearchablePreferenceScreenProviderTest::addNestedPreference2Screen,
+                PreferenceScreenAdaptorTest::addNestedPreference2Screen,
                 false);
     }
 
@@ -73,23 +73,22 @@ public class SearchablePreferenceScreenProviderTest {
                                                         screen,
                                                         context)),
                                 activity);
-                final SearchablePreferenceScreenProvider searchablePreferenceScreenProvider =
-                        new SearchablePreferenceScreenProvider(
-                                new PreferenceSearchablePredicate() {
+                final PreferenceSearchablePredicate preferenceSearchablePredicate =
+                        new PreferenceSearchablePredicate() {
 
-                                    @Override
-                                    public boolean isPreferenceSearchable(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
-                                        return keyOfSearchableOrNonSearchablePreference.equals(preference.getKey()) ?
-                                                preferenceSearchable :
-                                                true;
-                                    }
-                                });
+                            @Override
+                            public boolean isPreferenceSearchable(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
+                                return keyOfSearchableOrNonSearchablePreference.equals(preference.getKey()) ?
+                                        preferenceSearchable :
+                                        true;
+                            }
+                        };
 
                 // When
-                final PreferenceScreen preferenceScreen = searchablePreferenceScreenProvider.getPreferenceScreen(preferenceFragment);
+                PreferenceScreenAdaptor.removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(preferenceFragment, preferenceSearchablePredicate);
 
                 // Then
-                assertThat(preferenceScreen.findPreference(keyOfSearchableOrNonSearchablePreference) != null, is(preferenceSearchable));
+                assertThat(preferenceFragment.getPreferenceScreen().findPreference(keyOfSearchableOrNonSearchablePreference) != null, is(preferenceSearchable));
             });
         }
     }
