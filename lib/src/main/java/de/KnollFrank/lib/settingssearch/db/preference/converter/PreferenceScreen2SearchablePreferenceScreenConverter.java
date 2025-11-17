@@ -6,6 +6,7 @@ import androidx.preference.PreferenceScreen;
 
 import com.google.common.collect.BiMap;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -31,6 +32,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverter {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 preference2SearchablePreferenceConverter.convertPreferences(
                         Preferences.getImmediateChildren(preferenceScreen),
+                        List.of(),
                         id,
                         hostOfPreferenceScreen,
                         predecessorOfPreferenceScreen,

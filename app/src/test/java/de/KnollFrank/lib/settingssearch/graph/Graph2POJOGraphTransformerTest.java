@@ -64,12 +64,12 @@ public class Graph2POJOGraphTransformerTest extends PreferencesDatabaseTest {
                 final String twoNodeScreen2Id = "graph-screen2";
                 final SearchablePreferenceScreenGraphTestFactory.Data _data =
                         new SearchablePreferenceScreenGraphTestFactory.Data(
-                                addLocaleToId(locale, "5"),
-                                addLocaleToId(locale, "4"),
+                                addLocaleToId(locale, twoNodeScreen2Id + "-0"),
+                                addLocaleToId(locale, twoNodeScreen1Id + "-1"),
                                 "parentKey",
-                                addLocaleToId(locale, "1"),
-                                addLocaleToId(locale, "2"),
-                                addLocaleToId(locale, "3"),
+                                addLocaleToId(locale, twoNodeScreen1Id + "-0"),
+                                addLocaleToId(locale, twoNodeScreen1Id + "-0-0"),
+                                addLocaleToId(locale, twoNodeScreen1Id + "-0-1"),
                                 addLocaleToId(locale, "singleNodeGraph-screen1"),
                                 addLocaleToId(locale, twoNodeScreen1Id),
                                 addLocaleToId(locale, twoNodeScreen2Id));

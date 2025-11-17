@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -72,6 +73,7 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
         return preference2SearchablePreferenceConverter
                 .convertPreference(
                         preference,
+                        List.of(),
                         "-1",
                         hostOfPreference,
                         Optional.empty(),

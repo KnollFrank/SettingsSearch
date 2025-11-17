@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.addLocaleToId;
 import static de.KnollFrank.lib.settingssearch.test.SearchablePreferenceScreenEquality.assertActualEqualsExpected;
 
 import android.content.Context;
@@ -144,7 +143,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
             final Locale locale) {
         final SearchablePreference child1 =
                 new SearchablePreference(
-                        addLocaleToId(locale, "2"),
+                        id + "-0-0",
                         keyOfChild1,
                         Optional.empty(),
                         Optional.empty(),
@@ -160,7 +159,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty());
         final SearchablePreference child2 =
                 new SearchablePreference(
-                        addLocaleToId(locale, "3"),
+                        id + "-0-1",
                         keyOfChild2,
                         Optional.empty(),
                         Optional.empty(),
@@ -176,7 +175,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                         Optional.empty());
         final SearchablePreference parent =
                 new SearchablePreference(
-                        addLocaleToId(locale, "1"),
+                        id + "-0",
                         parentKey,
                         Optional.empty(),
                         Optional.empty(),
