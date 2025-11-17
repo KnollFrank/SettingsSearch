@@ -30,7 +30,6 @@ import java.util.function.Predicate;
 
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
@@ -130,8 +129,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
                                         (preference, hostOfPreference) -> Optional.empty(),
                                         new SearchableInfoAndDialogInfoProvider(
                                                 preference -> Optional.empty(),
-                                                (preference, hostOfPreference) -> Optional.empty()),
-                                        IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                                (preference, hostOfPreference) -> Optional.empty()))),
                         new DefaultPreferenceFragmentIdProvider()),
                 PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                         preferenceScreenWithHostProvider,

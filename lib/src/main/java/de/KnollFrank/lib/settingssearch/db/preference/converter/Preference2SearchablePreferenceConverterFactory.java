@@ -10,15 +10,13 @@ public class Preference2SearchablePreferenceConverterFactory {
 
     public static Preference2SearchablePreferenceConverter createPreference2SearchablePreferenceConverter(
             final SearchDatabaseConfig searchDatabaseConfig,
-            final PreferenceDialogs preferenceDialogs,
-            final IdGenerator idGenerator) {
+            final PreferenceDialogs preferenceDialogs) {
         return new Preference2SearchablePreferenceConverter(
                 new IconProvider(searchDatabaseConfig.iconResourceIdProvider),
                 new SearchableInfoAndDialogInfoProvider(
                         searchDatabaseConfig.searchableInfoProvider,
                         new SearchableDialogInfoOfProvider(
                                 preferenceDialogs,
-                                searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider)),
-                idGenerator);
+                                searchDatabaseConfig.preferenceDialogAndSearchableInfoProvider)));
     }
 }

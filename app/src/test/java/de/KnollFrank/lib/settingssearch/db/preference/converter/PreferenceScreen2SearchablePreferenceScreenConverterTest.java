@@ -92,8 +92,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
                 (preference, hostOfPreference) -> Optional.empty(),
                 new SearchableInfoAndDialogInfoProvider(
                         preference -> Optional.empty(),
-                        (preference, hostOfPreference) -> Optional.empty()),
-                IdGeneratorFactory.createIdGeneratorStartingAt(1));
+                        (preference, hostOfPreference) -> Optional.empty()));
     }
 
     private static PreferenceFragmentCompat createPreferenceFragmentHavingParentWithTwoChildren(

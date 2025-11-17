@@ -30,15 +30,11 @@ public class Preference2SearchablePreferenceConverter {
 
     private final IconProvider iconProvider;
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
-    // FK-TODO: remove idGenerator
-    private final IdGenerator idGenerator;
 
     public Preference2SearchablePreferenceConverter(final IconProvider iconProvider,
-                                                    final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider,
-                                                    final IdGenerator idGenerator) {
+                                                    final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
         this.iconProvider = iconProvider;
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
-        this.idGenerator = idGenerator;
     }
 
     public record SearchablePreferenceWithMap(SearchablePreference searchablePreference,

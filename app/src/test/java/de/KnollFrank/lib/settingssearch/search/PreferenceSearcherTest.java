@@ -48,7 +48,6 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.IdGeneratorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -804,8 +803,7 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                                                                         fragmentActivity,
                                                                         TestActivity.FRAGMENT_CONTAINER_VIEW,
                                                                         preferenceSearchablePredicate),
-                                                                preferenceDialogAndSearchableInfoProvider)),
-                                                IdGeneratorFactory.createIdGeneratorStartingAt(1))),
+                                                                preferenceDialogAndSearchableInfoProvider)))),
                                 preferenceFragmentIdProvider),
                         PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
                                 preferenceScreenWithHostProvider,
