@@ -21,33 +21,33 @@ import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class PreferenceScreenAdaptorTest {
+public class PreferenceScreenAdapterTest {
 
     @Test
     public void test_getPreferenceScreen_searchablePreference() {
         test_getPreferenceScreen(
-                PreferenceScreenAdaptorTest::addSinglePreferencesScreen,
+                PreferenceScreenAdapterTest::addSinglePreferencesScreen,
                 true);
     }
 
     @Test
     public void test_getPreferenceScreen_nonSearchablePreference() {
         test_getPreferenceScreen(
-                PreferenceScreenAdaptorTest::addSinglePreferencesScreen,
+                PreferenceScreenAdapterTest::addSinglePreferencesScreen,
                 false);
     }
 
     @Test
     public void test_getPreferenceScreen_nestedSearchablePreference() {
         test_getPreferenceScreen(
-                PreferenceScreenAdaptorTest::addNestedPreference2Screen,
+                PreferenceScreenAdapterTest::addNestedPreference2Screen,
                 true);
     }
 
     @Test
     public void test_getPreferenceScreen_nestedNonSearchablePreference() {
         test_getPreferenceScreen(
-                PreferenceScreenAdaptorTest::addNestedPreference2Screen,
+                PreferenceScreenAdapterTest::addNestedPreference2Screen,
                 false);
     }
 
@@ -85,7 +85,7 @@ public class PreferenceScreenAdaptorTest {
                         };
 
                 // When
-                PreferenceScreenAdaptor.removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(preferenceFragment, preferenceSearchablePredicate);
+                PreferenceScreenAdapter.removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(preferenceFragment, preferenceSearchablePredicate);
 
                 // Then
                 assertThat(preferenceFragment.getPreferenceScreen().findPreference(keyOfSearchableOrNonSearchablePreference) != null, is(preferenceSearchable));

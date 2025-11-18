@@ -9,7 +9,7 @@ import java.util.function.Predicate;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 
-class PreferenceScreenAdaptor {
+class PreferenceScreenAdapter {
 
     public static void removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(final PreferenceFragmentCompat preferenceFragment,
                                                                                               final PreferenceSearchablePredicate preferenceSearchablePredicate) {

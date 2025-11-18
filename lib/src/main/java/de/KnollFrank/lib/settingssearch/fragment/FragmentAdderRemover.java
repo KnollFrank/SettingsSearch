@@ -63,7 +63,7 @@ class FragmentAdderRemover {
                     public void onFragmentResumed(@NonNull final FragmentManager fragmentManager,
                                                   @NonNull final Fragment fragment) {
                         if (fragment == preferenceFragment) {
-                            PreferenceScreenAdaptor.removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(preferenceFragment, preferenceSearchablePredicate);
+                            PreferenceScreenAdapter.removeNonSearchablePreferencesFromPreferenceScreenOfPreferenceFragment(preferenceFragment, preferenceSearchablePredicate);
                         }
                     }
 
