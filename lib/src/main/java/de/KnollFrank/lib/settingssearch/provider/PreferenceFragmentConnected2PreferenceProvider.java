@@ -8,5 +8,5 @@ import java.util.Optional;
 @FunctionalInterface
 public interface PreferenceFragmentConnected2PreferenceProvider {
 
-    Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(Preference preference, final PreferenceFragmentCompat hostOfPreference);
+    Optional<Class<? extends PreferenceFragmentCompat>> getPreferenceFragmentConnected2Preference(Preference preference, PreferenceFragmentCompat hostOfPreference);
 }
