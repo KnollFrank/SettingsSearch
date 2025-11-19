@@ -78,7 +78,17 @@ tasks.register('generatePrepackagedDatabase', Exec) {
 
         mkdir -p "\$(dirname "\${absoluteLocalAssetPath}")"
         echo ">>> Apps installed. Starting test to create database..."
-        "\${adb}" shell am instrument -w -e class \${testClassName} \${appPackage}.test/androidx.test.runner.AndroidJUnitRunner
+        INSTRUMENTATION_OUTPUT=\$("\${adb}" shell am instrument -w -e class \${testClassName} \${appPackage}.test/androidx.test.runner.AndroidJUnitRunner 2>&1)
+        echo "--- Test Output Start ---"
+        echo "\${INSTRUMENTATION_OUTPUT}"
+        echo "--- Test Output End ---"
+        if echo "\${INSTRUMENTATION_OUTPUT}" | grep -q -E 'INSTRUMENTATION_CODE: 0|FAILURES!!!'; then
+            echo
+            echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            echo "!!! BUILD FAILED: Test run crashed or reported a failure. !!!"
+            echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            exit 1
+        fi
         echo ">>> Test finished. Pulling database from device to assets folder..."
         "\${adb}" exec-out run-as \${appPackage} cat "databases/\${dbNameOnDevice}" > "\${absoluteLocalAssetPath}"
         echo ">>> Cleaning up: Uninstalling apps..."
