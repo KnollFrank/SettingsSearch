@@ -1,9 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
 import org.jgrapht.Graph;
@@ -47,14 +42,8 @@ import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
 
 public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPreferenceClickListener {
 
-    public static final String BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS = "summaryOfSrcPreferenceWithExtras";
-    public static final String BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS = "summaryOfSrcPreferenceWithoutExtras";
-    public static final String KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS = "keyOfSrcPreferenceWithoutExtras";
     public static final String NON_STANDARD_LINK_TO_SECOND_FRAGMENT = "non_standard_link_to_second_fragment";
-    public static final String ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY = "addPreferenceToPreferenceFragmentWithSinglePreferenceKey";
     public static final String KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER = "keyOfPreferenceWithOnPreferenceClickListener";
-    public static final String SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS = "summary of src preference with extras";
-    public static final String SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS = "summary of src preference without extras";
     public static final String SUMMARY_CHANGING_PREFERENCE_KEY = "summaryChangingPreference";
 
     private final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
@@ -71,9 +60,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         final Locale locale = Utils.getCurrentLanguageLocale(getResources());
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
-        getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference(locale));
-        getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
-        getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
         {
             final Preference preference = getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT);
             preference.setIcon(R.drawable.face);
@@ -91,26 +77,6 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
         preference.getExtras().putBoolean(
                 preference.getKey() + ": " + src.getClass().getName() + " -> " + dst.getName(),
                 true);
-    }
-
-    private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference(final Locale locale) {
-        final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(requireContext());
-        checkBoxPreference.setKey(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
-        checkBoxPreference.setTitle("add preference to P1");
-        checkBoxPreference.setOnPreferenceClickListener(
-                preference -> {
-                    new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
-                            getPreferencesDatabase(),
-                            getPojoGraph(locale),
-                            new Configuration(
-                                    checkBoxPreference.isChecked(),
-                                    ConfigurationProvider
-                                            .getActualConfiguration(requireContext())
-                                            .summaryChangingPreference()),
-                            requireActivity());
-                    return true;
-                });
-        return checkBoxPreference;
     }
 
     private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {
@@ -216,53 +182,14 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
             show(PrefsFragmentSecond.class.getName(), preference.getExtras());
             return true;
         }
-        if (KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(preference.getKey())) {
-            show(
-                    PreferenceFragmentWithSinglePreference.class.getName(),
-                    createArguments4PreferenceWithoutExtras(preference, requireContext()));
-            return true;
-        }
         return false;
-    }
-
-    public static Bundle createArguments4PreferenceWithoutExtras(final @NonNull Preference preference,
-                                                                 final Context context) {
-        return createArguments4PreferenceWithoutExtras(preference.getSummary().toString(), context);
-    }
-
-    private static Bundle createArguments4PreferenceWithoutExtras(final String summary, final Context context) {
-        final Bundle arguments = new Bundle();
-        arguments.putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS, summary);
-        arguments.putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, false));
-        return arguments;
-    }
-
-    private Preference createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference() {
-        final Preference preference = new Preference(requireContext());
-        preference.setFragment(PreferenceFragmentWithSinglePreference.class.getName());
-        preference.setTitle("preference with extras from src to dst");
-        preference.setKey("keyOfSrcPreferenceWithExtras");
-        final String summary = SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS;
-        preference.setSummary(summary);
-        preference.getExtras().putString(BUNDLE_KEY_OF_SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS, summary);
-        return preference;
-    }
-
-    private Preference createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference() {
-        final Preference preference = new Preference(requireContext());
-        preference.setFragment(PreferenceFragmentWithSinglePreference.class.getName());
-        preference.setTitle("P1: preference without extras from src to dst");
-        preference.setKey(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS);
-        preference.setSummary(SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS);
-        return preference;
     }
 
     private void setOnPreferenceClickListeners() {
         Stream
                 .of(
                         KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER,
-                        NON_STANDARD_LINK_TO_SECOND_FRAGMENT,
-                        KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS)
+                        NON_STANDARD_LINK_TO_SECOND_FRAGMENT)
                 .<Preference>map(this::findPreference)
                 .forEach(preference -> preference.setOnPreferenceClickListener(this));
     }

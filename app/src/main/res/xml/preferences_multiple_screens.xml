@@ -165,4 +165,11 @@
         android:key="preferenceWithFragment"
         android:persistent="false"
         android:title="Preference with Fragment" />
+
+    <Preference
+        android:key="link_to_fifth_fragment"
+        android:persistent="false"
+        android:summary="some summary to fifth fragment"
+        android:title="some title to fifth fragment"
+        app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth" />
 </PreferenceScreen>

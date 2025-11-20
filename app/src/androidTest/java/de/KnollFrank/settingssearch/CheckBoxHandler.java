@@ -23,6 +23,7 @@ abstract class CheckBoxHandler {
 
             @Override
             protected void clickCheckBox() {
+                // FK-TODO: verallgemeinere den Aufruf von actionOnItemAtPosition(), denn es könnte auch ein actionOnItem()-Aufruf besser passen.
                 preferencesContainer.perform(actionOnItemAtPosition(position, click()));
             }
 

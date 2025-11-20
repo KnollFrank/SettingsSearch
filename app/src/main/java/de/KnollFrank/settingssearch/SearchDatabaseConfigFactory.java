@@ -40,6 +40,7 @@ import de.KnollFrank.settingssearch.preference.fragment.CustomDialogFragment;
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment;
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
+import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentSecond;
 
@@ -58,10 +59,10 @@ public class SearchDatabaseConfigFactory {
                                                                       final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
                                 if (PreferenceFragmentWithSinglePreference.class.equals(fragmentClass) &&
                                         src.isPresent() &&
-                                        PrefsFragmentFirst.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.orElseThrow().preference().getKey())) {
+                                        PrefsFragmentFifth.KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(src.orElseThrow().preference().getKey())) {
                                     return Classes.instantiateFragmentClass(
                                             fragmentClass,
-                                            Optional.of(PrefsFragmentFirst.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context)));
+                                            Optional.of(PrefsFragmentFifth.createArguments4PreferenceWithoutExtras(src.orElseThrow().preference(), context)));
                                 } else if (ItemFragment3.class.equals(fragmentClass) && src.isPresent() && "preferenceWithIntent3".equals(src.orElseThrow().preference().getKey())) {
                                     final Preference preference = src.orElseThrow().preference();
                                     PrefsFragmentFirst
