@@ -60,7 +60,7 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
         checkBoxPreference.setTitle("add preference to P1");
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
-                    new SearchDatabaseRootedAtPrefsFragmentFirstAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFirst(
+                    new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFifth(
                             getPreferencesDatabase(),
                             getPojoGraph(locale),
                             new Configuration(

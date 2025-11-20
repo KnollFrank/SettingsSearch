@@ -9,7 +9,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConf
 import de.KnollFrank.lib.settingssearch.db.preference.db.PrepackagedPreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphProcessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
-import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFirstAdapter;
+import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFifthAdapter;
 
 class PreferencesDatabaseFactory {
 
@@ -34,7 +34,7 @@ class PreferencesDatabaseFactory {
                                     public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph,
                                                                                         final Configuration actualConfiguration,
                                                                                         final FragmentActivity activityContext) {
-                                        return new SearchDatabaseRootedAtPrefsFragmentFirstAdapter()
+                                        return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter()
                                                 .getAdaptedGraph(
                                                         graph,
                                                         actualConfiguration,

@@ -35,7 +35,7 @@ import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 
-public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
+public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
 
     private final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
@@ -44,7 +44,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                     () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
                     edge -> new SearchablePreferenceEdge(edge.preference));
 
-    public void adaptSearchDatabaseRootedAtPrefsFragmentFirst(
+    public void adaptSearchDatabaseRootedAtPrefsFragmentFifth(
             final DAOProvider preferencesDatabase,
             final SearchablePreferenceScreenGraph graph,
             final Configuration newConfiguration,
@@ -61,6 +61,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                 activityContext.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
         final SearchablePreferenceScreen searchablePreferenceScreen = findSearchablePreferenceScreen(graph);
+        final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
                         graph.graph(),
@@ -69,11 +70,11 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                                 asPreferenceScreenWithHost(
                                         instantiateSearchablePreferenceScreen(
                                                 searchablePreferenceScreen,
-                                                graph.graph(),
-                                                SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
+                                                searchDatabaseConfig,
                                                 activityContext)),
                                 graph.locale(),
-                                activityContext));
+                                activityContext,
+                                searchDatabaseConfig));
         return new SearchablePreferenceScreenGraph(
                 newPojoGraph,
                 graph.locale(),
@@ -83,7 +84,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(
             final PreferenceScreenWithHost root,
             final Locale locale,
-            final FragmentActivity activityContext) {
+            final FragmentActivity activityContext,
+            final SearchDatabaseConfig searchDatabaseConfig) {
         return SearchablePreferenceScreenGraphProviderFactory
                 .createSearchablePreferenceScreenGraphProvider(
                         FRAGMENT_CONTAINER_VIEW_ID,
@@ -91,7 +93,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                         activityContext,
                         activityContext.getSupportFragmentManager(),
                         activityContext,
-                        SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
+                        searchDatabaseConfig,
                         locale)
                 .getSearchablePreferenceScreenGraph(root);
     }
@@ -100,7 +102,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         graphToSearchIn.graph().vertexSet(),
-                        Strings.prefixIdWithLanguage(PrefsFragmentFirst.class.getName(), graphToSearchIn.locale()))
+                        Strings.prefixIdWithLanguage(PrefsFragmentFifth.class.getName(), graphToSearchIn.locale()))
                 .orElseThrow();
     }
 
@@ -145,6 +147,26 @@ public class SearchDatabaseRootedAtPrefsFragmentFirstAdapter {
                                            instantiateAndInitializeFragment));
     }
 
+    private PreferenceFragmentCompat instantiateSearchablePreferenceScreen(
+            final SearchablePreferenceScreen searchablePreferenceScreen,
+            final SearchDatabaseConfig searchDatabaseConfig,
+            final FragmentActivity activityContext) {
+        final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
+                new FragmentFactoryAndInitializer(
+                        searchDatabaseConfig.fragmentFactory,
+                        FragmentInitializerFactory.createFragmentInitializer(
+                                activityContext,
+                                FRAGMENT_CONTAINER_VIEW_ID,
+                                searchDatabaseConfig.preferenceSearchablePredicate));
+        return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
+                searchablePreferenceScreen.host(),
+                // FK-FIXME: nicht Optional.empty(), sondern etwas mit app_mode_key=car
+                Optional.empty(),
+                activityContext,
+                new Fragments(
+                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
+                        activityContext));
+    }
     private Optional<PreferencePath> getPreferencePathLeadingToSearchablePreferenceScreen(
             final SearchablePreferenceScreen searchablePreferenceScreen,
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
