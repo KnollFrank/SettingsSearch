@@ -25,12 +25,12 @@ class PreferenceScreenGraphFactory {
         return new VertexSetListener<>() {
 
             @Override
-            public void vertexAdded(final GraphVertexChangeEvent<PreferenceScreenWithHost> e) {
-                preferenceScreenGraphListener.preferenceScreenWithHostAdded(e.getVertex());
+            public void vertexAdded(final GraphVertexChangeEvent<PreferenceScreenWithHost> graphVertexChangeEvent) {
+                preferenceScreenGraphListener.preferenceScreenWithHostAdded(graphVertexChangeEvent.getVertex());
             }
 
             @Override
-            public void vertexRemoved(final GraphVertexChangeEvent<PreferenceScreenWithHost> e) {
+            public void vertexRemoved(final GraphVertexChangeEvent<PreferenceScreenWithHost> graphVertexChangeEvent) {
             }
         };
     }
