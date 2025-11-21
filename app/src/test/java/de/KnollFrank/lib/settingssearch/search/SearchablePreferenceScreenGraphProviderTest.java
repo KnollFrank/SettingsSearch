@@ -80,7 +80,9 @@ public class SearchablePreferenceScreenGraphProviderTest {
         }
     }
 
-    private static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final TestActivity fragmentActivity, final PreferenceFragmentCompat preferenceFragment) {
+    private static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(
+            final TestActivity fragmentActivity,
+            final PreferenceFragmentCompat preferenceFragment) {
         return new PreferenceScreenWithHostProvider(
                 new Fragments(
                         new FragmentFactoryAndInitializerWithCache(
