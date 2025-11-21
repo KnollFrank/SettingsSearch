@@ -32,13 +32,10 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPrefe
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -94,7 +91,6 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
                                         result.preferenceScreenWithHost());
 
                 // Then
-                makeGetPreferencePathWorkOnGraph(pojoGraph, preferencesDatabase, Locale.GERMAN);
                 final SearchablePreference preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3ConnectedToFragment4.class,
@@ -231,15 +227,5 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
                     "fourth screen",
                     List.of());
         }
-    }
-
-    public static void makeGetPreferencePathWorkOnGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-                                                        final PreferencesDatabase preferencesDatabase,
-                                                        final Locale locale) {
-        preferencesDatabase.searchablePreferenceScreenGraphDAO().persist(
-                new SearchablePreferenceScreenGraph(
-                        graph,
-                        locale,
-                        PersistableBundleTestFactory.createSomePersistableBundle()));
     }
 }
