@@ -171,5 +171,12 @@
         android:persistent="false"
         android:summary="some summary to fifth fragment"
         android:title="some title to fifth fragment"
-        app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth" />
+        app:fragment="de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth">
+        <extra
+            android:name="some_string_extra"
+            android:value="hello world" />
+        <extra
+            android:name="some_boolean_extra"
+            android:value="true" />
+    </Preference>
 </PreferenceScreen>

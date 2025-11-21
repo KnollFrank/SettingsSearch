@@ -15,10 +15,10 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphUtils;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
@@ -70,6 +70,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
                                 asPreferenceScreenWithHost(
                                         instantiateSearchablePreferenceScreen(
                                                 searchablePreferenceScreen,
+                                                graph.graph(),
                                                 searchDatabaseConfig,
                                                 activityContext)),
                                 graph.locale(),
@@ -102,7 +103,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         graphToSearchIn.graph().vertexSet(),
-                        Strings.prefixIdWithLanguage(PrefsFragmentFifth.class.getName(), graphToSearchIn.locale()))
+                        "en-de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth Bundle[{some_string_extra=hello world, some_boolean_extra=true}]") // Strings.prefixIdWithLanguage(PrefsFragmentFifth.class.getName(), graphToSearchIn.locale()))
                 .orElseThrow();
     }
 
@@ -131,9 +132,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
                         searchDatabaseConfig.principalAndProxyProvider);
         // FK-TODO: PreferencePathNavigator should be able to navigate an empty PreferencePath simply by instantiating the root preference fragment.
         return this
-                .getPreferencePathLeadingToSearchablePreferenceScreen(
-                        searchablePreferenceScreen,
-                        graph)
+                .getPreferencePath(searchablePreferenceScreen)
                 .map(preferencePath ->
                              (PreferenceFragmentCompat)
                                      preferencePathNavigator
@@ -147,34 +146,12 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
                                            instantiateAndInitializeFragment));
     }
 
-    private PreferenceFragmentCompat instantiateSearchablePreferenceScreen(
-            final SearchablePreferenceScreen searchablePreferenceScreen,
-            final SearchDatabaseConfig searchDatabaseConfig,
-            final FragmentActivity activityContext) {
-        final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
-                new FragmentFactoryAndInitializer(
-                        searchDatabaseConfig.fragmentFactory,
-                        FragmentInitializerFactory.createFragmentInitializer(
-                                activityContext,
-                                FRAGMENT_CONTAINER_VIEW_ID,
-                                searchDatabaseConfig.preferenceSearchablePredicate));
-        return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(
-                searchablePreferenceScreen.host(),
-                // FK-FIXME: nicht Optional.empty(), sondern etwas mit app_mode_key=car
-                Optional.empty(),
-                activityContext,
-                new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
-                        activityContext));
-    }
-    private Optional<PreferencePath> getPreferencePathLeadingToSearchablePreferenceScreen(
-            final SearchablePreferenceScreen searchablePreferenceScreen,
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        return graph
-                .incomingEdgesOf(searchablePreferenceScreen)
+    private Optional<PreferencePath> getPreferencePath(final SearchablePreferenceScreen searchablePreferenceScreen) {
+        return searchablePreferenceScreen
+                .allPreferencesOfPreferenceHierarchy()
                 .stream()
-                .findFirst()
-                .map(searchablePreferenceEdge -> searchablePreferenceEdge.preference.getPreferencePath());
+                .findAny()
+                .map(SearchablePreference::getPreferencePath);
     }
 
     private PreferenceScreenWithHost asPreferenceScreenWithHost(final PreferenceFragmentCompat preferenceFragment) {
