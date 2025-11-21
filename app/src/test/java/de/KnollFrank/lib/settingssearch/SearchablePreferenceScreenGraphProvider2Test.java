@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.configureConnectedPreferencesOfFragment;
-import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
+import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByTitle;
 import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider;
 
 import android.os.Bundle;
@@ -50,7 +50,7 @@ public class SearchablePreferenceScreenGraphProvider2Test {
         // Then
         assertThat(
                 preferenceScreens,
-                is(Set.of(getPreferenceScreenByName(preferenceScreens, "first screen"))));
+                is(Set.of(getPreferenceScreenByTitle(preferenceScreens, "first screen"))));
     }
 
     public static class FragmentConnectedToNonPreferenceFragment extends PreferenceFragmentCompat {

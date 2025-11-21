@@ -30,12 +30,12 @@ class PreferenceScreensProviderTestHelper {
         fragment.setPreferenceScreen(screen);
     }
 
-    public static SearchablePreferenceScreen getPreferenceScreenByName(
+    public static SearchablePreferenceScreen getPreferenceScreenByTitle(
             final Set<SearchablePreferenceScreen> preferenceScreens,
-            final String name) {
+            final String title) {
         return preferenceScreens
                 .stream()
-                .filter(preferenceScreen -> preferenceScreen.title().filter(name::equals).isPresent())
+                .filter(preferenceScreen -> preferenceScreen.title().filter(title::equals).isPresent())
                 .findFirst()
                 .orElseThrow();
     }

@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByName;
+import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByTitle;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emptyComputePreferencesListener;
 
 import android.os.Bundle;
@@ -68,10 +68,10 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
                 MatcherAssert.assertThat(
                         preferenceScreens,
                         Matchers.hasItems(
-                                getPreferenceScreenByName(preferenceScreens, "first screen"),
-                                getPreferenceScreenByName(preferenceScreens, "second screen"),
-                                getPreferenceScreenByName(preferenceScreens, "third screen"),
-                                getPreferenceScreenByName(preferenceScreens, "fourth screen")));
+                                getPreferenceScreenByTitle(preferenceScreens, "first screen"),
+                                getPreferenceScreenByTitle(preferenceScreens, "second screen"),
+                                getPreferenceScreenByTitle(preferenceScreens, "third screen"),
+                                getPreferenceScreenByTitle(preferenceScreens, "fourth screen")));
             });
         }
     }

@@ -699,35 +699,36 @@ public class PreferenceSearcherTest extends PreferencesDatabaseTest {
                            final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
                            final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(fragmentActivity -> {
-                // Given
-                final Locale locale = Locale.GERMAN;
-                final MergedPreferenceScreen mergedPreferenceScreen =
-                        getMergedPreferenceScreen(
-                                preferenceFragment,
-                                preferenceSearchablePredicate,
-                                fragmentActivity,
-                                createFragmentFactoryReturning(preferenceFragment),
-                                preferenceFragmentConnected2PreferenceProvider,
-                                preferenceDialogAndSearchableInfoProvider,
-                                principalAndProxyProvider,
-                                emptyComputePreferencesListener(),
-                                searchablePreferenceScreenGraphDAO,
-                                preferenceScreenGraphAvailableListener,
-                                locale,
-                                new DefaultPreferenceFragmentIdProvider());
-                final PreferenceSearcher preferenceSearcher =
-                        new PreferenceSearcher(
-                                mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
-                                searchResultsFilter,
-                                new PreferenceMatcher(new CaseInsensitiveSubstringMatcher()));
+            scenario.onActivity(
+                    fragmentActivity -> {
+                        // Given
+                        final Locale locale = Locale.GERMAN;
+                        final MergedPreferenceScreen mergedPreferenceScreen =
+                                getMergedPreferenceScreen(
+                                        preferenceFragment,
+                                        preferenceSearchablePredicate,
+                                        fragmentActivity,
+                                        createFragmentFactoryReturning(preferenceFragment),
+                                        preferenceFragmentConnected2PreferenceProvider,
+                                        preferenceDialogAndSearchableInfoProvider,
+                                        principalAndProxyProvider,
+                                        emptyComputePreferencesListener(),
+                                        searchablePreferenceScreenGraphDAO,
+                                        preferenceScreenGraphAvailableListener,
+                                        locale,
+                                        new DefaultPreferenceFragmentIdProvider());
+                        final PreferenceSearcher preferenceSearcher =
+                                new PreferenceSearcher(
+                                        mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
+                                        searchResultsFilter,
+                                        new PreferenceMatcher(new CaseInsensitiveSubstringMatcher()));
 
-                // When
-                final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword, locale);
+                        // When
+                        final Set<PreferenceMatch> preferenceMatches = preferenceSearcher.searchFor(keyword, locale);
 
-                // Then
-                checkPreferenceMatches.accept(preferenceMatches);
-            });
+                        // Then
+                        checkPreferenceMatches.accept(preferenceMatches);
+                    });
         }
     }
 
