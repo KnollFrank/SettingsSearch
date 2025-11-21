@@ -73,14 +73,14 @@ class ContinueNavigationInActivity {
         final Intent intent = new Intent(context, activity);
         intent.putExtras(
                 Bundles.merge(
-                        createExtras4Activity(activity, src),
+                        createExtrasForActivity(activity, src),
                         getPreferencePathData(preferencePath)));
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         return intent;
     }
 
-    private <T extends PreferenceFragmentCompat> Bundle createExtras4Activity(final Class<? extends Activity> activity,
-                                                                              final T src) {
+    private <T extends PreferenceFragmentCompat> Bundle createExtrasForActivity(final Class<? extends Activity> activity,
+                                                                                final T src) {
         return Maps
                 .get(activityInitializerByActivity, activity)
                 .flatMap(activityInitializer -> ((ActivityInitializer<T>) activityInitializer).createExtras(src))
