@@ -1,10 +1,12 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
+import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.GraphWalk;
@@ -18,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
@@ -47,13 +50,12 @@ public class GraphPathFactory {
         for (int i = 1; i < pojoGraphPath.getVertexList().size(); i++) {
             final SearchablePreferenceScreen searchablePreferenceScreenActual = pojoGraphPath.getVertexList().get(i);
             final Preference preferencePrevious =
-                    Preferences.findPreferenceByKeyOrElseThrow(
+                    getInstanceOfSearchablePreference(
                             preferenceScreenWithHostPrevious.host(),
-                            pojoGraphPath
-                                    .getGraph()
-                                    .getEdge(searchablePreferenceScreenPrevious, searchablePreferenceScreenActual)
-                                    .preference
-                                    .getKey());
+                            getSearchablePreferenceConnectingSourceWithTarget(
+                                    pojoGraphPath.getGraph(),
+                                    searchablePreferenceScreenPrevious,
+                                    searchablePreferenceScreenActual));
             final PreferenceScreenWithHost preferenceScreenWithHostActual =
                     preferenceScreenWithHostProvider
                             .getPreferenceScreenWithHostOfFragment(
@@ -83,5 +85,21 @@ public class GraphPathFactory {
                 new DefaultDirectedGraph<>(PreferenceEdge.class),
                 List.of(),
                 0);
+    }
+
+    private static Preference getInstanceOfSearchablePreference(final PreferenceFragmentCompat hostOfPreference,
+                                                                final SearchablePreference searchablePreference) {
+        return Preferences.findPreferenceByKeyOrElseThrow(
+                hostOfPreference,
+                searchablePreference.getKey());
+    }
+
+    private static SearchablePreference getSearchablePreferenceConnectingSourceWithTarget(
+            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+            final SearchablePreferenceScreen source,
+            final SearchablePreferenceScreen target) {
+        return graph
+                .getEdge(source, target)
+                .preference;
     }
 }
