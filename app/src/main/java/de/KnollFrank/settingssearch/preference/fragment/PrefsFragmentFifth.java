@@ -122,7 +122,6 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
         return preference;
     }
 
-    // FK-TODO: refactor?
     private void setOnPreferenceClickListeners() {
         Stream
                 .of(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS)
