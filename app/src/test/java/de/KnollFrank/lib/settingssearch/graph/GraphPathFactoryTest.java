@@ -35,25 +35,25 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 public class GraphPathFactoryTest {
 
     @Test
-    public void test_instantiatePojoGraphPath_noNode() {
+    public void test_instantiateGraphPath_noNode() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
                 final GraphPathFactory graphPathFactory = new GraphPathFactory(createPreferenceScreenWithHostProvider(fragmentActivity));
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> emptyPojoGraph = new DefaultDirectedGraph<>(SearchablePreferenceEdge.class);
-                final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> emptyPojoGraphPath = new GraphWalk<>(emptyPojoGraph, List.of(), 0);
+                final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> emptyGraphPath = new GraphWalk<>(emptyPojoGraph, List.of(), 0);
 
                 // When
-                final GraphPath<PreferenceScreenWithHost, PreferenceEdge> graphPath = graphPathFactory.instantiatePojoGraphPath(emptyPojoGraphPath);
+                final GraphPath<PreferenceScreenWithHost, PreferenceEdge> graphPath = graphPathFactory.instantiate(emptyGraphPath);
 
                 // Then
-                assertSameSize(graphPath, emptyPojoGraphPath);
+                assertSameSize(graphPath, emptyGraphPath);
             });
         }
     }
 
     @Test
-    public void test_instantiatePojoGraphPath_singleNode() {
+    public void test_instantiateGraphPath_singleNode() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
@@ -63,44 +63,44 @@ public class GraphPathFactoryTest {
                                 fragmentActivity,
                                 Fragment4.class);
                 final SearchablePreferenceScreen searchablePreferenceScreen = Iterables.getOnlyElement(pojoGraphSingleNode.vertexSet());
-                final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphPath =
+                final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> graphPath =
                         new GraphWalk<>(
                                 pojoGraphSingleNode,
                                 List.of(searchablePreferenceScreen),
                                 0);
 
                 // When
-                final GraphPath<PreferenceScreenWithHost, PreferenceEdge> graphPath = graphPathFactory.instantiatePojoGraphPath(pojoGraphPath);
+                final GraphPath<PreferenceScreenWithHost, PreferenceEdge> graphPathInstantiated = graphPathFactory.instantiate(graphPath);
 
                 // Then
-                assertSameSize(graphPath, pojoGraphPath);
-                assertThat(graphPath.getEndVertex().host(), is(instanceOf(searchablePreferenceScreen.host())));
+                assertSameSize(graphPathInstantiated, graphPath);
+                assertThat(graphPathInstantiated.getEndVertex().host(), is(instanceOf(searchablePreferenceScreen.host())));
             });
         }
     }
 
     @Test
-    public void test_instantiatePojoGraphPath_twoNodes() {
+    public void test_instantiateGraphPath_twoNodes() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
                 final GraphPathFactory graphPathFactory = new GraphPathFactory(createPreferenceScreenWithHostProvider(fragmentActivity));
-                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphTwoNodes = createSomePojoGraph(fragmentActivity, Fragment3ConnectedToFragment4.class);
-                final SearchablePreferenceScreen thirdScreen = getPreferenceScreenByTitle(pojoGraphTwoNodes.vertexSet(), "third screen");
-                final SearchablePreferenceScreen fourthScreen = getPreferenceScreenByTitle(pojoGraphTwoNodes.vertexSet(), "fourth screen");
-                final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphPath =
+                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphTwoNodes = createSomePojoGraph(fragmentActivity, Fragment3ConnectedToFragment4.class);
+                final SearchablePreferenceScreen thirdScreen = getPreferenceScreenByTitle(graphTwoNodes.vertexSet(), "third screen");
+                final SearchablePreferenceScreen fourthScreen = getPreferenceScreenByTitle(graphTwoNodes.vertexSet(), "fourth screen");
+                final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> graphPath =
                         new GraphWalk<>(
-                                pojoGraphTwoNodes,
+                                graphTwoNodes,
                                 List.of(thirdScreen, fourthScreen),
                                 0);
 
                 // When
-                final GraphPath<PreferenceScreenWithHost, PreferenceEdge> graphPath = graphPathFactory.instantiatePojoGraphPath(pojoGraphPath);
+                final GraphPath<PreferenceScreenWithHost, PreferenceEdge> graphPathInstantiated = graphPathFactory.instantiate(graphPath);
 
                 // Then
-                assertSameSize(graphPath, pojoGraphPath);
-                assertThat(graphPath.getStartVertex().host(), is(instanceOf(thirdScreen.host())));
-                assertThat(graphPath.getEndVertex().host(), is(instanceOf(fourthScreen.host())));
+                assertSameSize(graphPathInstantiated, graphPath);
+                assertThat(graphPathInstantiated.getStartVertex().host(), is(instanceOf(thirdScreen.host())));
+                assertThat(graphPathInstantiated.getEndVertex().host(), is(instanceOf(fourthScreen.host())));
             });
         }
     }

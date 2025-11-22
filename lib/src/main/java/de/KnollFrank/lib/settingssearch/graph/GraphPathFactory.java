@@ -19,6 +19,8 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.common.HeadAndTail;
+import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -32,13 +34,26 @@ public class GraphPathFactory {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
-    public GraphPath<PreferenceScreenWithHost, PreferenceEdge> instantiatePojoGraphPath(final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphPath) {
-        if (pojoGraphPath.getVertexList().isEmpty()) {
-            return emptyGraphPath();
-        }
+    public GraphPath<PreferenceScreenWithHost, PreferenceEdge> instantiate(final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> graphPath) {
+        return Lists
+                .asHeadAndTail(graphPath.getVertexList())
+                .map(_graphPath -> instantiateGraphPath(_graphPath, graphPath.getGraph()))
+                .orElseGet(GraphPathFactory::emptyGraphPath);
+    }
+
+    private static GraphWalk<PreferenceScreenWithHost, PreferenceEdge> emptyGraphPath() {
+        return new GraphWalk<>(
+                new DefaultDirectedGraph<>(PreferenceEdge.class),
+                List.of(),
+                0);
+    }
+
+    private GraphWalk<PreferenceScreenWithHost, PreferenceEdge> instantiateGraphPath(
+            final HeadAndTail<SearchablePreferenceScreen> graphPath,
+            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
         final GraphBuilder<PreferenceScreenWithHost, PreferenceEdge, ? extends DefaultDirectedGraph<PreferenceScreenWithHost, PreferenceEdge>> graphBuilder = DefaultDirectedGraph.createBuilder(PreferenceEdge.class);
         final Builder<PreferenceScreenWithHost> vertexListBuilder = ImmutableList.builder();
-        SearchablePreferenceScreen searchablePreferenceScreenPrevious = pojoGraphPath.getVertexList().get(0);
+        SearchablePreferenceScreen searchablePreferenceScreenPrevious = graphPath.head();
         PreferenceScreenWithHost preferenceScreenWithHostPrevious =
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
@@ -47,13 +62,12 @@ public class GraphPathFactory {
                         .orElseThrow();
         graphBuilder.addVertex(preferenceScreenWithHostPrevious);
         vertexListBuilder.add(preferenceScreenWithHostPrevious);
-        for (int i = 1; i < pojoGraphPath.getVertexList().size(); i++) {
-            final SearchablePreferenceScreen searchablePreferenceScreenActual = pojoGraphPath.getVertexList().get(i);
+        for (final SearchablePreferenceScreen searchablePreferenceScreenActual : graphPath.tail()) {
             final Preference preferencePrevious =
                     getInstanceOfSearchablePreference(
                             preferenceScreenWithHostPrevious.host(),
                             getSearchablePreferenceConnectingSourceWithTarget(
-                                    pojoGraphPath.getGraph(),
+                                    graph,
                                     searchablePreferenceScreenPrevious,
                                     searchablePreferenceScreenActual));
             final PreferenceScreenWithHost preferenceScreenWithHostActual =
@@ -77,13 +91,6 @@ public class GraphPathFactory {
         return new GraphWalk<>(
                 graphBuilder.build(),
                 vertexListBuilder.build(),
-                0);
-    }
-
-    private static GraphWalk<PreferenceScreenWithHost, PreferenceEdge> emptyGraphPath() {
-        return new GraphWalk<>(
-                new DefaultDirectedGraph<>(PreferenceEdge.class),
-                List.of(),
                 0);
     }
 

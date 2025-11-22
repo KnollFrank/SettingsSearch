@@ -104,7 +104,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
             final GraphPathFactory graphPathFactory) {
         return graphPathFactory
-                .instantiatePojoGraphPath(GraphUtils.getPathFromRootNodeToSink(graph, searchablePreferenceScreen))
+                .instantiate(GraphUtils.getPathFromRootNodeToSink(graph, searchablePreferenceScreen))
                 .getEndVertex();
     }
 

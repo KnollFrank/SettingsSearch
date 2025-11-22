@@ -9,6 +9,15 @@ import java.util.stream.IntStream;
 
 public class Lists {
 
+    public static <T> Optional<HeadAndTail<T>> asHeadAndTail(final List<T> ts) {
+        return ts.isEmpty() ?
+                Optional.empty() :
+                Optional.of(
+                        new HeadAndTail<>(
+                                getHead(ts).orElseThrow(),
+                                getTail(ts).orElseThrow()));
+    }
+
     public static <T> List<T> concat(final List<List<T>> lists) {
         return lists
                 .stream()
