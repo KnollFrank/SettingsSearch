@@ -47,14 +47,13 @@ public class GraphPathFactory {
         for (int i = 1; i < pojoGraphPath.getVertexList().size(); i++) {
             final SearchablePreferenceScreen searchablePreferenceScreenActual = pojoGraphPath.getVertexList().get(i);
             final Preference preferencePrevious =
-                    Preferences
-                            .findPreferenceByKeyOrElseThrow(
-                                    preferenceScreenWithHostPrevious.host(),
-                                    pojoGraphPath
-                                            .getGraph()
-                                            .getEdge(searchablePreferenceScreenPrevious, searchablePreferenceScreenActual)
-                                            .preference
-                                            .getKey());
+                    Preferences.findPreferenceByKeyOrElseThrow(
+                            preferenceScreenWithHostPrevious.host(),
+                            pojoGraphPath
+                                    .getGraph()
+                                    .getEdge(searchablePreferenceScreenPrevious, searchablePreferenceScreenActual)
+                                    .preference
+                                    .getKey());
             final PreferenceScreenWithHost preferenceScreenWithHostActual =
                     preferenceScreenWithHostProvider
                             .getPreferenceScreenWithHostOfFragment(
