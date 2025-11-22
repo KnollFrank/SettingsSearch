@@ -23,6 +23,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationProvider;
 import de.KnollFrank.settingssearch.R;
+import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 import de.KnollFrank.settingssearch.SettingsSearchApplication;
 
 public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
@@ -68,6 +69,7 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
                                     ConfigurationProvider
                                             .getActualConfiguration(requireContext())
                                             .summaryChangingPreference()),
+                            SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                             requireActivity());
                     return true;
                 });

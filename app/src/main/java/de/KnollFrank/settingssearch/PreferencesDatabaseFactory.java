@@ -38,6 +38,7 @@ class PreferencesDatabaseFactory {
                                                 .getAdaptedGraph(
                                                         graph,
                                                         actualConfiguration,
+                                                        SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                                                         activityContext);
                                     }
                                 })),
