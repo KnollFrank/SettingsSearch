@@ -6,12 +6,9 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
 import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.BFSShortestPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.Locale;
-import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
@@ -107,18 +104,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
             final GraphPathFactory graphPathFactory) {
         return graphPathFactory
-                .instantiatePojoGraphPath(getPathFromRootNodeToSink(graph, searchablePreferenceScreen))
+                .instantiatePojoGraphPath(GraphUtils.getPathFromRootNodeToSink(graph, searchablePreferenceScreen))
                 .getEndVertex();
-    }
-
-    // FK-TODO: move method to GraphUtils
-    private static GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> getPathFromRootNodeToSink(
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-            final SearchablePreferenceScreen sink) {
-        final SearchablePreferenceScreen root = GraphUtils.getRootNode(graph).orElseThrow();
-        return Optional
-                .ofNullable(BFSShortestPath.findPathBetween(graph, root, sink))
-                .orElseThrow(() -> new IllegalStateException("No path found in graph from root '" + root.id() + "' to target screen '" + sink.id() + "'"));
     }
 
     private GraphPathFactory createGraphPathFactory(final SearchDatabaseConfig searchDatabaseConfig,
