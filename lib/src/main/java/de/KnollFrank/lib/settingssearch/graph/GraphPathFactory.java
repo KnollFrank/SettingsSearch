@@ -31,10 +31,7 @@ public class GraphPathFactory {
 
     public GraphPath<PreferenceScreenWithHost, PreferenceEdge> instantiatePojoGraphPath(final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphPath) {
         if (pojoGraphPath.getVertexList().isEmpty()) {
-            return new GraphWalk<>(
-                    new DefaultDirectedGraph<>(PreferenceEdge.class),
-                    List.of(),
-                    0);
+            return emptyGraphPath();
         }
         final GraphBuilder<PreferenceScreenWithHost, PreferenceEdge, ? extends DefaultDirectedGraph<PreferenceScreenWithHost, PreferenceEdge>> graphBuilder = DefaultDirectedGraph.createBuilder(PreferenceEdge.class);
         final Builder<PreferenceScreenWithHost> vertexListBuilder = ImmutableList.builder();
@@ -77,6 +74,13 @@ public class GraphPathFactory {
         return new GraphWalk<>(
                 graphBuilder.build(),
                 vertexListBuilder.build(),
+                0);
+    }
+
+    private static GraphWalk<PreferenceScreenWithHost, PreferenceEdge> emptyGraphPath() {
+        return new GraphWalk<>(
+                new DefaultDirectedGraph<>(PreferenceEdge.class),
+                List.of(),
                 0);
     }
 
