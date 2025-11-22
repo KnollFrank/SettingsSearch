@@ -2,7 +2,9 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.Preference;
 
-import org.jgrapht.Graph;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
+
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.GraphWalk;
@@ -29,68 +31,54 @@ public class GraphPathFactory {
 
     public GraphPath<PreferenceScreenWithHost, PreferenceEdge> instantiatePojoGraphPath(final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphPath) {
         final GraphBuilder<PreferenceScreenWithHost, PreferenceEdge, ? extends DefaultDirectedGraph<PreferenceScreenWithHost, PreferenceEdge>> graphBuilder = DefaultDirectedGraph.createBuilder(PreferenceEdge.class);
-        switch (pojoGraphPath.getVertexList().size()) {
-            case 0 -> {
-                return new GraphWalk<>(
-                        graphBuilder.build(),
-                        List.of(),
-                        0);
-            }
-            case 1 -> {
-                final PreferenceScreenWithHost preferenceScreenWithHostOfFragment =
-                        preferenceScreenWithHostProvider
-                                .getPreferenceScreenWithHostOfFragment(
-                                        pojoGraphPath.getStartVertex().host(),
-                                        Optional.empty())
-                                .orElseThrow();
-                final Graph<PreferenceScreenWithHost, PreferenceEdge> graph =
-                        graphBuilder
-                                .addVertex(preferenceScreenWithHostOfFragment)
-                                .build();
-                final GraphPath<PreferenceScreenWithHost, PreferenceEdge> graphPath =
-                        new GraphWalk<>(
-                                graph,
-                                List.of(preferenceScreenWithHostOfFragment),
-                                0);
-                return graphPath;
-            }
-            case 2 -> {
-                final PreferenceScreenWithHost preferenceScreenWithHost1 =
-                        preferenceScreenWithHostProvider
-                                .getPreferenceScreenWithHostOfFragment(
-                                        pojoGraphPath.getVertexList().get(0).host(),
-                                        Optional.empty())
-                                .orElseThrow();
-                graphBuilder.addVertex(preferenceScreenWithHost1);
-
-                final SearchablePreference searchablePreference =
-                        pojoGraphPath
-                                .getGraph()
-                                .getEdge(pojoGraphPath.getVertexList().get(0), pojoGraphPath.getVertexList().get(1))
-                                .preference;
-                final PreferenceScreenWithHost preferenceScreenWithHost2 =
-                        preferenceScreenWithHostProvider
-                                .getPreferenceScreenWithHostOfFragment(
-                                        pojoGraphPath.getVertexList().get(1).host(),
-                                        Optional.of(
-                                                new PreferenceWithHost(
-                                                        getPreference(preferenceScreenWithHost1, searchablePreference),
-                                                        preferenceScreenWithHost1.host())))
-                                .orElseThrow();
-                graphBuilder.addVertex(preferenceScreenWithHost2);
-
-                final Graph<PreferenceScreenWithHost, PreferenceEdge> graph = graphBuilder.build();
-                final GraphPath<PreferenceScreenWithHost, PreferenceEdge> graphPath =
-                        new GraphWalk<>(
-                                graph,
-                                List.of(preferenceScreenWithHost1, preferenceScreenWithHost2),
-                                0);
-                return graphPath;
-            }
-            default -> {
-                return null;
-            }
+        if (pojoGraphPath.getVertexList().isEmpty()) {
+            return new GraphWalk<>(
+                    graphBuilder.build(),
+                    List.of(),
+                    0);
         }
+        final Builder<PreferenceScreenWithHost> vertexListBuilder = ImmutableList.builder();
+        SearchablePreferenceScreen searchablePreferenceScreenPrevious = pojoGraphPath.getVertexList().get(0);
+        PreferenceScreenWithHost preferenceScreenWithHostPrevious =
+                preferenceScreenWithHostProvider
+                        .getPreferenceScreenWithHostOfFragment(
+                                searchablePreferenceScreenPrevious.host(),
+                                Optional.empty())
+                        .orElseThrow();
+        graphBuilder.addVertex(preferenceScreenWithHostPrevious);
+        vertexListBuilder.add(preferenceScreenWithHostPrevious);
+
+        for (int i = 1; i < pojoGraphPath.getVertexList().size(); i++) {
+            final SearchablePreferenceScreen searchablePreferenceScreenActual = pojoGraphPath.getVertexList().get(i);
+            final Preference preferencePrevious =
+                    getPreference(
+                            preferenceScreenWithHostPrevious,
+                            pojoGraphPath
+                                    .getGraph()
+                                    .getEdge(searchablePreferenceScreenPrevious, searchablePreferenceScreenActual)
+                                    .preference);
+            final PreferenceScreenWithHost preferenceScreenWithHostActual =
+                    preferenceScreenWithHostProvider
+                            .getPreferenceScreenWithHostOfFragment(
+                                    searchablePreferenceScreenActual.host(),
+                                    Optional.of(
+                                            new PreferenceWithHost(
+                                                    preferencePrevious,
+                                                    preferenceScreenWithHostPrevious.host())))
+                            .orElseThrow();
+            graphBuilder.addVertex(preferenceScreenWithHostActual);
+            vertexListBuilder.add(preferenceScreenWithHostActual);
+            graphBuilder.addEdge(
+                    preferenceScreenWithHostPrevious,
+                    preferenceScreenWithHostActual,
+                    new PreferenceEdge(preferencePrevious));
+            searchablePreferenceScreenPrevious = searchablePreferenceScreenActual;
+            preferenceScreenWithHostPrevious = preferenceScreenWithHostActual;
+        }
+        return new GraphWalk<>(
+                graphBuilder.build(),
+                vertexListBuilder.build(),
+                0);
     }
 
     private Preference getPreference(final PreferenceScreenWithHost preferenceScreenWithHost,

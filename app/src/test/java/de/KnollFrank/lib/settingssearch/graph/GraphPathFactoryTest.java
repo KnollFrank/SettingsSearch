@@ -99,6 +99,7 @@ public class GraphPathFactoryTest {
 
                 // Then
                 assertSameSize(graphPath, pojoGraphPath);
+                assertThat(graphPath.getStartVertex().host(), is(instanceOf(thirdScreen.host())));
                 assertThat(graphPath.getEndVertex().host(), is(instanceOf(fourthScreen.host())));
             });
         }
