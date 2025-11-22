@@ -17,7 +17,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.common.Preferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
@@ -47,12 +47,14 @@ public class GraphPathFactory {
         for (int i = 1; i < pojoGraphPath.getVertexList().size(); i++) {
             final SearchablePreferenceScreen searchablePreferenceScreenActual = pojoGraphPath.getVertexList().get(i);
             final Preference preferencePrevious =
-                    getPreference(
-                            preferenceScreenWithHostPrevious,
-                            pojoGraphPath
-                                    .getGraph()
-                                    .getEdge(searchablePreferenceScreenPrevious, searchablePreferenceScreenActual)
-                                    .preference);
+                    Preferences
+                            .findPreferenceByKeyOrElseThrow(
+                                    preferenceScreenWithHostPrevious.host(),
+                                    pojoGraphPath
+                                            .getGraph()
+                                            .getEdge(searchablePreferenceScreenPrevious, searchablePreferenceScreenActual)
+                                            .preference
+                                            .getKey());
             final PreferenceScreenWithHost preferenceScreenWithHostActual =
                     preferenceScreenWithHostProvider
                             .getPreferenceScreenWithHostOfFragment(
@@ -82,15 +84,5 @@ public class GraphPathFactory {
                 new DefaultDirectedGraph<>(PreferenceEdge.class),
                 List.of(),
                 0);
-    }
-
-    private Preference getPreference(final PreferenceScreenWithHost preferenceScreenWithHost,
-                                     final SearchablePreference searchablePreference) {
-        final Optional<Preference> preference =
-                Optional.ofNullable(
-                        preferenceScreenWithHost
-                                .preferenceScreen()
-                                .findPreference(searchablePreference.getKey()));
-        return preference.orElseThrow();
     }
 }
