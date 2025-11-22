@@ -163,10 +163,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
     public static SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
             final FragmentActivity activity,
             final Class<? extends Fragment> root) {
-        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
-                new PreferenceScreenWithHostProvider(
-                        InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity),
-                        new PrincipalAndProxyProvider(ImmutableBiMap.of()));
+        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider = createPreferenceScreenWithHostProvider(activity);
         return new SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(
                 createSearchablePreferenceScreenGraphProvider(
                         activity,
@@ -176,6 +173,12 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesDat
                                 root,
                                 Optional.empty())
                         .orElseThrow());
+    }
+
+    public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final FragmentActivity activity) {
+        return new PreferenceScreenWithHostProvider(
+                InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(activity),
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 
     public record SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(

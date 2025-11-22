@@ -14,7 +14,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
-class PreferenceScreensProviderTestHelper {
+public class PreferenceScreensProviderTestHelper {
 
     public static void configureConnectedPreferencesOfFragment(
             final PreferenceFragmentCompat fragment,
