@@ -1,14 +1,12 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE;
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.show;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -49,7 +47,8 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
         if (KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS.equals(preference.getKey())) {
             show(
                     PreferenceFragmentWithSinglePreference.class.getName(),
-                    createArguments4PreferenceWithoutExtras(preference, requireContext()));
+                    createArguments4PreferenceWithoutExtras(preference, requireContext()),
+                    this);
             return true;
         }
         return false;
@@ -127,24 +126,5 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
                 .of(KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS)
                 .<Preference>map(this::findPreference)
                 .forEach(preference -> preference.setOnPreferenceClickListener(this));
-    }
-
-    // FK-TODO: DRY with PrefsFragmentFirst
-    // adapted from PreferenceFragmentCompat.onPreferenceTreeClick()
-    private void show(final String classNameOfFragment2Show, final Bundle arguments) {
-        final FragmentManager fragmentManager = getParentFragmentManager();
-        final Fragment fragment =
-                fragmentManager.getFragmentFactory().instantiate(
-                        requireActivity().getClassLoader(),
-                        classNameOfFragment2Show);
-        fragment.setArguments(arguments);
-        fragment.setTargetFragment(this, 0);
-        fragmentManager.beginTransaction()
-                // Attempt to replace this fragment in its root view - developers should
-                // implement onPreferenceStartFragment in their activity so that they can
-                // customize this behaviour and handle any transitions between fragments
-                .replace(((View) requireView().getParent()).getId(), fragment)
-                .addToBackStack(null)
-                .commit();
     }
 }

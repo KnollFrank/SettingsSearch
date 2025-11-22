@@ -179,7 +179,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
             return true;
         }
         if (NON_STANDARD_LINK_TO_SECOND_FRAGMENT.equals(preference.getKey())) {
-            show(PrefsFragmentSecond.class.getName(), preference.getExtras());
+            show(PrefsFragmentSecond.class.getName(), preference.getExtras(), this);
             return true;
         }
         return false;
@@ -195,19 +195,23 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
     }
 
     // adapted from PreferenceFragmentCompat.onPreferenceTreeClick()
-    private void show(final String classNameOfFragment2Show, final Bundle arguments) {
-        final FragmentManager fragmentManager = getParentFragmentManager();
-        final Fragment fragment =
-                fragmentManager.getFragmentFactory().instantiate(
-                        requireActivity().getClassLoader(),
-                        classNameOfFragment2Show);
-        fragment.setArguments(arguments);
-        fragment.setTargetFragment(this, 0);
+    public static void show(final String classNameOfFragment2Show,
+                            final Bundle arguments,
+                            final Fragment targetFragment) {
+        final FragmentManager fragmentManager = targetFragment.getParentFragmentManager();
+        final Fragment fragment2Show =
+                fragmentManager
+                        .getFragmentFactory()
+                        .instantiate(
+                                targetFragment.requireActivity().getClassLoader(),
+                                classNameOfFragment2Show);
+        fragment2Show.setArguments(arguments);
+        fragment2Show.setTargetFragment(targetFragment, 0);
         fragmentManager.beginTransaction()
                 // Attempt to replace this fragment in its root view - developers should
                 // implement onPreferenceStartFragment in their activity so that they can
                 // customize this behaviour and handle any transitions between fragments
-                .replace(((View) requireView().getParent()).getId(), fragment)
+                .replace(((View) targetFragment.requireView().getParent()).getId(), fragment2Show)
                 .addToBackStack(null)
                 .commit();
     }
