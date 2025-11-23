@@ -456,16 +456,16 @@ public class PreferenceSearchExampleTest {
     }
 
     private static Matcher<View> someTitleToFifthFragment() {
-        return hasDescendant(
-                allOf(
-                        withId(android.R.id.title),
-                        withText("some title to fifth fragment")));
+        return hasDescendant(hasTitle("some title to fifth fragment"));
     }
 
     private static Matcher<View> addPreferenceToP1() {
-        return hasDescendant(
-                allOf(
-                        withId(android.R.id.title),
-                        withText(ADD_PREFERENCE_TO_P1_TITLE)));
+        return hasDescendant(hasTitle(ADD_PREFERENCE_TO_P1_TITLE));
+    }
+
+    private static Matcher<View> hasTitle(final String title) {
+        return allOf(
+                withId(android.R.id.title),
+                withText(title));
     }
 }
