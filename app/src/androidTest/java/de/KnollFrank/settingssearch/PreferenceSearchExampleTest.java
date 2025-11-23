@@ -34,6 +34,7 @@ import androidx.preference.PreferenceManager;
 import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -240,7 +241,7 @@ public class PreferenceSearchExampleTest {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             preferencesContainer().perform(actionOnItem(someTitleToFifthFragment(), click()));
             final int positionOfAddPreferenceToP1CheckBox = 0;
-            uncheckCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, positionOfAddPreferenceToP1CheckBox);
+            uncheckCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
             onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
@@ -252,7 +253,7 @@ public class PreferenceSearchExampleTest {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             preferencesContainer().perform(actionOnItem(someTitleToFifthFragment(), click()));
             final int positionOfAddPreferenceToP1CheckBox = 0;
-            checkCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, positionOfAddPreferenceToP1CheckBox);
+            checkCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
             onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
@@ -274,7 +275,7 @@ public class PreferenceSearchExampleTest {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final boolean checked = true;
             final int positionOfSummaryChangingPreferenceCheckBox = 11;
-            checkCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, positionOfSummaryChangingPreferenceCheckBox);
+            checkCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, actionOnItemAtPosition(positionOfSummaryChangingPreferenceCheckBox, click()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
             onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
@@ -286,7 +287,7 @@ public class PreferenceSearchExampleTest {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final boolean checked = false;
             final int positionOfSummaryChangingPreferenceCheckBox = 11;
-            uncheckCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, positionOfSummaryChangingPreferenceCheckBox);
+            uncheckCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, actionOnItemAtPosition(positionOfSummaryChangingPreferenceCheckBox, click()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
             onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
@@ -362,16 +363,16 @@ public class PreferenceSearchExampleTest {
                 isDisplayed());
     }
 
-    private void checkCheckBoxExplicitly(final String key, final int position) {
-        createCheckBoxHandler(key, position).checkCheckBoxExplicitly();
+    private void checkCheckBoxExplicitly(final String key, final ViewAction clickCheckBox) {
+        createCheckBoxHandler(key, clickCheckBox).checkCheckBoxExplicitly();
     }
 
-    private void uncheckCheckBoxExplicitly(final String key, final int position) {
-        createCheckBoxHandler(key, position).uncheckCheckBoxExplicitly();
+    private void uncheckCheckBoxExplicitly(final String key, final ViewAction clickCheckBox) {
+        createCheckBoxHandler(key, clickCheckBox).uncheckCheckBoxExplicitly();
     }
 
-    private static CheckBoxHandler createCheckBoxHandler(final String key, final int position) {
-        return CheckBoxHandler.of(key, preferencesContainer(), position);
+    private static CheckBoxHandler createCheckBoxHandler(final String key, final ViewAction clickCheckBox) {
+        return CheckBoxHandler.of(key, preferencesContainer(), clickCheckBox);
     }
 
     private static ViewInteraction preferencesContainer() {

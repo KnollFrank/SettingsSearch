@@ -1,19 +1,17 @@
 package de.KnollFrank.settingssearch;
 
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
-
 import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 
 abstract class CheckBoxHandler {
 
     public static CheckBoxHandler of(final String key,
                                      final ViewInteraction preferencesContainer,
-                                     final int position) {
+                                     final ViewAction clickCheckBox) {
         return new CheckBoxHandler() {
 
             @Override
@@ -23,8 +21,7 @@ abstract class CheckBoxHandler {
 
             @Override
             protected void clickCheckBox() {
-                // FK-TODO: verallgemeinere den Aufruf von actionOnItemAtPosition(), denn es könnte auch ein actionOnItem()-Aufruf besser passen.
-                preferencesContainer.perform(actionOnItemAtPosition(position, click()));
+                preferencesContainer.perform(clickCheckBox);
             }
 
             private static SharedPreferences getSharedPreferences() {
