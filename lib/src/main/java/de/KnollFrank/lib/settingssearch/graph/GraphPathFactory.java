@@ -41,14 +41,14 @@ public class GraphPathFactory {
                 .orElseGet(GraphPathFactory::emptyGraphPath);
     }
 
-    private static GraphWalk<PreferenceScreenWithHost, PreferenceEdge> emptyGraphPath() {
+    private static GraphPath<PreferenceScreenWithHost, PreferenceEdge> emptyGraphPath() {
         return new GraphWalk<>(
                 new DefaultDirectedGraph<>(PreferenceEdge.class),
                 List.of(),
                 0);
     }
 
-    private GraphWalk<PreferenceScreenWithHost, PreferenceEdge> instantiateGraphPath(
+    private GraphPath<PreferenceScreenWithHost, PreferenceEdge> instantiateGraphPath(
             final HeadAndTail<SearchablePreferenceScreen> graphPath,
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
         final GraphBuilder<PreferenceScreenWithHost, PreferenceEdge, ? extends DefaultDirectedGraph<PreferenceScreenWithHost, PreferenceEdge>> graphBuilder = DefaultDirectedGraph.createBuilder(PreferenceEdge.class);
