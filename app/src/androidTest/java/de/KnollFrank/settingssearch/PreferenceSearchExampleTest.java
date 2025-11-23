@@ -23,8 +23,8 @@ import static de.KnollFrank.settingssearch.Matchers.childAtPosition;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItemCount;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.SOME_ADDITIONAL_PREFERENCE;
-import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth.ADD_PREFERENCE_TO_P1_TITLE;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY;
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_TITLE;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.SUMMARY_CHANGING_PREFERENCE_KEY;
 
 import android.content.Context;
@@ -273,8 +273,7 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFindSummaryChangingPreferenceIsON() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final boolean checked = true;
-            final int positionOfSummaryChangingPreferenceCheckBox = 11;
-            checkCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, actionOnItemAtPosition(positionOfSummaryChangingPreferenceCheckBox, click()));
+            checkCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, actionOnItem(summaryChangingPreference(), click()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
             onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
@@ -285,8 +284,7 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFindSummaryChangingPreferenceIsOFF() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final boolean checked = false;
-            final int positionOfSummaryChangingPreferenceCheckBox = 11;
-            uncheckCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, actionOnItemAtPosition(positionOfSummaryChangingPreferenceCheckBox, click()));
+            uncheckCheckBoxExplicitly(SUMMARY_CHANGING_PREFERENCE_KEY, actionOnItem(summaryChangingPreference(), click()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(PrefsFragmentFirst.getSummary(checked)), closeSoftKeyboard());
             onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(PrefsFragmentFirst.getSummary(checked))));
@@ -460,7 +458,11 @@ public class PreferenceSearchExampleTest {
     }
 
     private static Matcher<View> addPreferenceToP1() {
-        return hasDescendant(hasTitle(ADD_PREFERENCE_TO_P1_TITLE));
+        return hasDescendant(hasTitle(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_TITLE));
+    }
+
+    private static Matcher<View> summaryChangingPreference() {
+        return hasDescendant(hasTitle("changes summary when clicked"));
     }
 
     private static Matcher<View> hasTitle(final String title) {
