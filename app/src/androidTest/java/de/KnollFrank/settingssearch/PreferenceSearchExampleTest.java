@@ -23,6 +23,7 @@ import static de.KnollFrank.settingssearch.Matchers.childAtPosition;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItem;
 import static de.KnollFrank.settingssearch.Matchers.recyclerViewHasItemCount;
 import static de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference.SOME_ADDITIONAL_PREFERENCE;
+import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth.ADD_PREFERENCE_TO_P1_TITLE;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth.ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.SUMMARY_CHANGING_PREFERENCE_KEY;
 
@@ -240,8 +241,7 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndNotFindNonAddedPreference() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             preferencesContainer().perform(actionOnItem(someTitleToFifthFragment(), click()));
-            final int positionOfAddPreferenceToP1CheckBox = 0;
-            uncheckCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
+            uncheckCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, actionOnItem(addPreferenceToP1(), click()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
             onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
@@ -252,8 +252,7 @@ public class PreferenceSearchExampleTest {
     public void shouldSearchAndFindAddedPreference() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             preferencesContainer().perform(actionOnItem(someTitleToFifthFragment(), click()));
-            final int positionOfAddPreferenceToP1CheckBox = 0;
-            checkCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, actionOnItemAtPosition(positionOfAddPreferenceToP1CheckBox, click()));
+            checkCheckBoxExplicitly(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, actionOnItem(addPreferenceToP1(), click()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
             onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
@@ -461,5 +460,12 @@ public class PreferenceSearchExampleTest {
                 allOf(
                         withId(android.R.id.title),
                         withText("some title to fifth fragment")));
+    }
+
+    private static Matcher<View> addPreferenceToP1() {
+        return hasDescendant(
+                allOf(
+                        withId(android.R.id.title),
+                        withText(ADD_PREFERENCE_TO_P1_TITLE)));
     }
 }

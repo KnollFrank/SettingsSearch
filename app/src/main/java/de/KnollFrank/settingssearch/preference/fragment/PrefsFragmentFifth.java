@@ -32,6 +32,7 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
     public static final String KEY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS = "keyOfSrcPreferenceWithoutExtras";
     public static final String SUMMARY_OF_SRC_PREFERENCE_WITH_EXTRAS = "summary of src preference with extras";
     public static final String SUMMARY_OF_SRC_PREFERENCE_WITHOUT_EXTRAS = "summary of src preference without extras";
+    public static final String ADD_PREFERENCE_TO_P1_TITLE = "add preference to P1";
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -57,7 +58,7 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
     private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference(final Locale locale) {
         final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(requireContext());
         checkBoxPreference.setKey(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
-        checkBoxPreference.setTitle("add preference to P1");
+        checkBoxPreference.setTitle(ADD_PREFERENCE_TO_P1_TITLE);
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
                     new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFifth(
