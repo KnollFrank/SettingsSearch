@@ -18,10 +18,10 @@ public class Graphs {
                 .collect(MoreCollectors.toOptional());
     }
 
-    public static <V, E> GraphPath<V, E> getPathFromRootNodeToSink(final Graph<V, E> graph, final V sink) {
+    public static <V, E> GraphPath<V, E> getPathFromRootNodeToTarget(final Graph<V, E> graph, final V target) {
         final V root = getRootNode(graph).orElseThrow();
         return Optional
-                .ofNullable(BFSShortestPath.findPathBetween(graph, root, sink))
-                .orElseThrow(() -> new IllegalStateException("No path found in graph from root '" + root + "' to sink '" + sink + "'"));
+                .ofNullable(BFSShortestPath.findPathBetween(graph, root, target))
+                .orElseThrow(() -> new IllegalStateException("No path found in graph from root '" + root + "' to sink '" + target + "'"));
     }
 }
