@@ -8,7 +8,7 @@ import org.jgrapht.alg.shortestpath.BFSShortestPath;
 
 import java.util.Optional;
 
-public class GraphUtils {
+public class Graphs {
 
     public static <V> Optional<V> getRootNode(final Graph<V, ?> graph) {
         return graph

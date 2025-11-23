@@ -13,7 +13,7 @@ import java.util.Locale;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.common.graph.GraphUtils;
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -104,7 +104,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
             final GraphPathFactory graphPathFactory) {
         return graphPathFactory
-                .instantiate(GraphUtils.getPathFromRootNodeToSink(graph, searchablePreferenceScreen))
+                .instantiate(Graphs.getPathFromRootNodeToSink(graph, searchablePreferenceScreen))
                 .getEndVertex();
     }
 

@@ -42,7 +42,7 @@ public class SubtreeReplacer<V, E> {
                                                          final V nodeToReplace,
                                                          final Graph<V, E> replacementTree,
                                                          final Graph<V, E> resultGraph) {
-        GraphUtils
+        Graphs
                 .getRootNode(replacementTree)
                 .ifPresent(
                         replacementRoot -> {
