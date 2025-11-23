@@ -22,6 +22,6 @@ public class Graphs {
         final V root = getRootNode(graph).orElseThrow();
         return Optional
                 .ofNullable(BFSShortestPath.findPathBetween(graph, root, target))
-                .orElseThrow(() -> new IllegalStateException("No path found in graph from root '" + root + "' to sink '" + target + "'"));
+                .orElseThrow(() -> new IllegalStateException("No path found in graph from root '" + root + "' to target '" + target + "'"));
     }
 }
