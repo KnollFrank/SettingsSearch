@@ -14,7 +14,7 @@ public class Graphs {
         return graph
                 .vertexSet()
                 .stream()
-                .filter(vertex -> graph.inDegreeOf(vertex) == 0)
+                .filter(node -> isRootNode(graph, node))
                 .collect(MoreCollectors.toOptional());
     }
 
@@ -23,5 +23,9 @@ public class Graphs {
         return Optional
                 .ofNullable(BFSShortestPath.findPathBetween(graph, root, target))
                 .orElseThrow(() -> new IllegalStateException("No path found in graph from root '" + root + "' to target '" + target + "'"));
+    }
+
+    private static <V> boolean isRootNode(final Graph<V, ?> graph, final V node) {
+        return graph.inDegreeOf(node) == 0;
     }
 }
