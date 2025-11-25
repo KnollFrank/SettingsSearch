@@ -39,6 +39,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         for (final var searchablePreferenceScreen : searchablePreferenceScreens) {
             persist(searchablePreferenceScreen, dbDataProvider);
         }
+        invalidateCaches();
     }
 
     public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen,
