@@ -34,7 +34,9 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     }
 
     public Optional<GraphAndDbDataProvider> findGraphById(final Locale id) {
-        return _findGraphById(id).map(this::createGraphAndDbDataProvider);
+        return this
+                ._findGraphById(id)
+                .map(this::createGraphAndDbDataProvider);
     }
 
     public Set<GraphAndDbDataProvider> loadAll() {
