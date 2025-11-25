@@ -62,12 +62,16 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     @Override
     public Set<SearchablePreferenceEntity> getAllPreferencesOfPreferenceHierarchy(final SearchablePreferenceScreenEntity screen) {
-        return Maps.get(getAllPreferencesBySearchablePreferenceScreen(), screen).orElseThrow();
+        return Maps
+                .get(getAllPreferencesBySearchablePreferenceScreen(), screen)
+                .orElseThrow();
     }
 
     @Override
     public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
-        return Maps.get(getHostByPreference(), preference).orElseThrow();
+        return Maps
+                .get(getHostByPreference(), preference)
+                .orElseThrow();
     }
 
     public void removeAll() {

@@ -47,17 +47,23 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
 
     @Override
     public Optional<SearchablePreferenceEntity> getPredecessor(final SearchablePreferenceEntity preference) {
-        return Maps.get(getPredecessorByPreference(), preference).orElseThrow();
+        return Maps
+                .get(getPredecessorByPreference(), preference)
+                .orElseThrow();
     }
 
     @Override
     public Set<SearchablePreferenceEntity> getChildren(final SearchablePreferenceEntity preference) {
-        return Maps.get(getChildrenByPreference(), preference).orElseThrow();
+        return Maps
+                .get(getChildrenByPreference(), preference)
+                .orElseThrow();
     }
 
     @Override
     public SearchablePreferenceScreenEntity getHost(final SearchablePreferenceEntity preference) {
-        return preferencesDatabase.searchablePreferenceScreenEntityDAO().getHost(preference);
+        return preferencesDatabase
+                .searchablePreferenceScreenEntityDAO()
+                .getHost(preference);
     }
 
     public void removeAll() {
