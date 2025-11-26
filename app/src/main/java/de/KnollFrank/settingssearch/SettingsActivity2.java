@@ -11,7 +11,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
-import de.KnollFrank.lib.settingssearch.common.Utils;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 
 // FK-FIXME: search for signature2, click search result, then you must press the back button MULTIPLE TIMES in order to go back. Expected: press back button ONCE in order to go back.
 public class SettingsActivity2 extends AppCompatActivity {
@@ -47,7 +47,7 @@ public class SettingsActivity2 extends AppCompatActivity {
                                 this,
                                 onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId),
-                Utils.getCurrentLanguageLocale(getResources()));
+                Locales.getCurrentLanguageLocale(getResources()));
     }
 
     public static class SettingsFragment2 extends PreferenceFragmentCompat {

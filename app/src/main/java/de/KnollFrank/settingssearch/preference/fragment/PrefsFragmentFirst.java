@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import de.KnollFrank.lib.settingssearch.common.Utils;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -58,7 +58,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final Locale locale = Utils.getCurrentLanguageLocale(getResources());
+        final Locale locale = Locales.getCurrentLanguageLocale(getResources());
         addPreferencesFromResource(R.xml.preferences_multiple_screens);
         {
             final Preference preference = getPreferenceScreen().findPreference(NON_STANDARD_LINK_TO_SECOND_FRAGMENT);

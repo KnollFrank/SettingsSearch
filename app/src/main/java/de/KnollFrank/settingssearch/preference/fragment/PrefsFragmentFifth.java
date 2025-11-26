@@ -15,7 +15,7 @@ import androidx.preference.PreferenceManager;
 import java.util.Locale;
 import java.util.stream.Stream;
 
-import de.KnollFrank.lib.settingssearch.common.Utils;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.settingssearch.Configuration;
@@ -37,7 +37,7 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         addPreferencesFromResource(R.xml.preferences5);
-        getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference(Utils.getCurrentLanguageLocale(getResources())));
+        getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference(Locales.getCurrentLanguageLocale(getResources())));
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
         setOnPreferenceClickListeners();

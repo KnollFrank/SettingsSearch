@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import androidx.fragment.app.FragmentActivity;
 
-import de.KnollFrank.lib.settingssearch.common.Utils;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 public class DAOProviderFactory {
@@ -14,7 +14,7 @@ public class DAOProviderFactory {
         return PreferencesDatabaseFactory.createPreferencesDatabase(
                 preferencesDatabaseConfig,
                 activityContext,
-                Utils.getCurrentLanguageLocale(activityContext.getResources()),
+                Locales.getCurrentLanguageLocale(activityContext.getResources()),
                 configuration,
                 configurationBundleConverter);
     }

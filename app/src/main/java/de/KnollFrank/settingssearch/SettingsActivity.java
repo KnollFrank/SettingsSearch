@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
-import de.KnollFrank.lib.settingssearch.common.Utils;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -56,7 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
                                 this,
                                 onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId),
-                Utils.getCurrentLanguageLocale(getResources()));
+                Locales.getCurrentLanguageLocale(getResources()));
     }
 
     static SearchPreferenceFragments createSearchPreferenceFragments(

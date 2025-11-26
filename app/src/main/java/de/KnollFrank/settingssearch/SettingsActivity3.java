@@ -10,7 +10,7 @@ import androidx.annotation.IdRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import de.KnollFrank.lib.settingssearch.common.Utils;
+import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 
 // FK-FIXME: suche nach "item3 20" und klicke auf das Suchergebnis, dann wird zwar zur Seite, die das Suchergebnis enthält, navigiert, aber es wird fälschlicherweise nicht zur Setting gescrollt.
@@ -47,6 +47,6 @@ public class SettingsActivity3 extends AppCompatActivity {
                                 this,
                                 onMergedPreferenceScreenAvailable,
                                 fragmentContainerViewId),
-                Utils.getCurrentLanguageLocale(getResources()));
+                Locales.getCurrentLanguageLocale(getResources()));
     }
 }
