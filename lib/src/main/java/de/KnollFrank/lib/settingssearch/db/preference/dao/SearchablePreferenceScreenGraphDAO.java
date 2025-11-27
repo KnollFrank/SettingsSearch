@@ -28,11 +28,13 @@ public class SearchablePreferenceScreenGraphDAO {
 
     public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
         delegate.persist(entityGraphPojoGraphConverter.doBackward(searchablePreferenceScreenGraph));
-        assertGraphFromDbEqualsGraph(searchablePreferenceScreenGraph.graph(), searchablePreferenceScreenGraph.locale());
         graphById.put(searchablePreferenceScreenGraph.locale(), Optional.of(searchablePreferenceScreenGraph));
     }
 
     public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id) {
+        if(graphById.containsKey(id) && graphById.get(id).isPresent()) {
+            assertGraphFromDbEqualsGraph(graphById.get(id).orElseThrow().graph(), id);
+        }
         if (!graphById.containsKey(id)) {
             graphById.put(id, _findGraphById(id));
         }
