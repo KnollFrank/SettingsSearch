@@ -38,7 +38,7 @@ public class SearchablePreferenceScreenGraphDAO {
         if (!graphById.containsKey(id)) {
             graphById.put(id, _findGraphById(id));
         }
-        return graphById.get(id);
+        return _findGraphById(id);
     }
 
     public Set<SearchablePreferenceScreenGraph> loadAll() {
