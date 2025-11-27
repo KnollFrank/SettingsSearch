@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
+import org.jgrapht.Graph;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -7,6 +9,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.graph.GraphDifference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 
@@ -23,6 +28,7 @@ public class SearchablePreferenceScreenGraphDAO {
 
     public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
         delegate.persist(entityGraphPojoGraphConverter.doBackward(searchablePreferenceScreenGraph));
+        assertGraphFromDbEqualsGraph(searchablePreferenceScreenGraph.graph(), searchablePreferenceScreenGraph.locale());
         graphById.put(searchablePreferenceScreenGraph.locale(), Optional.of(searchablePreferenceScreenGraph));
     }
 
@@ -66,5 +72,17 @@ public class SearchablePreferenceScreenGraphDAO {
 
     private void invalidateCaches() {
         graphById.clear();
+    }
+
+    private void assertGraphFromDbEqualsGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph, final Locale id) {
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb =
+                this
+                        ._findGraphById(id)
+                        .orElseThrow()
+                        .graph();
+        final var diff = GraphDifference.between(graph, graphFromDb);
+        if (!diff.areEqual()) {
+            throw new IllegalStateException("CACHE INCONSISTENCY DETECTED for locale " + id + ":\n" + diff);
+        }
     }
 }
