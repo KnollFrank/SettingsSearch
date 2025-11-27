@@ -5,7 +5,6 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
@@ -32,19 +31,21 @@ class PreferenceSearcher {
         return searchFor(needle, getHaystack(locale));
     }
 
-    private Set<PreferenceMatch> searchFor(final String needle, final Stream<SearchablePreference> haystack) {
+    private Set<PreferenceMatch> searchFor(final String needle, final Set<SearchablePreference> haystack) {
         return haystack
+                .stream()
                 .map(searchablePreference -> preferenceMatcher.getPreferenceMatch(searchablePreference, needle))
                 .flatMap(Optionals::streamOfPresentElements)
                 .collect(Collectors.toSet());
     }
 
-    private Stream<SearchablePreference> getHaystack(final Locale locale) {
+    private Set<SearchablePreference> getHaystack(final Locale locale) {
         return this
                 .getPreferences(graphDAO.findGraphById(locale))
                 .stream()
                 .filter(SearchablePreference::isVisible)
-                .filter(searchResultsFilter::includePreferenceInSearchResults);
+                .filter(searchResultsFilter::includePreferenceInSearchResults)
+                .collect(Collectors.toSet());
     }
 
     private Set<SearchablePreference> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
