@@ -40,7 +40,7 @@ public final class SearchablePreference {
     private final Optional<String> searchableInfo;
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider = Optional::empty;
     private final Set<SearchablePreference> children;
-    private final Optional<SearchablePreference> predecessor;
+    private Optional<SearchablePreference> predecessor;
     private Optional<SearchablePreferenceScreen> host = Optional.empty();
 
     public SearchablePreference(final String id,
@@ -184,6 +184,10 @@ public final class SearchablePreference {
 
     public Optional<SearchablePreference> getPredecessor() {
         return predecessor;
+    }
+
+    public void setPredecessor(final Optional<SearchablePreference> predecessor) {
+        this.predecessor = predecessor;
     }
 
     public SearchablePreferenceScreen getHost() {

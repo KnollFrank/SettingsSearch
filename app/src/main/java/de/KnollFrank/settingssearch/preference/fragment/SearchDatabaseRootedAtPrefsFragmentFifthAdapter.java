@@ -5,10 +5,13 @@ import android.view.View;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.common.collect.Iterables;
+
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 import java.util.Locale;
+import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
@@ -16,6 +19,7 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDataba
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
@@ -56,23 +60,43 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
                 activityContext.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
         final SearchablePreferenceScreen searchablePreferenceScreen = findSearchablePreferenceScreen(graph);
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replacementTree =
+                getPojoGraphRootedAt(
+                        instantiateSearchablePreferenceScreen(
+                                searchablePreferenceScreen,
+                                graph.graph(),
+                                createGraphPathFactory(searchDatabaseConfig, activityContext)),
+                        graph.locale(),
+                        activityContext,
+                        searchDatabaseConfig);
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> newPojoGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
                         graph.graph(),
                         searchablePreferenceScreen,
-                        // FK-FIXME: SearchablePreferenceScreen.allPreferencesOfPreferenceHierarchy haben den falschen predecessor, nämlich gar keinen. Es müßte aber die ParenNode dieser Node im originalGraph sein.
-                        getPojoGraphRootedAt(
-                                instantiateSearchablePreferenceScreen(
-                                        searchablePreferenceScreen,
-                                        graph.graph(),
-                                        createGraphPathFactory(searchDatabaseConfig, activityContext)),
-                                graph.locale(),
-                                activityContext,
-                                searchDatabaseConfig));
+                        replacementTree);
+        setPredecessorOfPreferencesOfNode(
+                newPojoGraph,
+                Graphs.getRootNode(replacementTree).orElseThrow());
         return new SearchablePreferenceScreenGraph(
                 newPojoGraph,
                 graph.locale(),
                 new ConfigurationBundleConverter().doForward(newConfiguration));
+    }
+
+    private static void setPredecessorOfPreferencesOfNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+                                                          final SearchablePreferenceScreen node) {
+        final SearchablePreference predecessor =
+                SearchDatabaseRootedAtPrefsFragmentFifthAdapter
+                        .getIncomingEdgeOfNode(graph, node)
+                        .preference;
+        for (final SearchablePreference searchablePreference : node.allPreferencesOfPreferenceHierarchy()) {
+            searchablePreference.setPredecessor(Optional.of(predecessor));
+        }
+    }
+
+    private static SearchablePreferenceEdge getIncomingEdgeOfNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+                                                                  final SearchablePreferenceScreen node) {
+        return Iterables.getOnlyElement(graph.incomingEdgesOf(node));
     }
 
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(
