@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
-import org.jgrapht.Graph;
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -10,8 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.graph.GraphDifference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 
@@ -32,13 +28,22 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id) {
-        if(graphById.containsKey(id) && graphById.get(id).isPresent()) {
-            assertGraphFromDbEqualsGraph(graphById.get(id).orElseThrow().graph(), id);
+        if (graphById.containsKey(id) && graphById.get(id).isPresent()) {
+            final var diff =
+                    GraphDifference.between(
+                            graphById.get(id).orElseThrow().graph(),
+                            this
+                                    ._findGraphById(id)
+                                    .orElseThrow()
+                                    .graph());
+            if (!diff.areEqual()) {
+                throw new IllegalStateException("CACHE INCONSISTENCY DETECTED for locale " + id + ":\n" + diff);
+            }
         }
         if (!graphById.containsKey(id)) {
             graphById.put(id, _findGraphById(id));
         }
-        return _findGraphById(id);
+        return graphById.get(id);
     }
 
     public Set<SearchablePreferenceScreenGraph> loadAll() {
@@ -74,17 +79,5 @@ public class SearchablePreferenceScreenGraphDAO {
 
     private void invalidateCaches() {
         graphById.clear();
-    }
-
-    private void assertGraphFromDbEqualsGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph, final Locale id) {
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphFromDb =
-                this
-                        ._findGraphById(id)
-                        .orElseThrow()
-                        .graph();
-        final var diff = GraphDifference.between(graph, graphFromDb);
-        if (!diff.areEqual()) {
-            throw new IllegalStateException("CACHE INCONSISTENCY DETECTED for locale " + id + ":\n" + diff);
-        }
     }
 }

@@ -60,6 +60,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
                 subtreeReplacer.replaceSubtreeWithTree(
                         graph.graph(),
                         searchablePreferenceScreen,
+                        // FK-FIXME: SearchablePreferenceScreen.allPreferencesOfPreferenceHierarchy haben den falschen predecessor, nämlich gar keinen. Es müßte aber die ParenNode dieser Node im originalGraph sein.
                         getPojoGraphRootedAt(
                                 instantiateSearchablePreferenceScreen(
                                         searchablePreferenceScreen,
