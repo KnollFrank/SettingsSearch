@@ -39,24 +39,25 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
             final FragmentActivity activityContext) {
         preferencesDatabase
                 .searchablePreferenceScreenGraphDAO()
-                .persist(getAdaptedGraph(graph, newConfiguration, searchDatabaseConfig, activityContext));
+                .persist(adaptGraphAtPrefsFragmentFifth(graph, newConfiguration, searchDatabaseConfig, activityContext));
     }
 
-    public SearchablePreferenceScreenGraph getAdaptedGraph(final SearchablePreferenceScreenGraph graph,
-                                                           final Configuration newConfiguration,
-                                                           final SearchDatabaseConfig searchDatabaseConfig,
-                                                           final FragmentActivity activityContext) {
+    public SearchablePreferenceScreenGraph adaptGraphAtPrefsFragmentFifth(
+            final SearchablePreferenceScreenGraph graph,
+            final Configuration newConfiguration,
+            final SearchDatabaseConfig searchDatabaseConfig,
+            final FragmentActivity activityContext) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 activityContext.findViewById(android.R.id.content),
                 FRAGMENT_CONTAINER_VIEW_ID);
-        final SearchablePreferenceScreen searchablePreferenceScreen = findSearchablePreferenceScreen(graph);
+        final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
         return new SearchablePreferenceScreenGraph(
                 SearchablePreferenceScreenSubtreeReplacer.replaceSubtreeWithTree(
                         graph.graph(),
-                        searchablePreferenceScreen,
+                        prefsFragmentFifthPreferenceScreen,
                         getPojoGraphRootedAt(
                                 instantiateSearchablePreferenceScreen(
-                                        searchablePreferenceScreen,
+                                        prefsFragmentFifthPreferenceScreen,
                                         graph.graph(),
                                         createGraphPathFactory(searchDatabaseConfig, activityContext)),
                                 graph.locale(),
@@ -83,7 +84,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
                 .getSearchablePreferenceScreenGraph(root);
     }
 
-    private SearchablePreferenceScreen findSearchablePreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn) {
+    private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn) {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         graphToSearchIn.graph().vertexSet(),

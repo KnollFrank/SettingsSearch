@@ -34,12 +34,11 @@ class PreferencesDatabaseFactory {
                                     public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph,
                                                                                         final Configuration actualConfiguration,
                                                                                         final FragmentActivity activityContext) {
-                                        return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter()
-                                                .getAdaptedGraph(
-                                                        graph,
-                                                        actualConfiguration,
-                                                        SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
-                                                        activityContext);
+                                        return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptGraphAtPrefsFragmentFifth(
+                                                graph,
+                                                actualConfiguration,
+                                                SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
+                                                activityContext);
                                     }
                                 })),
                 PreferencesDatabaseConfig.JournalMode.AUTOMATIC);
