@@ -16,7 +16,8 @@ public class SearchablePreferenceScreenGraphDAO {
     private final SearchablePreferenceScreenGraphEntityDAO delegate;
     private final Map<Locale, Optional<SearchablePreferenceScreenGraph>> graphById = new HashMap<>();
 
-    public SearchablePreferenceScreenGraphDAO(final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter, final SearchablePreferenceScreenGraphEntityDAO delegate) {
+    public SearchablePreferenceScreenGraphDAO(final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter,
+                                              final SearchablePreferenceScreenGraphEntityDAO delegate) {
         this.entityGraphPojoGraphConverter = entityGraphPojoGraphConverter;
         this.delegate = delegate;
     }
