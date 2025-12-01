@@ -16,15 +16,22 @@ public record PreferencePath(List<SearchablePreference> preferences) {
     }
 
     public SearchablePreference getStart() {
-        return Lists.getHead(preferences).orElseThrow();
+        return Lists
+                .getHead(preferences)
+                .orElseThrow();
     }
 
     public SearchablePreference getEnd() {
-        return Lists.getLastElement(preferences).orElseThrow();
+        return Lists
+                .getLastElement(preferences)
+                .orElseThrow();
     }
 
     public Optional<PreferencePath> getTail() {
-        final List<SearchablePreference> tailOfPreferences = Lists.getTail(preferences).orElseThrow();
+        final List<SearchablePreference> tailOfPreferences =
+                Lists
+                        .getTail(preferences)
+                        .orElseThrow();
         return tailOfPreferences.isEmpty() ?
                 Optional.empty() :
                 Optional.of(new PreferencePath(tailOfPreferences));
