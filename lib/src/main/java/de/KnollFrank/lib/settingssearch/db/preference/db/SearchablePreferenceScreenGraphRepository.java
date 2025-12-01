@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class SearchablePreferenceScreenGraphRepository<C> {
 
     private final SearchablePreferenceScreenGraphDAO delegate;
-    private final SearchablePreferenceScreenGraphProcessorManager<C> graphProcessorManager = new SearchablePreferenceScreenGraphProcessorManager<>();
+    private final SearchablePreferenceScreenGraphTransformerManager<C> graphTransformerManager = new SearchablePreferenceScreenGraphTransformerManager<>();
 
     public SearchablePreferenceScreenGraphRepository(final SearchablePreferenceScreenGraphDAO delegate) {
         this.delegate = delegate;
@@ -21,11 +21,11 @@ public class SearchablePreferenceScreenGraphRepository<C> {
 
     public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
         delegate.persist(searchablePreferenceScreenGraph);
-        graphProcessorManager.resetGraphProcessors();
+        graphTransformerManager.resetGraphTransformers();
     }
 
-    public void addGraphProcessor(final SearchablePreferenceScreenGraphProcessor<C> graphProcessor) {
-        graphProcessorManager.addGraphProcessor(graphProcessor);
+    public void addGraphTransformer(final SearchablePreferenceScreenGraphTransformer<C> graphTransformer) {
+        graphTransformerManager.addGraphTransformer(graphTransformer);
     }
 
     public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id,
@@ -42,8 +42,8 @@ public class SearchablePreferenceScreenGraphRepository<C> {
     }
 
     private void updateSearchDatabase(final C actualConfiguration, final FragmentActivity activityContext) {
-        graphProcessorManager
-                .executeGraphProcessorsOnGraphs(
+        graphTransformerManager
+                .executeGraphTransformersOnGraphs(
                         new ArrayList<>(delegate.loadAll()),
                         actualConfiguration,
                         activityContext)
@@ -52,6 +52,6 @@ public class SearchablePreferenceScreenGraphRepository<C> {
 
     public void removeAll() {
         delegate.removeAll();
-        graphProcessorManager.resetGraphProcessors();
+        graphTransformerManager.resetGraphTransformers();
     }
 }

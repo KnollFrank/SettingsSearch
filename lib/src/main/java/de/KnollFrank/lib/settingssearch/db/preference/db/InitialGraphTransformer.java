@@ -8,24 +8,24 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
-class InitialGraphProcessor<C> {
+class InitialGraphTransformer<C> {
 
-    private final Optional<SearchablePreferenceScreenGraphProcessor<C>> graphProcessor;
+    private final Optional<SearchablePreferenceScreenGraphTransformer<C>> graphTransformer;
     private final SearchablePreferenceScreenGraphRepository<C> graphRepository;
     private final FragmentActivity activityContext;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
-    public InitialGraphProcessor(final Optional<SearchablePreferenceScreenGraphProcessor<C>> graphProcessor,
-                                 final SearchablePreferenceScreenGraphRepository<C> graphRepository,
-                                 final FragmentActivity activityContext,
-                                 final ConfigurationBundleConverter<C> configurationBundleConverter) {
-        this.graphProcessor = graphProcessor;
+    public InitialGraphTransformer(final Optional<SearchablePreferenceScreenGraphTransformer<C>> graphTransformer,
+                                   final SearchablePreferenceScreenGraphRepository<C> graphRepository,
+                                   final FragmentActivity activityContext,
+                                   final ConfigurationBundleConverter<C> configurationBundleConverter) {
+        this.graphTransformer = graphTransformer;
         this.graphRepository = graphRepository;
         this.activityContext = activityContext;
         this.configurationBundleConverter = configurationBundleConverter;
     }
 
-    public void processAndPersist(final Optional<SearchablePreferenceScreenGraph> graph, final C configuration) {
+    public void transformAndPersist(final Optional<SearchablePreferenceScreenGraph> graph, final C configuration) {
         graph.ifPresent(
                 _graph -> {
                     if (!Objects.equals(configuration, configurationBundleConverter.doBackward(_graph.configuration()))) {
@@ -36,8 +36,8 @@ class InitialGraphProcessor<C> {
 
     private SearchablePreferenceScreenGraph process(final SearchablePreferenceScreenGraph graph,
                                                     final C configuration) {
-        return graphProcessor
-                .map(_graphProcessor -> _graphProcessor.processGraph(graph, configuration, activityContext))
+        return graphTransformer
+                .map(_graphTransformer -> _graphTransformer.transformGraph(graph, configuration, activityContext))
                 .orElse(graph)
                 .asGraphHavingConfiguration(configurationBundleConverter.doForward(configuration));
     }

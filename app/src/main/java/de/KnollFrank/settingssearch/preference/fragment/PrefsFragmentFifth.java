@@ -58,7 +58,7 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
         checkBoxPreference.setTitle(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_TITLE);
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
-                    getGraphRepository().addGraphProcessor(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter());
+                    getGraphRepository().addGraphTransformer(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter());
                     return true;
                 });
         return checkBoxPreference;

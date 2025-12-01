@@ -38,7 +38,7 @@ public class PreferencesDatabaseFactory {
                         .findGraphById(locale, null, activityContext),
                 preferencesDatabaseConfig
                         .prepackagedPreferencesDatabase()
-                        .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenGraphProcessor),
+                        .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenGraphTransformer),
                 preferencesDatabase.searchablePreferenceScreenGraphRepository(),
                 configuration,
                 configurationBundleConverter,
@@ -47,18 +47,18 @@ public class PreferencesDatabaseFactory {
     }
 
     private static <C> void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
-                                                   final Optional<SearchablePreferenceScreenGraphProcessor<C>> graphProcessor,
+                                                   final Optional<SearchablePreferenceScreenGraphTransformer<C>> graphTransformer,
                                                    final SearchablePreferenceScreenGraphRepository<C> graphRepository,
                                                    final C configuration,
                                                    final ConfigurationBundleConverter<C> configurationBundleConverter,
                                                    final FragmentActivity activityContext) {
-        final InitialGraphProcessor<C> initialGraphProcessor =
-                new InitialGraphProcessor<>(
-                        graphProcessor,
+        final InitialGraphTransformer<C> initialGraphTransformer =
+                new InitialGraphTransformer<>(
+                        graphTransformer,
                         graphRepository,
                         activityContext,
                         configurationBundleConverter);
-        initialGraphProcessor.processAndPersist(graph, configuration);
+        initialGraphTransformer.transformAndPersist(graph, configuration);
     }
 
     private static RoomDatabase.JournalMode asRoomJournalMode(final PreferencesDatabaseConfig.JournalMode journalMode) {

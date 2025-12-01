@@ -16,7 +16,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenSubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphProcessor;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
@@ -30,14 +30,14 @@ import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 
-public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements SearchablePreferenceScreenGraphProcessor<Configuration> {
+public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements SearchablePreferenceScreenGraphTransformer<Configuration> {
 
     private final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     @Override
-    public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph,
-                                                        final Configuration actualConfiguration,
-                                                        final FragmentActivity activityContext) {
+    public SearchablePreferenceScreenGraph transformGraph(final SearchablePreferenceScreenGraph graph,
+                                                          final Configuration actualConfiguration,
+                                                          final FragmentActivity activityContext) {
         return adaptGraphAtPrefsFragmentFifth(
                 graph,
                 actualConfiguration,
