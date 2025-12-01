@@ -262,13 +262,11 @@ public class PreferenceSearchExampleTest {
         }
     }
 
-    // fails
     @Test
     public void shouldSearchAndNotFindNonAddedPreference_usingPrepackagedDatabaseAssetFile() {
         test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(false);
     }
 
-    // fails
     @Test
     public void shouldSearchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile() {
         test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(true);
@@ -407,24 +405,21 @@ public class PreferenceSearchExampleTest {
     }
 
     private static void test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(final boolean shallFindAdditionalPreference) {
+        setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
+        PreferenceSearchExampleTest
+                .getSharedPreferences()
+                .edit()
+                .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
+                .commit();
         try (final ActivityScenario<LocalePreferenceSearchExample> scenario = ActivityScenario.launch(LocalePreferenceSearchExample.class)) {
-            scenario.onActivity(
-                    activity -> {
-                        LocalePreferenceSearchExample.setLocale(getSomeLocaleFromPrepackagedDatabase(activity));
-                        setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
-                        PreferenceSearchExampleTest
-                                .getSharedPreferences()
-                                .edit()
-                                .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
-                                .commit();
-                        onView(searchButton()).perform(click());
-                        onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
-                        if (shallFindAdditionalPreference) {
-                            onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
-                        } else {
-                            onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
-                        }
-                    });
+            scenario.onActivity(activity -> LocalePreferenceSearchExample.setLocale(getSomeLocaleFromPrepackagedDatabase(activity)));
+            onView(searchButton()).perform(click());
+            onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
+            if (shallFindAdditionalPreference) {
+                onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
+            } else {
+                onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
+            }
         }
     }
 
