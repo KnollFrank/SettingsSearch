@@ -100,23 +100,21 @@ public class PreferenceSearchExampleTest {
         }
     }
 
-    // fails
     @Test
     public void shouldSearchAndFindPreferenceFromAnotherActivity() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final String query = "Your signature";
             searchForQueryThenClickSearchResultAtPosition(query, 0);
-            onView(dialogTitle()).check(matches(withText(query)));
+            onView(titleOfPreference(query) /* or: dialogTitle() */).check(matches(withText(query)));
         }
     }
 
-    // fails
     @Test
     public void shouldSearchAndFindPreferenceFromTwoActivitiesApart() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final String query = "Your signature2";
             searchForQueryThenClickSearchResultAtPosition(query, 0);
-            onView(dialogTitle()).check(matches(withText(query)));
+            onView(titleOfPreference(query) /* or: dialogTitle() */).check(matches(withText(query)));
         }
     }
 
