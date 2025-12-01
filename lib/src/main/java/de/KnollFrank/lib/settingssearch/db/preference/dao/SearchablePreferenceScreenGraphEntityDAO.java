@@ -23,7 +23,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
     private final SearchablePreferenceScreenEntityDAO screenDAO;
     private final SearchablePreferenceEntityDAO preferenceDAO;
 
-    public SearchablePreferenceScreenGraphEntityDAO(final PreferencesDatabase preferencesDatabase) {
+    public SearchablePreferenceScreenGraphEntityDAO(final PreferencesDatabase<?> preferencesDatabase) {
         this.screenDAO = preferencesDatabase.searchablePreferenceScreenEntityDAO();
         this.preferenceDAO = preferencesDatabase.searchablePreferenceEntityDAO();
     }

@@ -30,7 +30,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     // FK-TODO: remove cache?
     private Optional<Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity>> hostByPreference = Optional.empty();
 
-    public SearchablePreferenceScreenEntityDAO(final PreferencesDatabase preferencesDatabase) {
+    public SearchablePreferenceScreenEntityDAO(final PreferencesDatabase<?> preferencesDatabase) {
         this.searchablePreferenceDAO = preferencesDatabase.searchablePreferenceEntityDAO();
     }
 
