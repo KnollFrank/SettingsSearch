@@ -11,6 +11,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
+import java.util.function.Consumer;
+
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 
 // FK-FIXME: search for signature2, click search result, then you must press the back button MULTIPLE TIMES in order to go back. Expected: press back button ONCE in order to go back.
@@ -42,7 +45,7 @@ public class SettingsActivity2 extends AppCompatActivity {
                 this,
                 findViewById(R.id.settings_root),
                 fragmentContainerViewId,
-                onMergedPreferenceScreenAvailable ->
+                (final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable) ->
                         createSearchPreferenceFragments(
                                 this,
                                 onMergedPreferenceScreenAvailable,

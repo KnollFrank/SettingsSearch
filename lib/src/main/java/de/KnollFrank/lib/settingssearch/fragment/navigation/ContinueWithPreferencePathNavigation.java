@@ -14,18 +14,18 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 
-public class ContinueWithPreferencePathNavigation {
+public class ContinueWithPreferencePathNavigation<C> {
 
     private final FragmentActivity activity;
     private final ViewGroup parent;
     private final @IdRes int fragmentContainerViewId;
-    private final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments;
+    private final Function<Consumer<MergedPreferenceScreen<C>>, SearchPreferenceFragments<C>> createSearchPreferenceFragments;
     private final Locale locale;
 
     private ContinueWithPreferencePathNavigation(final FragmentActivity activity,
                                                  final ViewGroup parent,
                                                  final @IdRes int fragmentContainerViewId,
-                                                 final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments,
+                                                 final Function<Consumer<MergedPreferenceScreen<C>>, SearchPreferenceFragments<C>> createSearchPreferenceFragments,
                                                  final Locale locale) {
         this.activity = activity;
         this.parent = parent;
@@ -34,13 +34,14 @@ public class ContinueWithPreferencePathNavigation {
         this.locale = locale;
     }
 
-    public static void continueWithPreferencePathNavigation(final FragmentActivity activity,
-                                                            final ViewGroup parent,
-                                                            final @IdRes int fragmentContainerViewId,
-                                                            final Function<Consumer<MergedPreferenceScreen>, SearchPreferenceFragments> createSearchPreferenceFragments,
-                                                            final Locale locale) {
+    public static <C> void continueWithPreferencePathNavigation(
+            final FragmentActivity activity,
+            final ViewGroup parent,
+            final @IdRes int fragmentContainerViewId,
+            final Function<Consumer<MergedPreferenceScreen<C>>, SearchPreferenceFragments<C>> createSearchPreferenceFragments,
+            final Locale locale) {
         final var continueWithPreferencePathNavigation =
-                new ContinueWithPreferencePathNavigation(
+                new ContinueWithPreferencePathNavigation<>(
                         activity,
                         parent,
                         fragmentContainerViewId,
@@ -77,7 +78,7 @@ public class ContinueWithPreferencePathNavigation {
     private boolean showPreferenceScreenAndHighlightPreferenceAlreadyExecuted = false;
 
     private void showPreferenceScreenAndHighlightPreferenceOnce(final PreferencePathData preferencePathData,
-                                                                final MergedPreferenceScreen mergedPreferenceScreen) {
+                                                                final MergedPreferenceScreen<C> mergedPreferenceScreen) {
         if (showPreferenceScreenAndHighlightPreferenceAlreadyExecuted) {
             return;
         }
@@ -89,7 +90,8 @@ public class ContinueWithPreferencePathNavigation {
                 .navigatePreferencePathAndHighlightPreference(
                         PreferencePathFactory.createPreferencePath(
                                 preferencePathData,
-                                mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
-                                locale));
+                                mergedPreferenceScreen.graphRepository(),
+                                locale,
+                                activity));
     }
 }

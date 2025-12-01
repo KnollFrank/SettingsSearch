@@ -10,6 +10,9 @@ import androidx.annotation.IdRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.function.Consumer;
+
+import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.settingssearch.preference.fragment.ItemFragment3;
 
@@ -42,7 +45,7 @@ public class SettingsActivity3 extends AppCompatActivity {
                 this,
                 findViewById(R.id.settings_root),
                 fragmentContainerViewId,
-                onMergedPreferenceScreenAvailable ->
+                (final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable) ->
                         createSearchPreferenceFragments(
                                 this,
                                 onMergedPreferenceScreenAvailable,

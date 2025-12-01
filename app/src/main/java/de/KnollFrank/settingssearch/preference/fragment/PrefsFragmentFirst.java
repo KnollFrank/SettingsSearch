@@ -81,8 +81,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {
         return getPreferencesDatabase()
-                .searchablePreferenceScreenGraphDAO()
-                .findGraphById(locale)
+                .searchablePreferenceScreenGraphRepository()
+                .findGraphById(locale, null, requireActivity())
                 .orElseThrow();
     }
 
@@ -104,7 +104,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 getSummaryChangingPreference(pojoGraph.graph()),
                                 getSummary(checked));
                         getPreferencesDatabase()
-                                .searchablePreferenceScreenGraphDAO()
+                                .searchablePreferenceScreenGraphRepository()
                                 .persist(
                                         getGraphHavingConfiguration(
                                                 pojoGraph,
@@ -138,7 +138,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 });
     }
 
-    private DAOProvider getPreferencesDatabase() {
+    private DAOProvider<Configuration> getPreferencesDatabase() {
         return SettingsSearchApplication
                 .getInstanceFromContext(requireContext())
                 .daoProviderManager

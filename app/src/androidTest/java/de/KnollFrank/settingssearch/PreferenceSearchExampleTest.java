@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
@@ -99,6 +100,7 @@ public class PreferenceSearchExampleTest {
         }
     }
 
+    // fails
     @Test
     public void shouldSearchAndFindPreferenceFromAnotherActivity() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
@@ -108,6 +110,7 @@ public class PreferenceSearchExampleTest {
         }
     }
 
+    // fails
     @Test
     public void shouldSearchAndFindPreferenceFromTwoActivitiesApart() {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
@@ -259,11 +262,13 @@ public class PreferenceSearchExampleTest {
         }
     }
 
+    // fails
     @Test
     public void shouldSearchAndNotFindNonAddedPreference_usingPrepackagedDatabaseAssetFile() {
         test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(false);
     }
 
+    // fails
     @Test
     public void shouldSearchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile() {
         test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(true);
@@ -402,27 +407,30 @@ public class PreferenceSearchExampleTest {
     }
 
     private static void test_searchAndFindAddedPreference_usingPrepackagedDatabaseAssetFile(final boolean shallFindAdditionalPreference) {
-        LocalePreferenceSearchExample.setLocale(getSomeLocaleFromPrepackagedDatabase());
-        setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
-        PreferenceSearchExampleTest
-                .getSharedPreferences()
-                .edit()
-                .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
-                .commit();
         try (final ActivityScenario<LocalePreferenceSearchExample> scenario = ActivityScenario.launch(LocalePreferenceSearchExample.class)) {
-            onView(searchButton()).perform(click());
-            onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
-            if (shallFindAdditionalPreference) {
-                onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
-            } else {
-                onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
-            }
+            scenario.onActivity(
+                    activity -> {
+                        LocalePreferenceSearchExample.setLocale(getSomeLocaleFromPrepackagedDatabase(activity));
+                        setupToEnsureCreateFromPrepackagedDatabaseAssetFile();
+                        PreferenceSearchExampleTest
+                                .getSharedPreferences()
+                                .edit()
+                                .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
+                                .commit();
+                        onView(searchButton()).perform(click());
+                        onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
+                        if (shallFindAdditionalPreference) {
+                            onView(searchResultsView()).check(matches(hasSearchResultWithSubstring(SOME_ADDITIONAL_PREFERENCE)));
+                        } else {
+                            onView(searchResultsView()).check(matches(recyclerViewHasItemCount(equalTo(0))));
+                        }
+                    });
         }
     }
 
-    private static Locale getSomeLocaleFromPrepackagedDatabase() {
-        final PreferencesDatabaseConfig<?> preferencesDatabaseConfig = PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
-        final PreferencesDatabase preferencesDatabase =
+    private static Locale getSomeLocaleFromPrepackagedDatabase(final FragmentActivity activityContext) {
+        final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
+        final PreferencesDatabase<Configuration> preferencesDatabase =
                 getPreferencesDatabase(
                         preferencesDatabaseConfig.databaseFileName(),
                         preferencesDatabaseConfig
@@ -431,8 +439,8 @@ public class PreferenceSearchExampleTest {
                                 .databaseAssetFile());
         final Locale locale =
                 preferencesDatabase
-                        .searchablePreferenceScreenGraphDAO()
-                        .loadAll()
+                        .searchablePreferenceScreenGraphRepository()
+                        .loadAll(null, activityContext)
                         .stream()
                         .findAny()
                         .orElseThrow()
@@ -441,8 +449,8 @@ public class PreferenceSearchExampleTest {
         return locale;
     }
 
-    private static PreferencesDatabase getPreferencesDatabase(final String databaseFileName,
-                                                              final File databasedAssetFile) {
+    private static PreferencesDatabase<Configuration> getPreferencesDatabase(final String databaseFileName,
+                                                                             final File databasedAssetFile) {
         return Room
                 .databaseBuilder(
                         ApplicationProvider.getApplicationContext(),

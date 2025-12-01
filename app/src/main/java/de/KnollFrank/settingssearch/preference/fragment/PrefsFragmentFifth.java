@@ -16,12 +16,9 @@ import java.util.Locale;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.common.Locales;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.settingssearch.Configuration;
-import de.KnollFrank.settingssearch.ConfigurationProvider;
 import de.KnollFrank.settingssearch.R;
-import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 import de.KnollFrank.settingssearch.SettingsSearchApplication;
 
 public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
@@ -61,36 +58,21 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
         checkBoxPreference.setTitle(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_TITLE);
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
-                    new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptSearchDatabaseRootedAtPrefsFragmentFifth(
-                            getPreferencesDatabase(),
-                            getPojoGraph(locale),
-                            new Configuration(
-                                    checkBoxPreference.isChecked(),
-                                    ConfigurationProvider
-                                            .getActualConfiguration(requireContext())
-                                            .summaryChangingPreference()),
-                            SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
-                            requireActivity());
+                    getGraphRepository().addGraphProcessor(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter());
                     return true;
                 });
         return checkBoxPreference;
     }
 
-    private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {
-        return getPreferencesDatabase()
-                .searchablePreferenceScreenGraphDAO()
-                .findGraphById(locale)
-                .orElseThrow();
-    }
-
-    private DAOProvider getPreferencesDatabase() {
+    private SearchablePreferenceScreenGraphRepository<Configuration> getGraphRepository() {
         return SettingsSearchApplication
                 .getInstanceFromContext(requireContext())
                 .daoProviderManager
-                .getDAOProvider();
+                .getDAOProvider()
+                .searchablePreferenceScreenGraphRepository();
     }
 
-    public static Bundle createArguments4PreferenceWithoutExtras(final @NonNull Preference preference,
+    public static Bundle createArguments4PreferenceWithoutExtras(final Preference preference,
                                                                  final Context context) {
         return createArguments4PreferenceWithoutExtras(preference.getSummary().toString(), context);
     }

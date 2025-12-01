@@ -20,8 +20,9 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
+import de.KnollFrank.settingssearch.Configuration;
 
 class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
 
@@ -29,7 +30,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
     private static final String KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "keyOfPreferenceOfConnectedFragment";
 
     public static void shouldSearchAndFindPreferenceOfNonStandardConnectedFragment(
-            final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
+            final SearchablePreferenceScreenGraphRepository<Configuration> graphRepository) {
         testSearch(
                 // Given a fragment with a non standard connected fragment
                 new FragmentWithNonStandardConnection(),
@@ -44,7 +45,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT)),
-                searchablePreferenceScreenGraphDAO);
+                graphRepository);
     }
 
     public static class FragmentWithNonStandardConnection extends PreferenceFragmentCompat {
@@ -80,7 +81,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                                    final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
-                                   final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
+                                   final SearchablePreferenceScreenGraphRepository<Configuration> graphRepository) {
         PreferenceSearcherTest.testSearch(
                 fragmentWithNonStandardConnection,
                 (preference, hostOfPreference) -> true,
@@ -90,7 +91,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 checkPreferenceMatches,
-                searchablePreferenceScreenGraphDAO,
+                graphRepository,
                 preferenceScreenGraph -> {
                 });
     }

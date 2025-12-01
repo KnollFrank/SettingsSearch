@@ -36,31 +36,31 @@ import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUI;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchPreferenceFragmentUIBinding;
 
 // FK-TODO: let users of this library extend this class for their custom UI instead of using SearchPreferenceFragmentUI?
-public class SearchPreferenceFragment extends Fragment {
+public class SearchPreferenceFragment<C> extends Fragment {
 
     private static final @IdRes int DUMMY_FRAGMENT_CONTAINER_VIEW = View.generateViewId();
 
     private final Optional<String> queryHint;
     private final SearchResultsFilter searchResultsFilter;
     private final PreferenceMatcher preferenceMatcher;
-    private final MergedPreferenceScreenFactory mergedPreferenceScreenFactory;
+    private final MergedPreferenceScreenFactory<C> mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier;
     private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
-    private final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable;
+    private final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable;
     private final Locale locale;
     private final PersistableBundle configuration;
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
-    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider, MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask;
+    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider<C>, MergedPreferenceScreen<C>> getMergedPreferenceScreenAndShowSearchResultsTask;
 
     public SearchPreferenceFragment(final Optional<String> queryHint,
                                     final SearchResultsFilter searchResultsFilter,
                                     final PreferenceMatcher preferenceMatcher,
-                                    final MergedPreferenceScreenFactory mergedPreferenceScreenFactory,
+                                    final MergedPreferenceScreenFactory<C> mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
-                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
+                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier,
                                     final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
-                                    final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
+                                    final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable,
                                     final Locale locale,
                                     final PersistableBundle configuration) {
         this.queryHint = queryHint;
@@ -116,10 +116,10 @@ public class SearchPreferenceFragment extends Fragment {
                 progressContainerUI.getProgressText());
     }
 
-    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider, MergedPreferenceScreen> createGetMergedPreferenceScreenAndShowSearchResultsTask(
+    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider<C>, MergedPreferenceScreen<C>> createGetMergedPreferenceScreenAndShowSearchResultsTask(
             final ProgressUpdateListener progressUpdateListener,
             final PersistableBundle configuration) {
-        final AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider, MergedPreferenceScreen> getMergedPreferenceScreenAndShowSearchResultsTask =
+        final AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider<C>, MergedPreferenceScreen<C>> getMergedPreferenceScreenAndShowSearchResultsTask =
                 new AsyncTaskWithProgressUpdateListenersAndProgressContainer<>(
                         (searchablePreferenceDAO, _progressUpdateListener) -> getMergedPreferenceScreen(_progressUpdateListener, configuration),
                         mergedPreferenceScreen -> {
@@ -134,8 +134,8 @@ public class SearchPreferenceFragment extends Fragment {
         return getMergedPreferenceScreenAndShowSearchResultsTask;
     }
 
-    private MergedPreferenceScreen getMergedPreferenceScreen(final ProgressUpdateListener progressUpdateListener,
-                                                             final PersistableBundle configuration) {
+    private MergedPreferenceScreen<C> getMergedPreferenceScreen(final ProgressUpdateListener progressUpdateListener,
+                                                                final PersistableBundle configuration) {
         return mergedPreferenceScreenFactory.getMergedPreferenceScreen(
                 getChildFragmentManager(),
                 progressUpdateListener,
@@ -154,14 +154,15 @@ public class SearchPreferenceFragment extends Fragment {
                 getChildFragmentManager());
     }
 
-    private void configureSearchView(final MergedPreferenceScreen mergedPreferenceScreen) {
+    private void configureSearchView(final MergedPreferenceScreen<C> mergedPreferenceScreen) {
         final SearchView searchView = searchPreferenceFragmentUIBinding.getSearchView();
-        final SearchAndDisplay searchAndDisplay =
-                new SearchAndDisplay(
-                        new PreferenceSearcher(
-                                mergedPreferenceScreen.searchablePreferenceScreenGraphDAO(),
+        final SearchAndDisplay<C> searchAndDisplay =
+                new SearchAndDisplay<>(
+                        new PreferenceSearcher<>(
+                                mergedPreferenceScreen.graphRepository(),
                                 searchResultsFilter,
-                                preferenceMatcher),
+                                preferenceMatcher,
+                                requireActivity()),
                         mergedPreferenceScreen.searchResultsDisplayer());
         SearchViewConfigurer.configureSearchView(searchView, queryHint, searchAndDisplay, locale);
         selectSearchView(searchView);

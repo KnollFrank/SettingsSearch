@@ -21,7 +21,8 @@ import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
+import de.KnollFrank.settingssearch.Configuration;
 
 class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
 
@@ -29,7 +30,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
     private static final String KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT = "keyOfPreferenceOfConnectedFragment";
 
     public static void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths(
-            final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
+            final SearchablePreferenceScreenGraphRepository<Configuration> graphRepository) {
         testSearch(
                 // Given a fragment with TWO connections to a connected fragment
                 new FragmentWith2Connections(),
@@ -40,7 +41,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                         assertThat(
                                 getKeyList(preferenceMatches),
                                 contains(KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT, KEY_OF_PREFERENCE_OF_CONNECTED_FRAGMENT)),
-                searchablePreferenceScreenGraphDAO);
+                graphRepository);
     }
 
     public static class FragmentWith2Connections extends PreferenceFragmentCompat {
@@ -91,7 +92,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
     private static void testSearch(final FragmentWith2Connections fragmentWith2Connections,
                                    final String keyword,
                                    final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
-                                   final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO) {
+                                   final SearchablePreferenceScreenGraphRepository<Configuration> graphRepository) {
         PreferenceSearcherTest.testSearch(
                 fragmentWith2Connections,
                 (preference, hostOfPreference) -> true,
@@ -101,7 +102,7 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
                 (preference, hostOfPreference) -> Optional.empty(),
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()),
                 checkPreferenceMatches,
-                searchablePreferenceScreenGraphDAO,
+                graphRepository,
                 preferenceScreenGraph -> {
                 });
     }

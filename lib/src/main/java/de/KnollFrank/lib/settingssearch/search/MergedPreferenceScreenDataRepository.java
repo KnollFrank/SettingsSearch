@@ -1,7 +1,8 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import android.content.Context;
 import android.os.PersistableBundle;
+
+import androidx.fragment.app.FragmentActivity;
 
 import org.jgrapht.Graph;
 
@@ -14,11 +15,12 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDataba
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
@@ -27,41 +29,46 @@ import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphPro
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
-public class MergedPreferenceScreenDataRepository {
+public class MergedPreferenceScreenDataRepository<C> {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
     private final PreferenceDialogs preferenceDialogs;
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
-    private final Context context;
-    private final DAOProvider daoProvider;
+    private final FragmentActivity activityContext;
+    private final DAOProvider<C> daoProvider;
     private final Locale locale;
+    private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
     MergedPreferenceScreenDataRepository(
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final PreferenceDialogs preferenceDialogs,
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
-            final Context context,
-            final DAOProvider daoProvider,
-            final Locale locale) {
+            final FragmentActivity activityContext,
+            final DAOProvider<C> daoProvider,
+            final Locale locale,
+            final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
         this.preferenceDialogs = preferenceDialogs;
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
-        this.context = context;
+        this.activityContext = activityContext;
         this.daoProvider = daoProvider;
         this.locale = locale;
+        this.configurationBundleConverter = configurationBundleConverter;
     }
 
     public void fillSearchDatabaseWithPreferences(final Locale locale, final PersistableBundle configuration) {
         synchronized (LockingSupport.searchDatabaseLock) {
-            final SearchablePreferenceScreenGraphDAO graphDAO = daoProvider.searchablePreferenceScreenGraphDAO();
-            if (graphDAO.findGraphById(locale).isEmpty()) {
+            final SearchablePreferenceScreenGraphRepository<C> graphRepository = daoProvider.searchablePreferenceScreenGraphRepository();
+            if (graphRepository
+                    .findGraphById(locale, configurationBundleConverter.doBackward(configuration), activityContext)
+                    .isEmpty()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
                 progressUpdateListener.onProgressUpdate("persisting search database");
-                graphDAO.persist(
+                graphRepository.persist(
                         new SearchablePreferenceScreenGraph(
                                 searchablePreferenceScreenGraph,
                                 locale,
@@ -98,7 +105,7 @@ public class MergedPreferenceScreenDataRepository {
                         preferenceScreenWithHostProvider,
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
-                        context,
+                        activityContext,
                         new PreferenceScreenGraphListener() {
 
                             @Override

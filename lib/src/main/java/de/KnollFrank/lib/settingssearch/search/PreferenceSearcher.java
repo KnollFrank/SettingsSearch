@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.search;
 
+import androidx.fragment.app.FragmentActivity;
+
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
@@ -7,24 +9,27 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 
-class PreferenceSearcher {
+class PreferenceSearcher<C> {
 
-    private final SearchablePreferenceScreenGraphDAO graphDAO;
+    private final SearchablePreferenceScreenGraphRepository<C> graphRepository;
     private final SearchResultsFilter searchResultsFilter;
     private final PreferenceMatcher preferenceMatcher;
+    private final FragmentActivity activityContext;
 
-    public PreferenceSearcher(final SearchablePreferenceScreenGraphDAO graphDAO,
+    public PreferenceSearcher(final SearchablePreferenceScreenGraphRepository<C> graphRepository,
                               final SearchResultsFilter searchResultsFilter,
-                              final PreferenceMatcher preferenceMatcher) {
-        this.graphDAO = graphDAO;
+                              final PreferenceMatcher preferenceMatcher,
+                              final FragmentActivity activityContext) {
+        this.graphRepository = graphRepository;
         this.searchResultsFilter = searchResultsFilter;
         this.preferenceMatcher = preferenceMatcher;
+        this.activityContext = activityContext;
     }
 
     public Set<PreferenceMatch> searchFor(final String needle, final Locale locale) {
@@ -41,7 +46,7 @@ class PreferenceSearcher {
 
     private Set<SearchablePreference> getHaystack(final Locale locale) {
         return this
-                .getPreferences(graphDAO.findGraphById(locale))
+                .getPreferences(graphRepository.findGraphById(locale, null, activityContext))
                 .stream()
                 .filter(SearchablePreference::isVisible)
                 .filter(searchResultsFilter::includePreferenceInSearchResults)

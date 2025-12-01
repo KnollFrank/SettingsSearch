@@ -166,11 +166,11 @@ public class Graph2POJOGraphTransformerTest extends PreferencesDatabaseTest {
 
                 // When
                 final SearchablePreferenceScreenGraph germanPojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.GERMAN);
-                preferencesDatabase.searchablePreferenceScreenGraphDAO().persist(germanPojoGraph);
+                preferencesDatabase.searchablePreferenceScreenGraphRepository().persist(germanPojoGraph);
 
                 // And
                 final SearchablePreferenceScreenGraph chinesePojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.CHINESE);
-                preferencesDatabase.searchablePreferenceScreenGraphDAO().persist(chinesePojoGraph);
+                preferencesDatabase.searchablePreferenceScreenGraphRepository().persist(chinesePojoGraph);
 
                 // Then no exception was thrown
             });

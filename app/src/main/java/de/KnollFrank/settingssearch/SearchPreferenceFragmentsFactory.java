@@ -14,12 +14,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 
 public class SearchPreferenceFragmentsFactory {
 
-    public static SearchPreferenceFragments createSearchPreferenceFragments(
+    public static SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(
             final @IdRes int fragmentContainerViewId,
             final FragmentActivity activity,
-            final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier,
-            final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
-            final DAOProvider daoProvider,
+            final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<Configuration>>>> createSearchDatabaseTaskSupplier,
+            final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable,
+            final DAOProvider<Configuration> daoProvider,
             final Configuration configuration) {
         return SearchPreferenceFragments
                 .builder(
@@ -27,7 +27,8 @@ public class SearchPreferenceFragmentsFactory {
                         SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
                         activity,
                         daoProvider,
-                        new ConfigurationBundleConverter().doForward(configuration))
+                        new ConfigurationBundleConverter().doForward(configuration),
+                        new ConfigurationBundleConverter())
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withOnMergedPreferenceScreenAvailable(onMergedPreferenceScreenAvailable)
                 .build();

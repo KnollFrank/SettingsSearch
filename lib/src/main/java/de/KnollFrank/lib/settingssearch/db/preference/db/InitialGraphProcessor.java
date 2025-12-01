@@ -5,23 +5,22 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.Objects;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 class InitialGraphProcessor<C> {
 
     private final Optional<SearchablePreferenceScreenGraphProcessor<C>> graphProcessor;
-    private final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO;
+    private final SearchablePreferenceScreenGraphRepository<C> graphRepository;
     private final FragmentActivity activityContext;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
     public InitialGraphProcessor(final Optional<SearchablePreferenceScreenGraphProcessor<C>> graphProcessor,
-                                 final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
+                                 final SearchablePreferenceScreenGraphRepository<C> graphRepository,
                                  final FragmentActivity activityContext,
                                  final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.graphProcessor = graphProcessor;
-        this.searchablePreferenceScreenGraphDAO = searchablePreferenceScreenGraphDAO;
+        this.graphRepository = graphRepository;
         this.activityContext = activityContext;
         this.configurationBundleConverter = configurationBundleConverter;
     }
@@ -30,7 +29,7 @@ class InitialGraphProcessor<C> {
         graph.ifPresent(
                 _graph -> {
                     if (!Objects.equals(configuration, configurationBundleConverter.doBackward(_graph.configuration()))) {
-                        searchablePreferenceScreenGraphDAO.persist(process(_graph, configuration));
+                        graphRepository.persist(process(_graph, configuration));
                     }
                 });
     }

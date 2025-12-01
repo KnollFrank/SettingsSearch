@@ -14,18 +14,20 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDataba
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
-public class SearchPreferenceFragmentsBuilder {
+public class SearchPreferenceFragmentsBuilder<C> {
 
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
-    private final DAOProvider daoProvider;
+    private final DAOProvider<C> daoProvider;
     private final SearchConfig searchConfig;
     private final PersistableBundle configuration;
-    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier = Optional::empty;
-    private Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
+    private final ConfigurationBundleConverter<C> configurationBundleConverter;
+    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier = Optional::empty;
+    private Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
 
 
@@ -34,8 +36,9 @@ public class SearchPreferenceFragmentsBuilder {
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
                                                final FragmentActivity activity,
-                                               final DAOProvider daoProvider,
-                                               final PersistableBundle configuration) {
+                                               final DAOProvider<C> daoProvider,
+                                               final PersistableBundle configuration,
+                                               final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.searchConfig = searchConfig;
         this.locale = locale;
@@ -43,20 +46,21 @@ public class SearchPreferenceFragmentsBuilder {
         this.activity = activity;
         this.daoProvider = daoProvider;
         this.configuration = configuration;
+        this.configurationBundleConverter = configurationBundleConverter;
     }
 
-    public SearchPreferenceFragmentsBuilder withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>>> createSearchDatabaseTaskSupplier) {
+    public SearchPreferenceFragmentsBuilder<C> withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier) {
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         return this;
     }
 
-    public SearchPreferenceFragmentsBuilder withOnMergedPreferenceScreenAvailable(final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable) {
+    public SearchPreferenceFragmentsBuilder<C> withOnMergedPreferenceScreenAvailable(final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable) {
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
         return this;
     }
 
-    public SearchPreferenceFragments build() {
-        return new SearchPreferenceFragments(
+    public SearchPreferenceFragments<C> build() {
+        return new SearchPreferenceFragments<>(
                 searchDatabaseConfig,
                 searchConfig,
                 locale,
@@ -65,6 +69,7 @@ public class SearchPreferenceFragmentsBuilder {
                 createSearchDatabaseTaskSupplier,
                 onMergedPreferenceScreenAvailable,
                 daoProvider,
-                configuration);
+                configuration,
+                configurationBundleConverter);
     }
 }

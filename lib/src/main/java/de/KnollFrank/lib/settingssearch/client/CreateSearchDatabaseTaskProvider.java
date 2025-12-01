@@ -21,10 +21,10 @@ public class CreateSearchDatabaseTaskProvider {
 
     public static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
-    public static AsyncTaskWithProgressUpdateListeners<Void, DAOProvider> getCreateSearchDatabaseTask(
-            final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
+    public static <C> AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>> getCreateSearchDatabaseTask(
+            final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
-            final DAOProvider daoProvider,
+            final DAOProvider<C> daoProvider,
             final PersistableBundle configuration,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
@@ -52,11 +52,11 @@ public class CreateSearchDatabaseTaskProvider {
                 });
     }
 
-    private static void fillSearchDatabaseWithPreferences(
-            final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
+    private static <C> void fillSearchDatabaseWithPreferences(
+            final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener,
-            final DAOProvider daoProvider,
+            final DAOProvider<C> daoProvider,
             final PersistableBundle configuration,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         mergedPreferenceScreenDataRepositoryProvider

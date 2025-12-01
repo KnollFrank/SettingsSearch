@@ -15,8 +15,8 @@ import java.util.Map;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
@@ -38,7 +38,7 @@ import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragme
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 import de.KnollFrank.lib.settingssearch.search.ui.SearchResultsFragmentUI;
 
-public class MergedPreferenceScreenFactory {
+public class MergedPreferenceScreenFactory<C> {
 
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PrepareShow prepareShow;
@@ -47,14 +47,14 @@ public class MergedPreferenceScreenFactory {
     private final FragmentActivity activity;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider;
+    private final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider;
     private final SearchResultsFragmentUI searchResultsFragmentUI;
     private final SearchResultsSorter searchResultsSorter;
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
-    private final DAOProvider daoProvider;
+    private final DAOProvider<C> daoProvider;
     private final PreferenceSearchablePredicate preferenceSearchablePredicate;
 
     public MergedPreferenceScreenFactory(
@@ -65,14 +65,14 @@ public class MergedPreferenceScreenFactory {
             final FragmentActivity activity,
             final Locale locale,
             final OnUiThreadRunner onUiThreadRunner,
-            final MergedPreferenceScreenDataRepositoryProvider mergedPreferenceScreenDataRepositoryProvider,
+            final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final SearchResultsSorter searchResultsSorter,
             final PreferencePathDisplayer preferencePathDisplayer,
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
-            final DAOProvider daoProvider,
+            final DAOProvider<C> daoProvider,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -92,7 +92,7 @@ public class MergedPreferenceScreenFactory {
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
     }
 
-    public MergedPreferenceScreen getMergedPreferenceScreen(
+    public MergedPreferenceScreen<C> getMergedPreferenceScreen(
             final FragmentManager childFragmentManager,
             final ProgressUpdateListener progressUpdateListener,
             final @IdRes int containerViewId,
@@ -125,7 +125,7 @@ public class MergedPreferenceScreenFactory {
                 prepareShow,
                 showPreferencePathPredicate,
                 preferencePathDisplayer,
-                daoProvider.searchablePreferenceScreenGraphDAO(),
+                daoProvider.searchablePreferenceScreenGraphRepository(),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 markupsFactory,
@@ -137,11 +137,11 @@ public class MergedPreferenceScreenFactory {
                 activity);
     }
 
-    public static MergedPreferenceScreen createMergedPreferenceScreen(
+    public static <C> MergedPreferenceScreen<C> createMergedPreferenceScreen(
             final PrepareShow prepareShow,
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PreferencePathDisplayer preferencePathDisplayer,
-            final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
+            final SearchablePreferenceScreenGraphRepository<C> graphRepository,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final MarkupsFactory markupsFactory,
@@ -151,8 +151,8 @@ public class MergedPreferenceScreenFactory {
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
             final FragmentActivity activity) {
-        return new MergedPreferenceScreen(
-                searchablePreferenceScreenGraphDAO,
+        return new MergedPreferenceScreen<>(
+                graphRepository,
                 new SearchResultsDisplayer(
                         new SearchResultsFragment(
                                 new NavigatePreferencePathAndHighlightPreference(

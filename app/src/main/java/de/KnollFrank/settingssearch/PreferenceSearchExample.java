@@ -24,7 +24,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
 
-    private Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider>> createSearchDatabaseTask = Optional.empty();
+    private Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<Configuration>>> createSearchDatabaseTask = Optional.empty();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -48,8 +48,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         configuration,
                         new ConfigurationBundleConverter(),
                         this);
-        final DAOProvider daoProvider = getDaoProviderManager().getDAOProvider();
-        final SearchPreferenceFragments searchPreferenceFragments = createSearchPreferenceFragments(daoProvider, configuration);
+        final DAOProvider<Configuration> daoProvider = getDaoProviderManager().getDAOProvider();
+        final SearchPreferenceFragments<Configuration> searchPreferenceFragments = createSearchPreferenceFragments(daoProvider, configuration);
         createSearchDatabaseTask =
                 Optional.of(
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
@@ -92,8 +92,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
         searchPreferenceFragments.showSearchPreferenceFragment();
     }
 
-    private SearchPreferenceFragments createSearchPreferenceFragments(final DAOProvider daoProvider,
-                                                                      final Configuration configuration) {
+    private SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(final DAOProvider<Configuration> daoProvider,
+                                                                                     final Configuration configuration) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 FRAGMENT_CONTAINER_VIEW_ID,
                 this,

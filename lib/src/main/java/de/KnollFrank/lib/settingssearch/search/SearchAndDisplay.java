@@ -5,12 +5,12 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.results.SearchResultsDisplayer;
 
-class SearchAndDisplay {
+class SearchAndDisplay<C> {
 
-    private final PreferenceSearcher preferenceSearcher;
+    private final PreferenceSearcher<C> preferenceSearcher;
     private final SearchResultsDisplayer searchResultsDisplayer;
 
-    public SearchAndDisplay(final PreferenceSearcher preferenceSearcher,
+    public SearchAndDisplay(final PreferenceSearcher<C> preferenceSearcher,
                             final SearchResultsDisplayer searchResultsDisplayer) {
         this.preferenceSearcher = preferenceSearcher;
         this.searchResultsDisplayer = searchResultsDisplayer;

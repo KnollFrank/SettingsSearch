@@ -20,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConf
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
+import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 
 @RunWith(RobolectricTestRunner.class)
@@ -31,18 +32,18 @@ public class DatabaseResetterTest {
                 fragmentActivity -> {
                     // Given
                     final Locale locale = Locale.GERMAN;
-                    final PreferencesDatabase preferencesDatabase = getPreferencesDatabase(fragmentActivity, locale);
+                    final PreferencesDatabase<Configuration> preferencesDatabase = getPreferencesDatabase(fragmentActivity, locale);
                     initialize(preferencesDatabase, locale);
 
                     // When
                     DatabaseResetter.resetDatabase(preferencesDatabase);
 
                     // Then
-                    assertIsReset(preferencesDatabase);
+                    assertIsReset(preferencesDatabase, fragmentActivity);
                 });
     }
 
-    private static PreferencesDatabase getPreferencesDatabase(final FragmentActivity activity, final Locale locale) {
+    private static PreferencesDatabase<Configuration> getPreferencesDatabase(final FragmentActivity activity, final Locale locale) {
         return PreferencesDatabaseFactory.createPreferencesDatabase(
                 new PreferencesDatabaseConfig<>(
                         "searchable_preferences.db",
@@ -57,7 +58,7 @@ public class DatabaseResetterTest {
                 new ConfigurationBundleConverter());
     }
 
-    private static void initialize(final PreferencesDatabase preferencesDatabase, final Locale locale) {
+    private static void initialize(final PreferencesDatabase<Configuration> preferencesDatabase, final Locale locale) {
         final var singleNodeGraph =
                 SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
                         PreferenceFragmentCompat.class,
@@ -73,7 +74,7 @@ public class DatabaseResetterTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         preferencesDatabase
-                .searchablePreferenceScreenGraphDAO()
+                .searchablePreferenceScreenGraphRepository()
                 .persist(
                         new SearchablePreferenceScreenGraph(
                                 singleNodeGraph.pojoGraph(),
@@ -81,7 +82,8 @@ public class DatabaseResetterTest {
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().configuration()));
     }
 
-    private static void assertIsReset(final PreferencesDatabase preferencesDatabase) {
-        assertThat(preferencesDatabase.searchablePreferenceScreenGraphDAO().loadAll(), is(empty()));
+    private static void assertIsReset(final PreferencesDatabase<Configuration> preferencesDatabase,
+                                      final FragmentActivity activityContext) {
+        assertThat(preferencesDatabase.searchablePreferenceScreenGraphRepository().loadAll(null, activityContext), is(empty()));
     }
 }

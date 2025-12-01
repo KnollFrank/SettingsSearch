@@ -51,7 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
                 this,
                 findViewById(R.id.settings_root),
                 fragmentContainerViewId,
-                onMergedPreferenceScreenAvailable ->
+                (final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable) ->
                         createSearchPreferenceFragments(
                                 this,
                                 onMergedPreferenceScreenAvailable,
@@ -59,9 +59,9 @@ public class SettingsActivity extends AppCompatActivity {
                 Locales.getCurrentLanguageLocale(getResources()));
     }
 
-    static SearchPreferenceFragments createSearchPreferenceFragments(
+    static SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(
             final FragmentActivity activity,
-            final Consumer<MergedPreferenceScreen> onMergedPreferenceScreenAvailable,
+            final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable,
             final @IdRes int fragmentContainerViewId) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 fragmentContainerViewId,

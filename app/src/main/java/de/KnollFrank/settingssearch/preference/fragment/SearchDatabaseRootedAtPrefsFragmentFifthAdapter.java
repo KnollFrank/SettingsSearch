@@ -14,7 +14,9 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenSubtreeReplacer;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
+import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphProcessor;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
@@ -26,20 +28,21 @@ import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphPro
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
+import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 
-public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
+public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements SearchablePreferenceScreenGraphProcessor<Configuration> {
 
     private final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
-    public void adaptSearchDatabaseRootedAtPrefsFragmentFifth(
-            final DAOProvider preferencesDatabase,
-            final SearchablePreferenceScreenGraph graph,
-            final Configuration newConfiguration,
-            final SearchDatabaseConfig searchDatabaseConfig,
-            final FragmentActivity activityContext) {
-        preferencesDatabase
-                .searchablePreferenceScreenGraphDAO()
-                .persist(adaptGraphAtPrefsFragmentFifth(graph, newConfiguration, searchDatabaseConfig, activityContext));
+    @Override
+    public SearchablePreferenceScreenGraph processGraph(final SearchablePreferenceScreenGraph graph,
+                                                        final Configuration actualConfiguration,
+                                                        final FragmentActivity activityContext) {
+        return adaptGraphAtPrefsFragmentFifth(
+                graph,
+                actualConfiguration,
+                SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
+                activityContext);
     }
 
     public SearchablePreferenceScreenGraph adaptGraphAtPrefsFragmentFifth(
@@ -47,9 +50,13 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
             final Configuration newConfiguration,
             final SearchDatabaseConfig searchDatabaseConfig,
             final FragmentActivity activityContext) {
-        FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
-                activityContext.findViewById(android.R.id.content),
-                FRAGMENT_CONTAINER_VIEW_ID);
+        final OnUiThreadRunner onUiThreadRunner = OnUiThreadRunnerFactory.fromActivity(activityContext);
+        onUiThreadRunner.runBlockingOnUiThread(() -> {
+            FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
+                    activityContext.findViewById(android.R.id.content),
+                    FRAGMENT_CONTAINER_VIEW_ID);
+            return null;
+        });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
         return new SearchablePreferenceScreenGraph(
                 SearchablePreferenceScreenSubtreeReplacer.replaceSubtreeWithTree(
@@ -59,7 +66,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
                                 instantiateSearchablePreferenceScreen(
                                         prefsFragmentFifthPreferenceScreen,
                                         graph.graph(),
-                                        createGraphPathFactory(searchDatabaseConfig, activityContext)),
+                                        createGraphPathFactory(searchDatabaseConfig, activityContext),
+                                        onUiThreadRunner),
                                 graph.locale(),
                                 activityContext,
                                 searchDatabaseConfig)),
@@ -95,9 +103,11 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter {
     private PreferenceScreenWithHost instantiateSearchablePreferenceScreen(
             final SearchablePreferenceScreen searchablePreferenceScreen,
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-            final GraphPathFactory graphPathFactory) {
-        return graphPathFactory
-                .instantiate(Graphs.getPathFromRootNodeToTarget(graph, searchablePreferenceScreen))
+            final GraphPathFactory graphPathFactory,
+            final OnUiThreadRunner onUiThreadRunner) {
+        final var graphPath = Graphs.getPathFromRootNodeToTarget(graph, searchablePreferenceScreen);
+        return onUiThreadRunner
+                .runBlockingOnUiThread(() -> graphPathFactory.instantiate(graphPath))
                 .getEndVertex();
     }
 

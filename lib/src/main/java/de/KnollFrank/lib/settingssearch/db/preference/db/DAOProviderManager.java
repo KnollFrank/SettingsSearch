@@ -8,7 +8,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Configurat
 
 public class DAOProviderManager<C> {
 
-    private Optional<DAOProvider> daoProvider = Optional.empty();
+    private Optional<DAOProvider<C>> daoProvider = Optional.empty();
     private static final Object LOCK = new Object();
 
     public void initDAOProvider(final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
@@ -30,7 +30,7 @@ public class DAOProviderManager<C> {
         }
     }
 
-    public DAOProvider getDAOProvider() {
+    public DAOProvider<C> getDAOProvider() {
         return daoProvider.orElseThrow(() -> new IllegalStateException("DAOProviderManager is not initialized. Call initDAOProvider() first."));
     }
 }
