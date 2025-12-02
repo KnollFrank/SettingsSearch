@@ -16,6 +16,9 @@ class GraphProcessorManager<C> {
     private final List<Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>>> graphProcessors = new ArrayList<>();
 
     public void addGraphProcessor(final Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>> graphProcessor) {
+        if (isGraphCreator(graphProcessor)) {
+            removeGraphProcessors();
+        }
         graphProcessors.add(graphProcessor);
     }
 
@@ -67,5 +70,9 @@ class GraphProcessorManager<C> {
         return graphProcessor.join(
                 graphTransformer -> graphTransformer.transformGraph(graph, configuration, activityContext),
                 graphCreator -> graphCreator.createGraph(configuration, activityContext));
+    }
+
+    private static <C> boolean isGraphCreator(final Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>> graphProcessor) {
+        return graphProcessor.isRight();
     }
 }
