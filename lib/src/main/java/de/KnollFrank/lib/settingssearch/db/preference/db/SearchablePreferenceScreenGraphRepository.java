@@ -42,12 +42,14 @@ public class SearchablePreferenceScreenGraphRepository<C> {
     }
 
     private void updateSearchDatabase(final C actualConfiguration, final FragmentActivity activityContext) {
-        graphTransformerManager
-                .executeGraphTransformersOnGraphs(
-                        new ArrayList<>(delegate.loadAll()),
-                        actualConfiguration,
-                        activityContext)
-                .forEach(delegate::persist);
+        if (graphTransformerManager.hasGraphTransformers()) {
+            graphTransformerManager
+                    .applyGraphTransformersToGraphs(
+                            new ArrayList<>(delegate.loadAll()),
+                            actualConfiguration,
+                            activityContext)
+                    .forEach(delegate::persist);
+        }
     }
 
     public void removeAll() {

@@ -21,20 +21,24 @@ class SearchablePreferenceScreenGraphTransformerManager<C> {
         graphTransformers.clear();
     }
 
-    public List<SearchablePreferenceScreenGraph> executeGraphTransformersOnGraphs(
+    public boolean hasGraphTransformers() {
+        return !graphTransformers.isEmpty();
+    }
+
+    public List<SearchablePreferenceScreenGraph> applyGraphTransformersToGraphs(
             final List<SearchablePreferenceScreenGraph> graphs,
             final C actualConfiguration,
             final FragmentActivity activityContext) {
         final List<SearchablePreferenceScreenGraph> transformedGraphs =
                 graphs
                         .stream()
-                        .map(graph -> executeGraphTransformersOnGraph(graph, actualConfiguration, activityContext))
+                        .map(graph -> applyGraphTransformersToGraph(graph, actualConfiguration, activityContext))
                         .collect(Collectors.toList());
         resetGraphTransformers();
         return transformedGraphs;
     }
 
-    private SearchablePreferenceScreenGraph executeGraphTransformersOnGraph(
+    private SearchablePreferenceScreenGraph applyGraphTransformersToGraph(
             final SearchablePreferenceScreenGraph graph,
             final C actualConfiguration,
             final FragmentActivity activityContext) {

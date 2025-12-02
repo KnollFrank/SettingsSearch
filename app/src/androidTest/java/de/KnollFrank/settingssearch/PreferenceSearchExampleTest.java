@@ -105,7 +105,7 @@ public class PreferenceSearchExampleTest {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final String query = "Your signature";
             searchForQueryThenClickSearchResultAtPosition(query, 0);
-            onView(titleOfPreference(query) /* or: dialogTitle() */).check(matches(withText(query)));
+            onView(/* titleOfPreference(query) */ dialogTitle()).check(matches(withText(query)));
         }
     }
 
@@ -114,7 +114,7 @@ public class PreferenceSearchExampleTest {
         try (final ActivityScenario<PreferenceSearchExample> scenario = ActivityScenario.launch(PreferenceSearchExample.class)) {
             final String query = "Your signature2";
             searchForQueryThenClickSearchResultAtPosition(query, 0);
-            onView(titleOfPreference(query) /* or: dialogTitle() */).check(matches(withText(query)));
+            onView(/* titleOfPreference(query) */ dialogTitle()).check(matches(withText(query)));
         }
     }
 
