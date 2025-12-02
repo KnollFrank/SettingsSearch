@@ -12,8 +12,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import com.codepoetics.ambivalence.Either;
-
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
@@ -58,7 +56,7 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
         checkBoxPreference.setTitle(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_TITLE);
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
-                    getGraphRepository().addGraphProcessor(Either.ofLeft(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter()));
+                    getGraphRepository().addGraphTransformer(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter());
                     return true;
                 });
         return checkBoxPreference;

@@ -26,8 +26,12 @@ public class SearchablePreferenceScreenGraphRepository<C> {
         graphProcessorManager.removeGraphProcessors();
     }
 
-    public void addGraphProcessor(final Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>> graphProcessor) {
-        graphProcessorManager.addGraphProcessor(graphProcessor);
+    public void addGraphTransformer(final SearchablePreferenceScreenGraphTransformer<C> graphTransformer) {
+        graphProcessorManager.addGraphProcessor(Either.ofLeft(graphTransformer));
+    }
+
+    public void addGraphCreator(final SearchablePreferenceScreenGraphCreator<C> graphCreator) {
+        graphProcessorManager.addGraphProcessor(Either.ofRight(graphCreator));
     }
 
     public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id,
