@@ -69,7 +69,7 @@ class GraphProcessorManager<C> {
             final FragmentActivity activityContext) {
         return graphProcessor.join(
                 graphTransformer -> graphTransformer.transformGraph(graph, configuration, activityContext),
-                graphCreator -> graphCreator.createGraph(configuration, activityContext));
+                graphCreator -> graphCreator.createGraph(graph.locale(), configuration, activityContext));
     }
 
     private static <C> boolean isGraphCreator(final Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>> graphProcessor) {
