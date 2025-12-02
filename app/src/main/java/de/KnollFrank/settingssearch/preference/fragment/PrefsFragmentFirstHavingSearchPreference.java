@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
+import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationProvider;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsFactory;
@@ -58,7 +59,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
         return preference;
     }
 
-    private SearchPreferenceFragments createSearchPreferenceFragments() {
+    private SearchPreferenceFragments<Configuration> createSearchPreferenceFragments() {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 getId(),
                 requireActivity(),
@@ -72,7 +73,7 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                 ConfigurationProvider.getActualConfiguration(requireContext()));
     }
 
-    private SearchPreference createSearchPreference(final SearchPreferenceFragments searchPreferenceFragments) {
+    private SearchPreference createSearchPreference(final SearchPreferenceFragments<Configuration> searchPreferenceFragments) {
         final SearchPreference searchPreference = new SearchPreference(requireContext());
         searchPreference.setOrder(-1);
         searchPreferenceFragments.searchConfig.queryHint.ifPresent(searchPreference::setQueryHint);

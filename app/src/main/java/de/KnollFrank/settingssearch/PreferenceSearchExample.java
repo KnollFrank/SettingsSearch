@@ -85,7 +85,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
     }
 
     private void showSearchPreferenceFragment() {
-        final SearchPreferenceFragments searchPreferenceFragments =
+        final SearchPreferenceFragments<Configuration> searchPreferenceFragments =
                 createSearchPreferenceFragments(
                         getDaoProviderManager().getDAOProvider(),
                         ConfigurationProvider.getActualConfiguration(this));
