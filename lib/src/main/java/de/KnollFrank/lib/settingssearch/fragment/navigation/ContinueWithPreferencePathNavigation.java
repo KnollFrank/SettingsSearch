@@ -66,7 +66,7 @@ public class ContinueWithPreferencePathNavigation<C> {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 parent,
                 fragmentContainerViewId);
-        final SearchPreferenceFragments searchPreferenceFragments =
+        final SearchPreferenceFragments<C> searchPreferenceFragments =
                 createSearchPreferenceFragments.apply(
                         mergedPreferenceScreen ->
                                 showPreferenceScreenAndHighlightPreferenceOnce(
