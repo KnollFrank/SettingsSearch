@@ -2,6 +2,8 @@ package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.codepoetics.ambivalence.Either;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
@@ -13,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class SearchablePreferenceScreenGraphRepository<C> {
 
     private final SearchablePreferenceScreenGraphDAO delegate;
-    private final SearchablePreferenceScreenGraphTransformerManager<C> graphTransformerManager = new SearchablePreferenceScreenGraphTransformerManager<>();
+    private final GraphProcessorManager<C> graphProcessorManager = new GraphProcessorManager<>();
 
     public SearchablePreferenceScreenGraphRepository(final SearchablePreferenceScreenGraphDAO delegate) {
         this.delegate = delegate;
@@ -21,11 +23,11 @@ public class SearchablePreferenceScreenGraphRepository<C> {
 
     public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
         delegate.persist(searchablePreferenceScreenGraph);
-        graphTransformerManager.resetGraphTransformers();
+        graphProcessorManager.removeGraphProcessors();
     }
 
-    public void addGraphTransformer(final SearchablePreferenceScreenGraphTransformer<C> graphTransformer) {
-        graphTransformerManager.addGraphTransformer(graphTransformer);
+    public void addGraphProcessor(final Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>> graphProcessor) {
+        graphProcessorManager.addGraphProcessor(graphProcessor);
     }
 
     public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id,
@@ -42,9 +44,9 @@ public class SearchablePreferenceScreenGraphRepository<C> {
     }
 
     private void updateSearchDatabase(final C actualConfiguration, final FragmentActivity activityContext) {
-        if (graphTransformerManager.hasGraphTransformers()) {
-            graphTransformerManager
-                    .applyGraphTransformersToGraphs(
+        if (graphProcessorManager.hasGraphProcessors()) {
+            graphProcessorManager
+                    .applyGraphProcessorsToGraphs(
                             new ArrayList<>(delegate.loadAll()),
                             actualConfiguration,
                             activityContext)
@@ -54,6 +56,6 @@ public class SearchablePreferenceScreenGraphRepository<C> {
 
     public void removeAll() {
         delegate.removeAll();
-        graphTransformerManager.resetGraphTransformers();
+        graphProcessorManager.removeGraphProcessors();
     }
 }

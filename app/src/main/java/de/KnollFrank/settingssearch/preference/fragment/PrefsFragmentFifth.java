@@ -12,10 +12,10 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import java.util.Locale;
+import com.codepoetics.ambivalence.Either;
+
 import java.util.stream.Stream;
 
-import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.R;
@@ -34,7 +34,7 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
         addPreferencesFromResource(R.xml.preferences5);
-        getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference(Locales.getCurrentLanguageLocale(getResources())));
+        getPreferenceScreen().addPreference(createAddPreferenceToP1CheckBoxPreference());
         getPreferenceScreen().addPreference(createPreferenceWithoutExtrasConnectedToPreferenceFragmentWithSinglePreference());
         getPreferenceScreen().addPreference(createPreferenceWithExtrasConnectedToPreferenceFragmentWithSinglePreference());
         setOnPreferenceClickListeners();
@@ -52,13 +52,13 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
         return false;
     }
 
-    private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference(final Locale locale) {
+    private CheckBoxPreference createAddPreferenceToP1CheckBoxPreference() {
         final CheckBoxPreference checkBoxPreference = new CheckBoxPreference(requireContext());
         checkBoxPreference.setKey(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY);
         checkBoxPreference.setTitle(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_TITLE);
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
-                    getGraphRepository().addGraphTransformer(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter());
+                    getGraphRepository().addGraphProcessor(Either.ofLeft(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter()));
                     return true;
                 });
         return checkBoxPreference;
