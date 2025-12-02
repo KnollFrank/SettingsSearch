@@ -2,8 +2,6 @@ package de.KnollFrank.lib.settingssearch.db.preference.db;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.codepoetics.ambivalence.Either;
-
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
@@ -27,11 +25,11 @@ public class SearchablePreferenceScreenGraphRepository<C> {
     }
 
     public void addGraphTransformer(final SearchablePreferenceScreenGraphTransformer<C> graphTransformer) {
-        graphProcessorManager.addGraphProcessor(Either.ofLeft(graphTransformer));
+        graphProcessorManager.addGraphTransformer(graphTransformer);
     }
 
     public void addGraphCreator(final SearchablePreferenceScreenGraphCreator<C> graphCreator) {
-        graphProcessorManager.addGraphProcessor(Either.ofRight(graphCreator));
+        graphProcessorManager.addGraphCreator(graphCreator);
     }
 
     public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id,
@@ -47,6 +45,11 @@ public class SearchablePreferenceScreenGraphRepository<C> {
         return delegate.loadAll();
     }
 
+    public void removeAll() {
+        delegate.removeAll();
+        graphProcessorManager.removeGraphProcessors();
+    }
+
     private void updateSearchDatabase(final C actualConfiguration, final FragmentActivity activityContext) {
         if (graphProcessorManager.hasGraphProcessors()) {
             graphProcessorManager
@@ -56,10 +59,5 @@ public class SearchablePreferenceScreenGraphRepository<C> {
                             activityContext)
                     .forEach(delegate::persist);
         }
-    }
-
-    public void removeAll() {
-        delegate.removeAll();
-        graphProcessorManager.removeGraphProcessors();
     }
 }

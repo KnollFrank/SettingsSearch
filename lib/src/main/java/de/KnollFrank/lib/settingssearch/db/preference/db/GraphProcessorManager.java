@@ -15,11 +15,13 @@ class GraphProcessorManager<C> {
     // FK-TODO: graphProcessors in der Suchdatenbank speichern
     private final List<Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>>> graphProcessors = new ArrayList<>();
 
-    public void addGraphProcessor(final Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>> graphProcessor) {
-        if (isGraphCreator(graphProcessor)) {
-            removeGraphProcessors();
-        }
-        graphProcessors.add(graphProcessor);
+    public void addGraphTransformer(final SearchablePreferenceScreenGraphTransformer<C> graphTransformer) {
+        graphProcessors.add(Either.ofLeft(graphTransformer));
+    }
+
+    public void addGraphCreator(final SearchablePreferenceScreenGraphCreator<C> graphCreator) {
+        removeGraphProcessors();
+        graphProcessors.add(Either.ofRight(graphCreator));
     }
 
     public void removeGraphProcessors() {
@@ -70,9 +72,5 @@ class GraphProcessorManager<C> {
         return graphProcessor.join(
                 graphTransformer -> graphTransformer.transformGraph(graph, configuration, activityContext),
                 graphCreator -> graphCreator.createGraph(graph.locale(), configuration, activityContext));
-    }
-
-    private static <C> boolean isGraphCreator(final Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>> graphProcessor) {
-        return graphProcessor.isRight();
     }
 }
