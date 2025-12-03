@@ -18,8 +18,8 @@ import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DatabaseResetter;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -41,16 +41,16 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
-    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier;
     private final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable;
-    private final DAOProvider<C> daoProvider;
+    private final PreferencesDatabase<C> preferencesDatabase;
     private final PersistableBundle configuration;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
     public static <C> SearchPreferenceFragmentsBuilder<C> builder(final SearchDatabaseConfig searchDatabaseConfig,
                                                                   final SearchConfig searchConfig,
                                                                   final FragmentActivity activity,
-                                                                  final DAOProvider<C> daoProvider,
+                                                                  final PreferencesDatabase<C> preferencesDatabase,
                                                                   final PersistableBundle configuration,
                                                                   final ConfigurationBundleConverter<C> configurationBundleConverter) {
         return new SearchPreferenceFragmentsBuilder<>(
@@ -59,7 +59,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                 Locales.getCurrentLanguageLocale(activity.getResources()),
                 OnUiThreadRunnerFactory.fromActivity(activity),
                 activity,
-                daoProvider,
+                preferencesDatabase,
                 configuration,
                 configurationBundleConverter);
     }
@@ -69,9 +69,9 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                                         final Locale locale,
                                         final OnUiThreadRunner onUiThreadRunner,
                                         final FragmentActivity activity,
-                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier,
+                                        final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier,
                                         final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable,
-                                        final DAOProvider<C> daoProvider,
+                                        final PreferencesDatabase<C> preferencesDatabase,
                                         final PersistableBundle configuration,
                                         final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.searchDatabaseConfig = searchDatabaseConfig;
@@ -81,7 +81,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
         this.activity = activity;
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         this.onMergedPreferenceScreenAvailable = onMergedPreferenceScreenAvailable;
-        this.daoProvider = daoProvider;
+        this.preferencesDatabase = preferencesDatabase;
         this.configuration = configuration;
         this.configurationBundleConverter = configurationBundleConverter;
     }
@@ -129,12 +129,12 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                 searchDatabaseConfig.activityInitializerByActivity,
                 searchDatabaseConfig.principalAndProxyProvider,
                 searchConfig.showSettingsFragmentAndHighlightSetting,
-                daoProvider,
+                preferencesDatabase,
                 searchDatabaseConfig.preferenceSearchablePredicate);
     }
 
     public void rebuildSearchDatabase() {
-        DatabaseResetter.resetDatabase(daoProvider);
+        DatabaseResetter.resetDatabase(preferencesDatabase);
     }
 
     @Override
@@ -142,12 +142,12 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
             final FragmentInitializer fragmentInitializer,
             final PreferenceDialogs preferenceDialogs,
             final FragmentActivity activityContext,
-            final DAOProvider<C> daoProvider,
+            final PreferencesDatabase<C> preferencesDatabase,
             final ProgressUpdateListener progressUpdateListener) {
         return createMergedPreferenceScreenDataRepository(
                 preferenceDialogs,
                 activityContext,
-                daoProvider,
+                preferencesDatabase,
                 progressUpdateListener,
                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                         searchDatabaseConfig.fragmentFactory,
@@ -159,7 +159,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
     public MergedPreferenceScreenDataRepository<C> createMergedPreferenceScreenDataRepository(
             final PreferenceDialogs preferenceDialogs,
             final FragmentActivity activityContext,
-            final DAOProvider<C> daoProvider,
+            final PreferencesDatabase<C> preferencesDatabase,
             final ProgressUpdateListener progressUpdateListener,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return MergedPreferenceScreenDataRepositoryFactory.createMergedPreferenceScreenDataRepository(
@@ -168,7 +168,7 @@ public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataR
                 searchDatabaseConfig,
                 progressUpdateListener,
                 activityContext,
-                daoProvider,
+                preferencesDatabase,
                 locale,
                 configurationBundleConverter);
     }

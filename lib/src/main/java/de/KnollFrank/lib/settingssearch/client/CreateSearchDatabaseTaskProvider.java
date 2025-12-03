@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
@@ -21,10 +21,10 @@ public class CreateSearchDatabaseTaskProvider {
 
     public static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
-    public static <C> AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>> getCreateSearchDatabaseTask(
+    public static <C> AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>> getCreateSearchDatabaseTask(
             final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
-            final DAOProvider<C> daoProvider,
+            final PreferencesDatabase<C> preferencesDatabase,
             final PersistableBundle configuration,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
@@ -40,10 +40,10 @@ public class CreateSearchDatabaseTaskProvider {
                                 mergedPreferenceScreenDataRepositoryProvider,
                                 activity,
                                 progressUpdateListener,
-                                daoProvider,
+                                preferencesDatabase,
                                 configuration,
                                 preferenceSearchablePredicate);
-                        return daoProvider;
+                        return preferencesDatabase;
                     } finally {
                         EspressoIdlingResource.decrement();
                     }
@@ -56,7 +56,7 @@ public class CreateSearchDatabaseTaskProvider {
             final MergedPreferenceScreenDataRepositoryProvider<C> mergedPreferenceScreenDataRepositoryProvider,
             final FragmentActivity activity,
             final ProgressUpdateListener progressUpdateListener,
-            final DAOProvider<C> daoProvider,
+            final PreferencesDatabase<C> preferencesDatabase,
             final PersistableBundle configuration,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         mergedPreferenceScreenDataRepositoryProvider
@@ -64,7 +64,7 @@ public class CreateSearchDatabaseTaskProvider {
                         FragmentInitializerFactory.createFragmentInitializer(activity, FRAGMENT_CONTAINER_VIEW_ID, preferenceSearchablePredicate),
                         PreferenceDialogsFactory.createPreferenceDialogs(activity, FRAGMENT_CONTAINER_VIEW_ID, preferenceSearchablePredicate),
                         activity,
-                        daoProvider,
+                        preferencesDatabase,
                         progressUpdateListener)
                 .fillSearchDatabaseWithPreferences(
                         Locales.getCurrentLanguageLocale(activity.getResources()),

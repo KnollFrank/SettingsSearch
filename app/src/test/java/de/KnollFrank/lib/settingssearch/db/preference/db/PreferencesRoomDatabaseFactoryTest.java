@@ -20,7 +20,7 @@ import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 
 @RunWith(RobolectricTestRunner.class)
-public class PreferencesDatabaseFactoryTest {
+public class PreferencesRoomDatabaseFactoryTest {
 
     @Test
     public void shouldGetPreferencesDatabase() {
@@ -29,7 +29,7 @@ public class PreferencesDatabaseFactoryTest {
                     // Given
 
                     // When
-                    final PreferencesDatabase<Configuration> preferencesDatabase =
+                    final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase =
                             PreferencesDatabaseFactory.createPreferencesDatabase(
                                     new PreferencesDatabaseConfig<>(
                                             "searchable_preferences.db",
@@ -44,7 +44,7 @@ public class PreferencesDatabaseFactoryTest {
                                     new ConfigurationBundleConverter());
 
                     // Then
-                    assertThat(preferencesDatabase, is(not(nullValue())));
+                    assertThat(preferencesRoomDatabase, is(not(nullValue())));
                 });
     }
 }

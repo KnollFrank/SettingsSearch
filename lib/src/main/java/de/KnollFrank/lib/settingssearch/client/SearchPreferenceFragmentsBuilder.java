@@ -13,7 +13,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 public class SearchPreferenceFragmentsBuilder<C> {
@@ -22,11 +22,11 @@ public class SearchPreferenceFragmentsBuilder<C> {
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;
-    private final DAOProvider<C> daoProvider;
+    private final PreferencesDatabase<C> preferencesDatabase;
     private final SearchConfig searchConfig;
     private final PersistableBundle configuration;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
-    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier = Optional::empty;
+    private Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier = Optional::empty;
     private Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
 
@@ -36,7 +36,7 @@ public class SearchPreferenceFragmentsBuilder<C> {
                                                final Locale locale,
                                                final OnUiThreadRunner onUiThreadRunner,
                                                final FragmentActivity activity,
-                                               final DAOProvider<C> daoProvider,
+                                               final PreferencesDatabase<C> preferencesDatabase,
                                                final PersistableBundle configuration,
                                                final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.searchDatabaseConfig = searchDatabaseConfig;
@@ -44,12 +44,12 @@ public class SearchPreferenceFragmentsBuilder<C> {
         this.locale = locale;
         this.onUiThreadRunner = onUiThreadRunner;
         this.activity = activity;
-        this.daoProvider = daoProvider;
+        this.preferencesDatabase = preferencesDatabase;
         this.configuration = configuration;
         this.configurationBundleConverter = configurationBundleConverter;
     }
 
-    public SearchPreferenceFragmentsBuilder<C> withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier) {
+    public SearchPreferenceFragmentsBuilder<C> withCreateSearchDatabaseTaskSupplier(final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier) {
         this.createSearchDatabaseTaskSupplier = createSearchDatabaseTaskSupplier;
         return this;
     }
@@ -68,7 +68,7 @@ public class SearchPreferenceFragmentsBuilder<C> {
                 activity,
                 createSearchDatabaseTaskSupplier,
                 onMergedPreferenceScreenAvailable,
-                daoProvider,
+                preferencesDatabase,
                 configuration,
                 configurationBundleConverter);
     }

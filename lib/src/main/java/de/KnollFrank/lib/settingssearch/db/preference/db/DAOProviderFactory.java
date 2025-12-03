@@ -7,7 +7,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Configurat
 
 public class DAOProviderFactory {
 
-    public static <C> DAOProvider<C> createDAOProvider(
+    public static <C> PreferencesDatabase<C> createDAOProvider(
             final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
             final C configuration,
             final ConfigurationBundleConverter<C> configurationBundleConverter,

@@ -25,7 +25,7 @@ import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateL
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListenersAndProgressContainer;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.SearchResultsFragment;
@@ -45,20 +45,20 @@ public class SearchPreferenceFragment<C> extends Fragment {
     private final PreferenceMatcher preferenceMatcher;
     private final MergedPreferenceScreenFactory<C> mergedPreferenceScreenFactory;
     private final OnUiThreadRunner onUiThreadRunner;
-    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier;
+    private final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier;
     private final SearchPreferenceFragmentUI searchPreferenceFragmentUI;
     private final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable;
     private final Locale locale;
     private final PersistableBundle configuration;
     private SearchPreferenceFragmentUIBinding searchPreferenceFragmentUIBinding;
-    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider<C>, MergedPreferenceScreen<C>> getMergedPreferenceScreenAndShowSearchResultsTask;
+    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<PreferencesDatabase<C>, MergedPreferenceScreen<C>> getMergedPreferenceScreenAndShowSearchResultsTask;
 
     public SearchPreferenceFragment(final Optional<String> queryHint,
                                     final SearchResultsFilter searchResultsFilter,
                                     final PreferenceMatcher preferenceMatcher,
                                     final MergedPreferenceScreenFactory<C> mergedPreferenceScreenFactory,
                                     final OnUiThreadRunner onUiThreadRunner,
-                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<C>>>> createSearchDatabaseTaskSupplier,
+                                    final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<C>>>> createSearchDatabaseTaskSupplier,
                                     final SearchPreferenceFragmentUI searchPreferenceFragmentUI,
                                     final Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable,
                                     final Locale locale,
@@ -116,10 +116,10 @@ public class SearchPreferenceFragment<C> extends Fragment {
                 progressContainerUI.getProgressText());
     }
 
-    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider<C>, MergedPreferenceScreen<C>> createGetMergedPreferenceScreenAndShowSearchResultsTask(
+    private AsyncTaskWithProgressUpdateListenersAndProgressContainer<PreferencesDatabase<C>, MergedPreferenceScreen<C>> createGetMergedPreferenceScreenAndShowSearchResultsTask(
             final ProgressUpdateListener progressUpdateListener,
             final PersistableBundle configuration) {
-        final AsyncTaskWithProgressUpdateListenersAndProgressContainer<DAOProvider<C>, MergedPreferenceScreen<C>> getMergedPreferenceScreenAndShowSearchResultsTask =
+        final AsyncTaskWithProgressUpdateListenersAndProgressContainer<PreferencesDatabase<C>, MergedPreferenceScreen<C>> getMergedPreferenceScreenAndShowSearchResultsTask =
                 new AsyncTaskWithProgressUpdateListenersAndProgressContainer<>(
                         (searchablePreferenceDAO, _progressUpdateListener) -> getMergedPreferenceScreen(_progressUpdateListener, configuration),
                         mergedPreferenceScreen -> {

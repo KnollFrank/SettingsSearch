@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchResultsByPreferencePathSorterTest extends PreferencesDatabaseTest {
+public class SearchResultsByPreferencePathSorterTest extends PreferencesRoomDatabaseTest {
 
     @Test
     public void shouldSortSearchResultsByPreferencePath() {

@@ -34,7 +34,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -46,7 +46,7 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class Graph2POJOGraphTransformerTest extends PreferencesDatabaseTest {
+public class Graph2POJOGraphTransformerTest extends PreferencesRoomDatabaseTest {
 
     @Test
     public void shouldTransformGraph2POJOGraph() {
@@ -166,11 +166,11 @@ public class Graph2POJOGraphTransformerTest extends PreferencesDatabaseTest {
 
                 // When
                 final SearchablePreferenceScreenGraph germanPojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.GERMAN);
-                preferencesDatabase.searchablePreferenceScreenGraphRepository().persist(germanPojoGraph);
+                preferencesRoomDatabase.searchablePreferenceScreenGraphRepository().persist(germanPojoGraph);
 
                 // And
                 final SearchablePreferenceScreenGraph chinesePojoGraph = transformGraph2POJOGraph(entityGraph, graph2POJOGraphTransformer, Locale.CHINESE);
-                preferencesDatabase.searchablePreferenceScreenGraphRepository().persist(chinesePojoGraph);
+                preferencesRoomDatabase.searchablePreferenceScreenGraphRepository().persist(chinesePojoGraph);
 
                 // Then no exception was thrown
             });

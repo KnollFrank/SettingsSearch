@@ -6,7 +6,7 @@ import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
@@ -20,7 +20,7 @@ public class MergedPreferenceScreenDataRepositoryFactory {
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
             final FragmentActivity activityContext,
-            final DAOProvider<C> daoProvider,
+            final PreferencesDatabase<C> preferencesDatabase,
             final Locale locale,
             final ConfigurationBundleConverter<C> configurationBundleConverter) {
         return new MergedPreferenceScreenDataRepository<C>(
@@ -31,7 +31,7 @@ public class MergedPreferenceScreenDataRepositoryFactory {
                 searchDatabaseConfig,
                 progressUpdateListener,
                 activityContext,
-                daoProvider,
+                preferencesDatabase,
                 locale,
                 configurationBundleConverter);
     }

@@ -9,19 +9,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseTest;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntities;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenDAOTest extends PreferencesDatabaseTest {
+public class SearchablePreferenceScreenDAOTest extends PreferencesRoomDatabaseTest {
 
     @Test
     public void shouldGetHostOfPreferencesOfScreen() {
         // Given
-        final SearchablePreferenceScreenEntityDAO dao = preferencesDatabase.searchablePreferenceScreenEntityDAO();
+        final SearchablePreferenceScreenEntityDAO dao = preferencesRoomDatabase.searchablePreferenceScreenEntityDAO();
         final SearchablePreferenceScreenGraphTestFactory.Data data =
                 new SearchablePreferenceScreenGraphTestFactory.Data(
                         "5",
@@ -41,7 +41,7 @@ public class SearchablePreferenceScreenDAOTest extends PreferencesDatabaseTest {
                         .orElseThrow();
 
         // When
-        final SearchablePreferenceScreenEntity hostOfPreference = preference.getHost(preferencesDatabase.searchablePreferenceEntityDAO());
+        final SearchablePreferenceScreenEntity hostOfPreference = preference.getHost(preferencesRoomDatabase.searchablePreferenceEntityDAO());
 
         // Then
         assertThat(hostOfPreference, is(screen.entity()));

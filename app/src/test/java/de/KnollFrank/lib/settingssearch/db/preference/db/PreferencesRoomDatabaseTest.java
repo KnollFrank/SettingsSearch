@@ -8,23 +8,23 @@ import org.junit.Before;
 
 import de.KnollFrank.settingssearch.Configuration;
 
-public abstract class PreferencesDatabaseTest {
+public abstract class PreferencesRoomDatabaseTest {
 
-    protected PreferencesDatabase<Configuration> preferencesDatabase;
+    protected PreferencesRoomDatabase<Configuration> preferencesRoomDatabase;
 
     @Before
     public void createPreferencesDatabase() {
-        preferencesDatabase =
+        preferencesRoomDatabase =
                 Room
                         .inMemoryDatabaseBuilder(
                                 ApplicationProvider.getApplicationContext(),
-                                PreferencesDatabase.class)
+                                PreferencesRoomDatabase.class)
                         .allowMainThreadQueries()
                         .build();
     }
 
     @After
     public void closePreferencesDatabase() {
-        preferencesDatabase.close();
+        preferencesRoomDatabase.close();
     }
 }

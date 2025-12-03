@@ -23,7 +23,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.common.Locales;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -138,7 +138,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 });
     }
 
-    private DAOProvider<Configuration> getPreferencesDatabase() {
+    private PreferencesDatabase<Configuration> getPreferencesDatabase() {
         return SettingsSearchApplication
                 .getInstanceFromContext(requireContext())
                 .daoProviderManager

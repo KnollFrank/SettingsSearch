@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDataba
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -36,7 +36,7 @@ public class MergedPreferenceScreenDataRepository<C> {
     private final SearchDatabaseConfig searchDatabaseConfig;
     private final ProgressUpdateListener progressUpdateListener;
     private final FragmentActivity activityContext;
-    private final DAOProvider<C> daoProvider;
+    private final PreferencesDatabase<C> preferencesDatabase;
     private final Locale locale;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
@@ -46,7 +46,7 @@ public class MergedPreferenceScreenDataRepository<C> {
             final SearchDatabaseConfig searchDatabaseConfig,
             final ProgressUpdateListener progressUpdateListener,
             final FragmentActivity activityContext,
-            final DAOProvider<C> daoProvider,
+            final PreferencesDatabase<C> preferencesDatabase,
             final Locale locale,
             final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
@@ -54,14 +54,14 @@ public class MergedPreferenceScreenDataRepository<C> {
         this.searchDatabaseConfig = searchDatabaseConfig;
         this.progressUpdateListener = progressUpdateListener;
         this.activityContext = activityContext;
-        this.daoProvider = daoProvider;
+        this.preferencesDatabase = preferencesDatabase;
         this.locale = locale;
         this.configurationBundleConverter = configurationBundleConverter;
     }
 
     public void fillSearchDatabaseWithPreferences(final Locale locale, final PersistableBundle configuration) {
         synchronized (LockingSupport.searchDatabaseLock) {
-            final SearchablePreferenceScreenGraphRepository<C> graphRepository = daoProvider.searchablePreferenceScreenGraphRepository();
+            final SearchablePreferenceScreenGraphRepository<C> graphRepository = preferencesDatabase.searchablePreferenceScreenGraphRepository();
             if (graphRepository
                     .findGraphById(locale, configurationBundleConverter.convertBackward(configuration), activityContext)
                     .isEmpty()) {

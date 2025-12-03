@@ -15,8 +15,8 @@ import de.KnollFrank.lib.settingssearch.client.CreateSearchDatabaseTaskProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProviderManager;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
@@ -24,7 +24,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;
 
-    private Optional<AsyncTaskWithProgressUpdateListeners<Void, DAOProvider<Configuration>>> createSearchDatabaseTask = Optional.empty();
+    private Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<Configuration>>> createSearchDatabaseTask = Optional.empty();
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -48,14 +48,14 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         configuration,
                         new ConfigurationBundleConverter(),
                         this);
-        final DAOProvider<Configuration> daoProvider = getDaoProviderManager().getDAOProvider();
-        final SearchPreferenceFragments<Configuration> searchPreferenceFragments = createSearchPreferenceFragments(daoProvider, configuration);
+        final PreferencesDatabase<Configuration> preferencesDatabase = getDaoProviderManager().getDAOProvider();
+        final SearchPreferenceFragments<Configuration> searchPreferenceFragments = createSearchPreferenceFragments(preferencesDatabase, configuration);
         createSearchDatabaseTask =
                 Optional.of(
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
                                 searchPreferenceFragments,
                                 this,
-                                daoProvider,
+                                preferencesDatabase,
                                 new ConfigurationBundleConverter().convertForward(configuration),
                                 searchPreferenceFragments.searchDatabaseConfig.preferenceSearchablePredicate));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
@@ -92,7 +92,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         searchPreferenceFragments.showSearchPreferenceFragment();
     }
 
-    private SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(final DAOProvider<Configuration> daoProvider,
+    private SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(final PreferencesDatabase<Configuration> preferencesDatabase,
                                                                                      final Configuration configuration) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 FRAGMENT_CONTAINER_VIEW_ID,
@@ -100,7 +100,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 () -> createSearchDatabaseTask,
                 mergedPreferenceScreen -> {
                 },
-                daoProvider,
+                preferencesDatabase,
                 configuration);
     }
 

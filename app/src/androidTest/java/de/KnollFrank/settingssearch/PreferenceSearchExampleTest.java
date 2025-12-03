@@ -52,8 +52,8 @@ import org.junit.runner.RunWith;
 import java.io.File;
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth;
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
@@ -423,7 +423,7 @@ public class PreferenceSearchExampleTest {
 
     private static Locale getSomeLocaleFromPrepackagedDatabase(final FragmentActivity activityContext) {
         final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
-        final PreferencesDatabase<Configuration> preferencesDatabase =
+        final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase =
                 getPreferencesDatabase(
                         preferencesDatabaseConfig.databaseFileName(),
                         preferencesDatabaseConfig
@@ -431,23 +431,23 @@ public class PreferenceSearchExampleTest {
                                 .orElseThrow()
                                 .databaseAssetFile());
         final Locale locale =
-                preferencesDatabase
+                preferencesRoomDatabase
                         .searchablePreferenceScreenGraphRepository()
                         .loadAll(null, activityContext)
                         .stream()
                         .findAny()
                         .orElseThrow()
                         .locale();
-        preferencesDatabase.close();
+        preferencesRoomDatabase.close();
         return locale;
     }
 
-    private static PreferencesDatabase<Configuration> getPreferencesDatabase(final String databaseFileName,
-                                                                             final File databasedAssetFile) {
+    private static PreferencesRoomDatabase<Configuration> getPreferencesDatabase(final String databaseFileName,
+                                                                                 final File databasedAssetFile) {
         return Room
                 .databaseBuilder(
                         ApplicationProvider.getApplicationContext(),
-                        PreferencesDatabase.class,
+                        PreferencesRoomDatabase.class,
                         databaseFileName)
                 .createFromAsset(databasedAssetFile.getPath())
                 .allowMainThreadQueries()

@@ -12,17 +12,17 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Configurat
 
 public class PreferencesDatabaseFactory {
 
-    public static <C> PreferencesDatabase<C> createPreferencesDatabase(
+    public static <C> PreferencesRoomDatabase<C> createPreferencesDatabase(
             final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
             final FragmentActivity activityContext,
             final Locale locale,
             final C configuration,
             final ConfigurationBundleConverter<C> configurationBundleConverter) {
-        final RoomDatabase.Builder<PreferencesDatabase> preferencesDatabaseBuilder =
+        final RoomDatabase.Builder<PreferencesRoomDatabase> preferencesDatabaseBuilder =
                 Room
                         .databaseBuilder(
                                 activityContext.getApplicationContext(),
-                                PreferencesDatabase.class,
+                                PreferencesRoomDatabase.class,
                                 preferencesDatabaseConfig.databaseFileName())
                         .setJournalMode(asRoomJournalMode(preferencesDatabaseConfig.journalMode()))
                         // FK-TODO: remove allowMainThreadQueries()
@@ -31,19 +31,19 @@ public class PreferencesDatabaseFactory {
                 .prepackagedPreferencesDatabase()
                 .map(PrepackagedPreferencesDatabase::databaseAssetFile)
                 .ifPresent(databaseAssetFile -> preferencesDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
-        final PreferencesDatabase<C> preferencesDatabase = preferencesDatabaseBuilder.build();
+        final PreferencesRoomDatabase<C> preferencesRoomDatabase = preferencesDatabaseBuilder.build();
         processAndPersistGraph(
-                preferencesDatabase
+                preferencesRoomDatabase
                         .searchablePreferenceScreenGraphRepository()
                         .findGraphById(locale, null, activityContext),
                 preferencesDatabaseConfig
                         .prepackagedPreferencesDatabase()
                         .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenGraphTransformer),
-                preferencesDatabase.searchablePreferenceScreenGraphRepository(),
+                preferencesRoomDatabase.searchablePreferenceScreenGraphRepository(),
                 configuration,
                 configurationBundleConverter,
                 activityContext);
-        return preferencesDatabase;
+        return preferencesRoomDatabase;
     }
 
     private static <C> void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,

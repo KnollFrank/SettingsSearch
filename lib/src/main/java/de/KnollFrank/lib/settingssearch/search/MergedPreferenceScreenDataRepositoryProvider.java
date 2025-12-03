@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.search;
 
 import androidx.fragment.app.FragmentActivity;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
@@ -14,13 +14,13 @@ public interface MergedPreferenceScreenDataRepositoryProvider<C> {
             FragmentInitializer fragmentInitializer,
             PreferenceDialogs preferenceDialogs,
             FragmentActivity activityContext,
-            DAOProvider<C> daoProvider,
+            PreferencesDatabase<C> preferencesDatabase,
             ProgressUpdateListener progressUpdateListener);
 
     MergedPreferenceScreenDataRepository<C> createMergedPreferenceScreenDataRepository(
             PreferenceDialogs preferenceDialogs,
             FragmentActivity activityContext,
-            DAOProvider<C> daoProvider,
+            PreferencesDatabase<C> preferencesDatabase,
             ProgressUpdateListener progressUpdateListener,
             InstantiateAndInitializeFragment instantiateAndInitializeFragment);
 }

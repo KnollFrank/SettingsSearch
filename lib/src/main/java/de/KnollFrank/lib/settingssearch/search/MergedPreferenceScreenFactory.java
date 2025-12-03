@@ -15,7 +15,7 @@ import java.util.Map;
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
-import de.KnollFrank.lib.settingssearch.db.preference.db.DAOProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -54,7 +54,7 @@ public class MergedPreferenceScreenFactory<C> {
     private final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity;
     private final PrincipalAndProxyProvider principalAndProxyProvider;
     private final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting;
-    private final DAOProvider<C> daoProvider;
+    private final PreferencesDatabase<C> preferencesDatabase;
     private final PreferenceSearchablePredicate preferenceSearchablePredicate;
 
     public MergedPreferenceScreenFactory(
@@ -72,7 +72,7 @@ public class MergedPreferenceScreenFactory<C> {
             final Map<Class<? extends Activity>, ActivityInitializer<?>> activityInitializerByActivity,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
-            final DAOProvider<C> daoProvider,
+            final PreferencesDatabase<C> preferencesDatabase,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         this.showPreferencePathPredicate = showPreferencePathPredicate;
         this.prepareShow = prepareShow;
@@ -88,7 +88,7 @@ public class MergedPreferenceScreenFactory<C> {
         this.activityInitializerByActivity = activityInitializerByActivity;
         this.principalAndProxyProvider = principalAndProxyProvider;
         this.showSettingsFragmentAndHighlightSetting = showSettingsFragmentAndHighlightSetting;
-        this.daoProvider = daoProvider;
+        this.preferencesDatabase = preferencesDatabase;
         this.preferenceSearchablePredicate = preferenceSearchablePredicate;
     }
 
@@ -117,7 +117,7 @@ public class MergedPreferenceScreenFactory<C> {
                                 onUiThreadRunner,
                                 preferenceSearchablePredicate),
                         activity,
-                        daoProvider,
+                        preferencesDatabase,
                         progressUpdateListener,
                         instantiateAndInitializeFragment)
                 .fillSearchDatabaseWithPreferences(locale, configuration);
@@ -125,7 +125,7 @@ public class MergedPreferenceScreenFactory<C> {
                 prepareShow,
                 showPreferencePathPredicate,
                 preferencePathDisplayer,
-                daoProvider.searchablePreferenceScreenGraphRepository(),
+                preferencesDatabase.searchablePreferenceScreenGraphRepository(),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 markupsFactory,
