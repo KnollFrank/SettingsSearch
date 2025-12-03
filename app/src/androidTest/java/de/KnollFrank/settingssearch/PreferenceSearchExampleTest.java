@@ -395,7 +395,7 @@ public class PreferenceSearchExampleTest {
     private static void setupToEnsureCreateFromPrepackagedDatabaseAssetFile() {
         DatabaseFileDeleter.deleteDatabaseFile(
                 getTargetContext(),
-                PreferencesDatabaseFactory.SEARCHABLE_PREFERENCES_DB);
+                PreferencesDatabaseConfigFactory.SEARCHABLE_PREFERENCES_DB);
     }
 
     private static SharedPreferences getSharedPreferences() {
@@ -422,7 +422,7 @@ public class PreferenceSearchExampleTest {
     }
 
     private static Locale getSomeLocaleFromPrepackagedDatabase(final FragmentActivity activityContext) {
-        final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
+        final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
         final PreferencesDatabase<Configuration> preferencesDatabase =
                 getPreferencesDatabase(
                         preferencesDatabaseConfig.databaseFileName(),

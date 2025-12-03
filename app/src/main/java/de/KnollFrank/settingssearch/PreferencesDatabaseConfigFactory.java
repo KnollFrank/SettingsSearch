@@ -11,7 +11,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScr
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFifthAdapter;
 
-class PreferencesDatabaseFactory {
+class PreferencesDatabaseConfigFactory {
 
     public static final String SEARCHABLE_PREFERENCES_DB = "searchable_preferences.db";
 
