@@ -13,6 +13,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 class GraphProcessorManager<C> {
 
     // FK-TODO: graphProcessors in der Suchdatenbank speichern
+    // FK-TODO: use Queue instead of List?
     private final List<Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>>> graphProcessors = new ArrayList<>();
 
     public void addGraphTransformer(final SearchablePreferenceScreenGraphTransformer<C> graphTransformer) {
