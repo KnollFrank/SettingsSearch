@@ -14,10 +14,10 @@ public class PreferencesRoomDatabaseFactory {
 
     public static <C> PreferencesRoomDatabase<C> createPreferencesRoomDatabase(
             final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
-            final FragmentActivity activityContext,
-            final Locale locale,
             final C configuration,
-            final ConfigurationBundleConverter<C> configurationBundleConverter) {
+            final Locale locale,
+            final ConfigurationBundleConverter<C> configurationBundleConverter,
+            final FragmentActivity activityContext) {
         final RoomDatabase.Builder<PreferencesRoomDatabase> preferencesDatabaseBuilder =
                 Room
                         .databaseBuilder(

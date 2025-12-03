@@ -52,10 +52,10 @@ public class DatabaseResetterTest {
                                         new File("database/searchable_preferences_prepackaged.db"),
                                         (graph, actualConfiguration, activityContext) -> graph)),
                         JournalMode.AUTOMATIC),
-                activity,
-                locale,
                 PersistableBundleTestFactory.createSomeConfiguration(),
-                new ConfigurationBundleConverter());
+                locale,
+                new ConfigurationBundleConverter(),
+                activity);
     }
 
     private static void initialize(final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase, final Locale locale) {

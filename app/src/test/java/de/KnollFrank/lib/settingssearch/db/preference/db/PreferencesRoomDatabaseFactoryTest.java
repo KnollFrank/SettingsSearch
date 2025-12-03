@@ -38,10 +38,10 @@ public class PreferencesRoomDatabaseFactoryTest {
                                                             new File("database/searchable_preferences_prepackaged.db"),
                                                             (graph, actualConfiguration, activityContext) -> graph)),
                                             JournalMode.AUTOMATIC),
-                                    fragmentActivity,
-                                    Locale.GERMAN,
                                     PersistableBundleTestFactory.createSomeConfiguration(),
-                                    new ConfigurationBundleConverter());
+                                    Locale.GERMAN,
+                                    new ConfigurationBundleConverter(),
+                                    fragmentActivity);
 
                     // Then
                     assertThat(preferencesRoomDatabase, is(not(nullValue())));
