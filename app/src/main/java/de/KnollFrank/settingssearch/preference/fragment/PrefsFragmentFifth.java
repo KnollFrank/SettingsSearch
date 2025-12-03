@@ -65,8 +65,8 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
     private SearchablePreferenceScreenGraphRepository<Configuration> getGraphRepository() {
         return SettingsSearchApplication
                 .getInstanceFromContext(requireContext())
-                .daoProviderManager
-                .getDAOProvider()
+                .preferencesDatabaseManager
+                .getPreferencesDatabase()
                 .searchablePreferenceScreenGraphRepository();
     }
 

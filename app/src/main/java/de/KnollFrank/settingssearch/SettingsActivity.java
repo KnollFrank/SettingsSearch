@@ -70,8 +70,8 @@ public class SettingsActivity extends AppCompatActivity {
                 onMergedPreferenceScreenAvailable,
                 SettingsSearchApplication
                         .getInstanceFromContext(activity)
-                        .daoProviderManager
-                        .getDAOProvider(),
+                        .preferencesDatabaseManager
+                        .getPreferencesDatabase(),
                 ConfigurationProvider.getActualConfiguration(activity));
     }
 
