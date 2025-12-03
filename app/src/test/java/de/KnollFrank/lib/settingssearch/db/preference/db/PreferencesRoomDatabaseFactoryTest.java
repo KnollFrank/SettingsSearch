@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
-import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 
 @RunWith(RobolectricTestRunner.class)
@@ -29,7 +28,7 @@ public class PreferencesRoomDatabaseFactoryTest {
                     // Given
 
                     // When
-                    final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase =
+                    final PreferencesRoomDatabase preferencesRoomDatabase =
                             PreferencesRoomDatabaseFactory.createPreferencesRoomDatabase(
                                     new PreferencesDatabaseConfig<>(
                                             "searchable_preferences.db",

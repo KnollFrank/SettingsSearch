@@ -6,11 +6,9 @@ import androidx.test.core.app.ApplicationProvider;
 import org.junit.After;
 import org.junit.Before;
 
-import de.KnollFrank.settingssearch.Configuration;
-
 public abstract class PreferencesRoomDatabaseTest {
 
-    protected PreferencesRoomDatabase<Configuration> preferencesRoomDatabase;
+    protected PreferencesRoomDatabase preferencesRoomDatabase;
 
     @Before
     public void createPreferencesDatabase() {

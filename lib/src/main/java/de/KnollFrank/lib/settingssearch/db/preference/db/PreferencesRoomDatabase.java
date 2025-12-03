@@ -38,19 +38,19 @@ import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
                 LocaleConverter.class,
                 PersistableBundleConverter.class
         })
-public abstract class PreferencesRoomDatabase<C> extends RoomDatabase implements PreferencesDatabase<C> {
+public abstract class PreferencesRoomDatabase extends RoomDatabase {
 
-    private Optional<SearchablePreferenceScreenGraphRepository<C>> graphRepository = Optional.empty();
+    // FK-TODO: move to PreferencesDatabaseFactory
+    private Optional<SearchablePreferenceScreenGraphDAO> screenGraphDAO = Optional.empty();
 
     protected PreferencesRoomDatabase() {
     }
 
-    @Override
-    public SearchablePreferenceScreenGraphRepository<C> searchablePreferenceScreenGraphRepository() {
-        if (graphRepository.isEmpty()) {
-            graphRepository = Optional.of(createSearchablePreferenceScreenGraphRepository());
+    public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
+        if (screenGraphDAO.isEmpty()) {
+            screenGraphDAO = Optional.of(createSearchablePreferenceScreenGraphDAO());
         }
-        return graphRepository.orElseThrow();
+        return screenGraphDAO.orElseThrow();
     }
 
     public abstract SearchablePreferenceScreenGraphEntityDAO searchablePreferenceScreenGraphEntityDAO();
@@ -59,10 +59,9 @@ public abstract class PreferencesRoomDatabase<C> extends RoomDatabase implements
 
     public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
 
-    private SearchablePreferenceScreenGraphRepository<C> createSearchablePreferenceScreenGraphRepository() {
-        return new SearchablePreferenceScreenGraphRepository<>(
-                new SearchablePreferenceScreenGraphDAO(
-                        new EntityGraphPojoGraphConverter(),
-                        searchablePreferenceScreenGraphEntityDAO()));
+    private SearchablePreferenceScreenGraphDAO createSearchablePreferenceScreenGraphDAO() {
+        return new SearchablePreferenceScreenGraphDAO(
+                new EntityGraphPojoGraphConverter(),
+                searchablePreferenceScreenGraphEntityDAO());
     }
 }

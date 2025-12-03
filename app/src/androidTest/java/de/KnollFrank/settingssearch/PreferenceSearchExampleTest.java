@@ -423,8 +423,8 @@ public class PreferenceSearchExampleTest {
 
     private static Locale getSomeLocaleFromPrepackagedDatabase(final FragmentActivity activityContext) {
         final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
-        final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase =
-                getPreferencesDatabase(
+        final PreferencesRoomDatabase preferencesRoomDatabase =
+                getPreferencesRoomDatabase(
                         preferencesDatabaseConfig.databaseFileName(),
                         preferencesDatabaseConfig
                                 .prepackagedPreferencesDatabase()
@@ -432,8 +432,8 @@ public class PreferenceSearchExampleTest {
                                 .databaseAssetFile());
         final Locale locale =
                 preferencesRoomDatabase
-                        .searchablePreferenceScreenGraphRepository()
-                        .loadAll(null, activityContext)
+                        .searchablePreferenceScreenGraphDAO()
+                        .loadAll()
                         .stream()
                         .findAny()
                         .orElseThrow()
@@ -442,8 +442,8 @@ public class PreferenceSearchExampleTest {
         return locale;
     }
 
-    private static PreferencesRoomDatabase<Configuration> getPreferencesDatabase(final String databaseFileName,
-                                                                                 final File databasedAssetFile) {
+    private static PreferencesRoomDatabase getPreferencesRoomDatabase(final String databaseFileName,
+                                                                      final File databasedAssetFile) {
         return Room
                 .databaseBuilder(
                         ApplicationProvider.getApplicationContext(),

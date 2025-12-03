@@ -5,22 +5,23 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.Objects;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 class InitialGraphTransformer<C> {
 
     private final Optional<SearchablePreferenceScreenGraphTransformer<C>> graphTransformer;
-    private final SearchablePreferenceScreenGraphRepository<C> graphRepository;
+    private final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO;
     private final FragmentActivity activityContext;
     private final ConfigurationBundleConverter<C> configurationBundleConverter;
 
     public InitialGraphTransformer(final Optional<SearchablePreferenceScreenGraphTransformer<C>> graphTransformer,
-                                   final SearchablePreferenceScreenGraphRepository<C> graphRepository,
+                                   final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
                                    final FragmentActivity activityContext,
                                    final ConfigurationBundleConverter<C> configurationBundleConverter) {
         this.graphTransformer = graphTransformer;
-        this.graphRepository = graphRepository;
+        this.searchablePreferenceScreenGraphDAO = searchablePreferenceScreenGraphDAO;
         this.activityContext = activityContext;
         this.configurationBundleConverter = configurationBundleConverter;
     }
@@ -29,7 +30,7 @@ class InitialGraphTransformer<C> {
         graph.ifPresent(
                 _graph -> {
                     if (!Objects.equals(configuration, configurationBundleConverter.convertBackward(_graph.configuration()))) {
-                        graphRepository.persist(process(_graph, configuration));
+                        searchablePreferenceScreenGraphDAO.persist(process(_graph, configuration));
                     }
                 });
     }

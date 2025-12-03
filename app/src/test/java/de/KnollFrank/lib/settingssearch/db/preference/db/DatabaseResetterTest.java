@@ -32,19 +32,19 @@ public class DatabaseResetterTest {
                 fragmentActivity -> {
                     // Given
                     final Locale locale = Locale.GERMAN;
-                    final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase = getPreferencesDatabase(fragmentActivity, locale);
-                    initialize(preferencesRoomDatabase, locale);
+                    final PreferencesDatabase<Configuration> preferencesDatabase = getPreferencesDatabase(fragmentActivity, locale);
+                    initialize(preferencesDatabase, locale);
 
                     // When
-                    DatabaseResetter.resetDatabase(preferencesRoomDatabase);
+                    DatabaseResetter.resetDatabase(preferencesDatabase);
 
                     // Then
-                    assertIsReset(preferencesRoomDatabase, fragmentActivity);
+                    assertIsReset(preferencesDatabase, fragmentActivity);
                 });
     }
 
-    private static PreferencesRoomDatabase<Configuration> getPreferencesDatabase(final FragmentActivity activity, final Locale locale) {
-        return PreferencesRoomDatabaseFactory.createPreferencesRoomDatabase(
+    private static PreferencesDatabase<Configuration> getPreferencesDatabase(final FragmentActivity activity, final Locale locale) {
+        return PreferencesDatabaseFactory.createPreferencesDatabase(
                 new PreferencesDatabaseConfig<>(
                         "searchable_preferences.db",
                         Optional.of(
@@ -58,7 +58,8 @@ public class DatabaseResetterTest {
                 activity);
     }
 
-    private static void initialize(final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase, final Locale locale) {
+    private static void initialize(final PreferencesDatabase<Configuration> preferencesDatabase,
+                                   final Locale locale) {
         final var singleNodeGraph =
                 SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
                         PreferenceFragmentCompat.class,
@@ -73,7 +74,7 @@ public class DatabaseResetterTest {
                                 "singleNodeGraph-screen1",
                                 "graph-screen1",
                                 "graph-screen2"));
-        preferencesRoomDatabase
+        preferencesDatabase
                 .searchablePreferenceScreenGraphRepository()
                 .persist(
                         new SearchablePreferenceScreenGraph(
@@ -82,8 +83,8 @@ public class DatabaseResetterTest {
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().configuration()));
     }
 
-    private static void assertIsReset(final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase,
+    private static void assertIsReset(final PreferencesDatabase<Configuration> preferencesDatabase,
                                       final FragmentActivity activityContext) {
-        assertThat(preferencesRoomDatabase.searchablePreferenceScreenGraphRepository().loadAll(null, activityContext), is(empty()));
+        assertThat(preferencesDatabase.searchablePreferenceScreenGraphRepository().loadAll(null, activityContext), is(empty()));
     }
 }

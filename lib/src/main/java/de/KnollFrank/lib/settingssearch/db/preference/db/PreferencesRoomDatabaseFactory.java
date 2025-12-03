@@ -7,12 +7,13 @@ import androidx.room.RoomDatabase;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 public class PreferencesRoomDatabaseFactory {
 
-    public static <C> PreferencesRoomDatabase<C> createPreferencesRoomDatabase(
+    public static <C> PreferencesRoomDatabase createPreferencesRoomDatabase(
             final PreferencesDatabaseConfig<C> preferencesDatabaseConfig,
             final C configuration,
             final Locale locale,
@@ -31,15 +32,15 @@ public class PreferencesRoomDatabaseFactory {
                 .prepackagedPreferencesDatabase()
                 .map(PrepackagedPreferencesDatabase::databaseAssetFile)
                 .ifPresent(databaseAssetFile -> preferencesDatabaseBuilder.createFromAsset(databaseAssetFile.getPath()));
-        final PreferencesRoomDatabase<C> preferencesRoomDatabase = preferencesDatabaseBuilder.build();
+        final PreferencesRoomDatabase preferencesRoomDatabase = preferencesDatabaseBuilder.build();
         processAndPersistGraph(
                 preferencesRoomDatabase
-                        .searchablePreferenceScreenGraphRepository()
-                        .findGraphById(locale, null, activityContext),
+                        .searchablePreferenceScreenGraphDAO()
+                        .findGraphById(locale),
                 preferencesDatabaseConfig
                         .prepackagedPreferencesDatabase()
                         .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenGraphTransformer),
-                preferencesRoomDatabase.searchablePreferenceScreenGraphRepository(),
+                preferencesRoomDatabase.searchablePreferenceScreenGraphDAO(),
                 configuration,
                 configurationBundleConverter,
                 activityContext);
@@ -48,14 +49,14 @@ public class PreferencesRoomDatabaseFactory {
 
     private static <C> void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
                                                    final Optional<SearchablePreferenceScreenGraphTransformer<C>> graphTransformer,
-                                                   final SearchablePreferenceScreenGraphRepository<C> graphRepository,
+                                                   final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
                                                    final C configuration,
                                                    final ConfigurationBundleConverter<C> configurationBundleConverter,
                                                    final FragmentActivity activityContext) {
         final InitialGraphTransformer<C> initialGraphTransformer =
                 new InitialGraphTransformer<>(
                         graphTransformer,
-                        graphRepository,
+                        searchablePreferenceScreenGraphDAO,
                         activityContext,
                         configurationBundleConverter);
         initialGraphTransformer.transformAndPersist(graph, configuration);
