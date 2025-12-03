@@ -22,7 +22,7 @@ import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 public class PreferencesRoomDatabaseFactoryTest {
 
     @Test
-    public void shouldGetPreferencesDatabase() {
+    public void shouldGetPreferencesRoomDatabase() {
         doWithFragmentActivity(
                 fragmentActivity -> {
                     // Given
