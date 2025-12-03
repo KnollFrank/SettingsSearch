@@ -11,12 +11,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.File;
-import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
-import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 
 @RunWith(RobolectricTestRunner.class)
 public class PreferencesRoomDatabaseFactoryTest {
@@ -37,9 +34,6 @@ public class PreferencesRoomDatabaseFactoryTest {
                                                             new File("database/searchable_preferences_prepackaged.db"),
                                                             (graph, actualConfiguration, activityContext) -> graph)),
                                             JournalMode.AUTOMATIC),
-                                    PersistableBundleTestFactory.createSomeConfiguration(),
-                                    Locale.GERMAN,
-                                    new ConfigurationBundleConverter(),
                                     fragmentActivity);
 
                     // Then
