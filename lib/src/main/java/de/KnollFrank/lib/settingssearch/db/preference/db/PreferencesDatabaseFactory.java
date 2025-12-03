@@ -34,17 +34,12 @@ public class PreferencesDatabaseFactory {
                 configuration,
                 configurationBundleConverter,
                 activityContext);
-        return createPreferencesDatabase(
-                preferencesRoomDatabase.searchablePreferenceScreenGraphDAO(),
-                computePreferencesListener);
-    }
-
-    private static <C> PreferencesDatabase<C> createPreferencesDatabase(final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
-                                                                        final ComputePreferencesListener computePreferencesListener) {
         return new PreferencesDatabase<>() {
 
             private final SearchablePreferenceScreenGraphRepository<C> searchablePreferenceScreenGraphRepository =
-                    SearchablePreferenceScreenGraphRepository.of(searchablePreferenceScreenGraphDAO, computePreferencesListener);
+                    SearchablePreferenceScreenGraphRepository.of(
+                            preferencesRoomDatabase.searchablePreferenceScreenGraphDAO(),
+                            computePreferencesListener);
 
             @Override
             public SearchablePreferenceScreenGraphRepository<C> searchablePreferenceScreenGraphRepository() {
