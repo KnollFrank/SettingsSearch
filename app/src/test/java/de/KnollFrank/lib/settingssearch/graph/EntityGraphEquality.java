@@ -87,7 +87,7 @@ class EntityGraphEquality {
                 .add("host=" + entity.host())
                 .add("title=" + entity.title())
                 .add("summary=" + entity.summary())
-                .add("graphId=" + new LocaleConverter().doBackward(entity.graphId()))
+                .add("graphId=" + new LocaleConverter().convertBackward(entity.graphId()))
                 .add("allPreferencesOfPreferenceHierarchy=" +
                              toString(
                                      entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider),

@@ -11,25 +11,25 @@ public class OptionalStringConverter implements Converter<Optional<String>, Stri
                     new Converter<>() {
 
                         @Override
-                        public String doForward(final String string) {
+                        public String convertForward(final String string) {
                             return string;
                         }
 
                         @Override
-                        public String doBackward(final String string) {
+                        public String convertBackward(final String string) {
                             return string;
                         }
                     });
 
     @TypeConverter
     @Override
-    public String doForward(final Optional<String> value) {
-        return converter.doForward(value);
+    public String convertForward(final Optional<String> value) {
+        return converter.convertForward(value);
     }
 
     @TypeConverter
     @Override
-    public Optional<String> doBackward(final String string) {
-        return converter.doBackward(string);
+    public Optional<String> convertBackward(final String string) {
+        return converter.convertBackward(string);
     }
 }

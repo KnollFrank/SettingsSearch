@@ -18,7 +18,7 @@ public class PersistableBundleConverter implements Converter<PersistableBundle, 
     @Override
     @TypeConverter
     @SuppressLint("NewApi")
-    public String doForward(final PersistableBundle bundle) {
+    public String convertForward(final PersistableBundle bundle) {
         try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             bundle.writeToStream(outputStream);
             return outputStream.toString(CHARSET);
@@ -30,7 +30,7 @@ public class PersistableBundleConverter implements Converter<PersistableBundle, 
     @Override
     @TypeConverter
     @SuppressLint("NewApi")
-    public PersistableBundle doBackward(final String xmlString) {
+    public PersistableBundle convertBackward(final String xmlString) {
         try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(xmlString.getBytes(CHARSET))) {
             return PersistableBundle.readFromStream(inputStream);
         } catch (final IOException e) {

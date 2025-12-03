@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
 public interface Converter<A, B> {
 
-    B doForward(A a);
+    B convertForward(A a);
 
-    A doBackward(B b);
+    A convertBackward(B b);
 }

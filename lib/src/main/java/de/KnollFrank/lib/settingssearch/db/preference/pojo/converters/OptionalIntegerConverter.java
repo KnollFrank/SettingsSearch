@@ -8,13 +8,13 @@ public class OptionalIntegerConverter implements Converter<Optional<Integer>, In
 
     @TypeConverter
     @Override
-    public Integer doForward(final Optional<Integer> value) {
+    public Integer convertForward(final Optional<Integer> value) {
         return value.orElse(null);
     }
 
     @TypeConverter
     @Override
-    public Optional<Integer> doBackward(final Integer value) {
+    public Optional<Integer> convertBackward(final Integer value) {
         return Optional.ofNullable(value);
     }
 }

@@ -28,7 +28,7 @@ class InitialGraphTransformer<C> {
     public void transformAndPersist(final Optional<SearchablePreferenceScreenGraph> graph, final C configuration) {
         graph.ifPresent(
                 _graph -> {
-                    if (!Objects.equals(configuration, configurationBundleConverter.doBackward(_graph.configuration()))) {
+                    if (!Objects.equals(configuration, configurationBundleConverter.convertBackward(_graph.configuration()))) {
                         graphRepository.persist(process(_graph, configuration));
                     }
                 });
@@ -39,6 +39,6 @@ class InitialGraphTransformer<C> {
         return graphTransformer
                 .map(_graphTransformer -> _graphTransformer.transformGraph(graph, configuration, activityContext))
                 .orElse(graph)
-                .asGraphHavingConfiguration(configurationBundleConverter.doForward(configuration));
+                .asGraphHavingConfiguration(configurationBundleConverter.convertForward(configuration));
     }
 }

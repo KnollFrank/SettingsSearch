@@ -23,7 +23,7 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
-        delegate.persist(entityGraphPojoGraphConverter.doBackward(searchablePreferenceScreenGraph));
+        delegate.persist(entityGraphPojoGraphConverter.convertBackward(searchablePreferenceScreenGraph));
         graphById.put(searchablePreferenceScreenGraph.locale(), Optional.of(searchablePreferenceScreenGraph));
     }
 
@@ -48,14 +48,14 @@ public class SearchablePreferenceScreenGraphDAO {
     private Optional<SearchablePreferenceScreenGraph> _findGraphById(final Locale id) {
         return delegate
                 .findGraphById(id)
-                .map(entityGraphPojoGraphConverter::doForward);
+                .map(entityGraphPojoGraphConverter::convertForward);
     }
 
     private Set<SearchablePreferenceScreenGraph> _loadAll() {
         return delegate
                 .loadAll()
                 .stream()
-                .map(entityGraphPojoGraphConverter::doForward)
+                .map(entityGraphPojoGraphConverter::convertForward)
                 .collect(Collectors.toSet());
     }
 

@@ -8,7 +8,7 @@ public class ConfigurationBundleConverter implements de.KnollFrank.lib.settingss
     private static final String SUMMARY_CHANGING_PREFERENCE = "summaryChangingPreference";
 
     @Override
-    public PersistableBundle doForward(final Configuration configuration) {
+    public PersistableBundle convertForward(final Configuration configuration) {
         final PersistableBundle bundle = new PersistableBundle();
         bundle.putBoolean(
                 ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE,
@@ -20,7 +20,7 @@ public class ConfigurationBundleConverter implements de.KnollFrank.lib.settingss
     }
 
     @Override
-    public Configuration doBackward(final PersistableBundle bundle) {
+    public Configuration convertBackward(final PersistableBundle bundle) {
         return new Configuration(
                 bundle.getBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE, false),
                 bundle.getBoolean(SUMMARY_CHANGING_PREFERENCE, false));

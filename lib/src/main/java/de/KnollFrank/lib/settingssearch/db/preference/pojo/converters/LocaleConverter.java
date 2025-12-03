@@ -10,20 +10,20 @@ public class LocaleConverter implements Converter<String, Locale> {
 
     @TypeConverter
     @Override
-    public Locale doForward(final String language) {
+    public Locale convertForward(final String language) {
         return new Locale(language);
     }
 
     @TypeConverter
     @Override
-    public String doBackward(final Locale locale) {
+    public String convertBackward(final Locale locale) {
         return locale.getLanguage();
     }
 
-    public Set<Locale> doForward(final Set<String> locales) {
+    public Set<Locale> convertForward(final Set<String> locales) {
         return locales
                 .stream()
-                .map(this::doForward)
+                .map(this::convertForward)
                 .collect(Collectors.toSet());
     }
 }

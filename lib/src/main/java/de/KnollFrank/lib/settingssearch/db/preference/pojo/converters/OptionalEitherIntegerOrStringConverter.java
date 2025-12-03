@@ -12,13 +12,13 @@ public class OptionalEitherIntegerOrStringConverter implements Converter<Optiona
 
     @TypeConverter
     @Override
-    public String doForward(final Optional<Either<Integer, String>> value) {
-        return converter.doForward(value);
+    public String convertForward(final Optional<Either<Integer, String>> value) {
+        return converter.convertForward(value);
     }
 
     @TypeConverter
     @Override
-    public Optional<Either<Integer, String>> doBackward(final String string) {
-        return converter.doBackward(string);
+    public Optional<Either<Integer, String>> convertBackward(final String string) {
+        return converter.convertBackward(string);
     }
 }

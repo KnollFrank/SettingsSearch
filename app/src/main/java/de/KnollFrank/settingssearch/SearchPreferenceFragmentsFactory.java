@@ -27,7 +27,7 @@ public class SearchPreferenceFragmentsFactory {
                         SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
                         activity,
                         daoProvider,
-                        new ConfigurationBundleConverter().doForward(configuration),
+                        new ConfigurationBundleConverter().convertForward(configuration),
                         new ConfigurationBundleConverter())
                 .withCreateSearchDatabaseTaskSupplier(createSearchDatabaseTaskSupplier)
                 .withOnMergedPreferenceScreenAvailable(onMergedPreferenceScreenAvailable)

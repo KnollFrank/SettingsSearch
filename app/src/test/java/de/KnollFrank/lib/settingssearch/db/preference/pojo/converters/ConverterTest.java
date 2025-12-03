@@ -5,12 +5,12 @@ import static org.hamcrest.Matchers.is;
 
 class ConverterTest {
 
-    public static <A, B> void test_a_doForward_doBackward_equals_a(
+    public static <A, B> void test_a_convertForward_convertBackward_equals_a(
             // Given
             final A a,
             final Converter<A, B> converter) {
         // When
-        final A aActual = converter.doBackward(converter.doForward(a));
+        final A aActual = converter.convertBackward(converter.convertForward(a));
 
         // Then
         assertThat(aActual, is(a));

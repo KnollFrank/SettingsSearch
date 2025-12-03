@@ -9,13 +9,13 @@ public class PreferenceFragmentClassConverter implements Converter<Class<? exten
 
     @TypeConverter
     @Override
-    public String doForward(final Class<? extends PreferenceFragmentCompat> clazz) {
+    public String convertForward(final Class<? extends PreferenceFragmentCompat> clazz) {
         return clazz.getName();
     }
 
     @TypeConverter
     @Override
-    public Class<? extends PreferenceFragmentCompat> doBackward(final String string) {
+    public Class<? extends PreferenceFragmentCompat> convertBackward(final String string) {
         return Classes.getClass(string);
     }
 }

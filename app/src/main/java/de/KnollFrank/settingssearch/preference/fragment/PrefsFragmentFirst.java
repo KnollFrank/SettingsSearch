@@ -118,7 +118,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     private SearchablePreferenceScreenGraph getGraphHavingConfiguration(final SearchablePreferenceScreenGraph graph,
                                                                                         final Configuration configuration) {
-                        return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().doForward(configuration));
+                        return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().convertForward(configuration));
                     }
 
                     private SearchablePreference getSummaryChangingPreference(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {

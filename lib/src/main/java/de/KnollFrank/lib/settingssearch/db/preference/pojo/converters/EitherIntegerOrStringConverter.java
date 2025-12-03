@@ -10,7 +10,7 @@ public class EitherIntegerOrStringConverter implements Converter<Either<Integer,
 
     @TypeConverter
     @Override
-    public String doForward(final Either<Integer, String> value) {
+    public String convertForward(final Either<Integer, String> value) {
         return value.join(
                 integer -> INTEGER_MARKER + integer,
                 string -> "S" + string);
@@ -18,7 +18,7 @@ public class EitherIntegerOrStringConverter implements Converter<Either<Integer,
 
     @TypeConverter
     @Override
-    public Either<Integer, String> doBackward(final String string) {
+    public Either<Integer, String> convertBackward(final String string) {
         final String value = string.substring(INTEGER_MARKER.length());
         return string.startsWith(INTEGER_MARKER) ?
                 Either.ofLeft(Integer.valueOf(value)) :

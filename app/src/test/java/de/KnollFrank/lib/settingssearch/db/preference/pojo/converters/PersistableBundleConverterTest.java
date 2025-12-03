@@ -18,7 +18,7 @@ public class PersistableBundleConverterTest {
         final PersistableBundle bundle = PersistableBundleTestFactory.createSomePersistableBundle();
 
         // When
-        final PersistableBundle bundleActual = converter.doBackward(converter.doForward(bundle));
+        final PersistableBundle bundleActual = converter.convertBackward(converter.convertForward(bundle));
 
         // Then
         assertThat(bundleActual, BundleMatchers.isEqualTo(bundle));

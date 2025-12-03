@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo.converters;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConverterTest.test_a_doForward_doBackward_equals_a;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConverterTest.test_a_convertForward_convertBackward_equals_a;
 
 import com.codepoetics.ambivalence.Either;
 
@@ -12,11 +12,11 @@ public class EitherIntegerOrStringConverterTest {
 
     @Test
     public void shouldConvertFromLeft2StringAndBack() {
-        test_a_doForward_doBackward_equals_a(Either.ofLeft(815), converter);
+        test_a_convertForward_convertBackward_equals_a(Either.ofLeft(815), converter);
     }
 
     @Test
     public void shouldConvertFromRight2StringAndBack() {
-        test_a_doForward_doBackward_equals_a(Either.ofRight("some string"), converter);
+        test_a_convertForward_convertBackward_equals_a(Either.ofRight("some string"), converter);
     }
 }

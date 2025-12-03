@@ -63,7 +63,7 @@ public class MergedPreferenceScreenDataRepository<C> {
         synchronized (LockingSupport.searchDatabaseLock) {
             final SearchablePreferenceScreenGraphRepository<C> graphRepository = daoProvider.searchablePreferenceScreenGraphRepository();
             if (graphRepository
-                    .findGraphById(locale, configurationBundleConverter.doBackward(configuration), activityContext)
+                    .findGraphById(locale, configurationBundleConverter.convertBackward(configuration), activityContext)
                     .isEmpty()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();

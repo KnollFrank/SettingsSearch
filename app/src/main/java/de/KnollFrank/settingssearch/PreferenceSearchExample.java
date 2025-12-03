@@ -56,7 +56,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 searchPreferenceFragments,
                                 this,
                                 daoProvider,
-                                new ConfigurationBundleConverter().doForward(configuration),
+                                new ConfigurationBundleConverter().convertForward(configuration),
                                 searchPreferenceFragments.searchDatabaseConfig.preferenceSearchablePredicate));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
