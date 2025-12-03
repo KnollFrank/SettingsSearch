@@ -4,8 +4,6 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import java.util.Optional;
-
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
@@ -40,17 +38,16 @@ import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
         })
 public abstract class PreferencesRoomDatabase extends RoomDatabase {
 
-    // FK-TODO: move to PreferencesDatabaseFactory
-    private Optional<SearchablePreferenceScreenGraphDAO> screenGraphDAO = Optional.empty();
+    private final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO =
+            new SearchablePreferenceScreenGraphDAO(
+                    new EntityGraphPojoGraphConverter(),
+                    searchablePreferenceScreenGraphEntityDAO());
 
     protected PreferencesRoomDatabase() {
     }
 
     public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
-        if (screenGraphDAO.isEmpty()) {
-            screenGraphDAO = Optional.of(createSearchablePreferenceScreenGraphDAO());
-        }
-        return screenGraphDAO.orElseThrow();
+        return searchablePreferenceScreenGraphDAO;
     }
 
     public abstract SearchablePreferenceScreenGraphEntityDAO searchablePreferenceScreenGraphEntityDAO();
@@ -58,10 +55,4 @@ public abstract class PreferencesRoomDatabase extends RoomDatabase {
     public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
 
     public abstract SearchablePreferenceEntityDAO searchablePreferenceEntityDAO();
-
-    private SearchablePreferenceScreenGraphDAO createSearchablePreferenceScreenGraphDAO() {
-        return new SearchablePreferenceScreenGraphDAO(
-                new EntityGraphPojoGraphConverter(),
-                searchablePreferenceScreenGraphEntityDAO());
-    }
 }
