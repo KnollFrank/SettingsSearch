@@ -40,7 +40,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
         super.onStart();
         final Configuration configuration = ConfigurationProvider.getActualConfiguration(this);
         this
-                .getDaoProviderManager()
+                .getPreferencesDatabaseManager()
                 .initPreferencesDatabase(
                         BuildConfig.GENERATE_DATABASE_FOR_ASSET ?
                                 PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigForCreationOfPrepackagedDatabaseAssetFile() :
@@ -48,7 +48,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                         configuration,
                         new ConfigurationBundleConverter(),
                         this);
-        final PreferencesDatabase<Configuration> preferencesDatabase = getDaoProviderManager().getPreferencesDatabase();
+        final PreferencesDatabase<Configuration> preferencesDatabase = getPreferencesDatabaseManager().getPreferencesDatabase();
         final SearchPreferenceFragments<Configuration> searchPreferenceFragments = createSearchPreferenceFragments(preferencesDatabase, configuration);
         createSearchDatabaseTask =
                 Optional.of(
@@ -87,7 +87,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
     private void showSearchPreferenceFragment() {
         final SearchPreferenceFragments<Configuration> searchPreferenceFragments =
                 createSearchPreferenceFragments(
-                        getDaoProviderManager().getPreferencesDatabase(),
+                        getPreferencesDatabaseManager().getPreferencesDatabase(),
                         ConfigurationProvider.getActualConfiguration(this));
         searchPreferenceFragments.showSearchPreferenceFragment();
     }
@@ -104,7 +104,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 configuration);
     }
 
-    private PreferencesDatabaseManager<Configuration> getDaoProviderManager() {
+    private PreferencesDatabaseManager<Configuration> getPreferencesDatabaseManager() {
         return SettingsSearchApplication
                 .getInstanceFromContext(this)
                 .preferencesDatabaseManager;
