@@ -9,14 +9,22 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 public class SearchablePreferenceScreenGraphRepository<C> {
 
     private final SearchablePreferenceScreenGraphDAO delegate;
-    private final GraphProcessorManager<C> graphProcessorManager = new GraphProcessorManager<>();
+    private final GraphProcessorManager<C> graphProcessorManager;
 
-    public SearchablePreferenceScreenGraphRepository(final SearchablePreferenceScreenGraphDAO delegate) {
+    public static <C> SearchablePreferenceScreenGraphRepository<C> of(final SearchablePreferenceScreenGraphDAO delegate,
+                                                                      final ComputePreferencesListener computePreferencesListener) {
+        return new SearchablePreferenceScreenGraphRepository<>(delegate, new GraphProcessorManager<>(computePreferencesListener));
+    }
+
+    private SearchablePreferenceScreenGraphRepository(final SearchablePreferenceScreenGraphDAO delegate,
+                                                      final GraphProcessorManager<C> graphProcessorManager) {
         this.delegate = delegate;
+        this.graphProcessorManager = graphProcessorManager;
     }
 
     public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {

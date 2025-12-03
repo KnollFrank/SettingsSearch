@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 
@@ -20,10 +21,11 @@ public class SearchPreferenceFragmentsFactory {
             final Supplier<Optional<AsyncTaskWithProgressUpdateListeners<Void, PreferencesDatabase<Configuration>>>> createSearchDatabaseTaskSupplier,
             final Consumer<MergedPreferenceScreen<Configuration>> onMergedPreferenceScreenAvailable,
             final PreferencesDatabase<Configuration> preferencesDatabase,
-            final Configuration configuration) {
+            final Configuration configuration,
+            final SearchDatabaseConfig searchDatabaseConfig) {
         return SearchPreferenceFragments
                 .builder(
-                        SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
+                        searchDatabaseConfig,
                         SearchConfigFactory.createSearchConfig(fragmentContainerViewId, activity),
                         activity,
                         preferencesDatabase,

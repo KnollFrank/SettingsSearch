@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.preference.SearchPreference;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationProvider;
 import de.KnollFrank.settingssearch.R;
+import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 import de.KnollFrank.settingssearch.SearchPreferenceFragmentsFactory;
 import de.KnollFrank.settingssearch.SettingsSearchApplication;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
@@ -70,7 +71,8 @@ public class PrefsFragmentFirstHavingSearchPreference extends PreferenceFragment
                         .getInstanceFromContext(requireContext())
                         .preferencesDatabaseManager
                         .getPreferencesDatabase(),
-                ConfigurationProvider.getActualConfiguration(requireContext()));
+                ConfigurationProvider.getActualConfiguration(requireContext()),
+                SearchDatabaseConfigFactory.createSearchDatabaseConfig());
     }
 
     private SearchPreference createSearchPreference(final SearchPreferenceFragments<Configuration> searchPreferenceFragments) {

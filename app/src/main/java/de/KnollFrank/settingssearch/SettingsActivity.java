@@ -72,7 +72,8 @@ public class SettingsActivity extends AppCompatActivity {
                         .getInstanceFromContext(activity)
                         .preferencesDatabaseManager
                         .getPreferencesDatabase(),
-                ConfigurationProvider.getActualConfiguration(activity));
+                ConfigurationProvider.getActualConfiguration(activity),
+                SearchDatabaseConfigFactory.createSearchDatabaseConfig());
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {

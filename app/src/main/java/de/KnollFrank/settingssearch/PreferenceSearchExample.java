@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.client.CreateSearchDatabaseTaskProvider;
 import de.KnollFrank.lib.settingssearch.client.SearchPreferenceFragments;
+import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.common.task.Tasks;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
@@ -39,6 +40,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         final Configuration configuration = ConfigurationProvider.getActualConfiguration(this);
+        final SearchDatabaseConfig searchDatabaseConfig = SearchDatabaseConfigFactory.createSearchDatabaseConfig();
         this
                 .getPreferencesDatabaseManager()
                 .initPreferencesDatabase(
@@ -47,9 +49,14 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile(),
                         configuration,
                         new ConfigurationBundleConverter(),
+                        searchDatabaseConfig.computePreferencesListener,
                         this);
         final PreferencesDatabase<Configuration> preferencesDatabase = getPreferencesDatabaseManager().getPreferencesDatabase();
-        final SearchPreferenceFragments<Configuration> searchPreferenceFragments = createSearchPreferenceFragments(preferencesDatabase, configuration);
+        final SearchPreferenceFragments<Configuration> searchPreferenceFragments =
+                createSearchPreferenceFragments(
+                        preferencesDatabase,
+                        configuration,
+                        searchDatabaseConfig);
         createSearchDatabaseTask =
                 Optional.of(
                         CreateSearchDatabaseTaskProvider.getCreateSearchDatabaseTask(
@@ -57,7 +64,7 @@ public class PreferenceSearchExample extends AppCompatActivity {
                                 this,
                                 preferencesDatabase,
                                 new ConfigurationBundleConverter().convertForward(configuration),
-                                searchPreferenceFragments.searchDatabaseConfig.preferenceSearchablePredicate));
+                                searchDatabaseConfig.preferenceSearchablePredicate));
         Tasks.executeTaskInParallelWithOtherTasks(createSearchDatabaseTask.orElseThrow());
     }
 
@@ -88,12 +95,15 @@ public class PreferenceSearchExample extends AppCompatActivity {
         final SearchPreferenceFragments<Configuration> searchPreferenceFragments =
                 createSearchPreferenceFragments(
                         getPreferencesDatabaseManager().getPreferencesDatabase(),
-                        ConfigurationProvider.getActualConfiguration(this));
+                        ConfigurationProvider.getActualConfiguration(this),
+                        SearchDatabaseConfigFactory.createSearchDatabaseConfig());
         searchPreferenceFragments.showSearchPreferenceFragment();
     }
 
-    private SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(final PreferencesDatabase<Configuration> preferencesDatabase,
-                                                                                     final Configuration configuration) {
+    private SearchPreferenceFragments<Configuration> createSearchPreferenceFragments(
+            final PreferencesDatabase<Configuration> preferencesDatabase,
+            final Configuration configuration,
+            final SearchDatabaseConfig searchDatabaseConfig) {
         return SearchPreferenceFragmentsFactory.createSearchPreferenceFragments(
                 FRAGMENT_CONTAINER_VIEW_ID,
                 this,
@@ -101,7 +111,8 @@ public class PreferenceSearchExample extends AppCompatActivity {
                 mergedPreferenceScreen -> {
                 },
                 preferencesDatabase,
-                configuration);
+                configuration,
+                searchDatabaseConfig);
     }
 
     private PreferencesDatabaseManager<Configuration> getPreferencesDatabaseManager() {

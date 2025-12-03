@@ -118,7 +118,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -153,7 +153,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceToIncludeInSearchResults)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -188,7 +188,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreferenceToExcludeFromSearchResults))),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -215,7 +215,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -247,7 +247,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfNestedPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -274,7 +274,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -301,7 +301,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -331,7 +331,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -362,7 +362,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -391,7 +391,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -420,7 +420,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -450,7 +450,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -478,7 +478,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -517,7 +517,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItems(keyOfPreference1, keyOfPreference2)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -538,7 +538,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
@@ -558,7 +558,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
@@ -578,7 +578,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
@@ -607,7 +607,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -638,7 +638,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -666,7 +666,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))),
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()),
+                createGraphRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -674,19 +674,19 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
     @Test
     public void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths() {
         PreferenceSearcherTestCaseTwoDifferentPreferencePaths.shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths(
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()));
+                createGraphRepository());
     }
 
     @Test
     public void shouldSearchAndFindPreferenceOfNonStandardConnectedFragment() {
         PreferenceSearcherTestCaseTwoNonStandardConnectedFragments.shouldSearchAndFindPreferenceOfNonStandardConnectedFragment(
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()));
+                createGraphRepository());
     }
 
     @Test
     public void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment() {
         PreferenceSearcherTestCaseNonStandardPreferenceFragment.shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(
-                new SearchablePreferenceScreenGraphRepository<>(preferencesRoomDatabase.searchablePreferenceScreenGraphDAO()));
+                createGraphRepository());
     }
 
     static void testSearch(final Fragment preferenceFragment,
@@ -887,5 +887,11 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         .stream()
                         .filter(preferenceScreenWithHost -> preferenceScreenWithHost.host() instanceof PreferenceFragmentWithSinglePreference)
                         .collect(Collectors.toSet()));
+    }
+
+    private SearchablePreferenceScreenGraphRepository<Configuration> createGraphRepository() {
+        return SearchablePreferenceScreenGraphRepository.of(
+                preferencesRoomDatabase.searchablePreferenceScreenGraphDAO(),
+                emptyComputePreferencesListener());
     }
 }

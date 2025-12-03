@@ -37,7 +37,7 @@ import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 public class SearchPreferenceFragments<C> implements MergedPreferenceScreenDataRepositoryProvider<C> {
 
     public final SearchConfig searchConfig;
-    public final SearchDatabaseConfig searchDatabaseConfig;
+    private final SearchDatabaseConfig searchDatabaseConfig;
     private final Locale locale;
     private final OnUiThreadRunner onUiThreadRunner;
     private final FragmentActivity activity;

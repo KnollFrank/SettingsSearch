@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.db;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emptyComputePreferencesListener;
 import static de.KnollFrank.lib.settingssearch.test.TestHelper.doWithFragmentActivity;
 
 import androidx.fragment.app.FragmentActivity;
@@ -55,6 +56,7 @@ public class DatabaseResetterTest {
                 PersistableBundleTestFactory.createSomeConfiguration(),
                 locale,
                 new ConfigurationBundleConverter(),
+                emptyComputePreferencesListener(),
                 activity);
     }
 

@@ -9,12 +9,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 class GraphProcessorManager<C> {
 
+    private final ComputePreferencesListener computePreferencesListener;
     // FK-TODO: graphProcessors in der Suchdatenbank speichern
     // FK-TODO: use Queue instead of List?
     private final List<Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>>> graphProcessors = new ArrayList<>();
+
+    public GraphProcessorManager(final ComputePreferencesListener computePreferencesListener) {
+        this.computePreferencesListener = computePreferencesListener;
+    }
 
     public void addGraphTransformer(final SearchablePreferenceScreenGraphTransformer<C> graphTransformer) {
         graphProcessors.add(Either.ofLeft(graphTransformer));
@@ -37,14 +43,14 @@ class GraphProcessorManager<C> {
             final List<SearchablePreferenceScreenGraph> graphs,
             final C configuration,
             final FragmentActivity activityContext) {
-        // FK-TODO: computePreferencesListener.onStartComputePreferences();
+        computePreferencesListener.onStartComputePreferences();
         final List<SearchablePreferenceScreenGraph> transformedGraphs =
                 graphs
                         .stream()
                         .map(graph -> applyGraphProcessorsToGraph(graph, configuration, activityContext))
                         .collect(Collectors.toList());
         removeGraphProcessors();
-        // FK-TODO: computePreferencesListener.onFinishComputePreferences();
+        computePreferencesListener.onFinishComputePreferences();
         return transformedGraphs;
     }
 
