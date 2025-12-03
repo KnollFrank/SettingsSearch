@@ -36,12 +36,14 @@ class GraphProcessorManager<C> {
             final List<SearchablePreferenceScreenGraph> graphs,
             final C configuration,
             final FragmentActivity activityContext) {
+        // FK-TODO: computePreferencesListener.onStartComputePreferences();
         final List<SearchablePreferenceScreenGraph> transformedGraphs =
                 graphs
                         .stream()
                         .map(graph -> applyGraphProcessorsToGraph(graph, configuration, activityContext))
                         .collect(Collectors.toList());
         removeGraphProcessors();
+        // FK-TODO: computePreferencesListener.onFinishComputePreferences();
         return transformedGraphs;
     }
 
