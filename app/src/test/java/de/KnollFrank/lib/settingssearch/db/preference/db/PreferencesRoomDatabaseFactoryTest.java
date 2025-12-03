@@ -30,7 +30,7 @@ public class PreferencesRoomDatabaseFactoryTest {
 
                     // When
                     final PreferencesRoomDatabase<Configuration> preferencesRoomDatabase =
-                            PreferencesDatabaseFactory.createPreferencesDatabase(
+                            PreferencesRoomDatabaseFactory.createPreferencesRoomDatabase(
                                     new PreferencesDatabaseConfig<>(
                                             "searchable_preferences.db",
                                             Optional.of(

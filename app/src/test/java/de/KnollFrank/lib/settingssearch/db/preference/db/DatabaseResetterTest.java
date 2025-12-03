@@ -44,7 +44,7 @@ public class DatabaseResetterTest {
     }
 
     private static PreferencesRoomDatabase<Configuration> getPreferencesDatabase(final FragmentActivity activity, final Locale locale) {
-        return PreferencesDatabaseFactory.createPreferencesDatabase(
+        return PreferencesRoomDatabaseFactory.createPreferencesRoomDatabase(
                 new PreferencesDatabaseConfig<>(
                         "searchable_preferences.db",
                         Optional.of(

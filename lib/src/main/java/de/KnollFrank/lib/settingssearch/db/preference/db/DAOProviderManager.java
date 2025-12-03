@@ -20,7 +20,7 @@ public class DAOProviderManager<C> {
                 if (daoProvider.isEmpty()) {
                     daoProvider =
                             Optional.of(
-                                    DAOProviderFactory.createDAOProvider(
+                                    PreferencesDatabaseFactory.createPreferencesDatabase(
                                             preferencesDatabaseConfig,
                                             configuration,
                                             configurationBundleConverter,

@@ -48,7 +48,7 @@ public class CreateSearchDatabaseTaskProvider {
                         EspressoIdlingResource.decrement();
                     }
                 },
-                _daoProvider -> {
+                _preferencesDatabase -> {
                 });
     }
 
