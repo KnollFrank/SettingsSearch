@@ -30,7 +30,6 @@ public class SearchPreferenceFragmentsBuilder<C> {
     private Consumer<MergedPreferenceScreen<C>> onMergedPreferenceScreenAvailable = mergedPreferenceScreen -> {
     };
 
-
     protected SearchPreferenceFragmentsBuilder(final SearchDatabaseConfig searchDatabaseConfig,
                                                final SearchConfig searchConfig,
                                                final Locale locale,
