@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import android.os.PersistableBundle;
-
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -24,7 +22,7 @@ public record SearchablePreferenceEntity(@PrimaryKey @NonNull String id,
                                          Optional<String> fragment,
                                          Optional<String> classNameOfReferencedActivity,
                                          boolean visible,
-                                         PersistableBundle extras,
+                                         LazyPersistableBundle extras,
                                          Optional<String> searchableInfo,
                                          Optional<String> parentId,
                                          Optional<String> predecessorId,

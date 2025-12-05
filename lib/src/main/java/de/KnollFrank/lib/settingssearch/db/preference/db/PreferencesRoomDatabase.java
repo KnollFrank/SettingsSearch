@@ -11,6 +11,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LazyPersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIntegerConverter;
@@ -34,7 +35,8 @@ import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
                 OptionalStringConverter.class,
                 OptionalIntegerConverter.class,
                 LocaleConverter.class,
-                PersistableBundleConverter.class
+                PersistableBundleConverter.class,
+                LazyPersistableBundleConverter.class
         })
 public abstract class PreferencesRoomDatabase extends RoomDatabase {
 
