@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.LazyPersistableBundle;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.LazyPersistableBundleFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
@@ -29,7 +29,7 @@ public class SearchablePreferenceToSearchablePreferenceEntityConverter {
                         preferenceToConvertToEntity.getFragment(),
                         preferenceToConvertToEntity.getClassNameOfReferencedActivity(),
                         preferenceToConvertToEntity.isVisible(),
-                        LazyPersistableBundle.fromBundle(preferenceToConvertToEntity.getExtras()),
+                        LazyPersistableBundleFactory.fromBundle(preferenceToConvertToEntity.getExtras()),
                         preferenceToConvertToEntity.getSearchableInfo(),
                         parentId,
                         predecessor.map(SearchablePreferenceEntity::id),
