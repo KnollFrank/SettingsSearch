@@ -89,6 +89,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     @Insert
     protected abstract void _persist(SearchablePreferenceScreenEntity searchablePreferenceScreen);
 
+    // FK-TODO: improve performance
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceScreenEntity")
     protected abstract List<SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy> _getSearchablePreferenceScreenAndAllPreferences();
