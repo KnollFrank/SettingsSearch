@@ -4,9 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Transaction;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -16,18 +16,17 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceWithScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesHelper;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
 @Dao
 public abstract class SearchablePreferenceScreenEntityDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
 
     private final SearchablePreferenceEntityDAO searchablePreferenceDAO;
-    // FK-TODO: remove cache?
+    // FK-TODO: remove cache? -> Caching ist für die Performance gut, solange die Invalidierung stimmt.
     private Optional<Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
-    // FK-TODO: remove cache?
+    // FK-TODO: remove cache? -> Behalten wir vorerst bei.
     private Optional<Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity>> hostByPreference = Optional.empty();
 
     public SearchablePreferenceScreenEntityDAO(final PreferencesRoomDatabase preferencesRoomDatabase) {
@@ -56,7 +55,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     }
 
     public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByGraphId(final Locale graphId) {
-        // FK-TODO: add cache?
+        // FK-TODO: add cache? -> Ja, das wäre eine gute Idee für eine weitere Optimierung.
         return new HashSet<>(_findSearchablePreferenceScreensByGraphId(graphId));
     }
 
@@ -89,13 +88,27 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     @Insert
     protected abstract void _persist(SearchablePreferenceScreenEntity searchablePreferenceScreen);
 
-    // FK-TODO: improve performance
-    @Transaction
-    @Query("SELECT * FROM SearchablePreferenceScreenEntity")
-    protected abstract List<SearchablePreferenceScreenAndAllPreferencesOfPreferenceHierarchy> _getSearchablePreferenceScreenAndAllPreferences();
+    @Query("SELECT " +
+            "screen.*, " +
+            "preference.id AS pref_id, " +
+            "preference.key AS pref_key, " +
+            "preference.title AS pref_title, " +
+            "preference.summary AS pref_summary, " +
+            "preference.iconResourceIdOrIconPixelData AS pref_iconResourceIdOrIconPixelData, " +
+            "preference.layoutResId AS pref_layoutResId, " +
+            "preference.widgetLayoutResId AS pref_widgetLayoutResId, " +
+            "preference.fragment AS pref_fragment, " +
+            "preference.classNameOfReferencedActivity AS pref_classNameOfReferencedActivity, " +
+            "preference.visible AS pref_visible, " +
+            "preference.extras AS pref_extras, " +
+            "preference.searchableInfo AS pref_searchableInfo, " +
+            "preference.parentId AS pref_parentId, " +
+            "preference.predecessorId AS pref_predecessorId, " +
+            "preference.searchablePreferenceScreenId AS pref_searchablePreferenceScreenId " +
+            "FROM SearchablePreferenceScreenEntity AS screen " +
+            "JOIN SearchablePreferenceEntity AS preference ON screen.id = preference.searchablePreferenceScreenId")
+    protected abstract List<PreferenceWithScreen> _getPreferenceWithScreen();
 
-    @Query("DELETE FROM SearchablePreferenceScreenEntity")
-    protected abstract void _removeAll();
 
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
@@ -104,9 +117,18 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         return allPreferencesBySearchablePreferenceScreen.orElseThrow();
     }
 
+    // FK-TODO: refactor
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> computeAllPreferencesBySearchablePreferenceScreen() {
-        return SearchablePreferenceScreenAndAllPreferencesHelper.getAllPreferencesBySearchablePreferenceScreen(
-                new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
+        final List<PreferenceWithScreen> preferenceWithScreens = _getPreferenceWithScreen();
+        final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> result = new HashMap<>();
+        for (final PreferenceWithScreen preferenceWithScreen : preferenceWithScreens) {
+            result
+                    .computeIfAbsent(
+                            preferenceWithScreen.screen(),
+                            k -> new HashSet<>())
+                    .add(preferenceWithScreen.preference());
+        }
+        return result;
     }
 
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {
@@ -116,10 +138,18 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         return hostByPreference.orElseThrow();
     }
 
+    // FK-TODO: refactor
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference() {
-        return SearchablePreferenceScreenAndAllPreferencesHelper.getHostByPreference(
-                new HashSet<>(_getSearchablePreferenceScreenAndAllPreferences()));
+        final List<PreferenceWithScreen> preferenceWithScreens = _getPreferenceWithScreen();
+        final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference = new HashMap<>();
+        for (final PreferenceWithScreen preferenceWithScreen : preferenceWithScreens) {
+            hostByPreference.put(preferenceWithScreen.preference(), preferenceWithScreen.screen());
+        }
+        return hostByPreference;
     }
+
+    @Query("DELETE FROM SearchablePreferenceScreenEntity")
+    protected abstract void _removeAll();
 
     private void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();
