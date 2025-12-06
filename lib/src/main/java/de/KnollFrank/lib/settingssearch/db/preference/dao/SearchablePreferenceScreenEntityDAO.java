@@ -109,7 +109,6 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
             "JOIN SearchablePreferenceEntity AS preference ON screen.id = preference.searchablePreferenceScreenId")
     protected abstract List<PreferenceWithScreen> _getPreferenceWithScreen();
 
-
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
             allPreferencesBySearchablePreferenceScreen = Optional.of(computeAllPreferencesBySearchablePreferenceScreen());
