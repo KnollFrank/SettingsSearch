@@ -47,6 +47,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         invalidateCaches();
     }
 
+    // FK-TODO: remove method?
     public void remove(final SearchablePreferenceScreenEntity screen) {
         searchablePreferenceDAO.remove(screen.getAllPreferencesOfPreferenceHierarchy(this));
         _removeByIds(Set.of(screen.id()));

@@ -123,6 +123,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         _remove(graph);
     }
 
+    // FK-TODO: performance optimization of _persist()
     private void _persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
         screenDAO.persist(
                 getScreens(graphAndDbDataProvider),
