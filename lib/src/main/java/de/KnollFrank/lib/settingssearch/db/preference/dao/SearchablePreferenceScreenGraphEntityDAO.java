@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
 
@@ -86,8 +87,39 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
                 .ifPresent(this::remove);
     }
 
+    // FK-TODO: refactor
     private void remove(final SearchablePreferenceScreenGraphEntity graph) {
-        graph.getNodes(this).forEach(screenDAO::remove);
+        // 1. Alle zu löschenden Screens, die zum Graphen gehören, effizient laden.
+        final Set<SearchablePreferenceScreenEntity> screensToRemove = screenDAO.findSearchablePreferenceScreensByGraphId(graph.id());
+        if (screensToRemove.isEmpty()) {
+            _remove(graph); // Nur den Graphen selbst löschen und fertig.
+            return;
+        }
+
+        // 2. Alle Preferences, die zu diesen Screens gehören, in einem Rutsch holen.
+        // Der Cache in screenDAO hilft hier, die performante JOIN-Abfrage nur einmal auszuführen.
+        final Set<SearchablePreferenceEntity> preferencesToRemove =
+                screensToRemove
+                        .stream()
+                        .flatMap(screen -> screen.getAllPreferencesOfPreferenceHierarchy(screenDAO).stream())
+                        .collect(Collectors.toSet());
+
+        // 3. Alle Preferences mit EINER einzigen, schnellen DELETE-Anweisung löschen.
+        preferenceDAO.remove(preferencesToRemove);
+
+        // 4. Alle Screens mit EINER einzigen, schnellen DELETE-Anweisung löschen.
+        final Set<String> screenIdsToRemove =
+                screensToRemove
+                        .stream()
+                        .map(SearchablePreferenceScreenEntity::id)
+                        .collect(Collectors.toSet());
+        screenDAO._removeByIds(screenIdsToRemove); // Direkter Aufruf der performanten Methode
+
+        // Wichtig: Da wir die öffentliche `remove` des screenDAO umgangen haben,
+        // müssen wir dessen Cache manuell invalidieren.
+        screenDAO.invalidateCaches();
+
+        // 5. Zum Schluss den Graphen selbst löschen.
         _remove(graph);
     }
 

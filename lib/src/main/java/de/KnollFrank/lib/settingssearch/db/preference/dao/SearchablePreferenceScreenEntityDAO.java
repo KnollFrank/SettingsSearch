@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
@@ -50,7 +49,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     public void remove(final SearchablePreferenceScreenEntity screen) {
         searchablePreferenceDAO.remove(screen.getAllPreferencesOfPreferenceHierarchy(this));
-        _remove(screen);
+        _removeByIds(Set.of(screen.id()));
         invalidateCaches();
     }
 
@@ -79,8 +78,8 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         invalidateCaches();
     }
 
-    @Delete
-    protected abstract void _remove(SearchablePreferenceScreenEntity screen);
+    @Query("DELETE FROM SearchablePreferenceScreenEntity WHERE id IN (:ids)")
+    protected abstract void _removeByIds(Set<String> ids);
 
     @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE graphId = :graphId")
     protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final Locale graphId);
@@ -150,7 +149,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     @Query("DELETE FROM SearchablePreferenceScreenEntity")
     protected abstract void _removeAll();
 
-    private void invalidateCaches() {
+    public void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();
         hostByPreference = Optional.empty();
     }

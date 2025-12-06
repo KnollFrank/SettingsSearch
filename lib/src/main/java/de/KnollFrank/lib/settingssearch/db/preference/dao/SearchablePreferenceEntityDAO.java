@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
@@ -41,7 +41,10 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     }
 
     public void remove(final Collection<SearchablePreferenceEntity> preferences) {
-        _remove(preferences);
+        if (preferences.isEmpty()) {
+            return;
+        }
+        _removeByIds(getIds(preferences));
         invalidateCaches();
     }
 
@@ -88,8 +91,8 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     @Query("SELECT * FROM SearchablePreferenceEntity")
     protected abstract List<PreferenceAndChildren> _getPreferencesAndChildren();
 
-    @Delete
-    public abstract void _remove(final Collection<SearchablePreferenceEntity> preferences);
+    @Query("DELETE FROM SearchablePreferenceEntity WHERE id IN (:ids)")
+    protected abstract void _removeByIds(Set<String> ids);
 
     private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference() {
         if (childrenByPreference.isEmpty()) {
@@ -118,5 +121,12 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     private void invalidateCaches() {
         predecessorByPreference = Optional.empty();
         childrenByPreference = Optional.empty();
+    }
+
+    private static Set<String> getIds(final Collection<SearchablePreferenceEntity> preferences) {
+        return preferences
+                .stream()
+                .map(SearchablePreferenceEntity::id)
+                .collect(Collectors.toSet());
     }
 }
