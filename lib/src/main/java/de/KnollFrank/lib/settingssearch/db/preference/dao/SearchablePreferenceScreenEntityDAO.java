@@ -106,11 +106,11 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     protected abstract void _persist(Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens);
 
     @Query("SELECT " +
-            "screen.id AS screen_id, " +
-            "screen.host AS screen_host, " +
-            "screen.title AS screen_title, " +
-            "screen.summary AS screen_summary, " +
-            "screen.graphId AS screen_graphId, " +
+            "screen.id AS " + PreferenceWithScreen.SCREEN_PREFIX + "id, " +
+            "screen.host AS " + PreferenceWithScreen.SCREEN_PREFIX + "host, " +
+            "screen.title AS " + PreferenceWithScreen.SCREEN_PREFIX + "title, " +
+            "screen.summary AS " + PreferenceWithScreen.SCREEN_PREFIX + "summary, " +
+            "screen.graphId AS " + PreferenceWithScreen.SCREEN_PREFIX + "graphId, " +
             "preference.* " +
             "FROM SearchablePreferenceEntity AS preference " +
             "JOIN SearchablePreferenceScreenEntity AS screen ON preference.searchablePreferenceScreenId = screen.id")
