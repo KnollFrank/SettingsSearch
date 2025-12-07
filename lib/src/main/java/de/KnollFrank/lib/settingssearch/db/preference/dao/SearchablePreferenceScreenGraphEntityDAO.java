@@ -123,11 +123,17 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         _remove(graph);
     }
 
-    // FK-TODO: performance optimization of _persist()
+    // FK-TODO: refactor
     private void _persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
+        // 1. Alle zu persistierenden Screens aus dem Graphen holen
+        final Set<SearchablePreferenceScreenEntity> screensToPersist = getScreens(graphAndDbDataProvider);
+
+        // 2. Den ScreenDAO aufrufen, der nun die gesamte Batch-Logik effizient handhabt
         screenDAO.persist(
-                getScreens(graphAndDbDataProvider),
+                screensToPersist,
                 graphAndDbDataProvider.dbDataProvider());
+
+        // 3. Den Graphen selbst persistieren
         persist(graphAndDbDataProvider.graph());
     }
 

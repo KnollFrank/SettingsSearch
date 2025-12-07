@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
@@ -32,19 +33,35 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         this.searchablePreferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
     }
 
+    // FK-TODO: refactor
     public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
                         final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
-        for (final var searchablePreferenceScreen : searchablePreferenceScreens) {
-            persist(searchablePreferenceScreen, dbDataProvider);
+        if (searchablePreferenceScreens.isEmpty()) {
+            return;
         }
+
+        // 1. Alle Preferences von allen Screens sammeln
+        // FK-TODO: use Sets.union()
+        final Set<SearchablePreferenceEntity> allPreferences =
+                searchablePreferenceScreens
+                        .stream()
+                        .flatMap(screen -> screen.getAllPreferencesOfPreferenceHierarchy(dbDataProvider).stream())
+                        .collect(Collectors.toSet());
+
+        // 2. Alle Preferences in einem einzigen Batch-Vorgang persistieren
+        searchablePreferenceDAO.persist(allPreferences);
+
+        // 3. Alle Screens in einem einzigen Batch-Vorgang persistieren
+        _persist(searchablePreferenceScreens);
+
+        // 4. Caches EINMAL am Ende invalidieren
         invalidateCaches();
     }
 
     public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen,
                         final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
-        searchablePreferenceDAO.persist(searchablePreferenceScreen.getAllPreferencesOfPreferenceHierarchy(dbDataProvider));
-        _persist(searchablePreferenceScreen);
-        invalidateCaches();
+        // Einfach an die performante Batch-Methode delegieren
+        persist(Set.of(searchablePreferenceScreen), dbDataProvider);
     }
 
     // FK-TODO: remove method?
@@ -86,7 +103,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final Locale graphId);
 
     @Insert
-    protected abstract void _persist(SearchablePreferenceScreenEntity searchablePreferenceScreen);
+    protected abstract void _persist(Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens);
 
     @Query("SELECT " +
             "screen.*, " +
