@@ -106,24 +106,14 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     protected abstract void _persist(Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens);
 
     @Query("SELECT " +
-            "screen.*, " +
-            "preference.id AS pref_id, " +
-            "preference.key AS pref_key, " +
-            "preference.title AS pref_title, " +
-            "preference.summary AS pref_summary, " +
-            "preference.iconResourceIdOrIconPixelData AS pref_iconResourceIdOrIconPixelData, " +
-            "preference.layoutResId AS pref_layoutResId, " +
-            "preference.widgetLayoutResId AS pref_widgetLayoutResId, " +
-            "preference.fragment AS pref_fragment, " +
-            "preference.classNameOfReferencedActivity AS pref_classNameOfReferencedActivity, " +
-            "preference.visible AS pref_visible, " +
-            "preference.extras AS pref_extras, " +
-            "preference.searchableInfo AS pref_searchableInfo, " +
-            "preference.parentId AS pref_parentId, " +
-            "preference.predecessorId AS pref_predecessorId, " +
-            "preference.searchablePreferenceScreenId AS pref_searchablePreferenceScreenId " +
-            "FROM SearchablePreferenceScreenEntity AS screen " +
-            "JOIN SearchablePreferenceEntity AS preference ON screen.id = preference.searchablePreferenceScreenId")
+            "screen.id AS screen_id, " +
+            "screen.host AS screen_host, " +
+            "screen.title AS screen_title, " +
+            "screen.summary AS screen_summary, " +
+            "screen.graphId AS screen_graphId, " +
+            "preference.* " +
+            "FROM SearchablePreferenceEntity AS preference " +
+            "JOIN SearchablePreferenceScreenEntity AS screen ON preference.searchablePreferenceScreenId = screen.id")
     protected abstract List<PreferenceWithScreen> _getPreferenceWithScreen();
 
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {

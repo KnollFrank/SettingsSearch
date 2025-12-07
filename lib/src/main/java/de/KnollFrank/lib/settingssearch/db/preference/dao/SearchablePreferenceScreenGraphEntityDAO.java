@@ -89,10 +89,9 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
 
     // FK-TODO: refactor
     private void remove(final SearchablePreferenceScreenGraphEntity graph) {
-        // 1. Alle zu löschenden Screens, die zum Graphen gehören, effizient laden.
         final Set<SearchablePreferenceScreenEntity> screensToRemove = screenDAO.findSearchablePreferenceScreensByGraphId(graph.id());
         if (screensToRemove.isEmpty()) {
-            _remove(graph); // Nur den Graphen selbst löschen und fertig.
+            _remove(graph);
             return;
         }
 
