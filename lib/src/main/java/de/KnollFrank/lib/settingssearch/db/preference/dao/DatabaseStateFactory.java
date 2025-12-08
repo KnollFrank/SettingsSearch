@@ -5,12 +5,12 @@ import java.util.OptionalLong;
 
 class DatabaseStateFactory {
 
-    public static DatabaseState fromInsertedRowIds(final List<Long> insertedRowIds) {
-        return DatabaseState.fromDatabaseChanged(!insertedRowIds.isEmpty());
-    }
-
     public static DatabaseState fromNumberOfChangedRows(final int numberOfChangedRows) {
         return DatabaseState.fromDatabaseChanged(numberOfChangedRows > 0);
+    }
+
+    public static DatabaseState fromInsertedRowIds(final List<Long> insertedRowIds) {
+        return DatabaseState.fromDatabaseChanged(!insertedRowIds.isEmpty());
     }
 
     public static DatabaseState fromInsertedRowId(final long insertedRowId) {
