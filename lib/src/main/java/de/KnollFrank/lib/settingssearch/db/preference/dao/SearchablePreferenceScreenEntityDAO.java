@@ -5,6 +5,7 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceWith
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         this.searchablePreferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
     }
 
+    @Transaction
     public DatabaseState persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
                                  final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
         final DatabaseState preferenceDatabaseState =
@@ -70,6 +72,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
                 .orElseThrow();
     }
 
+    @Transaction
     public DatabaseState removeAll() {
         final DatabaseState preferenceDatabaseState = searchablePreferenceDAO.removeAll();
         final DatabaseState screenDatabaseState = wrapper.removeAll();
@@ -80,6 +83,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         return databaseState;
     }
 
+    @Transaction
     public DatabaseState remove(final Collection<SearchablePreferenceScreenEntity> screens) {
         final DatabaseState preferenceDatabaseState = searchablePreferenceDAO.remove(getAllPreferences(screens, this));
         final DatabaseState screenDatabaseState = wrapper.remove(screens);

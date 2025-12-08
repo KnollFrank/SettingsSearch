@@ -35,6 +35,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
         this.preferencesRoomDatabase = preferencesRoomDatabase;
     }
 
+    @Transaction
     public DatabaseState persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
         final DatabaseState databaseState = wrapper.persist(searchablePreferences);
         if (databaseState.isDatabaseChanged()) {
@@ -43,6 +44,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
         return databaseState;
     }
 
+    @Transaction
     public DatabaseState remove(final Collection<SearchablePreferenceEntity> preferences) {
         final DatabaseState databaseState = wrapper.remove(preferences);
         if (databaseState.isDatabaseChanged()) {
@@ -72,6 +74,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
                 .getHost(preference);
     }
 
+    @Transaction
     public DatabaseState removeAll() {
         final DatabaseState databaseState = wrapper.removeAll();
         if (databaseState.isDatabaseChanged()) {
