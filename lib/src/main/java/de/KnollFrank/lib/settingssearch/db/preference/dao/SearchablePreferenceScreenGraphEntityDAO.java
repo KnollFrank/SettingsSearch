@@ -31,7 +31,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
 
     public void persistOrReplace(final GraphAndDbDataProvider graphAndDbDataProvider) {
         removeIfPresent(graphAndDbDataProvider.graph());
-        _persist(graphAndDbDataProvider);
+        persist(graphAndDbDataProvider);
     }
 
     public Optional<GraphAndDbDataProvider> findGraphById(final Locale id) {
@@ -122,17 +122,10 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         _remove(graph);
     }
 
-    // FK-TODO: refactor
-    private void _persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
-        // 1. Alle zu persistierenden Screens aus dem Graphen holen
-        final Set<SearchablePreferenceScreenEntity> screensToPersist = getScreens(graphAndDbDataProvider);
-
-        // 2. Den ScreenDAO aufrufen, der nun die gesamte Batch-Logik effizient handhabt
+    private void persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
         screenDAO.persist(
-                screensToPersist,
+                getScreens(graphAndDbDataProvider),
                 graphAndDbDataProvider.dbDataProvider());
-
-        // 3. Den Graphen selbst persistieren
         persist(graphAndDbDataProvider.graph());
     }
 
