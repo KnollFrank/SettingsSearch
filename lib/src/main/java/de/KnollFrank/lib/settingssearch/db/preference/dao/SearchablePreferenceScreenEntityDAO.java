@@ -111,7 +111,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
             "preference.* " +
             "FROM SearchablePreferenceEntity AS preference " +
             "JOIN SearchablePreferenceScreenEntity AS screen ON preference.searchablePreferenceScreenId = screen.id")
-    protected abstract List<PreferenceWithScreen> computePreferenceWithScreens();
+    protected abstract List<PreferenceWithScreen> _computePreferenceWithScreens();
 
     @Query("DELETE FROM SearchablePreferenceScreenEntity")
     protected abstract int removeAllAndReturnNumberOfDeletedRows();
@@ -142,6 +142,25 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
             preferenceWithScreens = Optional.of(computePreferenceWithScreens());
         }
         return preferenceWithScreens.orElseThrow();
+    }
+
+    private List<PreferenceWithScreen> computePreferenceWithScreens() {
+        return internObjects(_computePreferenceWithScreens());
+    }
+
+    private static List<PreferenceWithScreen> internObjects(final List<PreferenceWithScreen> rawData) {
+        final Map<String, SearchablePreferenceScreenEntity> internedScreens = new HashMap<>();
+        return rawData
+                .stream()
+                .map(
+                        rawItem -> {
+                            final SearchablePreferenceScreenEntity internedScreen =
+                                    internedScreens.computeIfAbsent(
+                                            rawItem.screen().id(),
+                                            id -> rawItem.screen());
+                            return new PreferenceWithScreen(rawItem.preference(), internedScreen);
+                        })
+                .collect(Collectors.toList());
     }
 
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {

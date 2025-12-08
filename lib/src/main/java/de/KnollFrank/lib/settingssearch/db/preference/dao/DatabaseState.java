@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-final class DatabaseState {
+class DatabaseState {
 
     private final boolean databaseChanged;
 
