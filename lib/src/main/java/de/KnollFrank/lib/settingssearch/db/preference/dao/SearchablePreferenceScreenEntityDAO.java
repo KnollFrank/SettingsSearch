@@ -101,7 +101,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final Locale graphId);
 
     @Insert
-    protected abstract List<Long> persistAndReturnInsertedRowIds(Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens);
+    protected abstract /* List<Long> degrades performance */ void persistInBatch(Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens);
 
     @Query("SELECT " +
             "screen.id AS " + SCREEN_PREFIX + "id, " +
@@ -185,8 +185,8 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     private class Wrapper {
 
         public DatabaseState persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens) {
-            final List<Long> insertedRowIds = persistAndReturnInsertedRowIds(searchablePreferenceScreens);
-            return DatabaseStateFactory.fromInsertedRowIds(insertedRowIds);
+            persistInBatch(searchablePreferenceScreens);
+            return DatabaseState.fromDatabaseChanged(!searchablePreferenceScreens.isEmpty());
         }
 
         public DatabaseState removeAll() {

@@ -90,7 +90,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     protected abstract int removeAllAndReturnNumberOfDeletedRows();
 
     @Insert
-    protected abstract List<Long> persistAndReturnInsertedRowIds(Collection<SearchablePreferenceEntity> searchablePreferences);
+    protected abstract /* List<Long> degrades performance */ void persistInBatch(Collection<SearchablePreferenceEntity> searchablePreferences);
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceEntity")
@@ -135,8 +135,8 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
     private class Wrapper {
 
         public DatabaseState persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
-            final List<Long> insertedRowIds = persistAndReturnInsertedRowIds(searchablePreferences);
-            return DatabaseStateFactory.fromInsertedRowIds(insertedRowIds);
+            persistInBatch(searchablePreferences);
+            return DatabaseState.fromDatabaseChanged(!searchablePreferences.isEmpty());
         }
 
         public DatabaseState remove(final Collection<SearchablePreferenceEntity> preferences) {
