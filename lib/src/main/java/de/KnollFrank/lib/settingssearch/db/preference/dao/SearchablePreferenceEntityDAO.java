@@ -35,17 +35,20 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
         this.preferencesRoomDatabase = preferencesRoomDatabase;
     }
 
-    public void persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
-        _persist(searchablePreferences);
-        invalidateCaches();
+    public DatabaseState persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
+        final DatabaseState databaseState = wrapper.persist(searchablePreferences);
+        if (databaseState.isDatabaseChanged()) {
+            invalidateCaches();
+        }
+        return databaseState;
     }
 
-    public void remove(final Collection<SearchablePreferenceEntity> preferences) {
-        if (preferences.isEmpty()) {
-            return;
+    public DatabaseState remove(final Collection<SearchablePreferenceEntity> preferences) {
+        final DatabaseState databaseState = wrapper.remove(preferences);
+        if (databaseState.isDatabaseChanged()) {
+            invalidateCaches();
         }
-        _removeByIds(getIds(preferences));
-        invalidateCaches();
+        return databaseState;
     }
 
     @Override
@@ -69,30 +72,33 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
                 .getHost(preference);
     }
 
-    public void removeAll() {
-        _removeAll();
-        invalidateCaches();
+    public DatabaseState removeAll() {
+        final DatabaseState databaseState = wrapper.removeAll();
+        if (databaseState.isDatabaseChanged()) {
+            invalidateCaches();
+        }
+        return databaseState;
     }
 
     @Query("SELECT * FROM SearchablePreferenceEntity WHERE id = :id")
     public abstract Optional<SearchablePreferenceEntity> findPreferenceById(final String id);
 
     @Query("DELETE FROM SearchablePreferenceEntity")
-    protected abstract void _removeAll();
+    protected abstract int removeAllAndReturnNumberOfDeletedRows();
 
     @Insert
-    protected abstract void _persist(Collection<SearchablePreferenceEntity> searchablePreferences);
+    protected abstract List<Long> persistAndReturnInsertedRowIds(Collection<SearchablePreferenceEntity> searchablePreferences);
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceEntity")
-    protected abstract List<PreferenceAndPredecessor> _getPreferencesAndPredecessors();
+    protected abstract List<PreferenceAndPredecessor> getPreferencesAndPredecessors();
 
     @Transaction
     @Query("SELECT * FROM SearchablePreferenceEntity")
-    protected abstract List<PreferenceAndChildren> _getPreferencesAndChildren();
+    protected abstract List<PreferenceAndChildren> getPreferencesAndChildren();
 
     @Query("DELETE FROM SearchablePreferenceEntity WHERE id IN (:ids)")
-    protected abstract void _removeByIds(Set<String> ids);
+    protected abstract int removeByIdsInBatchAndReturnNumberOfDeletedRows(Set<String> ids);
 
     private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> getChildrenByPreference() {
         if (childrenByPreference.isEmpty()) {
@@ -103,7 +109,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
 
     private Map<SearchablePreferenceEntity, Set<SearchablePreferenceEntity>> computeChildrenByPreference() {
         return PreferenceAndChildrens.getChildrenByPreference(
-                new HashSet<>(_getPreferencesAndChildren()));
+                new HashSet<>(getPreferencesAndChildren()));
     }
 
     private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> getPredecessorByPreference() {
@@ -115,7 +121,7 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
 
     private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> computePredecessorByPreference() {
         return PreferenceAndPredecessors.getPredecessorByPreference(
-                new HashSet<>(_getPreferencesAndPredecessors()));
+                new HashSet<>(getPreferencesAndPredecessors()));
     }
 
     private void invalidateCaches() {
@@ -123,10 +129,30 @@ public abstract class SearchablePreferenceEntityDAO implements SearchablePrefere
         childrenByPreference = Optional.empty();
     }
 
-    private static Set<String> getIds(final Collection<SearchablePreferenceEntity> preferences) {
-        return preferences
-                .stream()
-                .map(SearchablePreferenceEntity::id)
-                .collect(Collectors.toSet());
+    private class Wrapper {
+
+        public DatabaseState persist(final Collection<SearchablePreferenceEntity> searchablePreferences) {
+            final List<Long> insertedRowIds = persistAndReturnInsertedRowIds(searchablePreferences);
+            return DatabaseStateFactory.fromInsertedRowIds(insertedRowIds);
+        }
+
+        public DatabaseState remove(final Collection<SearchablePreferenceEntity> preferences) {
+            final int numberOfDeletedRows = removeByIdsInBatchAndReturnNumberOfDeletedRows(getIds(preferences));
+            return DatabaseStateFactory.fromNumberOfChangedRows(numberOfDeletedRows);
+        }
+
+        public DatabaseState removeAll() {
+            final int numberOfDeletedRows = removeAllAndReturnNumberOfDeletedRows();
+            return DatabaseStateFactory.fromNumberOfChangedRows(numberOfDeletedRows);
+        }
+
+        private static Set<String> getIds(final Collection<SearchablePreferenceEntity> preferences) {
+            return preferences
+                    .stream()
+                    .map(SearchablePreferenceEntity::id)
+                    .collect(Collectors.toSet());
+        }
     }
+
+    private final Wrapper wrapper = new Wrapper();
 }

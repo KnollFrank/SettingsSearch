@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Set;
+
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntities;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -34,7 +36,7 @@ public class SearchablePreferenceScreenDAOTest extends PreferencesRoomDatabaseTe
                         "graph-screen1",
                         "graph-screen2");
         final SearchablePreferenceScreenEntityAndDbDataProvider screen = createSomeSearchablePreferenceScreen(data);
-        dao.persist(screen.entity(), screen.dbDataProvider());
+        dao.persist(Set.of(screen.entity()), screen.dbDataProvider());
         final SearchablePreferenceEntity preference =
                 SearchablePreferenceEntities
                         .findPreferenceByKey(screen.entity().getAllPreferencesOfPreferenceHierarchy(dao), data.PARENT_KEY())

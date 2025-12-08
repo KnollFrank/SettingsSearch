@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
 
@@ -29,9 +28,10 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         this.preferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
     }
 
-    public void persistOrReplace(final GraphAndDbDataProvider graphAndDbDataProvider) {
-        removeIfPresent(graphAndDbDataProvider.graph());
-        persist(graphAndDbDataProvider);
+    public DatabaseState persistOrReplace(final GraphAndDbDataProvider graphAndDbDataProvider) {
+        final DatabaseState removedDatabaseState = removeIfPresent(graphAndDbDataProvider.graph());
+        final DatabaseState persistedDatabaseState = persist(graphAndDbDataProvider);
+        return removedDatabaseState.combine(persistedDatabaseState);
     }
 
     public Optional<GraphAndDbDataProvider> findGraphById(final Locale id) {
@@ -54,19 +54,20 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         return screenDAO.findSearchablePreferenceScreensByGraphId(graph.id());
     }
 
-    public void removeAll() {
-        screenDAO.removeAll();
-        _removeAll();
+    public DatabaseState removeAll() {
+        final DatabaseState screenDatabaseState = screenDAO.removeAll();
+        final DatabaseState graphDatabaseState = wrapper.removeAll();
+        return screenDatabaseState.combine(graphDatabaseState);
     }
 
     @Insert
-    protected abstract void persist(SearchablePreferenceScreenGraphEntity graph);
+    protected abstract long persistAndReturnInsertedRowId(SearchablePreferenceScreenGraphEntity graph);
 
     @Delete
-    protected abstract void _remove(SearchablePreferenceScreenGraphEntity graph);
+    protected abstract int removeAndReturnNumberOfDeletedRows(SearchablePreferenceScreenGraphEntity graph);
 
     @Query("DELETE FROM SearchablePreferenceScreenGraphEntity")
-    protected abstract void _removeAll();
+    protected abstract int removeAllAndReturnNumberOfDeletedRows();
 
     @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity WHERE id = :id")
     protected abstract Optional<SearchablePreferenceScreenGraphEntity> _findGraphById(Locale id);
@@ -80,53 +81,26 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
                 DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO));
     }
 
-    private void removeIfPresent(final SearchablePreferenceScreenGraphEntity graph) {
-        this
-                .findGraphById(graph.id())
-                .map(GraphAndDbDataProvider::graph)
-                .ifPresent(this::remove);
+    private DatabaseState removeIfPresent(final SearchablePreferenceScreenGraphEntity graph) {
+        final var graphFromDB = _findGraphById(graph.id());
+        return graphFromDB.isPresent() ?
+                remove(graphFromDB.orElseThrow()) :
+                DatabaseState.fromDatabaseChanged(false);
     }
 
-    // FK-TODO: refactor
-    private void remove(final SearchablePreferenceScreenGraphEntity graph) {
-        final Set<SearchablePreferenceScreenEntity> screensToRemove = screenDAO.findSearchablePreferenceScreensByGraphId(graph.id());
-        if (screensToRemove.isEmpty()) {
-            _remove(graph);
-            return;
-        }
-
-        // 2. Alle Preferences, die zu diesen Screens gehören, in einem Rutsch holen.
-        // Der Cache in screenDAO hilft hier, die performante JOIN-Abfrage nur einmal auszuführen.
-        final Set<SearchablePreferenceEntity> preferencesToRemove =
-                screensToRemove
-                        .stream()
-                        .flatMap(screen -> screen.getAllPreferencesOfPreferenceHierarchy(screenDAO).stream())
-                        .collect(Collectors.toSet());
-
-        // 3. Alle Preferences mit EINER einzigen, schnellen DELETE-Anweisung löschen.
-        preferenceDAO.remove(preferencesToRemove);
-
-        // 4. Alle Screens mit EINER einzigen, schnellen DELETE-Anweisung löschen.
-        final Set<String> screenIdsToRemove =
-                screensToRemove
-                        .stream()
-                        .map(SearchablePreferenceScreenEntity::id)
-                        .collect(Collectors.toSet());
-        screenDAO._removeByIds(screenIdsToRemove); // Direkter Aufruf der performanten Methode
-
-        // Wichtig: Da wir die öffentliche `remove` des screenDAO umgangen haben,
-        // müssen wir dessen Cache manuell invalidieren.
-        screenDAO.invalidateCaches();
-
-        // 5. Zum Schluss den Graphen selbst löschen.
-        _remove(graph);
+    private DatabaseState remove(final SearchablePreferenceScreenGraphEntity graph) {
+        final DatabaseState screenDatabaseState = screenDAO.remove(screenDAO.findSearchablePreferenceScreensByGraphId(graph.id()));
+        final DatabaseState graphDatabaseState = wrapper.remove(graph);
+        return screenDatabaseState.combine(graphDatabaseState);
     }
 
-    private void persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
-        screenDAO.persist(
-                getScreens(graphAndDbDataProvider),
-                graphAndDbDataProvider.dbDataProvider());
-        persist(graphAndDbDataProvider.graph());
+    private DatabaseState persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
+        final DatabaseState screenDatabaseState =
+                screenDAO.persist(
+                        getScreens(graphAndDbDataProvider),
+                        graphAndDbDataProvider.dbDataProvider());
+        final DatabaseState graphDatabaseState = wrapper.persist(graphAndDbDataProvider);
+        return screenDatabaseState.combine(graphDatabaseState);
     }
 
     private static Set<SearchablePreferenceScreenEntity> getScreens(final GraphAndDbDataProvider graphAndDbDataProvider) {
@@ -134,4 +108,24 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
                 .graph()
                 .getNodes(graphAndDbDataProvider.dbDataProvider());
     }
+
+    private class Wrapper {
+
+        public DatabaseState persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
+            final long insertedRowId = persistAndReturnInsertedRowId(graphAndDbDataProvider.graph());
+            return DatabaseStateFactory.fromInsertedRowId(insertedRowId);
+        }
+
+        public DatabaseState removeAll() {
+            final int numberOfDeletedRows = removeAllAndReturnNumberOfDeletedRows();
+            return DatabaseStateFactory.fromNumberOfChangedRows(numberOfDeletedRows);
+        }
+
+        public DatabaseState remove(final SearchablePreferenceScreenGraphEntity graph) {
+            final int numberOfDeletedRows = removeAndReturnNumberOfDeletedRows(graph);
+            return DatabaseStateFactory.fromNumberOfChangedRows(numberOfDeletedRows);
+        }
+    }
+
+    private final Wrapper wrapper = new Wrapper();
 }

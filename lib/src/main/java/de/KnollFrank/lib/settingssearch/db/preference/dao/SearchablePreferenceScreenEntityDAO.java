@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceWithScreen.SCREEN_PREFIX;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -15,6 +17,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceWithScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -33,42 +36,19 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         this.searchablePreferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
     }
 
-    // FK-TODO: refactor
-    public void persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
-                        final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
-        if (searchablePreferenceScreens.isEmpty()) {
-            return;
+    public DatabaseState persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
+                                 final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
+        final DatabaseState preferenceDatabaseState =
+                searchablePreferenceDAO.persist(
+                        getAllPreferences(
+                                searchablePreferenceScreens,
+                                dbDataProvider));
+        final DatabaseState screenDatabaseState = wrapper.persist(searchablePreferenceScreens);
+        final DatabaseState databaseState = preferenceDatabaseState.combine(screenDatabaseState);
+        if (databaseState.isDatabaseChanged()) {
+            invalidateCaches();
         }
-
-        // 1. Alle Preferences von allen Screens sammeln
-        // FK-TODO: use Sets.union()
-        final Set<SearchablePreferenceEntity> allPreferences =
-                searchablePreferenceScreens
-                        .stream()
-                        .flatMap(screen -> screen.getAllPreferencesOfPreferenceHierarchy(dbDataProvider).stream())
-                        .collect(Collectors.toSet());
-
-        // 2. Alle Preferences in einem einzigen Batch-Vorgang persistieren
-        searchablePreferenceDAO.persist(allPreferences);
-
-        // 3. Alle Screens in einem einzigen Batch-Vorgang persistieren
-        _persist(searchablePreferenceScreens);
-
-        // 4. Caches EINMAL am Ende invalidieren
-        invalidateCaches();
-    }
-
-    public void persist(final SearchablePreferenceScreenEntity searchablePreferenceScreen,
-                        final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
-        // Einfach an die performante Batch-Methode delegieren
-        persist(Set.of(searchablePreferenceScreen), dbDataProvider);
-    }
-
-    // FK-TODO: remove method?
-    public void remove(final SearchablePreferenceScreenEntity screen) {
-        searchablePreferenceDAO.remove(screen.getAllPreferencesOfPreferenceHierarchy(this));
-        _removeByIds(Set.of(screen.id()));
-        invalidateCaches();
+        return databaseState;
     }
 
     public Set<SearchablePreferenceScreenEntity> findSearchablePreferenceScreensByGraphId(final Locale graphId) {
@@ -90,31 +70,48 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
                 .orElseThrow();
     }
 
-    public void removeAll() {
-        searchablePreferenceDAO.removeAll();
-        _removeAll();
-        invalidateCaches();
+    public DatabaseState removeAll() {
+        final DatabaseState preferenceDatabaseState = searchablePreferenceDAO.removeAll();
+        final DatabaseState screenDatabaseState = wrapper.removeAll();
+        final DatabaseState databaseState = preferenceDatabaseState.combine(screenDatabaseState);
+        if (databaseState.isDatabaseChanged()) {
+            invalidateCaches();
+        }
+        return databaseState;
+    }
+
+    public DatabaseState remove(final Collection<SearchablePreferenceScreenEntity> screens) {
+        final DatabaseState preferenceDatabaseState = searchablePreferenceDAO.remove(getAllPreferences(screens, this));
+        final DatabaseState screenDatabaseState = wrapper.remove(screens);
+        final DatabaseState databaseState = preferenceDatabaseState.combine(screenDatabaseState);
+        if (databaseState.isDatabaseChanged()) {
+            invalidateCaches();
+        }
+        return databaseState;
     }
 
     @Query("DELETE FROM SearchablePreferenceScreenEntity WHERE id IN (:ids)")
-    protected abstract void _removeByIds(Set<String> ids);
+    protected abstract int removeByIdsInBatchAndReturnNumberOfDeletedRows(Set<String> ids);
 
     @Query("SELECT * FROM SearchablePreferenceScreenEntity WHERE graphId = :graphId")
     protected abstract List<SearchablePreferenceScreenEntity> _findSearchablePreferenceScreensByGraphId(final Locale graphId);
 
     @Insert
-    protected abstract void _persist(Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens);
+    protected abstract List<Long> persistAndReturnInsertedRowIds(Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens);
 
     @Query("SELECT " +
-            "screen.id AS " + PreferenceWithScreen.SCREEN_PREFIX + "id, " +
-            "screen.host AS " + PreferenceWithScreen.SCREEN_PREFIX + "host, " +
-            "screen.title AS " + PreferenceWithScreen.SCREEN_PREFIX + "title, " +
-            "screen.summary AS " + PreferenceWithScreen.SCREEN_PREFIX + "summary, " +
-            "screen.graphId AS " + PreferenceWithScreen.SCREEN_PREFIX + "graphId, " +
+            "screen.id AS " + SCREEN_PREFIX + "id, " +
+            "screen.host AS " + SCREEN_PREFIX + "host, " +
+            "screen.title AS " + SCREEN_PREFIX + "title, " +
+            "screen.summary AS " + SCREEN_PREFIX + "summary, " +
+            "screen.graphId AS " + SCREEN_PREFIX + "graphId, " +
             "preference.* " +
             "FROM SearchablePreferenceEntity AS preference " +
             "JOIN SearchablePreferenceScreenEntity AS screen ON preference.searchablePreferenceScreenId = screen.id")
-    protected abstract List<PreferenceWithScreen> _getPreferenceWithScreen();
+    protected abstract List<PreferenceWithScreen> getPreferenceWithScreen();
+
+    @Query("DELETE FROM SearchablePreferenceScreenEntity")
+    protected abstract int removeAllAndReturnNumberOfDeletedRows();
 
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen() {
         if (allPreferencesBySearchablePreferenceScreen.isEmpty()) {
@@ -125,7 +122,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     // FK-TODO: refactor
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> computeAllPreferencesBySearchablePreferenceScreen() {
-        final List<PreferenceWithScreen> preferenceWithScreens = _getPreferenceWithScreen();
+        final List<PreferenceWithScreen> preferenceWithScreens = getPreferenceWithScreen();
         final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> result = new HashMap<>();
         for (final PreferenceWithScreen preferenceWithScreen : preferenceWithScreens) {
             result
@@ -146,7 +143,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     // FK-TODO: refactor
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference() {
-        final List<PreferenceWithScreen> preferenceWithScreens = _getPreferenceWithScreen();
+        final List<PreferenceWithScreen> preferenceWithScreens = getPreferenceWithScreen();
         final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference = new HashMap<>();
         for (final PreferenceWithScreen preferenceWithScreen : preferenceWithScreens) {
             hostByPreference.put(preferenceWithScreen.preference(), preferenceWithScreen.screen());
@@ -154,11 +151,45 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         return hostByPreference;
     }
 
-    @Query("DELETE FROM SearchablePreferenceScreenEntity")
-    protected abstract void _removeAll();
+    private static Set<SearchablePreferenceEntity> getAllPreferences(
+            final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens,
+            final SearchablePreferenceScreenEntity.DbDataProvider dbDataProvider) {
+        return Sets.union(
+                searchablePreferenceScreens
+                        .stream()
+                        .map(screen -> screen.getAllPreferencesOfPreferenceHierarchy(dbDataProvider))
+                        .collect(Collectors.toList()));
+    }
 
-    public void invalidateCaches() {
+    private void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();
         hostByPreference = Optional.empty();
     }
+
+    private class Wrapper {
+
+        public DatabaseState persist(final Collection<SearchablePreferenceScreenEntity> searchablePreferenceScreens) {
+            final List<Long> insertedRowIds = persistAndReturnInsertedRowIds(searchablePreferenceScreens);
+            return DatabaseStateFactory.fromInsertedRowIds(insertedRowIds);
+        }
+
+        public DatabaseState removeAll() {
+            final int numberOfDeletedRows = removeAllAndReturnNumberOfDeletedRows();
+            return DatabaseStateFactory.fromNumberOfChangedRows(numberOfDeletedRows);
+        }
+
+        public DatabaseState remove(final Collection<SearchablePreferenceScreenEntity> screens) {
+            final int numberOfDeletedRows = removeByIdsInBatchAndReturnNumberOfDeletedRows(getIds(screens));
+            return DatabaseStateFactory.fromNumberOfChangedRows(numberOfDeletedRows);
+        }
+
+        private static Set<String> getIds(final Collection<SearchablePreferenceScreenEntity> screens) {
+            return screens
+                    .stream()
+                    .map(SearchablePreferenceScreenEntity::id)
+                    .collect(Collectors.toSet());
+        }
+    }
+
+    private final Wrapper wrapper = new Wrapper();
 }
