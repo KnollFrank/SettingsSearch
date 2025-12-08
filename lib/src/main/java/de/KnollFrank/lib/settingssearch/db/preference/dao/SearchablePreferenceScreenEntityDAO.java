@@ -149,17 +149,22 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     }
 
     private static List<PreferenceWithScreen> internObjects(final List<PreferenceWithScreen> rawData) {
-        final Map<String, SearchablePreferenceScreenEntity> internedScreens = new HashMap<>();
+        final Map<String, SearchablePreferenceScreenEntity> uniqueScreensById =
+                rawData
+                        .stream()
+                        .map(PreferenceWithScreen::screen)
+                        .collect(
+                                Collectors.toMap(
+                                        SearchablePreferenceScreenEntity::id,
+                                        screen -> screen,
+                                        (first, second) -> first));
+
         return rawData
                 .stream()
-                .map(
-                        rawItem -> {
-                            final SearchablePreferenceScreenEntity internedScreen =
-                                    internedScreens.computeIfAbsent(
-                                            rawItem.screen().id(),
-                                            id -> rawItem.screen());
-                            return new PreferenceWithScreen(rawItem.preference(), internedScreen);
-                        })
+                .map(rawItem ->
+                             new PreferenceWithScreen(
+                                     rawItem.preference(),
+                                     uniqueScreensById.get(rawItem.screen().id())))
                 .collect(Collectors.toList());
     }
 
