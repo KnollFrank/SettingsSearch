@@ -112,6 +112,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
             "preference.* " +
             "FROM SearchablePreferenceEntity AS preference " +
             "JOIN SearchablePreferenceScreenEntity AS screen ON preference.searchablePreferenceScreenId = screen.id")
+    // FK-TODO: getPreferenceWithScreen() braucht einen Cache, da sie zwei mal unabhängig aufgerufen wird und so eine doppelte Berechnung ausführt.
     protected abstract List<PreferenceWithScreen> getPreferenceWithScreen();
 
     @Query("DELETE FROM SearchablePreferenceScreenEntity")

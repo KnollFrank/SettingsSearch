@@ -5,6 +5,7 @@ import androidx.room.Relation;
 
 import java.util.Optional;
 
+// FK-TODO: hat N+1 Problem, verwende JOIN
 public class PreferenceAndPredecessor {
 
     @Embedded
