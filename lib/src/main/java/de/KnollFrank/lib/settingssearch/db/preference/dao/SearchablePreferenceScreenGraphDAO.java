@@ -22,8 +22,8 @@ public class SearchablePreferenceScreenGraphDAO {
         this.delegate = delegate;
     }
 
-    public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
-        delegate.persist(entityGraphPojoGraphConverter.convertBackward(searchablePreferenceScreenGraph));
+    public void persistOrReplace(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
+        delegate.persistOrReplace(entityGraphPojoGraphConverter.convertBackward(searchablePreferenceScreenGraph));
         graphById.put(searchablePreferenceScreenGraph.locale(), Optional.of(searchablePreferenceScreenGraph));
     }
 

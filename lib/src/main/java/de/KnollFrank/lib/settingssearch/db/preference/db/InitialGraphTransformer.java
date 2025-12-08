@@ -30,7 +30,7 @@ class InitialGraphTransformer<C> {
         graph.ifPresent(
                 _graph -> {
                     if (!Objects.equals(configuration, configurationBundleConverter.convertBackward(_graph.configuration()))) {
-                        searchablePreferenceScreenGraphDAO.persist(process(_graph, configuration));
+                        searchablePreferenceScreenGraphDAO.persistOrReplace(process(_graph, configuration));
                     }
                 });
     }

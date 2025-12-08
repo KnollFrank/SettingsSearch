@@ -29,7 +29,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         this.preferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
     }
 
-    public void persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
+    public void persistOrReplace(final GraphAndDbDataProvider graphAndDbDataProvider) {
         removeIfPresent(graphAndDbDataProvider.graph());
         _persist(graphAndDbDataProvider);
     }

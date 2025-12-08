@@ -105,7 +105,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 getSummary(checked));
                         getPreferencesDatabase()
                                 .searchablePreferenceScreenGraphRepository()
-                                .persist(
+                                .persistOrReplace(
                                         getGraphHavingConfiguration(
                                                 pojoGraph,
                                                 new Configuration(

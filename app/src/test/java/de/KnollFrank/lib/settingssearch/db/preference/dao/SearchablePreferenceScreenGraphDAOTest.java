@@ -36,7 +36,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
     }
 
     @Test
-    public void test_persist_findGraphById() {
+    public void test_persistOrReplace_findGraphById() {
         // Given
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
         final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph =
@@ -60,12 +60,12 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                         PersistableBundleTestFactory.createSomePersistableBundle());
 
         // When
-        dao.persist(searchablePreferenceScreenGraph);
+        dao.persistOrReplace(searchablePreferenceScreenGraph);
         testFindGraphById(searchablePreferenceScreenGraph, dao);
     }
 
     @Test
-    public void test_persistAndFindGraphById_twoGraphs_differentLocales() {
+    public void test_persistOrReplaceAndFindGraphById_twoGraphs_differentLocales() {
         // Given
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
 
@@ -85,7 +85,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                         "singleNodeGraph-screen1",
                                         "graph-screen1",
                                         "graph-screen2")));
-        dao.persist(germanGraph);
+        dao.persistOrReplace(germanGraph);
 
         // And
         final SearchablePreferenceScreenGraph chineseGraph =
@@ -103,7 +103,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                         "zh-singleNodeGraph-screen1",
                                         "zh-graph-screen1",
                                         "zh-graph-screen2")));
-        dao.persist(chineseGraph);
+        dao.persistOrReplace(chineseGraph);
 
         // Then
         testFindGraphById(germanGraph, dao);
@@ -111,7 +111,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
     }
 
     @Test
-    public void test_persistAndFindGraphById_twoGraphs_sameLocales() {
+    public void test_persistOrReplaceAndFindGraphById_twoGraphs_sameLocales() {
         // Given
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
         final Locale locale = Locale.GERMAN;
@@ -133,7 +133,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                                 "singleNodeGraph-screen1",
                                                 "graph-screen1",
                                                 "graph-screen2")));
-        dao.persist(graphToBeOverwritten);
+        dao.persistOrReplace(graphToBeOverwritten);
 
         // And
         final SearchablePreferenceScreenGraph overwritingGraph =
@@ -152,7 +152,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                                 "singleNodeGraph-screen1",
                                                 "graph-screen1",
                                                 "graph-screen2")));
-        dao.persist(overwritingGraph);
+        dao.persistOrReplace(overwritingGraph);
 
         // Then
         testFindGraphById(overwritingGraph, dao);

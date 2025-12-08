@@ -828,7 +828,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 preferenceScreenWithHost -> {
                                 }),
                         locale);
-        graphRepository.persist(
+        graphRepository.persistOrReplace(
                 new SearchablePreferenceScreenGraph(
                         searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
                                 preferenceScreenWithHostProvider

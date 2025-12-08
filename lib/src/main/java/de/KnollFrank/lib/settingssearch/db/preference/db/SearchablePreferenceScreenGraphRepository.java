@@ -27,8 +27,8 @@ public class SearchablePreferenceScreenGraphRepository<C> {
         this.graphProcessorManager = graphProcessorManager;
     }
 
-    public void persist(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
-        delegate.persist(searchablePreferenceScreenGraph);
+    public void persistOrReplace(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
+        delegate.persistOrReplace(searchablePreferenceScreenGraph);
         graphProcessorManager.removeGraphProcessors();
     }
 
@@ -65,7 +65,7 @@ public class SearchablePreferenceScreenGraphRepository<C> {
                             new ArrayList<>(delegate.loadAll()),
                             actualConfiguration,
                             activityContext)
-                    .forEach(delegate::persist);
+                    .forEach(delegate::persistOrReplace);
         }
     }
 }

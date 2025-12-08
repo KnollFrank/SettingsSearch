@@ -68,7 +68,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
                 progressUpdateListener.onProgressUpdate("persisting search database");
-                graphRepository.persist(
+                graphRepository.persistOrReplace(
                         new SearchablePreferenceScreenGraph(
                                 searchablePreferenceScreenGraph,
                                 locale,

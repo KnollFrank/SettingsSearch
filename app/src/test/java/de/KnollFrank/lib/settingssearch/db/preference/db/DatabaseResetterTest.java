@@ -78,7 +78,7 @@ public class DatabaseResetterTest {
                                 "graph-screen2"));
         preferencesDatabase
                 .searchablePreferenceScreenGraphRepository()
-                .persist(
+                .persistOrReplace(
                         new SearchablePreferenceScreenGraph(
                                 singleNodeGraph.pojoGraph(),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().id(),
