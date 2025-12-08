@@ -28,10 +28,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public abstract class SearchablePreferenceScreenEntityDAO implements SearchablePreferenceScreenEntity.DbDataProvider {
 
     private final SearchablePreferenceEntityDAO searchablePreferenceDAO;
-    // FK-TODO: remove cache? -> Caching ist für die Performance gut, solange die Invalidierung stimmt.
     private Optional<Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>>> allPreferencesBySearchablePreferenceScreen = Optional.empty();
-    // FK-TODO: remove cache? -> Behalten wir vorerst bei.
     private Optional<Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity>> hostByPreference = Optional.empty();
+    private Optional<List<PreferenceWithScreen>> preferenceWithScreens = Optional.empty();
 
     public SearchablePreferenceScreenEntityDAO(final PreferencesRoomDatabase preferencesRoomDatabase) {
         this.searchablePreferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
@@ -112,8 +111,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
             "preference.* " +
             "FROM SearchablePreferenceEntity AS preference " +
             "JOIN SearchablePreferenceScreenEntity AS screen ON preference.searchablePreferenceScreenId = screen.id")
-    // FK-TODO: getPreferenceWithScreen() braucht einen Cache, da sie zwei mal unabhängig aufgerufen wird und so eine doppelte Berechnung ausführt.
-    protected abstract List<PreferenceWithScreen> getPreferenceWithScreen();
+    protected abstract List<PreferenceWithScreen> computePreferenceWithScreens();
 
     @Query("DELETE FROM SearchablePreferenceScreenEntity")
     protected abstract int removeAllAndReturnNumberOfDeletedRows();
@@ -127,7 +125,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     // FK-TODO: refactor
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> computeAllPreferencesBySearchablePreferenceScreen() {
-        final List<PreferenceWithScreen> preferenceWithScreens = getPreferenceWithScreen();
+        final List<PreferenceWithScreen> preferenceWithScreens = getPreferenceWithScreens();
         final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> result = new HashMap<>();
         for (final PreferenceWithScreen preferenceWithScreen : preferenceWithScreens) {
             result
@@ -139,6 +137,13 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         return result;
     }
 
+    private List<PreferenceWithScreen> getPreferenceWithScreens() {
+        if (preferenceWithScreens.isEmpty()) {
+            preferenceWithScreens = Optional.of(computePreferenceWithScreens());
+        }
+        return preferenceWithScreens.orElseThrow();
+    }
+
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {
         if (hostByPreference.isEmpty()) {
             hostByPreference = Optional.of(computeHostByPreference());
@@ -148,7 +153,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
 
     // FK-TODO: refactor
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference() {
-        final List<PreferenceWithScreen> preferenceWithScreens = getPreferenceWithScreen();
+        final List<PreferenceWithScreen> preferenceWithScreens = getPreferenceWithScreens();
         final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference = new HashMap<>();
         for (final PreferenceWithScreen preferenceWithScreen : preferenceWithScreens) {
             hostByPreference.put(preferenceWithScreen.preference(), preferenceWithScreen.screen());
@@ -169,6 +174,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     private void invalidateCaches() {
         allPreferencesBySearchablePreferenceScreen = Optional.empty();
         hostByPreference = Optional.empty();
+        preferenceWithScreens = Optional.empty();
     }
 
     private class Wrapper {
