@@ -21,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceWithScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.PreferenceWithScreens;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 
@@ -145,27 +146,7 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     }
 
     private List<PreferenceWithScreen> computePreferenceWithScreens() {
-        return internObjects(_computePreferenceWithScreens());
-    }
-
-    private static List<PreferenceWithScreen> internObjects(final List<PreferenceWithScreen> rawData) {
-        final Map<String, SearchablePreferenceScreenEntity> uniqueScreensById =
-                rawData
-                        .stream()
-                        .map(PreferenceWithScreen::screen)
-                        .collect(
-                                Collectors.toMap(
-                                        SearchablePreferenceScreenEntity::id,
-                                        screen -> screen,
-                                        (first, second) -> first));
-
-        return rawData
-                .stream()
-                .map(rawItem ->
-                             new PreferenceWithScreen(
-                                     rawItem.preference(),
-                                     uniqueScreensById.get(rawItem.screen().id())))
-                .collect(Collectors.toList());
+        return PreferenceWithScreens.internObjects(_computePreferenceWithScreens());
     }
 
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference() {
