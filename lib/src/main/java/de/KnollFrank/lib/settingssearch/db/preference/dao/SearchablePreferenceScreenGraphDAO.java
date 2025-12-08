@@ -41,8 +41,10 @@ public class SearchablePreferenceScreenGraphDAO {
     }
 
     public void removeAll() {
-        delegate.removeAll();
-        invalidateCaches();
+        final DatabaseState databaseState = delegate.removeAll();
+        if (databaseState.isDatabaseChanged()) {
+            invalidateCaches();
+        }
     }
 
     private Optional<SearchablePreferenceScreenGraph> _findGraphById(final Locale id) {

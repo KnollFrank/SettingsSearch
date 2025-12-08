@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         this.preferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
     }
 
+    @Transaction
     public DatabaseState persistOrReplace(final GraphAndDbDataProvider graphAndDbDataProvider) {
         final DatabaseState removedDatabaseState = removeIfPresent(graphAndDbDataProvider.graph());
         final DatabaseState persistedDatabaseState = persist(graphAndDbDataProvider);
@@ -54,6 +56,7 @@ public abstract class SearchablePreferenceScreenGraphEntityDAO implements Search
         return screenDAO.findSearchablePreferenceScreensByGraphId(graph.id());
     }
 
+    @Transaction
     public DatabaseState removeAll() {
         final DatabaseState screenDatabaseState = screenDAO.removeAll();
         final DatabaseState graphDatabaseState = wrapper.removeAll();
