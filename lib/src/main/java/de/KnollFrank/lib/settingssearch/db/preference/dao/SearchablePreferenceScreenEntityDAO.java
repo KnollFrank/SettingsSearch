@@ -8,7 +8,6 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -157,14 +156,17 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         return hostByPreference.orElseThrow();
     }
 
-    // FK-TODO: refactor
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference() {
-        final List<PreferenceWithScreen> preferenceWithScreens = getPreferenceWithScreens();
-        final Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference = new HashMap<>();
-        for (final PreferenceWithScreen preferenceWithScreen : preferenceWithScreens) {
-            hostByPreference.put(preferenceWithScreen.preference(), preferenceWithScreen.screen());
-        }
-        return hostByPreference;
+        return computeHostByPreference(getPreferenceWithScreens());
+    }
+
+    private static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference(final List<PreferenceWithScreen> preferenceWithScreens) {
+        return preferenceWithScreens
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                PreferenceWithScreen::preference,
+                                PreferenceWithScreen::screen));
     }
 
     private static Set<SearchablePreferenceEntity> getAllPreferences(
