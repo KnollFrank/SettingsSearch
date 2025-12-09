@@ -124,18 +124,19 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
         return allPreferencesBySearchablePreferenceScreen.orElseThrow();
     }
 
-    // FK-TODO: refactor
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> computeAllPreferencesBySearchablePreferenceScreen() {
-        final List<PreferenceWithScreen> preferenceWithScreens = getPreferenceWithScreens();
-        final Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> result = new HashMap<>();
-        for (final PreferenceWithScreen preferenceWithScreen : preferenceWithScreens) {
-            result
-                    .computeIfAbsent(
-                            preferenceWithScreen.screen(),
-                            k -> new HashSet<>())
-                    .add(preferenceWithScreen.preference());
-        }
-        return result;
+        return getAllPreferencesBySearchablePreferenceScreen(getPreferenceWithScreens());
+    }
+
+    private static Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> getAllPreferencesBySearchablePreferenceScreen(final List<PreferenceWithScreen> preferenceWithScreens) {
+        return preferenceWithScreens
+                .stream()
+                .collect(
+                        Collectors.groupingBy(
+                                PreferenceWithScreen::screen,
+                                Collectors.mapping(
+                                        PreferenceWithScreen::preference,
+                                        Collectors.toSet())));
     }
 
     private List<PreferenceWithScreen> getPreferenceWithScreens() {
