@@ -157,10 +157,10 @@ public abstract class SearchablePreferenceScreenEntityDAO implements SearchableP
     }
 
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference() {
-        return computeHostByPreference(getPreferenceWithScreens());
+        return getHostByPreference(getPreferenceWithScreens());
     }
 
-    private static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> computeHostByPreference(final List<PreferenceWithScreen> preferenceWithScreens) {
+    private static Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> getHostByPreference(final List<PreferenceWithScreen> preferenceWithScreens) {
         return preferenceWithScreens
                 .stream()
                 .collect(
