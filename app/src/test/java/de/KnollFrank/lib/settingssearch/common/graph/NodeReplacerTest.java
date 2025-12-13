@@ -6,7 +6,6 @@ import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphs.cloneEd
 import org.jgrapht.Graph;
 import org.junit.Test;
 
-// FK-TODO: DRY with SubtreeReplacerTest
 public class NodeReplacerTest {
 
     private final StringVertex vR = new StringVertex("R");
@@ -124,7 +123,7 @@ public class NodeReplacerTest {
         final Graph<StringVertex, StringEdge> originalGraph =
                 StringGraphs
                         .newGraphBuilder()
-                        .addVertices(vP, vA, vB)
+                        .addVertices(vP, vA)
                         .addEdge(vP, vA, ePR) // just some edge
                         .build();
 
@@ -138,7 +137,7 @@ public class NodeReplacerTest {
 
     private NodeReplacer<StringVertex, StringEdge> createNodeReplacer() {
         return new NodeReplacer<>(
-                StringGraphs::createEmptyGraph,
+                StringEdge.class,
                 StringGraphs::cloneEdge);
     }
 }
