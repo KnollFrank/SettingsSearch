@@ -1,10 +1,9 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphEquality.assertActualEqualsExpected;
+import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphs.cloneEdge;
 
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.builder.GraphBuilder;
 import org.junit.Test;
 
 // FK-TODO: DRY with SubtreeReplacerTest
@@ -28,7 +27,7 @@ public class NodeReplacerTest {
         //              |
         //              --eRB--> B
         final Graph<StringVertex, StringEdge> originalGraph =
-                NodeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vR, vA, vB)
                         .addEdge(vP, vR, ePR)
@@ -45,7 +44,7 @@ public class NodeReplacerTest {
         //                |
         //                --(eRB)--> B
         final Graph<StringVertex, StringEdge> expectedGraph =
-                NodeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vX, vA, vB)
                         .addEdge(vP, vX, cloneEdge(ePR)) // old incoming edge
@@ -64,7 +63,7 @@ public class NodeReplacerTest {
         //   |
         //   --eRB--> B
         final Graph<StringVertex, StringEdge> originalGraph =
-                NodeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vR, vA, vB)
                         .addEdge(vR, vA, eRA)
@@ -80,7 +79,7 @@ public class NodeReplacerTest {
         //   |
         //   --(eRB)--> B
         final Graph<StringVertex, StringEdge> expectedGraph =
-                NodeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vX, vA, vB)
                         .addEdge(vX, vA, cloneEdge(eRA))
@@ -96,7 +95,7 @@ public class NodeReplacerTest {
         // Given a graph where the node to replace is a leaf:
         //   P --ePR--> R
         final Graph<StringVertex, StringEdge> originalGraph =
-                NodeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vR)
                         .addEdge(vP, vR, ePR)
@@ -109,7 +108,7 @@ public class NodeReplacerTest {
         // Then X should become the new leaf:
         //   P --(ePR)--> X
         final Graph<StringVertex, StringEdge> expectedGraph =
-                NodeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vX)
                         .addEdge(vP, vX, cloneEdge(ePR))
@@ -123,7 +122,7 @@ public class NodeReplacerTest {
         final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();    // Given an original graph:
         // Given a graph
         final Graph<StringVertex, StringEdge> originalGraph =
-                NodeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vA, vB)
                         .addEdge(vP, vA, ePR) // just some edge
@@ -139,15 +138,7 @@ public class NodeReplacerTest {
 
     private NodeReplacer<StringVertex, StringEdge> createNodeReplacer() {
         return new NodeReplacer<>(
-                () -> new DefaultDirectedGraph<>(StringEdge.class),
-                NodeReplacerTest::cloneEdge);
-    }
-
-    private static GraphBuilder<StringVertex, StringEdge, ?> newGraphBuilder() {
-        return DefaultDirectedGraph.createBuilder(StringEdge.class);
-    }
-
-    private static StringEdge cloneEdge(final StringEdge edge) {
-        return new StringEdge(edge.getLabel());
+                StringGraphs::createEmptyGraph,
+                StringGraphs::cloneEdge);
     }
 }

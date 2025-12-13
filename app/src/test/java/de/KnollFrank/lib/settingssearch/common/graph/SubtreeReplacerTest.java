@@ -1,10 +1,9 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphEquality.assertActualEqualsExpected;
+import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphs.cloneEdge;
 
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.builder.GraphBuilder;
 import org.junit.Test;
 
 public class SubtreeReplacerTest {
@@ -29,20 +28,20 @@ public class SubtreeReplacerTest {
         final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: R -> A (eRA)
         final Graph<StringVertex, StringEdge> originalGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vR, vA)
                         .addEdge(vR, vA, eRA)
                         .build();
         // Replacement Tree: X -> Y (eXY)
         final Graph<StringVertex, StringEdge> replacementGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vX, vY)
                         .addEdge(vX, vY, eXY)
                         .build();
         final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vX, vY)
                         .addEdge(vX, vY, cloneEdge(eXY))
@@ -68,7 +67,7 @@ public class SubtreeReplacerTest {
         //              |
         //              --eRB--> B
         final Graph<StringVertex, StringEdge> originalGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vR, vA, vB)
                         .addEdge(vP, vR, ePR)
@@ -78,7 +77,7 @@ public class SubtreeReplacerTest {
         // Replacement Tree (to replace R and its subtree [A,B]):
         //   X --eXY--> Y
         final Graph<StringVertex, StringEdge> replacementGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vX, vY)
                         .addEdge(vX, vY, eXY)
@@ -86,7 +85,7 @@ public class SubtreeReplacerTest {
         // Expected Returned Tree:
         //   P --(label from ePR)--> X --> Y
         final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vX, vY)
                         .addEdge(vP, vX, cloneEdge(ePR))
@@ -112,7 +111,7 @@ public class SubtreeReplacerTest {
         //   P --ePR--> R --eRA--> A
         // Node to replace: R (and its subtree [A])
         final Graph<StringVertex, StringEdge> originalGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vR, vA)
                         .addEdge(vP, vR, ePR)
@@ -120,14 +119,14 @@ public class SubtreeReplacerTest {
                         .build();
         // Replacement Tree: (empty)
         final Graph<StringVertex, StringEdge> emptyReplacementGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .build();
         // Expected Returned Tree:
         //   P
         // (R and A and edges ePR, eRA are removed; P remains, R's subtree is pruned)
         final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertex(vP)
                         .build();
@@ -150,20 +149,20 @@ public class SubtreeReplacerTest {
         // Original Tree: P --ePR--> R
         // Node to replace: R (a leaf)
         final Graph<StringVertex, StringEdge> originalGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vR)
                         .addEdge(vP, vR, ePR)
                         .build();
         // Replacement Tree: X (single node, root X)
         final Graph<StringVertex, StringEdge> replacementGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertex(vX)
                         .build();
         // Expected Returned Tree: P --(label from ePR)--> X
         final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vX)
                         .addEdge(vP, vX, cloneEdge(ePR))
@@ -186,19 +185,19 @@ public class SubtreeReplacerTest {
         final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: R -> A (eRA)
         final Graph<StringVertex, StringEdge> originalGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vR, vA)
                         .addEdge(vR, vA, eRA)
                         .build();
         // Replacement Tree: X
         final Graph<StringVertex, StringEdge> replacementGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertex(vX)
                         .build();
         final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vR, vA)
                         .addEdge(vR, vA, eRA)
@@ -223,19 +222,19 @@ public class SubtreeReplacerTest {
         // Original Tree: R -> A (eRA)
         // Node to replace: R (the root)
         final Graph<StringVertex, StringEdge> originalGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vR, vA)
                         .addEdge(vR, vA, eRA)
                         .build();
         // Replacement Tree: (Empty Graph)
         final Graph<StringVertex, StringEdge> emptyReplacementGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .build();
         // Expected Returned Tree: (Empty Graph)
         final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .build();
 
@@ -266,7 +265,7 @@ public class SubtreeReplacerTest {
         final StringVertex vC_local = new StringVertex("C_local");
         final StringEdge eAC_local = new StringEdge("A->C_local");
         final Graph<StringVertex, StringEdge> originalGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vR, vA, vB, vC_local)
                         .addEdge(vP, vR, ePR)
@@ -279,7 +278,7 @@ public class SubtreeReplacerTest {
         //   |
         //   --eXZ--> Z
         final Graph<StringVertex, StringEdge> replacementGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vX, vY, vZ)
                         .addEdge(vX, vY, eXY)
@@ -292,7 +291,7 @@ public class SubtreeReplacerTest {
         //     /  \ (labels from eXY X->Y, eXZ X->Z)
         //    Y    Z
         final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertices(vP, vX, vY, vZ)
                         .addEdge(vP, vX, cloneEdge(ePR)) // Edge factory reuses ePR label
@@ -317,17 +316,17 @@ public class SubtreeReplacerTest {
         final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: (empty)
         final Graph<StringVertex, StringEdge> originalGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .build();
         final Graph<StringVertex, StringEdge> originalGraphSnapshotForExpected =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .build();
         // Node to replace: vR (not in the empty graph)
         // Replacement Tree: X
         final Graph<StringVertex, StringEdge> replacementGraph =
-                SubtreeReplacerTest
+                StringGraphs
                         .newGraphBuilder()
                         .addVertex(vX)
                         .build();
@@ -345,15 +344,7 @@ public class SubtreeReplacerTest {
 
     private SubtreeReplacer<StringVertex, StringEdge> createSubtreeReplacer() {
         return new SubtreeReplacer<>(
-                () -> new DefaultDirectedGraph<>(StringEdge.class),
-                SubtreeReplacerTest::cloneEdge);
-    }
-
-    private static GraphBuilder<StringVertex, StringEdge, ?> newGraphBuilder() {
-        return DefaultDirectedGraph.createBuilder(StringEdge.class);
-    }
-
-    private static StringEdge cloneEdge(final StringEdge edge) {
-        return new StringEdge(edge.getLabel());
+                StringGraphs::createEmptyGraph,
+                StringGraphs::cloneEdge);
     }
 }
