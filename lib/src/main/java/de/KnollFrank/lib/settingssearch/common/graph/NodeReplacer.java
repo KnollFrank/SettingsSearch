@@ -4,6 +4,7 @@ import org.jgrapht.Graph;
 
 import java.util.function.Function;
 
+// FK-TODO: brauche SearchablePreferenceScreenNodeReplacer, der ähnlich wie SearchablePreferenceScreenSubtreeReplacer die Vorgänger aktualisiert.
 public class NodeReplacer<V, E> {
 
     private final Class<? extends E> edgeClass;
