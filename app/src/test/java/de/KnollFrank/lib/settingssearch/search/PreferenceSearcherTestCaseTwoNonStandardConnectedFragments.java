@@ -52,6 +52,7 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
+            // FK-TODO: ersetze überall "getPreferenceManager().getContext()" durch requireContext()?
             final Context context = getPreferenceManager().getContext();
             final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
             screen.setTitle("screen with connection");
