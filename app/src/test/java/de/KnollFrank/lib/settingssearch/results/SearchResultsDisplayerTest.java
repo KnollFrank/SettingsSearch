@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.results;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.getInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
 
@@ -115,7 +115,7 @@ public class SearchResultsDisplayerTest extends PreferencesRoomDatabaseTest {
                         });
         PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment(
                 searchResultsFragment,
-                getInstantiateAndInitializeFragment(searchResultsFragment, activity));
+                createInstantiateAndInitializeFragment(searchResultsFragment, activity));
         return searchResultsFragment;
     }
 }

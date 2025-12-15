@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.getInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment;
 
 import androidx.fragment.app.FragmentActivity;
@@ -14,6 +14,6 @@ public class PreferenceFragmentTestFactory {
         final PreferenceFragmentCompat preferenceFragment = new TestPreferenceFragment();
         return (PreferenceFragmentCompat) initializeFragment(
                 preferenceFragment,
-                getInstantiateAndInitializeFragment(preferenceFragment, activity));
+                createInstantiateAndInitializeFragment(preferenceFragment, activity));
     }
 }

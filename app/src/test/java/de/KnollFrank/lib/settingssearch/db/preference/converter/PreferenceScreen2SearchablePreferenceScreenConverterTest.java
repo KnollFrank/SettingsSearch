@@ -23,17 +23,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
+import de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
-import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
-import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
-import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -203,36 +197,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
 
     public static Fragment initializeFragment(final Fragment preferenceFragment,
                                               final FragmentActivity activity) {
-        return initializeFragment(preferenceFragment, getInstantiateAndInitializeFragment(preferenceFragment, activity));
-    }
-
-    public static InstantiateAndInitializeFragment getInstantiateAndInitializeFragment(final Fragment fragment,
-                                                                                       final FragmentActivity activity) {
-        return new Fragments(
-                new FragmentFactoryAndInitializerWithCache(
-                        new FragmentFactoryAndInitializer(
-                                createFragmentFactoryReturning(fragment),
-                                FragmentInitializerFactory.createFragmentInitializer(
-                                        activity,
-                                        TestActivity.FRAGMENT_CONTAINER_VIEW,
-                                        (preference, hostOfPreference) -> preference.isVisible()))),
-                activity);
-    }
-
-    private static FragmentFactory createFragmentFactoryReturning(final Fragment fragment) {
-        final DefaultFragmentFactory defaultFragmentFactory = new DefaultFragmentFactory();
-        return new FragmentFactory() {
-
-            @Override
-            public <T extends Fragment> T instantiate(final Class<T> fragmentClassName,
-                                                      final Optional<PreferenceWithHost> src,
-                                                      final Context context,
-                                                      final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-                return fragment.getClass().equals(fragmentClassName) ?
-                        (T) fragment :
-                        defaultFragmentFactory.instantiate(fragmentClassName, src, context, instantiateAndInitializeFragment);
-            }
-        };
+        return initializeFragment(preferenceFragment, InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(preferenceFragment, activity));
     }
 
     public static Fragment initializeFragment(final Fragment fragment, final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {

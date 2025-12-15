@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 public class PojoGraphTestFactory {
 
     public static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(
-            final PreferenceFragmentCompat preferenceFragment,
+            final Class<? extends PreferenceFragmentCompat> preferenceFragment,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
@@ -38,7 +38,7 @@ public class PojoGraphTestFactory {
         return preferenceScreenGraphProvider.getPreferenceScreenGraph(
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
-                                preferenceFragment.getClass(),
+                                preferenceFragment,
                                 Optional.empty())
                         .orElseThrow());
     }
