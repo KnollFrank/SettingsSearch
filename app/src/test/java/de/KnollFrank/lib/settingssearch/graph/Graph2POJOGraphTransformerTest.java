@@ -42,7 +42,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
-import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -54,9 +53,11 @@ public class Graph2POJOGraphTransformerTest extends PreferencesRoomDatabaseTest 
             scenario.onActivity(activity -> {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
-                final InstantiateAndInitializeFragment instantiateAndInitializeFragment = getInstantiateAndInitializeFragment(preferenceFragment, activity);
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
-                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, instantiateAndInitializeFragment, activity);
+                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(
+                                preferenceFragment,
+                                getInstantiateAndInitializeFragment(preferenceFragment, activity),
+                                activity);
                 final Locale locale = Locale.GERMAN;
                 final String twoNodeScreen1Id = "graph-screen1";
                 final String twoNodeScreen2Id = "graph-screen2";
@@ -145,9 +146,11 @@ public class Graph2POJOGraphTransformerTest extends PreferencesRoomDatabaseTest 
             scenario.onActivity(activity -> {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
-                final InstantiateAndInitializeFragment instantiateAndInitializeFragment = getInstantiateAndInitializeFragment(preferenceFragment, activity);
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
-                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(preferenceFragment, instantiateAndInitializeFragment, activity);
+                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(
+                                preferenceFragment,
+                                getInstantiateAndInitializeFragment(preferenceFragment, activity),
+                                activity);
                 final Graph2POJOGraphTransformer graph2POJOGraphTransformer =
                         createGraph2POJOGraphTransformer(
                                 new PreferenceFragmentIdProvider() {
