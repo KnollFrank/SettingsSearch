@@ -10,6 +10,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenSubtreeReplacer {
 
+    // FK-TODO: refactor to Step-Builder (= Fluent Interface or Internal DSL)
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replaceSubtreeWithTree(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> originalGraph,
             final SearchablePreferenceScreen rootNodeOfSubtreeToReplace,
