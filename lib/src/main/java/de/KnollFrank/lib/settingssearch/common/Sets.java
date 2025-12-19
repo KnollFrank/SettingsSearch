@@ -1,5 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.MoreCollectors;
 
 import java.util.Collection;
@@ -22,5 +23,11 @@ public class Sets {
                 .stream()
                 .filter(predicate)
                 .collect(MoreCollectors.toOptional());
+    }
+
+    public static <T> Optional<T> getOnlyElement(final Set<T> elements) {
+        return elements.size() == 1 ?
+                Optional.of(Iterables.getOnlyElement(elements)) :
+                Optional.empty();
     }
 }
