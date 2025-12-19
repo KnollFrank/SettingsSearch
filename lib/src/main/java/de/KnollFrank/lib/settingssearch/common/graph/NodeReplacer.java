@@ -15,6 +15,7 @@ public class NodeReplacer<V, E> {
         this.cloneEdge = cloneEdge;
     }
 
+    // FK-TODO: refactor to Step-Builder (= Fluent Interface or Internal DSL)
     public Graph<V, E> replaceNode(final Graph<V, E> originalGraph,
                                    final V nodeOfOriginalGraphToReplace,
                                    final V replacementNode) {
