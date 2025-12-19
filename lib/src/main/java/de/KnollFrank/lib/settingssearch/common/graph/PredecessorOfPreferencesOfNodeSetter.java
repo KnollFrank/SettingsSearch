@@ -10,7 +10,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
-class PredecessorOfPreferencesOfNodeSetter {
+public class PredecessorOfPreferencesOfNodeSetter {
 
     public static void setPredecessorOfPreferencesOfNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                                          final SearchablePreferenceScreen node) {

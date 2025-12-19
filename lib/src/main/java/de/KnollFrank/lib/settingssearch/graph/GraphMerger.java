@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import static de.KnollFrank.lib.settingssearch.common.graph.PredecessorOfPreferencesOfNodeSetter.setPredecessorOfPreferencesOfNode;
+
 import org.jgrapht.Graph;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
@@ -60,6 +62,7 @@ public class GraphMerger {
 
         // Die "Brückenkante" vom neuen attachmentPoint zur Wurzel des Teilbaums schlagen
         dstGraph.addEdge(attachmentPoint, subtreeRoot, cloneEdge(edgeToAttach));
+        setPredecessorOfPreferencesOfNode(dstGraph, subtreeRoot);
     }
 
     private SearchablePreferenceEdge cloneEdge(final SearchablePreferenceEdge edge) {
