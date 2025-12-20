@@ -152,19 +152,16 @@ public class DotGraphDifference {
 
     private String getVertexLabel(final SearchablePreferenceScreen screen) {
         final StringBuilder labelBuilder = new StringBuilder();
-        labelBuilder.append(screen.title()).append("\\n------------------\\n");
+        labelBuilder.append(screen.title().orElseThrow()).append("\\n------------------\\n");
         // Append preference details, highlighting differences
         screen
                 .allPreferencesOfPreferenceHierarchy()
                 .stream()
                 .map(
-                        pref -> {
-                            String prefString = pref.toString();
-                            if (preferenceContentDiffs.containsKey(pref)) {
-                                prefString = "[DIFF] " + prefString + " | Expected: " + preferenceContentDiffs.get(pref);
-                            }
-                            return prefString;
-                        })
+                        pref ->
+                                preferenceContentDiffs.containsKey(pref) ?
+                                        "[DIFF] " + pref.toString() + " | Expected: " + preferenceContentDiffs.get(pref) :
+                                        pref.getTitle().orElseThrow())
                 .forEach(prefString -> labelBuilder.append(prefString).append("\\l"));
         return labelBuilder.toString();
     }
@@ -177,7 +174,7 @@ public class DotGraphDifference {
             color = COLOR_ONLY_IN_EXPECTED;
         }
         return Map.of(
-                "label", DefaultAttribute.createAttribute(edge.preference.getTitle().toString()),
+                "label", DefaultAttribute.createAttribute(edge.preference.getTitle().orElseThrow()),
                 "color", DefaultAttribute.createAttribute(color));
     }
 
