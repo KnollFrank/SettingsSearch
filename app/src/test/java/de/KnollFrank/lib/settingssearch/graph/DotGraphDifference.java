@@ -127,7 +127,7 @@ public class DotGraphDifference {
                 .<String, Attribute>builder()
                 .put(
                         "shape",
-                        DefaultAttribute.createAttribute("none")) // Use none for HTML tables
+                        DefaultAttribute.createAttribute("none"))
                 .put(
                         "label",
                         new Attribute() {
@@ -168,7 +168,7 @@ public class DotGraphDifference {
     private String getVertexHtmlLabel(final SearchablePreferenceScreen screen, final String bgColor) {
         final StringBuilder sb = new StringBuilder();
         sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='4' bgcolor='").append(bgColor).append("'>");
-        sb.append("<tr><td align='center'><b>").append(escapeHtml(String.format("%s, %s", screen.title().orElseThrow(), screen.host()))).append("</b></td></tr>");
+        sb.append("<tr><td align='center'><b>").append(escapeHtml(String.format("%s, %s", screen.title().orElseThrow(), screen.host().getSimpleName()))).append("</b></td></tr>");
         sb.append("<tr><td align='left' balign='left'>");
         screen
                 .allPreferencesOfPreferenceHierarchy()
