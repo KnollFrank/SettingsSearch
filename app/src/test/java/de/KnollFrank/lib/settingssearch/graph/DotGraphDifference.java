@@ -29,6 +29,7 @@ public class DotGraphDifference {
     private static final String COLOR_ONLY_IN_EXPECTED = "green";
     private static final String COLOR_CONTENT_MISMATCH = "#FFCC00"; // Orange
     private static final String COLOR_DEFAULT = "black";
+    private static final String COLOR_CONTENT_IDENTICAL = "white";
 
     private final boolean areEqual;
     private final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> actual;
@@ -140,7 +141,7 @@ public class DotGraphDifference {
         } else if (hasAnyPreferenceDiff(vertex)) {
             return COLOR_CONTENT_MISMATCH;
         }
-        return "white";
+        return COLOR_CONTENT_IDENTICAL;
     }
 
     private boolean hasAnyPreferenceDiff(final SearchablePreferenceScreen screen) {
@@ -229,7 +230,7 @@ public class DotGraphDifference {
                 "        <tr><td bgcolor='" + COLOR_ONLY_IN_ACTUAL + "'>      </td><td>Only in Actual (Removed / Extra)</td></tr>\n" +
                 "        <tr><td bgcolor='" + COLOR_ONLY_IN_EXPECTED + "'>      </td><td>Only in Expected (Missing)</td></tr>\n" +
                 "        <tr><td bgcolor='" + COLOR_CONTENT_MISMATCH + "'>      </td><td>Content Mismatch (same ID, different state)</td></tr>\n" +
-                "        <tr><td bgcolor='white'>      </td><td>Identical</td></tr>\n" +
+                "        <tr><td bgcolor='" + COLOR_CONTENT_IDENTICAL + "'>      </td><td>Identical</td></tr>\n" +
                 "      </table>\n" +
                 "    >];\n" +
                 "  }\n" +
