@@ -167,37 +167,79 @@ public class DotGraphDifference {
 
     private String getVertexHtmlLabel(final SearchablePreferenceScreen screen, final String bgColor) {
         final StringBuilder sb = new StringBuilder();
+
+        // Haupttabelle (Wurzelelement des HTML-Labels)
+        // Wir erhöhen colspan auf 3, da wir nun drei Spalten haben (ID, KEY, TITLE)
         sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='4' bgcolor='").append(bgColor).append("'>");
-        sb.append("<tr><td align='center'><b>").append(escapeHtml(String.format("%s, %s", screen.title().orElseThrow(), screen.host().getSimpleName()))).append("</b></td></tr>");
-        sb.append("<tr><td align='left' balign='left'>");
-        screen
-                .allPreferencesOfPreferenceHierarchy()
-                .forEach(
-                        pref -> {
-                            if (preferenceContentDiffs.containsKey(pref)) {
-                                sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='2' bgcolor='white'>");
-                                sb
-                                        .append(String.format("<tr><td><font point-size='10' color='%s'>EXPECTED: </font></td><td align='left' bgcolor='#EEFFEE'>", COLOR_ONLY_IN_EXPECTED))
-                                        .append(escapeHtml(preferenceContentDiffs.get(pref)))
-                                        .append("</td></tr>");
-                                sb
-                                        .append(String.format("<tr><td><font point-size='10' color='%s'>ACTUAL: </font></td><td align='left' bgcolor='#FFEEEE'>", COLOR_ONLY_IN_ACTUAL))
-                                        .append(escapeHtml(pref.toString()))
-                                        .append("</td></tr>");
-                                sb.append("</table>");
-                            } else {
-                                sb
-                                        .append(escapeHtml(pref.getTitle().orElseThrow()))
-                                        .append("<br/>");
-                            }
-                        });
-        sb.append("</td></tr></table>");
+
+        // Titel-Zeile des Screens (Zusammengefasst über alle 3 Spalten)
+        sb.append("<tr><td align='center' colspan='3' bgcolor='#F0F0F0'><b>")
+                .append(escapeHtml(String.format("%s (%s)",
+                                                 screen.title().orElse("Untitled"),
+                                                 screen.host().getSimpleName())))
+                .append("</b></td></tr>");
+
+        // Spaltenüberschriften für die Präferenzen
+        sb.append("<tr>")
+                .append("<td align='left' bgcolor='#E0E0E0'><b>ID</b></td>")
+                .append("<td align='left' bgcolor='#E0E0E0'><b>KEY</b></td>") // NEU
+                .append("<td align='left' bgcolor='#E0E0E0'><b>Title</b></td>")
+                .append("</tr>");
+
+        screen.allPreferencesOfPreferenceHierarchy().forEach(pref -> {
+            if (preferenceContentDiffs.containsKey(pref)) {
+                // DIFF-Fall: Belegt alle 3 Spalten (colspan='3')
+                sb.append("<tr><td colspan='3' border='0' align='left' cellpadding='0'>");
+                sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='2' width='100%' bgcolor='white'>");
+
+                // EXPECTED-Zeile
+                sb.append("<tr>")
+                        .append("<td align='left' bgcolor='#EEFFEE'><font point-size='10' color='#006600'><b>EXPECTED:</b></font></td>")
+                        .append("<td align='left' bgcolor='#EEFFEE'><font point-size='10'>")
+                        .append(escapeHtml(preferenceContentDiffs.get(pref)))
+                        .append("</font></td>")
+                        .append("</tr>");
+
+                // ACTUAL-Zeile
+                sb.append("<tr>")
+                        .append("<td align='left' bgcolor='#FFEEEE'><font point-size='10' color='#CC0000'><b>ACTUAL:</b></font></td>")
+                        .append("<td align='left' bgcolor='#FFEEEE'><font point-size='10'>")
+                        .append(escapeHtml(pref.toString()))
+                        .append("</font></td>")
+                        .append("</tr>");
+
+                sb.append("</table>");
+                sb.append("</td></tr>");
+            } else {
+                // IDENTISCH-Fall: Drei Spalten bündig unter den Headern
+                sb.append("<tr>");
+
+                // Spalte 1: ID
+                sb.append("<td align='left' bgcolor='white'><font point-size='10'>")
+                        .append(escapeHtml(pref.getId()))
+                        .append("</font></td>");
+
+                // Spalte 2: KEY (NEU)
+                sb.append("<td align='left' bgcolor='white'><font point-size='10'>")
+                        .append(escapeHtml(pref.getKey()))
+                        .append("</font></td>");
+
+                // Spalte 3: Title
+                sb.append("<td align='left' bgcolor='white'>")
+                        .append(escapeHtml(pref.getTitle().orElse("No Title")))
+                        .append("</td>");
+
+                sb.append("</tr>");
+            }
+        });
+
+        sb.append("</table>");
         return sb.toString();
     }
 
     private Map<String, Attribute> getEdgeAttributes(final SearchablePreferenceEdge edge) {
         return Map.of(
-                "label", DefaultAttribute.createAttribute("\"" + edge.preference.getTitle().orElseThrow() + "\""),
+                "label", DefaultAttribute.createAttribute("\"" + edge.preference.getId() + "\""),
                 "color", DefaultAttribute.createAttribute(getColor(edge)));
     }
 
