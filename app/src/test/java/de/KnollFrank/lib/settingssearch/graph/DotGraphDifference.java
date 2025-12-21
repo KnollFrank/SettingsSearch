@@ -20,6 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
+// FK-TODO: refactor
 public class DotGraphDifference {
 
     // Colors for highlighting differences
@@ -108,25 +109,43 @@ public class DotGraphDifference {
                                 target = expected.getEdgeTarget(edge);
                             }
 
-                            // Nur wenn beide Knoten gefunden wurden, fügen wir die Kante hinzu.
                             if (source != null && target != null) {
                                 mergedGraph.addEdge(source, target, edge);
                             }
                         });
 
-        // Configure the DOT exporter with custom attribute providers
         final DOTExporter<SearchablePreferenceScreen, SearchablePreferenceEdge> exporter = new DOTExporter<>(this::getVertexId);
         exporter.setVertexAttributeProvider(this::getVertexAttributes);
         exporter.setEdgeAttributeProvider(this::getEdgeAttributes);
+
+        // Korrektur des Graph-Labels (mit Anführungszeichen)
         exporter.setGraphAttributeProvider(() -> Map.of("label", DefaultAttribute.createAttribute("\"Graph Difference\"")));
 
         final Writer writer = new StringWriter();
         try {
             exporter.exportGraph(mergedGraph, writer);
+            return addLegend(writer.toString());
         } catch (final Exception e) {
             return "Error exporting graph to DOT: " + e.getMessage();
         }
-        return writer.toString();
+    }
+
+    private String addLegend(String dot) {
+        String legend = "\n  // Legend\n" +
+                "  subgraph cluster_legend {\n" +
+                "    label=\"Legend\";\n" +
+                "    legend_node [shape=plaintext, label=<\n" +
+                "      <table border='0' cellborder='1' cellspacing='0'>\n" +
+                "        <tr><td><font color='black'>Color</font></td><td><font color='black'>Meaning</font></td></tr>\n" +
+                "        <tr><td bgcolor='" + COLOR_ONLY_IN_ACTUAL + "'>      </td><td>Only in Actual (Removed / Extra)</td></tr>\n" +
+                "        <tr><td bgcolor='" + COLOR_ONLY_IN_EXPECTED + "'>      </td><td>Only in Expected (Missing)</td></tr>\n" +
+                "        <tr><td bgcolor='" + COLOR_CONTENT_MISMATCH + "'>      </td><td>Content Mismatch (same ID, different state)</td></tr>\n" +
+                "        <tr><td bgcolor='white'>      </td><td>Identical</td></tr>\n" +
+                "      </table>\n" +
+                "    >];\n" +
+                "  }\n" +
+                "}";
+        return dot.substring(0, dot.lastIndexOf('}')) + legend;
     }
 
     private String getVertexId(final SearchablePreferenceScreen vertex) {
@@ -160,7 +179,7 @@ public class DotGraphDifference {
                 .map(
                         pref ->
                                 preferenceContentDiffs.containsKey(pref) ?
-                                        "[DIFF] " + pref.toString() + " | Expected: " + preferenceContentDiffs.get(pref) :
+                                        "[DIFF] Actual: " + pref.toString() + "\\l    Expected: " + preferenceContentDiffs.get(pref) :
                                         pref.getTitle().orElseThrow())
                 .forEach(prefString -> labelBuilder.append(prefString).append("\\l"));
         return labelBuilder.toString();
