@@ -17,6 +17,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
+import com.google.common.collect.Iterables;
+
 import org.jgrapht.Graph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,7 +109,7 @@ public class GraphMergerTest {
                         graphMerger.mergePartialGraphIntoGraph(
                                 transformToPojoGraph(partialEntityGraph),
                                 pojoGraph,
-                                Graphs.getRootNode(pojoGraph).orElseThrow());
+                                getTargetOfRootOfGraph(pojoGraph));
 
                 // Then
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> _mergedGraphExpected = createEntityGraph(root, List.of("key1"), activity);
@@ -118,6 +120,15 @@ public class GraphMergerTest {
                 assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
             });
         }
+    }
+
+    private static SearchablePreferenceScreen getTargetOfRootOfGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+        return graph.getEdgeTarget(
+                Iterables.getOnlyElement(
+                        graph.outgoingEdgesOf(
+                                Graphs
+                                        .getRootNode(graph)
+                                        .orElseThrow())));
     }
 
     private static void printDotGraphDifferenceBetween(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph, final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraphExpected) {
