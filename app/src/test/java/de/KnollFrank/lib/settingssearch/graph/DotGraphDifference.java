@@ -27,7 +27,7 @@ public class DotGraphDifference {
 
     private static final String COLOR_ONLY_IN_ACTUAL = "red";
     private static final String COLOR_ONLY_IN_EXPECTED = "green";
-    private static final String COLOR_CONTENT_MISMATCH = "#FFCC00"; // Orange
+    private static final String COLOR_CONTENT_MISMATCH = "#FFCC00";
     private static final String COLOR_DEFAULT = "black";
     private static final String COLOR_CONTENT_IDENTICAL = "white";
 
@@ -35,7 +35,6 @@ public class DotGraphDifference {
     private final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> actual;
     private final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> expected;
     private final Set<SearchablePreferenceScreen> allVertices;
-
     private final Set<SearchablePreferenceScreen> verticesOnlyInActual;
     private final Set<SearchablePreferenceScreen> verticesOnlyInExpected;
     private final Set<SearchablePreferenceEdge> edgesOnlyInActual;
@@ -78,7 +77,6 @@ public class DotGraphDifference {
                 GraphTypeBuilder
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>directed()
                         .allowingMultipleEdges(true)
-                        .allowingSelfLoops(true)
                         .edgeClass(SearchablePreferenceEdge.class)
                         .buildGraph();
 
@@ -103,7 +101,7 @@ public class DotGraphDifference {
                                 .<String, Attribute>builder()
                                 .put(
                                         "rankdir",
-                                        DefaultAttribute.createAttribute("LR"))
+                                        DefaultAttribute.createAttribute("TB"))
                                 .put(
                                         "label",
                                         DefaultAttribute.createAttribute("\"Graph Difference\\n\\n\""))
@@ -170,7 +168,7 @@ public class DotGraphDifference {
     private String getVertexHtmlLabel(final SearchablePreferenceScreen screen, final String bgColor) {
         final StringBuilder sb = new StringBuilder();
         sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='4' bgcolor='").append(bgColor).append("'>");
-        sb.append("<tr><td align='center'><b>").append(escapeHtml(screen.title().orElseThrow())).append("</b></td></tr>");
+        sb.append("<tr><td align='center'><b>").append(escapeHtml(String.format("%s, %s", screen.title().orElseThrow(), screen.host()))).append("</b></td></tr>");
         sb.append("<tr><td align='left' balign='left'>");
         screen
                 .allPreferencesOfPreferenceHierarchy()
