@@ -73,6 +73,76 @@ public class DotGraphDifference {
             return "Graphs are equal.";
         }
 
+        final StringBuilder sb = new StringBuilder();
+        sb.append("digraph G {\n");
+        sb.append("  rankdir=TB;\n");
+        sb.append("  label=\"Graph Comparison Details\\n\\n\";\n");
+        sb.append("  labelloc=t;\n");
+        sb.append("  fontsize=24;\n\n");
+
+        // 1. Sektion: ACTUAL Graph
+        sb.append("  subgraph cluster_actual {\n");
+        sb.append("    label=\"1. ACTUAL GRAPH (Result of Merger)\";\n");
+        sb.append("    style=dashed; color=gray; fontcolor=red;\n");
+        sb.append(exportSubGraph(actual, "actual_"));
+        sb.append("  }\n\n");
+
+        // 2. Sektion: EXPECTED Graph
+        sb.append("  subgraph cluster_expected {\n");
+        sb.append("    label=\"2. EXPECTED GRAPH (Reference)\";\n");
+        sb.append("    style=dashed; color=gray; fontcolor=green;\n");
+        sb.append(exportSubGraph(expected, "expected_"));
+        sb.append("  }\n\n");
+
+        // 3. Sektion: MERGED (DIFF) Graph
+        sb.append("  subgraph cluster_merged {\n");
+        sb.append("    label=\"3. MERGED GRAPH (Differences Highlighted)\";\n");
+        sb.append("    style=bold; color=black;\n");
+        sb.append(exportDiffGraph());
+        sb.append("  }\n\n");
+
+        // Legende hinzufügen
+        sb.append(getLegendContent());
+        sb.append("}\n");
+
+        return sb.toString();
+    }
+
+    /**
+     * Exportiert einen einzelnen Graphen als DOT-Fragment mit einem Präfix für die IDs,
+     * damit sich die Knoten der verschiedenen Sektionen nicht gegenseitig überschreiben.
+     */
+    private String exportSubGraph(Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph, String idPrefix) {
+        DOTExporter<SearchablePreferenceScreen, SearchablePreferenceEdge> exporter = new DOTExporter<>(v -> idPrefix + getVertexId(v));
+        exporter.setVertexAttributeProvider(v -> Map.of(
+                "shape", DefaultAttribute.createAttribute("none"),
+                "label", new Attribute() {
+                    @Override
+                    public String getValue() {
+                        return getVertexHtmlLabel(v, "white");
+                    }
+
+                    @Override
+                    public AttributeType getType() {
+                        return AttributeType.HTML;
+                    }
+                }));
+        exporter.setEdgeAttributeProvider(e -> Map.of(
+                "label", getLabelEdgeAttribute(e),
+                "color", DefaultAttribute.createAttribute("black")));
+
+        Writer writer = new StringWriter();
+        exporter.exportGraph(graph, writer);
+
+        // Extrahiere nur den Inhalt zwischen den geschweiften Klammern des exportierten Graphen
+        String result = writer.toString();
+        return result.substring(result.indexOf("{") + 1, result.lastIndexOf("}"));
+    }
+
+    /**
+     * Die Logik für den Diff-Graphen (ehemals der Inhalt deiner toString Methode).
+     */
+    private String exportDiffGraph() {
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
                 GraphTypeBuilder
                         .<SearchablePreferenceScreen, SearchablePreferenceEdge>directed()
@@ -81,45 +151,38 @@ public class DotGraphDifference {
                         .buildGraph();
 
         allVertices.forEach(mergedGraph::addVertex);
-        Sets
-                .union(actual.edgeSet(), expected.edgeSet())
-                .forEach(
-                        edge -> {
-                            final SearchablePreferenceScreen source = actual.containsEdge(edge) ? actual.getEdgeSource(edge) : expected.getEdgeSource(edge);
-                            final SearchablePreferenceScreen target = actual.containsEdge(edge) ? actual.getEdgeTarget(edge) : expected.getEdgeTarget(edge);
-                            if (source != null && target != null) {
-                                mergedGraph.addEdge(source, target, edge);
-                            }
-                        });
+        Sets.union(actual.edgeSet(), expected.edgeSet()).forEach(edge -> {
+            final SearchablePreferenceScreen source = actual.containsEdge(edge) ? actual.getEdgeSource(edge) : expected.getEdgeSource(edge);
+            final SearchablePreferenceScreen target = actual.containsEdge(edge) ? actual.getEdgeTarget(edge) : expected.getEdgeTarget(edge);
+            if (source != null && target != null) {
+                mergedGraph.addEdge(source, target, edge);
+            }
+        });
 
-        final DOTExporter<SearchablePreferenceScreen, SearchablePreferenceEdge> exporter = new DOTExporter<>(this::getVertexId);
+        DOTExporter<SearchablePreferenceScreen, SearchablePreferenceEdge> exporter = new DOTExporter<>(v -> "diff_" + getVertexId(v));
         exporter.setVertexAttributeProvider(this::getVertexAttributes);
         exporter.setEdgeAttributeProvider(this::getEdgeAttributes);
-        exporter.setGraphAttributeProvider(
-                () ->
-                        ImmutableMap
-                                .<String, Attribute>builder()
-                                .put(
-                                        "rankdir",
-                                        DefaultAttribute.createAttribute("TB"))
-                                .put(
-                                        "label",
-                                        DefaultAttribute.createAttribute("\"Graph Difference\\n\\n\""))
-                                .put(
-                                        "labelloc",
-                                        DefaultAttribute.createAttribute("t"))
-                                .put(
-                                        "fontsize",
-                                        DefaultAttribute.createAttribute("20"))
-                                .build());
 
-        final Writer writer = new StringWriter();
-        try {
-            exporter.exportGraph(mergedGraph, writer);
-            return addLegend(writer.toString());
-        } catch (final Exception e) {
-            return "Error exporting graph to DOT: " + e.getMessage();
-        }
+        Writer writer = new StringWriter();
+        exporter.exportGraph(mergedGraph, writer);
+        String result = writer.toString();
+        return result.substring(result.indexOf("{") + 1, result.lastIndexOf("}"));
+    }
+
+    private String getLegendContent() {
+        return "  // Legend\n" +
+                "  subgraph cluster_legend {\n" +
+                "    label=\"Legend\";\n" +
+                "    legend_node [shape=plaintext, label=<\n" +
+                "      <table border='0' cellborder='1' cellspacing='0'>\n" +
+                "        <tr><td>Color</td><td>Meaning</td></tr>\n" +
+                "        <tr><td bgcolor='" + COLOR_ONLY_IN_ACTUAL + "'>      </td><td>Only in Actual (Removed / Extra)</td></tr>\n" +
+                "        <tr><td bgcolor='" + COLOR_ONLY_IN_EXPECTED + "'>      </td><td>Only in Expected (Missing)</td></tr>\n" +
+                "        <tr><td bgcolor='" + COLOR_CONTENT_MISMATCH + "'>      </td><td>Content Mismatch</td></tr>\n" +
+                "        <tr><td bgcolor='white'>      </td><td>Identical</td></tr>\n" +
+                "      </table>\n" +
+                "    >];\n" +
+                "  }\n";
     }
 
     private Map<String, Attribute> getVertexAttributes(final SearchablePreferenceScreen vertex) {
@@ -239,8 +302,12 @@ public class DotGraphDifference {
 
     private Map<String, Attribute> getEdgeAttributes(final SearchablePreferenceEdge edge) {
         return Map.of(
-                "label", DefaultAttribute.createAttribute("\"" + edge.preference.getId() + "\""),
+                "label", getLabelEdgeAttribute(edge),
                 "color", DefaultAttribute.createAttribute(getColor(edge)));
+    }
+
+    private static Attribute getLabelEdgeAttribute(final SearchablePreferenceEdge edge) {
+        return DefaultAttribute.createAttribute("\"" + edge.preference.getId() + "\"");
     }
 
     private String getColor(final SearchablePreferenceEdge edge) {
