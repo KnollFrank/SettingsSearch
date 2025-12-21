@@ -76,6 +76,7 @@ public class GraphMergerTest {
                 // Then
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraphExpected = transformToPojoGraph(createEntityGraph(root, List.of("key1"), activity));
                 // System.out.println("mergedGraphExpected: " + PreferenceScreenGraph2DOTConverter.graph2DOT(_mergedGraphExpected));
+                printDotGraphDifferenceBetween(mergedGraph, mergedGraphExpected);
                 final GraphDifference graphDifference = GraphDifference.between(mergedGraph, mergedGraphExpected);
                 assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
             });
@@ -112,13 +113,21 @@ public class GraphMergerTest {
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> _mergedGraphExpected = createEntityGraph(root, List.of("key1"), activity);
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraphExpected = transformToPojoGraph(_mergedGraphExpected);
                 // System.out.println("mergedGraphExpected: " + PreferenceScreenGraph2DOTConverter.graph2DOT(_mergedGraphExpected));
-                final DotGraphDifference dotGraphDifference = DotGraphDifference.between(mergedGraph, mergedGraphExpected);
-                if(!dotGraphDifference.areEqual()) {
-                    System.out.println(dotGraphDifference);
-                }
+                printDotGraphDifferenceBetween(mergedGraph, mergedGraphExpected);
                 final GraphDifference graphDifference = GraphDifference.between(mergedGraph, mergedGraphExpected);
                 assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
             });
+        }
+    }
+
+    private static void printDotGraphDifferenceBetween(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph, final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraphExpected) {
+        final DotGraphDifference dotGraphDifference = DotGraphDifference.between(mergedGraph, mergedGraphExpected);
+        if (!dotGraphDifference.areEqual()) {
+            System.out.println(dotGraphDifference);
+            // in order to display dotGraphDifference:
+            // 1. save output to a file named actual_vs_expected.dot
+            // 2. dot -Tpdf actual_vs_expected.dot -o actual_vs_expected.pdf
+            // 3. open actual_vs_expected.pdf
         }
     }
 
