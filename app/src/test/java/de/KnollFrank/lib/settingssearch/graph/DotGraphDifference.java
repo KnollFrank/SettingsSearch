@@ -108,10 +108,6 @@ public class DotGraphDifference {
         return sb.toString();
     }
 
-    /**
-     * Exportiert einen einzelnen Graphen als DOT-Fragment mit einem Präfix für die IDs,
-     * damit sich die Knoten der verschiedenen Sektionen nicht gegenseitig überschreiben.
-     */
     private String exportSubGraph(Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph, String idPrefix) {
         DOTExporter<SearchablePreferenceScreen, SearchablePreferenceEdge> exporter = new DOTExporter<>(v -> idPrefix + getVertexId(v));
         exporter.setVertexAttributeProvider(v -> Map.of(
@@ -119,7 +115,7 @@ public class DotGraphDifference {
                 "label", new Attribute() {
                     @Override
                     public String getValue() {
-                        return getVertexHtmlLabel(v, "white");
+                        return getVertexHtmlLabel(v, "white", false);
                     }
 
                     @Override
@@ -133,15 +129,10 @@ public class DotGraphDifference {
 
         Writer writer = new StringWriter();
         exporter.exportGraph(graph, writer);
-
-        // Extrahiere nur den Inhalt zwischen den geschweiften Klammern des exportierten Graphen
         String result = writer.toString();
         return result.substring(result.indexOf("{") + 1, result.lastIndexOf("}"));
     }
 
-    /**
-     * Die Logik für den Diff-Graphen (ehemals der Inhalt deiner toString Methode).
-     */
     private String exportDiffGraph() {
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
                 GraphTypeBuilder
@@ -169,9 +160,99 @@ public class DotGraphDifference {
         return result.substring(result.indexOf("{") + 1, result.lastIndexOf("}"));
     }
 
+    private Map<String, Attribute> getVertexAttributes(final SearchablePreferenceScreen vertex) {
+        return ImmutableMap.<String, Attribute>builder()
+                .put("shape", DefaultAttribute.createAttribute("none"))
+                .put("label", new Attribute() {
+                    @Override
+                    public String getValue() {
+                        return getVertexHtmlLabel(vertex, getBgColor(vertex), true);
+                    }
+
+                    @Override
+                    public AttributeType getType() {
+                        return AttributeType.HTML;
+                    }
+                })
+                .build();
+    }
+
+    private String getVertexHtmlLabel(final SearchablePreferenceScreen screen, final String bgColor, boolean showDifferences) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='4' bgcolor='").append(bgColor).append("'>");
+
+        sb.append("<tr><td align='center' colspan='3' bgcolor='#F0F0F0'><b>")
+                .append(escapeHtml(String.format("%s (%s)", screen.title().orElse("Untitled"), screen.host().getSimpleName())))
+                .append("</b></td></tr>");
+
+        sb.append("<tr>")
+                .append("<td align='left' bgcolor='#E0E0E0'><b>ID</b></td>")
+                .append("<td align='left' bgcolor='#E0E0E0'><b>KEY</b></td>")
+                .append("<td align='left' bgcolor='#E0E0E0'><b>Title</b></td>")
+                .append("</tr>");
+
+        screen.allPreferencesOfPreferenceHierarchy().forEach(pref -> {
+            if (showDifferences && preferenceContentDiffs.containsKey(pref)) {
+                sb.append("<tr><td colspan='3' border='0' align='left' cellpadding='0'>");
+                sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='2' width='100%' bgcolor='white'>");
+                sb.append("<tr><td bgcolor='#EEFFEE'><font point-size='10' color='#006600'>EXPECTED:</font></td>")
+                        .append("<td align='left' bgcolor='#EEFFEE'>").append(escapeHtml(preferenceContentDiffs.get(pref))).append("</td></tr>");
+                sb.append("<tr><td bgcolor='#FFEEEE'><font point-size='10' color='#CC0000'>ACTUAL:</font></td>")
+                        .append("<td align='left' bgcolor='#FFEEEE'>").append(escapeHtml(pref.toString())).append("</td></tr>");
+                sb.append("</table></td></tr>");
+            } else {
+                sb.append("<tr>")
+                        .append("<td align='left' bgcolor='white'><font point-size='10'>").append(escapeHtml(pref.getId())).append("</font></td>")
+                        .append("<td align='left' bgcolor='white'><font point-size='10'>").append(escapeHtml(pref.getKey())).append("</font></td>")
+                        .append("<td align='left' bgcolor='white'>").append(escapeHtml(pref.getTitle().orElse("No Title"))).append("</td>")
+                        .append("</tr>");
+            }
+        });
+        sb.append("</table>");
+        return sb.toString();
+    }
+
+    private static Attribute getLabelEdgeAttribute(final SearchablePreferenceEdge edge) {
+        return DefaultAttribute.createAttribute("\"" + edge.preference.getId() + "\"");
+    }
+
+    private Map<String, Attribute> getEdgeAttributes(final SearchablePreferenceEdge edge) {
+        String color = COLOR_DEFAULT;
+        if (edgesOnlyInActual.contains(edge)) color = COLOR_ONLY_IN_ACTUAL;
+        else if (edgesOnlyInExpected.contains(edge)) color = COLOR_ONLY_IN_EXPECTED;
+        return Map.of("label", getLabelEdgeAttribute(edge), "color", DefaultAttribute.createAttribute(color));
+    }
+
+    private String getBgColor(final SearchablePreferenceScreen vertex) {
+        if (verticesOnlyInActual.contains(vertex)) return COLOR_ONLY_IN_ACTUAL;
+        if (verticesOnlyInExpected.contains(vertex)) return COLOR_ONLY_IN_EXPECTED;
+        if (hasAnyPreferenceDiff(vertex)) return COLOR_CONTENT_MISMATCH;
+        return COLOR_CONTENT_IDENTICAL;
+    }
+
+    private boolean hasAnyPreferenceDiff(final SearchablePreferenceScreen screen) {
+        return screen.allPreferencesOfPreferenceHierarchy().stream().anyMatch(preferenceContentDiffs::containsKey);
+    }
+
+    private Map<SearchablePreference, String> findPreferenceContentDifferences() {
+        final Map<SearchablePreference, String> diffs = new HashMap<>();
+        final Map<String, SearchablePreferenceScreen> actualMap = actual.vertexSet().stream().collect(Collectors.toMap(SearchablePreferenceScreen::id, Function.identity(), (a, b) -> a));
+        final Map<String, SearchablePreferenceScreen> expectedMap = expected.vertexSet().stream().collect(Collectors.toMap(SearchablePreferenceScreen::id, Function.identity(), (a, b) -> a));
+        Sets.intersection(actualMap.keySet(), expectedMap.keySet()).forEach(id -> {
+            SearchablePreferenceScreen sA = actualMap.get(id);
+            SearchablePreferenceScreen sE = expectedMap.get(id);
+            Map<String, SearchablePreference> ePrefs = sE.allPreferencesOfPreferenceHierarchy().stream().collect(Collectors.toMap(SearchablePreference::getId, Function.identity(), (a, b) -> a));
+            sA.allPreferencesOfPreferenceHierarchy().forEach(pA -> {
+                SearchablePreference pE = ePrefs.get(pA.getId());
+                if (pE != null && !pA.toString().equals(pE.toString()))
+                    diffs.put(pA, pE.toString());
+            });
+        });
+        return diffs;
+    }
+
     private String getLegendContent() {
-        return "  // Legend\n" +
-                "  subgraph cluster_legend {\n" +
+        return "  subgraph cluster_legend {\n" +
                 "    label=\"Legend\";\n" +
                 "    legend_node [shape=plaintext, label=<\n" +
                 "      <table border='0' cellborder='1' cellspacing='0'>\n" +
@@ -179,217 +260,15 @@ public class DotGraphDifference {
                 "        <tr><td bgcolor='" + COLOR_ONLY_IN_ACTUAL + "'>      </td><td>Only in Actual (Removed / Extra)</td></tr>\n" +
                 "        <tr><td bgcolor='" + COLOR_ONLY_IN_EXPECTED + "'>      </td><td>Only in Expected (Missing)</td></tr>\n" +
                 "        <tr><td bgcolor='" + COLOR_CONTENT_MISMATCH + "'>      </td><td>Content Mismatch</td></tr>\n" +
-                "        <tr><td bgcolor='white'>      </td><td>Identical</td></tr>\n" +
-                "      </table>\n" +
-                "    >];\n" +
-                "  }\n";
-    }
-
-    private Map<String, Attribute> getVertexAttributes(final SearchablePreferenceScreen vertex) {
-        return ImmutableMap
-                .<String, Attribute>builder()
-                .put(
-                        "shape",
-                        DefaultAttribute.createAttribute("none"))
-                .put(
-                        "label",
-                        new Attribute() {
-
-                            private final String htmlLabel = getVertexHtmlLabel(vertex, getBgColor(vertex));
-
-                            @Override
-                            public String getValue() {
-                                return htmlLabel;
-                            }
-
-                            @Override
-                            public AttributeType getType() {
-                                return AttributeType.HTML;
-                            }
-                        })
-                .build();
-    }
-
-    private String getBgColor(final SearchablePreferenceScreen vertex) {
-        if (verticesOnlyInActual.contains(vertex)) {
-            return COLOR_ONLY_IN_ACTUAL;
-        } else if (verticesOnlyInExpected.contains(vertex)) {
-            return COLOR_ONLY_IN_EXPECTED;
-        } else if (hasAnyPreferenceDiff(vertex)) {
-            return COLOR_CONTENT_MISMATCH;
-        }
-        return COLOR_CONTENT_IDENTICAL;
-    }
-
-    private boolean hasAnyPreferenceDiff(final SearchablePreferenceScreen screen) {
-        return screen
-                .allPreferencesOfPreferenceHierarchy()
-                .stream()
-                .anyMatch(preferenceContentDiffs::containsKey);
-    }
-
-    private String getVertexHtmlLabel(final SearchablePreferenceScreen screen, final String bgColor) {
-        final StringBuilder sb = new StringBuilder();
-
-        // Haupttabelle (Wurzelelement des HTML-Labels)
-        // Wir erhöhen colspan auf 3, da wir nun drei Spalten haben (ID, KEY, TITLE)
-        sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='4' bgcolor='").append(bgColor).append("'>");
-
-        // Titel-Zeile des Screens (Zusammengefasst über alle 3 Spalten)
-        sb.append("<tr><td align='center' colspan='3' bgcolor='#F0F0F0'><b>")
-                .append(escapeHtml(String.format("%s (%s)",
-                                                 screen.title().orElse("Untitled"),
-                                                 screen.host().getSimpleName())))
-                .append("</b></td></tr>");
-
-        // Spaltenüberschriften für die Präferenzen
-        sb.append("<tr>")
-                .append("<td align='left' bgcolor='#E0E0E0'><b>ID</b></td>")
-                .append("<td align='left' bgcolor='#E0E0E0'><b>KEY</b></td>") // NEU
-                .append("<td align='left' bgcolor='#E0E0E0'><b>Title</b></td>")
-                .append("</tr>");
-
-        screen.allPreferencesOfPreferenceHierarchy().forEach(pref -> {
-            if (preferenceContentDiffs.containsKey(pref)) {
-                // DIFF-Fall: Belegt alle 3 Spalten (colspan='3')
-                sb.append("<tr><td colspan='3' border='0' align='left' cellpadding='0'>");
-                sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='2' width='100%' bgcolor='white'>");
-
-                // EXPECTED-Zeile
-                sb.append("<tr>")
-                        .append("<td align='left' bgcolor='#EEFFEE'><font point-size='10' color='#006600'><b>EXPECTED:</b></font></td>")
-                        .append("<td align='left' bgcolor='#EEFFEE'><font point-size='10'>")
-                        .append(escapeHtml(preferenceContentDiffs.get(pref)))
-                        .append("</font></td>")
-                        .append("</tr>");
-
-                // ACTUAL-Zeile
-                sb.append("<tr>")
-                        .append("<td align='left' bgcolor='#FFEEEE'><font point-size='10' color='#CC0000'><b>ACTUAL:</b></font></td>")
-                        .append("<td align='left' bgcolor='#FFEEEE'><font point-size='10'>")
-                        .append(escapeHtml(pref.toString()))
-                        .append("</font></td>")
-                        .append("</tr>");
-
-                sb.append("</table>");
-                sb.append("</td></tr>");
-            } else {
-                // IDENTISCH-Fall: Drei Spalten bündig unter den Headern
-                sb.append("<tr>");
-
-                // Spalte 1: ID
-                sb.append("<td align='left' bgcolor='white'><font point-size='10'>")
-                        .append(escapeHtml(pref.getId()))
-                        .append("</font></td>");
-
-                // Spalte 2: KEY (NEU)
-                sb.append("<td align='left' bgcolor='white'><font point-size='10'>")
-                        .append(escapeHtml(pref.getKey()))
-                        .append("</font></td>");
-
-                // Spalte 3: Title
-                sb.append("<td align='left' bgcolor='white'>")
-                        .append(escapeHtml(pref.getTitle().orElse("No Title")))
-                        .append("</td>");
-
-                sb.append("</tr>");
-            }
-        });
-
-        sb.append("</table>");
-        return sb.toString();
-    }
-
-    private Map<String, Attribute> getEdgeAttributes(final SearchablePreferenceEdge edge) {
-        return Map.of(
-                "label", getLabelEdgeAttribute(edge),
-                "color", DefaultAttribute.createAttribute(getColor(edge)));
-    }
-
-    private static Attribute getLabelEdgeAttribute(final SearchablePreferenceEdge edge) {
-        return DefaultAttribute.createAttribute("\"" + edge.preference.getId() + "\"");
-    }
-
-    private String getColor(final SearchablePreferenceEdge edge) {
-        if (edgesOnlyInActual.contains(edge)) {
-            return COLOR_ONLY_IN_ACTUAL;
-        } else if (edgesOnlyInExpected.contains(edge)) {
-            return COLOR_ONLY_IN_EXPECTED;
-        } else {
-            return COLOR_DEFAULT;
-        }
-    }
-
-    private Map<SearchablePreference, String> findPreferenceContentDifferences() {
-        final Map<SearchablePreference, String> diffs = new HashMap<>();
-        final Map<String, SearchablePreferenceScreen> actualScreensById = getScreensById(actual.vertexSet());
-        final Map<String, SearchablePreferenceScreen> expectedScreensById = getScreensById(expected.vertexSet());
-
-        final Set<String> commonIds = Sets.intersection(actualScreensById.keySet(), expectedScreensById.keySet());
-
-        for (final String id : commonIds) {
-            final SearchablePreferenceScreen sActual = actualScreensById.get(id);
-            final SearchablePreferenceScreen sExpected = expectedScreensById.get(id);
-
-            final Map<String, SearchablePreference> expectedPrefsById = getPrefsById(sExpected.allPreferencesOfPreferenceHierarchy());
-
-            for (final SearchablePreference prefActual : sActual.allPreferencesOfPreferenceHierarchy()) {
-                final SearchablePreference prefExpected = expectedPrefsById.get(prefActual.getId());
-                if (prefExpected != null && !prefActual.toString().equals(prefExpected.toString())) {
-                    diffs.put(prefActual, prefExpected.toString());
-                }
-            }
-        }
-        return diffs;
-    }
-
-    private String addLegend(final String dot) {
-        final String legend = "\n  // Legend\n" +
-                "  subgraph cluster_legend {\n" +
-                "    label=\"Legend\";\n" +
-                "    legend_node [shape=plaintext, label=<\n" +
-                "      <table border='0' cellborder='1' cellspacing='0'>\n" +
-                "        <tr><td>Color</td><td>Meaning</td></tr>\n" +
-                "        <tr><td bgcolor='" + COLOR_ONLY_IN_ACTUAL + "'>      </td><td>Only in Actual (Removed / Extra)</td></tr>\n" +
-                "        <tr><td bgcolor='" + COLOR_ONLY_IN_EXPECTED + "'>      </td><td>Only in Expected (Missing)</td></tr>\n" +
-                "        <tr><td bgcolor='" + COLOR_CONTENT_MISMATCH + "'>      </td><td>Content Mismatch (same ID, different state)</td></tr>\n" +
-                "        <tr><td bgcolor='" + COLOR_CONTENT_IDENTICAL + "'>      </td><td>Identical</td></tr>\n" +
-                "      </table>\n" +
-                "    >];\n" +
-                "  }\n" +
-                "}";
-        return dot.substring(0, dot.lastIndexOf('}')) + legend;
+                "      </table>>];\n  }\n";
     }
 
     private String getVertexId(final SearchablePreferenceScreen vertex) {
-        return "screen_" + vertex.id().replaceAll("[^a-zA-Z0-9_]", "_");
+        return vertex.id().replaceAll("[^a-zA-Z0-9_]", "_");
     }
 
     private String escapeHtml(String text) {
         if (text == null) return "";
-        return text
-                .replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace("\"", "&quot;")
-                .replace("'", "&apos;");
-    }
-
-    private static Map<String, SearchablePreference> getPrefsById(final Set<SearchablePreference> searchablePreferences) {
-        return searchablePreferences
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                SearchablePreference::getId,
-                                Function.identity()));
-    }
-
-    private static Map<String, SearchablePreferenceScreen> getScreensById(final Set<SearchablePreferenceScreen> searchablePreferenceScreens) {
-        return searchablePreferenceScreens
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                SearchablePreferenceScreen::id,
-                                Function.identity()));
+        return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;");
     }
 }
