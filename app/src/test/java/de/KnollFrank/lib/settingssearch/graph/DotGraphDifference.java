@@ -97,7 +97,23 @@ public class DotGraphDifference {
         final DOTExporter<SearchablePreferenceScreen, SearchablePreferenceEdge> exporter = new DOTExporter<>(this::getVertexId);
         exporter.setVertexAttributeProvider(this::getVertexAttributes);
         exporter.setEdgeAttributeProvider(this::getEdgeAttributes);
-        exporter.setGraphAttributeProvider(() -> Map.of("label", DefaultAttribute.createAttribute("\"Graph Difference\"")));
+        exporter.setGraphAttributeProvider(
+                () ->
+                        ImmutableMap
+                                .<String, Attribute>builder()
+                                .put(
+                                        "rankdir",
+                                        DefaultAttribute.createAttribute("LR"))
+                                .put(
+                                        "label",
+                                        DefaultAttribute.createAttribute("\"Graph Difference\\n\\n\""))
+                                .put(
+                                        "labelloc",
+                                        DefaultAttribute.createAttribute("t"))
+                                .put(
+                                        "fontsize",
+                                        DefaultAttribute.createAttribute("20"))
+                                .build());
 
         final Writer writer = new StringWriter();
         try {
