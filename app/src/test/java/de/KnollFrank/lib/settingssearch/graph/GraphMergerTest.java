@@ -135,10 +135,6 @@ public class GraphMergerTest {
         final DotGraphDifference dotGraphDifference = DotGraphDifference.between(mergedGraph, mergedGraphExpected);
         if (!dotGraphDifference.areEqual()) {
             System.out.println(dotGraphDifference);
-            // in order to display dotGraphDifference:
-            // 1. save output to a file named actual_vs_expected.dot
-            // 2. dot -Tpdf actual_vs_expected.dot -o actual_vs_expected.pdf
-            // 3. open actual_vs_expected.pdf
         }
     }
 

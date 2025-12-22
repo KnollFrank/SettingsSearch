@@ -23,6 +23,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceE
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 // FK-TODO: refactor
+// in order to display dotGraphDifference:
+// 1. save output to a file named dotGraphDifference.dot
+// 2. dot -Tpdf dotGraphDifference.dot -o dotGraphDifference.pdf
+// 3. open dotGraphDifference.pdf
 public class DotGraphDifference {
 
     private static final String COLOR_ONLY_IN_ACTUAL = "red";
@@ -182,7 +186,7 @@ public class DotGraphDifference {
         sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='4' bgcolor='").append(bgColor).append("'>");
 
         sb.append("<tr><td align='center' colspan='3' bgcolor='#F0F0F0'><b>")
-                .append(escapeHtml(String.format("%s (%s)", screen.title().orElse("Untitled"), screen.host().getSimpleName())))
+                .append(escapeHtml(String.format("%s (%s)", screen.host().getSimpleName(), screen.title().orElse("Untitled"))))
                 .append("</b></td></tr>");
 
         sb.append("<tr>")
