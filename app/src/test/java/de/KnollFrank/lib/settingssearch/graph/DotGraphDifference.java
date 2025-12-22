@@ -146,21 +146,24 @@ public class DotGraphDifference {
                         .buildGraph();
 
         allVertices.forEach(mergedGraph::addVertex);
-        Sets.union(actual.edgeSet(), expected.edgeSet()).forEach(edge -> {
-            final SearchablePreferenceScreen source = actual.containsEdge(edge) ? actual.getEdgeSource(edge) : expected.getEdgeSource(edge);
-            final SearchablePreferenceScreen target = actual.containsEdge(edge) ? actual.getEdgeTarget(edge) : expected.getEdgeTarget(edge);
-            if (source != null && target != null) {
-                mergedGraph.addEdge(source, target, edge);
-            }
-        });
+        Sets
+                .union(actual.edgeSet(), expected.edgeSet())
+                .forEach(
+                        edge -> {
+                            final SearchablePreferenceScreen source = actual.containsEdge(edge) ? actual.getEdgeSource(edge) : expected.getEdgeSource(edge);
+                            final SearchablePreferenceScreen target = actual.containsEdge(edge) ? actual.getEdgeTarget(edge) : expected.getEdgeTarget(edge);
+                            if (source != null && target != null) {
+                                mergedGraph.addEdge(source, target, edge);
+                            }
+                        });
 
-        DOTExporter<SearchablePreferenceScreen, SearchablePreferenceEdge> exporter = new DOTExporter<>(v -> "diff_" + getVertexId(v));
+        final DOTExporter<SearchablePreferenceScreen, SearchablePreferenceEdge> exporter = new DOTExporter<>(v -> "diff_" + getVertexId(v));
         exporter.setVertexAttributeProvider(this::getVertexAttributes);
         exporter.setEdgeAttributeProvider(this::getEdgeAttributes);
 
-        Writer writer = new StringWriter();
+        final Writer writer = new StringWriter();
         exporter.exportGraph(mergedGraph, writer);
-        String result = writer.toString();
+        final String result = writer.toString();
         return result.substring(result.indexOf("{") + 1, result.lastIndexOf("}"));
     }
 
@@ -183,28 +186,63 @@ public class DotGraphDifference {
 
     private String getVertexHtmlLabel(final SearchablePreferenceScreen screen, final String bgColor, boolean showDifferences) {
         final StringBuilder sb = new StringBuilder();
+
+        // Haupttabelle (Wurzelelement des HTML-Labels)
         sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='4' bgcolor='").append(bgColor).append("'>");
 
-        sb.append("<tr><td align='center' colspan='3' bgcolor='#F0F0F0'><b>")
-                .append(escapeHtml(String.format("%s (%s)", screen.host().getSimpleName(), screen.title().orElse("Untitled"))))
-                .append("</b></td></tr>");
-
+        // --- SEKTION 1: SCREEN METADATEN ---
+        // Zeile 1: ID
         sb.append("<tr>")
-                .append("<td align='left' bgcolor='#E0E0E0'><b>ID</b></td>")
+                .append("<td align='left' bgcolor='#F0F0F0'><b>ID</b></td>")
+                .append("<td align='left' colspan='2' bgcolor='#F0F0F0'>").append(escapeHtml(screen.id())).append("</td>")
+                .append("</tr>");
+
+        // Zeile 2: TITLE
+        sb.append("<tr>")
+                .append("<td align='left' bgcolor='#F0F0F0'><b>Title</b></td>")
+                .append("<td align='left' colspan='2' bgcolor='#F0F0F0'>").append(escapeHtml(screen.title().orElse("-"))).append("</td>")
+                .append("</tr>");
+
+        // Zeile 3: SUMMARY
+        sb.append("<tr>")
+                .append("<td align='left' bgcolor='#F0F0F0'><b>Summary</b></td>")
+                .append("<td align='left' colspan='2' bgcolor='#F0F0F0'>").append(escapeHtml(screen.summary().orElse("-"))).append("</td>")
+                .append("</tr>");
+
+        // Zeile 4: HOST (Neu hinzugefügt)
+        sb.append("<tr>")
+                .append("<td align='left' bgcolor='#F0F0F0'><b>Host</b></td>")
+                .append("<td align='left' colspan='2' bgcolor='#F0F0F0'>").append(escapeHtml(screen.host().getName())).append("</td>")
+                .append("</tr>");
+
+        // Trenner / Sektions-Header
+        sb.append("<tr><td align='center' colspan='3' bgcolor='#D0D0D0'><b>Preferences</b></td></tr>");
+
+        // --- SEKTION 2: PRÄFERENZEN TABELLENKOPF ---
+        sb.append("<tr>")
+                .append("<td align='left' bgcolor='#E0E0E0'><b>Pref ID</b></td>")
                 .append("<td align='left' bgcolor='#E0E0E0'><b>KEY</b></td>")
                 .append("<td align='left' bgcolor='#E0E0E0'><b>Title</b></td>")
                 .append("</tr>");
 
+        // --- SEKTION 3: PRÄFERENZEN LISTE ---
         screen.allPreferencesOfPreferenceHierarchy().forEach(pref -> {
             if (showDifferences && preferenceContentDiffs.containsKey(pref)) {
+                // DIFF-Fall: Belegt alle 3 Spalten
                 sb.append("<tr><td colspan='3' border='0' align='left' cellpadding='0'>");
                 sb.append("<table border='0' cellborder='1' cellspacing='0' cellpadding='2' width='100%' bgcolor='white'>");
+
+                // EXPECTED-Zeile
                 sb.append("<tr><td bgcolor='#EEFFEE'><font point-size='10' color='#006600'>EXPECTED:</font></td>")
                         .append("<td align='left' bgcolor='#EEFFEE'>").append(escapeHtml(preferenceContentDiffs.get(pref))).append("</td></tr>");
+
+                // ACTUAL-Zeile
                 sb.append("<tr><td bgcolor='#FFEEEE'><font point-size='10' color='#CC0000'>ACTUAL:</font></td>")
                         .append("<td align='left' bgcolor='#FFEEEE'>").append(escapeHtml(pref.toString())).append("</td></tr>");
+
                 sb.append("</table></td></tr>");
             } else {
+                // IDENTISCH-Fall: Drei Spalten bündig unter den Headern
                 sb.append("<tr>")
                         .append("<td align='left' bgcolor='white'><font point-size='10'>").append(escapeHtml(pref.getId())).append("</font></td>")
                         .append("<td align='left' bgcolor='white'><font point-size='10'>").append(escapeHtml(pref.getKey())).append("</font></td>")
