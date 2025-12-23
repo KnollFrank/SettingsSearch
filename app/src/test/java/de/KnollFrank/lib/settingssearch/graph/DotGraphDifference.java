@@ -73,10 +73,6 @@ public class DotGraphDifference {
 
     @Override
     public String toString() {
-        if (areEqual) {
-            return "Graphs are equal.";
-        }
-
         final StringBuilder sb = new StringBuilder();
         sb.append("digraph G {\n");
         sb.append("  rankdir=TB;\n");

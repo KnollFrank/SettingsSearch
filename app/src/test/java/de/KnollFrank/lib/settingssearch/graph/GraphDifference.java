@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
 // FK-TODO: refactor
+// FK-TODO: stelle sicher, dass für alle Graphen actual und expected immer gilt: DotGraphDifference.between(actual, expected).areEqual() == GraphDifference.between(actual, expected).areEqual()
 public class GraphDifference {
 
     private final String differenceReport;
@@ -26,17 +27,17 @@ public class GraphDifference {
         // Level 1: Structural comparison
         if (actual.equals(expected)) {
             // Level 2 & 3: Deep component-wise comparison
-            this.areEqual =
+            areEqual =
                     compareScreenComponents(
                             reportBuilder,
                             actual.vertexSet(),
                             expected.vertexSet());
         } else {
-            this.areEqual = false;
+            areEqual = false;
             buildStructuralDifferenceReport(actual, expected, reportBuilder);
         }
 
-        this.differenceReport = reportBuilder.toString();
+        differenceReport = reportBuilder.toString();
     }
 
     public static GraphDifference between(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> actual,

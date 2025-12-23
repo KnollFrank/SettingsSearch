@@ -5,9 +5,6 @@ import static de.KnollFrank.lib.settingssearch.common.graph.PredecessorOfPrefere
 import org.jgrapht.Graph;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenNodeReplacer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -16,47 +13,31 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class GraphMerger {
 
+    // FK-TODO: refactor
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergePartialGraphIntoGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> partialGraph,
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
             final SearchablePreferenceScreen mergePointOfGraph) {
-
         final SearchablePreferenceScreen rootOfPartialGraph = Graphs.getRootNode(partialGraph).orElseThrow();
-
-        // 1. Präferenzen beider Wurzeln vereinigen (Wichtig für size: 3 Mismatch).
-        final Set<SearchablePreference> combinedPrefs = new HashSet<>();
-        combinedPrefs.addAll(mergePointOfGraph.allPreferencesOfPreferenceHierarchy());
-        combinedPrefs.addAll(rootOfPartialGraph.allPreferencesOfPreferenceHierarchy());
-
-        final SearchablePreferenceScreen mergedRoot =
-                new SearchablePreferenceScreen(
-                        mergePointOfGraph.id(),
-                        rootOfPartialGraph.host(),
-                        rootOfPartialGraph.title(),
-                        rootOfPartialGraph.summary(),
-                        combinedPrefs);
 
         // 2. Struktureller Austausch im Baum.
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> result =
                 SearchablePreferenceScreenNodeReplacer.replaceNode(
                         graph,
                         mergePointOfGraph,
-                        mergedRoot);
+                        rootOfPartialGraph);
 
         // 3. Teilbäume umhängen.
         // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
         for (final SearchablePreferenceEdge edge : graph.outgoingEdgesOf(mergePointOfGraph)) {
-            attachSubtree(graph, edge, result, mergedRoot);
+            attachSubtree(graph, edge, result, rootOfPartialGraph);
         }
-
         // Kinder aus dem Teilgraphen an die neue Wurzel hängen.
         for (final SearchablePreferenceEdge edge : partialGraph.outgoingEdgesOf(rootOfPartialGraph)) {
-            attachSubtree(partialGraph, edge, result, mergedRoot);
+            attachSubtree(partialGraph, edge, result, rootOfPartialGraph);
         }
-
         // 4. Globaler Refresh der internen Referenzen (predecessorId).
-        refreshAllPredecessors(result);
-
+        // refreshAllPredecessors(result);
         return result;
     }
 
@@ -85,13 +66,13 @@ public class GraphMerger {
 
             // Wir kopieren nur Kanten, deren Knoten im Zielgraphen sind und die noch nicht existieren.
             if (dstGraph.containsVertex(source) && dstGraph.containsVertex(target) && !dstGraph.containsEdge(source, target)) {
-                dstGraph.addEdge(source, target, createEdgeFromContext(source, edge));
+                dstGraph.addEdge(source, target, edge/*createEdgeFromContext(source, edge)*/);
             }
         }
 
         // Die verbindende Kante zur neuen Wurzel herstellen.
         if (!dstGraph.containsEdge(attachmentPoint, subtreeRoot)) {
-            dstGraph.addEdge(attachmentPoint, subtreeRoot, createEdgeFromContext(attachmentPoint, edgeToAttach));
+            dstGraph.addEdge(attachmentPoint, subtreeRoot, edgeToAttach/*createEdgeFromContext(attachmentPoint, edgeToAttach)*/);
         }
     }
 
