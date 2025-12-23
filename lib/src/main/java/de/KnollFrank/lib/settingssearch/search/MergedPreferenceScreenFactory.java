@@ -23,7 +23,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
-import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.PrepareShow;
@@ -107,7 +107,7 @@ public class MergedPreferenceScreenFactory<C> {
                                 preferenceSearchablePredicate));
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment =
                 new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(fragmentFactoryAndInitializer),
+                        new FragmentFactoryAndInitializerRegistry(fragmentFactoryAndInitializer),
                         activity);
         mergedPreferenceScreenDataRepositoryProvider
                 .createMergedPreferenceScreenDataRepository(

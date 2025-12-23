@@ -29,7 +29,7 @@ import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
-import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
@@ -85,7 +85,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
             final PreferenceFragmentCompat preferenceFragment) {
         return new PreferenceScreenWithHostProvider(
                 new Fragments(
-                        new FragmentFactoryAndInitializerWithCache(
+                        new FragmentFactoryAndInitializerRegistry(
                                 new FragmentFactoryAndInitializer(
                                         createFragmentFactoryReturning(preferenceFragment),
                                         FragmentInitializerFactory.createFragmentInitializer(

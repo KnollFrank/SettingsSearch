@@ -13,23 +13,23 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
-import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 
 public class Fragments implements InstantiateAndInitializeFragment {
 
-    private final FragmentFactoryAndInitializerWithCache fragmentFactoryAndInitializer;
+    private final FragmentFactoryAndInitializerRegistry fragmentFactoryAndInitializerRegistry;
     private final Context context;
 
-    public Fragments(final FragmentFactoryAndInitializerWithCache fragmentFactoryAndInitializer,
+    public Fragments(final FragmentFactoryAndInitializerRegistry fragmentFactoryAndInitializerRegistry,
                      final Context context) {
-        this.fragmentFactoryAndInitializer = fragmentFactoryAndInitializer;
+        this.fragmentFactoryAndInitializerRegistry = fragmentFactoryAndInitializerRegistry;
         this.context = context;
     }
 
     @Override
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
                                                                    final Optional<PreferenceWithHost> src) {
-        return fragmentFactoryAndInitializer.instantiateAndInitializeFragment(fragmentClass, src, context, this);
+        return fragmentFactoryAndInitializerRegistry.instantiateAndInitializeFragment(fragmentClass, src, context, this);
     }
 
     public static <T extends Fragment> void showFragment(final T fragment,

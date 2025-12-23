@@ -12,24 +12,27 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
-public class FragmentFactoryAndInitializerWithCache {
+public class FragmentFactoryAndInitializerRegistry {
 
     private final FragmentFactoryAndInitializer delegate;
-    private final Map<Arguments, Fragment> fragmentByArguments = new HashMap<>();
+    private final Map<Arguments, Fragment> registry = new HashMap<>();
 
-    public FragmentFactoryAndInitializerWithCache(final FragmentFactoryAndInitializer delegate) {
+    public FragmentFactoryAndInitializerRegistry(final FragmentFactoryAndInitializer delegate) {
         this.delegate = delegate;
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends Fragment> T instantiateAndInitializeFragment(final Class<T> fragmentClass,
                                                                    final Optional<PreferenceWithHost> src,
                                                                    final Context context,
                                                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        final Arguments arguments = ArgumentsFactory.createArguments(fragmentClass, src);
-        if (!fragmentByArguments.containsKey(arguments)) {
-            final T fragment = delegate.instantiateAndInitializeFragment(fragmentClass, src, context, instantiateAndInitializeFragment);
-            fragmentByArguments.put(arguments, fragment);
-        }
-        return (T) fragmentByArguments.get(arguments);
+        return (T) registry.computeIfAbsent(
+                ArgumentsFactory.createArguments(fragmentClass, src),
+                arguments ->
+                        delegate.instantiateAndInitializeFragment(
+                                fragmentClass,
+                                src,
+                                context,
+                                instantiateAndInitializeFragment));
     }
 }

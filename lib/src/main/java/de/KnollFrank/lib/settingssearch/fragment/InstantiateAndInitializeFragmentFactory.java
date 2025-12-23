@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.fragment;
 
 import android.content.Context;
 
-import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerWithCache;
+import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 
 public class InstantiateAndInitializeFragmentFactory {
 
@@ -11,7 +11,7 @@ public class InstantiateAndInitializeFragmentFactory {
             final FragmentInitializer fragmentInitializer,
             final Context context) {
         return new Fragments(
-                new FragmentFactoryAndInitializerWithCache(
+                new FragmentFactoryAndInitializerRegistry(
                         new FragmentFactoryAndInitializer(
                                 fragmentFactory,
                                 fragmentInitializer)),
