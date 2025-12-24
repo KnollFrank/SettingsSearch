@@ -56,16 +56,22 @@ public class GraphMergerTest {
      */
     @Test
     public void test_mergePartialGraphIntoGraph_rootNode() {
+        final var rootOfGraph = FragmentWithPreferenceCategory.class;
         shouldMergePartialGraphIntoGraph(
-                FragmentWithPreferenceCategory.class,
-                "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$FragmentWithPreferenceCategory");
+                rootOfGraph,
+                "de-" + rootOfGraph.getName());
     }
 
     @Test
     public void test_mergePartialGraphIntoGraph_innerNode() {
+        final var rootOfGraph = RootFragmentConnectedToFragmentWithPreferenceCategory.class;
         shouldMergePartialGraphIntoGraph(
-                RootFragmentConnectedToFragmentWithPreferenceCategory.class,
-                "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$FragmentWithPreferenceCategory Bundle[{some preference key: de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$RootFragmentConnectedToFragmentWithPreferenceCategory -> de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$FragmentWithPreferenceCategory=true}]");
+                rootOfGraph,
+                String.format(
+                        "de-%s Bundle[{some preference key: %s -> %s=true}]",
+                        FragmentWithPreferenceCategory.class.getName(),
+                        rootOfGraph.getName(),
+                        FragmentWithPreferenceCategory.class.getName()));
     }
 
     private static void shouldMergePartialGraphIntoGraph(final Class<? extends PreferenceFragmentCompat> rootOfGraph,
