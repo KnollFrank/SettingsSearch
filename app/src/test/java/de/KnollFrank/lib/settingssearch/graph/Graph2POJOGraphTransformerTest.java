@@ -54,7 +54,7 @@ public class Graph2POJOGraphTransformerTest extends PreferencesRoomDatabaseTest 
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
-                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(
+                        PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
                                 preferenceFragment.getClass(),
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
@@ -147,7 +147,7 @@ public class Graph2POJOGraphTransformerTest extends PreferencesRoomDatabaseTest 
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
-                        PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(
+                        PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
                                 preferenceFragment.getClass(),
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
@@ -281,7 +281,7 @@ public class Graph2POJOGraphTransformerTest extends PreferencesRoomDatabaseTest 
 
     private static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityGraph(final FragmentActivity activity) {
         final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
-        return PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph(
+        return PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
                 preferenceFragment.getClass(),
                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                 activity);

@@ -18,15 +18,15 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 
 public class PojoGraphTestFactory {
 
-    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityPreferenceScreenGraph(
-            final Class<? extends PreferenceFragmentCompat> preferenceFragment,
+    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityPreferenceScreenGraphRootedAt(
+            final Class<? extends PreferenceFragmentCompat> root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
         return createEntityPreferenceScreenGraphRootedAt(
                 PojoGraphTestFactory
                         .getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment)
                         .getPreferenceScreenWithHostOfFragment(
-                                preferenceFragment,
+                                root,
                                 Optional.empty())
                         .orElseThrow(),
                 instantiateAndInitializeFragment,
