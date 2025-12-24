@@ -48,12 +48,6 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 @RunWith(RobolectricTestRunner.class)
 public class GraphMergerTest {
 
-    /*
-    dot -Tpdf entityGraph.dot -o entityGraph.pdf
-    dot -Tpdf partialEntityGraph.dot -o partialEntityGraph.pdf
-    dot -Tpdf mergedGraphExpected.dot -o mergedGraphExpected.pdf
-    pdfunite entityGraph.pdf partialEntityGraph.pdf mergedGraphExpected.pdf allGraphs.pdf
-     */
     @Test
     public void test_mergePartialGraphIntoGraph_rootNode() {
         final var rootOfGraph = FragmentWithPreferenceCategory.class;
@@ -81,8 +75,6 @@ public class GraphMergerTest {
                 // Given
                 final GraphMerger graphMerger = new GraphMerger();
                 final var pojoGraph = transformToPojoGraph(createEntityGraph(rootOfGraph, List.of(), activity));
-                // System.out.println("entityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(entityGraph));
-
                 final List<String> preferenceKeys = List.of("key1");
                 final SearchablePreferenceScreen mergePointOfGraph =
                         SearchablePreferenceScreens
@@ -94,7 +86,6 @@ public class GraphMergerTest {
                                 preferenceKeys,
                                 mergePointOfGraph,
                                 activity);
-                // System.out.println("partialEntityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(partialEntityGraph));
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
@@ -105,7 +96,6 @@ public class GraphMergerTest {
 
                 // Then
                 final var mergedGraphExpected = transformToPojoGraph(createEntityGraph(rootOfGraph, preferenceKeys, activity));
-                // System.out.println("mergedGraphExpected: " + PreferenceScreenGraph2DOTConverter.graph2DOT(_mergedGraphExpected));
                 System.out.println(DotGraphDifference.between(mergedGraph, mergedGraphExpected));
                 final GraphDifference graphDifference = GraphDifference.between(mergedGraph, mergedGraphExpected);
                 assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
