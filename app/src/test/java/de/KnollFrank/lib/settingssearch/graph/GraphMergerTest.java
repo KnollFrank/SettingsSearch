@@ -55,41 +55,41 @@ public class GraphMergerTest {
     dot -Tpdf mergedGraphExpected.dot -o mergedGraphExpected.pdf
     pdfunite entityGraph.pdf partialEntityGraph.pdf mergedGraphExpected.pdf allGraphs.pdf
      */
-    // FK-TODO: reactivate test_mergeGraphs_rootNode()
-//    @Test
-//    public void test_mergeGraphs_rootNode() {
-//        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-//            scenario.onActivity(activity -> {
-//                // Given
-//                final GraphMerger graphMerger = new GraphMerger();
-//                final Class<? extends PreferenceFragmentCompat> root = PreferenceFragmentWithPreferenceCategory.class;
-//                final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph = createEntityGraph(root, List.of(), activity, createInstantiateAndInitializeFragment(activity));
-//                // System.out.println("entityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(entityGraph));
-//
-//                final Graph<PreferenceScreenWithHost, PreferenceEdge> partialEntityGraph = createEntityGraph(root, List.of("key1"), activity, createInstantiateAndInitializeFragment(activity));
-//                partialEntityGraph.removeVertex(
-//                        partialEntityGraph.getEdgeTarget(
-//                                getPreferenceEdgeHavingKey(
-//                                        partialEntityGraph,
-//                                        "some preference key")));
-//                // System.out.println("partialEntityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(partialEntityGraph));
-//
-//                // When
-//                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
-//                        graphMerger.mergePartialGraphIntoGraph(
-//                                transformToPojoGraph(partialEntityGraph),
-//                                transformToPojoGraph(entityGraph),
-//                                Graphs.getRootNode(transformToPojoGraph(entityGraph)).orElseThrow());
-//
-//                // Then
-//                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraphExpected = transformToPojoGraph(createEntityGraph(root, List.of("key1"), activity, createInstantiateAndInitializeFragment(activity)));
-//                // System.out.println("mergedGraphExpected: " + PreferenceScreenGraph2DOTConverter.graph2DOT(_mergedGraphExpected));
-//                printDotGraphDifferenceBetween(mergedGraph, mergedGraphExpected);
-//                final GraphDifference graphDifference = GraphDifference.between(mergedGraph, mergedGraphExpected);
-//                assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
-//            });
-//        }
-//    }
+    @Test
+    public void test_mergeGraphs_rootNode() {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
+            scenario.onActivity(activity -> {
+                // Given
+                final GraphMerger graphMerger = new GraphMerger();
+                final Class<? extends PreferenceFragmentCompat> root = PreferenceFragmentWithPreferenceCategory.class;
+                final var pojoGraph = transformToPojoGraph(createEntityGraph(root, List.of(), activity));
+                // System.out.println("entityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(entityGraph));
+
+                final List<String> preferenceKeys = List.of("key1");
+                final var partialEntityGraph =
+                        createPartialEntityGraph(
+                                pojoGraph,
+                                preferenceKeys,
+                                "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$PreferenceFragmentWithPreferenceCategory",
+                                activity);
+                // System.out.println("partialEntityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(partialEntityGraph));
+
+                // When
+                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
+                        graphMerger.mergePartialGraphIntoGraph(
+                                transformToPojoGraph(partialEntityGraph),
+                                pojoGraph,
+                                Graphs.getRootNode(pojoGraph).orElseThrow());
+
+                // Then
+                final var mergedGraphExpected = transformToPojoGraph(createEntityGraph(root, preferenceKeys, activity));
+                // System.out.println("mergedGraphExpected: " + PreferenceScreenGraph2DOTConverter.graph2DOT(_mergedGraphExpected));
+                System.out.println(DotGraphDifference.between(mergedGraph, mergedGraphExpected));
+                final GraphDifference graphDifference = GraphDifference.between(mergedGraph, mergedGraphExpected);
+                assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
+            });
+        }
+    }
 
     @Test
     public void test_mergeGraphs_innerNode() {
@@ -102,7 +102,12 @@ public class GraphMergerTest {
                 // System.out.println("entityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(entityGraph));
 
                 final List<String> preferenceKeys = List.of("key1");
-                final var partialEntityGraph = createPartialEntityGraph(pojoGraph, preferenceKeys, activity);
+                final var partialEntityGraph =
+                        createPartialEntityGraph(
+                                pojoGraph,
+                                preferenceKeys,
+                                "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$PreferenceFragmentWithPreferenceCategory Bundle[{some preference key: de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$RootPreferenceFragment -> de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$PreferenceFragmentWithPreferenceCategory=true}]",
+                                activity);
                 // System.out.println("partialEntityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(partialEntityGraph));
 
                 // When
@@ -142,6 +147,7 @@ public class GraphMergerTest {
     private static Graph<PreferenceScreenWithHost, PreferenceEdge> createPartialEntityGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
             final List<String> preferenceKeys,
+            final String idOfRootOfPojoGraph,
             final FragmentActivity activity) {
         PreferenceFragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
@@ -151,7 +157,7 @@ public class GraphMergerTest {
                                 .instantiate(
                                         Graphs.getPathFromRootNodeToTarget(
                                                 pojoGraph,
-                                                getPreferenceFragmentWithPreferenceCategory(pojoGraph)))
+                                                getSearchablePreferenceScreenById(pojoGraph, idOfRootOfPojoGraph)))
                                 .getEndVertex(),
                         instantiateAndInitializeFragment,
                         activity);
@@ -169,11 +175,10 @@ public class GraphMergerTest {
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 
-    private static SearchablePreferenceScreen getPreferenceFragmentWithPreferenceCategory(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+    private static SearchablePreferenceScreen getSearchablePreferenceScreenById(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+                                                                                final String id) {
         return SearchablePreferenceScreens
-                .findSearchablePreferenceScreenById(
-                        graph.vertexSet(),
-                        "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$PreferenceFragmentWithPreferenceCategory Bundle[{some preference key: de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$RootPreferenceFragment -> de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$PreferenceFragmentWithPreferenceCategory=true}]")
+                .findSearchablePreferenceScreenById(graph.vertexSet(), id)
                 .orElseThrow();
     }
 
