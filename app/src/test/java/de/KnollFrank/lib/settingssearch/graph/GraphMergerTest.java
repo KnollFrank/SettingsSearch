@@ -78,7 +78,10 @@ public class GraphMergerTest {
                 // System.out.println("entityGraph: " + PreferenceScreenGraph2DOTConverter.graph2DOT(entityGraph));
 
                 final List<String> preferenceKeys = List.of("key1");
-                final SearchablePreferenceScreen mergePointOfGraph = getSearchablePreferenceScreenById(pojoGraph, idOfRootOfPartialPojoGraph);
+                final SearchablePreferenceScreen mergePointOfGraph =
+                        SearchablePreferenceScreens
+                                .findSearchablePreferenceScreenById(pojoGraph.vertexSet(), idOfRootOfPartialPojoGraph)
+                                .orElseThrow();
                 final var partialEntityGraph =
                         createPartialEntityGraph(
                                 pojoGraph,
@@ -150,13 +153,6 @@ public class GraphMergerTest {
         return new PreferenceScreenWithHostProvider(
                 instantiateAndInitializeFragment,
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
-    }
-
-    private static SearchablePreferenceScreen getSearchablePreferenceScreenById(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-                                                                                final String id) {
-        return SearchablePreferenceScreens
-                .findSearchablePreferenceScreenById(graph.vertexSet(), id)
-                .orElseThrow();
     }
 
     private static PreferenceEdge getPreferenceEdgeHavingKey(final Graph<PreferenceScreenWithHost, PreferenceEdge> graph,
