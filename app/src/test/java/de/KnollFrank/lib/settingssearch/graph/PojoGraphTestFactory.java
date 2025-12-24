@@ -42,4 +42,22 @@ public class PojoGraphTestFactory {
                                 Optional.empty())
                         .orElseThrow());
     }
+
+    // FK-TODO: DRY with createSomeEntityPreferenceScreenGraph()
+    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityPreferenceScreenGraphRootedAt(
+            final PreferenceScreenWithHost root,
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
+            final Context context) {
+        return PreferenceScreenGraphProviderFactory
+                .createPreferenceScreenGraphProvider(
+                        new PreferenceScreenWithHostProvider(
+                                instantiateAndInitializeFragment,
+                                new PrincipalAndProxyProvider(ImmutableBiMap.of())),
+                        (preference, hostOfPreference) -> Optional.empty(),
+                        classNameOfActivity -> Optional.empty(),
+                        context,
+                        _preferenceScreenWithHost -> {
+                        })
+                .getPreferenceScreenGraph(root);
+    }
 }

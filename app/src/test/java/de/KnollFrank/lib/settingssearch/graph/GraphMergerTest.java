@@ -7,7 +7,6 @@ import static de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerT
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markExtrasOfPreferenceConnectingSrcWithDst;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -109,7 +108,7 @@ public class GraphMergerTest {
             final TestActivity activity) {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
-        return createEntityPreferenceScreenGraphRootedAt(
+        return PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
                 GraphMergerTest
                         .createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment)
                         .getPreferenceScreenWithHostOfFragment(
@@ -128,7 +127,7 @@ public class GraphMergerTest {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
         final Graph<PreferenceScreenWithHost, PreferenceEdge> partialEntityGraph =
-                createEntityPreferenceScreenGraphRootedAt(
+                PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
                         new GraphPathFactory(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
                                 .instantiate(
                                         Graphs.getPathFromRootNodeToTarget(
@@ -145,7 +144,7 @@ public class GraphMergerTest {
         return partialEntityGraph;
     }
 
-    private static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+    public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return new PreferenceScreenWithHostProvider(
                 instantiateAndInitializeFragment,
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
@@ -177,22 +176,6 @@ public class GraphMergerTest {
                                         preference -> Optional.empty(),
                                         (preference, hostOfPreference) -> Optional.empty()))),
                 new DefaultPreferenceFragmentIdProvider());
-    }
-
-    // FK-TODO: move method into class PojoGraphTestFactory and DRY with PojoGraphTestFactory.createSomeEntityPreferenceScreenGraph()
-    private static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityPreferenceScreenGraphRootedAt(
-            final PreferenceScreenWithHost root,
-            final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-            final Context context) {
-        return PreferenceScreenGraphProviderFactory
-                .createPreferenceScreenGraphProvider(
-                        createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
-                        (preference, hostOfPreference) -> Optional.empty(),
-                        classNameOfActivity -> Optional.empty(),
-                        context,
-                        _preferenceScreenWithHost -> {
-                        })
-                .getPreferenceScreenGraph(root);
     }
 
     public static class RootFragmentConnectedToFragmentWithPreferenceCategory extends PreferenceFragmentCompat {
