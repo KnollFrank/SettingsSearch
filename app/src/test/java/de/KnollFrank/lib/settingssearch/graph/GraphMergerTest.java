@@ -207,18 +207,12 @@ public class GraphMergerTest {
         }
 
         private void addPreferencesToPreferenceScreen(final PreferenceScreen preferenceScreen) {
-            preferenceScreen.addPreference(createPreferenceConnectedToFragment(FragmentWithPreferenceCategory.class, "some preference key"));
-        }
-
-        // FK-TODO: DRY with PreferenceFragmentWithPreferenceCategory.createPreferenceConnectedToFragment()
-        private Preference createPreferenceConnectedToFragment(final Class<? extends Fragment> fragment,
-                                                               final String keyOfPreference) {
-            final Preference preference = new Preference(requireContext());
-            preference.setFragment(fragment.getName());
-            preference.setTitle("root preference " + keyOfPreference + " connected to " + fragment.getSimpleName());
-            preference.setKey(keyOfPreference);
-            markExtrasOfPreferenceConnectingSrcWithDst(preference, this, fragment);
-            return preference;
+            preferenceScreen.addPreference(
+                    FragmentWithPreferenceCategory.createPreferenceConnectedToFragment(
+                            FragmentWithPreferenceCategory.class,
+                            "some preference key",
+                            "root preference ",
+                            this));
         }
     }
 
@@ -263,16 +257,22 @@ public class GraphMergerTest {
         }
 
         private Preference createPreference(final String key) {
-            return createPreferenceConnectedToFragment(PreferenceFragmentWithSinglePreference.class, key);
+            return createPreferenceConnectedToFragment(
+                    PreferenceFragmentWithSinglePreference.class,
+                    key,
+                    "preference ",
+                    this);
         }
 
-        private Preference createPreferenceConnectedToFragment(final Class<? extends Fragment> fragment,
-                                                               final String keyOfPreference) {
-            final Preference preference = new Preference(requireContext());
+        public static Preference createPreferenceConnectedToFragment(final Class<? extends Fragment> fragment,
+                                                                     final String keyOfPreference,
+                                                                     final String titlePrefix,
+                                                                     final PreferenceFragmentCompat src) {
+            final Preference preference = new Preference(src.requireContext());
             preference.setFragment(fragment.getName());
-            preference.setTitle("preference " + keyOfPreference + " connected to " + fragment.getSimpleName());
+            preference.setTitle(titlePrefix + keyOfPreference + " connected to " + fragment.getSimpleName());
             preference.setKey(keyOfPreference);
-            markExtrasOfPreferenceConnectingSrcWithDst(preference, this, fragment);
+            markExtrasOfPreferenceConnectingSrcWithDst(preference, src, fragment);
             return preference;
         }
     }
