@@ -57,15 +57,15 @@ public class GraphMergerTest {
     @Test
     public void test_mergePartialGraphIntoGraph_rootNode() {
         shouldMergePartialGraphIntoGraph(
-                PreferenceFragmentWithPreferenceCategory.class,
-                "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$PreferenceFragmentWithPreferenceCategory");
+                FragmentWithPreferenceCategory.class,
+                "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$FragmentWithPreferenceCategory");
     }
 
     @Test
     public void test_mergePartialGraphIntoGraph_innerNode() {
         shouldMergePartialGraphIntoGraph(
-                RootPreferenceFragment.class,
-                "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$PreferenceFragmentWithPreferenceCategory Bundle[{some preference key: de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$RootPreferenceFragment -> de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$PreferenceFragmentWithPreferenceCategory=true}]");
+                RootFragmentConnectedToFragmentWithPreferenceCategory.class,
+                "de-de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$FragmentWithPreferenceCategory Bundle[{some preference key: de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$RootFragmentConnectedToFragmentWithPreferenceCategory -> de.KnollFrank.lib.settingssearch.graph.GraphMergerTest$FragmentWithPreferenceCategory=true}]");
     }
 
     private static void shouldMergePartialGraphIntoGraph(final Class<? extends PreferenceFragmentCompat> rootOfGraph,
@@ -111,7 +111,7 @@ public class GraphMergerTest {
             final Class<? extends PreferenceFragmentCompat> root,
             final List<String> preferenceKeys,
             final TestActivity activity) {
-        PreferenceFragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
+        FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
         return createEntityPreferenceScreenGraphRootedAt(
                 GraphMergerTest
@@ -129,7 +129,7 @@ public class GraphMergerTest {
             final List<String> preferenceKeys,
             final SearchablePreferenceScreen rootOfPartialPojoGraph,
             final FragmentActivity activity) {
-        PreferenceFragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
+        FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
         final Graph<PreferenceScreenWithHost, PreferenceEdge> partialEntityGraph =
                 createEntityPreferenceScreenGraphRootedAt(
@@ -199,7 +199,7 @@ public class GraphMergerTest {
                 .getPreferenceScreenGraph(root);
     }
 
-    public static class RootPreferenceFragment extends PreferenceFragmentCompat {
+    public static class RootFragmentConnectedToFragmentWithPreferenceCategory extends PreferenceFragmentCompat {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
@@ -211,7 +211,7 @@ public class GraphMergerTest {
         }
 
         private void addPreferencesToPreferenceScreen(final PreferenceScreen preferenceScreen) {
-            preferenceScreen.addPreference(createPreferenceConnectedToFragment(PreferenceFragmentWithPreferenceCategory.class, "some preference key"));
+            preferenceScreen.addPreference(createPreferenceConnectedToFragment(FragmentWithPreferenceCategory.class, "some preference key"));
         }
 
         // FK-TODO: DRY with PreferenceFragmentWithPreferenceCategory.createPreferenceConnectedToFragment()
@@ -226,12 +226,12 @@ public class GraphMergerTest {
         }
     }
 
-    public static class PreferenceFragmentWithPreferenceCategory extends PreferenceFragmentCompat {
+    public static class FragmentWithPreferenceCategory extends PreferenceFragmentCompat {
 
         private static List<String> preferenceKeys = List.of();
 
         public static void setPreferenceKeys(final List<String> preferenceKeys) {
-            PreferenceFragmentWithPreferenceCategory.preferenceKeys = preferenceKeys;
+            FragmentWithPreferenceCategory.preferenceKeys = preferenceKeys;
         }
 
         @Override
