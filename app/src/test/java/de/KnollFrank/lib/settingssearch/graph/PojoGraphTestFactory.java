@@ -22,42 +22,35 @@ public class PojoGraphTestFactory {
             final Class<? extends PreferenceFragmentCompat> preferenceFragment,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
-        final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider =
-                new PreferenceScreenWithHostProvider(
-                        instantiateAndInitializeFragment,
-                        new PrincipalAndProxyProvider(ImmutableBiMap.of()));
-        final PreferenceScreenGraphProvider preferenceScreenGraphProvider =
-                PreferenceScreenGraphProviderFactory
-                        .createPreferenceScreenGraphProvider(
-                                preferenceScreenWithHostProvider,
-                                (preference, hostOfPreference) -> Optional.empty(),
-                                classNameOfActivity -> Optional.empty(),
-                                context,
-                                preferenceScreenWithHost -> {
-                                });
-        return preferenceScreenGraphProvider.getPreferenceScreenGraph(
-                preferenceScreenWithHostProvider
+        return createEntityPreferenceScreenGraphRootedAt(
+                PojoGraphTestFactory
+                        .getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment)
                         .getPreferenceScreenWithHostOfFragment(
                                 preferenceFragment,
                                 Optional.empty())
-                        .orElseThrow());
+                        .orElseThrow(),
+                instantiateAndInitializeFragment,
+                context);
     }
 
-    // FK-TODO: DRY with createSomeEntityPreferenceScreenGraph()
     public static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityPreferenceScreenGraphRootedAt(
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
         return PreferenceScreenGraphProviderFactory
                 .createPreferenceScreenGraphProvider(
-                        new PreferenceScreenWithHostProvider(
-                                instantiateAndInitializeFragment,
-                                new PrincipalAndProxyProvider(ImmutableBiMap.of())),
+                        getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
                         context,
-                        _preferenceScreenWithHost -> {
+                        preferenceScreenWithHost -> {
                         })
                 .getPreferenceScreenGraph(root);
+    }
+
+    private static PreferenceScreenWithHostProvider getPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+        return new PreferenceScreenWithHostProvider(
+                instantiateAndInitializeFragment,
+                new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 }
