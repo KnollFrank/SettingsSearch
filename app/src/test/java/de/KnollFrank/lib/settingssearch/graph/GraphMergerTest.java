@@ -89,7 +89,7 @@ public class GraphMergerTest {
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
                         GraphMerger.mergeSrcGraphIntoDstGraphAtMergePoint(
                                 transformToPojoGraph(partialEntityGraph),
-                                new GraphMerger.GraphAndMergePoint(pojoGraph, mergePointOfGraph));
+                                new GraphMerger.GraphAtMergePoint(pojoGraph, mergePointOfGraph));
 
                 // Then
                 final var mergedGraphExpected = transformToPojoGraph(createEntityGraph(rootOfGraph, preferenceKeys, activity));

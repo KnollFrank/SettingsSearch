@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class GraphMerger {
 
-    public record GraphAndMergePoint(
+    public record GraphAtMergePoint(
             Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
             SearchablePreferenceScreen mergePointOfGraph) {
 
@@ -23,14 +23,35 @@ public class GraphMerger {
 
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSrcGraphIntoDstGraphAtMergePoint(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> srcGraph,
-            final GraphAndMergePoint dstGraphAndMergePoint) {
+            final GraphAtMergePoint dstGraphAtMergePoint) {
         return mergeSubtreeIntoGraphAtMergePoint(
                 asSubtree(srcGraph),
-                dstGraphAndMergePoint);
+                dstGraphAtMergePoint);
+    }
+
+    private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSubtreeIntoGraphAtMergePoint(
+            final Subtree subtree,
+            final GraphAtMergePoint graphAtMergePoint) {
+        final GraphAtMergePoint mergedGraphAtMergePoint =
+                new GraphAtMergePoint(
+                        SearchablePreferenceScreenNodeReplacer.replaceNode(
+                                graphAtMergePoint.graph(),
+                                graphAtMergePoint.mergePointOfGraph(),
+                                subtree.subtreeRoot()),
+                        subtree.subtreeRoot());
+        // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
+        copySubtreesOfSrcToDst(graphAtMergePoint, mergedGraphAtMergePoint);
+        // Kinder aus dem Teilgraphen an die neue Wurzel hängen.
+        copySubtreesOfSrcToDst(subtree.asGraphAtMergePoint(), mergedGraphAtMergePoint);
+        return mergedGraphAtMergePoint.graph();
     }
 
     private record Subtree(Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                            SearchablePreferenceScreen subtreeRoot) {
+
+        public GraphAtMergePoint asGraphAtMergePoint() {
+            return new GraphAtMergePoint(graph, subtreeRoot);
+        }
     }
 
     private static Subtree asSubtree(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
@@ -39,27 +60,11 @@ public class GraphMerger {
                 Graphs.getRootNode(graph).orElseThrow());
     }
 
-    private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSubtreeIntoGraphAtMergePoint(
-            final Subtree subtree,
-            final GraphAndMergePoint graphAtMergePoint) {
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
-                SearchablePreferenceScreenNodeReplacer.replaceNode(
-                        graphAtMergePoint.graph(),
-                        graphAtMergePoint.mergePointOfGraph(),
-                        subtree.subtreeRoot());
-        final GraphAndMergePoint mergedGraphAndMergePoint = new GraphAndMergePoint(mergedGraph, subtree.subtreeRoot());
-        // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
-        copySubtreesOfSrcToDst(graphAtMergePoint, mergedGraphAndMergePoint);
-        // Kinder aus dem Teilgraphen an die neue Wurzel hängen.
-        copySubtreesOfSrcToDst(new GraphAndMergePoint(subtree.graph(), subtree.subtreeRoot()), mergedGraphAndMergePoint);
-        return mergedGraphAndMergePoint.graph();
-    }
-
     private record GraphAndEdge(Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                 SearchablePreferenceEdge edge) {
     }
 
-    private static void copySubtreesOfSrcToDst(final GraphAndMergePoint src, final GraphAndMergePoint dst) {
+    private static void copySubtreesOfSrcToDst(final GraphAtMergePoint src, final GraphAtMergePoint dst) {
         for (final SearchablePreferenceEdge outgoingEdgeOfMergePoint : src.outgoingEdgesOfMergePoint()) {
             copyEdgeTargetSubtreeOfSrcToDst(
                     new GraphAndEdge(src.graph(), outgoingEdgeOfMergePoint),
@@ -67,7 +72,7 @@ public class GraphMerger {
         }
     }
 
-    private static void copyEdgeTargetSubtreeOfSrcToDst(final GraphAndEdge src, final GraphAndMergePoint dst) {
+    private static void copyEdgeTargetSubtreeOfSrcToDst(final GraphAndEdge src, final GraphAtMergePoint dst) {
         final Subtree srcSubtree = getEdgeTargetAsSubtree(src);
         copyNodesAndEdges(srcSubtree, dst.graph());
         addEdgeFromMergePointToSubtree(src.edge(), dst, srcSubtree);
@@ -80,7 +85,7 @@ public class GraphMerger {
     }
 
     private static void addEdgeFromMergePointToSubtree(final SearchablePreferenceEdge edge,
-                                                       final GraphAndMergePoint mergePoint,
+                                                       final GraphAtMergePoint mergePoint,
                                                        final Subtree subtree) {
         final SearchablePreferenceScreen sourceVertex = mergePoint.mergePointOfGraph();
         final SearchablePreferenceScreen targetVertex = subtree.subtreeRoot();
