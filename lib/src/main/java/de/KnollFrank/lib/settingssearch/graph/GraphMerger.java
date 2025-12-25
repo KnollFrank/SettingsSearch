@@ -28,9 +28,9 @@ public class GraphMerger {
         // 3. Teilbäume umhängen.
         // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
         final GraphAndMergePoint dst = new GraphAndMergePoint(mergedGraph, rootOfSrcGraph);
-        extracted(dstGraphAndMergePoint, dst);
+        attachSubtree(dstGraphAndMergePoint, dst);
         // Kinder aus dem Teilgraphen an die neue Wurzel hängen.
-        extracted(new GraphAndMergePoint(srcGraph, rootOfSrcGraph), dst);
+        attachSubtree(new GraphAndMergePoint(srcGraph, rootOfSrcGraph), dst);
         return mergedGraph;
     }
 
@@ -38,7 +38,7 @@ public class GraphMerger {
                                 SearchablePreferenceEdge edge) {
     }
 
-    private void extracted(final GraphAndMergePoint src, final GraphAndMergePoint dst) {
+    private void attachSubtree(final GraphAndMergePoint src, final GraphAndMergePoint dst) {
         for (final SearchablePreferenceEdge srcEdge : src.graph().outgoingEdgesOf(src.mergePointOfGraph())) {
             attachSubtree(new GraphAndEdge(src.graph(), srcEdge), dst);
         }
@@ -49,7 +49,7 @@ public class GraphMerger {
                 new Subtree(
                         src.graph(),
                         src.graph().getEdgeTarget(src.edge()));
-        copyNodesAndEdges(srcSubtree, dst);
+        copyNodesAndEdges(srcSubtree, dst.graph());
         addEdgeFromMergePointToSubtree(src.edge(), dst, srcSubtree);
     }
 
@@ -68,9 +68,11 @@ public class GraphMerger {
                            SearchablePreferenceScreen subtreeRoot) {
     }
 
-    private static void copyNodesAndEdges(final Subtree src, final GraphAndMergePoint dst) {
-        copyNodesOfSubtreeToGraph(src, dst.graph());
-        copyEdges(src.graph(), dst.graph());
+    // FK-TODO: SubtreeReplacer verwenden?
+    private static void copyNodesAndEdges(final Subtree src,
+                                          final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> dst) {
+        copyNodesOfSubtreeToGraph(src, dst);
+        copyEdges(src.graph(), dst);
     }
 
     private static void copyNodesOfSubtreeToGraph(final Subtree subtree,

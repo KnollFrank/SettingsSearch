@@ -9,7 +9,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenNodeReplacer {
 
-    // FK-TODO: die ersten beiden Argumente analog zu GraphAndMergePoint zusammenfassen
+    // FK-TODO: refactor to Step-Builder (= Fluent Interface or Internal DSL)
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replaceNode(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> originalGraph,
             final SearchablePreferenceScreen nodeOfOriginalGraphToReplace,
