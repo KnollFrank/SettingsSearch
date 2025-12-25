@@ -72,15 +72,10 @@ public class GraphMerger {
         copyEdges(src.graph(), dst.graph());
     }
 
-    private static void copyNodesOfSubtreeToGraph(final Subtree src,
-                                                  final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> dst) {
-        new BreadthFirstIterator<>(src.graph(), src.subtreeRoot())
-                .forEachRemaining(
-                        node -> {
-                            if (!dst.containsVertex(node)) {
-                                dst.addVertex(node);
-                            }
-                        });
+    private static void copyNodesOfSubtreeToGraph(final Subtree subtree,
+                                                  final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+        new BreadthFirstIterator<>(subtree.graph(), subtree.subtreeRoot())
+                .forEachRemaining(graph::addVertex);
     }
 
     private static void copyEdges(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> src,
