@@ -49,14 +49,17 @@ public class GraphMerger {
                         src.graph(),
                         src.graph().getEdgeTarget(src.edge()));
         copyNodesAndEdges(srcSubtree, dst);
-        addEdgeFromMergePointToSubtree(dst, src, srcSubtree);
+        addEdgeFromMergePointToSubtree(src.edge(), dst, srcSubtree);
     }
 
-    private static void addEdgeFromMergePointToSubtree(final GraphAndMergePoint mergePoint,
-                                                       final GraphAndEdge src,
+    private static void addEdgeFromMergePointToSubtree(final SearchablePreferenceEdge edge,
+                                                       final GraphAndMergePoint mergePoint,
                                                        final Subtree subtree) {
-        if (!mergePoint.graph().containsEdge(mergePoint.mergePointOfGraph(), subtree.subtreeRoot())) {
-            mergePoint.graph().addEdge(mergePoint.mergePointOfGraph(), subtree.subtreeRoot(), src.edge());
+        final SearchablePreferenceScreen sourceVertex = mergePoint.mergePointOfGraph();
+        final SearchablePreferenceScreen targetVertex = subtree.subtreeRoot();
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = mergePoint.graph();
+        if (!graph.containsEdge(sourceVertex, targetVertex)) {
+            graph.addEdge(sourceVertex, targetVertex, edge);
         }
     }
 
