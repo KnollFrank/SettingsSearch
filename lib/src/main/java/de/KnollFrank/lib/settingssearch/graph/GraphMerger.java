@@ -18,18 +18,19 @@ public class GraphMerger {
     public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSrcGraphIntoDstGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> srcGraph,
             final GraphAndMergePoint dstGraphAndMergePoint) {
-        final SearchablePreferenceScreen rootOfPartialGraph = Graphs.getRootNode(srcGraph).orElseThrow();
+        final SearchablePreferenceScreen rootOfSrcGraph = Graphs.getRootNode(srcGraph).orElseThrow();
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
                 SearchablePreferenceScreenNodeReplacer.replaceNode(
                         dstGraphAndMergePoint.graph(),
                         dstGraphAndMergePoint.mergePointOfGraph(),
-                        rootOfPartialGraph);
+                        rootOfSrcGraph);
 
         // 3. Teilbäume umhängen.
         // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
-        extracted(dstGraphAndMergePoint, new GraphAndMergePoint(mergedGraph, rootOfPartialGraph));
+        final GraphAndMergePoint dst = new GraphAndMergePoint(mergedGraph, rootOfSrcGraph);
+        extracted(dstGraphAndMergePoint, dst);
         // Kinder aus dem Teilgraphen an die neue Wurzel hängen.
-        extracted(new GraphAndMergePoint(srcGraph, rootOfPartialGraph), new GraphAndMergePoint(mergedGraph, rootOfPartialGraph));
+        extracted(new GraphAndMergePoint(srcGraph, rootOfSrcGraph), dst);
         return mergedGraph;
     }
 
