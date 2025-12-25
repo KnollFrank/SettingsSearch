@@ -40,20 +40,18 @@ public class GraphMerger {
     }
 
     private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSubtreeIntoGraphAtMergePoint(
-            final Subtree src,
-            final GraphAndMergePoint dst) {
+            final Subtree subtree,
+            final GraphAndMergePoint graphAtMergePoint) {
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
                 SearchablePreferenceScreenNodeReplacer.replaceNode(
-                        dst.graph(),
-                        dst.mergePointOfGraph(),
-                        src.subtreeRoot());
-
-        // 3. Teilbäume umhängen.
+                        graphAtMergePoint.graph(),
+                        graphAtMergePoint.mergePointOfGraph(),
+                        subtree.subtreeRoot());
+        final GraphAndMergePoint mergedGraphAndMergePoint = new GraphAndMergePoint(mergedGraph, subtree.subtreeRoot());
         // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
-        final GraphAndMergePoint mergedGraphAndMergePoint = new GraphAndMergePoint(mergedGraph, src.subtreeRoot());
-        copySubtreesOfSrcToDst(dst, mergedGraphAndMergePoint);
+        copySubtreesOfSrcToDst(graphAtMergePoint, mergedGraphAndMergePoint);
         // Kinder aus dem Teilgraphen an die neue Wurzel hängen.
-        copySubtreesOfSrcToDst(new GraphAndMergePoint(src.graph(), src.subtreeRoot()), mergedGraphAndMergePoint);
+        copySubtreesOfSrcToDst(new GraphAndMergePoint(subtree.graph(), subtree.subtreeRoot()), mergedGraphAndMergePoint);
         return mergedGraphAndMergePoint.graph();
     }
 
