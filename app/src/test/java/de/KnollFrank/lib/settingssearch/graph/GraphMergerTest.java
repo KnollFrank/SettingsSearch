@@ -48,17 +48,17 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 public class GraphMergerTest {
 
     @Test
-    public void test_mergeSrcGraphWithDstGraph_rootNode() {
+    public void test_mergeSrcGraphIntoDstGraph_rootNode() {
         final var rootOfGraph = FragmentWithPreferenceCategory.class;
-        shouldMergeSrcGraphWithDstGraph(
+        shouldMergeSrcGraphIntoDstGraph(
                 rootOfGraph,
                 "de-" + rootOfGraph.getName());
     }
 
     @Test
-    public void test_mergeSrcGraphWithDstGraph_innerNode() {
+    public void test_mergeSrcGraphIntoDstGraph_innerNode() {
         final var rootOfGraph = RootFragmentConnectedToFragmentWithPreferenceCategory.class;
-        shouldMergeSrcGraphWithDstGraph(
+        shouldMergeSrcGraphIntoDstGraph(
                 rootOfGraph,
                 String.format(
                         "de-%s Bundle[{some preference key: %s -> %s=true}]",
@@ -67,7 +67,7 @@ public class GraphMergerTest {
                         FragmentWithPreferenceCategory.class.getName()));
     }
 
-    private static void shouldMergeSrcGraphWithDstGraph(final Class<? extends PreferenceFragmentCompat> rootOfGraph,
+    private static void shouldMergeSrcGraphIntoDstGraph(final Class<? extends PreferenceFragmentCompat> rootOfGraph,
                                                         final String idOfRootOfPartialPojoGraph) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
@@ -88,7 +88,7 @@ public class GraphMergerTest {
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
-                        graphMerger.mergeSrcGraphWithDstGraph(
+                        graphMerger.mergeSrcGraphIntoDstGraph(
                                 transformToPojoGraph(partialEntityGraph),
                                 new GraphMerger.GraphAndMergePoint(pojoGraph, mergePointOfGraph));
 

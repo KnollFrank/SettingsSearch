@@ -15,7 +15,7 @@ public class GraphMerger {
             SearchablePreferenceScreen mergePointOfGraph) {
     }
 
-    public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSrcGraphWithDstGraph(
+    public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSrcGraphIntoDstGraph(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> srcGraph,
             final GraphAndMergePoint dstGraphAndMergePoint) {
         final SearchablePreferenceScreen rootOfPartialGraph = Graphs.getRootNode(srcGraph).orElseThrow();
