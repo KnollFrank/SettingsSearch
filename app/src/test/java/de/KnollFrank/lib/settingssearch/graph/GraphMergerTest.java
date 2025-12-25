@@ -72,7 +72,6 @@ public class GraphMergerTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final GraphMerger graphMerger = new GraphMerger();
                 final var pojoGraph = transformToPojoGraph(createEntityGraph(rootOfGraph, List.of(), activity));
                 final List<String> preferenceKeys = List.of("key1");
                 final SearchablePreferenceScreen mergePointOfGraph =
@@ -88,7 +87,7 @@ public class GraphMergerTest {
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
-                        graphMerger.mergeSrcGraphIntoDstGraph(
+                        GraphMerger.mergeSrcGraphIntoDstGraph(
                                 transformToPojoGraph(partialEntityGraph),
                                 new GraphMerger.GraphAndMergePoint(pojoGraph, mergePointOfGraph));
 
