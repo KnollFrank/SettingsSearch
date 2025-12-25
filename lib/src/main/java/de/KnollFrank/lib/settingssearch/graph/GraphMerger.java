@@ -1,92 +1,99 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import static de.KnollFrank.lib.settingssearch.common.graph.PredecessorOfPreferencesOfNodeSetter.setPredecessorOfPreferencesOfNode;
-
 import org.jgrapht.Graph;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenNodeReplacer;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class GraphMerger {
 
-    // FK-TODO: refactor
-    public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergePartialGraphIntoGraph(
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> partialGraph,
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-            final SearchablePreferenceScreen mergePointOfGraph) {
-        final SearchablePreferenceScreen rootOfPartialGraph = Graphs.getRootNode(partialGraph).orElseThrow();
+    public record GraphAndMergePoint(
+            Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+            SearchablePreferenceScreen mergePointOfGraph) {
+    }
 
-        // 2. Struktureller Austausch im Baum.
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> result =
+    public Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSrcGraphWithDstGraph(
+            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> srcGraph,
+            final GraphAndMergePoint dstGraphAndMergePoint) {
+        final SearchablePreferenceScreen rootOfPartialGraph = Graphs.getRootNode(srcGraph).orElseThrow();
+        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
                 SearchablePreferenceScreenNodeReplacer.replaceNode(
-                        graph,
-                        mergePointOfGraph,
+                        dstGraphAndMergePoint.graph(),
+                        dstGraphAndMergePoint.mergePointOfGraph(),
                         rootOfPartialGraph);
 
         // 3. Teilbäume umhängen.
         // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
-        for (final SearchablePreferenceEdge edge : graph.outgoingEdgesOf(mergePointOfGraph)) {
-            attachSubtree(graph, edge, result, rootOfPartialGraph);
-        }
+        extracted(dstGraphAndMergePoint, new GraphAndMergePoint(mergedGraph, rootOfPartialGraph));
         // Kinder aus dem Teilgraphen an die neue Wurzel hängen.
-        for (final SearchablePreferenceEdge edge : partialGraph.outgoingEdgesOf(rootOfPartialGraph)) {
-            attachSubtree(partialGraph, edge, result, rootOfPartialGraph);
-        }
-        // 4. Globaler Refresh der internen Referenzen (predecessorId).
-        // refreshAllPredecessors(result);
-        return result;
+        extracted(new GraphAndMergePoint(srcGraph, rootOfPartialGraph), new GraphAndMergePoint(mergedGraph, rootOfPartialGraph));
+        return mergedGraph;
     }
 
-    private void refreshAllPredecessors(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        new BreadthFirstIterator<>(graph).forEachRemaining(node -> setPredecessorOfPreferencesOfNode(graph, node));
+    private record GraphAndEdge(Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+                                SearchablePreferenceEdge edge) {
     }
 
-    private void attachSubtree(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> srcGraph,
-                               final SearchablePreferenceEdge edgeToAttach,
-                               final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> dstGraph,
-                               final SearchablePreferenceScreen attachmentPoint) {
-
-        final SearchablePreferenceScreen subtreeRoot = srcGraph.getEdgeTarget(edgeToAttach);
-
-        // Füge Knoten des Subtrees hinzu, außer sie existieren bereits (Identität über equals/id).
-        new BreadthFirstIterator<>(srcGraph, subtreeRoot).forEachRemaining(node -> {
-            if (!dstGraph.containsVertex(node)) {
-                dstGraph.addVertex(node);
-            }
-        });
-
-        // Kanten kopieren
-        for (final SearchablePreferenceEdge edge : srcGraph.edgeSet()) {
-            final SearchablePreferenceScreen source = srcGraph.getEdgeSource(edge);
-            final SearchablePreferenceScreen target = srcGraph.getEdgeTarget(edge);
-
-            // Wir kopieren nur Kanten, deren Knoten im Zielgraphen sind und die noch nicht existieren.
-            if (dstGraph.containsVertex(source) && dstGraph.containsVertex(target) && !dstGraph.containsEdge(source, target)) {
-                dstGraph.addEdge(source, target, edge/*createEdgeFromContext(source, edge)*/);
-            }
-        }
-
-        // Die verbindende Kante zur neuen Wurzel herstellen.
-        if (!dstGraph.containsEdge(attachmentPoint, subtreeRoot)) {
-            dstGraph.addEdge(attachmentPoint, subtreeRoot, edgeToAttach/*createEdgeFromContext(attachmentPoint, edgeToAttach)*/);
+    private void extracted(final GraphAndMergePoint src, final GraphAndMergePoint dst) {
+        for (final SearchablePreferenceEdge srcEdge : src.graph().outgoingEdgesOf(src.mergePointOfGraph())) {
+            attachSubtree(new GraphAndEdge(src.graph(), srcEdge), dst);
         }
     }
 
-    private SearchablePreferenceEdge createEdgeFromContext(final SearchablePreferenceScreen sourceNode,
-                                                           final SearchablePreferenceEdge template) {
-        // WICHTIG: Die Kante muss die Preference-Instanz nutzen, die physikalisch im Parent-Knoten liegt.
-        final String key = template.preference.getKey();
-        final SearchablePreference preferenceInContext = sourceNode
-                .allPreferencesOfPreferenceHierarchy()
-                .stream()
-                .filter(p -> p.getKey().equals(key))
-                .findFirst()
-                .orElse(template.preference);
+    private void attachSubtree(final GraphAndEdge src, final GraphAndMergePoint dst) {
+        final Subtree srcSubtree =
+                new Subtree(
+                        src.graph(),
+                        src.graph().getEdgeTarget(src.edge()));
+        copyNodesAndEdges(srcSubtree, dst);
+        addEdgeFromMergePointToSubtree(dst, src, srcSubtree);
+    }
 
-        return new SearchablePreferenceEdge(preferenceInContext);
+    private static void addEdgeFromMergePointToSubtree(final GraphAndMergePoint mergePoint,
+                                                       final GraphAndEdge src,
+                                                       final Subtree subtree) {
+        if (!mergePoint.graph().containsEdge(mergePoint.mergePointOfGraph(), subtree.subtreeRoot())) {
+            mergePoint.graph().addEdge(mergePoint.mergePointOfGraph(), subtree.subtreeRoot(), src.edge());
+        }
+    }
+
+    private record Subtree(Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+                           SearchablePreferenceScreen subtreeRoot) {
+    }
+
+    private static void copyNodesAndEdges(final Subtree src, final GraphAndMergePoint dst) {
+        copyNodesOfSubtreeToGraph(src, dst.graph());
+        copyEdges(src.graph(), dst.graph());
+    }
+
+    private static void copyNodesOfSubtreeToGraph(final Subtree src,
+                                                  final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> dst) {
+        new BreadthFirstIterator<>(src.graph(), src.subtreeRoot())
+                .forEachRemaining(
+                        node -> {
+                            if (!dst.containsVertex(node)) {
+                                dst.addVertex(node);
+                            }
+                        });
+    }
+
+    private static void copyEdges(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> src,
+                                  final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> dst) {
+        for (final SearchablePreferenceEdge edge : src.edgeSet()) {
+            copyEdge(edge, src, dst);
+        }
+    }
+
+    private static void copyEdge(final SearchablePreferenceEdge edge,
+                                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> src,
+                                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> dst) {
+        final SearchablePreferenceScreen sourceNode = src.getEdgeSource(edge);
+        final SearchablePreferenceScreen targetNode = src.getEdgeTarget(edge);
+        if (dst.containsVertex(sourceNode) && dst.containsVertex(targetNode) && !dst.containsEdge(sourceNode, targetNode)) {
+            dst.addEdge(sourceNode, targetNode, edge);
+        }
     }
 }

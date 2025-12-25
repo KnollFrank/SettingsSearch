@@ -48,17 +48,17 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 public class GraphMergerTest {
 
     @Test
-    public void test_mergePartialGraphIntoGraph_rootNode() {
+    public void test_mergeSrcGraphWithDstGraph_rootNode() {
         final var rootOfGraph = FragmentWithPreferenceCategory.class;
-        shouldMergePartialGraphIntoGraph(
+        shouldMergeSrcGraphWithDstGraph(
                 rootOfGraph,
                 "de-" + rootOfGraph.getName());
     }
 
     @Test
-    public void test_mergePartialGraphIntoGraph_innerNode() {
+    public void test_mergeSrcGraphWithDstGraph_innerNode() {
         final var rootOfGraph = RootFragmentConnectedToFragmentWithPreferenceCategory.class;
-        shouldMergePartialGraphIntoGraph(
+        shouldMergeSrcGraphWithDstGraph(
                 rootOfGraph,
                 String.format(
                         "de-%s Bundle[{some preference key: %s -> %s=true}]",
@@ -67,8 +67,8 @@ public class GraphMergerTest {
                         FragmentWithPreferenceCategory.class.getName()));
     }
 
-    private static void shouldMergePartialGraphIntoGraph(final Class<? extends PreferenceFragmentCompat> rootOfGraph,
-                                                         final String idOfRootOfPartialPojoGraph) {
+    private static void shouldMergeSrcGraphWithDstGraph(final Class<? extends PreferenceFragmentCompat> rootOfGraph,
+                                                        final String idOfRootOfPartialPojoGraph) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -88,10 +88,9 @@ public class GraphMergerTest {
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
-                        graphMerger.mergePartialGraphIntoGraph(
+                        graphMerger.mergeSrcGraphWithDstGraph(
                                 transformToPojoGraph(partialEntityGraph),
-                                pojoGraph,
-                                mergePointOfGraph);
+                                new GraphMerger.GraphAndMergePoint(pojoGraph, mergePointOfGraph));
 
                 // Then
                 final var mergedGraphExpected = transformToPojoGraph(createEntityGraph(rootOfGraph, preferenceKeys, activity));
