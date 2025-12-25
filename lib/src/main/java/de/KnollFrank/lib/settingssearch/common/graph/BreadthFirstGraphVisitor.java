@@ -11,9 +11,7 @@ public abstract class BreadthFirstGraphVisitor<V, E> {
         final BreadthFirstIterator<V, E> iterator =
                 new BreadthFirstIterator<>(
                         graph,
-                        Graphs
-                                .getRootNode(graph)
-                                .orElseThrow());
+                        Graphs.getRootNode(graph).orElseThrow());
         while (iterator.hasNext()) {
             final V node = iterator.next();
             Optional
