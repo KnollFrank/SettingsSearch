@@ -48,17 +48,17 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 public class GraphMergerTest {
 
     @Test
-    public void test_mergeSrcGraphIntoDstGraph_rootNode() {
+    public void test_mergeSrcGraphIntoDstGraphAtMergePoint_rootNode() {
         final var rootOfGraph = FragmentWithPreferenceCategory.class;
-        shouldMergeSrcGraphIntoDstGraph(
+        shouldMergeSrcGraphIntoDstGraphAtMergePoint(
                 rootOfGraph,
                 "de-" + rootOfGraph.getName());
     }
 
     @Test
-    public void test_mergeSrcGraphIntoDstGraph_innerNode() {
+    public void test_mergeSrcGraphIntoDstGraphAtMergePoint_innerNode() {
         final var rootOfGraph = RootFragmentConnectedToFragmentWithPreferenceCategory.class;
-        shouldMergeSrcGraphIntoDstGraph(
+        shouldMergeSrcGraphIntoDstGraphAtMergePoint(
                 rootOfGraph,
                 String.format(
                         "de-%s Bundle[{some preference key: %s -> %s=true}]",
@@ -67,8 +67,8 @@ public class GraphMergerTest {
                         FragmentWithPreferenceCategory.class.getName()));
     }
 
-    private static void shouldMergeSrcGraphIntoDstGraph(final Class<? extends PreferenceFragmentCompat> rootOfGraph,
-                                                        final String idOfRootOfPartialPojoGraph) {
+    private static void shouldMergeSrcGraphIntoDstGraphAtMergePoint(final Class<? extends PreferenceFragmentCompat> rootOfGraph,
+                                                                    final String idOfRootOfPartialPojoGraph) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -87,7 +87,7 @@ public class GraphMergerTest {
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
-                        GraphMerger.mergeSrcGraphIntoDstGraph(
+                        GraphMerger.mergeSrcGraphIntoDstGraphAtMergePoint(
                                 transformToPojoGraph(partialEntityGraph),
                                 new GraphMerger.GraphAndMergePoint(pojoGraph, mergePointOfGraph));
 

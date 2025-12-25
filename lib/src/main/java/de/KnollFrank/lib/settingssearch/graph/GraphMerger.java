@@ -21,7 +21,7 @@ public class GraphMerger {
         }
     }
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSrcGraphIntoDstGraph(
+    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSrcGraphIntoDstGraphAtMergePoint(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> srcGraph,
             final GraphAndMergePoint dstGraphAndMergePoint) {
         return mergeSubtreeIntoGraphAtMergePoint(
