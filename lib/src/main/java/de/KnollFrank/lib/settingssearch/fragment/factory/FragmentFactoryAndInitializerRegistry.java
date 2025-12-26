@@ -26,13 +26,11 @@ public class FragmentFactoryAndInitializerRegistry {
                                                                    final Optional<PreferenceWithHost> src,
                                                                    final Context context,
                                                                    final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
-        return (T) registry.computeIfAbsent(
-                ArgumentsFactory.createArguments(fragmentClass, src),
-                arguments ->
-                        delegate.instantiateAndInitializeFragment(
-                                fragmentClass,
-                                src,
-                                context,
-                                instantiateAndInitializeFragment));
+        final Arguments arguments = ArgumentsFactory.createArguments(fragmentClass, src);
+        if (!registry.containsKey(arguments)) {
+            final T fragment = delegate.instantiateAndInitializeFragment(fragmentClass, src, context, instantiateAndInitializeFragment);
+            registry.put(arguments, fragment);
+        }
+        return (T) registry.get(arguments);
     }
 }
