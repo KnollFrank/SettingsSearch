@@ -4,9 +4,9 @@ import android.content.Context;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 public class FragmentFactoryAndInitializerRegistry {
 
     private final FragmentFactoryAndInitializer delegate;
-    private final Map<Arguments, Fragment> registry = new HashMap<>();
+    private final Map<Arguments, Fragment> registry = new ConcurrentHashMap<>();
 
     public FragmentFactoryAndInitializerRegistry(final FragmentFactoryAndInitializer delegate) {
         this.delegate = delegate;
