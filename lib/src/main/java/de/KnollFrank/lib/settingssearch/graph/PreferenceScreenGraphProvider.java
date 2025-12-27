@@ -54,7 +54,10 @@ class PreferenceScreenGraphProvider {
                 .filter(preferenceAndChildEntry -> {
                     final Preference preference = preferenceAndChildEntry.getKey();
                     final PreferenceScreenWithHost child = preferenceAndChildEntry.getValue();
-                    return addEdgeToGraphPredicate.shallAddEdgeToGraph(new PreferenceEdge(preference), root, child);
+                    return addEdgeToGraphPredicate.shallAddEdgeToGraph(
+                            new PreferenceEdge(preference),
+                            root,
+                            child);
                 })
                 .collect(
                         Collectors.toMap(
