@@ -56,17 +56,10 @@ public class Maps {
                 .flatMap(Set::stream);
     }
 
-    // FK-TODO: implement unsing mapKeysAndValues()
     public static <Key, Value, ValueMapped> Map<Key, ValueMapped> mapValues(
             final Map<Key, Value> map,
             final Function<Value, ValueMapped> valueMapper) {
-        return map
-                .entrySet()
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                Entry::getKey,
-                                entry -> valueMapper.apply(entry.getValue())));
+        return mapKeysAndValues(map, Function.identity(), valueMapper);
     }
 
     public static <K, V> Map<K, V> mapEachKeyToValue(final Set<K> keys, final V value) {
