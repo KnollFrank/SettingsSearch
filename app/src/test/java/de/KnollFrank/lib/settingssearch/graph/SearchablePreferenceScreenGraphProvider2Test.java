@@ -37,8 +37,8 @@ public class SearchablePreferenceScreenGraphProvider2Test {
         // Given
         final var result =
                 createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
-                        activity,
-                        FragmentConnectedToNonPreferenceFragment.class);
+                        FragmentConnectedToNonPreferenceFragment.class,
+                        activity);
 
         // When
         final Set<SearchablePreferenceScreen> preferenceScreens =

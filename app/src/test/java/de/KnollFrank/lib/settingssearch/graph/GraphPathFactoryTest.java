@@ -110,8 +110,8 @@ public class GraphPathFactoryTest {
             final Class<? extends Fragment> root) {
         final var result =
                 createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
-                        fragmentActivity,
-                        root);
+                        root,
+                        fragmentActivity);
         return result
                 .searchablePreferenceScreenGraphProvider()
                 .getSearchablePreferenceScreenGraph(

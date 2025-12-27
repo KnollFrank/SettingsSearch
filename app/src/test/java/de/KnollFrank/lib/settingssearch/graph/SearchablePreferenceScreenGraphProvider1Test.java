@@ -55,8 +55,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 // Given
                 final var result =
                         createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
-                                activity,
-                                Fragment1ConnectedToFragment2AndFragment4.class);
+                                Fragment1ConnectedToFragment2AndFragment4.class,
+                                activity);
 
                 // When
                 final Set<SearchablePreferenceScreen> preferenceScreens =
@@ -125,8 +125,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 // Given
                 final var result =
                         createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
-                                activity,
-                                Fragment1ConnectedToFragment2AndFragment4.class);
+                                Fragment1ConnectedToFragment2AndFragment4.class,
+                                activity);
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
@@ -207,10 +207,9 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 .collect(MoreCollectors.onlyElement());
     }
 
-    // FK-TODO: switch order of arguments
     public static SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
-            final FragmentActivity activity,
-            final Class<? extends Fragment> root) {
+            final Class<? extends Fragment> root,
+            final FragmentActivity activity) {
         return createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
                 root,
                 (sourceOfEdge, targetOfEdge, edge) -> true,
