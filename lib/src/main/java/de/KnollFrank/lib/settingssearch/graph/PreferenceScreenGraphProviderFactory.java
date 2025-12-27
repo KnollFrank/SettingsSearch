@@ -12,6 +12,7 @@ public class PreferenceScreenGraphProviderFactory {
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
+            final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
             final Context context,
             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
         return new PreferenceScreenGraphProvider(
@@ -20,6 +21,7 @@ public class PreferenceScreenGraphProviderFactory {
                         preferenceScreenWithHostProvider,
                         preferenceFragmentConnected2PreferenceProvider,
                         rootPreferenceFragmentOfActivityProvider,
-                        context));
+                        context),
+                addEdgeToGraphPredicate);
     }
 }

@@ -42,6 +42,7 @@ public class PojoGraphTestFactory {
                         getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
+                        (sourceOfEdge, targetOfEdge, edge) -> true,
                         context,
                         preferenceScreenWithHost -> {
                         })

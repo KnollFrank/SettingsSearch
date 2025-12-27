@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory;
+import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
@@ -77,6 +78,47 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
     }
 
     @Test
+    public void test_getSearchablePreferenceScreenGraph_addEdgePredicate() {
+        try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
+            scenario.onActivity(activity -> {
+                // Given
+                final var result =
+                        createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
+                                Fragment1ConnectedToFragment2AndFragment4.class,
+                                new AddEdgeToGraphPredicate() {
+
+                                    @Override
+                                    public boolean shallAddEdgeToGraph(final PreferenceScreenWithHost sourceOfEdge,
+                                                                       final PreferenceScreenWithHost targetOfEdge,
+                                                                       final PreferenceEdge edge) {
+                                        return !shallNotAddEdgeToGraph(sourceOfEdge, targetOfEdge);
+                                    }
+
+                                    private boolean shallNotAddEdgeToGraph(final PreferenceScreenWithHost sourceOfEdge, final PreferenceScreenWithHost targetOfEdge) {
+                                        return sourceOfEdge.host() instanceof Fragment1ConnectedToFragment2AndFragment4 &&
+                                                targetOfEdge.host() instanceof Fragment2ConnectedToFragment3ConnectedToFragment4;
+                                    }
+                                },
+                                activity);
+
+                // When
+                final Set<SearchablePreferenceScreen> preferenceScreens =
+                        result
+                                .searchablePreferenceScreenGraphProvider()
+                                .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
+                                .vertexSet();
+
+                // Then
+                MatcherAssert.assertThat(
+                        preferenceScreens,
+                        Matchers.containsInAnyOrder(
+                                getPreferenceScreenByTitle(preferenceScreens, "first screen"),
+                                getPreferenceScreenByTitle(preferenceScreens, "fourth screen")));
+            });
+        }
+    }
+
+    @Test
     public void shouldGetPreferencePath() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
@@ -115,9 +157,10 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
         }
     }
 
-    public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
+    private static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
             final FragmentActivity activity,
-            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
+            final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
+            final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
         return new SearchablePreferenceScreenGraphProvider(
                 preferenceScreenGraph -> {
                 },
@@ -134,6 +177,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
+                        addEdgeToGraphPredicate,
                         activity,
                         preferenceScreenWithHost -> {
                         }),
@@ -163,14 +207,26 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 .collect(MoreCollectors.onlyElement());
     }
 
+    // FK-TODO: switch order of arguments
     public static SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
             final FragmentActivity activity,
             final Class<? extends Fragment> root) {
+        return createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
+                root,
+                (sourceOfEdge, targetOfEdge, edge) -> true,
+                activity);
+    }
+
+    private static SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
+            final Class<? extends Fragment> root,
+            final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
+            final FragmentActivity activity) {
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider = createPreferenceScreenWithHostProvider(activity);
         return new SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(
                 createSearchablePreferenceScreenGraphProvider(
                         activity,
-                        preferenceScreenWithHostProvider),
+                        preferenceScreenWithHostProvider,
+                        addEdgeToGraphPredicate),
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
                                 root,

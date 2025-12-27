@@ -119,6 +119,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         activityClass -> Optional.empty(),
+                        (sourceOfEdge, targetOfEdge, edge) -> true,
                         fragmentActivity,
                         preferenceScreenWithHost -> {
                         }),

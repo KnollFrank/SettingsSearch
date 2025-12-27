@@ -70,6 +70,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                                 searchDatabaseConfig.principalAndProxyProvider),
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
+                        (sourceOfEdge, targetOfEdge, edge) -> true,
                         context,
                         preferenceScreenWithHost -> {
                         }),

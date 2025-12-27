@@ -9,11 +9,14 @@ class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
     private final ConnectedPreferenceScreenByPreferenceProvider connectedPreferenceScreenByPreferenceProvider;
+    private final AddEdgeToGraphPredicate addEdgeToGraphPredicate;
 
     public PreferenceScreenGraphProvider(final PreferenceScreenGraphListener preferenceScreenGraphListener,
-                                         final ConnectedPreferenceScreenByPreferenceProvider connectedPreferenceScreenByPreferenceProvider) {
+                                         final ConnectedPreferenceScreenByPreferenceProvider connectedPreferenceScreenByPreferenceProvider,
+                                         final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
         this.preferenceScreenGraphListener = preferenceScreenGraphListener;
         this.connectedPreferenceScreenByPreferenceProvider = connectedPreferenceScreenByPreferenceProvider;
+        this.addEdgeToGraphPredicate = addEdgeToGraphPredicate;
     }
 
     public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
@@ -30,11 +33,14 @@ class PreferenceScreenGraphProvider {
         preferenceScreenGraph.addVertex(root);
         connectedPreferenceScreenByPreferenceProvider
                 .getConnectedPreferenceScreenByPreference(root)
+                // FK-TODO: addEdgeToGraphPredicate hier als filter verwenden
                 .forEach(
                         (preference, child) -> {
-                            buildPreferenceScreenGraph(child, preferenceScreenGraph);
-                            preferenceScreenGraph.addVertex(child);
-                            preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(preference));
+                            if (addEdgeToGraphPredicate.shallAddEdgeToGraph(root, child, new PreferenceEdge(preference))) {
+                                buildPreferenceScreenGraph(child, preferenceScreenGraph);
+                                preferenceScreenGraph.addVertex(child);
+                                preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(preference));
+                            }
                         });
     }
 }
