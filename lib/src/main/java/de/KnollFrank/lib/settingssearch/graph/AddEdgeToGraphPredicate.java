@@ -6,5 +6,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 @FunctionalInterface
 public interface AddEdgeToGraphPredicate {
 
-    boolean shallAddEdgeToGraph(PreferenceScreenWithHost sourceOfEdge, PreferenceScreenWithHost targetOfEdge, PreferenceEdge edge);
+    boolean shallAddEdgeToGraph(PreferenceEdge edge,
+                                PreferenceScreenWithHost sourceNodeOfEdge,
+                                PreferenceScreenWithHost targetNodeOfEdge);
 }

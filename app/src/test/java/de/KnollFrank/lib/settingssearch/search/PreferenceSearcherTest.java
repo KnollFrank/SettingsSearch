@@ -824,7 +824,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         return Optional.empty();
                                     }
                                 },
-                                (sourceOfEdge, targetOfEdge, edge) -> true,
+                                (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
                                 fragmentActivity,
                                 preferenceScreenWithHost -> {
                                 }),

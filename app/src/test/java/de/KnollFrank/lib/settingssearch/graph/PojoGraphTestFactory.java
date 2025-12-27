@@ -37,12 +37,24 @@ public class PojoGraphTestFactory {
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
+        return createEntityPreferenceScreenGraphRootedAt(
+                root,
+                instantiateAndInitializeFragment,
+                (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
+                context);
+    }
+
+    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityPreferenceScreenGraphRootedAt(
+            final PreferenceScreenWithHost root,
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
+            final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
+            final Context context) {
         return PreferenceScreenGraphProviderFactory
                 .createPreferenceScreenGraphProvider(
                         getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
-                        (sourceOfEdge, targetOfEdge, edge) -> true,
+                        addEdgeToGraphPredicate,
                         context,
                         preferenceScreenWithHost -> {
                         })

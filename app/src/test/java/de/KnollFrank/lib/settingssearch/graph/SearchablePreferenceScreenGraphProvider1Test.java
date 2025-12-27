@@ -88,15 +88,16 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                                 new AddEdgeToGraphPredicate() {
 
                                     @Override
-                                    public boolean shallAddEdgeToGraph(final PreferenceScreenWithHost sourceOfEdge,
-                                                                       final PreferenceScreenWithHost targetOfEdge,
-                                                                       final PreferenceEdge edge) {
-                                        return !shallNotAddEdgeToGraph(sourceOfEdge, targetOfEdge);
+                                    public boolean shallAddEdgeToGraph(final PreferenceEdge edge,
+                                                                       final PreferenceScreenWithHost sourceNodeOfEdge,
+                                                                       final PreferenceScreenWithHost targetNodeOfEdge) {
+                                        return !shallNotAddEdgeToGraph(sourceNodeOfEdge, targetNodeOfEdge);
                                     }
 
-                                    private boolean shallNotAddEdgeToGraph(final PreferenceScreenWithHost sourceOfEdge, final PreferenceScreenWithHost targetOfEdge) {
-                                        return sourceOfEdge.host() instanceof Fragment1ConnectedToFragment2AndFragment4 &&
-                                                targetOfEdge.host() instanceof Fragment2ConnectedToFragment3ConnectedToFragment4;
+                                    private boolean shallNotAddEdgeToGraph(final PreferenceScreenWithHost sourceNodeOfEdge,
+                                                                           final PreferenceScreenWithHost targetNodeOfEdge) {
+                                        return sourceNodeOfEdge.host() instanceof Fragment1ConnectedToFragment2AndFragment4 &&
+                                                targetNodeOfEdge.host() instanceof Fragment2ConnectedToFragment3ConnectedToFragment4;
                                     }
                                 },
                                 activity);
@@ -212,7 +213,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
             final FragmentActivity activity) {
         return createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
                 root,
-                (sourceOfEdge, targetOfEdge, edge) -> true,
+                (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
                 activity);
     }
 

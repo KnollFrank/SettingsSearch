@@ -124,22 +124,24 @@ public class GraphMergerTest {
             final FragmentActivity activity) {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
-        final Graph<PreferenceScreenWithHost, PreferenceEdge> partialEntityGraph =
-                PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
-                        new GraphPathFactory(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
-                                .instantiate(
-                                        Graphs.getPathFromRootNodeToTarget(
-                                                pojoGraph,
-                                                rootOfPartialPojoGraph))
-                                .getEndVertex(),
-                        instantiateAndInitializeFragment,
-                        activity);
-        partialEntityGraph.removeVertex(
-                partialEntityGraph.getEdgeTarget(
-                        getPreferenceEdgeHavingKey(
-                                partialEntityGraph,
-                                "some preference key")));
-        return partialEntityGraph;
+        return PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
+                new GraphPathFactory(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
+                        .instantiate(
+                                Graphs.getPathFromRootNodeToTarget(
+                                        pojoGraph,
+                                        rootOfPartialPojoGraph))
+                        .getEndVertex(),
+                instantiateAndInitializeFragment,
+                new AddEdgeToGraphPredicate() {
+
+                    @Override
+                    public boolean shallAddEdgeToGraph(final PreferenceEdge edge,
+                                                       final PreferenceScreenWithHost sourceNodeOfEdge,
+                                                       final PreferenceScreenWithHost targetNodeOfEdge) {
+                        return !"some preference key".equals(edge.preference.getKey());
+                    }
+                },
+                activity);
     }
 
     public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
