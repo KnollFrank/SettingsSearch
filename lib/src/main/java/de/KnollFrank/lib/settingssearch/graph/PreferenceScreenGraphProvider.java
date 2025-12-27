@@ -1,6 +1,11 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import androidx.preference.Preference;
+
 import org.jgrapht.Graph;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
@@ -31,16 +36,29 @@ class PreferenceScreenGraphProvider {
             return;
         }
         preferenceScreenGraph.addVertex(root);
-        connectedPreferenceScreenByPreferenceProvider
+        this
                 .getConnectedPreferenceScreenByPreference(root)
-                // FK-TODO: addEdgeToGraphPredicate hier als filter verwenden
                 .forEach(
                         (preference, child) -> {
-                            if (addEdgeToGraphPredicate.shallAddEdgeToGraph(root, child, new PreferenceEdge(preference))) {
-                                buildPreferenceScreenGraph(child, preferenceScreenGraph);
-                                preferenceScreenGraph.addVertex(child);
-                                preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(preference));
-                            }
+                            buildPreferenceScreenGraph(child, preferenceScreenGraph);
+                            preferenceScreenGraph.addVertex(child);
+                            preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(preference));
                         });
+    }
+
+    private Map<Preference, PreferenceScreenWithHost> getConnectedPreferenceScreenByPreference(final PreferenceScreenWithHost root) {
+        return connectedPreferenceScreenByPreferenceProvider
+                .getConnectedPreferenceScreenByPreference(root)
+                .entrySet()
+                .stream()
+                .filter(preferenceAndChildEntry -> {
+                    final Preference preference = preferenceAndChildEntry.getKey();
+                    final PreferenceScreenWithHost child = preferenceAndChildEntry.getValue();
+                    return addEdgeToGraphPredicate.shallAddEdgeToGraph(root, child, new PreferenceEdge(preference));
+                })
+                .collect(
+                        Collectors.toMap(
+                                Map.Entry::getKey,
+                                Map.Entry::getValue));
     }
 }
