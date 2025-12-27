@@ -57,10 +57,9 @@ class ConnectedPreferenceScreenByPreferenceProvider {
                 .getConnectedPreferenceFragment(preference, hostOfPreference)
                 .flatMap(
                         fragmentConnectedToPreference ->
-                                preferenceScreenWithHostProvider
-                                        .getPreferenceScreenWithHostOfFragment(
-                                                fragmentConnectedToPreference,
-                                                Optional.of(new PreferenceWithHost(preference, hostOfPreference))));
+                                preferenceScreenWithHostProvider.getPreferenceScreenWithHostOfFragment(
+                                        fragmentConnectedToPreference,
+                                        Optional.of(new PreferenceWithHost(preference, hostOfPreference))));
     }
 
     private Optional<Class<? extends Fragment>> getConnectedPreferenceFragment(final Preference preference, final PreferenceFragmentCompat hostOfPreference) {
