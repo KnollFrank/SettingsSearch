@@ -150,16 +150,6 @@ public class GraphMergerTest {
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 
-    private static PreferenceEdge getPreferenceEdgeHavingKey(final Graph<PreferenceScreenWithHost, PreferenceEdge> graph,
-                                                             final String keyOfPreferenceOnEdge) {
-        return graph
-                .edgeSet()
-                .stream()
-                .filter(edge -> keyOfPreferenceOnEdge.equals(edge.preference.getKey()))
-                .findFirst()
-                .orElseThrow();
-    }
-
     private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformToPojoGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph) {
         return removeMapFromPojoNodes(
                 createGraph2POJOGraphTransformer().transformGraph2POJOGraph(
