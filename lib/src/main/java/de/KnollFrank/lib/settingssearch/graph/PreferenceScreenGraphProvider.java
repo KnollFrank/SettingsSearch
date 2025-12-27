@@ -5,10 +5,10 @@ import androidx.preference.Preference;
 import org.jgrapht.Graph;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
+import de.KnollFrank.lib.settingssearch.common.Maps;
 
 class PreferenceScreenGraphProvider {
 
@@ -47,21 +47,12 @@ class PreferenceScreenGraphProvider {
     }
 
     private Map<Preference, PreferenceScreenWithHost> getConnectedPreferenceScreenByPreference(final PreferenceScreenWithHost root) {
-        return connectedPreferenceScreenByPreferenceProvider
-                .getConnectedPreferenceScreenByPreference(root)
-                .entrySet()
-                .stream()
-                .filter(preferenceAndChildEntry -> {
-                    final Preference preference = preferenceAndChildEntry.getKey();
-                    final PreferenceScreenWithHost child = preferenceAndChildEntry.getValue();
-                    return addEdgeToGraphPredicate.shallAddEdgeToGraph(
-                            new PreferenceEdge(preference),
-                            root,
-                            child);
-                })
-                .collect(
-                        Collectors.toMap(
-                                Map.Entry::getKey,
-                                Map.Entry::getValue));
+        return Maps.filter(
+                connectedPreferenceScreenByPreferenceProvider.getConnectedPreferenceScreenByPreference(root),
+                (final Preference preference, final PreferenceScreenWithHost child) ->
+                        addEdgeToGraphPredicate.shallAddEdgeToGraph(
+                                new PreferenceEdge(preference),
+                                root,
+                                child));
     }
 }

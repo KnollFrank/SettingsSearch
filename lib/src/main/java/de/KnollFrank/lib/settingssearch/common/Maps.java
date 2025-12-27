@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -55,6 +56,7 @@ public class Maps {
                 .flatMap(Set::stream);
     }
 
+    // FK-TODO: implement unsing mapKeysAndValues()
     public static <Key, Value, ValueMapped> Map<Key, ValueMapped> mapValues(
             final Map<Key, Value> map,
             final Function<Value, ValueMapped> valueMapper) {
@@ -87,5 +89,16 @@ public class Maps {
                         Collectors.toMap(
                                 entry -> keyMapper.apply(entry.getKey()),
                                 entry -> valueMapper.apply(entry.getValue())));
+    }
+
+    public static <K, V> Map<K, V> filter(final Map<K, V> map, final BiPredicate<K, V> predicate) {
+        return map
+                .entrySet()
+                .stream()
+                .filter(entry -> predicate.test(entry.getKey(), entry.getValue()))
+                .collect(
+                        Collectors.toMap(
+                                Entry::getKey,
+                                Entry::getValue));
     }
 }
