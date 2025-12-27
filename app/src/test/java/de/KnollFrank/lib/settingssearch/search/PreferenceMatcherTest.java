@@ -34,7 +34,7 @@ public class PreferenceMatcherTest {
                                 Optional.of("Title, title part"),
                                 Optional.of("title in summary"),
                                 Optional.of("searchable info also has a title"),
-                                // FK-TODO: braucht man wirklich ein Smiley und eine activity?
+                                // FK-TODO: braucht man wirklich einen Smiley und eine activity?
                                 Optional.of(Either.ofRight(DrawableAndStringConverter.drawable2String(activity.getResources().getDrawable(R.drawable.smiley, null)))));
 
                 // When
