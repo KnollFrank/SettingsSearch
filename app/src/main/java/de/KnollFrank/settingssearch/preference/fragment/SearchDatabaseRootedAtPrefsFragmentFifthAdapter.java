@@ -88,7 +88,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                         activityContext.getSupportFragmentManager(),
                         activityContext,
                         searchDatabaseConfig,
-                        locale)
+                        locale,
+                        (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true)
                 .getSearchablePreferenceScreenGraph(root);
     }
 

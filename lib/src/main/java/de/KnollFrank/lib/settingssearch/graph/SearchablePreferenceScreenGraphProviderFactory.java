@@ -26,7 +26,8 @@ public class SearchablePreferenceScreenGraphProviderFactory {
             final Fragment fragment,
             final @IdRes int containerViewId,
             final SearchDatabaseConfig searchDatabaseConfig,
-            final Locale locale) {
+            final Locale locale,
+            final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
         return createSearchablePreferenceScreenGraphProvider(
                 containerViewId,
                 (ViewGroup) fragment.requireView(),
@@ -34,7 +35,8 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                 fragment.getChildFragmentManager(),
                 fragment.requireContext(),
                 searchDatabaseConfig,
-                locale);
+                locale,
+                addEdgeToGraphPredicate);
     }
 
     public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
@@ -44,7 +46,8 @@ public class SearchablePreferenceScreenGraphProviderFactory {
             final FragmentManager childFragmentManager,
             final Context context,
             final SearchDatabaseConfig searchDatabaseConfig,
-            final Locale locale) {
+            final Locale locale,
+            final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 view,
                 containerViewId);
@@ -70,7 +73,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                                 searchDatabaseConfig.principalAndProxyProvider),
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
-                        (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
+                        addEdgeToGraphPredicate,
                         context,
                         preferenceScreenWithHost -> {
                         }),
