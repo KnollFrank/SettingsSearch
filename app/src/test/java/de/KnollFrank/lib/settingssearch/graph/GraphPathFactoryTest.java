@@ -4,8 +4,8 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper.getPreferenceScreenByTitle;
-import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.createPreferenceScreenWithHostProvider;
-import static de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider;
+import static de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider1Test.createPreferenceScreenWithHostProvider;
+import static de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider1Test.createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -25,10 +25,10 @@ import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.Fragment3ConnectedToFragment4;
-import de.KnollFrank.lib.settingssearch.SearchablePreferenceScreenGraphProvider1Test.Fragment4;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider1Test.Fragment3ConnectedToFragment4;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider1Test.Fragment4;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
