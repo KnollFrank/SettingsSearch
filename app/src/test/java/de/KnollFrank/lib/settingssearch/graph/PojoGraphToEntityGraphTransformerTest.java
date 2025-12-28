@@ -20,7 +20,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
-public class PojoGraph2EntityGraphTransformerTest {
+public class PojoGraphToEntityGraphTransformerTest {
 
     @Test
     public void test_toPojoGraph_singleNodeGraph() {
@@ -68,7 +68,7 @@ public class PojoGraph2EntityGraphTransformerTest {
                                            final GraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
         // When
         final GraphAndDbDataProvider entityGraphAndDbDataProviderActual =
-                PojoGraph2EntityGraphTransformer.toEntityGraph(
+                PojoGraphToEntityGraphTransformer.toEntityGraph(
                         pojoGraph,
                         Locale.GERMAN,
                         PersistableBundleTestFactory.createSomePersistableBundle());

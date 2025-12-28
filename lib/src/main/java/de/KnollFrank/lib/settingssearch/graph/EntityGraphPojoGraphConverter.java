@@ -18,7 +18,7 @@ public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataPr
 
     @Override
     public GraphAndDbDataProvider convertBackward(final SearchablePreferenceScreenGraph pojoGraph) {
-        return PojoGraph2EntityGraphTransformer.toEntityGraph(
+        return PojoGraphToEntityGraphTransformer.toEntityGraph(
                 pojoGraph.graph(),
                 pojoGraph.locale(),
                 pojoGraph.configuration());
