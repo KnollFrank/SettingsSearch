@@ -12,19 +12,19 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 
 public class GraphToPojoGraphTransformer {
 
-    private final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter;
+    private final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter;
     private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
 
-    public GraphToPojoGraphTransformer(final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
+    public GraphToPojoGraphTransformer(final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter,
                                        final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
-        this.preferenceScreen2SearchablePreferenceScreenConverter = preferenceScreen2SearchablePreferenceScreenConverter;
+        this.preferenceScreenToSearchablePreferenceScreenConverter = preferenceScreenToSearchablePreferenceScreenConverter;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
@@ -72,7 +72,7 @@ public class GraphToPojoGraphTransformer {
             private SearchablePreferenceScreenWithMap convert2POJO(
                     final PreferenceScreenWithHost node,
                     final Optional<SearchablePreference> predecessorOfNode) {
-                return preferenceScreen2SearchablePreferenceScreenConverter.convertPreferenceScreen(
+                return preferenceScreenToSearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
                         preferenceFragmentIdProvider.getId(node.host()),

@@ -15,11 +15,11 @@ import de.KnollFrank.lib.settingssearch.common.Strings;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
-public class PreferenceScreen2SearchablePreferenceScreenConverter {
+public class PreferenceScreenToSearchablePreferenceScreenConverter {
 
     private final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter;
 
-    public PreferenceScreen2SearchablePreferenceScreenConverter(final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
+    public PreferenceScreenToSearchablePreferenceScreenConverter(final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
         this.preference2SearchablePreferenceConverter = preference2SearchablePreferenceConverter;
     }
 

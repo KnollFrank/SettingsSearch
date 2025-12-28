@@ -21,7 +21,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverterTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.DefaultPreferencePathDisplayer;
@@ -113,7 +113,7 @@ public class SearchResultsDisplayerTest extends PreferencesRoomDatabaseTest {
                                 return rootView.requireViewById(de.KnollFrank.lib.settingssearch.R.id.searchResults);
                             }
                         });
-        PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment(
+        PreferenceScreenToSearchablePreferenceScreenConverterTest.initializeFragment(
                 searchResultsFragment,
                 createInstantiateAndInitializeFragment(searchResultsFragment, activity));
         return searchResultsFragment;

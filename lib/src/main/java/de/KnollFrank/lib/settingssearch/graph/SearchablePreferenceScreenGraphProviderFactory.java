@@ -14,7 +14,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
@@ -55,7 +55,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
                 new GraphToPojoGraphTransformer(
-                        new PreferenceScreen2SearchablePreferenceScreenConverter(
+                        new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,
                                         PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId, searchDatabaseConfig.preferenceSearchablePredicate))),

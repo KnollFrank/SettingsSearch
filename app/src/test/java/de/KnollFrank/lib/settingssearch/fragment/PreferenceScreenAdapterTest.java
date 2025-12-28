@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.fragment;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverterTest.initializeFragment;
+import static de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverterTest.initializeFragment;
 
 import android.content.Context;
 

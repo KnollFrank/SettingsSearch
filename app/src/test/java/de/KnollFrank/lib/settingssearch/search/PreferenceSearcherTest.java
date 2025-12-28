@@ -51,7 +51,7 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -796,7 +796,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         preferenceScreenGraphAvailableListener,
                         computePreferencesListener,
                         new GraphToPojoGraphTransformer(
-                                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                                new PreferenceScreenToSearchablePreferenceScreenConverter(
                                         new Preference2SearchablePreferenceConverter(
                                                 new IconProvider(new ReflectionIconResourceIdProvider()),
                                                 new SearchableInfoAndDialogInfoProvider(

@@ -38,7 +38,7 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
@@ -167,7 +167,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 },
                 emptyComputePreferencesListener(),
                 new GraphToPojoGraphTransformer(
-                        new PreferenceScreen2SearchablePreferenceScreenConverter(
+                        new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 new Preference2SearchablePreferenceConverter(
                                         (preference, hostOfPreference) -> Optional.empty(),
                                         new SearchableInfoAndDialogInfoProvider(

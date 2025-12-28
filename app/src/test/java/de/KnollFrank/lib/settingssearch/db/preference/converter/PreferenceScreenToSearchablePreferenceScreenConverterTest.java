@@ -31,15 +31,15 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
+public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
 
     @Test
     public void shouldConvertPreferenceScreen() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter =
-                        new PreferenceScreen2SearchablePreferenceScreenConverter(
+                final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter =
+                        new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 createPreference2SearchablePreferenceConverter());
 
                 final String parentKey = "parentKey";
@@ -55,7 +55,7 @@ public class PreferenceScreen2SearchablePreferenceScreenConverterTest {
 
                 // When
                 final SearchablePreferenceScreen pojo =
-                        preferenceScreen2SearchablePreferenceScreenConverter
+                        preferenceScreenToSearchablePreferenceScreenConverter
                                 .convertPreferenceScreen(
                                         getPreferenceScreen(preferenceFragment, activity),
                                         preferenceFragment,

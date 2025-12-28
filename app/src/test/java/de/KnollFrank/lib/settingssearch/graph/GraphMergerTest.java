@@ -37,7 +37,7 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPrefe
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen2SearchablePreferenceScreenConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
@@ -159,7 +159,7 @@ public class GraphMergerTest {
 
     private static GraphToPojoGraphTransformer createGraph2POJOGraphTransformer() {
         return new GraphToPojoGraphTransformer(
-                new PreferenceScreen2SearchablePreferenceScreenConverter(
+                new PreferenceScreenToSearchablePreferenceScreenConverter(
                         new Preference2SearchablePreferenceConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),
                                 new SearchableInfoAndDialogInfoProvider(
