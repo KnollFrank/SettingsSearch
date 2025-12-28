@@ -46,6 +46,6 @@ public class SearchablePreferenceScreenGraphProvider {
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
-                graphToPojoGraphTransformer.transformGraph2POJOGraph(preferenceScreenGraph, locale));
+                graphToPojoGraphTransformer.transformGraphToPojoGraph(preferenceScreenGraph, locale));
     }
 }

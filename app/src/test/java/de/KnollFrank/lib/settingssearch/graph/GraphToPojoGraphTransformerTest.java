@@ -48,7 +48,7 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest {
 
     @Test
-    public void shouldTransformGraph2POJOGraph() {
+    public void shouldTransformGraphToPojoGraph() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -91,7 +91,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
                         removeMapFromPojoNodes(
-                                graphToPojoGraphTransformer.transformGraph2POJOGraph(
+                                graphToPojoGraphTransformer.transformGraphToPojoGraph(
                                         entityGraph,
                                         locale));
 
@@ -117,7 +117,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_transformGraph2POJOGraph_nonUniqueId_fail() {
+    public void test_transformGraphToPojoGraph_nonUniqueId_fail() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -133,7 +133,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                         createGraph2POJOGraphTransformer(preferenceFragmentIdProviderCreatingNonUniqueId);
 
                 // When
-                graphToPojoGraphTransformer.transformGraph2POJOGraph(
+                graphToPojoGraphTransformer.transformGraphToPojoGraph(
                         createSomeEntityGraph(activity),
                         Locale.GERMAN);
             });
@@ -168,11 +168,11 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                                 });
 
                 // When
-                final SearchablePreferenceScreenGraph germanPojoGraph = transformGraph2POJOGraph(entityGraph, graphToPojoGraphTransformer, Locale.GERMAN);
+                final SearchablePreferenceScreenGraph germanPojoGraph = transformGraphToPojoGraph(entityGraph, graphToPojoGraphTransformer, Locale.GERMAN);
                 preferencesRoomDatabase.searchablePreferenceScreenGraphDAO().persistOrReplace(germanPojoGraph);
 
                 // And
-                final SearchablePreferenceScreenGraph chinesePojoGraph = transformGraph2POJOGraph(entityGraph, graphToPojoGraphTransformer, Locale.CHINESE);
+                final SearchablePreferenceScreenGraph chinesePojoGraph = transformGraphToPojoGraph(entityGraph, graphToPojoGraphTransformer, Locale.CHINESE);
                 preferencesRoomDatabase.searchablePreferenceScreenGraphDAO().persistOrReplace(chinesePojoGraph);
 
                 // Then no exception was thrown
@@ -184,13 +184,13 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
         return locale.getLanguage() + "-" + id;
     }
 
-    private static SearchablePreferenceScreenGraph transformGraph2POJOGraph(
+    private static SearchablePreferenceScreenGraph transformGraphToPojoGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph,
             final GraphToPojoGraphTransformer graphToPojoGraphTransformer,
             final Locale locale) {
         return new SearchablePreferenceScreenGraph(
                 removeMapFromPojoNodes(
-                        graphToPojoGraphTransformer.transformGraph2POJOGraph(
+                        graphToPojoGraphTransformer.transformGraphToPojoGraph(
                                 entityGraph,
                                 locale)),
                 locale,

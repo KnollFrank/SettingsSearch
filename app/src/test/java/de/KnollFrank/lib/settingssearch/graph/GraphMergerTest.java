@@ -152,7 +152,7 @@ public class GraphMergerTest {
 
     private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformToPojoGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph) {
         return removeMapFromPojoNodes(
-                createGraph2POJOGraphTransformer().transformGraph2POJOGraph(
+                createGraph2POJOGraphTransformer().transformGraphToPojoGraph(
                         entityGraph,
                         Locale.GERMAN));
     }

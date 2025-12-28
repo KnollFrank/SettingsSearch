@@ -29,7 +29,7 @@ public class GraphToPojoGraphTransformer {
     }
 
     // FK-TODO: ersetze in der gesamten Bibliothek "POJO" durch "Pojo" und "2" durch "To".
-    public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraph2POJOGraph(
+    public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraphToPojoGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
             final Locale locale) {
         return GraphTransformerAlgorithm.transform(
