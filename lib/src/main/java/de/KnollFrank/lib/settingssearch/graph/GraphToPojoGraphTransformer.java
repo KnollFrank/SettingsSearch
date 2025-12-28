@@ -28,7 +28,7 @@ public class GraphToPojoGraphTransformer {
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
-    // FK-TODO: ersetze in der gesamten Bibliothek "POJO" durch "Pojo" und "2" durch "To".
+    // FK-TODO: ersetze in der gesamten Bibliothek "2" durch "To".
     public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraphToPojoGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
             final Locale locale) {
@@ -45,14 +45,14 @@ public class GraphToPojoGraphTransformer {
 
             @Override
             public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {
-                return convert2POJO(rootNode, Optional.empty());
+                return convertToPojo(rootNode, Optional.empty());
             }
 
             @Override
             public SearchablePreferenceScreenWithMap transformInnerNode(
                     final PreferenceScreenWithHost innerNode,
                     final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
-                return convert2POJO(
+                return convertToPojo(
                         innerNode,
                         Optional.of(
                                 getPredecessorOfNode(
@@ -69,7 +69,7 @@ public class GraphToPojoGraphTransformer {
                                 transformedParentNode));
             }
 
-            private SearchablePreferenceScreenWithMap convert2POJO(
+            private SearchablePreferenceScreenWithMap convertToPojo(
                     final PreferenceScreenWithHost node,
                     final Optional<SearchablePreference> predecessorOfNode) {
                 return preferenceScreenToSearchablePreferenceScreenConverter.convertPreferenceScreen(

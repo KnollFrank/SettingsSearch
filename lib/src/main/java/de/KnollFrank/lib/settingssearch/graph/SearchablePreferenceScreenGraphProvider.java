@@ -40,10 +40,10 @@ public class SearchablePreferenceScreenGraphProvider {
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> _getSearchablePreferenceScreenGraph(final PreferenceScreenWithHost root) {
         final var preferenceScreenGraph = preferenceScreenGraphProvider.getPreferenceScreenGraph(root);
         preferenceScreenGraphAvailableListener.onPreferenceScreenGraphAvailable(preferenceScreenGraph);
-        return transformGraph2POJOGraph(preferenceScreenGraph);
+        return transformGraphToPojoGraph(preferenceScreenGraph);
     }
 
-    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformGraph2POJOGraph(
+    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformGraphToPojoGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
                 graphToPojoGraphTransformer.transformGraphToPojoGraph(preferenceScreenGraph, locale));

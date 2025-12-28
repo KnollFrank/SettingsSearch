@@ -31,7 +31,7 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 public class Preference2SearchablePreferenceConverterIntegrationTest {
 
     @Test
-    public void test_iconOfPreference_survives_convertPreference2POJO() {
+    public void test_iconOfPreference_survives_convertPreferenceToPojo() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given

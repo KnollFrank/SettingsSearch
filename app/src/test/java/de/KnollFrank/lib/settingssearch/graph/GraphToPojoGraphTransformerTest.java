@@ -73,7 +73,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                                 addLocaleToId(locale, twoNodeScreen1Id),
                                 addLocaleToId(locale, twoNodeScreen2Id));
                 final GraphToPojoGraphTransformer graphToPojoGraphTransformer =
-                        createGraph2POJOGraphTransformer(
+                        createGraphToPojoGraphTransformer(
                                 new PreferenceFragmentIdProvider() {
 
                                     @Override
@@ -130,7 +130,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                             }
                         };
                 final GraphToPojoGraphTransformer graphToPojoGraphTransformer =
-                        createGraph2POJOGraphTransformer(preferenceFragmentIdProviderCreatingNonUniqueId);
+                        createGraphToPojoGraphTransformer(preferenceFragmentIdProviderCreatingNonUniqueId);
 
                 // When
                 graphToPojoGraphTransformer.transformGraphToPojoGraph(
@@ -152,7 +152,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
                 final GraphToPojoGraphTransformer graphToPojoGraphTransformer =
-                        createGraph2POJOGraphTransformer(
+                        createGraphToPojoGraphTransformer(
                                 new PreferenceFragmentIdProvider() {
 
                                     @Override
@@ -287,7 +287,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                 activity);
     }
 
-    private static GraphToPojoGraphTransformer createGraph2POJOGraphTransformer(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+    private static GraphToPojoGraphTransformer createGraphToPojoGraphTransformer(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         return new GraphToPojoGraphTransformer(
                 new PreferenceScreenToSearchablePreferenceScreenConverter(
                         new Preference2SearchablePreferenceConverter(
