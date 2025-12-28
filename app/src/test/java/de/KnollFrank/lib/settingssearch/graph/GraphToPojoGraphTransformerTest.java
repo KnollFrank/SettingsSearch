@@ -52,7 +52,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
+                final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
                         PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
                                 preferenceFragment.getClass(),
@@ -145,7 +145,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
-                final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
+                final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
                 final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph =
                         PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
                                 preferenceFragment.getClass(),
@@ -197,7 +197,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                 PersistableBundleTestFactory.createSomePersistableBundle());
     }
 
-    private static BiConsumer<PreferenceScreen, Context> getAddPreferences2Screen() {
+    private static BiConsumer<PreferenceScreen, Context> getAddPreferencesToScreen() {
         return new BiConsumer<>() {
 
             @Override
@@ -280,7 +280,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
     }
 
     private static Graph<PreferenceScreenWithHost, PreferenceEdge> createSomeEntityGraph(final FragmentActivity activity) {
-        final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferences2Screen());
+        final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
         return PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
                 preferenceFragment.getClass(),
                 createInstantiateAndInitializeFragment(preferenceFragment, activity),

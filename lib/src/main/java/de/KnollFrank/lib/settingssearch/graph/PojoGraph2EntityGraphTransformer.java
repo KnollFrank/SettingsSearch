@@ -84,7 +84,7 @@ public class PojoGraph2EntityGraphTransformer {
                         Optional.of(
                                 getPreferenceById(
                                         contextOfInnerNode.transformedParentNode(),
-                                        contextOfInnerNode.edgeFromParentNode2InnerNode().preference.getId())),
+                                        contextOfInnerNode.edgeFromParentNodeToInnerNode().preference.getId())),
                         graphId);
             }
 
