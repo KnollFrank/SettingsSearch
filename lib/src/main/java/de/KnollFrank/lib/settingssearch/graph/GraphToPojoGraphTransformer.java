@@ -17,13 +17,13 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePrefer
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 
-public class Graph2POJOGraphTransformer {
+public class GraphToPojoGraphTransformer {
 
     private final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter;
     private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
 
-    public Graph2POJOGraphTransformer(final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
-                                      final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+    public GraphToPojoGraphTransformer(final PreferenceScreen2SearchablePreferenceScreenConverter preferenceScreen2SearchablePreferenceScreenConverter,
+                                       final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.preferenceScreen2SearchablePreferenceScreenConverter = preferenceScreen2SearchablePreferenceScreenConverter;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }

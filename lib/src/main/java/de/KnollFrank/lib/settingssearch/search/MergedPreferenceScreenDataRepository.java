@@ -22,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
-import de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformer;
+import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -95,7 +95,7 @@ public class MergedPreferenceScreenDataRepository<C> {
         return new SearchablePreferenceScreenGraphProvider(
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
-                new Graph2POJOGraphTransformer(
+                new GraphToPojoGraphTransformer(
                         new PreferenceScreen2SearchablePreferenceScreenConverter(
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,

@@ -14,18 +14,18 @@ public class SearchablePreferenceScreenGraphProvider {
 
     private final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener;
     private final ComputePreferencesListener computePreferencesListener;
-    private final Graph2POJOGraphTransformer graph2POJOGraphTransformer;
+    private final GraphToPojoGraphTransformer graphToPojoGraphTransformer;
     private final PreferenceScreenGraphProvider preferenceScreenGraphProvider;
     private final Locale locale;
 
     public SearchablePreferenceScreenGraphProvider(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
                                                    final ComputePreferencesListener computePreferencesListener,
-                                                   final Graph2POJOGraphTransformer graph2POJOGraphTransformer,
+                                                   final GraphToPojoGraphTransformer graphToPojoGraphTransformer,
                                                    final PreferenceScreenGraphProvider preferenceScreenGraphProvider,
                                                    final Locale locale) {
         this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
         this.computePreferencesListener = computePreferencesListener;
-        this.graph2POJOGraphTransformer = graph2POJOGraphTransformer;
+        this.graphToPojoGraphTransformer = graphToPojoGraphTransformer;
         this.preferenceScreenGraphProvider = preferenceScreenGraphProvider;
         this.locale = locale;
     }
@@ -46,6 +46,6 @@ public class SearchablePreferenceScreenGraphProvider {
     private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformGraph2POJOGraph(
             final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
-                graph2POJOGraphTransformer.transformGraph2POJOGraph(preferenceScreenGraph, locale));
+                graphToPojoGraphTransformer.transformGraph2POJOGraph(preferenceScreenGraph, locale));
     }
 }

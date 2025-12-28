@@ -166,7 +166,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 preferenceScreenGraph -> {
                 },
                 emptyComputePreferencesListener(),
-                new Graph2POJOGraphTransformer(
+                new GraphToPojoGraphTransformer(
                         new PreferenceScreen2SearchablePreferenceScreenConverter(
                                 new Preference2SearchablePreferenceConverter(
                                         (preference, hostOfPreference) -> Optional.empty(),

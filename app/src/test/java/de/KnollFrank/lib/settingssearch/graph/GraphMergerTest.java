@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment;
-import static de.KnollFrank.lib.settingssearch.graph.Graph2POJOGraphTransformerTest.PreferenceFragmentWithSinglePreference;
+import static de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markExtrasOfPreferenceConnectingSrcWithDst;
 
@@ -157,8 +157,8 @@ public class GraphMergerTest {
                         Locale.GERMAN));
     }
 
-    private static Graph2POJOGraphTransformer createGraph2POJOGraphTransformer() {
-        return new Graph2POJOGraphTransformer(
+    private static GraphToPojoGraphTransformer createGraph2POJOGraphTransformer() {
+        return new GraphToPojoGraphTransformer(
                 new PreferenceScreen2SearchablePreferenceScreenConverter(
                         new Preference2SearchablePreferenceConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),

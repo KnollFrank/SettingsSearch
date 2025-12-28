@@ -54,7 +54,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
         return new SearchablePreferenceScreenGraphProvider(
                 searchDatabaseConfig.preferenceScreenGraphAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
-                new Graph2POJOGraphTransformer(
+                new GraphToPojoGraphTransformer(
                         new PreferenceScreen2SearchablePreferenceScreenConverter(
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,

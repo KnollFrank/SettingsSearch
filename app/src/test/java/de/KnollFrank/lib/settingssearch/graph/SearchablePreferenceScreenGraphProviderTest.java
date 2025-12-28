@@ -102,7 +102,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                 preferenceScreenGraph -> {
                 },
                 computePreferencesListener,
-                new Graph2POJOGraphTransformer(
+                new GraphToPojoGraphTransformer(
                         new PreferenceScreen2SearchablePreferenceScreenConverter(
                                 new Preference2SearchablePreferenceConverter(
                                         new IconProvider(new ReflectionIconResourceIdProvider()),
