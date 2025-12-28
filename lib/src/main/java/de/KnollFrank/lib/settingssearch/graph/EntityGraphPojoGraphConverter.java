@@ -9,7 +9,7 @@ public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataPr
     @Override
     public SearchablePreferenceScreenGraph convertForward(final GraphAndDbDataProvider graphAndDbDataProvider) {
         return new SearchablePreferenceScreenGraph(
-                EntityGraph2PojoGraphTransformer.toPojoGraph(
+                EntityGraphToPojoGraphTransformer.toPojoGraph(
                         graphAndDbDataProvider.asGraph(),
                         graphAndDbDataProvider.dbDataProvider()),
                 graphAndDbDataProvider.graph().id(),

@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
 
 @RunWith(RobolectricTestRunner.class)
-public class EntityGraph2PojoGraphTransformerTest {
+public class EntityGraphToPojoGraphTransformerTest {
 
     @Test
     public void test_toPojoGraph_singleNodeGraph() {
@@ -67,7 +67,7 @@ public class EntityGraph2PojoGraphTransformerTest {
                                          final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected) {
         // When
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphActual =
-                EntityGraph2PojoGraphTransformer.toPojoGraph(
+                EntityGraphToPojoGraphTransformer.toPojoGraph(
                         entityGraphAndDbDataProvider.asGraph(),
                         entityGraphAndDbDataProvider.dbDataProvider());
 

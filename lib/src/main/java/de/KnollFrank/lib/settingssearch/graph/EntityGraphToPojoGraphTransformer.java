@@ -16,7 +16,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
-public class EntityGraph2PojoGraphTransformer {
+public class EntityGraphToPojoGraphTransformer {
 
     public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> toPojoGraph(
             final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> entityGraph,
