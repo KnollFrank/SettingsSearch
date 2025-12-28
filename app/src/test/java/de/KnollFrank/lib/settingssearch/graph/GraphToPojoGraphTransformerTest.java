@@ -254,7 +254,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
         final Set<SearchablePreference> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet());
         return new PreferenceAndExpectedPredecessorOfPreference(
                 getDstPreference(searchablePreferences, data.DST_PREFERENCE_ID()),
-                getPreferenceConnectingSrc2Dst(searchablePreferences, data.PREFERENCE_CONNECTING_SRC_2_DST_ID()));
+                getPreferenceConnectingSrc2Dst(searchablePreferences, data.PREFERENCE_CONNECTING_SRC_TO_DST_ID()));
     }
 
     private record PreferenceAndExpectedPredecessorOfPreference(
