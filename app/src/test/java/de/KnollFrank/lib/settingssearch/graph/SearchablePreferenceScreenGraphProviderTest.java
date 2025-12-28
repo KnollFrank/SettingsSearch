@@ -22,9 +22,9 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
+import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.Fragments;
@@ -104,7 +104,7 @@ public class SearchablePreferenceScreenGraphProviderTest {
                 computePreferencesListener,
                 new GraphToPojoGraphTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
-                                new Preference2SearchablePreferenceConverter(
+                                new PreferenceToSearchablePreferenceConverter(
                                         new IconProvider(new ReflectionIconResourceIdProvider()),
                                         new SearchableInfoAndDialogInfoProvider(
                                                 new BuiltinSearchableInfoProvider(),

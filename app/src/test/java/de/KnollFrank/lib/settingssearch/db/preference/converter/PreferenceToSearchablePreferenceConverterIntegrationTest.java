@@ -28,7 +28,7 @@ import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class Preference2SearchablePreferenceConverterIntegrationTest {
+public class PreferenceToSearchablePreferenceConverterIntegrationTest {
 
     @Test
     public void test_iconOfPreference_survives_convertPreferenceToPojo() {
@@ -60,8 +60,8 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
 
     private static SearchablePreference convertPreference2SearchablePreference(final Preference preference,
                                                                                final PreferenceFragmentCompat hostOfPreference) {
-        final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter =
-                new Preference2SearchablePreferenceConverter(
+        final PreferenceToSearchablePreferenceConverter preferenceToSearchablePreferenceConverter =
+                new PreferenceToSearchablePreferenceConverter(
                         (_preference, _hostOfPreference) ->
                                 preference.equals(_preference) ?
                                         Optional.of(Either.ofRight(preference.getIcon())) :
@@ -69,7 +69,7 @@ public class Preference2SearchablePreferenceConverterIntegrationTest {
                         new SearchableInfoAndDialogInfoProvider(
                                 _preference -> Optional.empty(),
                                 (_preference, _hostOfPreference) -> Optional.empty()));
-        return preference2SearchablePreferenceConverter
+        return preferenceToSearchablePreferenceConverter
                 .convertPreference(
                         preference,
                         List.of(),

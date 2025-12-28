@@ -8,10 +8,10 @@ import de.KnollFrank.lib.settingssearch.search.IconProvider;
 
 public class Preference2SearchablePreferenceConverterFactory {
 
-    public static Preference2SearchablePreferenceConverter createPreference2SearchablePreferenceConverter(
+    public static PreferenceToSearchablePreferenceConverter createPreference2SearchablePreferenceConverter(
             final SearchDatabaseConfig searchDatabaseConfig,
             final PreferenceDialogs preferenceDialogs) {
-        return new Preference2SearchablePreferenceConverter(
+        return new PreferenceToSearchablePreferenceConverter(
                 new IconProvider(searchDatabaseConfig.iconResourceIdProvider),
                 new SearchableInfoAndDialogInfoProvider(
                         searchDatabaseConfig.searchableInfoProvider,

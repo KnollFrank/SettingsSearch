@@ -26,13 +26,13 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.search.provider.IconProvider;
 
-public class Preference2SearchablePreferenceConverter {
+public class PreferenceToSearchablePreferenceConverter {
 
     private final IconProvider iconProvider;
     private final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider;
 
-    public Preference2SearchablePreferenceConverter(final IconProvider iconProvider,
-                                                    final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
+    public PreferenceToSearchablePreferenceConverter(final IconProvider iconProvider,
+                                                     final SearchableInfoAndDialogInfoProvider searchableInfoAndDialogInfoProvider) {
         this.iconProvider = iconProvider;
         this.searchableInfoAndDialogInfoProvider = searchableInfoAndDialogInfoProvider;
     }

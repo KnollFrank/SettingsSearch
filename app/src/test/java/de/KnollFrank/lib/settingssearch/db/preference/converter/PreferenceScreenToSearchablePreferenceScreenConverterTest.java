@@ -40,7 +40,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                 // Given
                 final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter =
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
-                                createPreference2SearchablePreferenceConverter());
+                                createPreferenceToSearchablePreferenceConverter());
 
                 final String parentKey = "parentKey";
                 final @LayoutRes int layoutResIdOfParent = 15;
@@ -81,8 +81,8 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
         }
     }
 
-    private static Preference2SearchablePreferenceConverter createPreference2SearchablePreferenceConverter() {
-        return new Preference2SearchablePreferenceConverter(
+    private static PreferenceToSearchablePreferenceConverter createPreferenceToSearchablePreferenceConverter() {
+        return new PreferenceToSearchablePreferenceConverter(
                 (preference, hostOfPreference) -> Optional.empty(),
                 new SearchableInfoAndDialogInfoProvider(
                         preference -> Optional.empty(),

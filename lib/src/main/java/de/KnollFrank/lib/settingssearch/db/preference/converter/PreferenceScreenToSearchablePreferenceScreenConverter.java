@@ -17,10 +17,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class PreferenceScreenToSearchablePreferenceScreenConverter {
 
-    private final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter;
+    private final PreferenceToSearchablePreferenceConverter preferenceToSearchablePreferenceConverter;
 
-    public PreferenceScreenToSearchablePreferenceScreenConverter(final Preference2SearchablePreferenceConverter preference2SearchablePreferenceConverter) {
-        this.preference2SearchablePreferenceConverter = preference2SearchablePreferenceConverter;
+    public PreferenceScreenToSearchablePreferenceScreenConverter(final PreferenceToSearchablePreferenceConverter preferenceToSearchablePreferenceConverter) {
+        this.preferenceToSearchablePreferenceConverter = preferenceToSearchablePreferenceConverter;
     }
 
     public SearchablePreferenceScreenWithMap convertPreferenceScreen(
@@ -30,7 +30,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
             final Optional<SearchablePreference> predecessorOfPreferenceScreen,
             final Locale locale) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
-                preference2SearchablePreferenceConverter.convertPreferences(
+                preferenceToSearchablePreferenceConverter.convertPreferences(
                         Preferences.getImmediateChildren(preferenceScreen),
                         List.of(),
                         id,
