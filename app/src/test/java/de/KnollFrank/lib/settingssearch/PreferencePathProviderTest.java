@@ -2,13 +2,14 @@ package de.KnollFrank.lib.settingssearch;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createScreen;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createPreference;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.builder.GraphBuilder;
 import org.junit.Test;
 
-import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -96,33 +97,5 @@ public class PreferencePathProviderTest {
 
     private static GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> createGraphBuilder() {
         return DefaultDirectedGraph.createBuilder(SearchablePreferenceEdge.class);
-    }
-
-    private SearchablePreference createPreference(final String key) {
-        return new SearchablePreference(
-                "id-" + key,
-                key,
-                Optional.of("Title " + key),
-                Optional.empty(),
-                Optional.empty(),
-                0,
-                0,
-                Optional.empty(),
-                Optional.empty(),
-                true,
-                null,
-                Optional.empty(),
-                Set.of(),
-                Optional.empty());
-    }
-
-    private SearchablePreferenceScreen createScreen(final String id,
-                                                    final Set<SearchablePreference> preferences) {
-        return new SearchablePreferenceScreen(
-                id,
-                null,
-                Optional.of("Screen " + id),
-                Optional.empty(),
-                preferences);
     }
 }

@@ -1,30 +1,17 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import androidx.preference.PreferenceFragmentCompat;
-
-import java.util.Locale;
-
-import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
+import java.util.Optional;
+import java.util.Set;
 
 public class SearchablePreferenceScreenTestFactory {
 
-    public record SearchablePreferenceScreenEntityAndDbDataProvider(
-            SearchablePreferenceScreenEntity entity,
-            DbDataProvider dbDataProvider) {
-    }
-
-    public static SearchablePreferenceScreenEntityAndDbDataProvider createSomeSearchablePreferenceScreen(final SearchablePreferenceScreenGraphTestFactory.Data data) {
-        final GraphAndDbDataProvider entityGraphAndDbDataProvider =
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraph(
-                                PreferenceFragmentCompat.class,
-                                Locale.GERMAN,
-                                data)
-                        .entityGraphAndDbDataProvider();
-        return new SearchablePreferenceScreenEntityAndDbDataProvider(
-                Graphs
-                        .getRootNode(entityGraphAndDbDataProvider.asGraph())
-                        .orElseThrow(),
-                entityGraphAndDbDataProvider.dbDataProvider());
+    public static SearchablePreferenceScreen createScreen(final String id,
+                                                          final Set<SearchablePreference> preferences) {
+        return new SearchablePreferenceScreen(
+                id,
+                null,
+                Optional.of("Screen " + id),
+                Optional.empty(),
+                preferences);
     }
 }

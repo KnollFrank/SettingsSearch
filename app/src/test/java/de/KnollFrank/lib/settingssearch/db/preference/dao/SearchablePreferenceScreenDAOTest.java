@@ -2,8 +2,8 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.SearchablePreferenceScreenEntityAndDbDataProvider;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createSomeSearchablePreferenceScreen;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntityTestFactory.SearchablePreferenceScreenEntityAndDbDataProvider;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntityTestFactory.createSomeSearchablePreferenceScreen;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
