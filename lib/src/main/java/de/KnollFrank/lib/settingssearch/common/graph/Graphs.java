@@ -8,6 +8,8 @@ import org.jgrapht.alg.shortestpath.BFSShortestPath;
 
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.Sets;
+
 public class Graphs {
 
     public static <V> Optional<V> getRootNode(final Graph<V, ?> graph) {
@@ -23,6 +25,10 @@ public class Graphs {
         return Optional
                 .ofNullable(BFSShortestPath.findPathBetween(graph, root, target))
                 .orElseThrow(() -> new IllegalStateException("No path found in graph from root '" + root + "' to target '" + target + "'"));
+    }
+
+    public static <V, E> Optional<E> getIncomingEdgeOfNode(final Graph<V, E> graph, final V node) {
+        return Sets.asOptional(graph.incomingEdgesOf(node));
     }
 
     private static <V> boolean isRootNode(final Graph<V, ?> graph, final V node) {

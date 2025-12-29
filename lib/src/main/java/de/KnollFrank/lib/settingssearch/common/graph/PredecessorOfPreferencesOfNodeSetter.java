@@ -5,7 +5,6 @@ import org.jgrapht.Graph;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
@@ -27,13 +26,8 @@ public class PredecessorOfPreferencesOfNodeSetter {
 
     private static Optional<SearchablePreference> getIncomingPreferenceOfNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
                                                                               final SearchablePreferenceScreen node) {
-        return PredecessorOfPreferencesOfNodeSetter
+        return Graphs
                 .getIncomingEdgeOfNode(graph, node)
                 .map(incomingEdgeOfNode -> incomingEdgeOfNode.preference);
-    }
-
-    private static Optional<SearchablePreferenceEdge> getIncomingEdgeOfNode(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-                                                                            final SearchablePreferenceScreen node) {
-        return Sets.asOptional(graph.incomingEdgesOf(node));
     }
 }
