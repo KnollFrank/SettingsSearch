@@ -6,12 +6,12 @@ import java.util.Set;
 public class SearchablePreferenceScreenTestFactory {
 
     public static SearchablePreferenceScreen createScreen(final String id,
-                                                          final Set<SearchablePreference> preferences) {
+                                                          final Set<SearchablePreference> allPreferencesOfPreferenceHierarchy) {
         return new SearchablePreferenceScreen(
                 id,
                 null,
                 Optional.of("Screen " + id),
                 Optional.empty(),
-                preferences);
+                allPreferencesOfPreferenceHierarchy);
     }
 }
