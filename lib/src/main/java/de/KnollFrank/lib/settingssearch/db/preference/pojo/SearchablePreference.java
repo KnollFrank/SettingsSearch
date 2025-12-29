@@ -40,7 +40,9 @@ public final class SearchablePreference {
     private final Optional<String> searchableInfo;
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider = Optional::empty;
     private final Set<SearchablePreference> children;
+    // FK-TODO: make predecessor final
     private Optional<SearchablePreference> predecessor;
+    // FK-TODO: make host final
     private Optional<SearchablePreferenceScreen> host = Optional.empty();
 
     public SearchablePreference(final String id,
