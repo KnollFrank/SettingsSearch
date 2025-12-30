@@ -6,7 +6,7 @@ import org.jgrapht.traverse.BreadthFirstIterator;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
-import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenNodeReplacer;
+import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenNodeReplacerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
@@ -34,10 +34,12 @@ public class GraphMerger {
             final GraphAtMergePoint graphAtMergePoint) {
         final GraphAtMergePoint mergedGraphAtMergePoint =
                 new GraphAtMergePoint(
-                        SearchablePreferenceScreenNodeReplacer.replaceNode(
-                                graphAtMergePoint.graph(),
-                                graphAtMergePoint.mergePointOfGraph(),
-                                subtree.subtreeRoot()),
+                        SearchablePreferenceScreenNodeReplacerFactory
+                                .createNodeReplacer()
+                                .replaceNode(
+                                        graphAtMergePoint.graph(),
+                                        graphAtMergePoint.mergePointOfGraph(),
+                                        subtree.subtreeRoot()),
                         subtree.subtreeRoot());
         // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
         copySubtreesOfSrcToDst(graphAtMergePoint, mergedGraphAtMergePoint);
