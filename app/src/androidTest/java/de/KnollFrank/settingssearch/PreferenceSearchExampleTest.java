@@ -31,7 +31,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.preference.PreferenceManager;
 import androidx.room.Room;
 import androidx.test.core.app.ActivityScenario;
@@ -410,7 +409,7 @@ public class PreferenceSearchExampleTest {
                 .putBoolean(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_KEY, shallFindAdditionalPreference)
                 .commit();
         try (final ActivityScenario<LocalePreferenceSearchExample> scenario = ActivityScenario.launch(LocalePreferenceSearchExample.class)) {
-            scenario.onActivity(activity -> LocalePreferenceSearchExample.setLocale(getSomeLocaleFromPrepackagedDatabase(activity)));
+            scenario.onActivity(activity -> LocalePreferenceSearchExample.setLocale(getSomeLocaleFromPrepackagedDatabase()));
             onView(searchButton()).perform(click());
             onView(searchView()).perform(replaceText(SOME_ADDITIONAL_PREFERENCE), closeSoftKeyboard());
             if (shallFindAdditionalPreference) {
@@ -421,7 +420,7 @@ public class PreferenceSearchExampleTest {
         }
     }
 
-    private static Locale getSomeLocaleFromPrepackagedDatabase(final FragmentActivity activityContext) {
+    private static Locale getSomeLocaleFromPrepackagedDatabase() {
         final PreferencesDatabaseConfig<Configuration> preferencesDatabaseConfig = PreferencesDatabaseConfigFactory.createPreferencesDatabaseConfigUsingPrepackagedDatabaseAssetFile();
         final PreferencesRoomDatabase preferencesRoomDatabase =
                 getPreferencesRoomDatabase(

@@ -51,7 +51,6 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
 
                 final PreferenceFragmentCompat preferenceFragment = createPreferenceFragmentHavingParentWithTwoChildren(parentKey, layoutResIdOfParent, keyOfChild1, keyOfChild2, layoutResIdOfEachChild);
                 final String id = "some unique id";
-                final Locale locale = Locale.GERMAN;
 
                 // When
                 final SearchablePreferenceScreen pojo =
@@ -60,7 +59,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                                         getPreferenceScreen(preferenceFragment, activity),
                                         preferenceFragment,
                                         id,
-                                        locale)
+                                        Locale.GERMAN)
                                 .searchablePreferenceScreen();
 
                 // Then
@@ -74,8 +73,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                                 keyOfChild1,
                                 keyOfChild2,
                                 layoutResIdOfEachChild,
-                                preferenceFragment.getClass(),
-                                locale));
+                                preferenceFragment.getClass()));
             });
         }
     }
@@ -131,8 +129,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
             final String keyOfChild1,
             final String keyOfChild2,
             final @LayoutRes int layoutResIdOfEachChild,
-            final Class<? extends PreferenceFragmentCompat> host,
-            final Locale locale) {
+            final Class<? extends PreferenceFragmentCompat> host) {
         final SearchablePreference child1 =
                 new SearchablePreference(
                         id + "-0-0",

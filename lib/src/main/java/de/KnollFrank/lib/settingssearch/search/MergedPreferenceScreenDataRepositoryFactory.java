@@ -23,7 +23,7 @@ public class MergedPreferenceScreenDataRepositoryFactory {
             final PreferencesDatabase<C> preferencesDatabase,
             final Locale locale,
             final ConfigurationBundleConverter<C> configurationBundleConverter) {
-        return new MergedPreferenceScreenDataRepository<C>(
+        return new MergedPreferenceScreenDataRepository<>(
                 new PreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
                         searchDatabaseConfig.principalAndProxyProvider),

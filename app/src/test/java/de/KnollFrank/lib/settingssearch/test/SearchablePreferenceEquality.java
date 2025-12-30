@@ -2,11 +2,9 @@ package de.KnollFrank.lib.settingssearch.test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.fail;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,15 +40,5 @@ public class SearchablePreferenceEquality {
                 .stream()
                 .sorted(Comparator.comparing(SearchablePreference::getId))
                 .collect(Collectors.toList());
-    }
-
-    private static void assertActualEqualsExpected(final Optional<SearchablePreference> actual,
-                                                   final Optional<SearchablePreference> expected) {
-        if (actual.isPresent() && expected.isPresent()) {
-            assertActualEqualsExpected(actual.orElseThrow(), expected.orElseThrow());
-        } else if (actual.isEmpty() && expected.isEmpty()) {
-        } else {
-            fail();
-        }
     }
 }
