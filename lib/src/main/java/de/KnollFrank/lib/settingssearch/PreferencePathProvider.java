@@ -35,7 +35,6 @@ public class PreferencePathProvider {
         return getEdgePreferences(target.getGraphPath());
     }
 
-    // FK-TODO: man kann aus einem GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> den PreferencePath berechnen. Vielleicht überall mit dem GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> arbeiten?
     private static List<SearchablePreferenceWithinGraph> getEdgePreferences(final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> graphPath) {
         return graphPath
                 .getEdgeList()
