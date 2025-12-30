@@ -12,7 +12,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-class SubtreeReplacer<V, E> {
+public class SubtreeReplacer<V, E> {
 
     private final Supplier<Graph<V, E>> emptyGraphSupplier;
     private final Function<E, E> cloneEdge;
