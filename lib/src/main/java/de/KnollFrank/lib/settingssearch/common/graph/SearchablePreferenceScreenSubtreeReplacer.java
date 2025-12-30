@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import static de.KnollFrank.lib.settingssearch.common.graph.PredecessorOfPreferencesOfNodeSetter.setPredecessorOfPreferencesOfNode;
-
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
@@ -15,11 +13,7 @@ public class SearchablePreferenceScreenSubtreeReplacer {
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> originalGraph,
             final SearchablePreferenceScreen rootNodeOfSubtreeToReplace,
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> replacementTree) {
-        final var resultGraph = createSubtreeReplacer().replaceSubtreeWithTree(originalGraph, rootNodeOfSubtreeToReplace, replacementTree);
-        setPredecessorOfPreferencesOfNode(
-                resultGraph,
-                Graphs.getRootNode(replacementTree).orElseThrow());
-        return resultGraph;
+        return createSubtreeReplacer().replaceSubtreeWithTree(originalGraph, rootNodeOfSubtreeToReplace, replacementTree);
     }
 
     private static SubtreeReplacer<SearchablePreferenceScreen, SearchablePreferenceEdge> createSubtreeReplacer() {
