@@ -6,8 +6,6 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePref
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createPreference;
 
 import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.builder.GraphBuilder;
 import org.junit.Test;
 
 import java.util.Set;
@@ -15,6 +13,8 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 
 public class PreferencePathProviderTest {
 
@@ -27,17 +27,17 @@ public class PreferencePathProviderTest {
         final SearchablePreferenceScreen rootScreen = createScreen("Root", Set.of(p1));
 
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                PreferencePathProviderTest
+                SearchablePreferenceScreenGraphTestFactory
                         .createGraphBuilder()
                         .addVertex(rootScreen)
                         .build();
 
         // When
-        final PreferencePath path = PreferencePathProvider.getPreferencePath(graph, p1);
+        final PreferencePath path = PreferencePathProvider.getPreferencePath(new SearchablePreferenceWithinGraph(p1, graph));
 
         // Then
         // The path should only contain P1 since it's located directly in the root screen
-        assertThat(path.preferences(), contains(p1));
+        assertThat(path.preferences(), contains(new SearchablePreferenceWithinGraph(p1, graph)));
     }
 
     @Test
@@ -52,18 +52,22 @@ public class PreferencePathProviderTest {
         final SearchablePreferenceScreen screenA = createScreen("ScreenA", Set.of(targetPref));
 
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                PreferencePathProviderTest
+                SearchablePreferenceScreenGraphTestFactory
                         .createGraphBuilder()
                         .addVertices(rootScreen, screenA)
                         .addEdge(rootScreen, screenA, new SearchablePreferenceEdge(prefToA))
                         .build();
 
         // When
-        final PreferencePath path = PreferencePathProvider.getPreferencePath(graph, targetPref);
+        final PreferencePath path = PreferencePathProvider.getPreferencePath(new SearchablePreferenceWithinGraph(targetPref, graph));
 
         // Then
         // The path must contain the bridge preference leading to screenA and the target itself
-        assertThat(path.preferences(), contains(prefToA, targetPref));
+        assertThat(
+                path.preferences(),
+                contains(
+                        new SearchablePreferenceWithinGraph(prefToA, graph),
+                        new SearchablePreferenceWithinGraph(targetPref, graph)));
     }
 
     @Test
@@ -80,7 +84,7 @@ public class PreferencePathProviderTest {
         final SearchablePreferenceScreen screenB = createScreen("B", Set.of(target));
 
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                PreferencePathProviderTest
+                SearchablePreferenceScreenGraphTestFactory
                         .createGraphBuilder()
                         .addVertices(root, screenA, screenB)
                         .addEdge(root, screenA, new SearchablePreferenceEdge(bridge1))
@@ -88,14 +92,15 @@ public class PreferencePathProviderTest {
                         .build();
 
         // When
-        final PreferencePath path = PreferencePathProvider.getPreferencePath(graph, target);
+        final PreferencePath path = PreferencePathProvider.getPreferencePath(new SearchablePreferenceWithinGraph(target, graph));
 
         // Then
         // The path traces the sequence of bridge preferences across all screens to the target: [Bridge1, Bridge2, Target]
-        assertThat(path.preferences(), contains(bridge1, bridge2, target));
-    }
-
-    private static GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> createGraphBuilder() {
-        return DefaultDirectedGraph.createBuilder(SearchablePreferenceEdge.class);
+        assertThat(
+                path.preferences(),
+                contains(
+                        new SearchablePreferenceWithinGraph(bridge1, graph),
+                        new SearchablePreferenceWithinGraph(bridge2, graph),
+                        new SearchablePreferenceWithinGraph(target, graph)));
     }
 }

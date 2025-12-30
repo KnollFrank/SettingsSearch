@@ -35,12 +35,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragme
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphs;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
@@ -107,10 +107,11 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                                 .pojoGraph());
                 {
                     final var data = getPreferenceAndExpectedPredecessorOfPreference(pojoGraph, _data);
-                    final SearchablePreference preference = data.preference();
-                    final SearchablePreference expectedPredecessorOfPreference = data.expectedPredecessorOfPreference();
+                    final SearchablePreferenceWithinGraph preference = data.preference();
+                    final SearchablePreferenceWithinGraph expectedPredecessorOfPreference = data.expectedPredecessorOfPreference();
                     // check predecessor:
-                    assertThat("predecessor of " + preference, preference.getPredecessor(), is(Optional.of(expectedPredecessorOfPreference)));
+                    final List<SearchablePreferenceWithinGraph> preferences = preference.getPreferencePath().preferences();
+                    assertThat("predecessor of " + preference, preferences.get(preferences.size() - 2), is(expectedPredecessorOfPreference));
                 }
             });
         }
@@ -251,30 +252,30 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
     private PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
             final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected,
             final SearchablePreferenceScreenGraphTestFactory.Data data) {
-        final Set<SearchablePreference> searchablePreferences = getPreferences(pojoGraphExpected.vertexSet());
+        final Set<SearchablePreferenceWithinGraph> searchablePreferences = getPreferences(pojoGraphExpected);
         return new PreferenceAndExpectedPredecessorOfPreference(
                 getDstPreference(searchablePreferences, data.DST_PREFERENCE_ID()),
                 getPreferenceConnectingSrc2Dst(searchablePreferences, data.PREFERENCE_CONNECTING_SRC_TO_DST_ID()));
     }
 
     private record PreferenceAndExpectedPredecessorOfPreference(
-            SearchablePreference preference,
-            SearchablePreference expectedPredecessorOfPreference) {
+            SearchablePreferenceWithinGraph preference,
+            SearchablePreferenceWithinGraph expectedPredecessorOfPreference) {
     }
 
-    private static SearchablePreference getPreferenceConnectingSrc2Dst(final Set<SearchablePreference> searchablePreferences,
-                                                                       final String PREFERENCE_CONNECTING_SRC_2_DST_ID) {
+    private static SearchablePreferenceWithinGraph getPreferenceConnectingSrc2Dst(final Set<SearchablePreferenceWithinGraph> searchablePreferences,
+                                                                                  final String PREFERENCE_CONNECTING_SRC_2_DST_ID) {
         return getPreferenceById(searchablePreferences, PREFERENCE_CONNECTING_SRC_2_DST_ID);
     }
 
-    private static SearchablePreference getDstPreference(final Set<SearchablePreference> searchablePreferences,
-                                                         final String DST_PREFERENCE_ID) {
+    private static SearchablePreferenceWithinGraph getDstPreference(final Set<SearchablePreferenceWithinGraph> searchablePreferences,
+                                                                    final String DST_PREFERENCE_ID) {
         return getPreferenceById(searchablePreferences, DST_PREFERENCE_ID);
     }
 
-    private static SearchablePreference getPreferenceById(final Set<SearchablePreference> searchablePreferences,
-                                                          final String id) {
-        return SearchablePreferences
+    private static SearchablePreferenceWithinGraph getPreferenceById(final Set<SearchablePreferenceWithinGraph> searchablePreferences,
+                                                                     final String id) {
+        return SearchablePreferenceWithinGraphs
                 .findPreferenceById(searchablePreferences, id)
                 .orElseThrow();
     }

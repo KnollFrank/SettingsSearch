@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
@@ -40,9 +41,10 @@ import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -137,16 +139,25 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                                         result.preferenceScreenWithHost());
 
                 // Then
-                final SearchablePreference preferenceOfFragment2PointingToFragment3 =
+                final Set<SearchablePreferenceScreenWithinGraph> searchablePreferenceScreens =
+                        pojoGraph
+                                .vertexSet()
+                                .stream()
+                                .map(searchablePreferenceScreen ->
+                                             new SearchablePreferenceScreenWithinGraph(
+                                                     searchablePreferenceScreen,
+                                                     pojoGraph))
+                                .collect(Collectors.toSet());
+                final SearchablePreferenceWithinGraph preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3ConnectedToFragment4.class,
                                 Fragment3ConnectedToFragment4.class,
-                                pojoGraph.vertexSet());
-                final SearchablePreference preferenceOfFragment1PointingToFragment2 =
+                                searchablePreferenceScreens);
+                final SearchablePreferenceWithinGraph preferenceOfFragment1PointingToFragment2 =
                         getPreference(
                                 Fragment1ConnectedToFragment2AndFragment4.class,
                                 Fragment2ConnectedToFragment3ConnectedToFragment4.class,
-                                pojoGraph.vertexSet());
+                                searchablePreferenceScreens);
                 assertThat(
                         preferenceOfFragment2PointingToFragment3.getPreferencePath(),
                         is(
@@ -185,24 +196,26 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 Locale.GERMAN);
     }
 
-    private SearchablePreference getPreference(
+    private SearchablePreferenceWithinGraph getPreference(
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
             final Class<? extends PreferenceFragmentCompat> fragmentPointedTo,
-            final Set<SearchablePreferenceScreen> preferenceScreenWithHostSet) {
+            final Set<SearchablePreferenceScreenWithinGraph> preferenceScreenWithHostSet) {
         return getPreference(
                 preferenceScreenWithHostSet,
-                preference -> hostOfPreference.equals(preference.getHost().host()) && preference.getFragment().equals(Optional.of(fragmentPointedTo.getName())));
+                searchablePreferenceWithinGraph ->
+                        hostOfPreference.equals(searchablePreferenceWithinGraph.searchablePreference().getHost().host()) &&
+                                searchablePreferenceWithinGraph.searchablePreference().getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
-    private SearchablePreference getPreference(
-            final Set<SearchablePreferenceScreen> searchablePreferenceScreens,
-            final Predicate<SearchablePreference> predicate) {
+    private SearchablePreferenceWithinGraph getPreference(
+            final Set<SearchablePreferenceScreenWithinGraph> searchablePreferenceScreens,
+            final Predicate<SearchablePreferenceWithinGraph> predicate) {
         return searchablePreferenceScreens
                 .stream()
                 .flatMap(
-                        searchablePreferenceScreen ->
-                                searchablePreferenceScreen
-                                        .allPreferencesOfPreferenceHierarchy()
+                        searchablePreferenceScreenWithinGraph ->
+                                searchablePreferenceScreenWithinGraph
+                                        .getAllPreferencesOfPreferenceHierarchy()
                                         .stream()
                                         .filter(predicate))
                 .collect(MoreCollectors.onlyElement());

@@ -7,28 +7,28 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 
-public record PreferencePath(List<SearchablePreference> preferences) {
+public record PreferencePath(List<SearchablePreferenceWithinGraph> preferences) {
 
     public PreferencePath {
         Preconditions.checkArgument(!preferences.isEmpty());
     }
 
-    public SearchablePreference getStart() {
+    public SearchablePreferenceWithinGraph getStart() {
         return Lists
                 .getHead(preferences)
                 .orElseThrow();
     }
 
-    public SearchablePreference getEnd() {
+    public SearchablePreferenceWithinGraph getEnd() {
         return Lists
                 .getLastElement(preferences)
                 .orElseThrow();
     }
 
     public Optional<PreferencePath> getTail() {
-        final List<SearchablePreference> tailOfPreferences =
+        final List<SearchablePreferenceWithinGraph> tailOfPreferences =
                 Lists
                         .getTail(preferences)
                         .orElseThrow();
@@ -37,10 +37,10 @@ public record PreferencePath(List<SearchablePreference> preferences) {
                 Optional.of(new PreferencePath(tailOfPreferences));
     }
 
-    public PreferencePath append(final SearchablePreference preference) {
+    public PreferencePath append(final SearchablePreferenceWithinGraph preference) {
         return new PreferencePath(
                 ImmutableList
-                        .<SearchablePreference>builder()
+                        .<SearchablePreferenceWithinGraph>builder()
                         .addAll(preferences)
                         .add(preference)
                         .build());

@@ -1,9 +1,9 @@
 package de.KnollFrank.lib.settingssearch.results;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 
 @FunctionalInterface
 public interface SearchResultsFilter {
 
-    boolean includePreferenceInSearchResults(SearchablePreference preference);
+    boolean includePreferenceInSearchResults(SearchablePreferenceWithinGraph preference);
 }

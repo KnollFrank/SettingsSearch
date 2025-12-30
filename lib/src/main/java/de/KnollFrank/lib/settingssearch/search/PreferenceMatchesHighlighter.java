@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 
 public class PreferenceMatchesHighlighter {
@@ -34,31 +34,31 @@ public class PreferenceMatchesHighlighter {
 
     private void highlightTitle(final PreferenceMatch preferenceMatch) {
         highlight(
-                preferenceMatch.preference()::setHighlightedTitleProvider,
-                preferenceMatch.preference()::getTitle,
+                preferenceMatch.preference().searchablePreference()::setHighlightedTitleProvider,
+                preferenceMatch.preference().searchablePreference()::getTitle,
                 preferenceMatch.titleMatches());
     }
 
     private void highlightSummary(final PreferenceMatch preferenceMatch) {
         highlight(
-                preferenceMatch.preference()::setHighlightedSummaryProvider,
-                preferenceMatch.preference()::getSummary,
+                preferenceMatch.preference().searchablePreference()::setHighlightedSummaryProvider,
+                preferenceMatch.preference().searchablePreference()::getSummary,
                 preferenceMatch.summaryMatches());
     }
 
     private void highlightOrHideSearchableInfo(final PreferenceMatch preferenceMatch) {
         if (!preferenceMatch.searchableInfoMatches().isEmpty()) {
             highlight(
-                    preferenceMatch.preference()::setHighlightedSearchableInfoProvider,
-                    preferenceMatch.preference()::getSearchableInfo,
+                    preferenceMatch.preference().searchablePreference()::setHighlightedSearchableInfoProvider,
+                    preferenceMatch.preference().searchablePreference()::getSearchableInfo,
                     preferenceMatch.searchableInfoMatches());
         } else {
             hideSearchableInfo(preferenceMatch.preference());
         }
     }
 
-    private static void hideSearchableInfo(final SearchablePreference preference) {
-        preference.setHighlightedSearchableInfoProvider(Optional::empty);
+    private static void hideSearchableInfo(final SearchablePreferenceWithinGraph preference) {
+        preference.searchablePreference().setHighlightedSearchableInfoProvider(Optional::empty);
     }
 
     private void highlight(

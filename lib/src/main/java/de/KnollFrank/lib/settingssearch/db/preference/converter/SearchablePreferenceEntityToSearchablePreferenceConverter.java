@@ -14,16 +14,14 @@ class SearchablePreferenceEntityToSearchablePreferenceConverter {
         this.dbDataProvider = dbDataProvider;
     }
 
-    public Set<SearchablePreference> fromEntities(final Set<SearchablePreferenceEntity> entities,
-                                                  final PredecessorProvider predecessorProvider) {
+    public Set<SearchablePreference> fromEntities(final Set<SearchablePreferenceEntity> entities) {
         return entities
                 .stream()
-                .map(entity -> fromEntity(entity, predecessorProvider))
+                .map(this::fromEntity)
                 .collect(Collectors.toSet());
     }
 
-    private SearchablePreference fromEntity(final SearchablePreferenceEntity entity,
-                                            final PredecessorProvider predecessorProvider) {
+    private SearchablePreference fromEntity(final SearchablePreferenceEntity entity) {
         return new SearchablePreference(
                 entity.id(),
                 entity.key(),
@@ -37,7 +35,6 @@ class SearchablePreferenceEntityToSearchablePreferenceConverter {
                 entity.visible(),
                 entity.extras().get(),
                 entity.searchableInfo(),
-                fromEntities(entity.getChildren(dbDataProvider), predecessorProvider),
-                predecessorProvider.getPredecessor(entity));
+                fromEntities(entity.getChildren(dbDataProvider)));
     }
 }

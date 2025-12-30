@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.search;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphTestFactory.createSearchablePreferenceWithinGraph;
 
 import androidx.test.core.app.ActivityScenario;
 
@@ -40,7 +41,7 @@ public class PreferenceMatcherTest {
                 // When
                 final Optional<PreferenceMatch> preferenceMatch =
                         preferenceMatcher.getPreferenceMatch(
-                                searchablePreference,
+                                createSearchablePreferenceWithinGraph(searchablePreference),
                                 "title");
 
                 // Then
@@ -48,7 +49,7 @@ public class PreferenceMatcherTest {
                         preferenceMatch,
                         is(Optional.of(
                                 new PreferenceMatch(
-                                        searchablePreference,
+                                        createSearchablePreferenceWithinGraph(searchablePreference),
                                         Set.of(
                                                 new IndexRange(0, 5),
                                                 new IndexRange(7, 12)),

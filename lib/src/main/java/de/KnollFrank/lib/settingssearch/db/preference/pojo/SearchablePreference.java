@@ -10,14 +10,12 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import com.codepoetics.ambivalence.Either;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Classes;
 import de.KnollFrank.lib.settingssearch.common.converter.DrawableAndStringConverter;
 
@@ -40,8 +38,6 @@ public final class SearchablePreference {
     private final Optional<String> searchableInfo;
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider = Optional::empty;
     private final Set<SearchablePreference> children;
-    // FK-TODO: make predecessor final
-    private Optional<SearchablePreference> predecessor;
     // FK-TODO: make host final
     private Optional<SearchablePreferenceScreen> host = Optional.empty();
 
@@ -57,8 +53,7 @@ public final class SearchablePreference {
                                 final boolean visible,
                                 final PersistableBundle extras,
                                 final Optional<String> searchableInfo,
-                                final Set<SearchablePreference> children,
-                                final Optional<SearchablePreference> predecessor) {
+                                final Set<SearchablePreference> children) {
         this.id = id;
         this.key = Objects.requireNonNull(key);
         this.iconResourceIdOrIconPixelData = iconResourceIdOrIconPixelData;
@@ -72,7 +67,6 @@ public final class SearchablePreference {
         this.extras = extras;
         this.searchableInfo = searchableInfo;
         this.children = children;
-        this.predecessor = predecessor;
     }
 
     public String getId() {
@@ -173,23 +167,8 @@ public final class SearchablePreference {
         return extras;
     }
 
-    public PreferencePath getPreferencePath() {
-        return predecessor
-                .map(SearchablePreference::getPreferencePath)
-                .map(preferencePathOfPredecessor -> preferencePathOfPredecessor.append(this))
-                .orElseGet(() -> new PreferencePath(List.of(this)));
-    }
-
     public Set<SearchablePreference> getChildren() {
         return children;
-    }
-
-    public Optional<SearchablePreference> getPredecessor() {
-        return predecessor;
-    }
-
-    public void setPredecessor(final Optional<SearchablePreference> predecessor) {
-        this.predecessor = predecessor;
     }
 
     public SearchablePreferenceScreen getHost() {
@@ -223,7 +202,6 @@ public final class SearchablePreference {
                 .add("searchableInfo=" + searchableInfo)
                 .add("fragment=" + fragment)
                 .add("visible=" + visible)
-                .add("predecessorId='" + predecessor.map(SearchablePreference::getId) + "'")
                 .toString();
     }
 

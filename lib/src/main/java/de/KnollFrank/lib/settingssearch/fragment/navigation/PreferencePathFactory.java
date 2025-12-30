@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphs;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 
 class PreferencePathFactory {
@@ -29,25 +29,28 @@ class PreferencePathFactory {
     }
 
     private static PreferencePath createPreferencePath(final PreferencePathData preferencePathData,
-                                                       final Set<SearchablePreference> haystack) {
+                                                       final Set<SearchablePreferenceWithinGraph> haystack) {
         return new PreferencePath(
                 asSearchablePreferences(
                         preferencePathData.preferenceIds(),
                         haystack));
     }
 
-    private static List<SearchablePreference> asSearchablePreferences(final List<String> preferenceIds,
-                                                                      final Set<SearchablePreference> haystack) {
+    private static List<SearchablePreferenceWithinGraph> asSearchablePreferences(
+            final List<String> preferenceIds,
+            final Set<SearchablePreferenceWithinGraph> haystack) {
         return preferenceIds
                 .stream()
                 .map(preferenceId -> asSearchablePreference(preferenceId, haystack))
                 .collect(Collectors.toList());
     }
 
-    private static SearchablePreference asSearchablePreference(final String preferenceId,
-                                                               final Set<SearchablePreference> haystack) {
-        return SearchablePreferences
-                .findPreferenceById(haystack, preferenceId)
+
+    private static SearchablePreferenceWithinGraph asSearchablePreference(
+            final String id,
+            final Set<SearchablePreferenceWithinGraph> haystack) {
+        return SearchablePreferenceWithinGraphs
+                .findPreferenceById(haystack, id)
                 .orElseThrow();
     }
 }

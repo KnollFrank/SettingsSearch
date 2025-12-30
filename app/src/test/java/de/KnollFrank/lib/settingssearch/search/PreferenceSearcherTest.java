@@ -54,8 +54,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -141,8 +141,9 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new SearchResultsFilter() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                        return keyOfPreferenceToIncludeInSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost().host());
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceWithinGraph preference) {
+                        return keyOfPreferenceToIncludeInSearchResults.equals(preference.searchablePreference().getKey()) &&
+                                preferenceFragment.getClass().equals(preference.searchablePreference().getHost().host());
                     }
                 },
                 keyword,
@@ -176,8 +177,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new SearchResultsFilter() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreference preference) {
-                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.getKey()) && preferenceFragment.getClass().equals(preference.getHost().host()));
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceWithinGraph preference) {
+                        return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.searchablePreference().getKey()) && preferenceFragment.getClass().equals(preference.searchablePreference().getHost().host()));
                     }
                 },
                 keyword,

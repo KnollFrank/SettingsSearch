@@ -36,6 +36,7 @@ public class PreferencePathNavigator {
         final Optional<Class<? extends Activity>> activity =
                 preferencePath
                         .getStart()
+                        .searchablePreference()
                         .getClassOfReferencedActivity(context);
         return activity.isPresent() ?
                 continueNavigationInActivity.continueNavigationInActivity(

@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.results;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphTestFactory.createSearchablePreferenceWithinGraph;
 import static de.KnollFrank.lib.settingssearch.test.Matchers.recyclerViewHasItem;
 
 import android.view.View;
@@ -58,7 +59,7 @@ public class SearchResultsDisplayerTest extends PreferencesRoomDatabaseTest {
                 searchResultsDisplayer.displaySearchResults(
                         Set.of(
                                 new PreferenceMatch(
-                                        preference,
+                                        createSearchablePreferenceWithinGraph(preference),
                                         Set.of(new IndexRange(0, 5)),
                                         Set.of(),
                                         Set.of())));

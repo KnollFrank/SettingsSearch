@@ -11,6 +11,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
+// FK-TODO: remove class
 class PredecessorProviderFactory {
 
     public static PredecessorProvider createPredecessorProvider(

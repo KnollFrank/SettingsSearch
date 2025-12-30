@@ -28,8 +28,7 @@ public class SearchablePreferenceTestFactory {
                 true,
                 null,
                 Optional.empty(),
-                Set.of(),
-                Optional.empty());
+                Set.of());
     }
 
     public static SearchablePreference createSearchablePreference(
@@ -38,8 +37,7 @@ public class SearchablePreferenceTestFactory {
             final Optional<String> summary,
             final Optional<String> searchableInfo,
             final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Set<SearchablePreference> children,
-            final Optional<SearchablePreference> predecessor) {
+            final Set<SearchablePreference> children) {
         return new SearchablePreference(
                 id,
                 "some key",
@@ -53,13 +51,10 @@ public class SearchablePreferenceTestFactory {
                 true,
                 new PersistableBundle(),
                 searchableInfo,
-                children,
-                predecessor);
+                children);
     }
 
-    public static SearchablePreference createSearchablePreference(
-            final String title,
-            final Optional<SearchablePreference> predecessor) {
+    public static SearchablePreference createSearchablePreferenceWithTitle(final String title) {
         return new SearchablePreference(
                 idGenerator.nextId(),
                 title,
@@ -73,8 +68,7 @@ public class SearchablePreferenceTestFactory {
                 true,
                 new PersistableBundle(),
                 Optional.empty(),
-                Set.of(),
-                predecessor);
+                Set.of());
     }
 
     public static SearchablePreference createSearchablePreference(
@@ -87,8 +81,7 @@ public class SearchablePreferenceTestFactory {
                 title,
                 summary,
                 searchableInfo,
-                iconResourceIdOrIconPixelData,
-                Optional.empty());
+                iconResourceIdOrIconPixelData);
     }
 
     public static SearchablePreference createSearchablePreference(
@@ -96,8 +89,7 @@ public class SearchablePreferenceTestFactory {
             final Optional<String> title,
             final Optional<String> summary,
             final Optional<String> searchableInfo,
-            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData,
-            final Optional<SearchablePreference> predecessor) {
+            final Optional<Either<Integer, String>> iconResourceIdOrIconPixelData) {
         return new SearchablePreference(
                 id,
                 "some key",
@@ -111,8 +103,7 @@ public class SearchablePreferenceTestFactory {
                 true,
                 new PersistableBundle(),
                 searchableInfo,
-                Set.of(),
-                predecessor);
+                Set.of());
     }
 
     public static SearchablePreference createSearchablePreference(final String key) {
@@ -129,14 +120,6 @@ public class SearchablePreferenceTestFactory {
                 true,
                 new PersistableBundle(),
                 Optional.empty(),
-                Set.of(),
-                Optional.empty());
-    }
-
-    public static SearchablePreference copyPreferenceAndSetPredecessor(final SearchablePreference preference,
-                                                                       final Optional<SearchablePreference> predecessor) {
-        return createSearchablePreference(
-                preference.getTitle().orElseThrow(),
-                predecessor);
+                Set.of());
     }
 }

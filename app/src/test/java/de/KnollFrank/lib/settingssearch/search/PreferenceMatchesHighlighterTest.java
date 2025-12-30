@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.search;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphTestFactory.createSearchablePreferenceWithinGraph;
 
 import android.text.Spannable;
 
@@ -35,7 +36,7 @@ public class PreferenceMatchesHighlighterTest {
         final Set<PreferenceMatch> preferenceMatches =
                 Set.of(
                         new PreferenceMatch(
-                                preference,
+                                createSearchablePreferenceWithinGraph(preference),
                                 Set.of(
                                         new IndexRange(0, 5),
                                         new IndexRange(7, 12)),
@@ -67,7 +68,7 @@ public class PreferenceMatchesHighlighterTest {
         final Set<PreferenceMatch> preferenceMatches =
                 Set.of(
                         new PreferenceMatch(
-                                preference,
+                                createSearchablePreferenceWithinGraph(preference),
                                 Set.of(),
                                 Set.of(
                                         new IndexRange(0, 7),
@@ -100,7 +101,7 @@ public class PreferenceMatchesHighlighterTest {
         final Set<PreferenceMatch> preferenceMatches =
                 Set.of(
                         new PreferenceMatch(
-                                preference,
+                                createSearchablePreferenceWithinGraph(preference),
                                 Set.of(),
                                 Set.of(),
                                 Set.of(

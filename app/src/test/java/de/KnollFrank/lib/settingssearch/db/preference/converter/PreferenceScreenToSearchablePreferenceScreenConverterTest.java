@@ -60,7 +60,6 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                                         getPreferenceScreen(preferenceFragment, activity),
                                         preferenceFragment,
                                         id,
-                                        Optional.empty(),
                                         locale)
                                 .searchablePreferenceScreen();
 
@@ -148,8 +147,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(),
-                        Optional.empty());
+                        Set.of());
         final SearchablePreference child2 =
                 new SearchablePreference(
                         id + "-0-1",
@@ -164,8 +162,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(),
-                        Optional.empty());
+                        Set.of());
         final SearchablePreference parent =
                 new SearchablePreference(
                         id + "-0",
@@ -180,8 +177,7 @@ public class PreferenceScreenToSearchablePreferenceScreenConverterTest {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(child1, child2),
-                        Optional.empty());
+                        Set.of(child1, child2));
         return new SearchablePreferenceScreen(
                 id,
                 host,

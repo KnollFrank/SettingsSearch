@@ -75,7 +75,6 @@ public class PreferenceToSearchablePreferenceConverterIntegrationTest {
                         List.of(),
                         "-1",
                         hostOfPreference,
-                        Optional.empty(),
                         Locale.GERMAN)
                 .searchablePreference();
     }

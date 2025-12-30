@@ -28,7 +28,6 @@ public class SearchablePreferenceEquality {
         assertThat(actual.isVisible(), is(expected.isVisible()));
         assertThat(actual.getSearchableInfo(), is(expected.getSearchableInfo()));
         assertActualEqualsExpected(actual.getChildren(), expected.getChildren());
-        assertActualEqualsExpected(actual.getPredecessor(), expected.getPredecessor());
     }
 
     public static void assertActualEqualsExpected(final Set<SearchablePreference> actual,

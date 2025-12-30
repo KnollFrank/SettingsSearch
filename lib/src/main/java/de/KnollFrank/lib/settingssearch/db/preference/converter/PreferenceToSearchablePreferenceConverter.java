@@ -46,7 +46,6 @@ public class PreferenceToSearchablePreferenceConverter {
             final List<Integer> indexPathOfPreference,
             final String searchablePreferenceScreenId,
             final PreferenceFragmentCompat hostOfPreference,
-            final Optional<SearchablePreference> predecessorOfPreference,
             final Locale locale) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 convertChildrenOfPreference(
@@ -54,7 +53,6 @@ public class PreferenceToSearchablePreferenceConverter {
                         indexPathOfPreference,
                         searchablePreferenceScreenId,
                         hostOfPreference,
-                        predecessorOfPreference,
                         locale);
         final SearchablePreference searchablePreference =
                 new SearchablePreference(
@@ -70,8 +68,7 @@ public class PreferenceToSearchablePreferenceConverter {
                         preference.isVisible(),
                         BundleConverter.toPersistableBundle(preference.getExtras()),
                         searchableInfoAndDialogInfoProvider.getSearchableInfo(preference, hostOfPreference),
-                        searchablePreferences.keySet(),
-                        predecessorOfPreference);
+                        searchablePreferences.keySet());
         return new SearchablePreferenceWithMap(
                 searchablePreference,
                 ImmutableBiMap
@@ -86,7 +83,6 @@ public class PreferenceToSearchablePreferenceConverter {
             final List<Integer> indexPathOfParentOfPreferences,
             final String searchablePreferenceScreenId,
             final PreferenceFragmentCompat hostOfPreferences,
-            final Optional<SearchablePreference> predecessorOfPreferences,
             final Locale locale) {
         final List<SearchablePreferenceWithMap> pojoWithMapList =
                 IntStream
@@ -98,7 +94,6 @@ public class PreferenceToSearchablePreferenceConverter {
                                                 append(indexPathOfParentOfPreferences, index),
                                                 searchablePreferenceScreenId,
                                                 hostOfPreferences,
-                                                predecessorOfPreferences,
                                                 locale))
                         .collect(Collectors.toList());
         return getPojoEntityMap(pojoWithMapList);
@@ -109,7 +104,6 @@ public class PreferenceToSearchablePreferenceConverter {
             final List<Integer> indexPathOfPreference,
             final String searchablePreferenceScreenId,
             final PreferenceFragmentCompat hostOfPreference,
-            final Optional<SearchablePreference> predecessorOfPreference,
             final Locale locale) {
         return preference instanceof final PreferenceGroup preferenceGroup ?
                 convertPreferences(
@@ -117,7 +111,6 @@ public class PreferenceToSearchablePreferenceConverter {
                         indexPathOfPreference,
                         searchablePreferenceScreenId,
                         hostOfPreference,
-                        predecessorOfPreference,
                         locale) :
                 ImmutableBiMap.of();
     }

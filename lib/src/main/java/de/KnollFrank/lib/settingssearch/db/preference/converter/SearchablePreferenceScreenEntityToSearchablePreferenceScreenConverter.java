@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.converter;
 
-import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -19,16 +18,13 @@ public class SearchablePreferenceScreenEntityToSearchablePreferenceScreenConvert
         this.preferenceConverter = preferenceConverter;
     }
 
-    public SearchablePreferenceScreen fromEntity(final SearchablePreferenceScreenEntity entity,
-                                                 final Optional<SearchablePreferenceScreen> predecessorOfEntity) {
+    public SearchablePreferenceScreen fromEntity(final SearchablePreferenceScreenEntity entity) {
         final Set<SearchablePreferenceEntity> searchablePreferenceEntities = entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider);
         return new SearchablePreferenceScreen(
                 entity.id(),
                 entity.host(),
                 entity.title(),
                 entity.summary(),
-                preferenceConverter.fromEntities(
-                        searchablePreferenceEntities,
-                        PredecessorProviderFactory.createPredecessorProvider(predecessorOfEntity, searchablePreferenceEntities)));
+                preferenceConverter.fromEntities(searchablePreferenceEntities));
     }
 }

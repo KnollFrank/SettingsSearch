@@ -27,7 +27,6 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
             final PreferenceScreen preferenceScreen,
             final PreferenceFragmentCompat hostOfPreferenceScreen,
             final String id,
-            final Optional<SearchablePreference> predecessorOfPreferenceScreen,
             final Locale locale) {
         final BiMap<SearchablePreference, Preference> searchablePreferences =
                 preferenceToSearchablePreferenceConverter.convertPreferences(
@@ -35,7 +34,6 @@ public class PreferenceScreenToSearchablePreferenceScreenConverter {
                         List.of(),
                         id,
                         hostOfPreferenceScreen,
-                        predecessorOfPreferenceScreen,
                         locale);
         return new SearchablePreferenceScreenWithMap(
                 new SearchablePreferenceScreen(

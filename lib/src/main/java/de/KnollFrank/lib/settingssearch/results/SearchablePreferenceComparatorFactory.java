@@ -6,31 +6,36 @@ import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 
 class SearchablePreferenceComparatorFactory {
 
-    public static Comparator<SearchablePreference> lexicographicalComparator() {
+    public static Comparator<SearchablePreferenceWithinGraph> lexicographicalComparator() {
         return SearchablePreferenceComparatorFactory
                 .title()
                 .thenComparing(summary())
                 .thenComparing(searchableInfo());
     }
 
-    private static Comparator<SearchablePreference> title() {
+    private static Comparator<SearchablePreferenceWithinGraph> title() {
         return comparing(SearchablePreference::getTitle);
     }
 
-    private static Comparator<SearchablePreference> summary() {
+    private static Comparator<SearchablePreferenceWithinGraph> summary() {
         return comparing(SearchablePreference::getSummary);
     }
 
-    private static Comparator<SearchablePreference> searchableInfo() {
+    private static Comparator<SearchablePreferenceWithinGraph> searchableInfo() {
         return comparing(SearchablePreference::getSearchableInfo);
     }
 
-    private static Comparator<SearchablePreference> comparing(final Function<SearchablePreference, Optional<String>> keyExtractor) {
+    private static Comparator<SearchablePreferenceWithinGraph> comparing(final Function<SearchablePreference, Optional<String>> keyExtractor) {
         return Comparator.comparing(
-                keyExtractor,
+                getSearchablePreference().andThen(keyExtractor),
                 ComparatorFactory.emptiesLast(String.CASE_INSENSITIVE_ORDER));
+    }
+
+    private static Function<SearchablePreferenceWithinGraph, SearchablePreference> getSearchablePreference() {
+        return SearchablePreferenceWithinGraph::searchablePreference;
     }
 }

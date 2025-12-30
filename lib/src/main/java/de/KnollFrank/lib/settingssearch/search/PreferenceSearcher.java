@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 
@@ -36,7 +36,7 @@ class PreferenceSearcher<C> {
         return searchFor(needle, getHaystack(locale));
     }
 
-    private Set<PreferenceMatch> searchFor(final String needle, final Set<SearchablePreference> haystack) {
+    private Set<PreferenceMatch> searchFor(final String needle, final Set<SearchablePreferenceWithinGraph> haystack) {
         return haystack
                 .stream()
                 .map(searchablePreference -> preferenceMatcher.getPreferenceMatch(searchablePreference, needle))
@@ -44,16 +44,16 @@ class PreferenceSearcher<C> {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreference> getHaystack(final Locale locale) {
+    private Set<SearchablePreferenceWithinGraph> getHaystack(final Locale locale) {
         return this
                 .getPreferences(graphRepository.findGraphById(locale, null, activityContext))
                 .stream()
-                .filter(SearchablePreference::isVisible)
+                .filter(searchablePreferenceWithinGraph -> searchablePreferenceWithinGraph.searchablePreference().isVisible())
                 .filter(searchResultsFilter::includePreferenceInSearchResults)
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreference> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
+    private Set<SearchablePreferenceWithinGraph> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
         return graph
                 .map(SearchablePreferenceScreenGraph::graph)
                 .map(PojoGraphs::getPreferences)

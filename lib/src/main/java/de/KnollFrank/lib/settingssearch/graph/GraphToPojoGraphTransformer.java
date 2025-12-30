@@ -5,7 +5,6 @@ import androidx.preference.Preference;
 import org.jgrapht.Graph;
 
 import java.util.Locale;
-import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
@@ -44,19 +43,14 @@ public class GraphToPojoGraphTransformer {
 
             @Override
             public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {
-                return convertToPojo(rootNode, Optional.empty());
+                return convertToPojo(rootNode);
             }
 
             @Override
             public SearchablePreferenceScreenWithMap transformInnerNode(
                     final PreferenceScreenWithHost innerNode,
                     final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
-                return convertToPojo(
-                        innerNode,
-                        Optional.of(
-                                getPredecessorOfNode(
-                                        contextOfInnerNode.transformedParentNode(),
-                                        contextOfInnerNode.edgeFromParentNodeToInnerNode())));
+                return convertToPojo(innerNode);
             }
 
             @Override
@@ -68,14 +62,11 @@ public class GraphToPojoGraphTransformer {
                                 transformedParentNode));
             }
 
-            private SearchablePreferenceScreenWithMap convertToPojo(
-                    final PreferenceScreenWithHost node,
-                    final Optional<SearchablePreference> predecessorOfNode) {
+            private SearchablePreferenceScreenWithMap convertToPojo(final PreferenceScreenWithHost node) {
                 return preferenceScreenToSearchablePreferenceScreenConverter.convertPreferenceScreen(
                         node.preferenceScreen(),
                         node.host(),
                         preferenceFragmentIdProvider.getId(node.host()),
-                        predecessorOfNode,
                         locale);
             }
 

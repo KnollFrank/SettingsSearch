@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.builder.GraphBuilder;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,6 +23,10 @@ import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 
 public class SearchablePreferenceScreenGraphTestFactory {
+
+    public static GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> createGraphBuilder() {
+        return DefaultDirectedGraph.createBuilder(SearchablePreferenceEdge.class);
+    }
 
     public record Data(String DST_PREFERENCE_ID,
                        String PREFERENCE_CONNECTING_SRC_TO_DST_ID,
@@ -74,8 +79,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(),
-                        Optional.empty());
+                        Set.of());
         final SearchablePreferenceScreenGraphEntity graphEntity =
                 new SearchablePreferenceScreenGraphEntity(
                         locale,
@@ -110,8 +114,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                                         preferenceConnectingSrcToDst,
                                                                         Set.of()))
                                                         .build())))),
-                DefaultDirectedGraph
-                        .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                SearchablePreferenceScreenGraphTestFactory
+                        .createGraphBuilder()
                         .addVertex(src.second())
                         .build());
     }
@@ -152,8 +156,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(),
-                        Optional.empty());
+                        Set.of());
         final SearchablePreferenceScreenGraphEntity graphEntity =
                 new SearchablePreferenceScreenGraphEntity(
                         locale,
@@ -169,7 +172,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> dst =
                 createDst(
                         preferenceConnectingSrcToDst,
-                        preferencePojoConnectingSrcToDst,
                         graphEntity.id(),
                         data);
         return new Graphs(
@@ -197,8 +199,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                                         preferenceConnectingSrcToDst,
                                                                         Set.of()))
                                                         .build())))),
-                DefaultDirectedGraph
-                        .<SearchablePreferenceScreen, SearchablePreferenceEdge>createBuilder(SearchablePreferenceEdge.class)
+                SearchablePreferenceScreenGraphTestFactory
+                        .createGraphBuilder()
                         .addEdge(
                                 src.second(),
                                 dst.second(),
@@ -261,8 +263,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(),
-                        Optional.empty());
+                        Set.of());
         final SearchablePreferenceEntity child2 =
                 new SearchablePreferenceEntity(
                         data.child2Id(),
@@ -294,8 +295,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(),
-                        Optional.empty());
+                        Set.of());
         final SearchablePreference parentPojo =
                 new SearchablePreference(
                         data.parentId(),
@@ -310,8 +310,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(child1Pojo, child2Pojo),
-                        Optional.empty());
+                        Set.of(child1Pojo, child2Pojo));
         final SearchablePreferenceScreenEntity searchablePreferenceScreen =
                 new SearchablePreferenceScreenEntity(
                         screenId,
@@ -360,7 +359,6 @@ public class SearchablePreferenceScreenGraphTestFactory {
 
     private static Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> createDst(
             final SearchablePreferenceEntity predecessor,
-            final SearchablePreference predecessorPojo,
             final Locale graphId,
             final Data data) {
         final String screenId = data.twoNodeScreen2Id();
@@ -395,8 +393,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         true,
                         new PersistableBundle(),
                         Optional.empty(),
-                        Set.of(),
-                        Optional.of(predecessorPojo));
+                        Set.of());
         final SearchablePreferenceScreenEntity searchablePreferenceScreen =
                 new SearchablePreferenceScreenEntity(
                         screenId,

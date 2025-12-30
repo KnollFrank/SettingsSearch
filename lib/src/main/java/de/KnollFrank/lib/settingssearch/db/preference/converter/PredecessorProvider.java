@@ -5,6 +5,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 
+// FK-TODO: remove PredecessorProvider
 @FunctionalInterface
 interface PredecessorProvider {
 

@@ -4,8 +4,6 @@ import static de.KnollFrank.lib.settingssearch.db.preference.converter.Searchabl
 
 import org.jgrapht.Graph;
 
-import java.util.Optional;
-
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter;
@@ -32,13 +30,13 @@ public class EntityGraphToPojoGraphTransformer {
 
             @Override
             public SearchablePreferenceScreen transformRootNode(final SearchablePreferenceScreenEntity rootNode) {
-                return screenConverter.fromEntity(rootNode, Optional.empty());
+                return screenConverter.fromEntity(rootNode);
             }
 
             @Override
             public SearchablePreferenceScreen transformInnerNode(final SearchablePreferenceScreenEntity innerNode,
                                                                  final ContextOfInnerNode<SearchablePreferenceEntityEdge, SearchablePreferenceScreen> contextOfInnerNode) {
-                return screenConverter.fromEntity(innerNode, Optional.of(contextOfInnerNode.transformedParentNode()));
+                return screenConverter.fromEntity(innerNode);
             }
 
             @Override
