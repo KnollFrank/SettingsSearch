@@ -23,6 +23,7 @@ public class SubtreeReplacer<V, E> {
         this.cloneEdge = cloneEdge;
     }
 
+    // FK-TODO: refactor to Step-Builder (= Fluent Interface or Internal DSL)
     public Graph<V, E> replaceSubtreeWithTree(final Graph<V, E> originalGraph,
                                               final V rootNodeOfSubtreeToReplace,
                                               final Graph<V, E> replacementTree) {

@@ -7,8 +7,6 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 
 public class SearchablePreferenceScreenSubtreeReplacerFactory {
 
-    // FK-TODO: refactor to Step-Builder (= Fluent Interface or Internal DSL)
-
     public static SubtreeReplacer<SearchablePreferenceScreen, SearchablePreferenceEdge> createSubtreeReplacer() {
         return new SubtreeReplacer<>(
                 () -> new DefaultDirectedGraph<>(SearchablePreferenceEdge.class),
