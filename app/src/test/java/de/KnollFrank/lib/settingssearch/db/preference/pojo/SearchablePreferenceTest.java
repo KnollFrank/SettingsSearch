@@ -23,13 +23,15 @@ public class SearchablePreferenceTest extends PreferencesRoomDatabaseTest {
         // Given
         final SearchablePreference predecessor = createPreference("predecessor");
         final SearchablePreference parent = createPreference("parent");
+        final SearchablePreferenceScreen predecessorScreen = createScreen(predecessor);
+        final SearchablePreferenceScreen parentScreen = createScreen(parent);
         final DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraphBuilder()
-                        .addEdge(createScreen(predecessor), createScreen(parent), new SearchablePreferenceEdge(predecessor))
+                        .addEdge(predecessorScreen, parentScreen, new SearchablePreferenceEdge(predecessor))
                         .build();
-        final SearchablePreferenceWithinGraph _predecessor = new SearchablePreferenceWithinGraph(predecessor, graph);
-        final SearchablePreferenceWithinGraph _parent = new SearchablePreferenceWithinGraph(parent, graph);
+        final SearchablePreferenceOfHostWithinGraph _predecessor = new SearchablePreferenceOfHostWithinGraph(predecessor, predecessorScreen, graph);
+        final SearchablePreferenceOfHostWithinGraph _parent = new SearchablePreferenceOfHostWithinGraph(parent, parentScreen, graph);
 
         // When
         final PreferencePath preferencePath = _parent.getPreferencePath();

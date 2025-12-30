@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.KnollFrank.lib.settingssearch.client.SearchConfig;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 import de.KnollFrank.lib.settingssearch.search.SearchForQueryAndDisplayResultsCommand;
 import de.KnollFrank.lib.settingssearch.search.ui.ProgressContainerUI;
@@ -103,7 +103,7 @@ class SearchConfigFactory {
         private boolean ignoreSearchResults = false;
 
         @Override
-        public boolean includePreferenceInSearchResults(final SearchablePreferenceWithinGraph preference) {
+        public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinGraph preference) {
             return !ignoreSearchResults;
         }
 

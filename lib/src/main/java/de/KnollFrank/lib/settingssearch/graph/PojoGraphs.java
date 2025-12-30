@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinGraph;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 
 public class PojoGraphs {
 
-    public static Set<SearchablePreferenceWithinGraph> getPreferences(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+    public static Set<SearchablePreferenceOfHostWithinGraph> getPreferences(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
         return getPreferences(
                 pojoGraph
                         .vertexSet()
@@ -25,7 +25,7 @@ public class PojoGraphs {
                         .collect(Collectors.toSet()));
     }
 
-    public static Set<SearchablePreferenceWithinGraph> getPreferences(final Set<SearchablePreferenceScreenWithinGraph> preferenceScreens) {
+    public static Set<SearchablePreferenceOfHostWithinGraph> getPreferences(final Set<SearchablePreferenceScreenWithinGraph> preferenceScreens) {
         return Sets.union(
                 preferenceScreens
                         .stream()

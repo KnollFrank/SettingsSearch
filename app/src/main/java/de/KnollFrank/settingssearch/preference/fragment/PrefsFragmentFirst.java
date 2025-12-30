@@ -25,9 +25,9 @@ import java.util.stream.Stream;
 import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphs;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
@@ -121,7 +121,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().convertForward(configuration));
                     }
 
-                    private SearchablePreferenceWithinGraph getSummaryChangingPreference(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+                    private SearchablePreferenceOfHostWithinGraph getSummaryChangingPreference(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
                         return SearchablePreferenceWithinGraphs
                                 .findPreferenceByKey(
                                         PojoGraphs.getPreferences(pojoGraph),
@@ -130,7 +130,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private void setSummaryOfPreferences(final Preference preference,
-                                                         final SearchablePreferenceWithinGraph searchablePreference,
+                                                         final SearchablePreferenceOfHostWithinGraph searchablePreference,
                                                          final String summary) {
                         preference.setSummary(summary);
                         searchablePreference.searchablePreference().setSummary(Optional.of(summary));

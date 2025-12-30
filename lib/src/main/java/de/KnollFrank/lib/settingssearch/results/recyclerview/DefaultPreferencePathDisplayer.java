@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 
 public class DefaultPreferencePathDisplayer implements PreferencePathDisplayer {
 
@@ -19,7 +19,7 @@ public class DefaultPreferencePathDisplayer implements PreferencePathDisplayer {
         return preferencePath
                 .preferences()
                 .stream()
-                .map(SearchablePreferenceWithinGraph::searchablePreference)
+                .map(SearchablePreferenceOfHostWithinGraph::searchablePreference)
                 .map(SearchablePreference::getTitle)
                 .map(title -> title.orElse("?"))
                 .collect(Collectors.joining(" > "));

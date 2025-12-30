@@ -12,9 +12,9 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 
 public class PreferencePathProviderTest {
 
@@ -31,13 +31,18 @@ public class PreferencePathProviderTest {
                         .createGraphBuilder()
                         .addVertex(rootScreen)
                         .build();
+        final SearchablePreferenceOfHostWithinGraph _p1 =
+                new SearchablePreferenceOfHostWithinGraph(
+                        p1,
+                        rootScreen,
+                        graph);
 
         // When
-        final PreferencePath path = PreferencePathProvider.getPreferencePath(new SearchablePreferenceWithinGraph(p1, graph));
+        final PreferencePath path = PreferencePathProvider.getPreferencePath(_p1);
 
         // Then
         // The path should only contain P1 since it's located directly in the root screen
-        assertThat(path.preferences(), contains(new SearchablePreferenceWithinGraph(p1, graph)));
+        assertThat(path.preferences(), contains(_p1));
     }
 
     @Test
@@ -57,17 +62,22 @@ public class PreferencePathProviderTest {
                         .addVertices(rootScreen, screenA)
                         .addEdge(rootScreen, screenA, new SearchablePreferenceEdge(prefToA))
                         .build();
+        final SearchablePreferenceOfHostWithinGraph _targetPref =
+                new SearchablePreferenceOfHostWithinGraph(
+                        targetPref,
+                        screenA,
+                        graph);
 
         // When
-        final PreferencePath path = PreferencePathProvider.getPreferencePath(new SearchablePreferenceWithinGraph(targetPref, graph));
+        final PreferencePath path = PreferencePathProvider.getPreferencePath(_targetPref);
 
         // Then
         // The path must contain the bridge preference leading to screenA and the target itself
         assertThat(
                 path.preferences(),
                 contains(
-                        new SearchablePreferenceWithinGraph(prefToA, graph),
-                        new SearchablePreferenceWithinGraph(targetPref, graph)));
+                        new SearchablePreferenceOfHostWithinGraph(prefToA, rootScreen, graph),
+                        _targetPref));
     }
 
     @Test
@@ -90,17 +100,22 @@ public class PreferencePathProviderTest {
                         .addEdge(root, screenA, new SearchablePreferenceEdge(bridge1))
                         .addEdge(screenA, screenB, new SearchablePreferenceEdge(bridge2))
                         .build();
+        final SearchablePreferenceOfHostWithinGraph _target =
+                new SearchablePreferenceOfHostWithinGraph(
+                        target,
+                        screenB,
+                        graph);
 
         // When
-        final PreferencePath path = PreferencePathProvider.getPreferencePath(new SearchablePreferenceWithinGraph(target, graph));
+        final PreferencePath path = PreferencePathProvider.getPreferencePath(_target);
 
         // Then
         // The path traces the sequence of bridge preferences across all screens to the target: [Bridge1, Bridge2, Target]
         assertThat(
                 path.preferences(),
                 contains(
-                        new SearchablePreferenceWithinGraph(bridge1, graph),
-                        new SearchablePreferenceWithinGraph(bridge2, graph),
-                        new SearchablePreferenceWithinGraph(target, graph)));
+                        new SearchablePreferenceOfHostWithinGraph(bridge1, root, graph),
+                        new SearchablePreferenceOfHostWithinGraph(bridge2, screenA, graph),
+                        _target));
     }
 }

@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.results.MarkupsFactory;
 
 public class PreferenceMatchesHighlighter {
@@ -57,7 +57,7 @@ public class PreferenceMatchesHighlighter {
         }
     }
 
-    private static void hideSearchableInfo(final SearchablePreferenceWithinGraph preference) {
+    private static void hideSearchableInfo(final SearchablePreferenceOfHostWithinGraph preference) {
         preference.searchablePreference().setHighlightedSearchableInfoProvider(Optional::empty);
     }
 

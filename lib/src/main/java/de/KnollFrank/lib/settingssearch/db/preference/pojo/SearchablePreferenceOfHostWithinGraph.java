@@ -7,8 +7,9 @@ import java.util.Objects;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferencePathProvider;
 
-public record SearchablePreferenceWithinGraph(
+public record SearchablePreferenceOfHostWithinGraph(
         SearchablePreference searchablePreference,
+        SearchablePreferenceScreen hostOfPreference,
         Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphContainingPreference) {
 
     public PreferencePath getPreferencePath() {
@@ -18,7 +19,7 @@ public record SearchablePreferenceWithinGraph(
     @Override
     public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreferenceWithinGraph that = (SearchablePreferenceWithinGraph) o;
+        final SearchablePreferenceOfHostWithinGraph that = (SearchablePreferenceOfHostWithinGraph) o;
         return Objects.equals(searchablePreference, that.searchablePreference);
     }
 

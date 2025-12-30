@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphs;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 
@@ -29,16 +29,16 @@ class PreferencePathFactory {
     }
 
     private static PreferencePath createPreferencePath(final PreferencePathData preferencePathData,
-                                                       final Set<SearchablePreferenceWithinGraph> haystack) {
+                                                       final Set<SearchablePreferenceOfHostWithinGraph> haystack) {
         return new PreferencePath(
                 asSearchablePreferences(
                         preferencePathData.preferenceIds(),
                         haystack));
     }
 
-    private static List<SearchablePreferenceWithinGraph> asSearchablePreferences(
+    private static List<SearchablePreferenceOfHostWithinGraph> asSearchablePreferences(
             final List<String> preferenceIds,
-            final Set<SearchablePreferenceWithinGraph> haystack) {
+            final Set<SearchablePreferenceOfHostWithinGraph> haystack) {
         return preferenceIds
                 .stream()
                 .map(preferenceId -> asSearchablePreference(preferenceId, haystack))
@@ -46,9 +46,9 @@ class PreferencePathFactory {
     }
 
 
-    private static SearchablePreferenceWithinGraph asSearchablePreference(
+    private static SearchablePreferenceOfHostWithinGraph asSearchablePreference(
             final String id,
-            final Set<SearchablePreferenceWithinGraph> haystack) {
+            final Set<SearchablePreferenceOfHostWithinGraph> haystack) {
         return SearchablePreferenceWithinGraphs
                 .findPreferenceById(haystack, id)
                 .orElseThrow();

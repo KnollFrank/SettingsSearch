@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 
@@ -36,7 +36,7 @@ class PreferenceSearcher<C> {
         return searchFor(needle, getHaystack(locale));
     }
 
-    private Set<PreferenceMatch> searchFor(final String needle, final Set<SearchablePreferenceWithinGraph> haystack) {
+    private Set<PreferenceMatch> searchFor(final String needle, final Set<SearchablePreferenceOfHostWithinGraph> haystack) {
         return haystack
                 .stream()
                 .map(searchablePreference -> preferenceMatcher.getPreferenceMatch(searchablePreference, needle))
@@ -44,7 +44,7 @@ class PreferenceSearcher<C> {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreferenceWithinGraph> getHaystack(final Locale locale) {
+    private Set<SearchablePreferenceOfHostWithinGraph> getHaystack(final Locale locale) {
         return this
                 .getPreferences(graphRepository.findGraphById(locale, null, activityContext))
                 .stream()
@@ -53,7 +53,7 @@ class PreferenceSearcher<C> {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreferenceWithinGraph> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
+    private Set<SearchablePreferenceOfHostWithinGraph> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
         return graph
                 .map(SearchablePreferenceScreenGraph::graph)
                 .map(PojoGraphs::getPreferences)

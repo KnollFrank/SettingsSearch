@@ -7,14 +7,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 
 class LexicographicalSearchResultsSorter implements SearchResultsSorter {
 
-    private static final Comparator<SearchablePreferenceWithinGraph> COMPARATOR = lexicographicalComparator();
+    private static final Comparator<SearchablePreferenceOfHostWithinGraph> COMPARATOR = lexicographicalComparator();
 
     @Override
-    public List<SearchablePreferenceWithinGraph> sort(final Collection<SearchablePreferenceWithinGraph> searchResults) {
+    public List<SearchablePreferenceOfHostWithinGraph> sort(final Collection<SearchablePreferenceOfHostWithinGraph> searchResults) {
         return searchResults
                 .stream()
                 .sorted(COMPARATOR)

@@ -4,12 +4,14 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePref
 
 public class SearchablePreferenceWithinGraphTestFactory {
 
-    public static SearchablePreferenceWithinGraph createSearchablePreferenceWithinGraph(final SearchablePreference preference) {
-        return new SearchablePreferenceWithinGraph(
+    public static SearchablePreferenceOfHostWithinGraph createSearchablePreferenceWithinGraph(final SearchablePreference preference) {
+        final SearchablePreferenceScreen screen = createScreen(preference);
+        return new SearchablePreferenceOfHostWithinGraph(
                 preference,
+                screen,
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraphBuilder()
-                        .addVertex(createScreen(preference))
+                        .addVertex(screen)
                         .build());
     }
 }

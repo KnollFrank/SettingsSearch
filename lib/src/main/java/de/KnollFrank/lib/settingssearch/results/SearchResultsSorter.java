@@ -3,10 +3,10 @@ package de.KnollFrank.lib.settingssearch.results;
 import java.util.Collection;
 import java.util.List;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 
 @FunctionalInterface
 public interface SearchResultsSorter {
 
-    List<SearchablePreferenceWithinGraph> sort(Collection<SearchablePreferenceWithinGraph> searchResults);
+    List<SearchablePreferenceOfHostWithinGraph> sort(Collection<SearchablePreferenceOfHostWithinGraph> searchResults);
 }

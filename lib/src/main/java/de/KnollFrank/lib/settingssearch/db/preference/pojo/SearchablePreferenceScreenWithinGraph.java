@@ -17,13 +17,14 @@ public record SearchablePreferenceScreenWithinGraph(
         return Graphs.getPathFromRootNodeToTarget(graphContainingScreen, searchablePreferenceScreen);
     }
 
-    public Set<SearchablePreferenceWithinGraph> getAllPreferencesOfPreferenceHierarchy() {
+    public Set<SearchablePreferenceOfHostWithinGraph> getAllPreferencesOfPreferenceHierarchy() {
         return searchablePreferenceScreen
                 .allPreferencesOfPreferenceHierarchy()
                 .stream()
                 .map(searchablePreference ->
-                             new SearchablePreferenceWithinGraph(
+                             new SearchablePreferenceOfHostWithinGraph(
                                      searchablePreference,
+                                     searchablePreferenceScreen,
                                      graphContainingScreen))
                 .collect(Collectors.toSet());
     }

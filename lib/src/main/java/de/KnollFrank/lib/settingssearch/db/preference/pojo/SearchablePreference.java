@@ -38,8 +38,6 @@ public final class SearchablePreference {
     private final Optional<String> searchableInfo;
     private Supplier<Optional<CharSequence>> highlightedSearchableInfoProvider = Optional::empty;
     private final Set<SearchablePreference> children;
-    // FK-TODO: move host to SearchablePreferenceWithinGraph
-    private Optional<SearchablePreferenceScreen> host = Optional.empty();
 
     public SearchablePreference(final String id,
                                 final String key,
@@ -169,14 +167,6 @@ public final class SearchablePreference {
 
     public Set<SearchablePreference> getChildren() {
         return children;
-    }
-
-    public SearchablePreferenceScreen getHost() {
-        return host.orElseThrow(IllegalStateException::new);
-    }
-
-    public void setHost(final SearchablePreferenceScreen host) {
-        this.host = Optional.of(host);
     }
 
     @Override

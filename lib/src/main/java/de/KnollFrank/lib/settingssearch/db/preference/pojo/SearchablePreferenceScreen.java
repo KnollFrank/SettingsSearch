@@ -12,10 +12,6 @@ public record SearchablePreferenceScreen(String id,
                                          Optional<String> summary,
                                          Set<SearchablePreference> allPreferencesOfPreferenceHierarchy) {
 
-    public SearchablePreferenceScreen {
-        allPreferencesOfPreferenceHierarchy.forEach(preference -> preference.setHost(this));
-    }
-
     @Override
     public boolean equals(final Object object) {
         if (object == null || getClass() != object.getClass()) return false;
