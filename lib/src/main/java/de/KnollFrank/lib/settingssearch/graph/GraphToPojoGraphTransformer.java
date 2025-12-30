@@ -70,14 +70,6 @@ public class GraphToPojoGraphTransformer {
                         locale);
             }
 
-            private static SearchablePreference getPredecessorOfNode(
-                    final SearchablePreferenceScreenWithMap parentNode,
-                    final PreferenceEdge edgeFromParentNodeToNode) {
-                return getTransformedPreference(
-                        edgeFromParentNodeToNode.preference,
-                        parentNode);
-            }
-
             private static SearchablePreference getTransformedPreference(
                     final Preference preference,
                     final SearchablePreferenceScreenWithMap transformedParentNode) {
