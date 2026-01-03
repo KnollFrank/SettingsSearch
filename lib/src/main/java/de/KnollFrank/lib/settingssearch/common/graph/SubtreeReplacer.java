@@ -24,10 +24,6 @@ public class SubtreeReplacer<V, E> {
     }
 
     public Graph<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace, final Graph<V, E> replacementTree) {
-        // FK-TODO: throw IllegalArgumentException() or enforce in GraphAtNode
-        if (!subtreeToReplace.tree().containsVertex(subtreeToReplace.rootNodeOfSubtree())) {
-            return subtreeToReplace.tree();
-        }
         final Graph<V, E> resultGraph = emptyGraphSupplier.get();
         copyPartsOfGraph(
                 subtreeToReplace.tree(),

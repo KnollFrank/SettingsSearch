@@ -124,29 +124,6 @@ public class NodeReplacerTest {
         assertActualEqualsExpected(returnedGraph, expectedGraph);
     }
 
-    @Test
-    public void shouldReturnOriginalGraphIfNodeToReplaceIsNotFound() {
-        // Given
-        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();
-        // Given an original graph:
-        // Given a graph
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vA)
-                        .addEdge(vP, vA, ePR) // just some edge
-                        .build();
-
-        // When trying to replace a non-existent node R
-        final Graph<StringVertex, StringEdge> returnedGraph =
-                nodeReplacer.replaceNode(
-                        new GraphAtNode<>(originalGraph, vR),
-                        vX);
-
-        // Then the returned graph should be an identical copy of the original
-        assertActualEqualsExpected(returnedGraph, originalGraph);
-    }
-
     private NodeReplacer<StringVertex, StringEdge> createNodeReplacer() {
         return new NodeReplacer<>(
                 StringEdge.class,

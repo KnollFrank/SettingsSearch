@@ -176,41 +176,6 @@ public class SubtreeReplacerTest {
     }
 
     @Test
-    public void replaceSubtree_nodeToReplaceNotInGraph_returnsOriginalGraphInstance() {
-        // Given
-        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
-        // Original Tree: R -> A (eRA)
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vR, vA)
-                        .addEdge(vR, vA, eRA)
-                        .build();
-        // Replacement Tree: X
-        final Graph<StringVertex, StringEdge> replacementGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertex(vX)
-                        .build();
-        final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vR, vA)
-                        .addEdge(vR, vA, eRA)
-                        .build();
-        final StringVertex nonExistentNode = new StringVertex("NonExistent");
-
-        // When
-        final Graph<StringVertex, StringEdge> returnedGraph =
-                subtreeReplacer.replaceSubtreeWithTree(
-                        new Subtree<>(originalGraph, nonExistentNode),
-                        replacementGraph);
-
-        // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
-    }
-
-    @Test
     public void replaceSubtree_replacementGraphIsEmptyAndNodeToReplaceIsRoot_resultsInEmptyGraph() {
         // Given
         final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
@@ -301,37 +266,6 @@ public class SubtreeReplacerTest {
 
         // Then
         assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
-    }
-
-    @Test
-    public void replaceSubtree_originalGraphIsEmpty_nodeToReplaceNotFound() {
-        // Given
-        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
-        // Original Tree: (empty)
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .build();
-        final Graph<StringVertex, StringEdge> originalGraphSnapshotForExpected =
-                StringGraphs
-                        .newGraphBuilder()
-                        .build();
-        // Node to replace: vR (not in the empty graph)
-        // Replacement Tree: X
-        final Graph<StringVertex, StringEdge> replacementGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertex(vX)
-                        .build();
-
-        // When
-        final Graph<StringVertex, StringEdge> returnedGraph =
-                subtreeReplacer.replaceSubtreeWithTree(
-                        new Subtree<>(originalGraph, vR),
-                        replacementGraph);
-
-        // Then
-        assertActualEqualsExpected(returnedGraph, originalGraphSnapshotForExpected);
     }
 
     private SubtreeReplacer<StringVertex, StringEdge> createSubtreeReplacer() {

@@ -5,6 +5,12 @@ import org.jgrapht.Graph;
 // FK-TODO: enforce tree contains rootNodeOfSubtree
 public record Subtree<V, E>(Graph<V, E> tree, V rootNodeOfSubtree) {
 
+    public Subtree {
+        if (!tree.containsVertex(rootNodeOfSubtree)) {
+            throw new IllegalArgumentException("tree '" + tree + "' must contain rootNodeOfSubtree '" + rootNodeOfSubtree + "'");
+        }
+    }
+
     public static <V, E> Subtree<V, E> of(final Graph<V, E> graph) {
         return new Subtree<>(
                 graph,

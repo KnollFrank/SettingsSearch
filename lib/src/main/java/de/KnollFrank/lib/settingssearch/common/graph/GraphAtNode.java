@@ -7,6 +7,12 @@ import java.util.Set;
 // FK-TODO: enforce graph contains nodeOfGraph
 public record GraphAtNode<V, E>(Graph<V, E> graph, V nodeOfGraph) {
 
+    public GraphAtNode {
+        if (!graph.containsVertex(nodeOfGraph)) {
+            throw new IllegalArgumentException("graph '" + graph + "' must contain nodeOfGraph '" + nodeOfGraph + "'");
+        }
+    }
+
     public Set<E> incomingEdgesOfNodeOfGraph() {
         return graph.incomingEdgesOf(nodeOfGraph);
     }
