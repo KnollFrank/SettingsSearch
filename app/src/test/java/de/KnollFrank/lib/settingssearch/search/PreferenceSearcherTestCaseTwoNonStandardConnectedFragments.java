@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -52,12 +51,10 @@ class PreferenceSearcherTestCaseTwoNonStandardConnectedFragments {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            // FK-TODO: ersetze überall "getPreferenceManager().getContext()" durch requireContext()?
-            final Context context = getPreferenceManager().getContext();
-            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(requireContext());
             screen.setTitle("screen with connection");
             {
-                final Preference preference = new Preference(context);
+                final Preference preference = new Preference(requireContext());
                 preference.setTitle("preference with a non standard connection to " + PreferenceFragmentWithSinglePreference.class.getSimpleName());
                 preference.setKey("key");
                 screen.addPreference(preference);

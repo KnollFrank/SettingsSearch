@@ -99,12 +99,11 @@ public class ItemFragment3 extends Fragment implements SettingHighlighterProvide
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            final Context context = getPreferenceManager().getContext();
-            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(requireContext());
             screen.setTitle("screen title PreferenceFragment3");
             screen.setSummary("screen summary");
             PreferenceFragment3
-                    .asPreferences(items, context)
+                    .asPreferences(items, requireContext())
                     .forEach(screen::addPreference);
             setPreferenceScreen(screen);
         }

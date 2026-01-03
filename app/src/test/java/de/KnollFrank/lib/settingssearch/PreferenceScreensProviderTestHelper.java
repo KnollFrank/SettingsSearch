@@ -20,7 +20,7 @@ public class PreferenceScreensProviderTestHelper {
             final PreferenceFragmentCompat fragment,
             final String title,
             final List<Class<? extends Fragment>> connectedFragments) {
-        final Context context = fragment.getPreferenceManager().getContext();
+        final Context context = fragment.requireContext();
         final PreferenceScreen screen = fragment.getPreferenceManager().createPreferenceScreen(context);
         screen.setTitle(title);
         connectedFragments

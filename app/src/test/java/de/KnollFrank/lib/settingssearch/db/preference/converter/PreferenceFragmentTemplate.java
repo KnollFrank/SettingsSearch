@@ -32,11 +32,10 @@ public class PreferenceFragmentTemplate extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-        final Context context = getPreferenceManager().getContext();
-        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(requireContext());
         screen.setTitle("screen title");
         screen.setSummary("screen summary");
-        addPreferences2Screen.accept(screen, context);
+        addPreferences2Screen.accept(screen, requireContext());
         setPreferenceScreen(screen);
     }
 

@@ -48,19 +48,18 @@ class PreferenceSearcherTestCaseTwoDifferentPreferencePaths {
 
         @Override
         public void onCreatePreferences(final Bundle savedInstanceState, final String rootKey) {
-            final Context context = getPreferenceManager().getContext();
-            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(context);
+            final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(requireContext());
             screen.setTitle("screen with connection");
             final String someArgument = "someArgument";
             {
-                final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, context);
+                final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, requireContext());
                 preference.setTitle("first preference connected to " + PreferenceFragmentWithSinglePreference.class.getSimpleName());
                 preference.setKey("key1");
                 preference.getExtras().putString(someArgument, "1");
                 screen.addPreference(preference);
             }
             {
-                final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, context);
+                final Preference preference = createPreferenceConnectedTo(PreferenceFragmentWithSinglePreference.class, requireContext());
                 preference.setTitle("second preference connected to " + PreferenceFragmentWithSinglePreference.class.getSimpleName());
                 preference.setKey("key2");
                 preference.getExtras().putString(someArgument, "2");
