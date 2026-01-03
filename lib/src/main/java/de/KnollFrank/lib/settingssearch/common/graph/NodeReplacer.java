@@ -15,13 +15,11 @@ public class NodeReplacer<V, E> {
         this.cloneEdge = cloneEdge;
     }
 
-    // FK-TODO: refactor to Step-Builder (= Fluent Interface or Internal DSL)
-    public Graph<V, E> replaceNode(final Graph<V, E> originalGraph,
-                                   final V nodeOfOriginalGraphToReplace,
+    public Graph<V, E> replaceNode(final GraphAtNode<V, E> graphAtNodeToReplace,
                                    final V replacementNode) {
         return NodesTransformer.transformNodes(
-                originalGraph,
-                createNodeReplacer(nodeOfOriginalGraphToReplace, replacementNode),
+                graphAtNodeToReplace.graph(),
+                createNodeReplacer(graphAtNodeToReplace.nodeOfGraph(), replacementNode),
                 edgeClass,
                 cloneEdge);
     }

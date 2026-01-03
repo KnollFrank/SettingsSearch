@@ -36,7 +36,9 @@ public class NodeReplacerTest {
 
         // When replacing node R with X
         final Graph<StringVertex, StringEdge> returnedGraph =
-                nodeReplacer.replaceNode(originalGraph, vR, vX);
+                nodeReplacer.replaceNode(
+                        new GraphAtNode<>(originalGraph, vR),
+                        vX);
 
         // Then the expected graph should have X connected to R's old neighbors:
         //   P --(ePR)--> X --(eRA)--> A
@@ -71,7 +73,9 @@ public class NodeReplacerTest {
 
         // When replacing root R with X
         final Graph<StringVertex, StringEdge> returnedGraph =
-                nodeReplacer.replaceNode(originalGraph, vR, vX);
+                nodeReplacer.replaceNode(
+                        new GraphAtNode<>(originalGraph, vR),
+                        vX);
 
         // Then X should become the new root:
         //   X --(eRA)--> A
@@ -102,7 +106,9 @@ public class NodeReplacerTest {
 
         // When replacing leaf R with X
         final Graph<StringVertex, StringEdge> returnedGraph =
-                nodeReplacer.replaceNode(originalGraph, vR, vX);
+                nodeReplacer.replaceNode(
+                        new GraphAtNode<>(originalGraph, vR),
+                        vX);
 
         // Then X should become the new leaf:
         //   P --(ePR)--> X
@@ -129,7 +135,9 @@ public class NodeReplacerTest {
 
         // When trying to replace a non-existent node R
         final Graph<StringVertex, StringEdge> returnedGraph =
-                nodeReplacer.replaceNode(originalGraph, vR, vX);
+                nodeReplacer.replaceNode(
+                        new GraphAtNode<>(originalGraph, vR),
+                        vX);
 
         // Then the returned graph should be an identical copy of the original
         assertActualEqualsExpected(returnedGraph, originalGraph);
