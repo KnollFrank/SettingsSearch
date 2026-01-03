@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createScreen;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createPreference;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
 import org.jgrapht.Graph;
 import org.junit.Test;
@@ -23,7 +23,7 @@ public class PreferencePathProviderTest {
         // Given
         // Graph structure:
         // [ rootScreen { p1 } ]
-        final SearchablePreference p1 = createPreference("P1");
+        final SearchablePreference p1 = createSearchablePreference("P1");
         final SearchablePreferenceScreen rootScreen = createScreen("Root", Set.of(p1));
 
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
@@ -50,10 +50,10 @@ public class PreferencePathProviderTest {
         // Given
         // Graph structure:
         // [ rootScreen { prefToA } ] --prefToA--> [ screenA { targetPref } ]
-        final SearchablePreference prefToA = createPreference("ToA");
+        final SearchablePreference prefToA = createSearchablePreference("ToA");
         final SearchablePreferenceScreen rootScreen = createScreen("Root", Set.of(prefToA));
 
-        final SearchablePreference targetPref = createPreference("Target");
+        final SearchablePreference targetPref = createSearchablePreference("Target");
         final SearchablePreferenceScreen screenA = createScreen("ScreenA", Set.of(targetPref));
 
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
@@ -85,9 +85,9 @@ public class PreferencePathProviderTest {
         // Given
         // Graph structure:
         // [ root { bridge1 } ] --bridge1--> [ screenA { bridge2 } ] --bridge2--> [ screenB { target } ]
-        final SearchablePreference bridge1 = createPreference("Bridge1");
-        final SearchablePreference bridge2 = createPreference("Bridge2");
-        final SearchablePreference target = createPreference("Target");
+        final SearchablePreference bridge1 = createSearchablePreference("Bridge1");
+        final SearchablePreference bridge2 = createSearchablePreference("Bridge2");
+        final SearchablePreference target = createSearchablePreference("Target");
 
         final SearchablePreferenceScreen root = createScreen("Root", Set.of(bridge1));
         final SearchablePreferenceScreen screenA = createScreen("A", Set.of(bridge2));

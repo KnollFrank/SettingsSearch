@@ -14,19 +14,19 @@ public class SearchablePreferenceTestFactory {
 
     private static final IdGenerator idGenerator = IdGeneratorFactory.createIdGeneratorStartingAt(1);
 
-    public static SearchablePreference createPreference(final String key) {
+    public static SearchablePreference createSearchablePreference(final String key) {
         return new SearchablePreference(
                 "id-" + key,
                 key,
                 Optional.of("Title " + key),
                 Optional.empty(),
                 Optional.empty(),
-                0,
+                16,
                 0,
                 Optional.empty(),
                 Optional.empty(),
                 true,
-                null,
+                new PersistableBundle(),
                 Optional.empty(),
                 Set.of());
     }
@@ -103,23 +103,6 @@ public class SearchablePreferenceTestFactory {
                 true,
                 new PersistableBundle(),
                 searchableInfo,
-                Set.of());
-    }
-
-    public static SearchablePreference createSearchablePreference(final String key) {
-        return new SearchablePreference(
-                "1",
-                key,
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                16,
-                0,
-                Optional.empty(),
-                Optional.empty(),
-                true,
-                new PersistableBundle(),
-                Optional.empty(),
                 Set.of());
     }
 }

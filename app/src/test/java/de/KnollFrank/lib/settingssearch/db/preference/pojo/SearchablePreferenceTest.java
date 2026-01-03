@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createScreen;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createPreference;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.junit.Test;
@@ -21,8 +21,8 @@ public class SearchablePreferenceTest extends PreferencesRoomDatabaseTest {
     @Test
     public void shouldGetPreferencePath() {
         // Given
-        final SearchablePreference predecessor = createPreference("predecessor");
-        final SearchablePreference parent = createPreference("parent");
+        final SearchablePreference predecessor = createSearchablePreference("predecessor");
+        final SearchablePreference parent = createSearchablePreference("parent");
         final SearchablePreferenceScreen predecessorScreen = createScreen(predecessor);
         final SearchablePreferenceScreen parentScreen = createScreen(parent);
         final DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
