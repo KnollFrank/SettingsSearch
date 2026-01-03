@@ -23,24 +23,21 @@ public class SubtreeReplacer<V, E> {
         this.cloneEdge = cloneEdge;
     }
 
-    // FK-TODO: refactor to Step-Builder (= Fluent Interface or Internal DSL)
-    public Graph<V, E> replaceSubtreeWithTree(final Graph<V, E> originalGraph,
-                                              final V rootNodeOfSubtreeToReplace,
-                                              final Graph<V, E> replacementTree) {
-        if (!originalGraph.containsVertex(rootNodeOfSubtreeToReplace)) {
-            return originalGraph;
+    public Graph<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace, final Graph<V, E> replacementTree) {
+        // FK-TODO: throw IllegalArgumentException() or enforce in GraphAtNode
+        if (!subtreeToReplace.tree().containsVertex(subtreeToReplace.rootNodeOfSubtree())) {
+            return subtreeToReplace.tree();
         }
         final Graph<V, E> resultGraph = emptyGraphSupplier.get();
         copyPartsOfGraph(
-                originalGraph,
-                getSubtreeVertices(originalGraph, rootNodeOfSubtreeToReplace),
+                subtreeToReplace.tree(),
+                getSubtreeVertices(subtreeToReplace),
                 resultGraph);
-        integrateReplacementTreeIntoResultGraph(originalGraph, rootNodeOfSubtreeToReplace, replacementTree, resultGraph);
+        integrateReplacementTreeIntoResultGraph(subtreeToReplace.asGraphAtNode(), replacementTree, resultGraph);
         return resultGraph;
     }
 
-    private void integrateReplacementTreeIntoResultGraph(final Graph<V, E> originalGraph,
-                                                         final V nodeToReplace,
+    private void integrateReplacementTreeIntoResultGraph(final GraphAtNode<V, E> originalGraphAtNodeToReplace,
                                                          final Graph<V, E> replacementTree,
                                                          final Graph<V, E> resultGraph) {
         Graphs
@@ -49,7 +46,7 @@ public class SubtreeReplacer<V, E> {
                         replacementRoot -> {
                             copyGraphFromSrc2Dst(replacementTree, resultGraph);
                             connectParentToRootOfReplacementTree(
-                                    getParentAndIncomingEdge(originalGraph, nodeToReplace),
+                                    getParentAndIncomingEdge(originalGraphAtNodeToReplace),
                                     resultGraph,
                                     replacementRoot);
                         });
@@ -112,20 +109,19 @@ public class SubtreeReplacer<V, E> {
                 .collect(Collectors.toSet());
     }
 
-    private Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(final Graph<V, E> graph,
-                                                                   final V node) {
-        final Set<E> incomingEdges = graph.incomingEdgesOf(node);
+    private Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(final GraphAtNode<V, E> graphAtNode) {
+        final Set<E> incomingEdges = graphAtNode.incomingEdgesOfNodeOfGraph();
         if (!incomingEdges.isEmpty()) {
             final E edgeToChild = incomingEdges.iterator().next();
             return Optional.of(
                     new ParentAndEdge<>(
-                            graph.getEdgeSource(edgeToChild),
+                            graphAtNode.graph().getEdgeSource(edgeToChild),
                             edgeToChild));
         }
         return Optional.empty();
     }
 
-    private Set<V> getSubtreeVertices(final Graph<V, E> graph, final V startNode) {
-        return ImmutableSet.copyOf(new BreadthFirstIterator<>(graph, startNode));
+    private Set<V> getSubtreeVertices(final Subtree<V, E> subtree) {
+        return ImmutableSet.copyOf(new BreadthFirstIterator<>(subtree.tree(), subtree.rootNodeOfSubtree()));
     }
 }

@@ -53,8 +53,8 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                                 "2",
                                                 "3",
                                                 "singleNodeGraph-screen1",
-                                                "graph-screen1",
-                                                "graph-screen2"))
+                                                "tree-screen1",
+                                                "tree-screen2"))
                                 .pojoGraph(),
                         Locale.GERMAN,
                         PersistableBundleTestFactory.createSomePersistableBundle());
@@ -83,8 +83,8 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                         "2",
                                         "3",
                                         "singleNodeGraph-screen1",
-                                        "graph-screen1",
-                                        "graph-screen2")));
+                                        "tree-screen1",
+                                        "tree-screen2")));
         dao.persistOrReplace(germanGraph);
 
         // And
@@ -101,8 +101,8 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                         "20",
                                         "30",
                                         "zh-singleNodeGraph-screen1",
-                                        "zh-graph-screen1",
-                                        "zh-graph-screen2")));
+                                        "zh-tree-screen1",
+                                        "zh-tree-screen2")));
         dao.persistOrReplace(chineseGraph);
 
         // Then
@@ -131,8 +131,8 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                                 "2",
                                                 "3",
                                                 "singleNodeGraph-screen1",
-                                                "graph-screen1",
-                                                "graph-screen2")));
+                                                "tree-screen1",
+                                                "tree-screen2")));
         dao.persistOrReplace(graphToBeOverwritten);
 
         // And
@@ -150,8 +150,8 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                                                 "20",
                                                 "30",
                                                 "singleNodeGraph-screen1",
-                                                "graph-screen1",
-                                                "graph-screen2")));
+                                                "tree-screen1",
+                                                "tree-screen2")));
         dao.persistOrReplace(overwritingGraph);
 
         // Then

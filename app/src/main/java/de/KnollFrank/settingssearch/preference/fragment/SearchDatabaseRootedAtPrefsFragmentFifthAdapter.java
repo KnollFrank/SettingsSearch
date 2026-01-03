@@ -14,6 +14,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenSubtreeReplacerFactory;
+import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphTransformer;
@@ -62,8 +63,9 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 SearchablePreferenceScreenSubtreeReplacerFactory
                         .createSubtreeReplacer()
                         .replaceSubtreeWithTree(
-                                graph.graph(),
-                                prefsFragmentFifthPreferenceScreen,
+                                new Subtree<>(
+                                        graph.graph(),
+                                        prefsFragmentFifthPreferenceScreen),
                                 getPojoGraphRootedAt(
                                         instantiateSearchablePreferenceScreen(
                                                 prefsFragmentFifthPreferenceScreen,

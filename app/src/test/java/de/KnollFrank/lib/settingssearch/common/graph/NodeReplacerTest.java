@@ -21,7 +21,8 @@ public class NodeReplacerTest {
     @Test
     public void shouldReplaceNodeAndRedirectEdges() {
         // Given
-        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();    // Given an original graph:
+        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();
+        // Given an original graph:
         //   P --ePR--> R --eRA--> A
         //              |
         //              --eRB--> B
@@ -58,7 +59,8 @@ public class NodeReplacerTest {
     @Test
     public void shouldReplaceRootNode() {
         // Given
-        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();    // Given an original graph:
+        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();
+        // Given an original graph:
         // Given a graph where the node to replace is the root:
         //   R --eRA--> A
         //   |
@@ -94,7 +96,8 @@ public class NodeReplacerTest {
     @Test
     public void shouldReplaceLeafNode() {
         // Given
-        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();    // Given an original graph:
+        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();
+        // Given an original graph:
         // Given a graph where the node to replace is a leaf:
         //   P --ePR--> R
         final Graph<StringVertex, StringEdge> originalGraph =
@@ -124,7 +127,8 @@ public class NodeReplacerTest {
     @Test
     public void shouldReturnOriginalGraphIfNodeToReplaceIsNotFound() {
         // Given
-        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();    // Given an original graph:
+        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();
+        // Given an original graph:
         // Given a graph
         final Graph<StringVertex, StringEdge> originalGraph =
                 StringGraphs

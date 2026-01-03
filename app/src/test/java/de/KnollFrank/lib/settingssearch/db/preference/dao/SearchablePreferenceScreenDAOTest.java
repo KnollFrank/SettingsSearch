@@ -33,8 +33,8 @@ public class SearchablePreferenceScreenDAOTest extends PreferencesRoomDatabaseTe
                         "2",
                         "3",
                         "singleNodeGraph-screen1",
-                        "graph-screen1",
-                        "graph-screen2");
+                        "tree-screen1",
+                        "tree-screen2");
         final SearchablePreferenceScreenEntityAndDbDataProvider screen = createSomeSearchablePreferenceScreen(data);
         dao.persist(Set.of(screen.entity()), screen.dbDataProvider());
         final SearchablePreferenceEntity preference =

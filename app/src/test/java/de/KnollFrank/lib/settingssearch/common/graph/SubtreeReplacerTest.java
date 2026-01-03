@@ -50,8 +50,7 @@ public class SubtreeReplacerTest {
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        originalGraph,
-                        vR,
+                        new Subtree<>(originalGraph, vR),
                         replacementGraph);
 
         // Then
@@ -95,8 +94,7 @@ public class SubtreeReplacerTest {
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        originalGraph,
-                        vR,
+                        new Subtree<>(originalGraph, vR),
                         replacementGraph);
 
         // Then
@@ -134,8 +132,7 @@ public class SubtreeReplacerTest {
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        originalGraph,
-                        vR,
+                        new Subtree<>(originalGraph, vR),
                         emptyReplacementGraph);
 
         // Then
@@ -171,8 +168,7 @@ public class SubtreeReplacerTest {
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        originalGraph,
-                        vR,
+                        new Subtree<>(originalGraph, vR),
                         replacementGraph);
 
         // Then
@@ -207,8 +203,7 @@ public class SubtreeReplacerTest {
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        originalGraph,
-                        nonExistentNode,
+                        new Subtree<>(originalGraph, nonExistentNode),
                         replacementGraph);
 
         // Then
@@ -241,8 +236,7 @@ public class SubtreeReplacerTest {
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        originalGraph,
-                        vR,
+                        new Subtree<>(originalGraph, vR),
                         emptyReplacementGraph);
 
         // Then
@@ -302,8 +296,7 @@ public class SubtreeReplacerTest {
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        originalGraph,
-                        vR,
+                        new Subtree<>(originalGraph, vR),
                         replacementGraph);
 
         // Then
@@ -334,8 +327,7 @@ public class SubtreeReplacerTest {
         // When
         final Graph<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
-                        originalGraph,
-                        vR,
+                        new Subtree<>(originalGraph, vR),
                         replacementGraph);
 
         // Then
