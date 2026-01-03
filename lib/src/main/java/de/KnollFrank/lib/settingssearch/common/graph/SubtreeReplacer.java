@@ -26,7 +26,7 @@ public class SubtreeReplacer<V, E> {
     public Graph<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace, final Graph<V, E> replacementTree) {
         final Graph<V, E> resultGraph = emptyGraphSupplier.get();
         copyPartsOfGraph(
-                subtreeToReplace.tree(),
+                subtreeToReplace.graph(),
                 getSubtreeVertices(subtreeToReplace),
                 resultGraph);
         integrateReplacementTreeIntoResultGraph(subtreeToReplace.asGraphAtNode(), replacementTree, resultGraph);
@@ -118,6 +118,6 @@ public class SubtreeReplacer<V, E> {
     }
 
     private Set<V> getSubtreeVertices(final Subtree<V, E> subtree) {
-        return ImmutableSet.copyOf(new BreadthFirstIterator<>(subtree.tree(), subtree.rootNodeOfSubtree()));
+        return ImmutableSet.copyOf(new BreadthFirstIterator<>(subtree.graph(), subtree.rootNodeOfSubtree()));
     }
 }

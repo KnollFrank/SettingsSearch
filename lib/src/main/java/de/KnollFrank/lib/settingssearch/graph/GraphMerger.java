@@ -77,12 +77,12 @@ public class GraphMerger {
     private static void copyNodesAndEdges(final Subtree<SearchablePreferenceScreen, SearchablePreferenceEdge> src,
                                           final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> dst) {
         copyNodesOfSubtreeToGraph(src, dst);
-        copyEdges(src.tree(), dst);
+        copyEdges(src.graph(), dst);
     }
 
     private static void copyNodesOfSubtreeToGraph(final Subtree<SearchablePreferenceScreen, SearchablePreferenceEdge> subtree,
                                                   final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        new BreadthFirstIterator<>(subtree.tree(), subtree.rootNodeOfSubtree())
+        new BreadthFirstIterator<>(subtree.graph(), subtree.rootNodeOfSubtree())
                 .forEachRemaining(graph::addVertex);
     }
 

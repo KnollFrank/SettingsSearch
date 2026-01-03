@@ -4,7 +4,6 @@ import org.jgrapht.Graph;
 
 import java.util.Set;
 
-// FK-TODO: enforce graph contains nodeOfGraph
 public record GraphAtNode<V, E>(Graph<V, E> graph, V nodeOfGraph) {
 
     public GraphAtNode {

@@ -2,12 +2,11 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import org.jgrapht.Graph;
 
-// FK-TODO: enforce tree contains rootNodeOfSubtree
-public record Subtree<V, E>(Graph<V, E> tree, V rootNodeOfSubtree) {
+public record Subtree<V, E>(Graph<V, E> graph, V rootNodeOfSubtree) {
 
     public Subtree {
-        if (!tree.containsVertex(rootNodeOfSubtree)) {
-            throw new IllegalArgumentException("tree '" + tree + "' must contain rootNodeOfSubtree '" + rootNodeOfSubtree + "'");
+        if (!graph.containsVertex(rootNodeOfSubtree)) {
+            throw new IllegalArgumentException("graph '" + graph + "' must contain rootNodeOfSubtree '" + rootNodeOfSubtree + "'");
         }
     }
 
@@ -18,6 +17,6 @@ public record Subtree<V, E>(Graph<V, E> tree, V rootNodeOfSubtree) {
     }
 
     public GraphAtNode<V, E> asGraphAtNode() {
-        return new GraphAtNode<>(tree, rootNodeOfSubtree);
+        return new GraphAtNode<>(graph, rootNodeOfSubtree);
     }
 }
