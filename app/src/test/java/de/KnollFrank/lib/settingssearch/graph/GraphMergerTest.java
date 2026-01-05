@@ -97,8 +97,36 @@ public class GraphMergerTest {
                 System.out.println(DotGraphDifference.between(mergedGraph, mergedGraphExpected));
                 final GraphDifference graphDifference = GraphDifference.between(mergedGraph, mergedGraphExpected);
                 assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
+                assertIntegrity(mergedGraph);
             });
         }
+    }
+
+    private static void assertIntegrity(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+        for (final SearchablePreferenceEdge edge : graph.edgeSet()) {
+            assertPreferenceOfEdgeExistsInSourceScreen(edge, graph);
+        }
+    }
+
+    private static void assertPreferenceOfEdgeExistsInSourceScreen(final SearchablePreferenceEdge edge,
+                                                                   final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+        final SearchablePreferenceScreen sourceScreen = graph.getEdgeSource(edge);
+        assertThat(
+                String.format(
+                        "Integrity error: The preference [key=%s] associated with the edge from screen [id=%s] " +
+                                "is missing from the source screen's preference hierarchy. " +
+                                "This indicates a mismatch between the graph structure and the node content.",
+                        edge.preference.getKey(),
+                        sourceScreen.id()),
+                preferenceOfEdgeExistsInScreen(edge, sourceScreen),
+                is(true));
+    }
+
+    private static boolean preferenceOfEdgeExistsInScreen(final SearchablePreferenceEdge edge,
+                                                          final SearchablePreferenceScreen screen) {
+        return screen
+                .allPreferencesOfPreferenceHierarchy()
+                .contains(edge.preference);
     }
 
     private static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityGraph(

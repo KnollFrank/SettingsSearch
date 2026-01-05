@@ -1,11 +1,14 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import com.google.common.collect.MoreCollectors;
+
 import org.jgrapht.Graph;
 import org.jgrapht.traverse.BreadthFirstIterator;
 
 import de.KnollFrank.lib.settingssearch.common.graph.GraphAtNode;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenNodeReplacerFactory;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
@@ -30,9 +33,9 @@ public class GraphMerger {
                                         graphAtMergePoint,
                                         subtree.rootNodeOfSubtree()),
                         subtree.rootNodeOfSubtree());
-        // Ursprüngliche Kinder des Merge-Points wieder an die neue Wurzel hängen.
+        // Re-attach original children of the merge point to the new root.
         copySubtreesOfSrcToDst(graphAtMergePoint, mergedGraphAtMergePoint);
-        // Kinder aus dem Teilgraphen an die neue Wurzel hängen.
+        // Attach children from the partial graph to the new root.
         copySubtreesOfSrcToDst(subtree.asGraphAtNode(), mergedGraphAtMergePoint);
         return mergedGraphAtMergePoint.graph();
     }
@@ -70,8 +73,37 @@ public class GraphMerger {
         final SearchablePreferenceScreen targetVertex = subtree.rootNodeOfSubtree();
         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph = mergePoint.graph();
         if (!graph.containsEdge(sourceVertex, targetVertex)) {
-            graph.addEdge(sourceVertex, targetVertex, edge);
+            addEdgeHavingPreferenceFromSource(edge, sourceVertex, targetVertex, graph);
         }
+    }
+
+    private static void addEdgeHavingPreferenceFromSource(
+            final SearchablePreferenceEdge edge,
+            final SearchablePreferenceScreen source,
+            final SearchablePreferenceScreen target,
+            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
+        graph.addEdge(
+                source,
+                target,
+                new SearchablePreferenceEdge(
+                        getPreferenceFromScreen(
+                                source,
+                                edge.preference)));
+    }
+
+    private static SearchablePreference getPreferenceFromScreen(final SearchablePreferenceScreen screen,
+                                                                final SearchablePreference preference) {
+        return screen
+                .allPreferencesOfPreferenceHierarchy()
+                .stream()
+                .filter(_preference -> _preference.getKey().equals(preference.getKey()))
+                .collect(MoreCollectors.toOptional())
+                .orElseThrow(
+                        () ->
+                                new IllegalStateException(
+                                        String.format("Integrity error: Preference with key '%s' not found in screen '%s'.",
+                                                      preference.getKey(),
+                                                      screen.id())));
     }
 
     private static void copyNodesAndEdges(final Subtree<SearchablePreferenceScreen, SearchablePreferenceEdge> src,
@@ -99,7 +131,7 @@ public class GraphMerger {
         final SearchablePreferenceScreen sourceNode = src.getEdgeSource(edge);
         final SearchablePreferenceScreen targetNode = src.getEdgeTarget(edge);
         if (dst.containsVertex(sourceNode) && dst.containsVertex(targetNode) && !dst.containsEdge(sourceNode, targetNode)) {
-            dst.addEdge(sourceNode, targetNode, edge);
+            addEdgeHavingPreferenceFromSource(edge, sourceNode, targetNode, dst);
         }
     }
 }
