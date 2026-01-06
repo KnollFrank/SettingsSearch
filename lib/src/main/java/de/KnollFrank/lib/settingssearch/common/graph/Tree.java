@@ -5,7 +5,7 @@ import org.jgrapht.Graph;
 public record Tree<V, E>(Graph<V, E> graph) {
 
     public Tree {
-        Graphs.assertIsTree(graph);
+        TreeValidator.assertIsTree(graph);
     }
 
     public V getRoot() {
