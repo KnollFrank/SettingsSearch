@@ -8,7 +8,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.AsUnmodifiableGraph;
 import org.junit.Test;
 
-public class TreeTest {
+public class UnmodifiableTreeTest {
 
     private final StringVertex vR = new StringVertex("R");
     private final StringVertex vA = new StringVertex("A");
@@ -31,11 +31,11 @@ public class TreeTest {
                                 .build());
 
         // When
-        final Tree<StringVertex, StringEdge> tree = new Tree<>(graph);
+        final UnmodifiableTree<StringVertex, StringEdge> unmodifiableTree = new UnmodifiableTree<>(graph);
 
         // Then
-        assertThat(tree.getRootNode(), is(vR));
-        assertThat(tree.graph(), is(graph));
+        assertThat(unmodifiableTree.getRootNode(), is(vR));
+        assertThat(unmodifiableTree.graph(), is(graph));
     }
 
     @Test
@@ -53,7 +53,7 @@ public class TreeTest {
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> Tree.of(graph));
+                () -> UnmodifiableTree.of(graph));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class TreeTest {
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> Tree.of(graph));
+                () -> UnmodifiableTree.of(graph));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class TreeTest {
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> Tree.of(graph));
+                () -> UnmodifiableTree.of(graph));
     }
 
     @Test
@@ -102,6 +102,6 @@ public class TreeTest {
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> Tree.of(emptyGraph));
+                () -> UnmodifiableTree.of(emptyGraph));
     }
 }
