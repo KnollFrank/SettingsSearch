@@ -21,6 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseMana
 import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 
 // FK-TODO: suche nach etwas, scrolle im Suchergebnis nach unten, klicke ein Suchergebnis an, drücke den Back-Button, dann werden die Suchergebnisse erneut angezeigt und die vorherige Scrollposition (mit dem gerade angeklickten Suchergebnis) soll wiederhergestellt sein.
+// FK-TODO: keine echten Strings mehr speichern, sondern nur noch Resource-Ids für Mehrsprachigkeit?
 public class PreferenceSearchExample extends AppCompatActivity {
 
     private static final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = R.id.fragmentContainerView;

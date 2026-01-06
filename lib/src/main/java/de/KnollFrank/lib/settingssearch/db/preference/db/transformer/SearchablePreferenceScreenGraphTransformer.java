@@ -1,4 +1,4 @@
-package de.KnollFrank.lib.settingssearch.db.preference.db;
+package de.KnollFrank.lib.settingssearch.db.preference.db.transformer;
 
 import androidx.fragment.app.FragmentActivity;
 
