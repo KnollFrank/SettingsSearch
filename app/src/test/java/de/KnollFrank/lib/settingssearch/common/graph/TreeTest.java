@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThrows;
 
 import org.jgrapht.Graph;
+import org.jgrapht.graph.AsUnmodifiableGraph;
 import org.junit.Test;
 
 public class TreeTest {
@@ -20,13 +21,14 @@ public class TreeTest {
         //  |
         //  v
         // [B]
-        final Graph<StringVertex, StringEdge> graph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vR, vA, vB)
-                        .addEdge(vR, vA, new StringEdge("R->A"))
-                        .addEdge(vR, vB, new StringEdge("R->B"))
-                        .build();
+        final AsUnmodifiableGraph<StringVertex, StringEdge> graph =
+                new AsUnmodifiableGraph<>(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vR, vA, vB)
+                                .addEdge(vR, vA, new StringEdge("R->A"))
+                                .addEdge(vR, vB, new StringEdge("R->B"))
+                                .build());
 
         // When
         final Tree<StringVertex, StringEdge> tree = new Tree<>(graph);
@@ -51,7 +53,7 @@ public class TreeTest {
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Tree<>(graph));
+                () -> Tree.of(graph));
     }
 
     @Test
@@ -70,7 +72,7 @@ public class TreeTest {
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Tree<>(graph));
+                () -> Tree.of(graph));
     }
 
     @Test
@@ -86,7 +88,7 @@ public class TreeTest {
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Tree<>(graph));
+                () -> Tree.of(graph));
     }
 
     @Test
@@ -100,6 +102,6 @@ public class TreeTest {
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Tree<>(emptyGraph));
+                () -> Tree.of(emptyGraph));
     }
 }
