@@ -10,7 +10,7 @@ public record Tree<V, E>(Graph<V, E> graph) {
                 .throwIfInvalid();
     }
 
-    public V getRoot() {
+    public V getRootNode() {
         return Graphs
                 .getRootNode(graph)
                 .orElseThrow();

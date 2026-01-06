@@ -32,7 +32,7 @@ public class TreeTest {
         final Tree<StringVertex, StringEdge> tree = new Tree<>(graph);
 
         // Then
-        assertThat(tree.getRoot(), is(vR));
+        assertThat(tree.getRootNode(), is(vR));
         assertThat(tree.graph(), is(graph));
     }
 
