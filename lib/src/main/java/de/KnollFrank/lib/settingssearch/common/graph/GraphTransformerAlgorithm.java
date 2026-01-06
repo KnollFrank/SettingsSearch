@@ -14,6 +14,7 @@ public class GraphTransformerAlgorithm {
             final Graph<VSrc, ESrc> graph,
             final Class<? extends EDst> transformedEdgeClass,
             final GraphTransformer<VSrc, ESrc, VDst, EDst> graphTransformer) {
+        // FK-TODO: wegen DefaultDirectedGraph sollte der Rückgabetyp der transform()-Methode ein de.KnollFrank.lib.settingssearch.common.graph.Tree sein.
         final var transformedGraphBuilder = DefaultDirectedGraph.<VDst, EDst>createBuilder(transformedEdgeClass);
         final BreadthFirstGraphVisitor<VSrc, ESrc> graphVisitor =
                 new BreadthFirstGraphVisitor<>() {
