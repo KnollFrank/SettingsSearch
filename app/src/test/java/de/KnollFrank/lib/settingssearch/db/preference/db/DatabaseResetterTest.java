@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Optional;
 
+import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
@@ -80,7 +81,7 @@ public class DatabaseResetterTest {
                 .searchablePreferenceScreenGraphRepository()
                 .persistOrReplace(
                         new SearchablePreferenceScreenGraph(
-                                singleNodeGraph.pojoGraph(),
+                                UnmodifiableTree.of(singleNodeGraph.pojoGraph()),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().id(),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().configuration()));
     }

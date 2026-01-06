@@ -16,6 +16,7 @@ import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenSubtreeReplacerFactory;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
+import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
@@ -61,21 +62,22 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
         });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
         return new SearchablePreferenceScreenGraph(
-                SearchablePreferenceScreenSubtreeReplacerFactory
-                        .createSubtreeReplacer()
-                        .replaceSubtreeWithTree(
-                                new Subtree<>(
-                                        graph.graph(),
-                                        prefsFragmentFifthPreferenceScreen),
-                                getPojoGraphRootedAt(
-                                        instantiateSearchablePreferenceScreen(
-                                                prefsFragmentFifthPreferenceScreen,
-                                                graph.graph(),
-                                                createGraphPathFactory(searchDatabaseConfig, activityContext),
-                                                onUiThreadRunner),
-                                        graph.locale(),
-                                        activityContext,
-                                        searchDatabaseConfig)),
+                UnmodifiableTree.of(
+                        SearchablePreferenceScreenSubtreeReplacerFactory
+                                .createSubtreeReplacer()
+                                .replaceSubtreeWithTree(
+                                        new Subtree<>(
+                                                graph.tree().graph(),
+                                                prefsFragmentFifthPreferenceScreen),
+                                        getPojoGraphRootedAt(
+                                                instantiateSearchablePreferenceScreen(
+                                                        prefsFragmentFifthPreferenceScreen,
+                                                        graph.tree().graph(),
+                                                        createGraphPathFactory(searchDatabaseConfig, activityContext),
+                                                        onUiThreadRunner),
+                                                graph.locale(),
+                                                activityContext,
+                                                searchDatabaseConfig))),
                 graph.locale(),
                 new ConfigurationBundleConverter().convertForward(newConfiguration));
     }
@@ -101,7 +103,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn) {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
-                        graphToSearchIn.graph().vertexSet(),
+                        graphToSearchIn.tree().graph().vertexSet(),
                         "en-de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth Bundle[{some_string_extra=hello world, some_boolean_extra=true}]") // Strings.prefixIdWithLanguage(PrefsFragmentFifth.class.getName(), graphToSearchIn.locale()))
                 .orElseThrow();
     }

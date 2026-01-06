@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
+import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
@@ -55,7 +56,8 @@ class PreferenceSearcher<C> {
 
     private Set<SearchablePreferenceOfHostWithinGraph> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
         return graph
-                .map(SearchablePreferenceScreenGraph::graph)
+                .map(SearchablePreferenceScreenGraph::tree)
+                .map(UnmodifiableTree::graph)
                 .map(PojoGraphs::getPreferences)
                 .orElseGet(Collections::emptySet);
     }

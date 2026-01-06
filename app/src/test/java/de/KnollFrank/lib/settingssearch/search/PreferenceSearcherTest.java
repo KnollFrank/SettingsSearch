@@ -47,6 +47,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -832,12 +833,13 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         locale);
         graphRepository.persistOrReplace(
                 new SearchablePreferenceScreenGraph(
-                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
-                                preferenceScreenWithHostProvider
-                                        .getPreferenceScreenWithHostOfFragment(
-                                                preferenceFragment.getClass(),
-                                                Optional.empty())
-                                        .orElseThrow()),
+                        UnmodifiableTree.of(
+                                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
+                                        preferenceScreenWithHostProvider
+                                                .getPreferenceScreenWithHostOfFragment(
+                                                        preferenceFragment.getClass(),
+                                                        Optional.empty())
+                                                .orElseThrow())),
                         locale,
                         PersistableBundleTestFactory.createSomePersistableBundle()));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(

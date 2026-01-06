@@ -101,7 +101,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale);
                         setSummaryOfPreferences(
                                 preference,
-                                getSummaryChangingPreference(pojoGraph.graph()),
+                                getSummaryChangingPreference(pojoGraph.tree().graph()),
                                 getSummary(checked));
                         getPreferencesDatabase()
                                 .searchablePreferenceScreenGraphRepository()

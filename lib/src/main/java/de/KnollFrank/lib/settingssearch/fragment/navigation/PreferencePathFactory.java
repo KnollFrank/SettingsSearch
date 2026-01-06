@@ -25,6 +25,7 @@ class PreferencePathFactory {
                         graphRepository
                                 .findGraphById(locale, null, activityContext)
                                 .orElseThrow()
+                                .tree()
                                 .graph()));
     }
 

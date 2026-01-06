@@ -2,9 +2,9 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.PersistableBundle;
 
-import org.jgrapht.Graph;
-
 import java.util.Locale;
+
+import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
 
 /*
 FK-TODO:
@@ -16,11 +16,11 @@ FK-TODO:
      - 1. b)
 */
 public record SearchablePreferenceScreenGraph(
-        Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
+        UnmodifiableTree<SearchablePreferenceScreen, SearchablePreferenceEdge> tree,
         Locale locale,
         PersistableBundle configuration) {
 
     public SearchablePreferenceScreenGraph asGraphHavingConfiguration(final PersistableBundle configuration) {
-        return new SearchablePreferenceScreenGraph(graph, locale, configuration);
+        return new SearchablePreferenceScreenGraph(tree, locale, configuration);
     }
 }
