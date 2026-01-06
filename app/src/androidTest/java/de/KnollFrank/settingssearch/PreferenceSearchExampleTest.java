@@ -51,6 +51,7 @@ import org.junit.runner.RunWith;
 import java.io.File;
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.settingssearch.preference.fragment.PreferenceFragmentWithSinglePreference;
@@ -337,7 +338,7 @@ public class PreferenceSearchExampleTest {
     private static Matcher<View> customDialogContent() {
         return allOf(
                 withId(R.id.textView),
-                withParent(withParent(withId(android.R.id.content))),
+                withParent(withParent(withId(Views.ROOT_VIEW_CONTAINER_ID))),
                 isDisplayed());
     }
 

@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import de.KnollFrank.lib.settingssearch.common.EspressoIdlingResource;
 import de.KnollFrank.lib.settingssearch.common.Locales;
+import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.task.AsyncTaskWithProgressUpdateListeners;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
@@ -28,7 +29,7 @@ public class CreateSearchDatabaseTaskProvider {
             final PersistableBundle configuration,
             final PreferenceSearchablePredicate preferenceSearchablePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
-                activity.findViewById(android.R.id.content),
+                Views.getRootViewContainer(activity),
                 FRAGMENT_CONTAINER_VIEW_ID);
         // FK-TODO: Abhängigkeit zu espresso doch besser aus dem Produktivcode entfernen?
         EspressoIdlingResource.increment();
