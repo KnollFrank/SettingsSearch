@@ -6,22 +6,29 @@ import org.jgrapht.alg.cycle.CycleDetector;
 
 class TreeValidator {
 
-    public static <V, E> void assertIsTree(final Graph<V, E> graph) {
+    public static <V, E> TreeValidatorResult validateIsTree(final Graph<V, E> graph) {
         if (!graph.getType().isDirected()) {
-            throw new IllegalArgumentException("A Tree must be a directed graph.");
+            return TreeValidatorResult.invalid("A Tree must be a directed graph.");
         }
-        if (graph.vertexSet().isEmpty() || !new ConnectivityInspector<>(graph).isConnected()) {
-            throw new IllegalArgumentException("The graph must be connected and not empty.");
+        if (graph.vertexSet().isEmpty()) {
+            return TreeValidatorResult.invalid("The graph must not be empty.");
+        }
+        if (!new ConnectivityInspector<>(graph).isConnected()) {
+            return TreeValidatorResult.invalid("The graph must be connected.");
         }
         if (new CycleDetector<>(graph).detectCycles()) {
-            throw new IllegalArgumentException("The graph contains cycles; a tree must be acyclic.");
+            return TreeValidatorResult.invalid("The graph contains cycles; a tree must be acyclic.");
         }
         if (!hasMaxOneParent(graph)) {
-            throw new IllegalArgumentException("Each node in a directed tree must have an in-degree of at most 1.");
+            return TreeValidatorResult.invalid("Each node in a directed tree must have an in-degree of at most 1.");
         }
-        if (Graphs.getRootNode(graph).isEmpty()) {
-            throw new IllegalArgumentException("A Tree must have exactly one root node (in-degree 0).");
+        {
+            final int rootCount = Graphs.getRootNodes(graph).size();
+            if (rootCount != 1) {
+                return TreeValidatorResult.invalid("A Tree must have exactly one root node, but found: " + rootCount);
+            }
         }
+        return TreeValidatorResult.valid();
     }
 
     private static <V, E> boolean hasMaxOneParent(final Graph<V, E> graph) {
