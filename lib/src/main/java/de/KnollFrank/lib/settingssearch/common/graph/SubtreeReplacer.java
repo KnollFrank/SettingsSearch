@@ -23,7 +23,8 @@ public class SubtreeReplacer<V, E> {
         this.cloneEdge = cloneEdge;
     }
 
-    public UnmodifiableTree<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace, final UnmodifiableTree<V, E> replacementTree) {
+    public UnmodifiableTree<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace,
+                                                         final UnmodifiableTree<V, E> replacementTree) {
         final Graph<V, E> resultGraph = emptyGraphSupplier.get();
         copyPartsOfGraph(
                 subtreeToReplace.tree().graph(),
@@ -55,7 +56,7 @@ public class SubtreeReplacer<V, E> {
                                                       final Graph<V, E> resultGraph,
                                                       final V replacementRoot) {
         parentAndEdge
-                .filter(_parentAndEdge -> resultGraph.containsVertex(_parentAndEdge.parent))
+                .filter(_parentAndEdge -> resultGraph.containsVertex(_parentAndEdge.parent) && !resultGraph.containsEdge(_parentAndEdge.parent, replacementRoot))
                 .ifPresent(_parentAndEdge -> connectParentToRootOfReplacementTree(_parentAndEdge, resultGraph, replacementRoot));
     }
 
@@ -93,7 +94,11 @@ public class SubtreeReplacer<V, E> {
                                       final Set<E> edgesOfSrcToCopy,
                                       final Graph<V, E> dst) {
         for (final E edge : edgesOfSrcToCopy) {
-            dst.addEdge(src.getEdgeSource(edge), src.getEdgeTarget(edge), cloneEdge.apply(edge));
+            final V source = src.getEdgeSource(edge);
+            final V target = src.getEdgeTarget(edge);
+            if (!dst.containsEdge(source, target)) {
+                dst.addEdge(source, target, cloneEdge.apply(edge));
+            }
         }
     }
 
@@ -118,6 +123,9 @@ public class SubtreeReplacer<V, E> {
     }
 
     private Set<V> getSubtreeVertices(final Subtree<V, E> subtree) {
-        return ImmutableSet.copyOf(new BreadthFirstIterator<>(subtree.tree().graph(), subtree.rootNodeOfSubtree()));
+        return ImmutableSet.copyOf(
+                new BreadthFirstIterator<>(
+                        subtree.tree().graph(),
+                        subtree.rootNodeOfSubtree()));
     }
 }
