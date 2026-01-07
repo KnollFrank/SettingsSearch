@@ -6,8 +6,9 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.BFSShortestPath;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
 
@@ -20,12 +21,12 @@ public class Graphs {
                 .collect(MoreCollectors.toOptional());
     }
 
-    public static <V> List<V> getRootNodes(final Graph<V, ?> graph) {
+    public static <V> Set<V> getRootNodes(final Graph<V, ?> graph) {
         return graph
                 .vertexSet()
                 .stream()
                 .filter(node -> isRootNode(graph, node))
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     public static <V, E> GraphPath<V, E> getPathFromRootNodeToTarget(final Graph<V, E> graph, final V target) {
