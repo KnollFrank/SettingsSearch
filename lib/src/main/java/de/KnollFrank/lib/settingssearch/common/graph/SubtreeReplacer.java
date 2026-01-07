@@ -12,6 +12,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+// FK-TODO: refactor
 public class SubtreeReplacer<V, E> {
 
     private final Supplier<Graph<V, E>> emptyGraphSupplier;
