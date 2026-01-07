@@ -26,27 +26,35 @@ public class SubtreeReplacer<V, E> {
     public UnmodifiableTree<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace,
                                                          final UnmodifiableTree<V, E> replacementTree) {
         final Graph<V, E> resultGraph = emptyGraphSupplier.get();
+
+        final Set<V> subtreeVerticesToRemove = getSubtreeVertices(subtreeToReplace);
+
+        // 1. Copy original parts that are NOT being replaced
         copyPartsOfGraph(
                 subtreeToReplace.tree().graph(),
-                getSubtreeVertices(subtreeToReplace),
+                subtreeVerticesToRemove,
                 resultGraph);
+
+        // 2. Integrate the new tree
         integrateReplacementTreeIntoResultGraph(subtreeToReplace.asGraphAtNode(), replacementTree.graph(), resultGraph);
+
+        // 3. Validation happens here (Fail-Fast)
         return UnmodifiableTree.of(resultGraph);
     }
 
     private void integrateReplacementTreeIntoResultGraph(final GraphAtNode<V, E> originalGraphAtNodeToReplace,
                                                          final Graph<V, E> replacementTree,
                                                          final Graph<V, E> resultGraph) {
-        Graphs
-                .getRootNode(replacementTree)
-                .ifPresent(
-                        replacementRoot -> {
-                            copyGraphFromSrc2Dst(replacementTree, resultGraph);
-                            connectParentToRootOfReplacementTree(
-                                    getParentAndIncomingEdge(originalGraphAtNodeToReplace),
-                                    resultGraph,
-                                    replacementRoot);
-                        });
+        Graphs.getRootNode(replacementTree).ifPresent(replacementRoot -> {
+            // First, copy the replacement structure
+            copyGraphFromSrc2Dst(replacementTree, resultGraph);
+
+            // Then, connect the parent of the old node to the new replacement root
+            connectParentToRootOfReplacementTree(
+                    getParentAndIncomingEdge(originalGraphAtNodeToReplace),
+                    resultGraph,
+                    replacementRoot);
+        });
     }
 
     private record ParentAndEdge<V, E>(V parent, E edgeToChild) {
@@ -55,18 +63,17 @@ public class SubtreeReplacer<V, E> {
     private void connectParentToRootOfReplacementTree(final Optional<ParentAndEdge<V, E>> parentAndEdge,
                                                       final Graph<V, E> resultGraph,
                                                       final V replacementRoot) {
-        parentAndEdge
-                .filter(_parentAndEdge -> resultGraph.containsVertex(_parentAndEdge.parent) && !resultGraph.containsEdge(_parentAndEdge.parent, replacementRoot))
-                .ifPresent(_parentAndEdge -> connectParentToRootOfReplacementTree(_parentAndEdge, resultGraph, replacementRoot));
-    }
-
-    private void connectParentToRootOfReplacementTree(final ParentAndEdge<V, E> parentAndEdge,
-                                                      final Graph<V, E> resultGraph,
-                                                      final V replacementRoot) {
-        resultGraph.addEdge(
-                parentAndEdge.parent,
-                replacementRoot,
-                cloneEdge.apply(parentAndEdge.edgeToChild));
+        // Linearized logic to avoid confusion and potential double insertion
+        parentAndEdge.ifPresent(p -> {
+            // Ensure parent exists and we don't duplicate a connection that might
+            // have been added by copyGraphFromSrc2Dst already
+            if (resultGraph.containsVertex(p.parent) && !resultGraph.containsEdge(p.parent, replacementRoot)) {
+                resultGraph.addEdge(
+                        p.parent,
+                        replacementRoot,
+                        cloneEdge.apply(p.edgeToChild));
+            }
+        });
     }
 
     private void copyGraphFromSrc2Dst(final Graph<V, E> src, final Graph<V, E> dst) {
@@ -80,6 +87,7 @@ public class SubtreeReplacer<V, E> {
         addNodesToGraph(
                 Sets.difference(originalGraph.vertexSet(), subtreeVerticesToRemove),
                 resultGraph);
+
         copyEdgesFromSrc2Dst(
                 originalGraph,
                 getEdgesToRetain(originalGraph, subtreeVerticesToRemove),
@@ -96,7 +104,11 @@ public class SubtreeReplacer<V, E> {
         for (final E edge : edgesOfSrcToCopy) {
             final V source = src.getEdgeSource(edge);
             final V target = src.getEdgeTarget(edge);
-            if (!dst.containsEdge(source, target)) {
+
+            // CRITICAL: Check for existence before adding.
+            // In complex merge scenarios (like your ApplicationMode Adapter),
+            // nodes may overlap. Blindly calling addEdge leads to "E > N-1" errors.
+            if (dst.containsVertex(source) && dst.containsVertex(target) && !dst.containsEdge(source, target)) {
                 dst.addEdge(source, target, cloneEdge.apply(edge));
             }
         }
@@ -106,7 +118,8 @@ public class SubtreeReplacer<V, E> {
         return graph
                 .edgeSet()
                 .stream()
-                .filter(edge -> !nodesToRemove.contains(graph.getEdgeSource(edge)) && !nodesToRemove.contains(graph.getEdgeTarget(edge)))
+                .filter(edge -> !nodesToRemove.contains(graph.getEdgeSource(edge)) &&
+                        !nodesToRemove.contains(graph.getEdgeTarget(edge)))
                 .collect(Collectors.toSet());
     }
 
