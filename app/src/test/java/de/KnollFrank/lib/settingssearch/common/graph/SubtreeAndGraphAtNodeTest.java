@@ -11,17 +11,18 @@ public class SubtreeAndGraphAtNodeTest {
     public void subtreeConstructor_shouldThrowIllegalArgumentException_ifRootNodeIsNotInTree() {
         // Given
         // Graph structure: [ v1 ]
-        final Graph<StringVertex, StringEdge> graph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertex(new StringVertex("v1"))
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> tree =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertex(new StringVertex("v1"))
+                                .build());
         final StringVertex vNotInGraph = new StringVertex("not-in-graph");
 
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Subtree<>(graph, vNotInGraph));
+                () -> new Subtree<>(tree, vNotInGraph));
     }
 
     @Test

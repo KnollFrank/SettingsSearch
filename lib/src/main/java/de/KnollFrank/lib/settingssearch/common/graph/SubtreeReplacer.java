@@ -23,14 +23,14 @@ public class SubtreeReplacer<V, E> {
         this.cloneEdge = cloneEdge;
     }
 
-    public Graph<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace, final Graph<V, E> replacementTree) {
+    public UnmodifiableTree<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace, final UnmodifiableTree<V, E> replacementTree) {
         final Graph<V, E> resultGraph = emptyGraphSupplier.get();
         copyPartsOfGraph(
-                subtreeToReplace.graph(),
+                subtreeToReplace.tree().graph(),
                 getSubtreeVertices(subtreeToReplace),
                 resultGraph);
-        integrateReplacementTreeIntoResultGraph(subtreeToReplace.asGraphAtNode(), replacementTree, resultGraph);
-        return resultGraph;
+        integrateReplacementTreeIntoResultGraph(subtreeToReplace.asGraphAtNode(), replacementTree.graph(), resultGraph);
+        return UnmodifiableTree.of(resultGraph);
     }
 
     private void integrateReplacementTreeIntoResultGraph(final GraphAtNode<V, E> originalGraphAtNodeToReplace,
@@ -118,6 +118,6 @@ public class SubtreeReplacer<V, E> {
     }
 
     private Set<V> getSubtreeVertices(final Subtree<V, E> subtree) {
-        return ImmutableSet.copyOf(new BreadthFirstIterator<>(subtree.graph(), subtree.rootNodeOfSubtree()));
+        return ImmutableSet.copyOf(new BreadthFirstIterator<>(subtree.tree().graph(), subtree.rootNodeOfSubtree()));
     }
 }

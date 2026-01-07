@@ -36,6 +36,7 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphAtNode;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
+import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
@@ -88,8 +89,8 @@ public class GraphMergerTest {
 
                 // When
                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
-                        GraphMerger.mergeSrcGraphIntoDstGraphAtMergePoint(
-                                transformToPojoGraph(partialEntityGraph),
+                        GraphMerger.mergeSubtreeIntoGraphAtMergePoint(
+                                Subtree.of(transformToPojoGraph(partialEntityGraph)),
                                 new GraphAtNode<>(pojoGraph, mergePointOfGraph));
 
                 // Then

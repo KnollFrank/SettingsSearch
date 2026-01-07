@@ -62,42 +62,42 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
         });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
         return new SearchablePreferenceScreenGraph(
-                UnmodifiableTree.of(
-                        SearchablePreferenceScreenSubtreeReplacerFactory
-                                .createSubtreeReplacer()
-                                .replaceSubtreeWithTree(
-                                        new Subtree<>(
+                SearchablePreferenceScreenSubtreeReplacerFactory
+                        .createSubtreeReplacer()
+                        .replaceSubtreeWithTree(
+                                new Subtree<>(
+                                        graph.tree(),
+                                        prefsFragmentFifthPreferenceScreen),
+                                getPojoGraphRootedAt(
+                                        instantiateSearchablePreferenceScreen(
+                                                prefsFragmentFifthPreferenceScreen,
                                                 graph.tree().graph(),
-                                                prefsFragmentFifthPreferenceScreen),
-                                        getPojoGraphRootedAt(
-                                                instantiateSearchablePreferenceScreen(
-                                                        prefsFragmentFifthPreferenceScreen,
-                                                        graph.tree().graph(),
-                                                        createGraphPathFactory(searchDatabaseConfig, activityContext),
-                                                        onUiThreadRunner),
-                                                graph.locale(),
-                                                activityContext,
-                                                searchDatabaseConfig))),
+                                                createGraphPathFactory(searchDatabaseConfig, activityContext),
+                                                onUiThreadRunner),
+                                        graph.locale(),
+                                        activityContext,
+                                        searchDatabaseConfig)),
                 graph.locale(),
                 new ConfigurationBundleConverter().convertForward(newConfiguration));
     }
 
-    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(
+    private UnmodifiableTree<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(
             final PreferenceScreenWithHost root,
             final Locale locale,
             final FragmentActivity activityContext,
             final SearchDatabaseConfig searchDatabaseConfig) {
-        return SearchablePreferenceScreenGraphProviderFactory
-                .createSearchablePreferenceScreenGraphProvider(
-                        FRAGMENT_CONTAINER_VIEW_ID,
-                        Views.getRootViewContainer(activityContext),
-                        activityContext,
-                        activityContext.getSupportFragmentManager(),
-                        activityContext,
-                        searchDatabaseConfig,
-                        locale,
-                        (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true)
-                .getSearchablePreferenceScreenGraph(root);
+        return UnmodifiableTree.of(
+                SearchablePreferenceScreenGraphProviderFactory
+                        .createSearchablePreferenceScreenGraphProvider(
+                                FRAGMENT_CONTAINER_VIEW_ID,
+                                Views.getRootViewContainer(activityContext),
+                                activityContext,
+                                activityContext.getSupportFragmentManager(),
+                                activityContext,
+                                searchDatabaseConfig,
+                                locale,
+                                (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true)
+                        .getSearchablePreferenceScreenGraph(root));
     }
 
     private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn) {

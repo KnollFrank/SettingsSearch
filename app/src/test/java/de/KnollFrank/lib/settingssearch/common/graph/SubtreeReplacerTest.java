@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphEquality.assertActualEqualsExpected;
 import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphs.cloneEdge;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 
 public class SubtreeReplacerTest {
@@ -27,34 +26,37 @@ public class SubtreeReplacerTest {
         // Given
         final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: R -> A (eRA)
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vR, vA)
-                        .addEdge(vR, vA, eRA)
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> originalGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vR, vA)
+                                .addEdge(vR, vA, eRA)
+                                .build());
         // Replacement Tree: X -> Y (eXY)
-        final Graph<StringVertex, StringEdge> replacementGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vX, vY)
-                        .addEdge(vX, vY, eXY)
-                        .build();
-        final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vX, vY)
-                        .addEdge(vX, vY, cloneEdge(eXY))
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> replacementTree =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vX, vY)
+                                .addEdge(vX, vY, eXY)
+                                .build());
+        final UnmodifiableTree<StringVertex, StringEdge> expectedReturnedGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vX, vY)
+                                .addEdge(vX, vY, cloneEdge(eXY))
+                                .build());
 
         // When
-        final Graph<StringVertex, StringEdge> returnedGraph =
+        final UnmodifiableTree<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(originalGraph, vR),
-                        replacementGraph);
+                        replacementTree);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        assertActualEqualsExpected(returnedGraph.graph(), expectedReturnedGraph.graph());
     }
 
     @Test
@@ -65,78 +67,43 @@ public class SubtreeReplacerTest {
         //   P --ePR--> R --eRA--> A
         //              |
         //              --eRB--> B
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vR, vA, vB)
-                        .addEdge(vP, vR, ePR)
-                        .addEdge(vR, vA, eRA)
-                        .addEdge(vR, vB, eRB)
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> originalGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vP, vR, vA, vB)
+                                .addEdge(vP, vR, ePR)
+                                .addEdge(vR, vA, eRA)
+                                .addEdge(vR, vB, eRB)
+                                .build());
         // Replacement Tree (to replace R and its subtree [A,B]):
         //   X --eXY--> Y
-        final Graph<StringVertex, StringEdge> replacementGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vX, vY)
-                        .addEdge(vX, vY, eXY)
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> replacementGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vX, vY)
+                                .addEdge(vX, vY, eXY)
+                                .build());
         // Expected Returned Tree:
         //   P --(label from ePR)--> X --> Y
-        final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vX, vY)
-                        .addEdge(vP, vX, cloneEdge(ePR))
-                        .addEdge(vX, vY, cloneEdge(eXY))
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> expectedReturnedGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vP, vX, vY)
+                                .addEdge(vP, vX, cloneEdge(ePR))
+                                .addEdge(vX, vY, cloneEdge(eXY))
+                                .build());
 
         // When
-        final Graph<StringVertex, StringEdge> returnedGraph =
+        final UnmodifiableTree<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(originalGraph, vR),
                         replacementGraph);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
-    }
-
-    @Test
-    public void replaceSubtree_emptyReplacement_removesSubtree() {
-        // Given
-        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
-        // Original Tree:
-        //   P --ePR--> R --eRA--> A
-        // Node to replace: R (and its subtree [A])
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vR, vA)
-                        .addEdge(vP, vR, ePR)
-                        .addEdge(vR, vA, eRA)
-                        .build();
-        // Replacement Tree: (empty)
-        final Graph<StringVertex, StringEdge> emptyReplacementGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .build();
-        // Expected Returned Tree:
-        //   P
-        // (R and A and edges ePR, eRA are removed; P remains, R's subtree is pruned)
-        final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertex(vP)
-                        .build();
-
-        // When
-        final Graph<StringVertex, StringEdge> returnedGraph =
-                subtreeReplacer.replaceSubtreeWithTree(
-                        new Subtree<>(originalGraph, vR),
-                        emptyReplacementGraph);
-
-        // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        assertActualEqualsExpected(returnedGraph.graph(), expectedReturnedGraph.graph());
     }
 
     @Test
@@ -145,67 +112,37 @@ public class SubtreeReplacerTest {
         final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
         // Original Tree: P --ePR--> R
         // Node to replace: R (a leaf)
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vR)
-                        .addEdge(vP, vR, ePR)
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> originalGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vP, vR)
+                                .addEdge(vP, vR, ePR)
+                                .build());
         // Replacement Tree: X (single node, root X)
-        final Graph<StringVertex, StringEdge> replacementGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertex(vX)
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> replacementGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertex(vX)
+                                .build());
         // Expected Returned Tree: P --(label from ePR)--> X
-        final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vX)
-                        .addEdge(vP, vX, cloneEdge(ePR))
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> expectedReturnedGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vP, vX)
+                                .addEdge(vP, vX, cloneEdge(ePR))
+                                .build());
 
         // When
-        final Graph<StringVertex, StringEdge> returnedGraph =
+        final UnmodifiableTree<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(originalGraph, vR),
                         replacementGraph);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
-    }
-
-    @Test
-    public void replaceSubtree_replacementGraphIsEmptyAndNodeToReplaceIsRoot_resultsInEmptyGraph() {
-        // Given
-        final SubtreeReplacer<StringVertex, StringEdge> subtreeReplacer = createSubtreeReplacer();
-        // Original Tree: R -> A (eRA)
-        // Node to replace: R (the root)
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vR, vA)
-                        .addEdge(vR, vA, eRA)
-                        .build();
-        // Replacement Tree: (Empty Graph)
-        final Graph<StringVertex, StringEdge> emptyReplacementGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .build();
-        // Expected Returned Tree: (Empty Graph)
-        final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .build();
-
-        // When
-        final Graph<StringVertex, StringEdge> returnedGraph =
-                subtreeReplacer.replaceSubtreeWithTree(
-                        new Subtree<>(originalGraph, vR),
-                        emptyReplacementGraph);
-
-        // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        assertActualEqualsExpected(returnedGraph.graph(), expectedReturnedGraph.graph());
     }
 
     @Test
@@ -223,49 +160,52 @@ public class SubtreeReplacerTest {
         // Node to replace: R
         final StringVertex vC_local = new StringVertex("C_local");
         final StringEdge eAC_local = new StringEdge("A->C_local");
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vR, vA, vB, vC_local)
-                        .addEdge(vP, vR, ePR)
-                        .addEdge(vR, vA, eRA)
-                        .addEdge(vR, vB, eRB)
-                        .addEdge(vA, vC_local, eAC_local)
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> originalGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vP, vR, vA, vB, vC_local)
+                                .addEdge(vP, vR, ePR)
+                                .addEdge(vR, vA, eRA)
+                                .addEdge(vR, vB, eRB)
+                                .addEdge(vA, vC_local, eAC_local)
+                                .build());
         // Replacement Tree:
         //   X --eXY--> Y
         //   |
         //   --eXZ--> Z
-        final Graph<StringVertex, StringEdge> replacementGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vX, vY, vZ)
-                        .addEdge(vX, vY, eXY)
-                        .addEdge(vX, vZ, eXZ)
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> replacementGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vX, vY, vZ)
+                                .addEdge(vX, vY, eXY)
+                                .addEdge(vX, vZ, eXZ)
+                                .build());
         // Expected Returned Tree:
         //      P
         //      | (label from ePR, P->X)
         //      X
         //     /  \ (labels from eXY X->Y, eXZ X->Z)
         //    Y    Z
-        final Graph<StringVertex, StringEdge> expectedReturnedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vX, vY, vZ)
-                        .addEdge(vP, vX, cloneEdge(ePR)) // Edge factory reuses ePR label
-                        .addEdge(vX, vY, cloneEdge(eXY)) // Edges from replacement
-                        .addEdge(vX, vZ, cloneEdge(eXZ)) // Edges from replacement
-                        .build();
+        final UnmodifiableTree<StringVertex, StringEdge> expectedReturnedGraph =
+                UnmodifiableTree.of(
+                        StringGraphs
+                                .newGraphBuilder()
+                                .addVertices(vP, vX, vY, vZ)
+                                .addEdge(vP, vX, cloneEdge(ePR)) // Edge factory reuses ePR label
+                                .addEdge(vX, vY, cloneEdge(eXY)) // Edges from replacement
+                                .addEdge(vX, vZ, cloneEdge(eXZ)) // Edges from replacement
+                                .build());
 
         // When
-        final Graph<StringVertex, StringEdge> returnedGraph =
+        final UnmodifiableTree<StringVertex, StringEdge> returnedGraph =
                 subtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(originalGraph, vR),
                         replacementGraph);
 
         // Then
-        assertActualEqualsExpected(returnedGraph, expectedReturnedGraph);
+        assertActualEqualsExpected(returnedGraph.graph(), expectedReturnedGraph.graph());
     }
 
     private SubtreeReplacer<StringVertex, StringEdge> createSubtreeReplacer() {

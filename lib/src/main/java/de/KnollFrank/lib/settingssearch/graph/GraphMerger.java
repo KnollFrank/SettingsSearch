@@ -8,21 +8,14 @@ import org.jgrapht.traverse.BreadthFirstIterator;
 import de.KnollFrank.lib.settingssearch.common.graph.GraphAtNode;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenNodeReplacerFactory;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
+import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class GraphMerger {
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSrcGraphIntoDstGraphAtMergePoint(
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> srcGraph,
-            final GraphAtNode<SearchablePreferenceScreen, SearchablePreferenceEdge> dstGraphAtMergePoint) {
-        return mergeSubtreeIntoGraphAtMergePoint(
-                Subtree.of(srcGraph),
-                dstGraphAtMergePoint);
-    }
-
-    private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSubtreeIntoGraphAtMergePoint(
+    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergeSubtreeIntoGraphAtMergePoint(
             final Subtree<SearchablePreferenceScreen, SearchablePreferenceEdge> subtree,
             final GraphAtNode<SearchablePreferenceScreen, SearchablePreferenceEdge> graphAtMergePoint) {
         final GraphAtNode<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraphAtMergePoint =
@@ -62,7 +55,7 @@ public class GraphMerger {
 
     private static Subtree<SearchablePreferenceScreen, SearchablePreferenceEdge> getEdgeTargetAsSubtree(final GraphAndEdge graphAndEdge) {
         return new Subtree<>(
-                graphAndEdge.graph(),
+                UnmodifiableTree.of(graphAndEdge.graph()),
                 graphAndEdge.graph().getEdgeTarget(graphAndEdge.edge()));
     }
 
@@ -109,12 +102,12 @@ public class GraphMerger {
     private static void copyNodesAndEdges(final Subtree<SearchablePreferenceScreen, SearchablePreferenceEdge> src,
                                           final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> dst) {
         copyNodesOfSubtreeToGraph(src, dst);
-        copyEdges(src.graph(), dst);
+        copyEdges(src.tree().graph(), dst);
     }
 
     private static void copyNodesOfSubtreeToGraph(final Subtree<SearchablePreferenceScreen, SearchablePreferenceEdge> subtree,
                                                   final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        new BreadthFirstIterator<>(subtree.graph(), subtree.rootNodeOfSubtree())
+        new BreadthFirstIterator<>(subtree.tree().graph(), subtree.rootNodeOfSubtree())
                 .forEachRemaining(graph::addVertex);
     }
 
