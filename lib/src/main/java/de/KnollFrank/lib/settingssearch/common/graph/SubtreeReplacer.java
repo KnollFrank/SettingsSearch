@@ -105,12 +105,20 @@ public class SubtreeReplacer<V, E> {
             final V source = src.getEdgeSource(edge);
             final V target = src.getEdgeTarget(edge);
 
-            // CRITICAL: Check for existence before adding.
-            // In complex merge scenarios (like your ApplicationMode Adapter),
-            // nodes may overlap. Blindly calling addEdge leads to "E > N-1" errors.
-            if (dst.containsVertex(source) && dst.containsVertex(target) && !dst.containsEdge(source, target)) {
-                dst.addEdge(source, target, cloneEdge.apply(edge));
+            // 1. Existiert die exakte Kante schon? -> Überspringen
+            if (dst.containsEdge(source, target)) {
+                continue;
             }
+
+            // 2. Hat der Zielknoten bereits einen anderen Vater?
+            // Das ist der kritische Punkt für den "260 statt 257" Fehler!
+            if (dst.containsVertex(target) && !dst.incomingEdgesOf(target).isEmpty()) {
+                // Wenn der Knoten schon einen Vater hat, ignorieren wir diese Kante,
+                // um die Baum-Struktur (In-Degree max 1) nicht zu verletzen.
+                continue;
+            }
+
+            dst.addEdge(source, target, cloneEdge.apply(edge));
         }
     }
 
