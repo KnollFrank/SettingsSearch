@@ -12,7 +12,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-// FK-TODO: refactor
 public class SubtreeReplacer<V, E> {
 
     private final Supplier<Graph<V, E>> emptyGraphSupplier;
@@ -27,35 +26,30 @@ public class SubtreeReplacer<V, E> {
     public UnmodifiableTree<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace,
                                                          final UnmodifiableTree<V, E> replacementTree) {
         final Graph<V, E> resultGraph = emptyGraphSupplier.get();
-
-        final Set<V> subtreeVerticesToRemove = getSubtreeVertices(subtreeToReplace);
-
-        // 1. Copy original parts that are NOT being replaced
         copyPartsOfGraph(
                 subtreeToReplace.tree().graph(),
-                subtreeVerticesToRemove,
+                getSubtreeVertices(subtreeToReplace),
                 resultGraph);
-
-        // 2. Integrate the new tree
-        integrateReplacementTreeIntoResultGraph(subtreeToReplace.asGraphAtNode(), replacementTree.graph(), resultGraph);
-
-        // 3. Validation happens here (Fail-Fast)
+        integrateReplacementTreeIntoResultGraph(
+                subtreeToReplace.asGraphAtNode(),
+                replacementTree.graph(),
+                resultGraph);
         return UnmodifiableTree.of(resultGraph);
     }
 
     private void integrateReplacementTreeIntoResultGraph(final GraphAtNode<V, E> originalGraphAtNodeToReplace,
                                                          final Graph<V, E> replacementTree,
                                                          final Graph<V, E> resultGraph) {
-        Graphs.getRootNode(replacementTree).ifPresent(replacementRoot -> {
-            // First, copy the replacement structure
-            copyGraphFromSrc2Dst(replacementTree, resultGraph);
-
-            // Then, connect the parent of the old node to the new replacement root
-            connectParentToRootOfReplacementTree(
-                    getParentAndIncomingEdge(originalGraphAtNodeToReplace),
-                    resultGraph,
-                    replacementRoot);
-        });
+        Graphs
+                .getRootNode(replacementTree)
+                .ifPresent(
+                        replacementRoot -> {
+                            copyGraphFromSrc2Dst(replacementTree, resultGraph);
+                            connectParentToRootOfReplacementTree(
+                                    getParentAndIncomingEdge(originalGraphAtNodeToReplace),
+                                    resultGraph,
+                                    replacementRoot);
+                        });
     }
 
     private record ParentAndEdge<V, E>(V parent, E edgeToChild) {
@@ -64,17 +58,24 @@ public class SubtreeReplacer<V, E> {
     private void connectParentToRootOfReplacementTree(final Optional<ParentAndEdge<V, E>> parentAndEdge,
                                                       final Graph<V, E> resultGraph,
                                                       final V replacementRoot) {
-        // Linearized logic to avoid confusion and potential double insertion
-        parentAndEdge.ifPresent(p -> {
-            // Ensure parent exists and we don't duplicate a connection that might
-            // have been added by copyGraphFromSrc2Dst already
-            if (resultGraph.containsVertex(p.parent) && !resultGraph.containsEdge(p.parent, replacementRoot)) {
-                resultGraph.addEdge(
-                        p.parent,
-                        replacementRoot,
-                        cloneEdge.apply(p.edgeToChild));
-            }
-        });
+        parentAndEdge
+                .filter(_parentAndEdge ->
+                                resultGraph.containsVertex(_parentAndEdge.parent) &&
+                                        !resultGraph.containsEdge(_parentAndEdge.parent, replacementRoot))
+                .ifPresent(_parentAndEdge ->
+                                   connectParentToRootOfReplacementTree(
+                                           _parentAndEdge,
+                                           resultGraph,
+                                           replacementRoot));
+    }
+
+    private void connectParentToRootOfReplacementTree(final ParentAndEdge<V, E> parentAndEdge,
+                                                      final Graph<V, E> resultGraph,
+                                                      final V replacementRoot) {
+        resultGraph.addEdge(
+                parentAndEdge.parent,
+                replacementRoot,
+                cloneEdge.apply(parentAndEdge.edgeToChild));
     }
 
     private void copyGraphFromSrc2Dst(final Graph<V, E> src, final Graph<V, E> dst) {
@@ -88,7 +89,6 @@ public class SubtreeReplacer<V, E> {
         addNodesToGraph(
                 Sets.difference(originalGraph.vertexSet(), subtreeVerticesToRemove),
                 resultGraph);
-
         copyEdgesFromSrc2Dst(
                 originalGraph,
                 getEdgesToRetain(originalGraph, subtreeVerticesToRemove),
@@ -105,22 +105,14 @@ public class SubtreeReplacer<V, E> {
         for (final E edge : edgesOfSrcToCopy) {
             final V source = src.getEdgeSource(edge);
             final V target = src.getEdgeTarget(edge);
-
-            // 1. Existiert die exakte Kante schon? -> Überspringen
-            if (dst.containsEdge(source, target)) {
-                continue;
+            if (!dst.containsEdge(source, target) && !nodeHasParent(dst, target)) {
+                dst.addEdge(source, target, cloneEdge.apply(edge));
             }
-
-            // 2. Hat der Zielknoten bereits einen anderen Vater?
-            // Das ist der kritische Punkt für den "260 statt 257" Fehler!
-            if (dst.containsVertex(target) && !dst.incomingEdgesOf(target).isEmpty()) {
-                // Wenn der Knoten schon einen Vater hat, ignorieren wir diese Kante,
-                // um die Baum-Struktur (In-Degree max 1) nicht zu verletzen.
-                continue;
-            }
-
-            dst.addEdge(source, target, cloneEdge.apply(edge));
         }
+    }
+
+    private static <V, E> boolean nodeHasParent(final Graph<V, E> graph, final V node) {
+        return graph.containsVertex(node) && !graph.incomingEdgesOf(node).isEmpty();
     }
 
     private Set<E> getEdgesToRetain(final Graph<V, E> graph, final Set<V> nodesToRemove) {
@@ -133,15 +125,14 @@ public class SubtreeReplacer<V, E> {
     }
 
     private Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(final GraphAtNode<V, E> graphAtNode) {
-        final Set<E> incomingEdges = graphAtNode.incomingEdgesOfNodeOfGraph();
-        if (!incomingEdges.isEmpty()) {
-            final E edgeToChild = incomingEdges.iterator().next();
-            return Optional.of(
-                    new ParentAndEdge<>(
-                            graphAtNode.graph().getEdgeSource(edgeToChild),
-                            edgeToChild));
-        }
-        return Optional.empty();
+        return Graphs
+                .getIncomingEdgeOfNode(
+                        graphAtNode.graph(),
+                        graphAtNode.nodeOfGraph())
+                .map(edgeToChild ->
+                             new ParentAndEdge<>(
+                                     graphAtNode.graph().getEdgeSource(edgeToChild),
+                                     edgeToChild));
     }
 
     private Set<V> getSubtreeVertices(final Subtree<V, E> subtree) {
