@@ -22,6 +22,7 @@ class ToJGraphTConverter<V, E, W> {
     }
 
     public AsUnmodifiableGraph<V, E> toJGraphT(final ValueGraph<V, W> guavaGraph) {
+        // FK-TODO: verwende Builder analog zu ToGuavaGraphConverter
         final Graph<V, E> jgraphtGraph = new DefaultDirectedGraph<>(edgeClass);
         addVertices(jgraphtGraph, guavaGraph.nodes());
         addEdges(guavaGraph, jgraphtGraph);
