@@ -9,24 +9,28 @@ import java.util.Set;
 import java.util.function.Function;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-public class ToGuavaGraphConverter {
+class ToGuavaGraphConverter<V, E, W> {
 
-    public static <V, E, W> ImmutableValueGraph<V, W> toGuava(final Graph<V, E> jgraphtGraph,
-                                                              final Function<E, W> edgeValueExtractor) {
+    private final Function<E, W> edgeValueExtractor;
+
+    public ToGuavaGraphConverter(final Function<E, W> edgeValueExtractor) {
+        this.edgeValueExtractor = edgeValueExtractor;
+    }
+
+    public ImmutableValueGraph<V, W> toGuava(final Graph<V, E> jgraphtGraph) {
         final ImmutableValueGraph.Builder<V, W> graphBuilder = ValueGraphBuilder.directed().immutable();
         addNodes(graphBuilder, jgraphtGraph.vertexSet());
-        addEdges(graphBuilder, jgraphtGraph.edgeSet(), jgraphtGraph, edgeValueExtractor);
+        addEdges(graphBuilder, jgraphtGraph.edgeSet(), jgraphtGraph);
         return graphBuilder.build();
     }
 
-    private static <V, E, W> void addNodes(final ImmutableValueGraph.Builder<V, W> graphBuilder, final Set<V> nodes) {
+    private void addNodes(final ImmutableValueGraph.Builder<V, W> graphBuilder, final Set<V> nodes) {
         nodes.forEach(graphBuilder::addNode);
     }
 
-    private static <V, E, W> void addEdges(final ImmutableValueGraph.Builder<V, W> graphBuilder,
-                                           final Set<E> edges,
-                                           final Graph<V, E> jgraphtGraph,
-                                           final Function<E, W> edgeValueExtractor) {
+    private void addEdges(final ImmutableValueGraph.Builder<V, W> graphBuilder,
+                          final Set<E> edges,
+                          final Graph<V, E> jgraphtGraph) {
         for (final E edge : edges) {
             graphBuilder.putEdgeValue(
                     jgraphtGraph.getEdgeSource(edge),
