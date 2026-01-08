@@ -5,8 +5,10 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphEquality.assertActualEqualsExpected;
 
 import com.google.common.graph.ImmutableValueGraph;
+import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
+import org.jgrapht.Graph;
 import org.jgrapht.graph.AsUnmodifiableGraph;
 import org.junit.Test;
 
@@ -17,17 +19,16 @@ public class GraphConvertersTest {
     private final StringVertex vB = new StringVertex("B");
 
     // [A] --("Edge-AB")--> [B]
-    private final AsUnmodifiableGraph<StringVertex, StringEdge> jGraphT_GRAPH =
-            new AsUnmodifiableGraph<>(
-                    StringGraphs
-                            .newGraphBuilder()
-                            .addVertex(vA)
-                            .addVertex(vB)
-                            .addEdge(vA, vB, new StringEdge("Edge-AB"))
-                            .build());
+    private final Graph<StringVertex, StringEdge> jGraphT_GRAPH =
+            StringGraphs
+                    .newGraphBuilder()
+                    .addVertex(vA)
+                    .addVertex(vB)
+                    .addEdge(vA, vB, new StringEdge("Edge-AB"))
+                    .build();
 
     // [A] --("Edge-AB")--> [B]
-    private final ImmutableValueGraph<StringVertex, String> GUAVA_GRAPH =
+    private final ValueGraph<StringVertex, String> GUAVA_GRAPH =
             ValueGraphBuilder
                     .directed()
                     .<StringVertex, String>immutable()
@@ -40,7 +41,7 @@ public class GraphConvertersTest {
     public void shouldConvertJGraphTToGuava() {
         // When
         final ImmutableValueGraph<StringVertex, String> guavaGraph =
-                GraphConverters.toGuava(
+                ToGuavaGraphConverter.toGuava(
                         jGraphT_GRAPH,
                         StringEdge::getLabel);
 
@@ -52,7 +53,7 @@ public class GraphConvertersTest {
     public void shouldConvertGuavaToJGraphT() {
         // When
         final AsUnmodifiableGraph<StringVertex, StringEdge> jGraphT =
-                GraphConverters.asJGraphT(
+                ToJGraphTConverter.asJGraphT(
                         GUAVA_GRAPH,
                         StringEdge.class,
                         StringEdge::new);
