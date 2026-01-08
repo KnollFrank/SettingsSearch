@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
 import org.jgrapht.Graph;
@@ -16,16 +15,15 @@ public class GraphConverters {
 
     public static <V, E, W> ImmutableValueGraph<V, W> toGuava(final Graph<V, E> jgraphtGraph,
                                                               final Function<E, W> edgeValueExtractor) {
-        // FK-TODO: refactor to usage of ValueGraphBuilder.directed().immutable()
-        final MutableValueGraph<V, W> mutableGraph = ValueGraphBuilder.directed().build();
-        jgraphtGraph.vertexSet().forEach(mutableGraph::addNode);
+        final ImmutableValueGraph.Builder<V, W> graphBuilder = ValueGraphBuilder.directed().immutable();
+        jgraphtGraph.vertexSet().forEach(graphBuilder::addNode);
         for (final E edge : jgraphtGraph.edgeSet()) {
-            mutableGraph.putEdgeValue(
+            graphBuilder.putEdgeValue(
                     jgraphtGraph.getEdgeSource(edge),
                     jgraphtGraph.getEdgeTarget(edge),
                     edgeValueExtractor.apply(edge));
         }
-        return ImmutableValueGraph.copyOf(mutableGraph);
+        return graphBuilder.build();
     }
 
     public static <V, E, W> AsUnmodifiableGraph<V, E> asJGraphT(final ImmutableValueGraph<V, W> guavaGraph,
