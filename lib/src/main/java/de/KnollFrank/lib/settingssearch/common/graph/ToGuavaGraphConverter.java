@@ -18,21 +18,21 @@ class ToGuavaGraphConverter<V, E, W> {
     }
 
     public ImmutableValueGraph<V, W> toGuava(final Graph<V, E> jgraphtGraph) {
-        final ImmutableValueGraph.Builder<V, W> graphBuilder = ValueGraphBuilder.directed().immutable();
-        addNodes(graphBuilder, jgraphtGraph.vertexSet());
-        addEdges(graphBuilder, jgraphtGraph.edgeSet(), jgraphtGraph);
-        return graphBuilder.build();
+        final ImmutableValueGraph.Builder<V, W> guavaGraphBuilder = ValueGraphBuilder.directed().immutable();
+        addNodes(guavaGraphBuilder, jgraphtGraph.vertexSet());
+        addEdges(guavaGraphBuilder, jgraphtGraph.edgeSet(), jgraphtGraph);
+        return guavaGraphBuilder.build();
     }
 
-    private void addNodes(final ImmutableValueGraph.Builder<V, W> graphBuilder, final Set<V> nodes) {
-        nodes.forEach(graphBuilder::addNode);
+    private void addNodes(final ImmutableValueGraph.Builder<V, W> guavaGraphBuilder, final Set<V> nodes) {
+        nodes.forEach(guavaGraphBuilder::addNode);
     }
 
-    private void addEdges(final ImmutableValueGraph.Builder<V, W> graphBuilder,
+    private void addEdges(final ImmutableValueGraph.Builder<V, W> guavaGraphBuilder,
                           final Set<E> edges,
                           final Graph<V, E> jgraphtGraph) {
         for (final E edge : edges) {
-            graphBuilder.putEdgeValue(
+            guavaGraphBuilder.putEdgeValue(
                     jgraphtGraph.getEdgeSource(edge),
                     jgraphtGraph.getEdgeTarget(edge),
                     edgeValueExtractor.apply(edge));
