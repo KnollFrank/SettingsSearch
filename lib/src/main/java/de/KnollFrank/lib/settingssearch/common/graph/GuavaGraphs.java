@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class GuavaGraphs {
 
+    public static <Node, Value> boolean isEmpty(final ValueGraph<Node, Value> graph) {
+        return graph.nodes().isEmpty();
+    }
+
     public static <Node> Optional<Node> getRootNode(final ValueGraph<Node, ?> graph) {
         return GuavaGraphs
                 .getRootNodes(graph)

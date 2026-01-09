@@ -8,11 +8,10 @@ import java.util.Set;
 class GuavaTreeValidator {
 
     public static <Node, Value> TreeValidatorResult validateIsTree(final ValueGraph<Node, Value> graph) {
-        // A tree must be a directed graph.
         if (!graph.isDirected()) {
             return TreeValidatorResult.invalid("A Tree must be a directed graph.");
         }
-        if (isEmpty(graph)) {
+        if (GuavaGraphs.isEmpty(graph)) {
             return TreeValidatorResult.invalid("The graph must not be empty.");
         }
         {
@@ -26,9 +25,5 @@ class GuavaTreeValidator {
             }
         }
         return TreeValidatorResult.valid();
-    }
-
-    private static <Node, Value> boolean isEmpty(final ValueGraph<Node, Value> graph) {
-        return graph.nodes().isEmpty();
     }
 }
