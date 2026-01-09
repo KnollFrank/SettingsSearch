@@ -60,7 +60,7 @@ public class ImmutableValueTreeTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldFailForGraphWithCycle() {
+    public void shouldFailForGraphWithCycle1() {
         // Given: [A] <--> [B]
         final ImmutableValueGraph<StringVertex, String> graphWithCycle =
                 ValueGraphBuilder
@@ -68,6 +68,22 @@ public class ImmutableValueTreeTest {
                         .<StringVertex, String>immutable()
                         .putEdgeValue(vA, vB, "val1")
                         .putEdgeValue(vB, vA, "val2")
+                        .build();
+
+        // When & Then
+        ImmutableValueTree.of(graphWithCycle);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldFailForGraphWithCycle2() {
+        // Given: [C] --> [A] <--> [B]
+        final ImmutableValueGraph<StringVertex, String> graphWithCycle =
+                ValueGraphBuilder
+                        .directed()
+                        .<StringVertex, String>immutable()
+                        .putEdgeValue(vC, vA, "C->A")
+                        .putEdgeValue(vA, vB, "A->B")
+                        .putEdgeValue(vB, vA, "B->A")
                         .build();
 
         // When & Then

@@ -17,11 +17,6 @@ public record ImmutableValueTree<V, W>(ImmutableValueGraph<V, W> graph) {
     }
 
     public V getRootNode() {
-        return graph
-                .nodes()
-                .stream()
-                .filter(node -> graph.inDegree(node) == 0)
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Validated tree has no root node. This should not happen."));
+        return GuavaGraphs.getRootNode(graph).orElseThrow();
     }
 }
