@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.graph.Traverser;
 import com.google.common.graph.ValueGraph;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
@@ -22,6 +23,7 @@ class TreeValidator {
             if (numberOfEdges != numberOfNodes - 1) {
                 return TreeValidatorResult.invalid(
                         String.format(
+                                Locale.ROOT,
                                 "A tree with %d nodes must have exactly %d edges, but found %d.",
                                 numberOfNodes,
                                 numberOfNodes - 1,
