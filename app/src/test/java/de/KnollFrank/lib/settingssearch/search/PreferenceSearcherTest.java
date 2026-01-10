@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
+import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER;
 
@@ -47,7 +48,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -67,7 +68,6 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
-import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
 import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
@@ -834,7 +834,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         locale);
         graphRepository.persistOrReplace(
                 new SearchablePreferenceScreenGraph(
-                        new ValueTree<>(GraphConverterFactory.createGraphConverter().toGuava(
+                        new Tree<>(createGraphConverter().toGuava(
                                 searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
                                         preferenceScreenWithHostProvider
                                                 .getPreferenceScreenWithHostOfFragment(

@@ -8,14 +8,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-public class GuavaGraphs {
+public class ValueGraphs {
 
     public static <Node, Value> boolean isEmpty(final ValueGraph<Node, Value> graph) {
         return graph.nodes().isEmpty();
     }
 
     public static <Node> Optional<Node> getRootNode(final ValueGraph<Node, ?> graph) {
-        return GuavaGraphs
+        return ValueGraphs
                 .getRootNodes(graph)
                 .stream()
                 .collect(MoreCollectors.toOptional());

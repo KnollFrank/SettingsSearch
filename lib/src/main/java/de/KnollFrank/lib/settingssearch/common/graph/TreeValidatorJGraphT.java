@@ -7,14 +7,14 @@ import org.jgrapht.Graph;
 import java.util.function.Function;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-class TreeValidator {
+class TreeValidatorJGraphT {
 
     public static <V, E> TreeValidatorResult validateIsTree(final Graph<V, E> graph) {
         return GuavaTreeValidator.validateIsTree(toGuava(graph));
     }
 
-    private static <V, E> ValueGraph<V, E> toGuava(final Graph<V, E> graph) {
-        final var converter = new ToGuavaGraphConverter<V, E, E>(Function.identity());
+    private static <Node, Edge> ValueGraph<Node, Edge> toGuava(final Graph<Node, Edge> graph) {
+        final var converter = new ToGuavaGraphConverter<Node, Edge, Edge>(Function.identity());
         return converter.toGuava(graph);
     }
 }

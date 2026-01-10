@@ -9,7 +9,7 @@ import com.google.common.graph.ValueGraphBuilder;
 import org.junit.Test;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-public class ValueTreeTest {
+public class TreeTest {
 
     private final StringVertex vA = new StringVertex("A");
     private final StringVertex vB = new StringVertex("B");
@@ -26,7 +26,7 @@ public class ValueTreeTest {
                         .build();
 
         // When
-        final ValueTree<StringVertex, String> tree = new ValueTree<>(validGraph);
+        final Tree<StringVertex, String> tree = new Tree<>(validGraph);
 
         // Then
         assertThat(tree.graph(), is(validGraph));
@@ -43,7 +43,7 @@ public class ValueTreeTest {
                         .build();
 
         // When & Then
-        new ValueTree<>(undirectedGraph);
+        new Tree<>(undirectedGraph);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -56,7 +56,7 @@ public class ValueTreeTest {
                         .build();
 
         // When & Then
-        new ValueTree<>(emptyGraph);
+        new Tree<>(emptyGraph);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -71,7 +71,7 @@ public class ValueTreeTest {
                         .build();
 
         // When & Then
-        new ValueTree<>(graphWithCycle);
+        new Tree<>(graphWithCycle);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -87,7 +87,7 @@ public class ValueTreeTest {
                         .build();
 
         // When & Then
-        new ValueTree<>(graphWithCycle);
+        new Tree<>(graphWithCycle);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -102,7 +102,7 @@ public class ValueTreeTest {
                         .build();
 
         // When & Then
-        new ValueTree<>(graphWithMultipleParents);
+        new Tree<>(graphWithMultipleParents);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -117,18 +117,18 @@ public class ValueTreeTest {
                         .build();
 
         // When & Then
-        new ValueTree<>(graphWithMultipleRoots);
+        new Tree<>(graphWithMultipleRoots);
     }
 
     @Test
     public void shouldReturnRootNode() {
         // Given: A valid tree with root A
-        final ValueTree<StringVertex, String> tree =
-                new ValueTree<>(ValueGraphBuilder
-                                        .directed()
-                                        .<StringVertex, String>immutable()
-                                        .putEdgeValue(vA, vB, "val")
-                                        .build());
+        final Tree<StringVertex, String> tree =
+                new Tree<>(ValueGraphBuilder
+                                   .directed()
+                                   .<StringVertex, String>immutable()
+                                   .putEdgeValue(vA, vB, "val")
+                                   .build());
 
         // When
         final StringVertex rootNode = tree.getRootNode();

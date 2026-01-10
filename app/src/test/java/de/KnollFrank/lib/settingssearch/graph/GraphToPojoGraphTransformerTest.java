@@ -31,7 +31,7 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
@@ -192,7 +192,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
             final GraphToPojoGraphTransformer graphToPojoGraphTransformer,
             final Locale locale) {
         return new SearchablePreferenceScreenGraph(
-                new ValueTree<>(createGraphConverter().toGuava(
+                new Tree<>(createGraphConverter().toGuava(
                         MapFromPojoNodesRemover.removeMapFromPojoNodes(
                                 graphToPojoGraphTransformer.transformGraphToPojoGraph(
                                         entityGraph,

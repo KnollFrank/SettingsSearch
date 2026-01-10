@@ -13,7 +13,7 @@ class GuavaTreeValidator {
         if (!graph.isDirected()) {
             return TreeValidatorResult.invalid("A Tree must be a directed graph.");
         }
-        if (GuavaGraphs.isEmpty(graph)) {
+        if (ValueGraphs.isEmpty(graph)) {
             return TreeValidatorResult.invalid("The graph must not be empty.");
         }
         {
@@ -29,7 +29,7 @@ class GuavaTreeValidator {
             }
         }
         {
-            final int rootCount = GuavaGraphs.getRootNodes(graph).size();
+            final int rootCount = ValueGraphs.getRootNodes(graph).size();
             if (rootCount != 1) {
                 return TreeValidatorResult.invalid("A Tree must have exactly one root node, but found: " + rootCount);
             }
@@ -67,6 +67,6 @@ class GuavaTreeValidator {
         return Iterables.size(
                 Traverser
                         .forGraph(graph)
-                        .breadthFirst(GuavaGraphs.getRootNode(graph).orElseThrow()));
+                        .breadthFirst(ValueGraphs.getRootNode(graph).orElseThrow()));
     }
 }

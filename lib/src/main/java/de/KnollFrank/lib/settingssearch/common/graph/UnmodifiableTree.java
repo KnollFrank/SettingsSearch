@@ -10,7 +10,7 @@ public record UnmodifiableTree<V, E>(AsUnmodifiableGraph<V, E> graph) {
     }
 
     public UnmodifiableTree {
-        TreeValidator
+        TreeValidatorJGraphT
                 .validateIsTree(graph)
                 .throwIfInvalid();
     }

@@ -18,8 +18,8 @@ import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenSubtreeReplacerFactory;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
-import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
@@ -65,7 +65,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
         });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
         return new SearchablePreferenceScreenGraph(
-                new ValueTree<>(createGraphConverter().toGuava(
+                new Tree<>(createGraphConverter().toGuava(
                         SearchablePreferenceScreenSubtreeReplacerFactory
                                 .createSubtreeReplacer()
                                 .replaceSubtreeWithTree(

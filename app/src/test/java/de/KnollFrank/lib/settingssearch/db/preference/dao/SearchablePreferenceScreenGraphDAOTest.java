@@ -14,7 +14,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
@@ -42,7 +42,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
         final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph =
                 new SearchablePreferenceScreenGraph(
-                        new ValueTree<>(createGraphConverter().toGuava(
+                        new Tree<>(createGraphConverter().toGuava(
                                 SearchablePreferenceScreenGraphTestFactory
                                         .createGraph(
                                                 PreferenceFragmentCompat.class,
@@ -182,7 +182,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
 
     private static SearchablePreferenceScreenGraph asSearchablePreferenceScreenGraph(final Graphs graphs) {
         return new SearchablePreferenceScreenGraph(
-                new ValueTree<>(createGraphConverter().toGuava(graphs.pojoGraph())),
+                new Tree<>(createGraphConverter().toGuava(graphs.pojoGraph())),
                 graphs.entityGraphAndDbDataProvider().graph().id(),
                 graphs.entityGraphAndDbDataProvider().graph().configuration());
     }
