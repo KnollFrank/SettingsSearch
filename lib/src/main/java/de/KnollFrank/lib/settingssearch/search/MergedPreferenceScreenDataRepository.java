@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.LockingSupport;
-import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
@@ -73,7 +73,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                 progressUpdateListener.onProgressUpdate("persisting search database");
                 graphRepository.persistOrReplace(
                         new SearchablePreferenceScreenGraph(
-                                ImmutableValueTree.of(createGraphConverter().toGuava(searchablePreferenceScreenGraph)),
+                                new ValueTree<>(createGraphConverter().toGuava(searchablePreferenceScreenGraph)),
                                 locale,
                                 configuration));
             }

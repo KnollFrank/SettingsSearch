@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraph;
 
 import org.jgrapht.Graph;
@@ -22,7 +21,7 @@ public class GraphConverter<Node, Edge, EdgeValue> {
         return toJGraphTConverter.toJGraphT(guavaGraph);
     }
 
-    public ImmutableValueGraph<Node, EdgeValue> toGuava(final Graph<Node, Edge> jgraphtGraph) {
+    public ValueGraph<Node, EdgeValue> toGuava(final Graph<Node, Edge> jgraphtGraph) {
         return toGuavaGraphConverter.toGuava(jgraphtGraph);
     }
 }

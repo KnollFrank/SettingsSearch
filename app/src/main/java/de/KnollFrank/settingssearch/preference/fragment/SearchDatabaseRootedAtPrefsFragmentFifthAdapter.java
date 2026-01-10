@@ -16,10 +16,10 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
-import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
 import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenSubtreeReplacerFactory;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
@@ -65,24 +65,23 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
         });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
         return new SearchablePreferenceScreenGraph(
-                ImmutableValueTree.of(
-                        createGraphConverter().toGuava(
-                                SearchablePreferenceScreenSubtreeReplacerFactory
-                                        .createSubtreeReplacer()
-                                        .replaceSubtreeWithTree(
-                                                new Subtree<>(
-                                                        UnmodifiableTree.of(createGraphConverter().toJGraphT(graph.tree().graph())),
-                                                        prefsFragmentFifthPreferenceScreen),
-                                                getPojoGraphRootedAt(
-                                                        instantiateSearchablePreferenceScreen(
-                                                                prefsFragmentFifthPreferenceScreen,
-                                                                createGraphConverter().toJGraphT(graph.tree().graph()),
-                                                                createGraphPathFactory(searchDatabaseConfig, activityContext),
-                                                                onUiThreadRunner),
-                                                        graph.locale(),
-                                                        activityContext,
-                                                        searchDatabaseConfig))
-                                        .graph())),
+                new ValueTree<>(createGraphConverter().toGuava(
+                        SearchablePreferenceScreenSubtreeReplacerFactory
+                                .createSubtreeReplacer()
+                                .replaceSubtreeWithTree(
+                                        new Subtree<>(
+                                                UnmodifiableTree.of(createGraphConverter().toJGraphT(graph.tree().graph())),
+                                                prefsFragmentFifthPreferenceScreen),
+                                        getPojoGraphRootedAt(
+                                                instantiateSearchablePreferenceScreen(
+                                                        prefsFragmentFifthPreferenceScreen,
+                                                        createGraphConverter().toJGraphT(graph.tree().graph()),
+                                                        createGraphPathFactory(searchDatabaseConfig, activityContext),
+                                                        onUiThreadRunner),
+                                                graph.locale(),
+                                                activityContext,
+                                                searchDatabaseConfig))
+                                .graph())),
                 graph.locale(),
                 new ConfigurationBundleConverter().convertForward(newConfiguration));
     }

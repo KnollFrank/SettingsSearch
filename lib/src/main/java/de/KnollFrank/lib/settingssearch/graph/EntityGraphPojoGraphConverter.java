@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
 
-import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter;
@@ -12,11 +12,10 @@ public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataPr
     @Override
     public SearchablePreferenceScreenGraph convertForward(final GraphAndDbDataProvider graphAndDbDataProvider) {
         return new SearchablePreferenceScreenGraph(
-                ImmutableValueTree.of(
-                        createGraphConverter().toGuava(
-                                EntityGraphToPojoGraphTransformer.toPojoGraph(
-                                        graphAndDbDataProvider.asGraph(),
-                                        graphAndDbDataProvider.dbDataProvider()))),
+                new ValueTree<>(createGraphConverter().toGuava(
+                        EntityGraphToPojoGraphTransformer.toPojoGraph(
+                                graphAndDbDataProvider.asGraph(),
+                                graphAndDbDataProvider.dbDataProvider()))),
                 graphAndDbDataProvider.graph().id(),
                 graphAndDbDataProvider.graph().configuration());
     }

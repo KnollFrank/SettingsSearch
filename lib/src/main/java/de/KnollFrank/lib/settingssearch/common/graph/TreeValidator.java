@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.graph.ImmutableValueGraph;
+import com.google.common.graph.ValueGraph;
 
 import org.jgrapht.Graph;
 
@@ -13,7 +13,7 @@ class TreeValidator {
         return GuavaTreeValidator.validateIsTree(toGuava(graph));
     }
 
-    private static <V, E> ImmutableValueGraph<V, E> toGuava(final Graph<V, E> graph) {
+    private static <V, E> ValueGraph<V, E> toGuava(final Graph<V, E> graph) {
         final var converter = new ToGuavaGraphConverter<V, E, E>(Function.identity());
         return converter.toGuava(graph);
     }

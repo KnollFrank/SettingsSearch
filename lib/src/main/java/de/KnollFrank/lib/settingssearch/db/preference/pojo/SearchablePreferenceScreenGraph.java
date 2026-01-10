@@ -4,7 +4,7 @@ import android.os.PersistableBundle;
 
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
 
 /*
 FK-TODO:
@@ -16,7 +16,7 @@ FK-TODO:
      - 1. b)
 */
 public record SearchablePreferenceScreenGraph(
-        ImmutableValueTree<SearchablePreferenceScreen, SearchablePreference> tree,
+        ValueTree<SearchablePreferenceScreen, SearchablePreference> tree,
         Locale locale,
         PersistableBundle configuration) {
 

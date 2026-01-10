@@ -14,7 +14,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ValueTree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
@@ -42,23 +42,22 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
         final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph =
                 new SearchablePreferenceScreenGraph(
-                        ImmutableValueTree.of(
-                                createGraphConverter().toGuava(
-                                        SearchablePreferenceScreenGraphTestFactory
-                                                .createGraph(
-                                                        PreferenceFragmentCompat.class,
-                                                        Locale.GERMAN,
-                                                        new SearchablePreferenceScreenGraphTestFactory.Data(
-                                                                "5",
-                                                                "4",
-                                                                "parentKey",
-                                                                "1",
-                                                                "2",
-                                                                "3",
-                                                                "singleNodeGraph-screen1",
-                                                                "tree-screen1",
-                                                                "tree-screen2"))
-                                                .pojoGraph())),
+                        new ValueTree<>(createGraphConverter().toGuava(
+                                SearchablePreferenceScreenGraphTestFactory
+                                        .createGraph(
+                                                PreferenceFragmentCompat.class,
+                                                Locale.GERMAN,
+                                                new SearchablePreferenceScreenGraphTestFactory.Data(
+                                                        "5",
+                                                        "4",
+                                                        "parentKey",
+                                                        "1",
+                                                        "2",
+                                                        "3",
+                                                        "singleNodeGraph-screen1",
+                                                        "tree-screen1",
+                                                        "tree-screen2"))
+                                        .pojoGraph())),
                         Locale.GERMAN,
                         PersistableBundleTestFactory.createSomePersistableBundle());
 
@@ -183,7 +182,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
 
     private static SearchablePreferenceScreenGraph asSearchablePreferenceScreenGraph(final Graphs graphs) {
         return new SearchablePreferenceScreenGraph(
-                ImmutableValueTree.of(createGraphConverter().toGuava(graphs.pojoGraph())),
+                new ValueTree<>(createGraphConverter().toGuava(graphs.pojoGraph())),
                 graphs.entityGraphAndDbDataProvider().graph().id(),
                 graphs.entityGraphAndDbDataProvider().graph().configuration());
     }
