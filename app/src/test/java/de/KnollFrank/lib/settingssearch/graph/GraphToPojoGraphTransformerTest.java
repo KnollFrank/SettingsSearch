@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment;
+import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
 import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
 
@@ -30,7 +31,7 @@ import java.util.function.BiConsumer;
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
@@ -191,11 +192,12 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
             final GraphToPojoGraphTransformer graphToPojoGraphTransformer,
             final Locale locale) {
         return new SearchablePreferenceScreenGraph(
-                UnmodifiableTree.of(
-                        removeMapFromPojoNodes(
-                                graphToPojoGraphTransformer.transformGraphToPojoGraph(
-                                        entityGraph,
-                                        locale))),
+                ImmutableValueTree.of(
+                        createGraphConverter().toGuava(
+                                removeMapFromPojoNodes(
+                                        graphToPojoGraphTransformer.transformGraphToPojoGraph(
+                                                entityGraph,
+                                                locale)))),
                 locale,
                 PersistableBundleTestFactory.createSomePersistableBundle());
     }

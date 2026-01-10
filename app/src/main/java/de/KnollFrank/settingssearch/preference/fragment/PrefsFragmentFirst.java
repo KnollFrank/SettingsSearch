@@ -1,5 +1,7 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
+import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -101,7 +103,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale);
                         setSummaryOfPreferences(
                                 preference,
-                                getSummaryChangingPreference(pojoGraph.tree().graph()),
+                                getSummaryChangingPreference(createGraphConverter().toJGraphT(pojoGraph.tree().graph())),
                                 getSummary(checked));
                         getPreferencesDatabase()
                                 .searchablePreferenceScreenGraphRepository()

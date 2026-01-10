@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
+import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
 
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -13,13 +14,12 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
-import de.KnollFrank.lib.settingssearch.graph.PojoGraphEquality;
 
 @RunWith(RobolectricTestRunner.class)
 public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatabaseTest {
@@ -42,22 +42,23 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
         final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph =
                 new SearchablePreferenceScreenGraph(
-                        UnmodifiableTree.of(
-                                SearchablePreferenceScreenGraphTestFactory
-                                        .createGraph(
-                                                PreferenceFragmentCompat.class,
-                                                Locale.GERMAN,
-                                                new SearchablePreferenceScreenGraphTestFactory.Data(
-                                                        "5",
-                                                        "4",
-                                                        "parentKey",
-                                                        "1",
-                                                        "2",
-                                                        "3",
-                                                        "singleNodeGraph-screen1",
-                                                        "tree-screen1",
-                                                        "tree-screen2"))
-                                        .pojoGraph()),
+                        ImmutableValueTree.of(
+                                createGraphConverter().toGuava(
+                                        SearchablePreferenceScreenGraphTestFactory
+                                                .createGraph(
+                                                        PreferenceFragmentCompat.class,
+                                                        Locale.GERMAN,
+                                                        new SearchablePreferenceScreenGraphTestFactory.Data(
+                                                                "5",
+                                                                "4",
+                                                                "parentKey",
+                                                                "1",
+                                                                "2",
+                                                                "3",
+                                                                "singleNodeGraph-screen1",
+                                                                "tree-screen1",
+                                                                "tree-screen2"))
+                                                .pojoGraph())),
                         Locale.GERMAN,
                         PersistableBundleTestFactory.createSomePersistableBundle());
 
@@ -176,13 +177,13 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
     }
 
     private static void assertActualEqualsExpected(final SearchablePreferenceScreenGraph actual, final SearchablePreferenceScreenGraph expected) {
-        PojoGraphEquality.assertActualEqualsExpected(actual.tree().graph(), expected.tree().graph());
+        assertThat(actual.tree().graph(), is(expected.tree().graph()));
         assertThat(actual.locale(), is(expected.locale()));
     }
 
     private static SearchablePreferenceScreenGraph asSearchablePreferenceScreenGraph(final Graphs graphs) {
         return new SearchablePreferenceScreenGraph(
-                UnmodifiableTree.of(graphs.pojoGraph()),
+                ImmutableValueTree.of(createGraphConverter().toGuava(graphs.pojoGraph())),
                 graphs.entityGraphAndDbDataProvider().graph().id(),
                 graphs.entityGraphAndDbDataProvider().graph().configuration());
     }

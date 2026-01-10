@@ -10,39 +10,39 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-class ToGuavaGraphConverter<V, E, W> {
+public class ToGuavaGraphConverter<Node, Edge, EdgeValue> {
 
-    private final Function<E, W> edgeValueExtractor;
+    private final Function<Edge, EdgeValue> edgeValueExtractor;
 
-    public ToGuavaGraphConverter(final Function<E, W> edgeValueExtractor) {
+    public ToGuavaGraphConverter(final Function<Edge, EdgeValue> edgeValueExtractor) {
         this.edgeValueExtractor = edgeValueExtractor;
     }
 
-    public ImmutableValueGraph<V, W> toGuava(final Graph<V, E> jgraphtGraph) {
-        final ImmutableValueGraph.Builder<V, W> guavaGraphBuilder = ValueGraphBuilder.directed().immutable();
+    public ImmutableValueGraph<Node, EdgeValue> toGuava(final Graph<Node, Edge> jgraphtGraph) {
+        final ImmutableValueGraph.Builder<Node, EdgeValue> guavaGraphBuilder = ValueGraphBuilder.directed().immutable();
         addNodes(guavaGraphBuilder, jgraphtGraph.vertexSet());
         addEdges(guavaGraphBuilder, getEdgeDescriptions(jgraphtGraph));
         return guavaGraphBuilder.build();
     }
 
-    private void addNodes(final ImmutableValueGraph.Builder<V, W> guavaGraphBuilder, final Set<V> nodes) {
+    private void addNodes(final ImmutableValueGraph.Builder<Node, EdgeValue> guavaGraphBuilder, final Set<Node> nodes) {
         nodes.forEach(guavaGraphBuilder::addNode);
     }
 
     private class EdgeDescription {
 
-        public final V nodeU;
-        public final V nodeV;
-        public final W value;
+        public final Node nodeU;
+        public final Node nodeV;
+        public final EdgeValue edgeValue;
 
-        public EdgeDescription(V nodeU, V nodeV, W value) {
+        public EdgeDescription(Node nodeU, Node nodeV, EdgeValue edgeValue) {
             this.nodeU = nodeU;
             this.nodeV = nodeV;
-            this.value = value;
+            this.edgeValue = edgeValue;
         }
     }
 
-    private Set<EdgeDescription> getEdgeDescriptions(final Graph<V, E> jgraphtGraph) {
+    private Set<EdgeDescription> getEdgeDescriptions(final Graph<Node, Edge> jgraphtGraph) {
         return jgraphtGraph
                 .edgeSet()
                 .stream()
@@ -54,13 +54,13 @@ class ToGuavaGraphConverter<V, E, W> {
                 .collect(Collectors.toSet());
     }
 
-    private void addEdges(final ImmutableValueGraph.Builder<V, W> guavaGraphBuilder,
+    private void addEdges(final ImmutableValueGraph.Builder<Node, EdgeValue> guavaGraphBuilder,
                           final Set<EdgeDescription> edgeDescriptions) {
         edgeDescriptions.forEach(
                 edgeDescription ->
                         guavaGraphBuilder.putEdgeValue(
                                 edgeDescription.nodeU,
                                 edgeDescription.nodeV,
-                                edgeDescription.value));
+                                edgeDescription.edgeValue));
     }
 }

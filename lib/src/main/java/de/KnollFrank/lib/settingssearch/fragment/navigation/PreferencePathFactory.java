@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.fragment.navigation;
 
+import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
+
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.List;
@@ -22,11 +24,12 @@ class PreferencePathFactory {
         return createPreferencePath(
                 preferencePathData,
                 PojoGraphs.getPreferences(
-                        graphRepository
-                                .findGraphById(locale, null, activityContext)
-                                .orElseThrow()
-                                .tree()
-                                .graph()));
+                        createGraphConverter().toJGraphT(
+                                graphRepository
+                                        .findGraphById(locale, null, activityContext)
+                                        .orElseThrow()
+                                        .tree()
+                                        .graph())));
     }
 
     private static PreferencePath createPreferencePath(final PreferencePathData preferencePathData,

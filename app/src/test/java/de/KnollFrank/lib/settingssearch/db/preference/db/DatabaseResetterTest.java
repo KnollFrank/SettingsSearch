@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.db;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
+import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceSearcherTest.emptyComputePreferencesListener;
 import static de.KnollFrank.lib.settingssearch.test.TestHelper.doWithFragmentActivity;
 
@@ -17,7 +18,7 @@ import java.io.File;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig.JournalMode;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
@@ -81,7 +82,7 @@ public class DatabaseResetterTest {
                 .searchablePreferenceScreenGraphRepository()
                 .persistOrReplace(
                         new SearchablePreferenceScreenGraph(
-                                UnmodifiableTree.of(singleNodeGraph.pojoGraph()),
+                                ImmutableValueTree.of(createGraphConverter().toGuava(singleNodeGraph.pojoGraph())),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().id(),
                                 singleNodeGraph.entityGraphAndDbDataProvider().graph().configuration()));
     }

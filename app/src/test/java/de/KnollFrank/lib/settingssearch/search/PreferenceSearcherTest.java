@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.not;
+import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
 import static de.KnollFrank.lib.settingssearch.search.PreferenceMatchHelper.getKeySet;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.KEY_OF_PREFERENCE_WITH_ON_PREFERENCE_CLICK_LISTENER;
 
@@ -47,7 +48,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
+import de.KnollFrank.lib.settingssearch.common.graph.ImmutableValueTree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -833,13 +834,14 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         locale);
         graphRepository.persistOrReplace(
                 new SearchablePreferenceScreenGraph(
-                        UnmodifiableTree.of(
-                                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
-                                        preferenceScreenWithHostProvider
-                                                .getPreferenceScreenWithHostOfFragment(
-                                                        preferenceFragment.getClass(),
-                                                        Optional.empty())
-                                                .orElseThrow())),
+                        ImmutableValueTree.of(
+                                createGraphConverter().toGuava(
+                                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
+                                                preferenceScreenWithHostProvider
+                                                        .getPreferenceScreenWithHostOfFragment(
+                                                                preferenceFragment.getClass(),
+                                                                Optional.empty())
+                                                        .orElseThrow()))),
                         locale,
                         PersistableBundleTestFactory.createSomePersistableBundle()));
         return MergedPreferenceScreenFactory.createMergedPreferenceScreen(
