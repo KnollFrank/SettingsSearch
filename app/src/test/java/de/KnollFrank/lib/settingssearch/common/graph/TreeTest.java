@@ -131,7 +131,7 @@ public class TreeTest {
                                    .build());
 
         // When
-        final StringVertex rootNode = tree.getRootNode();
+        final StringVertex rootNode = tree.rootNode();
 
         // Then
         assertThat(rootNode, is(vA));
