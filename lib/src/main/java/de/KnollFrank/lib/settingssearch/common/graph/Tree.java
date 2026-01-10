@@ -6,7 +6,7 @@ import com.google.common.graph.ValueGraph;
 public record Tree<V, W>(ValueGraph<V, W> graph) {
 
     public Tree {
-        GuavaTreeValidator
+        TreeValidator
                 .validateIsTree(graph)
                 .throwIfInvalid();
     }

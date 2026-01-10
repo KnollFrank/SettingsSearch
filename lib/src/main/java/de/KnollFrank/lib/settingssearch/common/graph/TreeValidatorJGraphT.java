@@ -10,7 +10,7 @@ import java.util.function.Function;
 class TreeValidatorJGraphT {
 
     public static <V, E> TreeValidatorResult validateIsTree(final Graph<V, E> graph) {
-        return GuavaTreeValidator.validateIsTree(toGuava(graph));
+        return TreeValidator.validateIsTree(toGuava(graph));
     }
 
     private static <Node, Edge> ValueGraph<Node, Edge> toGuava(final Graph<Node, Edge> graph) {

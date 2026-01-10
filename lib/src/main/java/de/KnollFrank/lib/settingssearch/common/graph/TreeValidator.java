@@ -7,7 +7,7 @@ import com.google.common.graph.ValueGraph;
 import java.util.Optional;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-class GuavaTreeValidator {
+class TreeValidator {
 
     public static <Node> TreeValidatorResult validateIsTree(final ValueGraph<Node, ?> graph) {
         if (!graph.isDirected()) {
