@@ -31,14 +31,14 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings({"UnstableApiUsage"})
-public class TreePathFactoryTest {
+public class TreePathInstantiatorTest {
 
     @Test
     public void test_instantiateTreePath_singleNode() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final TreePathFactory treePathFactory = new TreePathFactory(createPreferenceScreenWithHostProvider(fragmentActivity));
+                final TreePathInstantiator treePathInstantiator = new TreePathInstantiator(createPreferenceScreenWithHostProvider(fragmentActivity));
                 final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraphSingleNode =
                         createSomePojoGraph(
                                 fragmentActivity,
@@ -48,7 +48,7 @@ public class TreePathFactoryTest {
                         new TreePath<>(pojoGraphSingleNode, List.of(searchablePreferenceScreen));
 
                 // When
-                final TreePath<PreferenceScreenWithHost, Preference> graphPathInstantiated = treePathFactory.instantiate(treePath);
+                final TreePath<PreferenceScreenWithHost, Preference> graphPathInstantiated = treePathInstantiator.instantiate(treePath);
 
                 // Then
                 assertSameSize(graphPathInstantiated, treePath);
@@ -62,7 +62,7 @@ public class TreePathFactoryTest {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(fragmentActivity -> {
                 // Given
-                final TreePathFactory treePathFactory = new TreePathFactory(createPreferenceScreenWithHostProvider(fragmentActivity));
+                final TreePathInstantiator treePathInstantiator = new TreePathInstantiator(createPreferenceScreenWithHostProvider(fragmentActivity));
                 final Tree<SearchablePreferenceScreen, SearchablePreference> graphTwoNodes = createSomePojoGraph(fragmentActivity, Fragment3ConnectedToFragment4.class);
                 final SearchablePreferenceScreen thirdScreen = getPreferenceScreenByTitle(graphTwoNodes.graph().nodes(), "third screen");
                 final SearchablePreferenceScreen fourthScreen = getPreferenceScreenByTitle(graphTwoNodes.graph().nodes(), "fourth screen");
@@ -72,7 +72,7 @@ public class TreePathFactoryTest {
                                 List.of(thirdScreen, fourthScreen));
 
                 // When
-                final TreePath<PreferenceScreenWithHost, Preference> graphPathInstantiated = treePathFactory.instantiate(graphPath);
+                final TreePath<PreferenceScreenWithHost, Preference> graphPathInstantiated = treePathInstantiator.instantiate(graphPath);
 
                 // Then
                 assertSameSize(graphPathInstantiated, graphPath);

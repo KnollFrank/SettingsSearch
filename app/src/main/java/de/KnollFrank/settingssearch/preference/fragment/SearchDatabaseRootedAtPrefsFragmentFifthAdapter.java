@@ -24,7 +24,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
-import de.KnollFrank.lib.settingssearch.graph.TreePathFactory;
+import de.KnollFrank.lib.settingssearch.graph.TreePathInstantiator;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
@@ -106,17 +106,17 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     private PreferenceScreenWithHost instantiateSearchablePreferenceScreen(
             final SearchablePreferenceScreen searchablePreferenceScreen,
             final Tree<SearchablePreferenceScreen, SearchablePreference> tree,
-            final TreePathFactory treePathFactory,
+            final TreePathInstantiator treePathInstantiator,
             final OnUiThreadRunner onUiThreadRunner) {
         final var treePath = tree.getPathFromRootNodeToTarget(searchablePreferenceScreen);
         return onUiThreadRunner
-                .runBlockingOnUiThread(() -> treePathFactory.instantiate(treePath))
+                .runBlockingOnUiThread(() -> treePathInstantiator.instantiate(treePath))
                 .endNode();
     }
 
-    private TreePathFactory createGraphPathFactory(final SearchDatabaseConfig searchDatabaseConfig,
-                                                   final FragmentActivity activityContext) {
-        return new TreePathFactory(
+    private TreePathInstantiator createGraphPathFactory(final SearchDatabaseConfig searchDatabaseConfig,
+                                                        final FragmentActivity activityContext) {
+        return new TreePathInstantiator(
                 new PreferenceScreenWithHostProvider(
                         InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                                 searchDatabaseConfig.fragmentFactory,

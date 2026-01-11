@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings({"UnstableApiUsage"})
-public class Trees {
+public class TreePaths {
 
     public static <N, V> TreePath<N, V> getPathFromRootNodeToTarget(final Tree<N, V> tree, final N target) {
         if (!tree.graph().nodes().contains(target)) {

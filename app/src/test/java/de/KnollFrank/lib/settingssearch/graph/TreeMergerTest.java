@@ -37,7 +37,6 @@ import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPrefe
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeAtNode;
-import de.KnollFrank.lib.settingssearch.common.graph.Trees;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
@@ -164,11 +163,8 @@ public class TreeMergerTest {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
         return PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
-                new TreePathFactory(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
-                        .instantiate(
-                                Trees.getPathFromRootNodeToTarget(
-                                        pojoGraph,
-                                        rootOfPartialPojoGraph))
+                new TreePathInstantiator(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
+                        .instantiate(pojoGraph.getPathFromRootNodeToTarget(rootOfPartialPojoGraph))
                         .endNode(),
                 instantiateAndInitializeFragment,
                 new AddEdgeToGraphPredicate() {

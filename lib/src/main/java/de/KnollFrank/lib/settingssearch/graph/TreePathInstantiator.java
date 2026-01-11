@@ -22,11 +22,11 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-public class TreePathFactory {
+public class TreePathInstantiator {
 
     private final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider;
 
-    public TreePathFactory(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
+    public TreePathInstantiator(final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
