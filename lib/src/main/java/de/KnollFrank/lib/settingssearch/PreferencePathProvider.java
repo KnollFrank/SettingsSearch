@@ -2,19 +2,16 @@ package de.KnollFrank.lib.settingssearch;
 
 import com.google.common.collect.ImmutableList;
 
-import org.jgrapht.GraphPath;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.common.graph.TreePath;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinTree;
-import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
 
-// FK-TODO: refactor
+@SuppressWarnings({"UnstableApiUsage"})
 public class PreferencePathProvider {
 
     public static PreferencePath getPreferencePath(final SearchablePreferenceOfHostWithinTree target) {
@@ -34,24 +31,18 @@ public class PreferencePathProvider {
     }
 
     private static List<SearchablePreferenceOfHostWithinTree> getPathPreferences(final SearchablePreferenceScreenWithinTree target) {
-        return getEdgePreferences(target.getGraphPath());
+        return getEdgePreferences(target.getTreePath());
     }
 
-    private static List<SearchablePreferenceOfHostWithinTree> getEdgePreferences(final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> graphPath) {
-        final var graphContainingPreference =
-                new Tree<>(
-                        GraphConverterFactory
-                                .createSearchablePreferenceScreenGraphConverter()
-                                .toGuava(graphPath.getGraph()));
-        return graphPath
-                .getEdgeList()
+    private static List<SearchablePreferenceOfHostWithinTree> getEdgePreferences(final TreePath<SearchablePreferenceScreen, SearchablePreference> treePath) {
+        return treePath
+                .edges()
                 .stream()
                 .map(searchablePreferenceEdge ->
                              new SearchablePreferenceOfHostWithinTree(
-                                     searchablePreferenceEdge.preference,
-                                     // FK-TODO: use converted guava Tree instead of jgraph graphPath.getGraph()
-                                     graphPath.getGraph().getEdgeSource(searchablePreferenceEdge),
-                                     graphContainingPreference))
+                                     searchablePreferenceEdge.edgeValue(),
+                                     searchablePreferenceEdge.edge().source(),
+                                     treePath.tree()))
                 .collect(Collectors.toList());
     }
 }

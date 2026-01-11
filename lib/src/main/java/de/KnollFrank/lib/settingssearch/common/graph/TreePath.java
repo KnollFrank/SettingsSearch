@@ -19,4 +19,8 @@ public record TreePath<N, V>(Tree<N, V> tree, List<N> nodes) {
     public N endNode() {
         return Lists.getLastElement(nodes).orElseThrow();
     }
+
+    public List<Edge<N, V>> edges() {
+        return Trees.getEdgesOnPath(this);
+    }
 }

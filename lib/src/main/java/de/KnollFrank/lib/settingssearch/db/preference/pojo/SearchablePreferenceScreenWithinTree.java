@@ -1,25 +1,19 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import org.jgrapht.GraphPath;
-
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
+import de.KnollFrank.lib.settingssearch.common.graph.TreePath;
+import de.KnollFrank.lib.settingssearch.common.graph.Trees;
 
 public record SearchablePreferenceScreenWithinTree(
         SearchablePreferenceScreen searchablePreferenceScreen,
         Tree<SearchablePreferenceScreen, SearchablePreference> treeContainingScreen) {
 
-    public GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> getGraphPath() {
-        return Graphs.getPathFromRootNodeToTarget(
-                GraphConverterFactory
-                        .createSearchablePreferenceScreenGraphConverter()
-                        .toJGraphT(treeContainingScreen.graph()),
-                searchablePreferenceScreen);
+    public TreePath<SearchablePreferenceScreen, SearchablePreference> getTreePath() {
+        return Trees.getPathFromRootNodeToTarget(treeContainingScreen, searchablePreferenceScreen);
     }
 
     public Set<SearchablePreferenceOfHostWithinTree> getAllPreferencesOfPreferenceHierarchy() {
