@@ -1,14 +1,13 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import androidx.core.util.Pair;
-
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ValueGraph;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
+
+import de.KnollFrank.lib.settingssearch.common.Lists;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class Trees {
@@ -27,18 +26,11 @@ public class Trees {
     public static <N, V> List<Edge<N, V>> getEdgesOnPath(final TreePath<N, V> path) {
         final List<N> nodes = path.nodes();
         final ValueGraph<N, V> graph = path.tree().graph();
-        return getConsecutivePairs(nodes)
+        return Lists
+                .getConsecutivePairs(nodes)
                 .stream()
                 .map(consecutiveNodePair -> EndpointPair.ordered(consecutiveNodePair.first, consecutiveNodePair.second))
                 .map(endpointPair -> new Edge<>(endpointPair, graph.edgeValueOrDefault(endpointPair, null)))
-                .toList();
-    }
-
-    private static <N> List<Pair<N, N>> getConsecutivePairs(final List<N> elements) {
-        return IntStream
-                .range(0, elements.size() - 1)
-                .mapToObj(index -> Pair.create(index, index + 1))
-                .map(consecutiveIndexPair -> Pair.create(elements.get(consecutiveIndexPair.first), elements.get(consecutiveIndexPair.second)))
                 .toList();
     }
 }

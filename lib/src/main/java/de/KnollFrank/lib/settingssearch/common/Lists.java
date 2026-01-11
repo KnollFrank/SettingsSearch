@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common;
 
-import android.util.Pair;
+import androidx.core.util.Pair;
 
 import java.util.List;
 import java.util.Optional;
@@ -58,5 +58,13 @@ public class Lists {
                 .range(0, as.size())
                 .mapToObj(i -> Pair.create(as.get(i), bs.get(i)))
                 .collect(Collectors.toList());
+    }
+
+    public static <N> List<Pair<N, N>> getConsecutivePairs(final List<N> elements) {
+        return IntStream
+                .range(0, elements.size() - 1)
+                .mapToObj(index -> Pair.create(index, index + 1))
+                .map(consecutiveIndexPair -> Pair.create(elements.get(consecutiveIndexPair.first), elements.get(consecutiveIndexPair.second)))
+                .toList();
     }
 }

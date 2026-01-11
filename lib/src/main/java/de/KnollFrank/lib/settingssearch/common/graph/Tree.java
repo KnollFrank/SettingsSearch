@@ -9,6 +9,7 @@ public class Tree<N, V> extends TypedTree<N, V, ValueGraph<N, V>> {
         super(graph);
     }
 
+    @Override
     public ValueGraph<N, V> graph() {
         return super.graph();
     }
