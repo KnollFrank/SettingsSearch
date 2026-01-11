@@ -56,10 +56,9 @@ public class TreesTest {
     public void shouldReturnPathToIntermediateNode() {
         // When
         final TreePath<String, String> path =
-                Trees
-                        .getPathFromRootToTarget(
-                                testTree,
-                                "Child1");
+                Trees.getPathFromRootToTarget(
+                        testTree,
+                        "Child1");
 
         // Assert
         assertThat(path.nodes(), contains("Root", "Child1"));
