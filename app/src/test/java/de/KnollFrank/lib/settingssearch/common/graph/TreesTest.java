@@ -18,6 +18,13 @@ import de.KnollFrank.lib.settingssearch.test.Matchers;
 @SuppressWarnings({"UnstableApiUsage"})
 public class TreesTest {
 
+    private static final String ROOT = "Root";
+    private static final String CHILD_1 = "Child1";
+    private static final String CHILD_2 = "Child2";
+    private static final String GRAND_CHILD_1 = "GrandChild1";
+    private static final String EDGE_1 = "edge1";
+    private static final String EDGE_2 = "edge2";
+    private static final String EDGE_3 = "edge3";
     /*
      * Root
      *   |
@@ -27,15 +34,15 @@ public class TreesTest {
      *   |
      *   '--(edge2)--> Child2
      */
-    private final Tree<String, String> testTree =
+    private static final Tree<String, String> testTree =
             new Tree<>(
                     ValueGraphBuilder
                             .directed()
                             .<String, String>immutable()
                             // FK-TODO: extrahiere Konstanten für die Nodes und Values
-                            .putEdgeValue("Root", "Child1", "edge1")
-                            .putEdgeValue("Root", "Child2", "edge2")
-                            .putEdgeValue("Child1", "GrandChild1", "edge3")
+                            .putEdgeValue(ROOT, CHILD_1, EDGE_1)
+                            .putEdgeValue(ROOT, CHILD_2, EDGE_2)
+                            .putEdgeValue(CHILD_1, GRAND_CHILD_1, EDGE_3)
                             .build());
 
     @Test
@@ -44,12 +51,12 @@ public class TreesTest {
         final TreePath<String, String> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
-                        "GrandChild1");
+                        GRAND_CHILD_1);
 
         // Then
-        assertThat(path.nodes(), contains("Root", "Child1", "GrandChild1"));
-        assertThat(path.startNode(), is("Root"));
-        assertThat(path.endNode(), is("GrandChild1"));
+        assertThat(path.nodes(), contains(ROOT, CHILD_1, GRAND_CHILD_1));
+        assertThat(path.startNode(), is(ROOT));
+        assertThat(path.endNode(), is(GRAND_CHILD_1));
         assertThat(path.tree(), is(testTree));
         Matchers.assertIsSubset(path.nodes(), path.tree().graph().nodes());
     }
@@ -60,7 +67,7 @@ public class TreesTest {
         final TreePath<String, String> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
-                        "GrandChild1");
+                        GRAND_CHILD_1);
 
         // When
         final List<Edge<String, String>> edgesOnPath = Trees.getEdgesOnPath(path);
@@ -72,9 +79,9 @@ public class TreesTest {
                         .map(Edge::edgeValue)
                         .collect(Collectors.toList());
         assertThat(edgesOnPath.size(), is(2));
-        assertThat(edgeValues, contains("edge1", "edge3"));
-        assertThat(edgesOnPath.get(0).edge(), is(EndpointPair.ordered("Root", "Child1")));
-        assertThat(edgesOnPath.get(1).edge(), is(EndpointPair.ordered("Child1", "GrandChild1")));
+        assertThat(edgeValues, contains(EDGE_1, EDGE_3));
+        assertThat(edgesOnPath.get(0).edge(), is(EndpointPair.ordered(ROOT, CHILD_1)));
+        assertThat(edgesOnPath.get(1).edge(), is(EndpointPair.ordered(CHILD_1, GRAND_CHILD_1)));
     }
 
     @Test
@@ -83,7 +90,7 @@ public class TreesTest {
         final TreePath<String, String> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
-                        "Root");
+                        ROOT);
 
         // When
         final List<Edge<String, String>> edgesOnPath = Trees.getEdgesOnPath(path);
@@ -99,10 +106,10 @@ public class TreesTest {
         final TreePath<String, String> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
-                        "Root");
+                        ROOT);
 
         // Then
-        assertThat(path.nodes(), contains("Root"));
+        assertThat(path.nodes(), contains(ROOT));
     }
 
     @Test
@@ -111,10 +118,10 @@ public class TreesTest {
         final TreePath<String, String> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
-                        "Child1");
+                        CHILD_1);
 
         // Assert
-        assertThat(path.nodes(), contains("Root", "Child1"));
+        assertThat(path.nodes(), contains(ROOT, CHILD_1));
     }
 
     @Test(expected = IllegalArgumentException.class)
