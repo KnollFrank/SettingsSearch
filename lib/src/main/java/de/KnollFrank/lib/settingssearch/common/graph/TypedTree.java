@@ -23,7 +23,7 @@ public class TypedTree<N, V, G extends ValueGraph<N, V>> {
     }
 
     public N rootNode() {
-        return ValueGraphs.getRootNode(graph).orElseThrow();
+        return Graphs.getRootNode(graph).orElseThrow();
     }
 
     public Optional<N> parentNodeOf(final N node) {
@@ -34,14 +34,14 @@ public class TypedTree<N, V, G extends ValueGraph<N, V>> {
     }
 
     public Optional<EndpointPair<N>> incomingEdgeOf(final N node) {
-        return ValueGraphs
+        return Graphs
                 .getIncomingEdgesOfNode(graph, node)
                 .stream()
                 .collect(MoreCollectors.toOptional());
     }
 
     public Set<EndpointPair<N>> outgoingEdgesOf(final N node) {
-        return ValueGraphs.getOutgoingEdgesOfNode(graph, node);
+        return Graphs.getOutgoingEdgesOfNode(graph, node);
     }
 
     @Override

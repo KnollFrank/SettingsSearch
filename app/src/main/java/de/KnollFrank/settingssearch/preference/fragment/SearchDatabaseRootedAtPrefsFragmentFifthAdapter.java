@@ -67,7 +67,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                                 instantiateSearchablePreferenceScreen(
                                         prefsFragmentFifthPreferenceScreen,
                                         graph.tree(),
-                                        createGraphPathFactory(searchDatabaseConfig, activityContext),
+                                        createTreePathInstantiator(searchDatabaseConfig, activityContext),
                                         onUiThreadRunner),
                                 graph.locale(),
                                 activityContext,
@@ -114,8 +114,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 .endNode();
     }
 
-    private TreePathInstantiator createGraphPathFactory(final SearchDatabaseConfig searchDatabaseConfig,
-                                                        final FragmentActivity activityContext) {
+    private TreePathInstantiator createTreePathInstantiator(final SearchDatabaseConfig searchDatabaseConfig,
+                                                            final FragmentActivity activityContext) {
         return new TreePathInstantiator(
                 new PreferenceScreenWithHostProvider(
                         InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(

@@ -1,48 +1,69 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.collect.MoreCollectors;
-
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.BFSShortestPath;
+import com.google.common.graph.EndpointPair;
+import com.google.common.graph.MutableValueGraph;
+import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
 
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class Graphs {
 
-    public static <V> Optional<V> getRootNode(final Graph<V, ?> graph) {
+    public static <Node, Value> boolean isEmpty(final ValueGraph<Node, Value> graph) {
+        return graph.nodes().isEmpty();
+    }
+
+    public static <Node> Optional<Node> getRootNode(final ValueGraph<Node, ?> graph) {
         return Graphs
                 .getRootNodes(graph)
                 .stream()
                 .collect(MoreCollectors.toOptional());
     }
 
-    public static <V> Set<V> getRootNodes(final Graph<V, ?> graph) {
+    public static <Node> Set<Node> getRootNodes(final ValueGraph<Node, ?> graph) {
         return graph
-                .vertexSet()
+                .nodes()
                 .stream()
                 .filter(node -> isRootNode(graph, node))
                 .collect(Collectors.toSet());
     }
 
-    // FK-TODO: mit Hilfe von guava nachprogrammmieren
-    // FK-TODO: remove method
-    public static <V, E> GraphPath<V, E> getPathFromRootNodeToTarget(final Graph<V, E> graph, final V target) {
-        final V root = getRootNode(graph).orElseThrow();
-        return Optional
-                .ofNullable(BFSShortestPath.findPathBetween(graph, root, target))
-                .orElseThrow(() -> new IllegalStateException("No path found in graph from root '" + root + "' to target '" + target + "'"));
+    public static <N> Set<EndpointPair<N>> getIncomingEdgesOfNode(final ValueGraph<N, ?> graph,
+                                                                  final N node) {
+        final Predicate<EndpointPair<N>> isIncomingEdgeOfNode = edge -> edge.target().equals(node);
+        return Sets.filterElementsByPredicate(
+                graph.incidentEdges(node),
+                isIncomingEdgeOfNode);
     }
 
-    public static <V, E> Optional<E> getIncomingEdgeOfNode(final Graph<V, E> graph, final V node) {
-        return Sets.asOptional(graph.incomingEdgesOf(node));
+    public static <N> Set<EndpointPair<N>> getOutgoingEdgesOfNode(final ValueGraph<N, ?> graph,
+                                                                  final N node) {
+        final Predicate<EndpointPair<N>> isOutgoingEdgeOfNode = edge -> edge.source().equals(node);
+        return Sets.filterElementsByPredicate(
+                graph.incidentEdges(node),
+                isOutgoingEdgeOfNode);
     }
 
-    private static <V> boolean isRootNode(final Graph<V, ?> graph, final V node) {
-        return graph.inDegreeOf(node) == 0;
+    public static <N, V> MutableValueGraph<N, V> toMutableValueGraph(final ValueGraph<N, V> graph) {
+        final MutableValueGraph<N, V> mutableCopy = ValueGraphBuilder.from(graph).build();
+        graph.nodes().forEach(mutableCopy::addNode);
+        for (final EndpointPair<N> edge : graph.edges()) {
+            mutableCopy.putEdgeValue(
+                    edge.source(),
+                    edge.target(),
+                    graph.edgeValueOrDefault(edge, null));
+        }
+        return mutableCopy;
+    }
+
+    private static <Node> boolean isRootNode(final ValueGraph<Node, ?> graph, final Node node) {
+        return graph.inDegree(node) == 0;
     }
 }

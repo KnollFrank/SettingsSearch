@@ -5,13 +5,13 @@ import com.google.common.graph.EndpointPair;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.NodeReplacer;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeAtNode;
 import de.KnollFrank.lib.settingssearch.common.graph.TypedTree;
 import de.KnollFrank.lib.settingssearch.common.graph.TypedTreeAtNode;
-import de.KnollFrank.lib.settingssearch.common.graph.ValueGraphs;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
@@ -131,6 +131,6 @@ public class TreeMerger {
     }
 
     private static <N, V> TypedTree<N, V, MutableValueGraph<N, V>> toMutableTree(final Tree<N, V> tree) {
-        return new TypedTree<>(ValueGraphs.toMutableValueGraph(tree.graph()));
+        return new TypedTree<>(Graphs.toMutableValueGraph(tree.graph()));
     }
 }

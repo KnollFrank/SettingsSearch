@@ -4,7 +4,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.common.graph.ValueGraphs;
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 
 public class SearchablePreferenceScreenEntityTestFactory {
 
@@ -22,7 +22,7 @@ public class SearchablePreferenceScreenEntityTestFactory {
                                 data)
                         .entityGraphAndDbDataProvider();
         return new SearchablePreferenceScreenEntityAndDbDataProvider(
-                ValueGraphs
+                Graphs
                         .getRootNode(entityGraphAndDbDataProvider.asGraph().graph())
                         .orElseThrow(),
                 entityGraphAndDbDataProvider.dbDataProvider());

@@ -14,7 +14,7 @@ class TreeValidator {
         if (!graph.isDirected()) {
             return TreeValidatorResult.invalid("A Tree must be a directed graph.");
         }
-        if (ValueGraphs.isEmpty(graph)) {
+        if (Graphs.isEmpty(graph)) {
             return TreeValidatorResult.invalid("The graph must not be empty.");
         }
         {
@@ -31,7 +31,7 @@ class TreeValidator {
             }
         }
         {
-            final int rootCount = ValueGraphs.getRootNodes(graph).size();
+            final int rootCount = Graphs.getRootNodes(graph).size();
             if (rootCount != 1) {
                 return TreeValidatorResult.invalid("A Tree must have exactly one root node, but found: " + rootCount);
             }
@@ -69,6 +69,6 @@ class TreeValidator {
         return Iterables.size(
                 Traverser
                         .forGraph(graph)
-                        .depthFirstPreOrder(ValueGraphs.getRootNode(graph).orElseThrow()));
+                        .depthFirstPreOrder(Graphs.getRootNode(graph).orElseThrow()));
     }
 }
