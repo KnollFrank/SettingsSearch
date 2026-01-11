@@ -14,6 +14,6 @@ public class Tree<N, V> extends TypedTree<N, V, ValueGraph<N, V>> {
     }
 
     public TreePath<N, V> getPathFromRootNodeToTarget(final N target) {
-        return TreePaths.getPathFromRootNodeToTarget(this, target);
+        return Trees.getPathFromRootNodeToTarget(this, target);
     }
 }

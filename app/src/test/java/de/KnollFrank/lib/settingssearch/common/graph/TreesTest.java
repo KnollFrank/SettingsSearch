@@ -11,7 +11,7 @@ import org.junit.Test;
 import de.KnollFrank.lib.settingssearch.test.Matchers;
 
 @SuppressWarnings({"UnstableApiUsage"})
-public class TreePathsTest {
+public class TreesTest {
 
     /**
      * Root
@@ -33,7 +33,7 @@ public class TreePathsTest {
     public void shouldReturnCorrectPathToLeaf() {
         // When
         final TreePath<String, String> path =
-                TreePaths.getPathFromRootNodeToTarget(
+                Trees.getPathFromRootNodeToTarget(
                         testTree,
                         "GrandChild1");
 
@@ -49,7 +49,7 @@ public class TreePathsTest {
     public void shouldReturnSingleNodePathWhenTargetIsRootNode() {
         // When
         final TreePath<String, String> path =
-                TreePaths.getPathFromRootNodeToTarget(
+                Trees.getPathFromRootNodeToTarget(
                         testTree,
                         "Root");
 
@@ -61,7 +61,7 @@ public class TreePathsTest {
     public void shouldReturnPathToIntermediateNode() {
         // When
         final TreePath<String, String> path =
-                TreePaths.getPathFromRootNodeToTarget(
+                Trees.getPathFromRootNodeToTarget(
                         testTree,
                         "Child1");
 
@@ -72,6 +72,6 @@ public class TreePathsTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenNodeIsNotFound() {
         // When
-        TreePaths.getPathFromRootNodeToTarget(testTree, "UnknownNode");
+        Trees.getPathFromRootNodeToTarget(testTree, "UnknownNode");
     }
 }
