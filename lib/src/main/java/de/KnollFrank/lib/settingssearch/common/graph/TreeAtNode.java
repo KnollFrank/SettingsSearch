@@ -1,11 +1,16 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-@SuppressWarnings({"UnstableApiUsage"})
-public record TreeAtNode<V, E>(Tree<V, E> tree, V nodeOfTree) {
+import com.google.common.graph.ValueGraph;
 
-    public TreeAtNode {
-        if (!tree.graph().nodes().contains(nodeOfTree)) {
-            throw new IllegalArgumentException("tree '" + tree + "' must contain nodeOfTree '" + nodeOfTree + "'");
-        }
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+public class TreeAtNode<N, V> extends TypedTreeAtNode<N, V, ValueGraph<N, V>, Tree<N, V>> {
+
+    public TreeAtNode(final Tree<N, V> tree, final N nodeOfTree) {
+        super(tree, nodeOfTree);
+    }
+
+    @Override
+    public Tree<N, V> tree() {
+        return super.tree();
     }
 }
