@@ -19,7 +19,7 @@ public class TypedTree<N, V, G extends ValueGraph<N, V>> {
     }
 
     public G graph() {
-        return this.graph;
+        return graph;
     }
 
     public N rootNode() {
