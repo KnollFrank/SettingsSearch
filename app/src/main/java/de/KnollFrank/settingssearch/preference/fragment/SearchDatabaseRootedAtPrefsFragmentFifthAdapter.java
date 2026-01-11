@@ -1,13 +1,9 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createSearchablePreferenceScreenGraphConverter;
-
 import android.view.View;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
-
-import org.jgrapht.Graph;
 
 import java.util.Locale;
 
@@ -15,22 +11,21 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Views;
-import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
+import de.KnollFrank.lib.settingssearch.common.graph.Trees;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
-import de.KnollFrank.lib.settingssearch.graph.GraphPathFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
+import de.KnollFrank.lib.settingssearch.graph.TreePathFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
@@ -72,7 +67,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                         getPojoGraphRootedAt(
                                 instantiateSearchablePreferenceScreen(
                                         prefsFragmentFifthPreferenceScreen,
-                                        createSearchablePreferenceScreenGraphConverter().toJGraphT(graph.tree().graph()),
+                                        graph.tree(),
                                         createGraphPathFactory(searchDatabaseConfig, activityContext),
                                         onUiThreadRunner),
                                 graph.locale(),
@@ -111,18 +106,18 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
 
     private PreferenceScreenWithHost instantiateSearchablePreferenceScreen(
             final SearchablePreferenceScreen searchablePreferenceScreen,
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph,
-            final GraphPathFactory graphPathFactory,
+            final Tree<SearchablePreferenceScreen, SearchablePreference> graph,
+            final TreePathFactory treePathFactory,
             final OnUiThreadRunner onUiThreadRunner) {
-        final var graphPath = Graphs.getPathFromRootNodeToTarget(graph, searchablePreferenceScreen);
+        final var graphPath = Trees.getPathFromRootNodeToTarget(graph, searchablePreferenceScreen);
         return onUiThreadRunner
-                .runBlockingOnUiThread(() -> graphPathFactory.instantiate(graphPath))
-                .getEndVertex();
+                .runBlockingOnUiThread(() -> treePathFactory.instantiate(graphPath))
+                .endNode();
     }
 
-    private GraphPathFactory createGraphPathFactory(final SearchDatabaseConfig searchDatabaseConfig,
-                                                    final FragmentActivity activityContext) {
-        return new GraphPathFactory(
+    private TreePathFactory createGraphPathFactory(final SearchDatabaseConfig searchDatabaseConfig,
+                                                   final FragmentActivity activityContext) {
+        return new TreePathFactory(
                 new PreferenceScreenWithHostProvider(
                         InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                                 searchDatabaseConfig.fragmentFactory,

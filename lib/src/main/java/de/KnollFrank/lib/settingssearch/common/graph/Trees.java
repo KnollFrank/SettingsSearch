@@ -7,7 +7,7 @@ import java.util.Optional;
 @SuppressWarnings({"UnstableApiUsage"})
 public class Trees {
 
-    public static <N, V> TreePath<N, V> getPathFromRootToTarget(final Tree<N, V> tree, final N target) {
+    public static <N, V> TreePath<N, V> getPathFromRootNodeToTarget(final Tree<N, V> tree, final N target) {
         if (!tree.graph().nodes().contains(target)) {
             throw new IllegalArgumentException("Target node " + target + " is not part of the tree.");
         }

@@ -34,10 +34,10 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeAtNode;
+import de.KnollFrank.lib.settingssearch.common.graph.Trees;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
@@ -164,14 +164,12 @@ public class TreeMergerTest {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
         return PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
-                new GraphPathFactory(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
+                new TreePathFactory(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
                         .instantiate(
-                                Graphs.getPathFromRootNodeToTarget(
-                                        GraphConverterFactory
-                                                .createSearchablePreferenceScreenGraphConverter()
-                                                .toJGraphT(pojoGraph.graph()),
+                                Trees.getPathFromRootNodeToTarget(
+                                        pojoGraph,
                                         rootOfPartialPojoGraph))
-                        .getEndVertex(),
+                        .endNode(),
                 instantiateAndInitializeFragment,
                 new AddEdgeToGraphPredicate() {
 

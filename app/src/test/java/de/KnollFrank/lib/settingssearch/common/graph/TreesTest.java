@@ -8,6 +8,8 @@ import com.google.common.graph.ValueGraphBuilder;
 
 import org.junit.Test;
 
+import de.KnollFrank.lib.settingssearch.test.Matchers;
+
 @SuppressWarnings({"UnstableApiUsage"})
 public class TreesTest {
 
@@ -31,20 +33,23 @@ public class TreesTest {
     public void shouldReturnCorrectPathToLeaf() {
         // When
         final TreePath<String, String> path =
-                Trees.getPathFromRootToTarget(
+                Trees.getPathFromRootNodeToTarget(
                         testTree,
                         "GrandChild1");
 
         // Then
         assertThat(path.nodes(), contains("Root", "Child1", "GrandChild1"));
+        assertThat(path.startNode(), is("Root"));
+        assertThat(path.endNode(), is("GrandChild1"));
         assertThat(path.tree(), is(testTree));
+        Matchers.assertIsSubset(path.nodes(), path.tree().graph().nodes());
     }
 
     @Test
-    public void shouldReturnSingleNodePathWhenTargetIsRoot() {
+    public void shouldReturnSingleNodePathWhenTargetIsRootNode() {
         // When
         final TreePath<String, String> path =
-                Trees.getPathFromRootToTarget(
+                Trees.getPathFromRootNodeToTarget(
                         testTree,
                         "Root");
 
@@ -56,7 +61,7 @@ public class TreesTest {
     public void shouldReturnPathToIntermediateNode() {
         // When
         final TreePath<String, String> path =
-                Trees.getPathFromRootToTarget(
+                Trees.getPathFromRootNodeToTarget(
                         testTree,
                         "Child1");
 
@@ -67,6 +72,6 @@ public class TreesTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionWhenNodeIsNotFound() {
         // When
-        Trees.getPathFromRootToTarget(testTree, "UnknownNode");
+        Trees.getPathFromRootNodeToTarget(testTree, "UnknownNode");
     }
 }

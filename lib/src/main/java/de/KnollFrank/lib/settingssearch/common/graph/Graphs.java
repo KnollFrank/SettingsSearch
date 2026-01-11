@@ -30,6 +30,7 @@ public class Graphs {
     }
 
     // FK-TODO: mit Hilfe von guava nachprogrammmieren
+    // FK-TODO: remove method
     public static <V, E> GraphPath<V, E> getPathFromRootNodeToTarget(final Graph<V, E> graph, final V target) {
         final V root = getRootNode(graph).orElseThrow();
         return Optional

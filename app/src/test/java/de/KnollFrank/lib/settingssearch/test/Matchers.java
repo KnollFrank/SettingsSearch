@@ -1,5 +1,8 @@
 package de.KnollFrank.lib.settingssearch.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.isIn;
+
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -10,7 +13,9 @@ import androidx.test.espresso.matcher.BoundedMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class Matchers {
 
@@ -62,5 +67,14 @@ public class Matchers {
                 return holder;
             }
         };
+    }
+
+    public static <E> void assertIsSubset(final List<E> subset, final Set<E> superset) {
+        for (final E elementOfSubset : subset) {
+            assertThat(
+                    "Element '" + elementOfSubset + "' from subset should be in superset",
+                    elementOfSubset,
+                    isIn(superset));
+        }
     }
 }
