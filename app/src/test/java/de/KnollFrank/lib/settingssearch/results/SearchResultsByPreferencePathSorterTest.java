@@ -15,7 +15,7 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
@@ -53,10 +53,10 @@ public class SearchResultsByPreferencePathSorterTest {
                                 .build());
 
         // When
-        final SearchablePreferenceOfHostWithinGraph _defaultSpeedOfWalk = new SearchablePreferenceOfHostWithinGraph(defaultSpeedOfWalk, defaultSpeedOfWalkScreen, graph);
-        final SearchablePreferenceOfHostWithinGraph _defaultSpeed = new SearchablePreferenceOfHostWithinGraph(defaultSpeed, rootScreen, graph);
-        final SearchablePreferenceOfHostWithinGraph _defaultSpeedOfCar = new SearchablePreferenceOfHostWithinGraph(defaultSpeedOfCar, defaultSpeedOfCarScreen, graph);
-        final List<SearchablePreferenceOfHostWithinGraph> sortedSearchResults =
+        final SearchablePreferenceOfHostWithinTree _defaultSpeedOfWalk = new SearchablePreferenceOfHostWithinTree(defaultSpeedOfWalk, defaultSpeedOfWalkScreen, graph);
+        final SearchablePreferenceOfHostWithinTree _defaultSpeed = new SearchablePreferenceOfHostWithinTree(defaultSpeed, rootScreen, graph);
+        final SearchablePreferenceOfHostWithinTree _defaultSpeedOfCar = new SearchablePreferenceOfHostWithinTree(defaultSpeedOfCar, defaultSpeedOfCarScreen, graph);
+        final List<SearchablePreferenceOfHostWithinTree> sortedSearchResults =
                 searchResultsSorter.sort(
                         Set.of(
                                 _defaultSpeedOfWalk,

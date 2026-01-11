@@ -42,9 +42,9 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinTree;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
@@ -142,22 +142,22 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                                         result.preferenceScreenWithHost());
 
                 // Then
-                final Set<SearchablePreferenceScreenWithinGraph> searchablePreferenceScreens =
+                final Set<SearchablePreferenceScreenWithinTree> searchablePreferenceScreens =
                         pojoGraph
                                 .graph()
                                 .nodes()
                                 .stream()
                                 .map(searchablePreferenceScreen ->
-                                             new SearchablePreferenceScreenWithinGraph(
+                                             new SearchablePreferenceScreenWithinTree(
                                                      searchablePreferenceScreen,
                                                      pojoGraph))
                                 .collect(Collectors.toSet());
-                final SearchablePreferenceOfHostWithinGraph preferenceOfFragment2PointingToFragment3 =
+                final SearchablePreferenceOfHostWithinTree preferenceOfFragment2PointingToFragment3 =
                         getPreference(
                                 Fragment2ConnectedToFragment3ConnectedToFragment4.class,
                                 Fragment3ConnectedToFragment4.class,
                                 searchablePreferenceScreens);
-                final SearchablePreferenceOfHostWithinGraph preferenceOfFragment1PointingToFragment2 =
+                final SearchablePreferenceOfHostWithinTree preferenceOfFragment1PointingToFragment2 =
                         getPreference(
                                 Fragment1ConnectedToFragment2AndFragment4.class,
                                 Fragment2ConnectedToFragment3ConnectedToFragment4.class,
@@ -200,10 +200,10 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 Locale.GERMAN);
     }
 
-    private SearchablePreferenceOfHostWithinGraph getPreference(
+    private SearchablePreferenceOfHostWithinTree getPreference(
             final Class<? extends PreferenceFragmentCompat> hostOfPreference,
             final Class<? extends PreferenceFragmentCompat> fragmentPointedTo,
-            final Set<SearchablePreferenceScreenWithinGraph> preferenceScreenWithHostSet) {
+            final Set<SearchablePreferenceScreenWithinTree> preferenceScreenWithHostSet) {
         return getPreference(
                 preferenceScreenWithHostSet,
                 searchablePreferenceWithinGraph ->
@@ -211,14 +211,14 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                                 searchablePreferenceWithinGraph.searchablePreference().getFragment().equals(Optional.of(fragmentPointedTo.getName())));
     }
 
-    private SearchablePreferenceOfHostWithinGraph getPreference(
-            final Set<SearchablePreferenceScreenWithinGraph> searchablePreferenceScreens,
-            final Predicate<SearchablePreferenceOfHostWithinGraph> predicate) {
+    private SearchablePreferenceOfHostWithinTree getPreference(
+            final Set<SearchablePreferenceScreenWithinTree> searchablePreferenceScreens,
+            final Predicate<SearchablePreferenceOfHostWithinTree> predicate) {
         return searchablePreferenceScreens
                 .stream()
                 .flatMap(
-                        searchablePreferenceScreenWithinGraph ->
-                                searchablePreferenceScreenWithinGraph
+                        searchablePreferenceScreenWithinTree ->
+                                searchablePreferenceScreenWithinTree
                                         .getAllPreferencesOfPreferenceHierarchy()
                                         .stream()
                                         .filter(predicate))

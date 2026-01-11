@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
 public class PreferenceMatcher {
 
@@ -14,7 +14,7 @@ public class PreferenceMatcher {
         this.stringMatcher = stringMatcher;
     }
 
-    public Optional<PreferenceMatch> getPreferenceMatch(final SearchablePreferenceOfHostWithinGraph haystack,
+    public Optional<PreferenceMatch> getPreferenceMatch(final SearchablePreferenceOfHostWithinTree haystack,
                                                         final String needle) {
         final Set<IndexRange> titleMatches = getMatches(haystack.searchablePreference().getTitle(), needle);
         final Set<IndexRange> summaryMatches = getMatches(haystack.searchablePreference().getSummary(), needle);

@@ -54,7 +54,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
@@ -141,7 +141,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new SearchResultsFilter() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinGraph preference) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference) {
                         return keyOfPreferenceToIncludeInSearchResults.equals(preference.searchablePreference().getKey()) &&
                                 preferenceFragment.getClass().equals(preference.hostOfPreference().host());
                     }
@@ -177,7 +177,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new SearchResultsFilter() {
 
                     @Override
-                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinGraph preference) {
+                    public boolean includePreferenceInSearchResults(final SearchablePreferenceOfHostWithinTree preference) {
                         return !(keyOfPreferenceToExcludeFromSearchResults.equals(preference.searchablePreference().getKey()) && preferenceFragment.getClass().equals(preference.hostOfPreference().host()));
                     }
                 },

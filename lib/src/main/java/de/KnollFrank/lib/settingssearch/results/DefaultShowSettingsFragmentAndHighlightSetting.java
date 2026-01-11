@@ -11,7 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
 public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSettingsFragmentAndHighlightSetting {
 
@@ -24,7 +24,7 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
     @Override
     public void showSettingsFragmentAndHighlightSetting(final FragmentActivity activity,
                                                         final Fragment settingsFragment,
-                                                        final SearchablePreferenceOfHostWithinGraph setting2Highlight) {
+                                                        final SearchablePreferenceOfHostWithinTree setting2Highlight) {
         showFragment(
                 settingsFragment,
                 _settingsFragment -> highlightSetting(_settingsFragment, asSetting(setting2Highlight)),
@@ -42,7 +42,7 @@ public class DefaultShowSettingsFragmentAndHighlightSetting implements ShowSetti
         }
     }
 
-    private static Setting asSetting(final SearchablePreferenceOfHostWithinGraph preference) {
+    private static Setting asSetting(final SearchablePreferenceOfHostWithinTree preference) {
         return new Setting() {
 
             @Override

@@ -10,34 +10,34 @@ import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
 
-public record SearchablePreferenceScreenWithinGraph(
+public record SearchablePreferenceScreenWithinTree(
         SearchablePreferenceScreen searchablePreferenceScreen,
-        Tree<SearchablePreferenceScreen, SearchablePreference> graphContainingScreen) {
+        Tree<SearchablePreferenceScreen, SearchablePreference> treeContainingScreen) {
 
     public GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> getGraphPath() {
         return Graphs.getPathFromRootNodeToTarget(
                 GraphConverterFactory
                         .createSearchablePreferenceScreenGraphConverter()
-                        .toJGraphT(graphContainingScreen.graph()),
+                        .toJGraphT(treeContainingScreen.graph()),
                 searchablePreferenceScreen);
     }
 
-    public Set<SearchablePreferenceOfHostWithinGraph> getAllPreferencesOfPreferenceHierarchy() {
+    public Set<SearchablePreferenceOfHostWithinTree> getAllPreferencesOfPreferenceHierarchy() {
         return searchablePreferenceScreen
                 .allPreferencesOfPreferenceHierarchy()
                 .stream()
                 .map(searchablePreference ->
-                             new SearchablePreferenceOfHostWithinGraph(
+                             new SearchablePreferenceOfHostWithinTree(
                                      searchablePreference,
                                      searchablePreferenceScreen,
-                                     graphContainingScreen))
+                                     treeContainingScreen))
                 .collect(Collectors.toSet());
     }
 
     @Override
     public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreferenceScreenWithinGraph that = (SearchablePreferenceScreenWithinGraph) o;
+        final SearchablePreferenceScreenWithinTree that = (SearchablePreferenceScreenWithinTree) o;
         return Objects.equals(searchablePreferenceScreen, that.searchablePreferenceScreen);
     }
 

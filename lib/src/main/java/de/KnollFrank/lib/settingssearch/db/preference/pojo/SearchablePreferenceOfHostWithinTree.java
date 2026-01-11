@@ -6,7 +6,7 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferencePathProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
-public record SearchablePreferenceOfHostWithinGraph(
+public record SearchablePreferenceOfHostWithinTree(
         SearchablePreference searchablePreference,
         SearchablePreferenceScreen hostOfPreference,
         Tree<SearchablePreferenceScreen, SearchablePreference> treeContainingPreference) {
@@ -18,7 +18,7 @@ public record SearchablePreferenceOfHostWithinGraph(
     @Override
     public boolean equals(final Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        final SearchablePreferenceOfHostWithinGraph that = (SearchablePreferenceOfHostWithinGraph) o;
+        final SearchablePreferenceOfHostWithinTree that = (SearchablePreferenceOfHostWithinTree) o;
         return Objects.equals(searchablePreference, that.searchablePreference);
     }
 

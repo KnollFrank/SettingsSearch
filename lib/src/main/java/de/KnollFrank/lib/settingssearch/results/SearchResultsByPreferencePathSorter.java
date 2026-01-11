@@ -8,21 +8,21 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
 public class SearchResultsByPreferencePathSorter implements SearchResultsSorter {
 
     @Override
-    public List<SearchablePreferenceOfHostWithinGraph> sort(final Collection<SearchablePreferenceOfHostWithinGraph> searchResults) {
+    public List<SearchablePreferenceOfHostWithinTree> sort(final Collection<SearchablePreferenceOfHostWithinTree> searchResults) {
         return searchResults
                 .stream()
                 .sorted(getPreferenceByPreferencePathComparator())
                 .collect(Collectors.toList());
     }
 
-    private Comparator<SearchablePreferenceOfHostWithinGraph> getPreferenceByPreferencePathComparator() {
+    private Comparator<SearchablePreferenceOfHostWithinTree> getPreferenceByPreferencePathComparator() {
         return Comparator.comparing(
-                SearchablePreferenceOfHostWithinGraph::getPreferencePath,
+                SearchablePreferenceOfHostWithinTree::getPreferencePath,
                 getPreferencePathComparator());
     }
 

@@ -7,9 +7,9 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 @SuppressWarnings({"UnstableApiUsage"})
 public class SearchablePreferenceWithinGraphTestFactory {
 
-    public static SearchablePreferenceOfHostWithinGraph createSearchablePreferenceWithinGraph(final SearchablePreference preference) {
+    public static SearchablePreferenceOfHostWithinTree createSearchablePreferenceWithinGraph(final SearchablePreference preference) {
         final SearchablePreferenceScreen screen = createScreen(preference);
-        return new SearchablePreferenceOfHostWithinGraph(
+        return new SearchablePreferenceOfHostWithinTree(
                 preference,
                 screen,
                 new Tree<>(

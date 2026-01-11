@@ -30,20 +30,20 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.provider.ShowPreferencePathPredicate;
 import de.KnollFrank.lib.settingssearch.results.adapter.ClickListenerSetter;
 
 // adapted from androidx.preference.PreferenceGroupAdapter
 public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<PreferenceViewHolder> {
 
-    private final List<SearchablePreferenceOfHostWithinGraph> items = new ArrayList<>();
-    private final Consumer<SearchablePreferenceOfHostWithinGraph> onPreferenceClickListener;
+    private final List<SearchablePreferenceOfHostWithinTree> items = new ArrayList<>();
+    private final Consumer<SearchablePreferenceOfHostWithinTree> onPreferenceClickListener;
     private final ShowPreferencePathPredicate showPreferencePathPredicate;
     private final PreferencePathDisplayer preferencePathDisplayer;
     private final List<ItemResourceDescriptor> itemResourceDescriptors = new ArrayList<>();
 
-    public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreferenceOfHostWithinGraph> onPreferenceClickListener,
+    public SearchResultsRecyclerViewAdapter(final Consumer<SearchablePreferenceOfHostWithinTree> onPreferenceClickListener,
                                             final ShowPreferencePathPredicate showPreferencePathPredicate,
                                             final PreferencePathDisplayer preferencePathDisplayer) {
         this.onPreferenceClickListener = onPreferenceClickListener;
@@ -72,7 +72,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         return items.size();
     }
 
-    public void setItems(final List<SearchablePreferenceOfHostWithinGraph> items) {
+    public void setItems(final List<SearchablePreferenceOfHostWithinTree> items) {
         final DiffResult diffResult = DiffUtil.calculateDiff(getDiffUtilCallback(this.items, items));
         {
             this.items.clear();
@@ -81,14 +81,14 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
         diffResult.dispatchUpdatesTo(this);
     }
 
-    private SearchablePreferenceOfHostWithinGraph getItem(final int position) {
+    private SearchablePreferenceOfHostWithinTree getItem(final int position) {
         return items.get(position);
     }
 
     private record ItemResourceDescriptor(@LayoutRes int layoutResId,
                                           @LayoutRes int widgetLayoutResId) {
 
-        public static ItemResourceDescriptor from(final SearchablePreferenceOfHostWithinGraph searchablePreference) {
+        public static ItemResourceDescriptor from(final SearchablePreferenceOfHostWithinTree searchablePreference) {
             return new ItemResourceDescriptor(
                     searchablePreference.searchablePreference().getLayoutResId(),
                     searchablePreference.searchablePreference().getWidgetLayoutResId());
@@ -151,7 +151,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     }
 
     private void onBindViewHolder(final PreferenceViewHolder viewHolder,
-                                  final SearchablePreferenceOfHostWithinGraph searchablePreference) {
+                                  final SearchablePreferenceOfHostWithinTree searchablePreference) {
         viewHolder.resetState();
         viewHolder.itemView.setClickable(true);
         viewHolder.itemView.setOnClickListener(view -> onPreferenceClickListener.accept(searchablePreference));
@@ -165,28 +165,28 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     }
 
     private static void displayTitle(final PreferenceViewHolder holder,
-                                     final SearchablePreferenceOfHostWithinGraph searchablePreference) {
+                                     final SearchablePreferenceOfHostWithinTree searchablePreference) {
         setOptionalTextOnOptionalTextView(
                 holder.findViewById(android.R.id.title),
                 searchablePreference.searchablePreference().getHighlightedTitle());
     }
 
     private static void displaySummary(final PreferenceViewHolder holder,
-                                       final SearchablePreferenceOfHostWithinGraph searchablePreference) {
+                                       final SearchablePreferenceOfHostWithinTree searchablePreference) {
         setOptionalTextOnOptionalTextView(
                 holder.findViewById(android.R.id.summary),
                 searchablePreference.searchablePreference().getHighlightedSummary());
     }
 
     private static void displaySearchableInfo(final PreferenceViewHolder holder,
-                                              final SearchablePreferenceOfHostWithinGraph searchablePreference) {
+                                              final SearchablePreferenceOfHostWithinTree searchablePreference) {
         setOptionalTextOnOptionalTextView(
                 getSearchableInfoView(holder),
                 searchablePreference.searchablePreference().getHighlightedSearchableInfo());
     }
 
     private void displayPreferencePath(final PreferenceViewHolder holder,
-                                       final SearchablePreferenceOfHostWithinGraph searchablePreference) {
+                                       final SearchablePreferenceOfHostWithinTree searchablePreference) {
         final PreferencePath preferencePath = searchablePreference.getPreferencePath();
         PreferencePathView.displayPreferencePath(
                 getPreferencePathView(holder),
@@ -196,7 +196,7 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     }
 
     private static void displayIcon(final PreferenceViewHolder holder,
-                                    final SearchablePreferenceOfHostWithinGraph searchablePreference,
+                                    final SearchablePreferenceOfHostWithinTree searchablePreference,
                                     final boolean iconSpaceReserved) {
         final Optional<Drawable> icon = searchablePreference.searchablePreference().getIcon(holder.itemView.getContext());
         holder
@@ -250,8 +250,8 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Prefe
     }
 
     private static DiffUtil.Callback getDiffUtilCallback(
-            final List<SearchablePreferenceOfHostWithinGraph> oldItems,
-            final List<SearchablePreferenceOfHostWithinGraph> newItems) {
+            final List<SearchablePreferenceOfHostWithinTree> oldItems,
+            final List<SearchablePreferenceOfHostWithinTree> newItems) {
         return new DiffUtil.Callback() {
 
             @Override

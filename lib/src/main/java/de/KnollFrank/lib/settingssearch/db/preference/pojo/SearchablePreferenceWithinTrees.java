@@ -5,18 +5,18 @@ import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
 
-public class SearchablePreferenceWithinGraphs {
+public class SearchablePreferenceWithinTrees {
 
-    public static Optional<SearchablePreferenceOfHostWithinGraph> findPreferenceByKey(
-            final Set<SearchablePreferenceOfHostWithinGraph> preferences,
+    public static Optional<SearchablePreferenceOfHostWithinTree> findPreferenceByKey(
+            final Set<SearchablePreferenceOfHostWithinTree> preferences,
             final String key) {
         return Sets.findElementByPredicate(
                 preferences,
                 preference -> preference.searchablePreference().getKey().equals(key));
     }
 
-    public static Optional<SearchablePreferenceOfHostWithinGraph> findPreferenceById(
-            final Set<SearchablePreferenceOfHostWithinGraph> preferences,
+    public static Optional<SearchablePreferenceOfHostWithinTree> findPreferenceById(
+            final Set<SearchablePreferenceOfHostWithinTree> preferences,
             final String id) {
         return Sets.findElementByPredicate(
                 preferences,

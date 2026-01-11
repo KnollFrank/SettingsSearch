@@ -6,36 +6,36 @@ import java.util.function.Function;
 
 import de.KnollFrank.lib.settingssearch.common.compare.ComparatorFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
 class SearchablePreferenceComparatorFactory {
 
-    public static Comparator<SearchablePreferenceOfHostWithinGraph> lexicographicalComparator() {
+    public static Comparator<SearchablePreferenceOfHostWithinTree> lexicographicalComparator() {
         return SearchablePreferenceComparatorFactory
                 .title()
                 .thenComparing(summary())
                 .thenComparing(searchableInfo());
     }
 
-    private static Comparator<SearchablePreferenceOfHostWithinGraph> title() {
+    private static Comparator<SearchablePreferenceOfHostWithinTree> title() {
         return comparing(SearchablePreference::getTitle);
     }
 
-    private static Comparator<SearchablePreferenceOfHostWithinGraph> summary() {
+    private static Comparator<SearchablePreferenceOfHostWithinTree> summary() {
         return comparing(SearchablePreference::getSummary);
     }
 
-    private static Comparator<SearchablePreferenceOfHostWithinGraph> searchableInfo() {
+    private static Comparator<SearchablePreferenceOfHostWithinTree> searchableInfo() {
         return comparing(SearchablePreference::getSearchableInfo);
     }
 
-    private static Comparator<SearchablePreferenceOfHostWithinGraph> comparing(final Function<SearchablePreference, Optional<String>> keyExtractor) {
+    private static Comparator<SearchablePreferenceOfHostWithinTree> comparing(final Function<SearchablePreference, Optional<String>> keyExtractor) {
         return Comparator.comparing(
                 getSearchablePreference().andThen(keyExtractor),
                 ComparatorFactory.emptiesLast(String.CASE_INSENSITIVE_ORDER));
     }
 
-    private static Function<SearchablePreferenceOfHostWithinGraph, SearchablePreference> getSearchablePreference() {
-        return SearchablePreferenceOfHostWithinGraph::searchablePreference;
+    private static Function<SearchablePreferenceOfHostWithinTree, SearchablePreference> getSearchablePreference() {
+        return SearchablePreferenceOfHostWithinTree::searchablePreference;
     }
 }

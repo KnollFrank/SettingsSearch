@@ -7,28 +7,28 @@ import java.util.List;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 
-public record PreferencePath(List<SearchablePreferenceOfHostWithinGraph> preferences) {
+public record PreferencePath(List<SearchablePreferenceOfHostWithinTree> preferences) {
 
     public PreferencePath {
         Preconditions.checkArgument(!preferences.isEmpty());
     }
 
-    public SearchablePreferenceOfHostWithinGraph getStart() {
+    public SearchablePreferenceOfHostWithinTree getStart() {
         return Lists
                 .getHead(preferences)
                 .orElseThrow();
     }
 
-    public SearchablePreferenceOfHostWithinGraph getEnd() {
+    public SearchablePreferenceOfHostWithinTree getEnd() {
         return Lists
                 .getLastElement(preferences)
                 .orElseThrow();
     }
 
     public Optional<PreferencePath> getTail() {
-        final List<SearchablePreferenceOfHostWithinGraph> tailOfPreferences =
+        final List<SearchablePreferenceOfHostWithinTree> tailOfPreferences =
                 Lists
                         .getTail(preferences)
                         .orElseThrow();
@@ -37,10 +37,10 @@ public record PreferencePath(List<SearchablePreferenceOfHostWithinGraph> prefere
                 Optional.of(new PreferencePath(tailOfPreferences));
     }
 
-    public PreferencePath append(final SearchablePreferenceOfHostWithinGraph preference) {
+    public PreferencePath append(final SearchablePreferenceOfHostWithinTree preference) {
         return new PreferencePath(
                 ImmutableList
-                        .<SearchablePreferenceOfHostWithinGraph>builder()
+                        .<SearchablePreferenceOfHostWithinTree>builder()
                         .addAll(preferences)
                         .add(preference)
                         .build());

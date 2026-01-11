@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphs;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 
 class PreferencePathFactory {
@@ -29,16 +29,16 @@ class PreferencePathFactory {
     }
 
     private static PreferencePath createPreferencePath(final PreferencePathData preferencePathData,
-                                                       final Set<SearchablePreferenceOfHostWithinGraph> haystack) {
+                                                       final Set<SearchablePreferenceOfHostWithinTree> haystack) {
         return new PreferencePath(
                 asSearchablePreferences(
                         preferencePathData.preferenceIds(),
                         haystack));
     }
 
-    private static List<SearchablePreferenceOfHostWithinGraph> asSearchablePreferences(
+    private static List<SearchablePreferenceOfHostWithinTree> asSearchablePreferences(
             final List<String> preferenceIds,
-            final Set<SearchablePreferenceOfHostWithinGraph> haystack) {
+            final Set<SearchablePreferenceOfHostWithinTree> haystack) {
         return preferenceIds
                 .stream()
                 .map(preferenceId -> asSearchablePreference(preferenceId, haystack))
@@ -46,10 +46,10 @@ class PreferencePathFactory {
     }
 
 
-    private static SearchablePreferenceOfHostWithinGraph asSearchablePreference(
+    private static SearchablePreferenceOfHostWithinTree asSearchablePreference(
             final String id,
-            final Set<SearchablePreferenceOfHostWithinGraph> haystack) {
-        return SearchablePreferenceWithinGraphs
+            final Set<SearchablePreferenceOfHostWithinTree> haystack) {
+        return SearchablePreferenceWithinTrees
                 .findPreferenceById(haystack, id)
                 .orElseThrow();
     }

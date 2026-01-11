@@ -24,10 +24,10 @@ import de.KnollFrank.lib.settingssearch.common.Locales;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinGraphs;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.Configuration;
@@ -120,8 +120,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().convertForward(configuration));
                     }
 
-                    private SearchablePreferenceOfHostWithinGraph getSummaryChangingPreference(final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph) {
-                        return SearchablePreferenceWithinGraphs
+                    private SearchablePreferenceOfHostWithinTree getSummaryChangingPreference(final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph) {
+                        return SearchablePreferenceWithinTrees
                                 .findPreferenceByKey(
                                         PojoGraphs.getPreferences(pojoGraph),
                                         SUMMARY_CHANGING_PREFERENCE_KEY)
@@ -129,7 +129,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private void setSummaryOfPreferences(final Preference preference,
-                                                         final SearchablePreferenceOfHostWithinGraph searchablePreference,
+                                                         final SearchablePreferenceOfHostWithinTree searchablePreference,
                                                          final String summary) {
                         preference.setSummary(summary);
                         searchablePreference.searchablePreference().setSummary(Optional.of(summary));

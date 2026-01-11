@@ -16,7 +16,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.Bundles;
 import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 
 class ContinueNavigationInActivity {
@@ -94,7 +94,7 @@ class ContinueNavigationInActivity {
                         preferencePath
                                 .preferences()
                                 .stream()
-                                .map(SearchablePreferenceOfHostWithinGraph::searchablePreference)
+                                .map(SearchablePreferenceOfHostWithinTree::searchablePreference)
                                 .map(SearchablePreference::getId)
                                 .collect(Collectors.toList())));
     }

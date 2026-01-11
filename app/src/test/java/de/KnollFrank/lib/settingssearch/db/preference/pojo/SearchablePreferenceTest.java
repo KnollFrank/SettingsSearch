@@ -32,8 +32,8 @@ public class SearchablePreferenceTest extends PreferencesRoomDatabaseTest {
                                 .createGraphBuilder()
                                 .putEdgeValue(predecessorScreen, parentScreen, predecessor)
                                 .build());
-        final SearchablePreferenceOfHostWithinGraph _predecessor = new SearchablePreferenceOfHostWithinGraph(predecessor, predecessorScreen, tree);
-        final SearchablePreferenceOfHostWithinGraph _parent = new SearchablePreferenceOfHostWithinGraph(parent, parentScreen, tree);
+        final SearchablePreferenceOfHostWithinTree _predecessor = new SearchablePreferenceOfHostWithinTree(predecessor, predecessorScreen, tree);
+        final SearchablePreferenceOfHostWithinTree _parent = new SearchablePreferenceOfHostWithinTree(parent, parentScreen, tree);
 
         // When
         final PreferencePath preferencePath = _parent.getPreferencePath();
