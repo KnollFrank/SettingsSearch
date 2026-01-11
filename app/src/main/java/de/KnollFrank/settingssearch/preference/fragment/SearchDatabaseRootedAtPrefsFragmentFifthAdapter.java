@@ -14,7 +14,6 @@ import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
 import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.common.graph.Trees;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
@@ -106,12 +105,12 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
 
     private PreferenceScreenWithHost instantiateSearchablePreferenceScreen(
             final SearchablePreferenceScreen searchablePreferenceScreen,
-            final Tree<SearchablePreferenceScreen, SearchablePreference> graph,
+            final Tree<SearchablePreferenceScreen, SearchablePreference> tree,
             final TreePathFactory treePathFactory,
             final OnUiThreadRunner onUiThreadRunner) {
-        final var graphPath = Trees.getPathFromRootNodeToTarget(graph, searchablePreferenceScreen);
+        final var treePath = tree.getPathFromRootNodeToTarget(searchablePreferenceScreen);
         return onUiThreadRunner
-                .runBlockingOnUiThread(() -> treePathFactory.instantiate(graphPath))
+                .runBlockingOnUiThread(() -> treePathFactory.instantiate(treePath))
                 .endNode();
     }
 
