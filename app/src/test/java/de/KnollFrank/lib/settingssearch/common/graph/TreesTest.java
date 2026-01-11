@@ -39,7 +39,6 @@ public class TreesTest {
                     ValueGraphBuilder
                             .directed()
                             .<String, String>immutable()
-                            // FK-TODO: extrahiere Konstanten für die Nodes und Values
                             .putEdgeValue(ROOT, CHILD_1, EDGE_1)
                             .putEdgeValue(ROOT, CHILD_2, EDGE_2)
                             .putEdgeValue(CHILD_1, GRAND_CHILD_1, EDGE_3)
