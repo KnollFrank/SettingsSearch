@@ -48,11 +48,11 @@ public class TreePathInstantiatorTest {
                         new TreePath<>(pojoGraphSingleNode, List.of(searchablePreferenceScreen));
 
                 // When
-                final TreePath<PreferenceScreenWithHost, Preference> graphPathInstantiated = treePathInstantiator.instantiate(treePath);
+                final TreePath<PreferenceScreenWithHost, Preference> treePathInstantiated = treePathInstantiator.instantiate(treePath);
 
                 // Then
-                assertSameSize(graphPathInstantiated, treePath);
-                assertThat(graphPathInstantiated.endNode().host(), is(instanceOf(searchablePreferenceScreen.host())));
+                assertSameSize(treePathInstantiated, treePath);
+                assertThat(treePathInstantiated.endNode().host(), is(instanceOf(searchablePreferenceScreen.host())));
             });
         }
     }
@@ -66,18 +66,18 @@ public class TreePathInstantiatorTest {
                 final Tree<SearchablePreferenceScreen, SearchablePreference> graphTwoNodes = createSomePojoGraph(fragmentActivity, Fragment3ConnectedToFragment4.class);
                 final SearchablePreferenceScreen thirdScreen = getPreferenceScreenByTitle(graphTwoNodes.graph().nodes(), "third screen");
                 final SearchablePreferenceScreen fourthScreen = getPreferenceScreenByTitle(graphTwoNodes.graph().nodes(), "fourth screen");
-                final TreePath<SearchablePreferenceScreen, SearchablePreference> graphPath =
+                final TreePath<SearchablePreferenceScreen, SearchablePreference> treePath =
                         new TreePath<>(
                                 graphTwoNodes,
                                 List.of(thirdScreen, fourthScreen));
 
                 // When
-                final TreePath<PreferenceScreenWithHost, Preference> graphPathInstantiated = treePathInstantiator.instantiate(graphPath);
+                final TreePath<PreferenceScreenWithHost, Preference> treePathInstantiated = treePathInstantiator.instantiate(treePath);
 
                 // Then
-                assertSameSize(graphPathInstantiated, graphPath);
-                assertThat(graphPathInstantiated.startNode().host(), is(instanceOf(thirdScreen.host())));
-                assertThat(graphPathInstantiated.endNode().host(), is(instanceOf(fourthScreen.host())));
+                assertSameSize(treePathInstantiated, treePath);
+                assertThat(treePathInstantiated.startNode().host(), is(instanceOf(thirdScreen.host())));
+                assertThat(treePathInstantiated.endNode().host(), is(instanceOf(fourthScreen.host())));
             });
         }
     }
