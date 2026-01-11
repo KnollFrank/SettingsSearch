@@ -27,12 +27,18 @@ public class Trees {
     public static <N, V> List<Edge<N, V>> getEdgesOnPath(final TreePath<N, V> path) {
         final List<N> nodes = path.nodes();
         final ValueGraph<N, V> graph = path.tree().graph();
-        return IntStream
-                .range(0, nodes.size() - 1)
-                .mapToObj(index -> Pair.create(index, index + 1))
-                .map(integerIntegerPair -> Pair.create(nodes.get(integerIntegerPair.first), nodes.get(integerIntegerPair.second)))
-                .map(nnPair -> EndpointPair.ordered(nnPair.first, nnPair.second))
+        return getConsecutivePairs(nodes)
+                .stream()
+                .map(consecutiveNodePair -> EndpointPair.ordered(consecutiveNodePair.first, consecutiveNodePair.second))
                 .map(endpointPair -> new Edge<>(endpointPair, graph.edgeValueOrDefault(endpointPair, null)))
+                .toList();
+    }
+
+    private static <N> List<Pair<N, N>> getConsecutivePairs(final List<N> elements) {
+        return IntStream
+                .range(0, elements.size() - 1)
+                .mapToObj(index -> Pair.create(index, index + 1))
+                .map(consecutiveIndexPair -> Pair.create(elements.get(consecutiveIndexPair.first), elements.get(consecutiveIndexPair.second)))
                 .toList();
     }
 }
