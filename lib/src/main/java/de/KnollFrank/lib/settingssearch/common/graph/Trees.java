@@ -1,12 +1,14 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import androidx.core.util.Pair;
+
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ValueGraph;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class Trees {
@@ -24,18 +26,13 @@ public class Trees {
 
     public static <N, V> List<Edge<N, V>> getEdgesOnPath(final TreePath<N, V> path) {
         final List<N> nodes = path.nodes();
-        if (nodes.size() <= 1) {
-            return List.of();
-        }
         final ValueGraph<N, V> graph = path.tree().graph();
-        final List<Edge<N, V>> edges = new ArrayList<>();
-        for (int i = 0; i < nodes.size() - 1; i++) {
-            final N source = nodes.get(i);
-            final N target = nodes.get(i + 1);
-            final EndpointPair<N> endpointPair = EndpointPair.ordered(source, target);
-            final V edgeValue = graph.edgeValueOrDefault(source, target, null);
-            edges.add(new Edge<>(endpointPair, edgeValue));
-        }
-        return List.copyOf(edges);
+        return IntStream
+                .range(0, nodes.size() - 1)
+                .mapToObj(index -> Pair.create(index, index + 1))
+                .map(integerIntegerPair -> Pair.create(nodes.get(integerIntegerPair.first), nodes.get(integerIntegerPair.second)))
+                .map(nnPair -> EndpointPair.ordered(nnPair.first, nnPair.second))
+                .map(endpointPair -> new Edge<>(endpointPair, graph.edgeValueOrDefault(endpointPair, null)))
+                .toList();
     }
 }
