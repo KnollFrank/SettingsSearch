@@ -1,12 +1,8 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
-
 import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
-
-import org.jgrapht.Graph;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -20,7 +16,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2Searc
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
@@ -73,15 +69,15 @@ public class MergedPreferenceScreenDataRepository<C> {
                 progressUpdateListener.onProgressUpdate("persisting search database");
                 graphRepository.persistOrReplace(
                         new SearchablePreferenceScreenGraph(
-                                new Tree<>(createGraphConverter().toGuava(searchablePreferenceScreenGraph)),
+                                searchablePreferenceScreenGraph,
                                 locale,
                                 configuration));
             }
         }
     }
 
-    private Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> computeSearchablePreferenceScreenGraph() {
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> searchablePreferenceScreenGraph =
+    private Tree<SearchablePreferenceScreen, SearchablePreference> computeSearchablePreferenceScreenGraph() {
+        final Tree<SearchablePreferenceScreen, SearchablePreference> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenGraph(

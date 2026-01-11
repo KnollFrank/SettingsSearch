@@ -1,144 +1,125 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-
-import org.jgrapht.Graph;
-import org.jgrapht.traverse.BreadthFirstIterator;
+import com.google.common.graph.EndpointPair;
+import com.google.common.graph.ImmutableValueGraph;
+import com.google.common.graph.MutableValueGraph;
+import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class SubtreeReplacer<V, E> {
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+public class SubtreeReplacer {
 
-    private final Supplier<Graph<V, E>> emptyGraphSupplier;
-    private final Function<E, E> cloneEdge;
-
-    public SubtreeReplacer(final Supplier<Graph<V, E>> emptyGraphSupplier,
-                           final Function<E, E> cloneEdge) {
-        this.emptyGraphSupplier = emptyGraphSupplier;
-        this.cloneEdge = cloneEdge;
-    }
-
-    public UnmodifiableTree<V, E> replaceSubtreeWithTree(final Subtree<V, E> subtreeToReplace,
-                                                         final UnmodifiableTree<V, E> replacementTree) {
-        final Graph<V, E> resultGraph = emptyGraphSupplier.get();
+    public static <N, V> Tree<N, V> replaceSubtreeWithTree(final Subtree<N, V> subtreeToReplace,
+                                                           final Tree<N, V> replacementTree) {
+        final MutableValueGraph<N, V> resultGraph = ValueGraphBuilder.directed().build();
         copyPartsOfGraph(
                 subtreeToReplace.tree().graph(),
-                getSubtreeVertices(subtreeToReplace),
+                subtreeToReplace.getSubtreeNodes(),
                 resultGraph);
         integrateReplacementTreeIntoResultGraph(
-                subtreeToReplace.asGraphAtNode(),
-                replacementTree.graph(),
+                subtreeToReplace.asTreeAtNode(),
+                replacementTree,
                 resultGraph);
-        return UnmodifiableTree.of(resultGraph);
+        return new Tree<>(ImmutableValueGraph.copyOf(resultGraph));
     }
 
-    private void integrateReplacementTreeIntoResultGraph(final GraphAtNode<V, E> originalGraphAtNodeToReplace,
-                                                         final Graph<V, E> replacementTree,
-                                                         final Graph<V, E> resultGraph) {
-        Graphs
-                .getRootNode(replacementTree)
-                .ifPresent(
-                        replacementRoot -> {
-                            copyGraphFromSrc2Dst(replacementTree, resultGraph);
-                            connectParentToRootOfReplacementTree(
-                                    getParentAndIncomingEdge(originalGraphAtNodeToReplace),
-                                    resultGraph,
-                                    replacementRoot);
-                        });
+    private static <N, V> void integrateReplacementTreeIntoResultGraph(final TreeAtNode<N, V> originalTreeAtNodeToReplace,
+                                                                       final Tree<N, V> replacementTree,
+                                                                       final MutableValueGraph<N, V> resultGraph) {
+        copyGraphFromSrc2Dst(replacementTree.graph(), resultGraph);
+        connectParentToRootOfReplacementTree(
+                getParentAndEdgeValue(originalTreeAtNodeToReplace),
+                resultGraph,
+                replacementTree.rootNode());
     }
 
-    private record ParentAndEdge<V, E>(V parent, E edgeToChild) {
+    private record ParentAndEdgeValue<N, V>(N parent, V valueOfEdgeToChild) {
     }
 
-    private void connectParentToRootOfReplacementTree(final Optional<ParentAndEdge<V, E>> parentAndEdge,
-                                                      final Graph<V, E> resultGraph,
-                                                      final V replacementRoot) {
-        parentAndEdge
-                .filter(_parentAndEdge ->
-                                resultGraph.containsVertex(_parentAndEdge.parent) &&
-                                        !resultGraph.containsEdge(_parentAndEdge.parent, replacementRoot))
-                .ifPresent(_parentAndEdge ->
+    private static <N, V> void connectParentToRootOfReplacementTree(final Optional<ParentAndEdgeValue<N, V>> parentAndEdgeValue,
+                                                                    final MutableValueGraph<N, V> resultGraph,
+                                                                    final N replacementRoot) {
+        parentAndEdgeValue
+                .filter(_parentAndEdgeValue ->
+                                resultGraph.nodes().contains(_parentAndEdgeValue.parent) &&
+                                        !resultGraph.hasEdgeConnecting(_parentAndEdgeValue.parent, replacementRoot))
+                .ifPresent(_parentAndEdgeValue ->
                                    connectParentToRootOfReplacementTree(
-                                           _parentAndEdge,
+                                           _parentAndEdgeValue,
                                            resultGraph,
                                            replacementRoot));
     }
 
-    private void connectParentToRootOfReplacementTree(final ParentAndEdge<V, E> parentAndEdge,
-                                                      final Graph<V, E> resultGraph,
-                                                      final V replacementRoot) {
-        resultGraph.addEdge(
-                parentAndEdge.parent,
+    private static <N, V> void connectParentToRootOfReplacementTree(final ParentAndEdgeValue<N, V> parentAndEdgeValue,
+                                                                    final MutableValueGraph<N, V> resultGraph,
+                                                                    final N replacementRoot) {
+        resultGraph.putEdgeValue(
+                parentAndEdgeValue.parent,
                 replacementRoot,
-                cloneEdge.apply(parentAndEdge.edgeToChild));
+                parentAndEdgeValue.valueOfEdgeToChild);
     }
 
-    private void copyGraphFromSrc2Dst(final Graph<V, E> src, final Graph<V, E> dst) {
-        addNodesToGraph(src.vertexSet(), dst);
-        copyEdgesFromSrc2Dst(src, src.edgeSet(), dst);
+    private static <N, V> void copyGraphFromSrc2Dst(final ValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
+        addNodesToGraph(src.nodes(), dst);
+        copyEdgesFromSrc2Dst(src, src.edges(), dst);
     }
 
-    private void copyPartsOfGraph(final Graph<V, E> originalGraph,
-                                  final Set<V> subtreeVerticesToRemove,
-                                  final Graph<V, E> resultGraph) {
+    private static <N, V> void copyPartsOfGraph(final ValueGraph<N, V> originalGraph,
+                                                final Set<N> subtreeVerticesToRemove,
+                                                final MutableValueGraph<N, V> resultGraph) {
         addNodesToGraph(
-                Sets.difference(originalGraph.vertexSet(), subtreeVerticesToRemove),
+                Sets.difference(originalGraph.nodes(), subtreeVerticesToRemove),
                 resultGraph);
         copyEdgesFromSrc2Dst(
                 originalGraph,
-                getEdgesToRetain(originalGraph, subtreeVerticesToRemove),
+                getEdgesToRetain(originalGraph.edges(), subtreeVerticesToRemove),
                 resultGraph);
     }
 
-    private void addNodesToGraph(final Set<V> nodes, final Graph<V, E> graph) {
-        nodes.forEach(graph::addVertex);
+    private static <N, V> void addNodesToGraph(final Set<N> nodes, final MutableValueGraph<N, V> graph) {
+        nodes.forEach(graph::addNode);
     }
 
-    private void copyEdgesFromSrc2Dst(final Graph<V, E> src,
-                                      final Set<E> edgesOfSrcToCopy,
-                                      final Graph<V, E> dst) {
-        for (final E edge : edgesOfSrcToCopy) {
-            final V source = src.getEdgeSource(edge);
-            final V target = src.getEdgeTarget(edge);
-            if (!dst.containsEdge(source, target) && !nodeHasParent(dst, target)) {
-                dst.addEdge(source, target, cloneEdge.apply(edge));
+    private static <N, V> void copyEdgesFromSrc2Dst(final ValueGraph<N, V> src,
+                                                    final Set<EndpointPair<N>> edgesOfSrcToCopy,
+                                                    final MutableValueGraph<N, V> dst) {
+        for (final EndpointPair<N> edge : edgesOfSrcToCopy) {
+            final N source = edge.source();
+            final N target = edge.target();
+            if (!dst.hasEdgeConnecting(edge) && !nodeHasParent(dst, target)) {
+                dst.putEdgeValue(source, target, src.edgeValueOrDefault(edge, null));
             }
         }
     }
 
-    private static <V, E> boolean nodeHasParent(final Graph<V, E> graph, final V node) {
-        return graph.containsVertex(node) && !graph.incomingEdgesOf(node).isEmpty();
+    private static <N, V> boolean nodeHasParent(final ValueGraph<N, V> graph, final N node) {
+        return graph.nodes().contains(node) && !graph.predecessors(node).isEmpty();
     }
 
-    private Set<E> getEdgesToRetain(final Graph<V, E> graph, final Set<V> nodesToRemove) {
-        return graph
-                .edgeSet()
+    private static <N> Set<EndpointPair<N>> getEdgesToRetain(final Set<EndpointPair<N>> edges, final Set<N> nodesToRemove) {
+        return edges
                 .stream()
-                .filter(edge -> !nodesToRemove.contains(graph.getEdgeSource(edge)) &&
-                        !nodesToRemove.contains(graph.getEdgeTarget(edge)))
+                .filter(edge -> retainEdge(edge, nodesToRemove))
                 .collect(Collectors.toSet());
     }
 
-    private Optional<ParentAndEdge<V, E>> getParentAndIncomingEdge(final GraphAtNode<V, E> graphAtNode) {
-        return Graphs
-                .getIncomingEdgeOfNode(
-                        graphAtNode.graph(),
-                        graphAtNode.nodeOfGraph())
-                .map(edgeToChild ->
-                             new ParentAndEdge<>(
-                                     graphAtNode.graph().getEdgeSource(edgeToChild),
-                                     edgeToChild));
+    private static <N> boolean retainEdge(final EndpointPair<N> edge, final Set<N> nodesToRemove) {
+        return !nodesToRemove.contains(edge.source()) && !nodesToRemove.contains(edge.target());
     }
 
-    private Set<V> getSubtreeVertices(final Subtree<V, E> subtree) {
-        return ImmutableSet.copyOf(
-                new BreadthFirstIterator<>(
-                        subtree.tree().graph(),
-                        subtree.rootNodeOfSubtree()));
+
+    private static <N, V> Optional<ParentAndEdgeValue<N, V>> getParentAndEdgeValue(final TreeAtNode<N, V> treeAtNode) {
+        return treeAtNode
+                .tree()
+                .incomingEdgeOf(treeAtNode.nodeOfTree())
+                .map(incomingEdge ->
+                             new ParentAndEdgeValue<>(
+                                     incomingEdge.source(),
+                                     treeAtNode.tree().graph().edgeValueOrDefault(incomingEdge, null)));
     }
 }

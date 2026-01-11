@@ -1,16 +1,15 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import org.jgrapht.Graph;
-
 import java.util.Objects;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferencePathProvider;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
 public record SearchablePreferenceOfHostWithinGraph(
         SearchablePreference searchablePreference,
         SearchablePreferenceScreen hostOfPreference,
-        Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphContainingPreference) {
+        Tree<SearchablePreferenceScreen, SearchablePreference> treeContainingPreference) {
 
     public PreferencePath getPreferencePath() {
         return PreferencePathProvider.getPreferencePath(this);

@@ -6,10 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
-
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.builder.GraphBuilder;
+import com.google.common.graph.ImmutableValueGraph;
+import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.List;
 import java.util.Locale;
@@ -18,14 +16,16 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformerTest;
 import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SearchablePreferenceScreenGraphTestFactory {
 
-    public static GraphBuilder<SearchablePreferenceScreen, SearchablePreferenceEdge, ? extends DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge>> createGraphBuilder() {
-        return DefaultDirectedGraph.createBuilder(SearchablePreferenceEdge.class);
+    public static ImmutableValueGraph.Builder<SearchablePreferenceScreen, SearchablePreference> createGraphBuilder() {
+        return ValueGraphBuilder.directed().immutable();
     }
 
     public record Data(String DST_PREFERENCE_ID,
@@ -41,7 +41,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
 
     public record Graphs(
             GraphAndDbDataProvider entityGraphAndDbDataProvider,
-            Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+            Tree<SearchablePreferenceScreen, SearchablePreference> pojoTree) {
     }
 
     public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host,
@@ -114,10 +114,11 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                                         preferenceConnectingSrcToDst,
                                                                         Set.of()))
                                                         .build())))),
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraphBuilder()
-                        .addVertex(src.second())
-                        .build());
+                new Tree<>(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraphBuilder()
+                                .addNode(src.second())
+                                .build()));
     }
 
     public static Graphs createGraph(final Class<? extends PreferenceFragmentCompat> host,
@@ -199,13 +200,14 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                                         preferenceConnectingSrcToDst,
                                                                         Set.of()))
                                                         .build())))),
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraphBuilder()
-                        .addEdge(
-                                src.second(),
-                                dst.second(),
-                                new SearchablePreferenceEdge(preferencePojoConnectingSrcToDst))
-                        .build());
+                new Tree<>(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraphBuilder()
+                                .putEdgeValue(
+                                        src.second(),
+                                        dst.second(),
+                                        preferencePojoConnectingSrcToDst)
+                                .build()));
     }
 
     private static Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> createSrc(

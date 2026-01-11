@@ -1,6 +1,6 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
+import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createSearchablePreferenceScreenGraphConverter;
 
 import android.view.View;
 
@@ -16,13 +16,13 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Views;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
-import de.KnollFrank.lib.settingssearch.common.graph.SearchablePreferenceScreenSubtreeReplacerFactory;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
+import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.common.graph.UnmodifiableTree;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
@@ -65,46 +65,42 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
         });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
         return new SearchablePreferenceScreenGraph(
-                new Tree<>(createGraphConverter().toGuava(
-                        SearchablePreferenceScreenSubtreeReplacerFactory
-                                .createSubtreeReplacer()
-                                .replaceSubtreeWithTree(
-                                        new Subtree<>(
-                                                UnmodifiableTree.of(createGraphConverter().toJGraphT(graph.tree().graph())),
-                                                prefsFragmentFifthPreferenceScreen),
-                                        getPojoGraphRootedAt(
-                                                instantiateSearchablePreferenceScreen(
-                                                        prefsFragmentFifthPreferenceScreen,
-                                                        createGraphConverter().toJGraphT(graph.tree().graph()),
-                                                        createGraphPathFactory(searchDatabaseConfig, activityContext),
-                                                        onUiThreadRunner),
-                                                graph.locale(),
-                                                activityContext,
-                                                searchDatabaseConfig))
-                                .graph())),
+                SubtreeReplacer.replaceSubtreeWithTree(
+                        new Subtree<>(
+                                graph.tree(),
+                                prefsFragmentFifthPreferenceScreen),
+                        getPojoGraphRootedAt(
+                                instantiateSearchablePreferenceScreen(
+                                        prefsFragmentFifthPreferenceScreen,
+                                        createSearchablePreferenceScreenGraphConverter().toJGraphT(graph.tree().graph()),
+                                        createGraphPathFactory(searchDatabaseConfig, activityContext),
+                                        onUiThreadRunner),
+                                graph.locale(),
+                                activityContext,
+                                searchDatabaseConfig)),
                 graph.locale(),
                 new ConfigurationBundleConverter().convertForward(newConfiguration));
     }
 
-    private UnmodifiableTree<SearchablePreferenceScreen, SearchablePreferenceEdge> getPojoGraphRootedAt(
+    private Tree<SearchablePreferenceScreen, SearchablePreference> getPojoGraphRootedAt(
             final PreferenceScreenWithHost root,
             final Locale locale,
             final FragmentActivity activityContext,
             final SearchDatabaseConfig searchDatabaseConfig) {
-        return UnmodifiableTree.of(
-                SearchablePreferenceScreenGraphProviderFactory
-                        .createSearchablePreferenceScreenGraphProvider(
-                                FRAGMENT_CONTAINER_VIEW_ID,
-                                Views.getRootViewContainer(activityContext),
-                                activityContext,
-                                activityContext.getSupportFragmentManager(),
-                                activityContext,
-                                searchDatabaseConfig,
-                                locale,
-                                (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true)
-                        .getSearchablePreferenceScreenGraph(root));
+        return SearchablePreferenceScreenGraphProviderFactory
+                .createSearchablePreferenceScreenGraphProvider(
+                        FRAGMENT_CONTAINER_VIEW_ID,
+                        Views.getRootViewContainer(activityContext),
+                        activityContext,
+                        activityContext.getSupportFragmentManager(),
+                        activityContext,
+                        searchDatabaseConfig,
+                        locale,
+                        (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true)
+                .getSearchablePreferenceScreenGraph(root);
     }
 
+    @SuppressWarnings({"UnstableApiUsage"})
     private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn) {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(

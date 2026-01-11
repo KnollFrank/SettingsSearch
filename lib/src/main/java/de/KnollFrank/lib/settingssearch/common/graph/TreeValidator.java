@@ -69,6 +69,6 @@ class TreeValidator {
         return Iterables.size(
                 Traverser
                         .forGraph(graph)
-                        .breadthFirst(ValueGraphs.getRootNode(graph).orElseThrow()));
+                        .depthFirstPreOrder(ValueGraphs.getRootNode(graph).orElseThrow()));
     }
 }

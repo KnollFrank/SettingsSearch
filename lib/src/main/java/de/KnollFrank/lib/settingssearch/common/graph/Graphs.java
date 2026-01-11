@@ -29,6 +29,7 @@ public class Graphs {
                 .collect(Collectors.toSet());
     }
 
+    // FK-TODO: mit Hilfe von guava nachprogrammmieren
     public static <V, E> GraphPath<V, E> getPathFromRootNodeToTarget(final Graph<V, E> graph, final V target) {
         final V root = getRootNode(graph).orElseThrow();
         return Optional

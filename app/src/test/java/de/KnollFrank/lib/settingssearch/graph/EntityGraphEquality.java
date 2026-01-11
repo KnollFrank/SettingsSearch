@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import org.jgrapht.Graph;
+import com.google.common.graph.ValueGraph;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -11,15 +11,16 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleMatchers;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class EntityGraphEquality {
 
     public static void assertActualEqualsExpected(final GraphAndDbDataProvider actual,
@@ -29,10 +30,10 @@ class EntityGraphEquality {
         final var expectedGraph = expected.asGraph();
         assertActualEqualsExpected(
                 Pair.create(
-                        actualGraph.vertexSet(),
+                        actualGraph.graph().nodes(),
                         actual.dbDataProvider()),
                 Pair.create(
-                        expectedGraph.vertexSet(),
+                        expectedGraph.graph().nodes(),
                         expected.dbDataProvider()));
         assertActualEdgesEqualsExpectedEdges(
                 Pair.create(
@@ -55,11 +56,11 @@ class EntityGraphEquality {
                 is(nodes2String(expected.first(), expected.second())));
     }
 
-    private static void assertActualEdgesEqualsExpectedEdges(final Pair<Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>, SearchablePreferenceEntity.DbDataProvider> actual,
-                                                             final Pair<Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge>, SearchablePreferenceEntity.DbDataProvider> expected) {
+    private static void assertActualEdgesEqualsExpectedEdges(final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>, SearchablePreferenceEntity.DbDataProvider> actual,
+                                                             final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>, SearchablePreferenceEntity.DbDataProvider> expected) {
         assertThat(
-                edgesAsStrings(actual.first(), actual.second()),
-                is(edgesAsStrings(expected.first(), expected.second())));
+                edgesAsStrings(actual.first().graph(), actual.second()),
+                is(edgesAsStrings(expected.first().graph(), expected.second())));
     }
 
     private static String nodes2String(final Set<SearchablePreferenceScreenEntity> nodes,
@@ -71,12 +72,12 @@ class EntityGraphEquality {
                 .collect(Collectors.joining(", "));
     }
 
-    private static Set<String> edgesAsStrings(final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> graph,
+    private static Set<String> edgesAsStrings(final ValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> graph,
                                               final SearchablePreferenceEntity.DbDataProvider dbDataProvider) {
         return graph
-                .edgeSet()
+                .edges()
                 .stream()
-                .map(edge -> graph.getEdgeSource(edge).id() + "->" + graph.getEdgeTarget(edge).id() + ":" + toString(edge.preference, dbDataProvider))
+                .map(edge -> edge.source().id() + "->" + edge.target().id() + ":" + toString(graph.edgeValueOrDefault(edge, null), dbDataProvider))
                 .collect(Collectors.toSet());
     }
 

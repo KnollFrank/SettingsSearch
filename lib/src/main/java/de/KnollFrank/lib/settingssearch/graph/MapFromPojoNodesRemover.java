@@ -1,21 +1,18 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import org.jgrapht.Graph;
-
 import de.KnollFrank.lib.settingssearch.common.graph.NodesTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 public class MapFromPojoNodesRemover {
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> removeMapFromPojoNodes(
-            final Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> pojoGraph) {
+    public static Tree<SearchablePreferenceScreen, SearchablePreference> removeMapFromPojoNodes(
+            final Tree<SearchablePreferenceScreenWithMap, SearchablePreference> pojoGraph) {
         return NodesTransformer.transformNodes(
                 pojoGraph,
-                MapFromPojoNodesRemover::removeMapFromPojoNode,
-                SearchablePreferenceEdge.class,
-                edge -> new SearchablePreferenceEdge(edge.preference));
+                MapFromPojoNodesRemover::removeMapFromPojoNode);
     }
 
     public static SearchablePreferenceScreen removeMapFromPojoNode(final SearchablePreferenceScreenWithMap searchablePreferenceScreenWithMap) {

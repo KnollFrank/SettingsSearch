@@ -1,7 +1,5 @@
 package de.KnollFrank.lib.settingssearch.search;
 
-import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
-
 import androidx.fragment.app.FragmentActivity;
 
 import java.util.Collections;
@@ -11,7 +9,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
-import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
@@ -59,8 +56,6 @@ class PreferenceSearcher<C> {
     private Set<SearchablePreferenceOfHostWithinGraph> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
         return graph
                 .map(SearchablePreferenceScreenGraph::tree)
-                .map(Tree::graph)
-                .map(createGraphConverter()::toJGraphT)
                 .map(PojoGraphs::getPreferences)
                 .orElseGet(Collections::emptySet);
     }

@@ -1,7 +1,5 @@
 package de.KnollFrank.settingssearch.preference.fragment;
 
-import static de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory.createGraphConverter;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,15 +16,14 @@ import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
-import org.jgrapht.Graph;
-
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.common.Locales;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
@@ -103,7 +100,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale);
                         setSummaryOfPreferences(
                                 preference,
-                                getSummaryChangingPreference(createGraphConverter().toJGraphT(pojoGraph.tree().graph())),
+                                getSummaryChangingPreference(pojoGraph.tree()),
                                 getSummary(checked));
                         getPreferencesDatabase()
                                 .searchablePreferenceScreenGraphRepository()
@@ -123,7 +120,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().convertForward(configuration));
                     }
 
-                    private SearchablePreferenceOfHostWithinGraph getSummaryChangingPreference(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+                    private SearchablePreferenceOfHostWithinGraph getSummaryChangingPreference(final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph) {
                         return SearchablePreferenceWithinGraphs
                                 .findPreferenceByKey(
                                         PojoGraphs.getPreferences(pojoGraph),

@@ -2,31 +2,29 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverterFactory.createScreenConverter;
 
-import org.jgrapht.Graph;
-
-import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
+import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntityEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
 public class EntityGraphToPojoGraphTransformer {
 
-    public static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> toPojoGraph(
-            final Graph<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge> entityGraph,
+    public static Tree<SearchablePreferenceScreen, SearchablePreference> toPojoGraph(
+            final Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> entityGraph,
             final DbDataProvider dbDataProvider) {
-        return GraphTransformerAlgorithm.transform(
+        return TreeTransformerAlgorithm.transform(
                 entityGraph,
-                SearchablePreferenceEdge.class,
                 createGraphTransformer(createScreenConverter(dbDataProvider)));
     }
 
-    private static GraphTransformer<SearchablePreferenceScreenEntity, SearchablePreferenceEntityEdge, SearchablePreferenceScreen, SearchablePreferenceEdge> createGraphTransformer(final SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter screenConverter) {
-        return new GraphTransformer<>() {
+    private static TreeTransformer<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, SearchablePreferenceScreen, SearchablePreference> createGraphTransformer(final SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter screenConverter) {
+        return new TreeTransformer<>() {
 
             @Override
             public SearchablePreferenceScreen transformRootNode(final SearchablePreferenceScreenEntity rootNode) {
@@ -35,17 +33,18 @@ public class EntityGraphToPojoGraphTransformer {
 
             @Override
             public SearchablePreferenceScreen transformInnerNode(final SearchablePreferenceScreenEntity innerNode,
-                                                                 final ContextOfInnerNode<SearchablePreferenceEntityEdge, SearchablePreferenceScreen> contextOfInnerNode) {
+                                                                 final ContextOfInnerNode<SearchablePreferenceEntity, SearchablePreferenceScreen> contextOfInnerNode) {
                 return screenConverter.fromEntity(innerNode);
             }
 
             @Override
-            public SearchablePreferenceEdge transformEdge(final SearchablePreferenceEntityEdge edge,
-                                                          final SearchablePreferenceScreen transformedParentNode) {
-                return new SearchablePreferenceEdge(
-                        SearchablePreferences
-                                .findPreferenceById(transformedParentNode.allPreferencesOfPreferenceHierarchy(), edge.preference.id())
-                                .orElseThrow());
+            public SearchablePreference transformEdgeValue(final SearchablePreferenceEntity edgeValue,
+                                                           final SearchablePreferenceScreen transformedParentNode) {
+                return SearchablePreferences
+                        .findPreferenceById(
+                                transformedParentNode.allPreferencesOfPreferenceHierarchy(),
+                                edgeValue.id())
+                        .orElseThrow();
             }
         };
     }

@@ -2,19 +2,16 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.Preference;
 
-import org.jgrapht.Graph;
-
 import java.util.Locale;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformer;
-import de.KnollFrank.lib.settingssearch.common.graph.GraphTransformerAlgorithm;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
+import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer;
+import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformerAlgorithm;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 
 public class GraphToPojoGraphTransformer {
 
@@ -27,19 +24,18 @@ public class GraphToPojoGraphTransformer {
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
-    public Graph<SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> transformGraphToPojoGraph(
-            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph,
+    public Tree<SearchablePreferenceScreenWithMap, SearchablePreference> transformGraphToPojoGraph(
+            final Tree<PreferenceScreenWithHost, Preference> preferenceScreenGraph,
             final Locale locale) {
-        return GraphTransformerAlgorithm.transform(
+        return TreeTransformerAlgorithm.transform(
                 preferenceScreenGraph,
-                SearchablePreferenceEdge.class,
-                createGraphTransformer(locale));
+                createTreeTransformer(locale));
     }
 
-    private GraphTransformer<PreferenceScreenWithHost, PreferenceEdge, SearchablePreferenceScreenWithMap, SearchablePreferenceEdge> createGraphTransformer(
+    private TreeTransformer<PreferenceScreenWithHost, Preference, SearchablePreferenceScreenWithMap, SearchablePreference> createTreeTransformer(
             final Locale locale) {
         final PreferenceFragmentIdProvider preferenceFragmentIdProvider = createPreferenceFragmentUniqueLocalizedIdProvider(locale);
-        return new GraphTransformer<>() {
+        return new TreeTransformer<>() {
 
             @Override
             public SearchablePreferenceScreenWithMap transformRootNode(final PreferenceScreenWithHost rootNode) {
@@ -49,17 +45,14 @@ public class GraphToPojoGraphTransformer {
             @Override
             public SearchablePreferenceScreenWithMap transformInnerNode(
                     final PreferenceScreenWithHost innerNode,
-                    final ContextOfInnerNode<PreferenceEdge, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
+                    final ContextOfInnerNode<Preference, SearchablePreferenceScreenWithMap> contextOfInnerNode) {
                 return convertToPojo(innerNode);
             }
 
             @Override
-            public SearchablePreferenceEdge transformEdge(final PreferenceEdge edge,
-                                                          final SearchablePreferenceScreenWithMap transformedParentNode) {
-                return new SearchablePreferenceEdge(
-                        getTransformedPreference(
-                                edge.preference,
-                                transformedParentNode));
+            public SearchablePreference transformEdgeValue(final Preference edgeValue,
+                                                           final SearchablePreferenceScreenWithMap transformedParentNode) {
+                return getTransformedPreference(edgeValue, transformedParentNode);
             }
 
             private SearchablePreferenceScreenWithMap convertToPojo(final PreferenceScreenWithHost node) {

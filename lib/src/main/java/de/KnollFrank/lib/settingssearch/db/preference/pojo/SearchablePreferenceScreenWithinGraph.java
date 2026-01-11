@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 
 import java.util.Objects;
@@ -8,13 +7,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
+import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
 
 public record SearchablePreferenceScreenWithinGraph(
         SearchablePreferenceScreen searchablePreferenceScreen,
-        Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graphContainingScreen) {
+        Tree<SearchablePreferenceScreen, SearchablePreference> graphContainingScreen) {
 
     public GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> getGraphPath() {
-        return Graphs.getPathFromRootNodeToTarget(graphContainingScreen, searchablePreferenceScreen);
+        return Graphs.getPathFromRootNodeToTarget(
+                GraphConverterFactory
+                        .createSearchablePreferenceScreenGraphConverter()
+                        .toJGraphT(graphContainingScreen.graph()),
+                searchablePreferenceScreen);
     }
 
     public Set<SearchablePreferenceOfHostWithinGraph> getAllPreferencesOfPreferenceHierarchy() {

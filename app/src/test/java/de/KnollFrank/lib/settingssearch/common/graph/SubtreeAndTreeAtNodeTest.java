@@ -2,20 +2,20 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import static org.junit.Assert.assertThrows;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 
-public class SubtreeAndGraphAtNodeTest {
+@SuppressWarnings({"UnstableApiUsage"})
+public class SubtreeAndTreeAtNodeTest {
 
     @Test
     public void subtreeConstructor_shouldThrowIllegalArgumentException_ifRootNodeIsNotInTree() {
         // Given
         // Graph structure: [ v1 ]
-        final UnmodifiableTree<StringVertex, StringEdge> tree =
-                UnmodifiableTree.of(
+        final Tree<StringVertex, String> tree =
+                new Tree<>(
                         StringGraphs
-                                .newGraphBuilder()
-                                .addVertex(new StringVertex("v1"))
+                                .newStringGraphBuilder()
+                                .addNode(new StringVertex("v1"))
                                 .build());
         final StringVertex vNotInGraph = new StringVertex("not-in-graph");
 
@@ -29,16 +29,17 @@ public class SubtreeAndGraphAtNodeTest {
     public void graphAtNodeConstructor_shouldThrowIllegalArgumentException_ifNodeIsNotInGraph() {
         // Given
         // Graph structure: [ v1 ]
-        final Graph<StringVertex, StringEdge> graph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertex(new StringVertex("v1"))
-                        .build();
+        final Tree<StringVertex, String> graph =
+                new Tree<>(
+                        StringGraphs
+                        .newStringGraphBuilder()
+                        .addNode(new StringVertex("v1"))
+                        .build());
         final StringVertex vNotInGraph = new StringVertex("not-in-graph");
 
         // Then
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new GraphAtNode<>(graph, vNotInGraph));
+                () -> new TreeAtNode<>(graph, vNotInGraph));
     }
 }

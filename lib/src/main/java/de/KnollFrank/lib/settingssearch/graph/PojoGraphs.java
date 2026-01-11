@@ -1,22 +1,23 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import org.jgrapht.Graph;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinGraph;
 
+@SuppressWarnings({"UnstableApiUsage"})
 public class PojoGraphs {
 
-    public static Set<SearchablePreferenceOfHostWithinGraph> getPreferences(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph) {
+    public static Set<SearchablePreferenceOfHostWithinGraph> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph) {
         return getPreferences(
                 pojoGraph
-                        .vertexSet()
+                        .graph()
+                        .nodes()
                         .stream()
                         .map(searchablePreferenceScreen ->
                                      new SearchablePreferenceScreenWithinGraph(

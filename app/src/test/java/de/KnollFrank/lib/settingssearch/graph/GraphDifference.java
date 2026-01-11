@@ -1,27 +1,26 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
 import com.google.common.collect.Sets;
-
-import org.jgrapht.Graph;
+import com.google.common.graph.ValueGraph;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
 // FK-TODO: refactor
 // FK-TODO: stelle sicher, dass für alle Graphen actual und expected immer gilt: DotGraphDifference.between(actual, expected).areEqual() == GraphDifference.between(actual, expected).areEqual()
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class GraphDifference {
 
     private final String differenceReport;
     private final boolean areEqual;
 
-    private GraphDifference(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> actual,
-                            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> expected) {
+    private GraphDifference(final ValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
+                            final ValueGraph<SearchablePreferenceScreen, SearchablePreference> expected) {
         final StringBuilder reportBuilder = new StringBuilder();
 
         // Level 1: Structural comparison
@@ -30,8 +29,8 @@ public class GraphDifference {
             areEqual =
                     compareScreenComponents(
                             reportBuilder,
-                            actual.vertexSet(),
-                            expected.vertexSet());
+                            actual.nodes(),
+                            expected.nodes());
         } else {
             areEqual = false;
             buildStructuralDifferenceReport(actual, expected, reportBuilder);
@@ -40,8 +39,8 @@ public class GraphDifference {
         differenceReport = reportBuilder.toString();
     }
 
-    public static GraphDifference between(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> actual,
-                                          final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> expected) {
+    public static GraphDifference between(final ValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
+                                          final ValueGraph<SearchablePreferenceScreen, SearchablePreference> expected) {
         return new GraphDifference(actual, expected);
     }
 
@@ -54,12 +53,12 @@ public class GraphDifference {
         return areEqual ? "Graphs are equal." : differenceReport;
     }
 
-    private void buildStructuralDifferenceReport(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> actual,
-                                                 final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> expected,
+    private void buildStructuralDifferenceReport(final ValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
+                                                 final ValueGraph<SearchablePreferenceScreen, SearchablePreference> expected,
                                                  final StringBuilder sb) {
         sb.append("Graphs are structurally different (based on graph.equals()):\n");
-        appendSetDifference(sb, "Screens", actual.vertexSet(), expected.vertexSet());
-        appendSetDifference(sb, "Edges", actual.edgeSet(), expected.edgeSet());
+        appendSetDifference(sb, "Screens", actual.nodes(), expected.nodes());
+        appendSetDifference(sb, "Edges", actual.edges(), expected.edges());
     }
 
     private boolean compareScreenComponents(final StringBuilder sb,

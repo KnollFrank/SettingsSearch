@@ -17,7 +17,6 @@ import com.google.common.collect.MoreCollectors;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.jgrapht.Graph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -37,17 +36,19 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinGraph;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings({"UnstableApiUsage"})
 public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoomDatabaseTest {
 
     @Test
@@ -65,7 +66,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                         result
                                 .searchablePreferenceScreenGraphProvider()
                                 .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
-                                .vertexSet();
+                                .graph()
+                                .nodes();
 
                 // Then
                 MatcherAssert.assertThat(
@@ -109,7 +111,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                         result
                                 .searchablePreferenceScreenGraphProvider()
                                 .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
-                                .vertexSet();
+                                .graph()
+                                .nodes();
 
                 // Then
                 MatcherAssert.assertThat(
@@ -132,7 +135,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                                 activity);
 
                 // When
-                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph =
+                final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph =
                         result
                                 .searchablePreferenceScreenGraphProvider()
                                 .getSearchablePreferenceScreenGraph(
@@ -141,7 +144,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 // Then
                 final Set<SearchablePreferenceScreenWithinGraph> searchablePreferenceScreens =
                         pojoGraph
-                                .vertexSet()
+                                .graph()
+                                .nodes()
                                 .stream()
                                 .map(searchablePreferenceScreen ->
                                              new SearchablePreferenceScreenWithinGraph(

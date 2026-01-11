@@ -1,11 +1,11 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphEquality.assertActualEqualsExpected;
-import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphs.cloneEdge;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 
+@SuppressWarnings({"UnstableApiUsage"})
 public class NodeReplacerTest {
 
     private final StringVertex vR = new StringVertex("R");
@@ -14,119 +14,110 @@ public class NodeReplacerTest {
     private final StringVertex vX = new StringVertex("X");
     private final StringVertex vP = new StringVertex("P");
 
-    private final StringEdge ePR = new StringEdge("P->R");
-    private final StringEdge eRA = new StringEdge("R->A");
-    private final StringEdge eRB = new StringEdge("R->B");
+    private final String ePR = "P->R";
+    private final String eRA = "R->A";
+    private final String eRB = "R->B";
 
     @Test
     public void shouldReplaceNodeAndRedirectEdges() {
         // Given
-        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();
         // Given an original graph:
         //   P --ePR--> R --eRA--> A
         //              |
         //              --eRB--> B
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vR, vA, vB)
-                        .addEdge(vP, vR, ePR)
-                        .addEdge(vR, vA, eRA)
-                        .addEdge(vR, vB, eRB)
-                        .build();
+        final Tree<StringVertex, String> originalGraph =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vP, vR, ePR)
+                                .putEdgeValue(vR, vA, eRA)
+                                .putEdgeValue(vR, vB, eRB)
+                                .build());
 
         // When replacing node R with X
-        final Graph<StringVertex, StringEdge> returnedGraph =
-                nodeReplacer.replaceNode(
-                        new GraphAtNode<>(originalGraph, vR),
+        final Tree<StringVertex, String> returnedGraph =
+                NodeReplacer.replaceNode(
+                        new TreeAtNode<>(originalGraph, vR),
                         vX);
 
         // Then the expected graph should have X connected to R's old neighbors:
         //   P --(ePR)--> X --(eRA)--> A
         //                |
         //                --(eRB)--> B
-        final Graph<StringVertex, StringEdge> expectedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vX, vA, vB)
-                        .addEdge(vP, vX, cloneEdge(ePR)) // old incoming edge
-                        .addEdge(vX, vA, cloneEdge(eRA)) // old outgoing edge
-                        .addEdge(vX, vB, cloneEdge(eRB)) // old outgoing edge
-                        .build();
-        assertActualEqualsExpected(returnedGraph, expectedGraph);
+        final Tree<StringVertex, String> expectedGraph =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vP, vX, ePR) // old incoming edge
+                                .putEdgeValue(vX, vA, eRA) // old outgoing edge
+                                .putEdgeValue(vX, vB, eRB) // old outgoing edge
+                                .build());
+        assertThat(returnedGraph, is(expectedGraph));
     }
 
     @Test
     public void shouldReplaceRootNode() {
         // Given
-        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();
         // Given an original graph:
         // Given a graph where the node to replace is the root:
         //   R --eRA--> A
         //   |
         //   --eRB--> B
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vR, vA, vB)
-                        .addEdge(vR, vA, eRA)
-                        .addEdge(vR, vB, eRB)
-                        .build();
+        final Tree<StringVertex, String> originalGraph =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vR, vA, eRA)
+                                .putEdgeValue(vR, vB, eRB)
+                                .build());
 
         // When replacing root R with X
-        final Graph<StringVertex, StringEdge> returnedGraph =
-                nodeReplacer.replaceNode(
-                        new GraphAtNode<>(originalGraph, vR),
+        final Tree<StringVertex, String> returnedGraph =
+                NodeReplacer.replaceNode(
+                        new TreeAtNode<>(originalGraph, vR),
                         vX);
 
         // Then X should become the new root:
         //   X --(eRA)--> A
         //   |
         //   --(eRB)--> B
-        final Graph<StringVertex, StringEdge> expectedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vX, vA, vB)
-                        .addEdge(vX, vA, cloneEdge(eRA))
-                        .addEdge(vX, vB, cloneEdge(eRB))
-                        .build();
-        assertActualEqualsExpected(returnedGraph, expectedGraph);
+        final Tree<StringVertex, String> expectedGraph =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vX, vA, eRA)
+                                .putEdgeValue(vX, vB, eRB)
+                                .build());
+        assertThat(returnedGraph, is(expectedGraph));
     }
 
     @Test
     public void shouldReplaceLeafNode() {
         // Given
-        final NodeReplacer<StringVertex, StringEdge> nodeReplacer = createNodeReplacer();
         // Given an original graph:
         // Given a graph where the node to replace is a leaf:
         //   P --ePR--> R
-        final Graph<StringVertex, StringEdge> originalGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vR)
-                        .addEdge(vP, vR, ePR)
-                        .build();
+        final Tree<StringVertex, String> originalGraph =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vP, vR, ePR)
+                                .build());
 
         // When replacing leaf R with X
-        final Graph<StringVertex, StringEdge> returnedGraph =
-                nodeReplacer.replaceNode(
-                        new GraphAtNode<>(originalGraph, vR),
+        final Tree<StringVertex, String> returnedGraph =
+                NodeReplacer.replaceNode(
+                        new TreeAtNode<>(originalGraph, vR),
                         vX);
 
         // Then X should become the new leaf:
         //   P --(ePR)--> X
-        final Graph<StringVertex, StringEdge> expectedGraph =
-                StringGraphs
-                        .newGraphBuilder()
-                        .addVertices(vP, vX)
-                        .addEdge(vP, vX, cloneEdge(ePR))
-                        .build();
-        assertActualEqualsExpected(returnedGraph, expectedGraph);
-    }
-
-    private NodeReplacer<StringVertex, StringEdge> createNodeReplacer() {
-        return new NodeReplacer<>(
-                StringEdge.class,
-                StringGraphs::cloneEdge);
+        final Tree<StringVertex, String> expectedGraph =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vP, vX, ePR)
+                                .build());
+        assertThat(returnedGraph, is(expectedGraph));
     }
 }

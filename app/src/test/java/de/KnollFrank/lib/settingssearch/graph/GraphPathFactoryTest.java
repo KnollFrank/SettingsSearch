@@ -112,10 +112,13 @@ public class GraphPathFactoryTest {
                 createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
                         root,
                         fragmentActivity);
-        return result
-                .searchablePreferenceScreenGraphProvider()
-                .getSearchablePreferenceScreenGraph(
-                        result.preferenceScreenWithHost());
+        return GraphConverterFactory
+                .createSearchablePreferenceScreenGraphConverter()
+                .toJGraphT(
+                        result
+                                .searchablePreferenceScreenGraphProvider()
+                                .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
+                                .graph());
     }
 
     private static void assertSameSize(final GraphPath<?, ?> actual, final GraphPath<?, ?> expected) {

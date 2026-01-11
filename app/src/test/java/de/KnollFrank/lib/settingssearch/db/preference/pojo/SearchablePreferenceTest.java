@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createScreen;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -13,9 +12,11 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings({"UnstableApiUsage"})
 public class SearchablePreferenceTest extends PreferencesRoomDatabaseTest {
 
     @Test
@@ -25,13 +26,14 @@ public class SearchablePreferenceTest extends PreferencesRoomDatabaseTest {
         final SearchablePreference parent = createSearchablePreference("parent");
         final SearchablePreferenceScreen predecessorScreen = createScreen(predecessor);
         final SearchablePreferenceScreen parentScreen = createScreen(parent);
-        final DefaultDirectedGraph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraphBuilder()
-                        .addEdge(predecessorScreen, parentScreen, new SearchablePreferenceEdge(predecessor))
-                        .build();
-        final SearchablePreferenceOfHostWithinGraph _predecessor = new SearchablePreferenceOfHostWithinGraph(predecessor, predecessorScreen, graph);
-        final SearchablePreferenceOfHostWithinGraph _parent = new SearchablePreferenceOfHostWithinGraph(parent, parentScreen, graph);
+        final Tree<SearchablePreferenceScreen, SearchablePreference> tree =
+                new Tree<>(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraphBuilder()
+                                .putEdgeValue(predecessorScreen, parentScreen, predecessor)
+                                .build());
+        final SearchablePreferenceOfHostWithinGraph _predecessor = new SearchablePreferenceOfHostWithinGraph(predecessor, predecessorScreen, tree);
+        final SearchablePreferenceOfHostWithinGraph _parent = new SearchablePreferenceOfHostWithinGraph(parent, parentScreen, tree);
 
         // When
         final PreferencePath preferencePath = _parent.getPreferencePath();

@@ -6,7 +6,6 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePref
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreferenceWithTitle;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -14,13 +13,14 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings({"UnstableApiUsage"})
 public class SearchResultsByPreferencePathSorterTest {
 
     @Test
@@ -42,14 +42,15 @@ public class SearchResultsByPreferencePathSorterTest {
         final SearchablePreferenceScreen walkScreen = createScreen("walk", Set.of(walk));
         final SearchablePreferenceScreen defaultSpeedOfWalkScreen = createScreen("defaultSpeedOfWalk", Set.of(defaultSpeedOfWalk));
         final SearchablePreferenceScreen defaultSpeedOfCarScreen = createScreen("defaultSpeedOfCar", Set.of(defaultSpeedOfCar));
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraphBuilder()
-                        .addEdge(rootScreen, carScreen, new SearchablePreferenceEdge(defaultSpeed))
-                        .addEdge(rootScreen, walkScreen, new SearchablePreferenceEdge(toWalk))
-                        .addEdge(carScreen, defaultSpeedOfCarScreen, new SearchablePreferenceEdge(car))
-                        .addEdge(walkScreen, defaultSpeedOfWalkScreen, new SearchablePreferenceEdge(walk))
-                        .build();
+        final Tree<SearchablePreferenceScreen, SearchablePreference> graph =
+                new Tree<>(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraphBuilder()
+                                .putEdgeValue(rootScreen, carScreen, defaultSpeed)
+                                .putEdgeValue(rootScreen, walkScreen, toWalk)
+                                .putEdgeValue(carScreen, defaultSpeedOfCarScreen, car)
+                                .putEdgeValue(walkScreen, defaultSpeedOfWalkScreen, walk)
+                                .build());
 
         // When
         final SearchablePreferenceOfHostWithinGraph _defaultSpeedOfWalk = new SearchablePreferenceOfHostWithinGraph(defaultSpeedOfWalk, defaultSpeedOfWalkScreen, graph);

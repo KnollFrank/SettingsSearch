@@ -1,19 +1,21 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createGraph;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
@@ -39,7 +41,7 @@ public class EntityGraphToPojoGraphTransformerTest {
                                 "graph-screen2"));
         test_toPojoGraph(
                 graphs.entityGraphAndDbDataProvider(),
-                graphs.pojoGraph());
+                graphs.pojoTree());
     }
 
     @Test
@@ -60,18 +62,18 @@ public class EntityGraphToPojoGraphTransformerTest {
                                 "graph-screen2"));
         test_toPojoGraph(
                 graphs.entityGraphAndDbDataProvider(),
-                graphs.pojoGraph());
+                graphs.pojoTree());
     }
 
     private static void test_toPojoGraph(final GraphAndDbDataProvider entityGraphAndDbDataProvider,
-                                         final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphExpected) {
+                                         final Tree<SearchablePreferenceScreen, SearchablePreference> pojoTreeExpected) {
         // When
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraphActual =
+        final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraphActual =
                 EntityGraphToPojoGraphTransformer.toPojoGraph(
                         entityGraphAndDbDataProvider.asGraph(),
                         entityGraphAndDbDataProvider.dbDataProvider());
 
         // Then
-        PojoGraphEquality.assertActualEqualsExpected(pojoGraphActual, pojoGraphExpected);
+        assertThat(pojoGraphActual, is(pojoTreeExpected));
     }
 }

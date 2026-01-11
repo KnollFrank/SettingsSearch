@@ -5,15 +5,15 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePref
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Locale;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
@@ -39,7 +39,7 @@ public class PojoGraphToEntityGraphTransformerTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         test_toEntityGraph(
-                graphs.pojoGraph(),
+                graphs.pojoTree(),
                 graphs.entityGraphAndDbDataProvider());
     }
 
@@ -60,11 +60,11 @@ public class PojoGraphToEntityGraphTransformerTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         test_toEntityGraph(
-                graphs.pojoGraph(),
+                graphs.pojoTree(),
                 graphs.entityGraphAndDbDataProvider());
     }
 
-    private static void test_toEntityGraph(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
+    private static void test_toEntityGraph(final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph,
                                            final GraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
         // When
         final GraphAndDbDataProvider entityGraphAndDbDataProviderActual =

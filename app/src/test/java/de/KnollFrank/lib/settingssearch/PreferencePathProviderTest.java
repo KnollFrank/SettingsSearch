@@ -5,17 +5,17 @@ import static org.hamcrest.Matchers.contains;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createScreen;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 
 import java.util.Set;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
+@SuppressWarnings({"UnstableApiUsage"})
 public class PreferencePathProviderTest {
 
     @Test
@@ -26,16 +26,17 @@ public class PreferencePathProviderTest {
         final SearchablePreference p1 = createSearchablePreference("P1");
         final SearchablePreferenceScreen rootScreen = createScreen("Root", Set.of(p1));
 
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraphBuilder()
-                        .addVertex(rootScreen)
-                        .build();
+        final Tree<SearchablePreferenceScreen, SearchablePreference> tree =
+                new Tree<>(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraphBuilder()
+                                .addNode(rootScreen)
+                                .build());
         final SearchablePreferenceOfHostWithinGraph _p1 =
                 new SearchablePreferenceOfHostWithinGraph(
                         p1,
                         rootScreen,
-                        graph);
+                        tree);
 
         // When
         final PreferencePath path = PreferencePathProvider.getPreferencePath(_p1);
@@ -56,12 +57,12 @@ public class PreferencePathProviderTest {
         final SearchablePreference targetPref = createSearchablePreference("Target");
         final SearchablePreferenceScreen screenA = createScreen("ScreenA", Set.of(targetPref));
 
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraphBuilder()
-                        .addVertices(rootScreen, screenA)
-                        .addEdge(rootScreen, screenA, new SearchablePreferenceEdge(prefToA))
-                        .build();
+        final Tree<SearchablePreferenceScreen, SearchablePreference> graph =
+                new Tree<>(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraphBuilder()
+                                .putEdgeValue(rootScreen, screenA, prefToA)
+                                .build());
         final SearchablePreferenceOfHostWithinGraph _targetPref =
                 new SearchablePreferenceOfHostWithinGraph(
                         targetPref,
@@ -93,18 +94,18 @@ public class PreferencePathProviderTest {
         final SearchablePreferenceScreen screenA = createScreen("A", Set.of(bridge2));
         final SearchablePreferenceScreen screenB = createScreen("B", Set.of(target));
 
-        final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph =
-                SearchablePreferenceScreenGraphTestFactory
-                        .createGraphBuilder()
-                        .addVertices(root, screenA, screenB)
-                        .addEdge(root, screenA, new SearchablePreferenceEdge(bridge1))
-                        .addEdge(screenA, screenB, new SearchablePreferenceEdge(bridge2))
-                        .build();
+        final Tree<SearchablePreferenceScreen, SearchablePreference> tree =
+                new Tree<>(
+                        SearchablePreferenceScreenGraphTestFactory
+                                .createGraphBuilder()
+                                .putEdgeValue(root, screenA, bridge1)
+                                .putEdgeValue(screenA, screenB, bridge2)
+                                .build());
         final SearchablePreferenceOfHostWithinGraph _target =
                 new SearchablePreferenceOfHostWithinGraph(
                         target,
                         screenB,
-                        graph);
+                        tree);
 
         // When
         final PreferencePath path = PreferencePathProvider.getPreferencePath(_target);
@@ -114,8 +115,8 @@ public class PreferencePathProviderTest {
         assertThat(
                 path.preferences(),
                 contains(
-                        new SearchablePreferenceOfHostWithinGraph(bridge1, root, graph),
-                        new SearchablePreferenceOfHostWithinGraph(bridge2, screenA, graph),
+                        new SearchablePreferenceOfHostWithinGraph(bridge1, root, tree),
+                        new SearchablePreferenceOfHostWithinGraph(bridge2, screenA, tree),
                         _target));
     }
 }

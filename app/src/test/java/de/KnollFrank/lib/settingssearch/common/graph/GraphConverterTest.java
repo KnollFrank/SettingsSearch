@@ -5,9 +5,9 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphEquality.assertActualEqualsExpected;
 
 import com.google.common.graph.ValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
 
 import org.jgrapht.graph.AsUnmodifiableGraph;
+import org.jgrapht.graph.DefaultDirectedGraph;
 import org.junit.Test;
 
 public class GraphConverterTest {
@@ -18,8 +18,7 @@ public class GraphConverterTest {
     // [A] --("Edge-AB")--> [B]
     private final AsUnmodifiableGraph<StringVertex, StringEdge> jGraphT_GRAPH =
             new AsUnmodifiableGraph<>(
-                    StringGraphs
-                            .newGraphBuilder()
+                    DefaultDirectedGraph.<StringVertex, StringEdge>createBuilder(StringEdge.class)
                             .addVertex(vA)
                             .addVertex(vB)
                             .addEdge(vA, vB, new StringEdge("Edge-AB"))
@@ -28,9 +27,8 @@ public class GraphConverterTest {
     // [A] --("Edge-AB")--> [B]
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     private final ValueGraph<StringVertex, String> GUAVA_GRAPH =
-            ValueGraphBuilder
-                    .directed()
-                    .<StringVertex, String>immutable()
+            StringGraphs
+                    .newStringGraphBuilder()
                     .addNode(vA)
                     .addNode(vB)
                     .putEdgeValue(vA, vB, "Edge-AB")

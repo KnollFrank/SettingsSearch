@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import android.content.Context;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableBiMap;
@@ -14,11 +15,12 @@ import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 public class PojoGraphTestFactory {
 
-    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference> createEntityPreferenceScreenGraphRootedAt(
             final Class<? extends PreferenceFragmentCompat> root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
@@ -33,7 +35,7 @@ public class PojoGraphTestFactory {
                 context);
     }
 
-    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference> createEntityPreferenceScreenGraphRootedAt(
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
@@ -44,21 +46,26 @@ public class PojoGraphTestFactory {
                 context);
     }
 
-    public static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference> createEntityPreferenceScreenGraphRootedAt(
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
             final Context context) {
-        return PreferenceScreenGraphProviderFactory
-                .createPreferenceScreenGraphProvider(
-                        getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
-                        (preference, hostOfPreference) -> Optional.empty(),
-                        classNameOfActivity -> Optional.empty(),
-                        addEdgeToGraphPredicate,
-                        context,
-                        preferenceScreenWithHost -> {
-                        })
-                .getPreferenceScreenGraph(root);
+        final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph =
+                PreferenceScreenGraphProviderFactory
+                        .createPreferenceScreenGraphProvider(
+                                getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
+                                (preference, hostOfPreference) -> Optional.empty(),
+                                classNameOfActivity -> Optional.empty(),
+                                addEdgeToGraphPredicate,
+                                context,
+                                preferenceScreenWithHost -> {
+                                })
+                        .getPreferenceScreenGraph(root);
+        return new Tree<>(
+                GraphConverterFactory
+                        .createPreferenceScreenWithHostGraphConverter()
+                        .toGuava(preferenceScreenGraph));
     }
 
     private static PreferenceScreenWithHostProvider getPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {

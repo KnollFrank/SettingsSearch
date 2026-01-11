@@ -33,6 +33,7 @@ public class SearchablePreferenceScreenGraphProvider2Test {
         }
     }
 
+    @SuppressWarnings({"UnstableApiUsage"})
     private static void shouldIgnoreNonPreferenceFragments(final FragmentActivity activity) {
         // Given
         final var result =
@@ -45,7 +46,8 @@ public class SearchablePreferenceScreenGraphProvider2Test {
                 result
                         .searchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
-                        .vertexSet();
+                        .graph()
+                        .nodes();
 
         // Then
         assertThat(

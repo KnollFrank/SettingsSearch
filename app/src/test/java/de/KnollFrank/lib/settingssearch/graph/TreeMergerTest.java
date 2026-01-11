@@ -18,8 +18,8 @@ import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
+import com.google.common.graph.EndpointPair;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -34,20 +34,22 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
-import de.KnollFrank.lib.settingssearch.common.graph.GraphAtNode;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
+import de.KnollFrank.lib.settingssearch.common.graph.TreeAtNode;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class GraphMergerTest {
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+public class TreeMergerTest {
 
     @Test
     public void test_mergeSrcGraphIntoDstGraphAtMergePoint_rootNode() {
@@ -78,7 +80,7 @@ public class GraphMergerTest {
                 final List<String> preferenceKeys = List.of("key1");
                 final SearchablePreferenceScreen mergePointOfGraph =
                         SearchablePreferenceScreens
-                                .findSearchablePreferenceScreenById(pojoGraph.vertexSet(), idOfRootOfPartialPojoGraph)
+                                .findSearchablePreferenceScreenById(pojoGraph.graph().nodes(), idOfRootOfPartialPojoGraph)
                                 .orElseThrow();
                 final var partialEntityGraph =
                         createPartialEntityGraph(
@@ -88,56 +90,63 @@ public class GraphMergerTest {
                                 activity);
 
                 // When
-                final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> mergedGraph =
-                        GraphMerger.mergeSubtreeIntoGraphAtMergePoint(
+                final Tree<SearchablePreferenceScreen, SearchablePreference> mergedGraph =
+                        TreeMerger.mergeSubtreeIntoTreeAtMergePoint(
                                 Subtree.of(transformToPojoGraph(partialEntityGraph)),
-                                new GraphAtNode<>(pojoGraph, mergePointOfGraph));
+                                new TreeAtNode<>(pojoGraph, mergePointOfGraph));
 
                 // Then
                 final var mergedGraphExpected = transformToPojoGraph(createEntityGraph(rootOfGraph, preferenceKeys, activity));
-                System.out.println(DotGraphDifference.between(mergedGraph, mergedGraphExpected));
-                final GraphDifference graphDifference = GraphDifference.between(mergedGraph, mergedGraphExpected);
+                System.out.println(DotGraphDifference.between(
+                        GraphConverterFactory
+                                .createSearchablePreferenceScreenGraphConverter()
+                                .toJGraphT(mergedGraph.graph()),
+                        GraphConverterFactory
+                                .createSearchablePreferenceScreenGraphConverter()
+                                .toJGraphT(mergedGraphExpected.graph())));
+                final GraphDifference graphDifference = GraphDifference.between(mergedGraph.graph(), mergedGraphExpected.graph());
                 assertThat(graphDifference.toString(), graphDifference.areEqual(), is(true));
                 assertIntegrity(mergedGraph);
             });
         }
     }
 
-    private static void assertIntegrity(final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        for (final SearchablePreferenceEdge edge : graph.edgeSet()) {
+    private static void assertIntegrity(final Tree<SearchablePreferenceScreen, SearchablePreference> graph) {
+        for (final EndpointPair<SearchablePreferenceScreen> edge : graph.graph().edges()) {
             assertPreferenceOfEdgeExistsInSourceScreen(edge, graph);
         }
     }
 
-    private static void assertPreferenceOfEdgeExistsInSourceScreen(final SearchablePreferenceEdge edge,
-                                                                   final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> graph) {
-        final SearchablePreferenceScreen sourceScreen = graph.getEdgeSource(edge);
+    private static void assertPreferenceOfEdgeExistsInSourceScreen(final EndpointPair<SearchablePreferenceScreen> edge,
+                                                                   final Tree<SearchablePreferenceScreen, SearchablePreference> graph) {
+        final SearchablePreference searchablePreference = graph.graph().edgeValueOrDefault(edge, null);
+        final SearchablePreferenceScreen sourceScreen = edge.source();
         assertThat(
                 String.format(
                         "Integrity error: The preference [key=%s] associated with the edge from screen [id=%s] " +
                                 "is missing from the source screen's preference hierarchy. " +
                                 "This indicates a mismatch between the graph structure and the node content.",
-                        edge.preference.getKey(),
+                        searchablePreference.getKey(),
                         sourceScreen.id()),
-                preferenceOfEdgeExistsInScreen(edge, sourceScreen),
+                preferenceExistsInScreen(searchablePreference, sourceScreen),
                 is(true));
     }
 
-    private static boolean preferenceOfEdgeExistsInScreen(final SearchablePreferenceEdge edge,
-                                                          final SearchablePreferenceScreen screen) {
+    private static boolean preferenceExistsInScreen(final SearchablePreference searchablePreference,
+                                                    final SearchablePreferenceScreen screen) {
         return screen
                 .allPreferencesOfPreferenceHierarchy()
-                .contains(edge.preference);
+                .contains(searchablePreference);
     }
 
-    private static Graph<PreferenceScreenWithHost, PreferenceEdge> createEntityGraph(
+    private static Tree<PreferenceScreenWithHost, Preference> createEntityGraph(
             final Class<? extends PreferenceFragmentCompat> root,
             final List<String> preferenceKeys,
             final TestActivity activity) {
         FragmentWithPreferenceCategory.setPreferenceKeys(preferenceKeys);
         final InstantiateAndInitializeFragment instantiateAndInitializeFragment = createInstantiateAndInitializeFragment(activity);
         return PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
-                GraphMergerTest
+                TreeMergerTest
                         .createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment)
                         .getPreferenceScreenWithHostOfFragment(
                                 root,
@@ -147,8 +156,8 @@ public class GraphMergerTest {
                 activity);
     }
 
-    private static Graph<PreferenceScreenWithHost, PreferenceEdge> createPartialEntityGraph(
-            final Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> pojoGraph,
+    private static Tree<PreferenceScreenWithHost, Preference> createPartialEntityGraph(
+            final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph,
             final List<String> preferenceKeys,
             final SearchablePreferenceScreen rootOfPartialPojoGraph,
             final FragmentActivity activity) {
@@ -158,7 +167,9 @@ public class GraphMergerTest {
                 new GraphPathFactory(createPreferenceScreenWithHostProvider(instantiateAndInitializeFragment))
                         .instantiate(
                                 Graphs.getPathFromRootNodeToTarget(
-                                        pojoGraph,
+                                        GraphConverterFactory
+                                                .createSearchablePreferenceScreenGraphConverter()
+                                                .toJGraphT(pojoGraph.graph()),
                                         rootOfPartialPojoGraph))
                         .getEndVertex(),
                 instantiateAndInitializeFragment,
@@ -174,16 +185,18 @@ public class GraphMergerTest {
                 activity);
     }
 
-    public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
+    public static PreferenceScreenWithHostProvider createPreferenceScreenWithHostProvider(
+            final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {
         return new PreferenceScreenWithHostProvider(
                 instantiateAndInitializeFragment,
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 
-    private static Graph<SearchablePreferenceScreen, SearchablePreferenceEdge> transformToPojoGraph(final Graph<PreferenceScreenWithHost, PreferenceEdge> entityGraph) {
+    private static Tree<SearchablePreferenceScreen, SearchablePreference> transformToPojoGraph(
+            final Tree<PreferenceScreenWithHost, Preference> entityTree) {
         return removeMapFromPojoNodes(
                 createGraphToPojoGraphTransformer().transformGraphToPojoGraph(
-                        entityGraph,
+                        entityTree,
                         Locale.GERMAN));
     }
 

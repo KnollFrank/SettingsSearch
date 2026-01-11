@@ -1,26 +1,20 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import org.jgrapht.Graph;
-
 import java.util.function.Function;
 
 public class NodesTransformer {
 
-    public static <VSrc, VDst, E> Graph<VDst, E> transformNodes(
-            final Graph<VSrc, E> graph,
-            final Function<VSrc, VDst> transformNode,
-            final Class<? extends E> edgeClass,
-            final Function<E, E> cloneEdge) {
-        return GraphTransformerAlgorithm.transform(
-                graph,
-                edgeClass,
-                transformNodes(transformNode, cloneEdge));
+    public static <NSrc, NDst, V> Tree<NDst, V> transformNodes(
+            final Tree<NSrc, V> tree,
+            final Function<NSrc, NDst> transformNode) {
+        return TreeTransformerAlgorithm.transform(
+                tree,
+                transformNodes(transformNode));
     }
 
-    private static <VSrc, VDst, E> GraphTransformer<VSrc, E, VDst, E> transformNodes(
-            final Function<VSrc, VDst> transformNode,
-            final Function<E, E> cloneEdge) {
-        return new GraphTransformer<>() {
+    private static <VSrc, VDst, E> TreeTransformer<VSrc, E, VDst, E> transformNodes(
+            final Function<VSrc, VDst> transformNode) {
+        return new TreeTransformer<>() {
 
             @Override
             public VDst transformRootNode(final VSrc rootNode) {
@@ -33,8 +27,8 @@ public class NodesTransformer {
             }
 
             @Override
-            public E transformEdge(final E edge, final VDst transformedParentNode) {
-                return cloneEdge.apply(edge);
+            public E transformEdgeValue(final E edgeValue, final VDst transformedParentNode) {
+                return edgeValue;
             }
         };
     }

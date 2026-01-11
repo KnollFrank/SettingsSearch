@@ -18,15 +18,19 @@ public class Sets {
     }
 
     public static <T> Optional<T> findElementByPredicate(final Set<T> elements, final Predicate<T> predicate) {
-        return elements
-                .stream()
-                .filter(predicate)
-                .collect(MoreCollectors.toOptional());
+        return asOptional(filterElementsByPredicate(elements, predicate));
     }
 
     public static <T> Optional<T> asOptional(final Set<T> elements) {
         return elements
                 .stream()
                 .collect(MoreCollectors.toOptional());
+    }
+
+    public static <E> Set<E> filterElementsByPredicate(final Set<E> elements, final Predicate<E> predicate) {
+        return elements
+                .stream()
+                .filter(predicate)
+                .collect(Collectors.toSet());
     }
 }

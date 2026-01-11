@@ -7,10 +7,12 @@ import org.jgrapht.GraphPath;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEdge;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinGraph;
+import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
 
 // FK-TODO: refactor
 public class PreferencePathProvider {
@@ -26,7 +28,7 @@ public class PreferencePathProvider {
                         getPathPreferences(
                                 new SearchablePreferenceScreenWithinGraph(
                                         target.hostOfPreference(),
-                                        target.graphContainingPreference())))
+                                        target.treeContainingPreference())))
                 .add(target)
                 .build();
     }
@@ -36,14 +38,20 @@ public class PreferencePathProvider {
     }
 
     private static List<SearchablePreferenceOfHostWithinGraph> getEdgePreferences(final GraphPath<SearchablePreferenceScreen, SearchablePreferenceEdge> graphPath) {
+        final var graphContainingPreference =
+                new Tree<>(
+                        GraphConverterFactory
+                                .createSearchablePreferenceScreenGraphConverter()
+                                .toGuava(graphPath.getGraph()));
         return graphPath
                 .getEdgeList()
                 .stream()
                 .map(searchablePreferenceEdge ->
                              new SearchablePreferenceOfHostWithinGraph(
                                      searchablePreferenceEdge.preference,
+                                     // FK-TODO: use converted guava Tree instead of jgraph graphPath.getGraph()
                                      graphPath.getGraph().getEdgeSource(searchablePreferenceEdge),
-                                     graphPath.getGraph()))
+                                     graphContainingPreference))
                 .collect(Collectors.toList());
     }
 }
