@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenTreeAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.search.ReflectionIconResourceIdProvider;
@@ -29,7 +29,7 @@ public class SearchDatabaseConfigBuilder {
     private SearchableInfoProvider searchableInfoProvider = preference -> Optional.empty();
     private PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider = (preference, hostOfPreference) -> Optional.empty();
     private PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider = (preference, hostOfPreference) -> Optional.empty();
-    private PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener = preferenceScreenGraph -> {
+    private PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener = preferenceScreenTree -> {
     };
     private ComputePreferencesListener computePreferencesListener =
             new ComputePreferencesListener() {
@@ -83,8 +83,8 @@ public class SearchDatabaseConfigBuilder {
 
 
     @SuppressWarnings("unused")
-    public SearchDatabaseConfigBuilder withPreferenceScreenGraphAvailableListener(final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
-        this.preferenceScreenGraphAvailableListener = preferenceScreenGraphAvailableListener;
+    public SearchDatabaseConfigBuilder withPreferenceScreenGraphAvailableListener(final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener) {
+        this.preferenceScreenTreeAvailableListener = preferenceScreenTreeAvailableListener;
         return this;
     }
 
@@ -127,7 +127,7 @@ public class SearchDatabaseConfigBuilder {
                         return Maps.get(activitySearchDatabaseConfigs.rootPreferenceFragmentByActivity(), activityClass);
                     }
                 },
-                preferenceScreenGraphAvailableListener,
+                preferenceScreenTreeAvailableListener,
                 computePreferencesListener,
                 preferenceSearchablePredicate,
                 PrincipalAndProxyProviderFactory.createPrincipalAndProxyProvider(activitySearchDatabaseConfigs.principalAndProxies()),

@@ -44,10 +44,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Persistabl
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest {
+public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
 
     @Test
-    public void shouldTransformGraphToPojoGraph() {
+    public void shouldTransformTreeToPojoTree() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -71,7 +71,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                                 addLocaleToId(locale, "singleNodeGraph-screen1"),
                                 addLocaleToId(locale, twoNodeScreen1Id),
                                 addLocaleToId(locale, twoNodeScreen2Id));
-                final GraphToPojoGraphTransformer graphToPojoGraphTransformer =
+                final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
                         createGraphToPojoGraphTransformer(
                                 new PreferenceFragmentIdProvider() {
 
@@ -90,7 +90,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                 // When
                 final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph =
                         removeMapFromPojoNodes(
-                                graphToPojoGraphTransformer.transformGraphToPojoGraph(
+                                treeToPojoTreeTransformer.transformTreeToPojoTree(
                                         entityGraph,
                                         locale));
 
@@ -118,7 +118,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
     }
 
     @Test(expected = IllegalStateException.class)
-    public void test_transformGraphToPojoGraph_nonUniqueId_fail() {
+    public void test_transformTreeToPojoTree_nonUniqueId_fail() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -130,11 +130,11 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                                 return "non unique id";
                             }
                         };
-                final GraphToPojoGraphTransformer graphToPojoGraphTransformer =
+                final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
                         createGraphToPojoGraphTransformer(preferenceFragmentIdProviderCreatingNonUniqueId);
 
                 // When
-                graphToPojoGraphTransformer.transformGraphToPojoGraph(
+                treeToPojoTreeTransformer.transformTreeToPojoTree(
                         createSomeEntityGraph(activity),
                         Locale.GERMAN);
             });
@@ -152,7 +152,7 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                                 preferenceFragment.getClass(),
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
-                final GraphToPojoGraphTransformer graphToPojoGraphTransformer =
+                final TreeToPojoTreeTransformer treeToPojoTreeTransformer =
                         createGraphToPojoGraphTransformer(
                                 new PreferenceFragmentIdProvider() {
 
@@ -169,11 +169,11 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                                 });
 
                 // When
-                final SearchablePreferenceScreenGraph germanPojoGraph = transformGraphToPojoGraph(entityGraph, graphToPojoGraphTransformer, Locale.GERMAN);
+                final SearchablePreferenceScreenGraph germanPojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.GERMAN);
                 preferencesRoomDatabase.searchablePreferenceScreenGraphDAO().persistOrReplace(germanPojoGraph);
 
                 // And
-                final SearchablePreferenceScreenGraph chinesePojoGraph = transformGraphToPojoGraph(entityGraph, graphToPojoGraphTransformer, Locale.CHINESE);
+                final SearchablePreferenceScreenGraph chinesePojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.CHINESE);
                 preferencesRoomDatabase.searchablePreferenceScreenGraphDAO().persistOrReplace(chinesePojoGraph);
 
                 // Then no exception was thrown
@@ -185,13 +185,13 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
         return locale.getLanguage() + "-" + id;
     }
 
-    private static SearchablePreferenceScreenGraph transformGraphToPojoGraph(
+    private static SearchablePreferenceScreenGraph transformTreeToPojoTree(
             final Tree<PreferenceScreenWithHost, Preference> entityGraph,
-            final GraphToPojoGraphTransformer graphToPojoGraphTransformer,
+            final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
             final Locale locale) {
         return new SearchablePreferenceScreenGraph(
                 MapFromPojoNodesRemover.removeMapFromPojoNodes(
-                        graphToPojoGraphTransformer.transformGraphToPojoGraph(
+                        treeToPojoTreeTransformer.transformTreeToPojoTree(
                                 entityGraph,
                                 locale)),
                 locale,
@@ -288,8 +288,8 @@ public class GraphToPojoGraphTransformerTest extends PreferencesRoomDatabaseTest
                 activity);
     }
 
-    private static GraphToPojoGraphTransformer createGraphToPojoGraphTransformer(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
-        return new GraphToPojoGraphTransformer(
+    private static TreeToPojoTreeTransformer createGraphToPojoGraphTransformer(final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+        return new TreeToPojoTreeTransformer(
                 new PreferenceScreenToSearchablePreferenceScreenConverter(
                         new PreferenceToSearchablePreferenceConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),

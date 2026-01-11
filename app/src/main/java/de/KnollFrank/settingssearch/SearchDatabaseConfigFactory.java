@@ -11,27 +11,26 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
 
-import org.jgrapht.Graph;
-
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.ActivitySearchDatabaseConfigs;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PrincipalAndProxy;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.SearchDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.common.Classes;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
+import de.KnollFrank.lib.settingssearch.graph.GraphConverterFactory;
 import de.KnollFrank.lib.settingssearch.provider.ActivityInitializer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenTreeAvailableListener;
 import de.KnollFrank.settingssearch.SettingsActivity.SettingsFragment;
 import de.KnollFrank.settingssearch.SettingsActivity2.SettingsFragment2;
 import de.KnollFrank.settingssearch.preference.custom.CustomDialogPreference;
@@ -135,11 +134,16 @@ public class SearchDatabaseConfigFactory {
                             }
                         })
                 .withPreferenceScreenGraphAvailableListener(
-                        new PreferenceScreenGraphAvailableListener() {
+                        new PreferenceScreenTreeAvailableListener() {
 
                             @Override
-                            public void onPreferenceScreenGraphAvailable(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-                                Log.i(this.getClass().getSimpleName(), PreferenceScreenGraph2DOTConverter.graph2DOT(preferenceScreenGraph));
+                            public void onPreferenceScreenTreeAvailable(final Tree<PreferenceScreenWithHost, Preference> preferenceScreenTree) {
+                                Log.i(
+                                        this.getClass().getSimpleName(),
+                                        PreferenceScreenGraph2DOTConverter.graph2DOT(
+                                                GraphConverterFactory
+                                                        .createPreferenceScreenWithHostGraphConverter()
+                                                        .toJGraphT(preferenceScreenTree.graph())));
                             }
                         })
                 .withComputePreferencesListener(

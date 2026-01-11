@@ -49,10 +49,10 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings({"UnstableApiUsage"})
-public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoomDatabaseTest {
+public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoomDatabaseTest {
 
     @Test
-    public void shouldGetSearchablePreferenceScreenGraph() {
+    public void shouldGetSearchablePreferenceScreenTree() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -64,8 +64,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 // When
                 final Set<SearchablePreferenceScreen> preferenceScreens =
                         result
-                                .searchablePreferenceScreenGraphProvider()
-                                .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
+                                .searchablePreferenceScreenTreeProvider()
+                                .getSearchablePreferenceScreenTree(result.preferenceScreenWithHost())
                                 .graph()
                                 .nodes();
 
@@ -82,7 +82,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
     }
 
     @Test
-    public void test_getSearchablePreferenceScreenGraph_addEdgePredicate() {
+    public void test_getSearchablePreferenceScreenTree_addEdgePredicate() {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(activity -> {
                 // Given
@@ -109,8 +109,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 // When
                 final Set<SearchablePreferenceScreen> preferenceScreens =
                         result
-                                .searchablePreferenceScreenGraphProvider()
-                                .getSearchablePreferenceScreenGraph(result.preferenceScreenWithHost())
+                                .searchablePreferenceScreenTreeProvider()
+                                .getSearchablePreferenceScreenTree(result.preferenceScreenWithHost())
                                 .graph()
                                 .nodes();
 
@@ -137,8 +137,8 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
                 // When
                 final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph =
                         result
-                                .searchablePreferenceScreenGraphProvider()
-                                .getSearchablePreferenceScreenGraph(
+                                .searchablePreferenceScreenTreeProvider()
+                                .getSearchablePreferenceScreenTree(
                                         result.preferenceScreenWithHost());
 
                 // Then
@@ -173,15 +173,15 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
         }
     }
 
-    private static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
+    private static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
             final FragmentActivity activity,
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
-        return new SearchablePreferenceScreenGraphProvider(
+        return new SearchablePreferenceScreenTreeProvider(
                 preferenceScreenGraph -> {
                 },
                 emptyComputePreferencesListener(),
-                new GraphToPojoGraphTransformer(
+                new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 new PreferenceToSearchablePreferenceConverter(
                                         (preference, hostOfPreference) -> Optional.empty(),
@@ -258,7 +258,7 @@ public class SearchablePreferenceScreenGraphProvider1Test extends PreferencesRoo
     }
 
     public record SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(
-            SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider,
+            SearchablePreferenceScreenTreeProvider searchablePreferenceScreenTreeProvider,
             PreferenceScreenWithHost preferenceScreenWithHost) {
     }
 

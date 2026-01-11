@@ -18,8 +18,8 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
-import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformerTest;
-import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformerTest.PreferenceFragmentWithSinglePreference;
+import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTest;
+import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTest.PreferenceFragmentWithSinglePreference;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SearchablePreferenceScreenGraphTestFactory {
@@ -57,7 +57,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         2131427444,
                         0,
-                        Optional.of(GraphToPojoGraphTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
+                        Optional.of(TreeToPojoTreeTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
                         Optional.empty(),
                         true,
                         LazyPersistableBundleFactory.fromBundle(new PersistableBundle()),
@@ -74,7 +74,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         Optional.empty(),
                         2131427444,
                         0,
-                        Optional.of(GraphToPojoGraphTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
+                        Optional.of(TreeToPojoTreeTransformerTest.PreferenceFragmentWithSinglePreference.class.getName()),
                         Optional.empty(),
                         true,
                         new PersistableBundle(),
@@ -426,7 +426,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 .build()),
                 new SearchablePreferenceScreen(
                         screenId,
-                        GraphToPojoGraphTransformerTest.PreferenceFragmentWithSinglePreference.class,
+                        TreeToPojoTreeTransformerTest.PreferenceFragmentWithSinglePreference.class,
                         Optional.of("screen title"),
                         Optional.of("screen summary"),
                         Set.of(searchablePreferencePojo)));

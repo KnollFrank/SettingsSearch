@@ -13,18 +13,18 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreen
 import de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenWithMap;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 
-public class GraphToPojoGraphTransformer {
+public class TreeToPojoTreeTransformer {
 
     private final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter;
     private final PreferenceFragmentIdProvider preferenceFragmentIdProvider;
 
-    public GraphToPojoGraphTransformer(final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter,
-                                       final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
+    public TreeToPojoTreeTransformer(final PreferenceScreenToSearchablePreferenceScreenConverter preferenceScreenToSearchablePreferenceScreenConverter,
+                                     final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         this.preferenceScreenToSearchablePreferenceScreenConverter = preferenceScreenToSearchablePreferenceScreenConverter;
         this.preferenceFragmentIdProvider = preferenceFragmentIdProvider;
     }
 
-    public Tree<SearchablePreferenceScreenWithMap, SearchablePreference> transformGraphToPojoGraph(
+    public Tree<SearchablePreferenceScreenWithMap, SearchablePreference> transformTreeToPojoTree(
             final Tree<PreferenceScreenWithHost, Preference> preferenceScreenGraph,
             final Locale locale) {
         return TreeTransformerAlgorithm.transform(

@@ -7,11 +7,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableBiMap;
 
-import org.jgrapht.Graph;
-
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
@@ -51,21 +48,16 @@ public class PojoGraphTestFactory {
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
             final Context context) {
-        final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph =
-                PreferenceScreenGraphProviderFactory
-                        .createPreferenceScreenGraphProvider(
-                                getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
-                                (preference, hostOfPreference) -> Optional.empty(),
-                                classNameOfActivity -> Optional.empty(),
-                                addEdgeToGraphPredicate,
-                                context,
-                                preferenceScreenWithHost -> {
-                                })
-                        .getPreferenceScreenGraph(root);
-        return new Tree<>(
-                GraphConverterFactory
-                        .createPreferenceScreenWithHostGraphConverter()
-                        .toGuava(preferenceScreenGraph));
+        return PreferenceScreenGraphProviderFactory
+                .createPreferenceScreenGraphProvider(
+                        getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
+                        (preference, hostOfPreference) -> Optional.empty(),
+                        classNameOfActivity -> Optional.empty(),
+                        addEdgeToGraphPredicate,
+                        context,
+                        preferenceScreenWithHost -> {
+                        })
+                .getPreferenceScreenGraph(root);
     }
 
     private static PreferenceScreenWithHostProvider getPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {

@@ -25,7 +25,6 @@ import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
 
-import org.jgrapht.Graph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -40,13 +39,13 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.PreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragmentTemplate;
@@ -66,12 +65,12 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
-import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
+import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
-import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenGraphAvailableListener;
+import de.KnollFrank.lib.settingssearch.provider.PreferenceScreenTreeAvailableListener;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceSearchablePredicate;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 import de.KnollFrank.lib.settingssearch.provider.SearchableDialogInfoOfProvider;
@@ -699,7 +698,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                            final PrincipalAndProxyProvider principalAndProxyProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
                            final SearchablePreferenceScreenGraphRepository<Configuration> graphRepository,
-                           final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener) {
+                           final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(
                     fragmentActivity -> {
@@ -716,7 +715,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         principalAndProxyProvider,
                                         emptyComputePreferencesListener(),
                                         graphRepository,
-                                        preferenceScreenGraphAvailableListener,
+                                        preferenceScreenTreeAvailableListener,
                                         locale,
                                         new DefaultPreferenceFragmentIdProvider());
                         final PreferenceSearcher<Configuration> preferenceSearcher =
@@ -774,7 +773,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ComputePreferencesListener computePreferencesListener,
             final SearchablePreferenceScreenGraphRepository<Configuration> graphRepository,
-            final PreferenceScreenGraphAvailableListener preferenceScreenGraphAvailableListener,
+            final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener,
             final Locale locale,
             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
         final FragmentFactoryAndInitializer fragmentFactoryAndInitializer =
@@ -792,11 +791,11 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 new PreferenceScreenWithHostProvider(
                         instantiateAndInitializeFragment,
                         principalAndProxyProvider);
-        final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
-                new SearchablePreferenceScreenGraphProvider(
-                        preferenceScreenGraphAvailableListener,
+        final SearchablePreferenceScreenTreeProvider searchablePreferenceScreenTreeProvider =
+                new SearchablePreferenceScreenTreeProvider(
+                        preferenceScreenTreeAvailableListener,
                         computePreferencesListener,
-                        new GraphToPojoGraphTransformer(
+                        new TreeToPojoTreeTransformer(
                                 new PreferenceScreenToSearchablePreferenceScreenConverter(
                                         new PreferenceToSearchablePreferenceConverter(
                                                 new IconProvider(new ReflectionIconResourceIdProvider()),
@@ -832,7 +831,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         locale);
         graphRepository.persistOrReplace(
                 new SearchablePreferenceScreenGraph(
-                        searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
+                        searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(
                                                 preferenceFragment.getClass(),
@@ -882,13 +881,16 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         }
     }
 
-    private static void makeGraphRootedAtPrefsFragmentFirstConnected(final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        preferenceScreenGraph.removeAllVertices(
-                preferenceScreenGraph
-                        .vertexSet()
+    @SuppressWarnings({"UnstableApiUsage"})
+    private static void makeGraphRootedAtPrefsFragmentFirstConnected(final Tree<PreferenceScreenWithHost, Preference> preferenceScreenTree) {
+        final Set<PreferenceScreenWithHost> nodesToRemove =
+                preferenceScreenTree
+                        .graph()
+                        .nodes()
                         .stream()
                         .filter(preferenceScreenWithHost -> preferenceScreenWithHost.host() instanceof PreferenceFragmentWithSinglePreference)
-                        .collect(Collectors.toSet()));
+                        .collect(Collectors.toSet());
+        // FK-FIXME: preferenceScreenTree.removeAllVertices(nodesToRemove);
     }
 
     private SearchablePreferenceScreenGraphRepository<Configuration> createGraphRepository() {

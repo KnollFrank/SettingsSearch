@@ -3,8 +3,8 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment;
-import static de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformerTest.PreferenceFragmentWithSinglePreference;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
+import static de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTest.PreferenceFragmentWithSinglePreference;
 import static de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst.markExtrasOfPreferenceConnectingSrcWithDst;
 
 import android.os.Bundle;
@@ -189,13 +189,13 @@ public class TreeMergerTest {
     private static Tree<SearchablePreferenceScreen, SearchablePreference> transformToPojoGraph(
             final Tree<PreferenceScreenWithHost, Preference> entityTree) {
         return removeMapFromPojoNodes(
-                createGraphToPojoGraphTransformer().transformGraphToPojoGraph(
+                createGraphToPojoGraphTransformer().transformTreeToPojoTree(
                         entityTree,
                         Locale.GERMAN));
     }
 
-    private static GraphToPojoGraphTransformer createGraphToPojoGraphTransformer() {
-        return new GraphToPojoGraphTransformer(
+    private static TreeToPojoTreeTransformer createGraphToPojoGraphTransformer() {
+        return new TreeToPojoTreeTransformer(
                 new PreferenceScreenToSearchablePreferenceScreenConverter(
                         new PreferenceToSearchablePreferenceConverter(
                                 (preference, hostOfPreference) -> Optional.empty(),

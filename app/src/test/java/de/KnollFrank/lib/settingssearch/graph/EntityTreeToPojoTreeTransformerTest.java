@@ -21,7 +21,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
 
 @RunWith(RobolectricTestRunner.class)
-public class EntityGraphToPojoGraphTransformerTest {
+public class EntityTreeToPojoTreeTransformerTest {
 
     @Test
     public void test_toPojoGraph_singleNodeGraph() {

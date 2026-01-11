@@ -91,7 +91,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                         searchDatabaseConfig,
                         locale,
                         (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true)
-                .getSearchablePreferenceScreenGraph(root);
+                .getSearchablePreferenceScreenTree(root);
     }
 
     @SuppressWarnings({"UnstableApiUsage"})

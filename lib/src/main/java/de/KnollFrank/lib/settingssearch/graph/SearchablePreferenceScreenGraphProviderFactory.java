@@ -22,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerVi
 
 public class SearchablePreferenceScreenGraphProviderFactory {
 
-    public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
+    public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
             final Fragment fragment,
             final @IdRes int containerViewId,
             final SearchDatabaseConfig searchDatabaseConfig,
@@ -39,7 +39,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                 addEdgeToGraphPredicate);
     }
 
-    public static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
+    public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
             final @IdRes int containerViewId,
             final ViewGroup view,
             final FragmentActivity fragmentActivity,
@@ -51,10 +51,10 @@ public class SearchablePreferenceScreenGraphProviderFactory {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 view,
                 containerViewId);
-        return new SearchablePreferenceScreenGraphProvider(
-                searchDatabaseConfig.preferenceScreenGraphAvailableListener,
+        return new SearchablePreferenceScreenTreeProvider(
+                searchDatabaseConfig.preferenceScreenTreeAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
-                new GraphToPojoGraphTransformer(
+                new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,

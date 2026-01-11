@@ -2,14 +2,19 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.Preference;
 
-import org.jgrapht.Graph;
+import com.google.common.graph.EndpointPair;
+import com.google.common.graph.ImmutableValueGraph;
+import com.google.common.graph.MutableValueGraph;
 
 import java.util.Map;
 
 import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+// FK-TODO: rename to PreferenceScreenTreeProvider
 class PreferenceScreenGraphProvider {
 
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
@@ -24,25 +29,28 @@ class PreferenceScreenGraphProvider {
         this.addEdgeToGraphPredicate = addEdgeToGraphPredicate;
     }
 
-    public Graph<PreferenceScreenWithHost, PreferenceEdge> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
-        final var preferenceScreenGraph = PreferenceScreenGraphFactory.createEmptyPreferenceScreenGraph(preferenceScreenGraphListener);
+    // FK-TODO: rename to getPreferenceScreenTree()
+    public Tree<PreferenceScreenWithHost, Preference> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
+        final MutableValueGraph<PreferenceScreenWithHost, Preference> preferenceScreenGraph = PreferenceScreenGraphFactory.createEmptyPreferenceScreenGraph(preferenceScreenGraphListener);
         buildPreferenceScreenGraph(root, preferenceScreenGraph);
-        return preferenceScreenGraph;
+        return new Tree<>(ImmutableValueGraph.copyOf(preferenceScreenGraph));
     }
 
     private void buildPreferenceScreenGraph(final PreferenceScreenWithHost root,
-                                            final Graph<PreferenceScreenWithHost, PreferenceEdge> preferenceScreenGraph) {
-        if (preferenceScreenGraph.containsVertex(root)) {
+                                            final MutableValueGraph<PreferenceScreenWithHost, Preference> preferenceScreenGraph) {
+        if (preferenceScreenGraph.nodes().contains(root)) {
             return;
         }
-        preferenceScreenGraph.addVertex(root);
+        preferenceScreenGraph.addNode(root);
         this
                 .getConnectedPreferenceScreenByPreference(root)
                 .forEach(
                         (preference, child) -> {
                             buildPreferenceScreenGraph(child, preferenceScreenGraph);
-                            preferenceScreenGraph.addVertex(child);
-                            preferenceScreenGraph.addEdge(root, child, new PreferenceEdge(preference));
+                            preferenceScreenGraph.addNode(child);
+                            preferenceScreenGraph.putEdgeValue(
+                                    EndpointPair.ordered(root, child),
+                                    preference);
                         });
     }
 

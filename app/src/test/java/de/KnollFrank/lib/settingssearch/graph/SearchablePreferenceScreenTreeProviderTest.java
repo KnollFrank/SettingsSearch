@@ -37,7 +37,7 @@ import de.KnollFrank.lib.settingssearch.search.provider.BuiltinSearchableInfoPro
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-public class SearchablePreferenceScreenGraphProviderTest {
+public class SearchablePreferenceScreenTreeProviderTest {
 
     @Test
     public void shouldInvokeComputePreferencesListener() {
@@ -57,14 +57,14 @@ public class SearchablePreferenceScreenGraphProviderTest {
                         createPreferenceScreenWithHostProvider(
                                 fragmentActivity,
                                 preferenceFragment);
-                final SearchablePreferenceScreenGraphProvider searchablePreferenceScreenGraphProvider =
+                final SearchablePreferenceScreenTreeProvider searchablePreferenceScreenTreeProvider =
                         createSearchablePreferenceScreenGraphProvider(
                                 computePreferencesListener,
                                 fragmentActivity,
                                 preferenceScreenWithHostProvider);
 
                 // When
-                searchablePreferenceScreenGraphProvider.getSearchablePreferenceScreenGraph(
+                searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
                         preferenceScreenWithHostProvider
                                 .getPreferenceScreenWithHostOfFragment(
                                         preferenceFragment.getClass(),
@@ -94,15 +94,15 @@ public class SearchablePreferenceScreenGraphProviderTest {
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 
-    private static SearchablePreferenceScreenGraphProvider createSearchablePreferenceScreenGraphProvider(
+    private static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
             final ComputePreferencesListener computePreferencesListener,
             final FragmentActivity fragmentActivity,
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider) {
-        return new SearchablePreferenceScreenGraphProvider(
+        return new SearchablePreferenceScreenTreeProvider(
                 preferenceScreenGraph -> {
                 },
                 computePreferencesListener,
-                new GraphToPojoGraphTransformer(
+                new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 new PreferenceToSearchablePreferenceConverter(
                                         new IconProvider(new ReflectionIconResourceIdProvider()),

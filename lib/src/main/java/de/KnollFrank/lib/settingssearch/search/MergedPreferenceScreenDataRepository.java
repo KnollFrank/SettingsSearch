@@ -21,10 +21,10 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
-import de.KnollFrank.lib.settingssearch.graph.GraphToPojoGraphTransformer;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProvider;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
+import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressUpdateListener;
 
@@ -80,7 +80,7 @@ public class MergedPreferenceScreenDataRepository<C> {
         final Tree<SearchablePreferenceScreen, SearchablePreference> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()
-                        .getSearchablePreferenceScreenGraph(
+                        .getSearchablePreferenceScreenTree(
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(
                                                 searchDatabaseConfig.rootPreferenceFragment,
@@ -90,11 +90,11 @@ public class MergedPreferenceScreenDataRepository<C> {
         return searchablePreferenceScreenGraph;
     }
 
-    private SearchablePreferenceScreenGraphProvider getSearchablePreferenceScreenGraphProvider() {
-        return new SearchablePreferenceScreenGraphProvider(
-                searchDatabaseConfig.preferenceScreenGraphAvailableListener,
+    private SearchablePreferenceScreenTreeProvider getSearchablePreferenceScreenGraphProvider() {
+        return new SearchablePreferenceScreenTreeProvider(
+                searchDatabaseConfig.preferenceScreenTreeAvailableListener,
                 searchDatabaseConfig.computePreferencesListener,
-                new GraphToPojoGraphTransformer(
+                new TreeToPojoTreeTransformer(
                         new PreferenceScreenToSearchablePreferenceScreenConverter(
                                 Preference2SearchablePreferenceConverterFactory.createPreference2SearchablePreferenceConverter(
                                         searchDatabaseConfig,
