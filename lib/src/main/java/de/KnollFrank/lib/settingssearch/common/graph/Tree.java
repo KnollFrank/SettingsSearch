@@ -9,11 +9,6 @@ public class Tree<N, V> extends TypedTree<N, V, ValueGraph<N, V>> {
         super(graph);
     }
 
-    @Override
-    public ValueGraph<N, V> graph() {
-        return super.graph();
-    }
-
     public TreePath<N, V> getPathFromRootNodeToTarget(final N target) {
         return Trees.getPathFromRootNodeToTarget(this, target);
     }
