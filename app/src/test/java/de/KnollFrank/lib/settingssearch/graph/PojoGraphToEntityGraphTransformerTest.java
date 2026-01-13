@@ -14,11 +14,11 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
@@ -42,7 +42,7 @@ public class PojoGraphToEntityGraphTransformerTest {
                                 "graph-screen2"));
         test_toEntityGraph(
                 graphs.pojoTree(),
-                graphs.entityGraphAndDbDataProvider());
+                graphs.entityTreeAndDbDataProvider());
     }
 
     @Test
@@ -63,13 +63,13 @@ public class PojoGraphToEntityGraphTransformerTest {
                                 "graph-screen2"));
         test_toEntityGraph(
                 graphs.pojoTree(),
-                graphs.entityGraphAndDbDataProvider());
+                graphs.entityTreeAndDbDataProvider());
     }
 
     private static void test_toEntityGraph(@SuppressWarnings({"UnstableApiUsage", "NullableProblems"}) final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,
-                                           final GraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
+                                           final TreeAndDbDataProvider entityTreeAndDbDataProviderExpected) {
         // When
-        final GraphAndDbDataProvider entityGraphAndDbDataProviderActual =
+        final TreeAndDbDataProvider entityTreeAndDbDataProviderActual =
                 PojoGraphToEntityGraphTransformer.toEntityGraph(
                         pojoGraph,
                         Locale.GERMAN,
@@ -77,7 +77,7 @@ public class PojoGraphToEntityGraphTransformerTest {
 
         // Then
         EntityGraphEquality.assertActualEqualsExpected(
-                entityGraphAndDbDataProviderActual,
-                entityGraphAndDbDataProviderExpected);
+                entityTreeAndDbDataProviderActual,
+                entityTreeAndDbDataProviderExpected);
     }
 }

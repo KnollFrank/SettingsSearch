@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
 
 @Dao
-public abstract class SearchablePreferenceScreenTreeEntityDAO implements SearchablePreferenceScreenGraphEntity.DbDataProvider {
+public abstract class SearchablePreferenceScreenTreeEntityDAO implements SearchablePreferenceScreenTreeEntity.DbDataProvider {
 
     private final SearchablePreferenceScreenEntityDAO screenDAO;
     private final SearchablePreferenceEntityDAO preferenceDAO;
@@ -30,30 +30,30 @@ public abstract class SearchablePreferenceScreenTreeEntityDAO implements Searcha
     }
 
     @Transaction
-    public DatabaseState persistOrReplace(final GraphAndDbDataProvider graphAndDbDataProvider) {
-        final DatabaseState removedDatabaseState = removeIfPresent(graphAndDbDataProvider.graph());
-        final DatabaseState persistedDatabaseState = persist(graphAndDbDataProvider);
+    public DatabaseState persistOrReplace(final TreeAndDbDataProvider treeAndDbDataProvider) {
+        final DatabaseState removedDatabaseState = removeIfPresent(treeAndDbDataProvider.tree());
+        final DatabaseState persistedDatabaseState = persist(treeAndDbDataProvider);
         return removedDatabaseState.combine(persistedDatabaseState);
     }
 
-    public Optional<GraphAndDbDataProvider> findGraphById(final Locale id) {
+    public Optional<TreeAndDbDataProvider> findTreeById(final Locale id) {
         return this
-                ._findGraphById(id)
-                .map(this::createGraphAndDbDataProvider);
+                ._findTreeById(id)
+                .map(this::createTreeAndDbDataProvider);
     }
 
-    public Set<GraphAndDbDataProvider> loadAll() {
+    public Set<TreeAndDbDataProvider> loadAll() {
         return this
                 ._loadAll()
                 .stream()
-                .map(this::createGraphAndDbDataProvider)
+                .map(this::createTreeAndDbDataProvider)
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenGraphEntity graph) {
+    public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenTreeEntity tree) {
         // FK-TODO: add cache?
-        return screenDAO.findSearchablePreferenceScreensByGraphId(graph.id());
+        return screenDAO.findSearchablePreferenceScreensByGraphId(tree.id());
     }
 
     @Transaction
@@ -64,58 +64,58 @@ public abstract class SearchablePreferenceScreenTreeEntityDAO implements Searcha
     }
 
     @Insert
-    protected abstract long persistAndReturnInsertedRowId(SearchablePreferenceScreenGraphEntity graph);
+    protected abstract long persistAndReturnInsertedRowId(SearchablePreferenceScreenTreeEntity tree);
 
     @Delete
-    protected abstract int removeAndReturnNumberOfDeletedRows(SearchablePreferenceScreenGraphEntity graph);
+    protected abstract int removeAndReturnNumberOfDeletedRows(SearchablePreferenceScreenTreeEntity tree);
 
-    @Query("DELETE FROM SearchablePreferenceScreenGraphEntity")
+    @Query("DELETE FROM SearchablePreferenceScreenTreeEntity")
     protected abstract int removeAllAndReturnNumberOfDeletedRows();
 
-    @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity WHERE id = :id")
-    protected abstract Optional<SearchablePreferenceScreenGraphEntity> _findGraphById(Locale id);
+    @Query("SELECT * FROM SearchablePreferenceScreenTreeEntity WHERE id = :id")
+    protected abstract Optional<SearchablePreferenceScreenTreeEntity> _findTreeById(Locale id);
 
-    @Query("SELECT * FROM SearchablePreferenceScreenGraphEntity")
-    protected abstract List<SearchablePreferenceScreenGraphEntity> _loadAll();
+    @Query("SELECT * FROM SearchablePreferenceScreenTreeEntity")
+    protected abstract List<SearchablePreferenceScreenTreeEntity> _loadAll();
 
-    private GraphAndDbDataProvider createGraphAndDbDataProvider(final SearchablePreferenceScreenGraphEntity graph) {
-        return new GraphAndDbDataProvider(
-                graph,
+    private TreeAndDbDataProvider createTreeAndDbDataProvider(final SearchablePreferenceScreenTreeEntity tree) {
+        return new TreeAndDbDataProvider(
+                tree,
                 DbDataProviderFactory.createDbDataProvider(this, screenDAO, preferenceDAO));
     }
 
-    private DatabaseState removeIfPresent(final SearchablePreferenceScreenGraphEntity graph) {
-        final var graphFromDB = _findGraphById(graph.id());
-        return graphFromDB.isPresent() ?
-                remove(graphFromDB.orElseThrow()) :
+    private DatabaseState removeIfPresent(final SearchablePreferenceScreenTreeEntity graph) {
+        final var treeFromDB = _findTreeById(graph.id());
+        return treeFromDB.isPresent() ?
+                remove(treeFromDB.orElseThrow()) :
                 DatabaseState.fromDatabaseChanged(false);
     }
 
-    private DatabaseState remove(final SearchablePreferenceScreenGraphEntity graph) {
-        final DatabaseState screenDatabaseState = screenDAO.remove(screenDAO.findSearchablePreferenceScreensByGraphId(graph.id()));
-        final DatabaseState graphDatabaseState = wrapper.remove(graph);
-        return screenDatabaseState.combine(graphDatabaseState);
+    private DatabaseState remove(final SearchablePreferenceScreenTreeEntity tree) {
+        final DatabaseState screenDatabaseState = screenDAO.remove(screenDAO.findSearchablePreferenceScreensByGraphId(tree.id()));
+        final DatabaseState treeDatabaseState = wrapper.remove(tree);
+        return screenDatabaseState.combine(treeDatabaseState);
     }
 
-    private DatabaseState persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
+    private DatabaseState persist(final TreeAndDbDataProvider treeAndDbDataProvider) {
         final DatabaseState screenDatabaseState =
                 screenDAO.persist(
-                        getScreens(graphAndDbDataProvider),
-                        graphAndDbDataProvider.dbDataProvider());
-        final DatabaseState graphDatabaseState = wrapper.persist(graphAndDbDataProvider);
+                        getScreens(treeAndDbDataProvider),
+                        treeAndDbDataProvider.dbDataProvider());
+        final DatabaseState graphDatabaseState = wrapper.persist(treeAndDbDataProvider);
         return screenDatabaseState.combine(graphDatabaseState);
     }
 
-    private static Set<SearchablePreferenceScreenEntity> getScreens(final GraphAndDbDataProvider graphAndDbDataProvider) {
-        return graphAndDbDataProvider
-                .graph()
-                .getNodes(graphAndDbDataProvider.dbDataProvider());
+    private static Set<SearchablePreferenceScreenEntity> getScreens(final TreeAndDbDataProvider treeAndDbDataProvider) {
+        return treeAndDbDataProvider
+                .tree()
+                .getNodes(treeAndDbDataProvider.dbDataProvider());
     }
 
     private class Wrapper {
 
-        public DatabaseState persist(final GraphAndDbDataProvider graphAndDbDataProvider) {
-            final long insertedRowId = persistAndReturnInsertedRowId(graphAndDbDataProvider.graph());
+        public DatabaseState persist(final TreeAndDbDataProvider treeAndDbDataProvider) {
+            final long insertedRowId = persistAndReturnInsertedRowId(treeAndDbDataProvider.tree());
             return DatabaseStateFactory.fromInsertedRowId(insertedRowId);
         }
 
@@ -124,8 +124,8 @@ public abstract class SearchablePreferenceScreenTreeEntityDAO implements Searcha
             return DatabaseStateFactory.fromNumberOfChangedRows(numberOfDeletedRows);
         }
 
-        public DatabaseState remove(final SearchablePreferenceScreenGraphEntity graph) {
-            final int numberOfDeletedRows = removeAndReturnNumberOfDeletedRows(graph);
+        public DatabaseState remove(final SearchablePreferenceScreenTreeEntity tree) {
+            final int numberOfDeletedRows = removeAndReturnNumberOfDeletedRows(tree);
             return DatabaseStateFactory.fromNumberOfChangedRows(numberOfDeletedRows);
         }
     }

@@ -1,23 +1,23 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter;
 
-public class EntityTreePojoTreeConverter implements Converter<GraphAndDbDataProvider, SearchablePreferenceScreenTree> {
+public class EntityTreePojoTreeConverter implements Converter<TreeAndDbDataProvider, SearchablePreferenceScreenTree> {
 
     @Override
-    public SearchablePreferenceScreenTree convertForward(final GraphAndDbDataProvider graphAndDbDataProvider) {
+    public SearchablePreferenceScreenTree convertForward(final TreeAndDbDataProvider treeAndDbDataProvider) {
         return new SearchablePreferenceScreenTree(
                 EntityGraphToPojoGraphTransformer.toPojoGraph(
-                        graphAndDbDataProvider.asGraph(),
-                        graphAndDbDataProvider.dbDataProvider()),
-                graphAndDbDataProvider.graph().id(),
-                graphAndDbDataProvider.graph().configuration());
+                        treeAndDbDataProvider.asGraph(),
+                        treeAndDbDataProvider.dbDataProvider()),
+                treeAndDbDataProvider.tree().id(),
+                treeAndDbDataProvider.tree().configuration());
     }
 
     @Override
-    public GraphAndDbDataProvider convertBackward(final SearchablePreferenceScreenTree pojoTree) {
+    public TreeAndDbDataProvider convertBackward(final SearchablePreferenceScreenTree pojoTree) {
         return PojoGraphToEntityGraphTransformer.toEntityGraph(
                 pojoTree.tree(),
                 pojoTree.locale(),

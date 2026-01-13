@@ -10,7 +10,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceSc
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LazyPersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalEitherIntegerOrStringConverter;
@@ -22,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
 @Database(
         entities = {
-                SearchablePreferenceScreenGraphEntity.class,
+                SearchablePreferenceScreenTreeEntity.class,
                 SearchablePreferenceScreenEntity.class,
                 SearchablePreferenceEntity.class
         },

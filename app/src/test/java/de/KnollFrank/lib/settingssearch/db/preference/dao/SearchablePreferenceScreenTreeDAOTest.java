@@ -180,7 +180,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
     private static SearchablePreferenceScreenTree asSearchablePreferenceScreenGraph(final Graphs graphs) {
         return new SearchablePreferenceScreenTree(
                 graphs.pojoTree(),
-                graphs.entityGraphAndDbDataProvider().graph().id(),
-                graphs.entityGraphAndDbDataProvider().graph().configuration());
+                graphs.entityTreeAndDbDataProvider().tree().id(),
+                graphs.entityTreeAndDbDataProvider().tree().configuration());
     }
 }

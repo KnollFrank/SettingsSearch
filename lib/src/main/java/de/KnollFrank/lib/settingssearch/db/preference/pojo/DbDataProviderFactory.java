@@ -7,14 +7,14 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 
 public class DbDataProviderFactory {
 
-    public static DbDataProvider createDbDataProvider(final SearchablePreferenceScreenGraphEntity.DbDataProvider graphDbDataProvider,
+    public static DbDataProvider createDbDataProvider(final SearchablePreferenceScreenTreeEntity.DbDataProvider treeDbDataProvider,
                                                       final SearchablePreferenceScreenEntity.DbDataProvider screenDbDataProvider,
                                                       final SearchablePreferenceEntity.DbDataProvider preferenceDbDataProvider) {
         return new DbDataProvider() {
 
             @Override
-            public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenGraphEntity graph) {
-                return graphDbDataProvider.getNodes(graph);
+            public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenTreeEntity tree) {
+                return treeDbDataProvider.getNodes(tree);
             }
 
             @Override
@@ -46,13 +46,13 @@ public class DbDataProviderFactory {
                 createPreferenceDataProvider(dbDataProviderData));
     }
 
-    private static SearchablePreferenceScreenGraphEntity.DbDataProvider createGraphDbDataProvider(final DbDataProviderData dbDataProviderData) {
-        return new SearchablePreferenceScreenGraphEntity.DbDataProvider() {
+    private static SearchablePreferenceScreenTreeEntity.DbDataProvider createGraphDbDataProvider(final DbDataProviderData dbDataProviderData) {
+        return new SearchablePreferenceScreenTreeEntity.DbDataProvider() {
 
             @Override
-            public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenGraphEntity graph) {
+            public Set<SearchablePreferenceScreenEntity> getNodes(final SearchablePreferenceScreenTreeEntity tree) {
                 return Maps
-                        .get(dbDataProviderData.nodesByGraph(), graph)
+                        .get(dbDataProviderData.nodesByTree(), tree)
                         .orElseThrow();
             }
         };

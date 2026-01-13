@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public record DbDataProviderData(
-        Map<SearchablePreferenceScreenGraphEntity, Set<SearchablePreferenceScreenEntity>> nodesByGraph,
+        Map<SearchablePreferenceScreenTreeEntity, Set<SearchablePreferenceScreenEntity>> nodesByTree,
         Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen,
         Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference,
         Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference,

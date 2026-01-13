@@ -40,7 +40,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
     }
 
     public record Graphs(
-            GraphAndDbDataProvider entityGraphAndDbDataProvider,
+            TreeAndDbDataProvider entityTreeAndDbDataProvider,
             Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoTree) {
     }
 
@@ -80,8 +80,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         new PersistableBundle(),
                         Optional.empty(),
                         Set.of());
-        final SearchablePreferenceScreenGraphEntity graphEntity =
-                new SearchablePreferenceScreenGraphEntity(
+        final SearchablePreferenceScreenTreeEntity treeEntity =
+                new SearchablePreferenceScreenTreeEntity(
                         locale,
                         PersistableBundleTestFactory.createSomePersistableBundle());
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
@@ -90,11 +90,11 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         preferenceConnectingSrcToDst,
                         preferencePojoConnectingSrcToDst,
                         host,
-                        graphEntity.id(),
+                        treeEntity.id(),
                         data);
         return new Graphs(
-                new GraphAndDbDataProvider(
-                        graphEntity,
+                new TreeAndDbDataProvider(
+                        treeEntity,
                         DbDataProviderFactory.createDbDataProvider(
                                 DbDataProviderDatas.merge(
                                         List.of(
@@ -103,7 +103,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                         .builder()
                                                         .withNodesByGraph(
                                                                 Map.of(
-                                                                        graphEntity,
+                                                                        treeEntity,
                                                                         Set.of(src.first().first())))
                                                         .withPredecessorByPreference(
                                                                 Map.of(
@@ -158,8 +158,8 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         new PersistableBundle(),
                         Optional.empty(),
                         Set.of());
-        final SearchablePreferenceScreenGraphEntity graphEntity =
-                new SearchablePreferenceScreenGraphEntity(
+        final SearchablePreferenceScreenTreeEntity treeEntity =
+                new SearchablePreferenceScreenTreeEntity(
                         locale,
                         PersistableBundleTestFactory.createSomePersistableBundle());
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> src =
@@ -168,16 +168,16 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         preferenceConnectingSrcToDst,
                         preferencePojoConnectingSrcToDst,
                         host,
-                        graphEntity.id(),
+                        treeEntity.id(),
                         data);
         final Pair<Pair<SearchablePreferenceScreenEntity, DbDataProviderData>, SearchablePreferenceScreen> dst =
                 createDst(
                         preferenceConnectingSrcToDst,
-                        graphEntity.id(),
+                        treeEntity.id(),
                         data);
         return new Graphs(
-                new GraphAndDbDataProvider(
-                        graphEntity,
+                new TreeAndDbDataProvider(
+                        treeEntity,
                         DbDataProviderFactory.createDbDataProvider(
                                 DbDataProviderDatas.merge(
                                         List.of(
@@ -187,7 +187,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                                         .builder()
                                                         .withNodesByGraph(
                                                                 Map.of(
-                                                                        graphEntity,
+                                                                        treeEntity,
                                                                         Set.of(
                                                                                 src.first().first(),
                                                                                 dst.first().first())))

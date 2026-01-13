@@ -13,19 +13,19 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.Pair;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.BundleMatchers;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.LocaleConverter;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class EntityGraphEquality {
 
-    public static void assertActualEqualsExpected(final GraphAndDbDataProvider actual,
-                                                  final GraphAndDbDataProvider expected) {
-        assertActualEqualsExpected(actual.graph(), expected.graph());
+    public static void assertActualEqualsExpected(final TreeAndDbDataProvider actual,
+                                                  final TreeAndDbDataProvider expected) {
+        assertActualEqualsExpected(actual.tree(), expected.tree());
         final var actualGraph = actual.asGraph();
         final var expectedGraph = expected.asGraph();
         assertActualEqualsExpected(
@@ -44,7 +44,7 @@ class EntityGraphEquality {
                         expected.dbDataProvider()));
     }
 
-    private static void assertActualEqualsExpected(final SearchablePreferenceScreenGraphEntity actual, final SearchablePreferenceScreenGraphEntity expected) {
+    private static void assertActualEqualsExpected(final SearchablePreferenceScreenTreeEntity actual, final SearchablePreferenceScreenTreeEntity expected) {
         assertThat(actual.id(), is(expected.id()));
         assertThat(actual.configuration(), BundleMatchers.isEqualTo(expected.configuration()));
     }

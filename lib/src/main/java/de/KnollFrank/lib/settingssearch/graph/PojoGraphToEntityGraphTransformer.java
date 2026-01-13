@@ -19,18 +19,18 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderData;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderDatas;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProviderFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DetachedSearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntities;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTreeEntity;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PojoGraphToEntityGraphTransformer {
 
-    public static GraphAndDbDataProvider toEntityGraph(
+    public static TreeAndDbDataProvider toEntityGraph(
             final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,
             final Locale graphId,
             final PersistableBundle configuration) {
@@ -38,8 +38,8 @@ public class PojoGraphToEntityGraphTransformer {
                 TreeTransformerAlgorithm.transform(
                         pojoGraph,
                         createGraphTransformer(graphId));
-        final SearchablePreferenceScreenGraphEntity graphEntity = new SearchablePreferenceScreenGraphEntity(graphId, configuration);
-        return new GraphAndDbDataProvider(
+        final SearchablePreferenceScreenTreeEntity graphEntity = new SearchablePreferenceScreenTreeEntity(graphId, configuration);
+        return new TreeAndDbDataProvider(
                 graphEntity,
                 DbDataProviderFactory.createDbDataProvider(
                         DbDataProviderDatas.merge(

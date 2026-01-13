@@ -16,11 +16,11 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.Locale;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
@@ -43,7 +43,7 @@ public class EntityTreeToPojoTreeTransformerTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         test_toPojoGraph(
-                graphs.entityGraphAndDbDataProvider(),
+                graphs.entityTreeAndDbDataProvider(),
                 graphs.pojoTree());
     }
 
@@ -64,17 +64,17 @@ public class EntityTreeToPojoTreeTransformerTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         test_toPojoGraph(
-                graphs.entityGraphAndDbDataProvider(),
+                graphs.entityTreeAndDbDataProvider(),
                 graphs.pojoTree());
     }
 
-    private static void test_toPojoGraph(final GraphAndDbDataProvider entityGraphAndDbDataProvider,
+    private static void test_toPojoGraph(final TreeAndDbDataProvider entityTreeAndDbDataProvider,
                                          final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoTreeExpected) {
         // When
         final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraphActual =
                 EntityGraphToPojoGraphTransformer.toPojoGraph(
-                        entityGraphAndDbDataProvider.asGraph(),
-                        entityGraphAndDbDataProvider.dbDataProvider());
+                        entityTreeAndDbDataProvider.asGraph(),
+                        entityTreeAndDbDataProvider.dbDataProvider());
 
         // Then
         assertThat(pojoGraphActual, is(pojoTreeExpected));

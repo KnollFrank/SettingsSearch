@@ -49,7 +49,7 @@ public class SearchablePreferenceScreenTreeDAO {
 
     private Optional<SearchablePreferenceScreenTree> _findGraphById(final Locale id) {
         return delegate
-                .findGraphById(id)
+                .findTreeById(id)
                 .map(entityTreePojoTreeConverter::convertForward);
     }
 

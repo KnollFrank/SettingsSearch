@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class DbDataProviderDataBuilder {
 
-    private Map<SearchablePreferenceScreenGraphEntity, Set<SearchablePreferenceScreenEntity>> nodesByGraph = new HashMap<>();
+    private Map<SearchablePreferenceScreenTreeEntity, Set<SearchablePreferenceScreenEntity>> nodesByGraph = new HashMap<>();
     private Map<SearchablePreferenceScreenEntity, Set<SearchablePreferenceEntity>> allPreferencesBySearchablePreferenceScreen = new HashMap<>();
     private Map<SearchablePreferenceEntity, SearchablePreferenceScreenEntity> hostByPreference = new HashMap<>();
     private Map<SearchablePreferenceEntity, Optional<SearchablePreferenceEntity>> predecessorByPreference = new HashMap<>();
@@ -16,7 +16,7 @@ public class DbDataProviderDataBuilder {
     protected DbDataProviderDataBuilder() {
     }
 
-    public DbDataProviderDataBuilder withNodesByGraph(final Map<SearchablePreferenceScreenGraphEntity, Set<SearchablePreferenceScreenEntity>> nodesByGraph) {
+    public DbDataProviderDataBuilder withNodesByGraph(final Map<SearchablePreferenceScreenTreeEntity, Set<SearchablePreferenceScreenEntity>> nodesByGraph) {
         this.nodesByGraph = nodesByGraph;
         return this;
     }

@@ -14,17 +14,17 @@ public class SearchablePreferenceScreenEntityTestFactory {
     }
 
     public static SearchablePreferenceScreenEntityAndDbDataProvider createSomeSearchablePreferenceScreen(final SearchablePreferenceScreenGraphTestFactory.Data data) {
-        final GraphAndDbDataProvider entityGraphAndDbDataProvider =
+        final TreeAndDbDataProvider entityTreeAndDbDataProvider =
                 SearchablePreferenceScreenGraphTestFactory
                         .createGraph(
                                 PreferenceFragmentCompat.class,
                                 Locale.GERMAN,
                                 data)
-                        .entityGraphAndDbDataProvider();
+                        .entityTreeAndDbDataProvider();
         return new SearchablePreferenceScreenEntityAndDbDataProvider(
                 Graphs
-                        .getRootNode(entityGraphAndDbDataProvider.asGraph().graph())
+                        .getRootNode(entityTreeAndDbDataProvider.asGraph().graph())
                         .orElseThrow(),
-                entityGraphAndDbDataProvider.dbDataProvider());
+                entityTreeAndDbDataProvider.dbDataProvider());
     }
 }

@@ -10,12 +10,12 @@ import java.util.Locale;
 import java.util.Set;
 
 @Entity
-public record SearchablePreferenceScreenGraphEntity(@PrimaryKey @NonNull Locale id,
-                                                    PersistableBundle configuration) {
+public record SearchablePreferenceScreenTreeEntity(@PrimaryKey @NonNull Locale id,
+                                                   PersistableBundle configuration) {
 
     public interface DbDataProvider {
 
-        Set<SearchablePreferenceScreenEntity> getNodes(SearchablePreferenceScreenGraphEntity graph);
+        Set<SearchablePreferenceScreenEntity> getNodes(SearchablePreferenceScreenTreeEntity tree);
     }
 
     public Set<SearchablePreferenceScreenEntity> getNodes(final DbDataProvider dbDataProvider) {

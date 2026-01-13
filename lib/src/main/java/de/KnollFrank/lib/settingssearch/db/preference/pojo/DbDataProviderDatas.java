@@ -11,7 +11,7 @@ public class DbDataProviderDatas {
 
     public static DbDataProviderData merge(final Collection<DbDataProviderData> dbDataProviderDatas) {
         return new DbDataProviderData(
-                mapThenMerge(dbDataProviderDatas, DbDataProviderData::nodesByGraph),
+                mapThenMerge(dbDataProviderDatas, DbDataProviderData::nodesByTree),
                 mapThenMerge(dbDataProviderDatas, DbDataProviderData::allPreferencesBySearchablePreferenceScreen),
                 mapThenMerge(dbDataProviderDatas, DbDataProviderData::hostByPreference),
                 mapThenMerge(dbDataProviderDatas, DbDataProviderData::predecessorByPreference),

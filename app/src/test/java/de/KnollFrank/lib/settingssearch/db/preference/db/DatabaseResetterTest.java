@@ -81,8 +81,8 @@ public class DatabaseResetterTest {
                 .persistOrReplace(
                         new SearchablePreferenceScreenTree(
                                 singleNodeGraph.pojoTree(),
-                                singleNodeGraph.entityGraphAndDbDataProvider().graph().id(),
-                                singleNodeGraph.entityGraphAndDbDataProvider().graph().configuration()));
+                                singleNodeGraph.entityTreeAndDbDataProvider().tree().id(),
+                                singleNodeGraph.entityTreeAndDbDataProvider().tree().configuration()));
     }
 
     private static void assertIsReset(final PreferencesDatabase<Configuration> preferencesDatabase,
