@@ -4,7 +4,7 @@ import android.os.PersistableBundle;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -79,8 +79,8 @@ public class MergedPreferenceScreenDataRepository<C> {
     }
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    private Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> computeSearchablePreferenceScreenGraph() {
-        final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> searchablePreferenceScreenGraph =
+    private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> computeSearchablePreferenceScreenGraph() {
+        final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> searchablePreferenceScreenGraph =
                 this
                         .getSearchablePreferenceScreenGraphProvider()
                         .getSearchablePreferenceScreenTree(

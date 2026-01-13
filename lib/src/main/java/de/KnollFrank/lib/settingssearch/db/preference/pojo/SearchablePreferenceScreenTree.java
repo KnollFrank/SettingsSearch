@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
 import android.os.PersistableBundle;
 
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Locale;
 
@@ -18,9 +18,8 @@ FK-TODO:
      - 1. b)
 */
 public record SearchablePreferenceScreenTree(
-
         @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-        Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
+        Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
         Locale locale,
         PersistableBundle configuration) {
 

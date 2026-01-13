@@ -12,9 +12,9 @@ import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer.ContextOfIn
 public class TreeTransformerAlgorithm {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    public static <NSrc, VSrc, NDst, VDst>
-    Tree<NDst, VDst, ImmutableValueGraph<NDst, VDst>> transform(final Tree<NSrc, VSrc, ? extends ValueGraph<NSrc, VSrc>> tree,
-                                                                final TreeTransformer<NSrc, VSrc, NDst, VDst> treeTransformer) {
+    public static <NSrc, VSrc, NDst, VDst> Tree<NDst, VDst, ImmutableValueGraph<NDst, VDst>> transform(
+            final Tree<NSrc, VSrc, ? extends ValueGraph<NSrc, VSrc>> tree,
+            final TreeTransformer<NSrc, VSrc, NDst, VDst> treeTransformer) {
         final ImmutableValueGraph.Builder<NDst, VDst> transformedGraphBuilder = ValueGraphBuilder.directed().immutable();
         final BreadthFirstTreeVisitor<NSrc, VSrc> treeVisitor =
                 new BreadthFirstTreeVisitor<>() {

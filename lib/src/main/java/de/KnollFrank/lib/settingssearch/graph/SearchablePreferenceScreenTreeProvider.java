@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import androidx.preference.Preference;
 
+import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraph;
 
 import java.util.Locale;
@@ -33,20 +34,20 @@ public class SearchablePreferenceScreenTreeProvider {
         this.locale = locale;
     }
 
-    public Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> getSearchablePreferenceScreenTree(final PreferenceScreenWithHost root) {
+    public Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> getSearchablePreferenceScreenTree(final PreferenceScreenWithHost root) {
         computePreferencesListener.onStartComputePreferences();
         final var searchablePreferenceScreenGraph = _getSearchablePreferenceScreenTree(root);
         computePreferencesListener.onFinishComputePreferences();
         return searchablePreferenceScreenGraph;
     }
 
-    private Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> _getSearchablePreferenceScreenTree(final PreferenceScreenWithHost root) {
+    private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> _getSearchablePreferenceScreenTree(final PreferenceScreenWithHost root) {
         final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree = preferenceScreenGraphProvider.getPreferenceScreenGraph(root);
         preferenceScreenTreeAvailableListener.onPreferenceScreenTreeAvailable(preferenceScreenTree);
         return transformGraphToPojoGraph(preferenceScreenTree);
     }
 
-    private Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformGraphToPojoGraph(
+    private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformGraphToPojoGraph(
             final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenGraph) {
         return MapFromPojoNodesRemover.removeMapFromPojoNodes(
                 treeToPojoTreeTransformer.transformTreeToPojoTree(preferenceScreenGraph, locale));
