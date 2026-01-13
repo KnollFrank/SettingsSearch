@@ -7,14 +7,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 
 public class SearchablePreferenceScreenGraphDAO {
 
     private final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter;
     private final SearchablePreferenceScreenGraphEntityDAO delegate;
-    private final Map<Locale, Optional<SearchablePreferenceScreenGraph>> graphById = new HashMap<>();
+    private final Map<Locale, Optional<SearchablePreferenceScreenTree>> graphById = new HashMap<>();
 
     public SearchablePreferenceScreenGraphDAO(final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter,
                                               final SearchablePreferenceScreenGraphEntityDAO delegate) {
@@ -22,20 +22,20 @@ public class SearchablePreferenceScreenGraphDAO {
         this.delegate = delegate;
     }
 
-    public void persistOrReplace(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
-        delegate.persistOrReplace(entityGraphPojoGraphConverter.convertBackward(searchablePreferenceScreenGraph));
-        graphById.put(searchablePreferenceScreenGraph.locale(), Optional.of(searchablePreferenceScreenGraph));
+    public void persistOrReplace(final SearchablePreferenceScreenTree searchablePreferenceScreenTree) {
+        delegate.persistOrReplace(entityGraphPojoGraphConverter.convertBackward(searchablePreferenceScreenTree));
+        graphById.put(searchablePreferenceScreenTree.locale(), Optional.of(searchablePreferenceScreenTree));
     }
 
-    public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id) {
+    public Optional<SearchablePreferenceScreenTree> findGraphById(final Locale id) {
         if (!graphById.containsKey(id)) {
             graphById.put(id, _findGraphById(id));
         }
         return graphById.get(id);
     }
 
-    public Set<SearchablePreferenceScreenGraph> loadAll() {
-        final Set<SearchablePreferenceScreenGraph> graphs = _loadAll();
+    public Set<SearchablePreferenceScreenTree> loadAll() {
+        final Set<SearchablePreferenceScreenTree> graphs = _loadAll();
         cache(graphs);
         return graphs;
     }
@@ -47,13 +47,13 @@ public class SearchablePreferenceScreenGraphDAO {
         }
     }
 
-    private Optional<SearchablePreferenceScreenGraph> _findGraphById(final Locale id) {
+    private Optional<SearchablePreferenceScreenTree> _findGraphById(final Locale id) {
         return delegate
                 .findGraphById(id)
                 .map(entityGraphPojoGraphConverter::convertForward);
     }
 
-    private Set<SearchablePreferenceScreenGraph> _loadAll() {
+    private Set<SearchablePreferenceScreenTree> _loadAll() {
         return delegate
                 .loadAll()
                 .stream()
@@ -61,8 +61,8 @@ public class SearchablePreferenceScreenGraphDAO {
                 .collect(Collectors.toSet());
     }
 
-    private void cache(final Set<SearchablePreferenceScreenGraph> graphs) {
-        for (final SearchablePreferenceScreenGraph graph : graphs) {
+    private void cache(final Set<SearchablePreferenceScreenTree> graphs) {
+        for (final SearchablePreferenceScreenTree graph : graphs) {
             graphById.put(graph.locale(), Optional.of(graph));
         }
     }

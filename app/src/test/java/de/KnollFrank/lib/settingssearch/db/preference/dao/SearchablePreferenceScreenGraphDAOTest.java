@@ -14,8 +14,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
 
@@ -28,7 +28,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
 
         // When
-        final Optional<SearchablePreferenceScreenGraph> graphFromDb = dao.findGraphById(Locale.GERMAN);
+        final Optional<SearchablePreferenceScreenTree> graphFromDb = dao.findGraphById(Locale.GERMAN);
 
         // Then
         assertThat(graphFromDb, is(Optional.empty()));
@@ -38,8 +38,8 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
     public void test_persistOrReplace_findGraphById() {
         // Given
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
-        final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph =
-                new SearchablePreferenceScreenGraph(
+        final SearchablePreferenceScreenTree searchablePreferenceScreenTree =
+                new SearchablePreferenceScreenTree(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraph(
                                         PreferenceFragmentCompat.class,
@@ -59,8 +59,8 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                         PersistableBundleTestFactory.createSomePersistableBundle());
 
         // When
-        dao.persistOrReplace(searchablePreferenceScreenGraph);
-        testFindGraphById(searchablePreferenceScreenGraph, dao);
+        dao.persistOrReplace(searchablePreferenceScreenTree);
+        testFindGraphById(searchablePreferenceScreenTree, dao);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
         final SearchablePreferenceScreenGraphDAO dao = createGraphDAO();
 
         // When
-        final SearchablePreferenceScreenGraph germanGraph =
+        final SearchablePreferenceScreenTree germanGraph =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory.createSingleNodeGraph(
                                 PreferenceFragmentCompat.class,
@@ -87,7 +87,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
         dao.persistOrReplace(germanGraph);
 
         // And
-        final SearchablePreferenceScreenGraph chineseGraph =
+        final SearchablePreferenceScreenTree chineseGraph =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory.createGraph(
                                 PreferenceFragmentCompat.class,
@@ -116,7 +116,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
         final Locale locale = Locale.GERMAN;
 
         // When
-        final SearchablePreferenceScreenGraph graphToBeOverwritten =
+        final SearchablePreferenceScreenTree graphToBeOverwritten =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createSingleNodeGraph(
@@ -135,7 +135,7 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
         dao.persistOrReplace(graphToBeOverwritten);
 
         // And
-        final SearchablePreferenceScreenGraph overwritingGraph =
+        final SearchablePreferenceScreenTree overwritingGraph =
                 asSearchablePreferenceScreenGraph(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraph(
@@ -163,22 +163,22 @@ public class SearchablePreferenceScreenGraphDAOTest extends PreferencesRoomDatab
                 preferencesRoomDatabase.searchablePreferenceScreenGraphEntityDAO());
     }
 
-    private static void testFindGraphById(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph,
+    private static void testFindGraphById(final SearchablePreferenceScreenTree searchablePreferenceScreenTree,
                                           final SearchablePreferenceScreenGraphDAO dao) {
-        final SearchablePreferenceScreenGraph searchablePreferenceScreenGraphFromDb =
+        final SearchablePreferenceScreenTree searchablePreferenceScreenTreeFromDb =
                 dao
-                        .findGraphById(searchablePreferenceScreenGraph.locale())
+                        .findGraphById(searchablePreferenceScreenTree.locale())
                         .orElseThrow();
-        assertActualEqualsExpected(searchablePreferenceScreenGraphFromDb, searchablePreferenceScreenGraph);
+        assertActualEqualsExpected(searchablePreferenceScreenTreeFromDb, searchablePreferenceScreenTree);
     }
 
-    private static void assertActualEqualsExpected(final SearchablePreferenceScreenGraph actual, final SearchablePreferenceScreenGraph expected) {
+    private static void assertActualEqualsExpected(final SearchablePreferenceScreenTree actual, final SearchablePreferenceScreenTree expected) {
         assertThat(actual.tree().graph(), is(expected.tree().graph()));
         assertThat(actual.locale(), is(expected.locale()));
     }
 
-    private static SearchablePreferenceScreenGraph asSearchablePreferenceScreenGraph(final Graphs graphs) {
-        return new SearchablePreferenceScreenGraph(
+    private static SearchablePreferenceScreenTree asSearchablePreferenceScreenGraph(final Graphs graphs) {
+        return new SearchablePreferenceScreenTree(
                 graphs.pojoTree(),
                 graphs.entityGraphAndDbDataProvider().graph().id(),
                 graphs.entityGraphAndDbDataProvider().graph().configuration());

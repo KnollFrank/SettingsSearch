@@ -8,7 +8,7 @@ import java.util.Optional;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PrepackagedPreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFifthAdapter;
 
 class PreferencesDatabaseConfigFactory {
@@ -31,9 +31,9 @@ class PreferencesDatabaseConfigFactory {
                                 new SearchablePreferenceScreenGraphTransformer<>() {
 
                                     @Override
-                                    public SearchablePreferenceScreenGraph transformGraph(final SearchablePreferenceScreenGraph graph,
-                                                                                          final Configuration actualConfiguration,
-                                                                                          final FragmentActivity activityContext) {
+                                    public SearchablePreferenceScreenTree transformGraph(final SearchablePreferenceScreenTree graph,
+                                                                                         final Configuration actualConfiguration,
+                                                                                         final FragmentActivity activityContext) {
                                         return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptGraphAtPrefsFragmentFifth(
                                                 graph,
                                                 actualConfiguration,

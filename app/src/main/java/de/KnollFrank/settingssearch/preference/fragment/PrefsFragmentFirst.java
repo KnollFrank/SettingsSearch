@@ -28,7 +28,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
@@ -80,7 +80,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                 true);
     }
 
-    private SearchablePreferenceScreenGraph getPojoGraph(final Locale locale) {
+    private SearchablePreferenceScreenTree getPojoGraph(final Locale locale) {
         return getPreferencesDatabase()
                 .searchablePreferenceScreenGraphRepository()
                 .findGraphById(locale, null, requireActivity())
@@ -99,7 +99,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     private boolean onPreferenceChange(final @NonNull Preference preference, final boolean checked) {
-                        final SearchablePreferenceScreenGraph pojoGraph = getPojoGraph(locale);
+                        final SearchablePreferenceScreenTree pojoGraph = getPojoGraph(locale);
                         setSummaryOfPreferences(
                                 preference,
                                 getSummaryChangingPreference(pojoGraph.tree()),
@@ -117,8 +117,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                         return true;
                     }
 
-                    private SearchablePreferenceScreenGraph getGraphHavingConfiguration(final SearchablePreferenceScreenGraph graph,
-                                                                                        final Configuration configuration) {
+                    private SearchablePreferenceScreenTree getGraphHavingConfiguration(final SearchablePreferenceScreenTree graph,
+                                                                                       final Configuration configuration) {
                         return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().convertForward(configuration));
                     }
 

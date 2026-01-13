@@ -40,8 +40,8 @@ import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabase
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.settingssearch.test.TestActivity;
@@ -173,11 +173,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 });
 
                 // When
-                final SearchablePreferenceScreenGraph germanPojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.GERMAN);
+                final SearchablePreferenceScreenTree germanPojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.GERMAN);
                 preferencesRoomDatabase.searchablePreferenceScreenGraphDAO().persistOrReplace(germanPojoGraph);
 
                 // And
-                final SearchablePreferenceScreenGraph chinesePojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.CHINESE);
+                final SearchablePreferenceScreenTree chinesePojoGraph = transformTreeToPojoTree(entityGraph, treeToPojoTreeTransformer, Locale.CHINESE);
                 preferencesRoomDatabase.searchablePreferenceScreenGraphDAO().persistOrReplace(chinesePojoGraph);
 
                 // Then no exception was thrown
@@ -189,11 +189,11 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
         return locale.getLanguage() + "-" + id;
     }
 
-    private static SearchablePreferenceScreenGraph transformTreeToPojoTree(
+    private static SearchablePreferenceScreenTree transformTreeToPojoTree(
             final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> entityGraph,
             final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
             final Locale locale) {
-        return new SearchablePreferenceScreenGraph(
+        return new SearchablePreferenceScreenTree(
                 MapFromPojoNodesRemover.removeMapFromPojoNodes(
                         treeToPojoTreeTransformer.transformTreeToPojoTree(
                                 entityGraph,

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 
 class InitialGraphTransformer<C> {
@@ -27,7 +27,7 @@ class InitialGraphTransformer<C> {
         this.configurationBundleConverter = configurationBundleConverter;
     }
 
-    public void transformAndPersist(final Optional<SearchablePreferenceScreenGraph> graph, final C configuration) {
+    public void transformAndPersist(final Optional<SearchablePreferenceScreenTree> graph, final C configuration) {
         graph.ifPresent(
                 _graph -> {
                     if (!Objects.equals(configuration, configurationBundleConverter.convertBackward(_graph.configuration()))) {
@@ -36,8 +36,8 @@ class InitialGraphTransformer<C> {
                 });
     }
 
-    private SearchablePreferenceScreenGraph process(final SearchablePreferenceScreenGraph graph,
-                                                    final C configuration) {
+    private SearchablePreferenceScreenTree process(final SearchablePreferenceScreenTree graph,
+                                                   final C configuration) {
         return graphTransformer
                 .map(_graphTransformer -> _graphTransformer.transformGraph(graph, configuration, activityContext))
                 .orElse(graph)

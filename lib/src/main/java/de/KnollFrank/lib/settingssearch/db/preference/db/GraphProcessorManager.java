@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 class GraphProcessorManager<C> {
@@ -41,12 +41,12 @@ class GraphProcessorManager<C> {
         return !graphProcessors.isEmpty();
     }
 
-    public List<SearchablePreferenceScreenGraph> applyGraphProcessorsToGraphs(
-            final List<SearchablePreferenceScreenGraph> graphs,
+    public List<SearchablePreferenceScreenTree> applyGraphProcessorsToGraphs(
+            final List<SearchablePreferenceScreenTree> graphs,
             final C configuration,
             final FragmentActivity activityContext) {
         computePreferencesListener.onStartComputePreferences();
-        final List<SearchablePreferenceScreenGraph> transformedGraphs =
+        final List<SearchablePreferenceScreenTree> transformedGraphs =
                 graphs
                         .stream()
                         .map(graph -> applyGraphProcessorsToGraph(graph, configuration, activityContext))
@@ -56,8 +56,8 @@ class GraphProcessorManager<C> {
         return transformedGraphs;
     }
 
-    private SearchablePreferenceScreenGraph applyGraphProcessorsToGraph(
-            final SearchablePreferenceScreenGraph graph,
+    private SearchablePreferenceScreenTree applyGraphProcessorsToGraph(
+            final SearchablePreferenceScreenTree graph,
             final C configuration,
             final FragmentActivity activityContext) {
         return graphProcessors
@@ -75,9 +75,9 @@ class GraphProcessorManager<C> {
                         });
     }
 
-    private static <C> SearchablePreferenceScreenGraph applyGraphProcessorToGraph(
+    private static <C> SearchablePreferenceScreenTree applyGraphProcessorToGraph(
             final Either<SearchablePreferenceScreenGraphTransformer<C>, SearchablePreferenceScreenGraphCreator<C>> graphProcessor,
-            final SearchablePreferenceScreenGraph graph,
+            final SearchablePreferenceScreenTree graph,
             final C configuration,
             final FragmentActivity activityContext) {
         return graphProcessor.join(

@@ -10,7 +10,7 @@ import java.util.Set;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 public class SearchablePreferenceScreenGraphRepository<C> {
@@ -29,8 +29,8 @@ public class SearchablePreferenceScreenGraphRepository<C> {
         this.graphProcessorManager = graphProcessorManager;
     }
 
-    public void persistOrReplace(final SearchablePreferenceScreenGraph searchablePreferenceScreenGraph) {
-        delegate.persistOrReplace(searchablePreferenceScreenGraph);
+    public void persistOrReplace(final SearchablePreferenceScreenTree searchablePreferenceScreenTree) {
+        delegate.persistOrReplace(searchablePreferenceScreenTree);
         graphProcessorManager.removeGraphProcessors();
     }
 
@@ -42,15 +42,15 @@ public class SearchablePreferenceScreenGraphRepository<C> {
         graphProcessorManager.addGraphCreator(graphCreator);
     }
 
-    public Optional<SearchablePreferenceScreenGraph> findGraphById(final Locale id,
-                                                                   final C actualConfiguration,
-                                                                   final FragmentActivity activityContext) {
+    public Optional<SearchablePreferenceScreenTree> findGraphById(final Locale id,
+                                                                  final C actualConfiguration,
+                                                                  final FragmentActivity activityContext) {
         updateSearchDatabase(actualConfiguration, activityContext);
         return delegate.findGraphById(id);
     }
 
-    public Set<SearchablePreferenceScreenGraph> loadAll(final C actualConfiguration,
-                                                        final FragmentActivity activityContext) {
+    public Set<SearchablePreferenceScreenTree> loadAll(final C actualConfiguration,
+                                                       final FragmentActivity activityContext) {
         updateSearchDatabase(actualConfiguration, activityContext);
         return delegate.loadAll();
     }

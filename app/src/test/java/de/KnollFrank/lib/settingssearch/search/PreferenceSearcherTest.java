@@ -55,7 +55,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSear
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.fragment.DefaultFragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
@@ -832,7 +832,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 }),
                         locale);
         graphRepository.persistOrReplace(
-                new SearchablePreferenceScreenGraph(
+                new SearchablePreferenceScreenTree(
                         searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
                                 preferenceScreenWithHostProvider
                                         .getPreferenceScreenWithHostOfFragment(

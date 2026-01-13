@@ -17,14 +17,14 @@ FK-TODO:
      + 1. a) und
      - 1. b)
 */
-public record SearchablePreferenceScreenGraph(
+public record SearchablePreferenceScreenTree(
 
         @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
         Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
         Locale locale,
         PersistableBundle configuration) {
 
-    public SearchablePreferenceScreenGraph asGraphHavingConfiguration(final PersistableBundle configuration) {
-        return new SearchablePreferenceScreenGraph(tree, locale, configuration);
+    public SearchablePreferenceScreenTree asGraphHavingConfiguration(final PersistableBundle configuration) {
+        return new SearchablePreferenceScreenTree(tree, locale, configuration);
     }
 }

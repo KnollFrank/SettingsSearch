@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
@@ -49,7 +49,7 @@ public class PreferencesDatabaseFactory {
         };
     }
 
-    private static <C> void processAndPersistGraph(final Optional<SearchablePreferenceScreenGraph> graph,
+    private static <C> void processAndPersistGraph(final Optional<SearchablePreferenceScreenTree> graph,
                                                    final Optional<SearchablePreferenceScreenGraphTransformer<C>> graphTransformer,
                                                    final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
                                                    final C configuration,

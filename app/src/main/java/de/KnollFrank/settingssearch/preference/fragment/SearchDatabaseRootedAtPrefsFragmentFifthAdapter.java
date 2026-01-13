@@ -21,7 +21,7 @@ import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
@@ -37,9 +37,9 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     private final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     @Override
-    public SearchablePreferenceScreenGraph transformGraph(final SearchablePreferenceScreenGraph graph,
-                                                          final Configuration actualConfiguration,
-                                                          final FragmentActivity activityContext) {
+    public SearchablePreferenceScreenTree transformGraph(final SearchablePreferenceScreenTree graph,
+                                                         final Configuration actualConfiguration,
+                                                         final FragmentActivity activityContext) {
         return adaptGraphAtPrefsFragmentFifth(
                 graph,
                 actualConfiguration,
@@ -47,8 +47,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 activityContext);
     }
 
-    public SearchablePreferenceScreenGraph adaptGraphAtPrefsFragmentFifth(
-            final SearchablePreferenceScreenGraph graph,
+    public SearchablePreferenceScreenTree adaptGraphAtPrefsFragmentFifth(
+            final SearchablePreferenceScreenTree graph,
             final Configuration newConfiguration,
             final SearchDatabaseConfig searchDatabaseConfig,
             final FragmentActivity activityContext) {
@@ -60,7 +60,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
             return null;
         });
         final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
-        return new SearchablePreferenceScreenGraph(
+        return new SearchablePreferenceScreenTree(
                 SubtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(
                                 graph.tree(),
@@ -98,7 +98,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     }
 
     @SuppressWarnings({"UnstableApiUsage"})
-    private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenGraph graphToSearchIn) {
+    private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenTree graphToSearchIn) {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
                         graphToSearchIn.tree().graph().nodes(),

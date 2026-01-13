@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraph;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 
@@ -53,9 +53,9 @@ class PreferenceSearcher<C> {
                 .collect(Collectors.toSet());
     }
 
-    private Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Optional<SearchablePreferenceScreenGraph> graph) {
+    private Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Optional<SearchablePreferenceScreenTree> graph) {
         return graph
-                .map(SearchablePreferenceScreenGraph::tree)
+                .map(SearchablePreferenceScreenTree::tree)
                 .map(PojoGraphs::getPreferences)
                 .orElseGet(Collections::emptySet);
     }
