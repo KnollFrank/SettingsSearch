@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 
 import java.util.function.Function;
 
@@ -9,7 +8,7 @@ public class NodesTransformer {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static <NSrc, V, NDst> Tree<NDst, V, ImmutableValueGraph<NDst, V>> transformNodes(
-            final Tree<NSrc, V, ? extends ValueGraph<NSrc, V>> tree,
+            final Tree<NSrc, V, ImmutableValueGraph<NSrc, V>> tree,
             final Function<NSrc, NDst> transformNode) {
         return TreeTransformerAlgorithm.transform(
                 tree,

@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static de.KnollFrank.lib.settingssearch.db.preference.converter.SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverterFactory.createScreenConverter;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeTransformer;
@@ -20,7 +19,7 @@ public class EntityGraphToPojoGraphTransformer {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> toPojoGraph(
-            final Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>> entityGraph,
+            final Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>> entityGraph,
             final DbDataProvider dbDataProvider) {
         return TreeTransformerAlgorithm.transform(
                 entityGraph,

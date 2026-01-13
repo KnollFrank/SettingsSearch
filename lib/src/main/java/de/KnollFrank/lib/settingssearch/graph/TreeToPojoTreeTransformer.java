@@ -3,7 +3,6 @@ package de.KnollFrank.lib.settingssearch.graph;
 import androidx.preference.Preference;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 
 import java.util.Locale;
 
@@ -29,7 +28,7 @@ public class TreeToPojoTreeTransformer {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public Tree<SearchablePreferenceScreenWithMap, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreenWithMap, SearchablePreference>> transformTreeToPojoTree(
-            final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenGraph,
+            final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenGraph,
             final Locale locale) {
         return TreeTransformerAlgorithm.transform(
                 preferenceScreenGraph,

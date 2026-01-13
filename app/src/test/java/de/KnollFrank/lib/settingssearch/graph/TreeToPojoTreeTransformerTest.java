@@ -17,7 +17,6 @@ import androidx.preference.PreferenceScreen;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -190,7 +189,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
     }
 
     private static SearchablePreferenceScreenTree transformTreeToPojoTree(
-            final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> entityGraph,
+            final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> entityGraph,
             final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
             final Locale locale) {
         return new SearchablePreferenceScreenTree(

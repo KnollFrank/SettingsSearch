@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 
 import de.KnollFrank.lib.settingssearch.common.graph.NodesTransformer;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
@@ -13,7 +12,7 @@ public class MapFromPojoNodesRemover {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> removeMapFromPojoNodes(
-            final Tree<SearchablePreferenceScreenWithMap, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreenWithMap, SearchablePreference>> pojoGraph) {
+            final Tree<SearchablePreferenceScreenWithMap, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreenWithMap, SearchablePreference>> pojoGraph) {
         return NodesTransformer.transformNodes(
                 pojoGraph,
                 MapFromPojoNodesRemover::removeMapFromPojoNode);

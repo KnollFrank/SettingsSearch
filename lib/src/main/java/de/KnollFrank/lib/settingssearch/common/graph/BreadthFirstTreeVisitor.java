@@ -1,12 +1,12 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.Traverser;
-import com.google.common.graph.ValueGraph;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public abstract class BreadthFirstTreeVisitor<N, V> {
 
-    public void visit(final Tree<N, V, ? extends ValueGraph<N, V>> tree) {
+    public void visit(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
         for (final N node : breadthFirst(tree)) {
             tree
                     .parentNodeOf(node)
@@ -20,7 +20,7 @@ public abstract class BreadthFirstTreeVisitor<N, V> {
 
     protected abstract void visitInnerNode(final N innerNode, final N parentNode);
 
-    private Iterable<N> breadthFirst(final Tree<N, V, ? extends ValueGraph<N, V>> tree) {
+    private Iterable<N> breadthFirst(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
         return Traverser
                 .forTree(tree.graph())
                 .breadthFirst(tree.rootNode());
