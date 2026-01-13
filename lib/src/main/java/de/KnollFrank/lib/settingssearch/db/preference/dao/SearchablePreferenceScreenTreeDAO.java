@@ -8,22 +8,22 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
-import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
+import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
-public class SearchablePreferenceScreenGraphDAO {
+public class SearchablePreferenceScreenTreeDAO {
 
-    private final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter;
+    private final EntityTreePojoTreeConverter entityTreePojoTreeConverter;
     private final SearchablePreferenceScreenGraphEntityDAO delegate;
     private final Map<Locale, Optional<SearchablePreferenceScreenTree>> graphById = new HashMap<>();
 
-    public SearchablePreferenceScreenGraphDAO(final EntityGraphPojoGraphConverter entityGraphPojoGraphConverter,
-                                              final SearchablePreferenceScreenGraphEntityDAO delegate) {
-        this.entityGraphPojoGraphConverter = entityGraphPojoGraphConverter;
+    public SearchablePreferenceScreenTreeDAO(final EntityTreePojoTreeConverter entityTreePojoTreeConverter,
+                                             final SearchablePreferenceScreenGraphEntityDAO delegate) {
+        this.entityTreePojoTreeConverter = entityTreePojoTreeConverter;
         this.delegate = delegate;
     }
 
     public void persistOrReplace(final SearchablePreferenceScreenTree searchablePreferenceScreenTree) {
-        delegate.persistOrReplace(entityGraphPojoGraphConverter.convertBackward(searchablePreferenceScreenTree));
+        delegate.persistOrReplace(entityTreePojoTreeConverter.convertBackward(searchablePreferenceScreenTree));
         graphById.put(searchablePreferenceScreenTree.locale(), Optional.of(searchablePreferenceScreenTree));
     }
 
@@ -50,14 +50,14 @@ public class SearchablePreferenceScreenGraphDAO {
     private Optional<SearchablePreferenceScreenTree> _findGraphById(final Locale id) {
         return delegate
                 .findGraphById(id)
-                .map(entityGraphPojoGraphConverter::convertForward);
+                .map(entityTreePojoTreeConverter::convertForward);
     }
 
     private Set<SearchablePreferenceScreenTree> _loadAll() {
         return delegate
                 .loadAll()
                 .stream()
-                .map(entityGraphPojoGraphConverter::convertForward)
+                .map(entityTreePojoTreeConverter::convertForward)
                 .collect(Collectors.toSet());
     }
 

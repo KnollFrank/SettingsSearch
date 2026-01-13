@@ -4,7 +4,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.GraphAndDbDataProvide
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.Converter;
 
-public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataProvider, SearchablePreferenceScreenTree> {
+public class EntityTreePojoTreeConverter implements Converter<GraphAndDbDataProvider, SearchablePreferenceScreenTree> {
 
     @Override
     public SearchablePreferenceScreenTree convertForward(final GraphAndDbDataProvider graphAndDbDataProvider) {
@@ -17,10 +17,10 @@ public class EntityGraphPojoGraphConverter implements Converter<GraphAndDbDataPr
     }
 
     @Override
-    public GraphAndDbDataProvider convertBackward(final SearchablePreferenceScreenTree pojoGraph) {
+    public GraphAndDbDataProvider convertBackward(final SearchablePreferenceScreenTree pojoTree) {
         return PojoGraphToEntityGraphTransformer.toEntityGraph(
-                pojoGraph.tree(),
-                pojoGraph.locale(),
-                pojoGraph.configuration());
+                pojoTree.tree(),
+                pojoTree.locale(),
+                pojoTree.configuration());
     }
 }

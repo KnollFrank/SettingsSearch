@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeCreator;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
@@ -15,15 +15,15 @@ import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 
 public class SearchablePreferenceScreenTreeRepository<C> {
 
-    private final SearchablePreferenceScreenGraphDAO delegate;
+    private final SearchablePreferenceScreenTreeDAO delegate;
     private final TreeProcessorManager<C> treeProcessorManager;
 
-    public static <C> SearchablePreferenceScreenTreeRepository<C> of(final SearchablePreferenceScreenGraphDAO delegate,
+    public static <C> SearchablePreferenceScreenTreeRepository<C> of(final SearchablePreferenceScreenTreeDAO delegate,
                                                                      final ComputePreferencesListener computePreferencesListener) {
         return new SearchablePreferenceScreenTreeRepository<>(delegate, new TreeProcessorManager<>(computePreferencesListener));
     }
 
-    private SearchablePreferenceScreenTreeRepository(final SearchablePreferenceScreenGraphDAO delegate,
+    private SearchablePreferenceScreenTreeRepository(final SearchablePreferenceScreenTreeDAO delegate,
                                                      final TreeProcessorManager<C> treeProcessorManager) {
         this.delegate = delegate;
         this.treeProcessorManager = treeProcessorManager;

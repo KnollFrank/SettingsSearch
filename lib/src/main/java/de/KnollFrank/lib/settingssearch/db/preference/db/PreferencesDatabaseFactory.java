@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity;
 import java.util.Locale;
 import java.util.Optional;
 
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
@@ -51,14 +51,14 @@ public class PreferencesDatabaseFactory {
 
     private static <C> void processAndPersistGraph(final Optional<SearchablePreferenceScreenTree> tree,
                                                    final Optional<SearchablePreferenceScreenTreeTransformer<C>> treeTransformer,
-                                                   final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO,
+                                                   final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO,
                                                    final C configuration,
                                                    final ConfigurationBundleConverter<C> configurationBundleConverter,
                                                    final FragmentActivity activityContext) {
         final InitialTreeTransformer<C> initialTreeTransformer =
                 new InitialTreeTransformer<>(
                         treeTransformer,
-                        searchablePreferenceScreenGraphDAO,
+                        searchablePreferenceScreenTreeDAO,
                         activityContext,
                         configurationBundleConverter);
         initialTreeTransformer.transformAndPersist(tree, configuration);

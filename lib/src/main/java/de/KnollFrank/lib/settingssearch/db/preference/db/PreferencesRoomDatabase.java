@@ -6,8 +6,8 @@ import androidx.room.TypeConverters;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenEntityDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphEntityDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalIn
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.OptionalStringConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PreferenceFragmentClassConverter;
-import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
+import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 
 @Database(
         entities = {
@@ -40,16 +40,16 @@ import de.KnollFrank.lib.settingssearch.graph.EntityGraphPojoGraphConverter;
         })
 public abstract class PreferencesRoomDatabase extends RoomDatabase {
 
-    private final SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO =
-            new SearchablePreferenceScreenGraphDAO(
-                    new EntityGraphPojoGraphConverter(),
+    private final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO =
+            new SearchablePreferenceScreenTreeDAO(
+                    new EntityTreePojoTreeConverter(),
                     searchablePreferenceScreenGraphEntityDAO());
 
     protected PreferencesRoomDatabase() {
     }
 
-    public SearchablePreferenceScreenGraphDAO searchablePreferenceScreenGraphDAO() {
-        return searchablePreferenceScreenGraphDAO;
+    public SearchablePreferenceScreenTreeDAO searchablePreferenceScreenGraphDAO() {
+        return searchablePreferenceScreenTreeDAO;
     }
 
     public abstract SearchablePreferenceScreenGraphEntityDAO searchablePreferenceScreenGraphEntityDAO();
