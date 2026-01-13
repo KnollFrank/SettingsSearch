@@ -19,12 +19,12 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
 
 @Dao
-public abstract class SearchablePreferenceScreenGraphEntityDAO implements SearchablePreferenceScreenGraphEntity.DbDataProvider {
+public abstract class SearchablePreferenceScreenTreeEntityDAO implements SearchablePreferenceScreenGraphEntity.DbDataProvider {
 
     private final SearchablePreferenceScreenEntityDAO screenDAO;
     private final SearchablePreferenceEntityDAO preferenceDAO;
 
-    public SearchablePreferenceScreenGraphEntityDAO(final PreferencesRoomDatabase preferencesRoomDatabase) {
+    public SearchablePreferenceScreenTreeEntityDAO(final PreferencesRoomDatabase preferencesRoomDatabase) {
         this.screenDAO = preferencesRoomDatabase.searchablePreferenceScreenEntityDAO();
         this.preferenceDAO = preferencesRoomDatabase.searchablePreferenceEntityDAO();
     }

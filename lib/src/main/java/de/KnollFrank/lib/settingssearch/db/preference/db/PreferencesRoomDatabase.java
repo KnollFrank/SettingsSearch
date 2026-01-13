@@ -6,8 +6,8 @@ import androidx.room.TypeConverters;
 
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenEntityDAO;
-import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenGraphEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeDAO;
+import de.KnollFrank.lib.settingssearch.db.preference.dao.SearchablePreferenceScreenTreeEntityDAO;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
@@ -52,7 +52,7 @@ public abstract class PreferencesRoomDatabase extends RoomDatabase {
         return searchablePreferenceScreenTreeDAO;
     }
 
-    public abstract SearchablePreferenceScreenGraphEntityDAO searchablePreferenceScreenGraphEntityDAO();
+    public abstract SearchablePreferenceScreenTreeEntityDAO searchablePreferenceScreenGraphEntityDAO();
 
     public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
 

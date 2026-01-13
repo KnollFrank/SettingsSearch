@@ -13,11 +13,11 @@ import de.KnollFrank.lib.settingssearch.graph.EntityTreePojoTreeConverter;
 public class SearchablePreferenceScreenTreeDAO {
 
     private final EntityTreePojoTreeConverter entityTreePojoTreeConverter;
-    private final SearchablePreferenceScreenGraphEntityDAO delegate;
+    private final SearchablePreferenceScreenTreeEntityDAO delegate;
     private final Map<Locale, Optional<SearchablePreferenceScreenTree>> graphById = new HashMap<>();
 
     public SearchablePreferenceScreenTreeDAO(final EntityTreePojoTreeConverter entityTreePojoTreeConverter,
-                                             final SearchablePreferenceScreenGraphEntityDAO delegate) {
+                                             final SearchablePreferenceScreenTreeEntityDAO delegate) {
         this.entityTreePojoTreeConverter = entityTreePojoTreeConverter;
         this.delegate = delegate;
     }
