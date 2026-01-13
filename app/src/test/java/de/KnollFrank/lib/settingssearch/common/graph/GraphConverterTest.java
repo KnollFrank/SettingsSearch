@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.common.graph.StringGraphEquality.assertActualEqualsExpected;
 
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import org.jgrapht.graph.AsUnmodifiableGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -26,7 +26,7 @@ public class GraphConverterTest {
 
     // [A] --("Edge-AB")--> [B]
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    private final ValueGraph<StringVertex, String> GUAVA_GRAPH =
+    private final ImmutableValueGraph<StringVertex, String> GUAVA_GRAPH =
             StringGraphs
                     .newStringGraphBuilder()
                     .addNode(vA)

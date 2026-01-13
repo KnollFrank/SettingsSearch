@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.graph.EndpointPair;
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import org.jgrapht.graph.AsUnmodifiableGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -21,7 +21,7 @@ public class ToJGraphTConverter<Node, Edge, EdgeValue> {
         this.edgeWrapper = edgeWrapper;
     }
 
-    public AsUnmodifiableGraph<Node, Edge> toJGraphT(final ValueGraph<Node, EdgeValue> guavaGraph) {
+    public AsUnmodifiableGraph<Node, Edge> toJGraphT(final ImmutableValueGraph<Node, EdgeValue> guavaGraph) {
         final GraphBuilder<Node, Edge, ? extends DefaultDirectedGraph<Node, Edge>> jgraphtGraphBuilder = DefaultDirectedGraph.createBuilder(edgeClass);
         addVertices(jgraphtGraphBuilder, guavaGraph.nodes());
         addEdges(jgraphtGraphBuilder, guavaGraph);
@@ -33,7 +33,7 @@ public class ToJGraphTConverter<Node, Edge, EdgeValue> {
         vertices.forEach(jgraphtGraphBuilder::addVertex);
     }
 
-    private void addEdges(final GraphBuilder<Node, Edge, ? extends DefaultDirectedGraph<Node, Edge>> jgraphtGraphBuilder, final ValueGraph<Node, EdgeValue> guavaGraph) {
+    private void addEdges(final GraphBuilder<Node, Edge, ? extends DefaultDirectedGraph<Node, Edge>> jgraphtGraphBuilder, final ImmutableValueGraph<Node, EdgeValue> guavaGraph) {
         for (final EndpointPair<Node> edge : guavaGraph.edges()) {
             final Node source = edge.nodeU();
             final Node target = edge.nodeV();
