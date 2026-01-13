@@ -10,7 +10,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Optional;
 import java.util.Set;
@@ -139,7 +139,7 @@ public class SearchDatabaseConfigFactory {
 
                             @Override
                             @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-                            public void onPreferenceScreenTreeAvailable(final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
+                            public void onPreferenceScreenTreeAvailable(final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
                                 Log.i(
                                         this.getClass().getSimpleName(),
                                         PreferenceScreenGraph2DOTConverter.graph2DOT(
