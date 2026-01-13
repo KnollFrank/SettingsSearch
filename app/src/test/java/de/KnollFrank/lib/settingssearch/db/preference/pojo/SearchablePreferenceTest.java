@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createScreen;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ public class SearchablePreferenceTest extends PreferencesRoomDatabaseTest {
         final SearchablePreference parent = createSearchablePreference("parent");
         final SearchablePreferenceScreen predecessorScreen = createScreen(predecessor);
         final SearchablePreferenceScreen parentScreen = createScreen(parent);
-        @SuppressWarnings({"UnstableApiUsage", "NullableProblems"}) final Tree<SearchablePreferenceScreen, SearchablePreference, ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree =
+        @SuppressWarnings({"UnstableApiUsage", "NullableProblems"}) final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree =
                 new Tree<>(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraphBuilder()

@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,7 +15,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 public class PojoGraphs {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {
+    public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {
         return getPreferences(
                 pojoGraph
                         .graph()

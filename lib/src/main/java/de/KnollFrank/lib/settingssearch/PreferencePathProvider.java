@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,7 +35,7 @@ public class PreferencePathProvider {
         return getEdgePreferences(target.getTreePath());
     }
 
-    private static List<SearchablePreferenceOfHostWithinTree> getEdgePreferences(final TreePath<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
+    private static List<SearchablePreferenceOfHostWithinTree> getEdgePreferences(final TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
         return treePath
                 .edges()
                 .stream()

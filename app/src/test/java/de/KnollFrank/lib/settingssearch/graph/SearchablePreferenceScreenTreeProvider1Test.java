@@ -14,7 +14,7 @@ import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.MoreCollectors;
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -136,7 +136,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                                 activity);
 
                 // When
-                final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph =
+                final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph =
                         result
                                 .searchablePreferenceScreenTreeProvider()
                                 .getSearchablePreferenceScreenTree(

@@ -92,7 +92,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                                 });
 
                 // When
-                final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph =
+                final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph =
                         removeMapFromPojoNodes(
                                 treeToPojoTreeTransformer.transformTreeToPojoTree(
                                         entityGraph,
@@ -254,7 +254,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
     }
 
     private PreferenceAndExpectedPredecessorOfPreference getPreferenceAndExpectedPredecessorOfPreference(
-            final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraphExpected,
+            final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraphExpected,
             final SearchablePreferenceScreenGraphTestFactory.Data data) {
         final Set<SearchablePreferenceOfHostWithinTree> searchablePreferences = getPreferences(pojoGraphExpected);
         return new PreferenceAndExpectedPredecessorOfPreference(

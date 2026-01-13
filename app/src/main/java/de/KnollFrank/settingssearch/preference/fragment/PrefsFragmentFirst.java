@@ -16,7 +16,7 @@ import androidx.preference.Preference.OnPreferenceClickListener;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -123,7 +123,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     }
 
                     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-                    private SearchablePreferenceOfHostWithinTree getSummaryChangingPreference(final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {
+                    private SearchablePreferenceOfHostWithinTree getSummaryChangingPreference(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {
                         return SearchablePreferenceWithinTrees
                                 .findPreferenceByKey(
                                         PojoGraphs.getPreferences(pojoGraph),

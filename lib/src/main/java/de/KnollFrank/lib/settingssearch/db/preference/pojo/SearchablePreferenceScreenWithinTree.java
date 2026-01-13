@@ -1,6 +1,6 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Objects;
 import java.util.Set;
@@ -13,9 +13,9 @@ import de.KnollFrank.lib.settingssearch.common.graph.Trees;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public record SearchablePreferenceScreenWithinTree(
         SearchablePreferenceScreen searchablePreferenceScreen,
-        Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treeContainingScreen) {
+        Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treeContainingScreen) {
 
-    public TreePath<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> getTreePath() {
+    public TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> getTreePath() {
         return Trees.getPathFromRootNodeToTarget(treeContainingScreen, searchablePreferenceScreen);
     }
 

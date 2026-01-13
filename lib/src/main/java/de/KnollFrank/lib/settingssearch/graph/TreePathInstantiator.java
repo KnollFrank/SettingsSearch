@@ -39,7 +39,7 @@ public class TreePathInstantiator {
                 treePath.tree());
     }
 
-    private TreePath<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> instantiateTreePath(
+    private TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> instantiateTreePath(
             final HeadAndTail<SearchablePreferenceScreen> treePath,
             final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree) {
         final ImmutableValueGraph.Builder<PreferenceScreenWithHost, Preference> graphBuilder = ValueGraphBuilder.directed().immutable();
