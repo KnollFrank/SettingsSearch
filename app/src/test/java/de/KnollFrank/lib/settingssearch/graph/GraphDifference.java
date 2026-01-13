@@ -1,7 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
 import com.google.common.collect.Sets;
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,8 +19,8 @@ public class GraphDifference {
     private final String differenceReport;
     private final boolean areEqual;
 
-    private GraphDifference(final ValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
-                            final ValueGraph<SearchablePreferenceScreen, SearchablePreference> expected) {
+    private GraphDifference(final ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
+                            final ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference> expected) {
         final StringBuilder reportBuilder = new StringBuilder();
 
         // Level 1: Structural comparison
@@ -39,8 +39,8 @@ public class GraphDifference {
         differenceReport = reportBuilder.toString();
     }
 
-    public static GraphDifference between(final ValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
-                                          final ValueGraph<SearchablePreferenceScreen, SearchablePreference> expected) {
+    public static GraphDifference between(final ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
+                                          final ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference> expected) {
         return new GraphDifference(actual, expected);
     }
 
@@ -53,8 +53,8 @@ public class GraphDifference {
         return areEqual ? "Graphs are equal." : differenceReport;
     }
 
-    private void buildStructuralDifferenceReport(final ValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
-                                                 final ValueGraph<SearchablePreferenceScreen, SearchablePreference> expected,
+    private void buildStructuralDifferenceReport(final ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference> actual,
+                                                 final ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference> expected,
                                                  final StringBuilder sb) {
         sb.append("Graphs are structurally different (based on graph.equals()):\n");
         appendSetDifference(sb, "Screens", actual.nodes(), expected.nodes());
