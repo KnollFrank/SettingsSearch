@@ -19,6 +19,7 @@ import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.graph.EndpointPair;
+import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraph;
 
 import org.junit.Test;
@@ -90,7 +91,7 @@ public class TreeMergerTest {
                                 activity);
 
                 // When
-                final Tree<SearchablePreferenceScreen, SearchablePreference, ValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedGraph =
+                final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedGraph =
                         TreeMerger.mergeSubtreeIntoTreeAtMergePoint(
                                 Subtree.of(transformToPojoGraph(partialEntityGraph)),
                                 new TreeAtNode<>(pojoGraph, mergePointOfGraph));

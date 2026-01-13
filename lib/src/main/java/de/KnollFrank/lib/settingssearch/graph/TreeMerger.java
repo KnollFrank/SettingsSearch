@@ -2,6 +2,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import com.google.common.collect.MoreCollectors;
 import com.google.common.graph.EndpointPair;
+import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
 
@@ -16,7 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreeMerger {
 
-    public static Tree<SearchablePreferenceScreen, SearchablePreference, ValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergeSubtreeIntoTreeAtMergePoint(
+    public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergeSubtreeIntoTreeAtMergePoint(
             final Subtree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> subtree,
             final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treeAtMergePoint) {
         final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedTreeAtMergePoint =
@@ -30,7 +31,7 @@ public class TreeMerger {
         copySubtreesOfSrcToDst(treeAtMergePoint, mergedTreeAtMergePoint);
         // Attach children from the partial graph to the new root.
         copySubtreesOfSrcToDst(subtree.asTreeAtNode(), mergedTreeAtMergePoint);
-        return new Tree<>(mergedTreeAtMergePoint.tree().graph());
+        return new Tree<>(ImmutableValueGraph.copyOf(mergedTreeAtMergePoint.tree().graph()));
     }
 
     private record TreeAndEdge(
