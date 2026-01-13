@@ -3,9 +3,12 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import com.google.common.graph.ImmutableValueGraph;
+import com.google.common.graph.ValueGraph;
+
 import org.junit.Test;
 
-@SuppressWarnings({"UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class NodeReplacerTest {
 
     private final StringVertex vR = new StringVertex("R");
@@ -25,7 +28,7 @@ public class NodeReplacerTest {
         //   P --ePR--> R --eRA--> A
         //              |
         //              --eRB--> B
-        final Tree<StringVertex, String> originalGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> originalGraph =
                 new Tree<>(
                         StringGraphs
                                 .newStringGraphBuilder()
@@ -35,7 +38,7 @@ public class NodeReplacerTest {
                                 .build());
 
         // When replacing node R with X
-        final Tree<StringVertex, String> returnedGraph =
+        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
                         new TreeAtNode<>(originalGraph, vR),
                         vX);
@@ -44,7 +47,7 @@ public class NodeReplacerTest {
         //   P --(ePR)--> X --(eRA)--> A
         //                |
         //                --(eRB)--> B
-        final Tree<StringVertex, String> expectedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> expectedGraph =
                 new Tree<>(
                         StringGraphs
                                 .newStringGraphBuilder()
@@ -63,7 +66,7 @@ public class NodeReplacerTest {
         //   R --eRA--> A
         //   |
         //   --eRB--> B
-        final Tree<StringVertex, String> originalGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> originalGraph =
                 new Tree<>(
                         StringGraphs
                                 .newStringGraphBuilder()
@@ -72,7 +75,7 @@ public class NodeReplacerTest {
                                 .build());
 
         // When replacing root R with X
-        final Tree<StringVertex, String> returnedGraph =
+        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
                         new TreeAtNode<>(originalGraph, vR),
                         vX);
@@ -81,7 +84,7 @@ public class NodeReplacerTest {
         //   X --(eRA)--> A
         //   |
         //   --(eRB)--> B
-        final Tree<StringVertex, String> expectedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> expectedGraph =
                 new Tree<>(
                         StringGraphs
                                 .newStringGraphBuilder()
@@ -97,7 +100,7 @@ public class NodeReplacerTest {
         // Given an original graph:
         // Given a graph where the node to replace is a leaf:
         //   P --ePR--> R
-        final Tree<StringVertex, String> originalGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> originalGraph =
                 new Tree<>(
                         StringGraphs
                                 .newStringGraphBuilder()
@@ -105,14 +108,14 @@ public class NodeReplacerTest {
                                 .build());
 
         // When replacing leaf R with X
-        final Tree<StringVertex, String> returnedGraph =
+        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
                         new TreeAtNode<>(originalGraph, vR),
                         vX);
 
         // Then X should become the new leaf:
         //   P --(ePR)--> X
-        final Tree<StringVertex, String> expectedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> expectedGraph =
                 new Tree<>(
                         StringGraphs
                                 .newStringGraphBuilder()

@@ -3,14 +3,11 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import com.google.common.graph.ValueGraph;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-public class TreeAtNode<N, V> extends TypedTreeAtNode<N, V, ValueGraph<N, V>, Tree<N, V>> {
+public record TreeAtNode<N, V, G extends ValueGraph<N, V>>(Tree<N, V, G> tree, N nodeOfTree) {
 
-    public TreeAtNode(final Tree<N, V> tree, final N nodeOfTree) {
-        super(tree, nodeOfTree);
-    }
-
-    @Override
-    public Tree<N, V> tree() {
-        return super.tree();
+    public TreeAtNode {
+        if (!tree.graph().nodes().contains(nodeOfTree)) {
+            throw new IllegalArgumentException("tree '" + tree + "' must contain nodeOfTree '" + nodeOfTree + "'");
+        }
     }
 }

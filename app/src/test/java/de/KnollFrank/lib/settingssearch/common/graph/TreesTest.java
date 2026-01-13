@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 
 import com.google.common.graph.EndpointPair;
+import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
 import org.junit.Test;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.test.Matchers;
 
-@SuppressWarnings({"UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class TreesTest {
 
     private static final String ROOT = "Root";
@@ -34,7 +35,7 @@ public class TreesTest {
      *   |
      *   '--(edge2)--> Child2
      */
-    private static final Tree<String, String> testTree =
+    private static final Tree<String, String, ImmutableValueGraph<String, String>> testTree =
             new Tree<>(
                     ValueGraphBuilder
                             .directed()
@@ -47,7 +48,7 @@ public class TreesTest {
     @Test
     public void getPathFromRootNodeToTarget_shouldReturnCorrectPathToLeaf() {
         // When
-        final TreePath<String, String> path =
+        final TreePath<String, String, ImmutableValueGraph<String, String>> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
                         GRAND_CHILD_1);
@@ -63,7 +64,7 @@ public class TreesTest {
     @Test
     public void getEdgesOnPath_shouldReturnCorrectEdges() {
         // Given
-        final TreePath<String, String> path =
+        final TreePath<String, String, ImmutableValueGraph<String, String>> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
                         GRAND_CHILD_1);
@@ -86,7 +87,7 @@ public class TreesTest {
     @Test
     public void getEdgesOnPath_whenPathIsOnlyRoot_shouldReturnEmptyList() {
         // Given
-        final TreePath<String, String> path =
+        final TreePath<String, String, ImmutableValueGraph<String, String>> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
                         ROOT);
@@ -102,7 +103,7 @@ public class TreesTest {
     @Test
     public void getPathFromRootNodeToTarget_shouldReturnSingleNodePathWhenTargetIsRootNode() {
         // When
-        final TreePath<String, String> path =
+        final TreePath<String, String, ImmutableValueGraph<String, String>> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
                         ROOT);
@@ -114,7 +115,7 @@ public class TreesTest {
     @Test
     public void getPathFromRootNodeToTarget_shouldReturnPathToIntermediateNode() {
         // When
-        final TreePath<String, String> path =
+        final TreePath<String, String, ImmutableValueGraph<String, String>> path =
                 Trees.getPathFromRootNodeToTarget(
                         testTree,
                         CHILD_1);

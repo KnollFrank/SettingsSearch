@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ImmutableValueGraph;
+import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
 
     public record Graphs(
             GraphAndDbDataProvider entityGraphAndDbDataProvider,
-            Tree<SearchablePreferenceScreen, SearchablePreference> pojoTree) {
+            Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoTree) {
     }
 
     public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host,

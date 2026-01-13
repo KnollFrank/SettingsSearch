@@ -6,6 +6,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableBiMap;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Optional;
 
@@ -15,9 +16,10 @@ import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PojoGraphTestFactory {
 
-    public static Tree<PreferenceScreenWithHost, Preference> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenGraphRootedAt(
             final Class<? extends PreferenceFragmentCompat> root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
@@ -32,7 +34,7 @@ public class PojoGraphTestFactory {
                 context);
     }
 
-    public static Tree<PreferenceScreenWithHost, Preference> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenGraphRootedAt(
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
@@ -43,7 +45,7 @@ public class PojoGraphTestFactory {
                 context);
     }
 
-    public static Tree<PreferenceScreenWithHost, Preference> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenGraphRootedAt(
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final AddEdgeToGraphPredicate addEdgeToGraphPredicate,

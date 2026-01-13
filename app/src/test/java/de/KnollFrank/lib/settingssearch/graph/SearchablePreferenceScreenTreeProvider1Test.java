@@ -14,6 +14,7 @@ import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.MoreCollectors;
+import com.google.common.graph.ValueGraph;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -48,7 +49,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
-@SuppressWarnings({"UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoomDatabaseTest {
 
     @Test
@@ -135,7 +136,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                                 activity);
 
                 // When
-                final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph =
+                final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph =
                         result
                                 .searchablePreferenceScreenTreeProvider()
                                 .getSearchablePreferenceScreenTree(
@@ -148,9 +149,9 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                                 .nodes()
                                 .stream()
                                 .map(searchablePreferenceScreen ->
-                                             new SearchablePreferenceScreenWithinTree(
-                                                     searchablePreferenceScreen,
-                                                     pojoGraph))
+                                        new SearchablePreferenceScreenWithinTree(
+                                                searchablePreferenceScreen,
+                                                pojoGraph))
                                 .collect(Collectors.toSet());
                 final SearchablePreferenceOfHostWithinTree preferenceOfFragment2PointingToFragment3 =
                         getPreference(

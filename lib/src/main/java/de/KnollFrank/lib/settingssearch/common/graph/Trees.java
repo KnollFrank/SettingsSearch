@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.common.Lists;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class Trees {
 
-    public static <N, V> TreePath<N, V> getPathFromRootNodeToTarget(final Tree<N, V> tree, final N target) {
+    public static <N, V, G extends ValueGraph<N, V>> TreePath<N, V, G> getPathFromRootNodeToTarget(final Tree<N, V, G> tree, final N target) {
         if (!tree.graph().nodes().contains(target)) {
             throw new IllegalArgumentException("Target node " + target + " is not part of the tree.");
         }
@@ -23,7 +23,7 @@ public class Trees {
         return new TreePath<>(tree, List.copyOf(path));
     }
 
-    public static <N, V> List<Edge<N, V>> getEdgesOnPath(final TreePath<N, V> path) {
+    public static <N, V, G extends ValueGraph<N, V>> List<Edge<N, V>> getEdgesOnPath(final TreePath<N, V, G> path) {
         final List<N> nodes = path.nodes();
         final ValueGraph<N, V> graph = path.tree().graph();
         return Lists

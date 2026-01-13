@@ -1,11 +1,14 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import com.google.common.graph.ValueGraph;
+
 import java.util.function.Function;
 
 public class NodesTransformer {
 
-    public static <NSrc, NDst, V> Tree<NDst, V> transformNodes(
-            final Tree<NSrc, V> tree,
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    public static <NSrc, V, NDst> Tree<NDst, V, ? extends ValueGraph<NDst, V>> transformNodes(
+            final Tree<NSrc, V, ? extends ValueGraph<NSrc, V>> tree,
             final Function<NSrc, NDst> transformNode) {
         return TreeTransformerAlgorithm.transform(
                 tree,

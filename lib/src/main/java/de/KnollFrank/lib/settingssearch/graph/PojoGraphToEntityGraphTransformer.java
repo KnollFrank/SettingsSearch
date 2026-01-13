@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import android.os.PersistableBundle;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.graph.ValueGraph;
 
 import java.util.Locale;
 import java.util.Map;
@@ -26,14 +27,14 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphEntity;
 
-@SuppressWarnings({"UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PojoGraphToEntityGraphTransformer {
 
     public static GraphAndDbDataProvider toEntityGraph(
-            final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph,
+            final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,
             final Locale graphId,
             final PersistableBundle configuration) {
-        final Tree<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity> transformedGraph =
+        final Tree<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity>> transformedGraph =
                 TreeTransformerAlgorithm.transform(
                         pojoGraph,
                         createGraphTransformer(graphId));
@@ -103,7 +104,7 @@ public class PojoGraphToEntityGraphTransformer {
         };
     }
 
-    private static Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> removeDetachedDbDataProviders(final Tree<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity> graph) {
+    private static Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>> removeDetachedDbDataProviders(final Tree<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity>> graph) {
         return TreeTransformerAlgorithm.transform(
                 graph,
                 new TreeTransformer<>() {

@@ -19,6 +19,7 @@ import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.graph.EndpointPair;
+import com.google.common.graph.ValueGraph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,7 +90,7 @@ public class TreeMergerTest {
                                 activity);
 
                 // When
-                final Tree<SearchablePreferenceScreen, SearchablePreference> mergedGraph =
+                final Tree<SearchablePreferenceScreen, SearchablePreference, ValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergedGraph =
                         TreeMerger.mergeSubtreeIntoTreeAtMergePoint(
                                 Subtree.of(transformToPojoGraph(partialEntityGraph)),
                                 new TreeAtNode<>(pojoGraph, mergePointOfGraph));
@@ -110,14 +111,14 @@ public class TreeMergerTest {
         }
     }
 
-    private static void assertIntegrity(final Tree<SearchablePreferenceScreen, SearchablePreference> graph) {
+    private static void assertIntegrity(final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> graph) {
         for (final EndpointPair<SearchablePreferenceScreen> edge : graph.graph().edges()) {
             assertPreferenceOfEdgeExistsInSourceScreen(edge, graph);
         }
     }
 
     private static void assertPreferenceOfEdgeExistsInSourceScreen(final EndpointPair<SearchablePreferenceScreen> edge,
-                                                                   final Tree<SearchablePreferenceScreen, SearchablePreference> graph) {
+                                                                   final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> graph) {
         final SearchablePreference searchablePreference = graph.graph().edgeValueOrDefault(edge, null);
         final SearchablePreferenceScreen sourceScreen = edge.source();
         assertThat(
@@ -138,7 +139,7 @@ public class TreeMergerTest {
                 .contains(searchablePreference);
     }
 
-    private static Tree<PreferenceScreenWithHost, Preference> createEntityGraph(
+    private static Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> createEntityGraph(
             final Class<? extends PreferenceFragmentCompat> root,
             final List<String> preferenceKeys,
             final TestActivity activity) {
@@ -155,8 +156,8 @@ public class TreeMergerTest {
                 activity);
     }
 
-    private static Tree<PreferenceScreenWithHost, Preference> createPartialEntityGraph(
-            final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph,
+    private static Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> createPartialEntityGraph(
+            final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,
             final List<String> preferenceKeys,
             final SearchablePreferenceScreen rootOfPartialPojoGraph,
             final FragmentActivity activity) {
@@ -186,8 +187,8 @@ public class TreeMergerTest {
                 new PrincipalAndProxyProvider(ImmutableBiMap.of()));
     }
 
-    private static Tree<SearchablePreferenceScreen, SearchablePreference> transformToPojoGraph(
-            final Tree<PreferenceScreenWithHost, Preference> entityTree) {
+    private static Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> transformToPojoGraph(
+            final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> entityTree) {
         return removeMapFromPojoNodes(
                 createGraphToPojoGraphTransformer().transformTreeToPojoTree(
                         entityTree,

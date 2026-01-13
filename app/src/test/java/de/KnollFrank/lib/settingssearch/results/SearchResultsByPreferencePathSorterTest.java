@@ -6,6 +6,8 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePref
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreferenceWithTitle;
 
+import com.google.common.graph.ImmutableValueGraph;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -20,7 +22,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
 @RunWith(RobolectricTestRunner.class)
-@SuppressWarnings({"UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SearchResultsByPreferencePathSorterTest {
 
     @Test
@@ -42,7 +44,7 @@ public class SearchResultsByPreferencePathSorterTest {
         final SearchablePreferenceScreen walkScreen = createScreen("walk", Set.of(walk));
         final SearchablePreferenceScreen defaultSpeedOfWalkScreen = createScreen("defaultSpeedOfWalk", Set.of(defaultSpeedOfWalk));
         final SearchablePreferenceScreen defaultSpeedOfCarScreen = createScreen("defaultSpeedOfCar", Set.of(defaultSpeedOfCar));
-        final Tree<SearchablePreferenceScreen, SearchablePreference> graph =
+        final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> graph =
                 new Tree<>(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraphBuilder()

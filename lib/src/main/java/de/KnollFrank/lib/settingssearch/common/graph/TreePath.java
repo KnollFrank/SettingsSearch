@@ -1,10 +1,13 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import com.google.common.graph.ValueGraph;
+
 import java.util.List;
 
 import de.KnollFrank.lib.settingssearch.common.Lists;
 
-public record TreePath<N, V>(Tree<N, V> tree, List<N> nodes) {
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+public record TreePath<N, V, G extends ValueGraph<N, V>>(Tree<N, V, G> tree, List<N> nodes) {
 
     public TreePath {
         if (nodes.isEmpty()) {

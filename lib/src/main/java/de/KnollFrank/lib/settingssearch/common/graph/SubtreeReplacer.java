@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SubtreeReplacer {
 
-    public static <N, V> Tree<N, V> replaceSubtreeWithTree(final Subtree<N, V> subtreeToReplace,
-                                                           final Tree<N, V> replacementTree) {
+    public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> replaceSubtreeWithTree(final Subtree<N, V, ? extends ValueGraph<N, V>> subtreeToReplace,
+                                                                                      final Tree<N, V, ? extends ValueGraph<N, V>> replacementTree) {
         final MutableValueGraph<N, V> resultGraph = ValueGraphBuilder.directed().build();
         copyPartsOfGraph(
                 subtreeToReplace.tree().graph(),
@@ -28,8 +28,8 @@ public class SubtreeReplacer {
         return new Tree<>(ImmutableValueGraph.copyOf(resultGraph));
     }
 
-    private static <N, V> void integrateReplacementTreeIntoResultGraph(final TreeAtNode<N, V> originalTreeAtNodeToReplace,
-                                                                       final Tree<N, V> replacementTree,
+    private static <N, V> void integrateReplacementTreeIntoResultGraph(final TreeAtNode<N, V, ? extends ValueGraph<N, V>> originalTreeAtNodeToReplace,
+                                                                       final Tree<N, V, ? extends ValueGraph<N, V>> replacementTree,
                                                                        final MutableValueGraph<N, V> resultGraph) {
         copyGraphFromSrc2Dst(replacementTree.graph(), resultGraph);
         connectParentToRootOfReplacementTree(
@@ -46,13 +46,13 @@ public class SubtreeReplacer {
                                                                     final N replacementRoot) {
         parentAndEdgeValue
                 .filter(_parentAndEdgeValue ->
-                                resultGraph.nodes().contains(_parentAndEdgeValue.parent) &&
-                                        !resultGraph.hasEdgeConnecting(_parentAndEdgeValue.parent, replacementRoot))
+                        resultGraph.nodes().contains(_parentAndEdgeValue.parent) &&
+                                !resultGraph.hasEdgeConnecting(_parentAndEdgeValue.parent, replacementRoot))
                 .ifPresent(_parentAndEdgeValue ->
-                                   connectParentToRootOfReplacementTree(
-                                           _parentAndEdgeValue,
-                                           resultGraph,
-                                           replacementRoot));
+                        connectParentToRootOfReplacementTree(
+                                _parentAndEdgeValue,
+                                resultGraph,
+                                replacementRoot));
     }
 
     private static <N, V> void connectParentToRootOfReplacementTree(final ParentAndEdgeValue<N, V> parentAndEdgeValue,
@@ -113,13 +113,13 @@ public class SubtreeReplacer {
     }
 
 
-    private static <N, V> Optional<ParentAndEdgeValue<N, V>> getParentAndEdgeValue(final TreeAtNode<N, V> treeAtNode) {
+    private static <N, V> Optional<ParentAndEdgeValue<N, V>> getParentAndEdgeValue(final TreeAtNode<N, V, ? extends ValueGraph<N, V>> treeAtNode) {
         return treeAtNode
                 .tree()
                 .incomingEdgeOf(treeAtNode.nodeOfTree())
                 .map(incomingEdge ->
-                             new ParentAndEdgeValue<>(
-                                     incomingEdge.source(),
-                                     treeAtNode.tree().graph().edgeValueOrDefault(incomingEdge, null)));
+                        new ParentAndEdgeValue<>(
+                                incomingEdge.source(),
+                                treeAtNode.tree().graph().edgeValueOrDefault(incomingEdge, null)));
     }
 }

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import com.google.common.graph.ValueGraph;
+
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -8,11 +10,12 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreePath;
 import de.KnollFrank.lib.settingssearch.common.graph.Trees;
 
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public record SearchablePreferenceScreenWithinTree(
         SearchablePreferenceScreen searchablePreferenceScreen,
-        Tree<SearchablePreferenceScreen, SearchablePreference> treeContainingScreen) {
+        Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treeContainingScreen) {
 
-    public TreePath<SearchablePreferenceScreen, SearchablePreference> getTreePath() {
+    public TreePath<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> getTreePath() {
         return Trees.getPathFromRootNodeToTarget(treeContainingScreen, searchablePreferenceScreen);
     }
 
@@ -21,10 +24,10 @@ public record SearchablePreferenceScreenWithinTree(
                 .allPreferencesOfPreferenceHierarchy()
                 .stream()
                 .map(searchablePreference ->
-                             new SearchablePreferenceOfHostWithinTree(
-                                     searchablePreference,
-                                     searchablePreferenceScreen,
-                                     treeContainingScreen))
+                        new SearchablePreferenceOfHostWithinTree(
+                                searchablePreference,
+                                searchablePreferenceScreen,
+                                treeContainingScreen))
                 .collect(Collectors.toSet());
     }
 

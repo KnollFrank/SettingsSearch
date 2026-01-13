@@ -56,8 +56,8 @@ class EntityGraphEquality {
                 is(nodes2String(expected.first(), expected.second())));
     }
 
-    private static void assertActualEdgesEqualsExpectedEdges(final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>, SearchablePreferenceEntity.DbDataProvider> actual,
-                                                             final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>, SearchablePreferenceEntity.DbDataProvider> expected) {
+    private static void assertActualEdgesEqualsExpectedEdges(final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>>, SearchablePreferenceEntity.DbDataProvider> actual,
+                                                             final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>>, SearchablePreferenceEntity.DbDataProvider> expected) {
         assertThat(
                 edgesAsStrings(actual.first().graph(), actual.second()),
                 is(edgesAsStrings(expected.first().graph(), expected.second())));
@@ -90,9 +90,9 @@ class EntityGraphEquality {
                 .add("summary=" + entity.summary())
                 .add("graphId=" + new LocaleConverter().convertBackward(entity.graphId()))
                 .add("allPreferencesOfPreferenceHierarchy=" +
-                             toString(
-                                     entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider),
-                                     dbDataProvider))
+                        toString(
+                                entity.getAllPreferencesOfPreferenceHierarchy(dbDataProvider),
+                                dbDataProvider))
                 .toString();
     }
 

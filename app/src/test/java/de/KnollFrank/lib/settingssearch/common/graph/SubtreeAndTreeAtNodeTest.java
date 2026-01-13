@@ -2,16 +2,18 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import static org.junit.Assert.assertThrows;
 
+import com.google.common.graph.ImmutableValueGraph;
+
 import org.junit.Test;
 
-@SuppressWarnings({"UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SubtreeAndTreeAtNodeTest {
 
     @Test
     public void subtreeConstructor_shouldThrowIllegalArgumentException_ifRootNodeIsNotInTree() {
         // Given
         // Graph structure: [ v1 ]
-        final Tree<StringVertex, String> tree =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree =
                 new Tree<>(
                         StringGraphs
                                 .newStringGraphBuilder()
@@ -29,7 +31,7 @@ public class SubtreeAndTreeAtNodeTest {
     public void graphAtNodeConstructor_shouldThrowIllegalArgumentException_ifNodeIsNotInGraph() {
         // Given
         // Graph structure: [ v1 ]
-        final Tree<StringVertex, String> graph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> graph =
                 new Tree<>(
                         StringGraphs
                         .newStringGraphBuilder()

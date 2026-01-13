@@ -1,15 +1,42 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import com.google.common.collect.MoreCollectors;
+import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ValueGraph;
 
-@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-public class Tree<N, V> extends TypedTree<N, V, ValueGraph<N, V>> {
+import java.util.Optional;
+import java.util.Set;
 
-    public Tree(final ValueGraph<N, V> graph) {
-        super(graph);
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+public record Tree<N, V, G extends ValueGraph<N, V>>(G graph) {
+
+    public Tree {
+        TreeValidator.validateIsTree(graph).throwIfInvalid();
     }
 
-    public TreePath<N, V> getPathFromRootNodeToTarget(final N target) {
+    public N rootNode() {
+        return Graphs.getRootNode(graph).orElseThrow();
+    }
+
+    public Optional<N> parentNodeOf(final N node) {
+        return graph
+                .predecessors(node)
+                .stream()
+                .collect(MoreCollectors.toOptional());
+    }
+
+    public Optional<EndpointPair<N>> incomingEdgeOf(final N node) {
+        return Graphs
+                .getIncomingEdgesOfNode(graph, node)
+                .stream()
+                .collect(MoreCollectors.toOptional());
+    }
+
+    public Set<EndpointPair<N>> outgoingEdgesOf(final N node) {
+        return Graphs.getOutgoingEdgesOfNode(graph, node);
+    }
+
+    public TreePath<N, V, G> getPathFromRootNodeToTarget(final N target) {
         return Trees.getPathFromRootNodeToTarget(this, target);
     }
 }

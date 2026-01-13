@@ -1,11 +1,14 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
+import com.google.common.graph.ValueGraph;
+
 import java.util.function.Function;
 
 public class NodeReplacer {
 
-    public static <N, V> Tree<N, V> replaceNode(final TreeAtNode<N, V> treeAtNodeToReplace,
-                                                final N replacementNode) {
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    public static <N, V> Tree<N, V, ? extends ValueGraph<N, V>> replaceNode(final TreeAtNode<N, V, ? extends ValueGraph<N, V>> treeAtNodeToReplace,
+                                                                            final N replacementNode) {
         return NodesTransformer.transformNodes(
                 treeAtNodeToReplace.tree(),
                 createNodeReplacer(treeAtNodeToReplace.nodeOfTree(), replacementNode));

@@ -5,6 +5,8 @@ import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePref
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.common.graph.ValueGraph;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -64,7 +66,7 @@ public class PojoGraphToEntityGraphTransformerTest {
                 graphs.entityGraphAndDbDataProvider());
     }
 
-    private static void test_toEntityGraph(final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph,
+    private static void test_toEntityGraph(final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,
                                            final GraphAndDbDataProvider entityGraphAndDbDataProviderExpected) {
         // When
         final GraphAndDbDataProvider entityGraphAndDbDataProviderActual =

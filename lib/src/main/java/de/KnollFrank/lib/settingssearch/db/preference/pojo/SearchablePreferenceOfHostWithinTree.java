@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.db.preference.pojo;
 
+import com.google.common.graph.ValueGraph;
+
 import java.util.Objects;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
@@ -9,7 +11,8 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 public record SearchablePreferenceOfHostWithinTree(
         SearchablePreference searchablePreference,
         SearchablePreferenceScreen hostOfPreference,
-        Tree<SearchablePreferenceScreen, SearchablePreference> treeContainingPreference) {
+        @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+        Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treeContainingPreference) {
 
     public PreferencePath getPreferencePath() {
         return PreferencePathProvider.getPreferencePath(this);

@@ -1,5 +1,7 @@
 package de.KnollFrank.lib.settingssearch.graph;
 
+import com.google.common.graph.ValueGraph;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,19 +12,19 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinTree;
 
-@SuppressWarnings({"UnstableApiUsage"})
 public class PojoGraphs {
 
-    public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference> pojoGraph) {
+    @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+    public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {
         return getPreferences(
                 pojoGraph
                         .graph()
                         .nodes()
                         .stream()
                         .map(searchablePreferenceScreen ->
-                                     new SearchablePreferenceScreenWithinTree(
-                                             searchablePreferenceScreen,
-                                             pojoGraph))
+                                new SearchablePreferenceScreenWithinTree(
+                                        searchablePreferenceScreen,
+                                        pojoGraph))
                         .collect(Collectors.toSet()));
     }
 

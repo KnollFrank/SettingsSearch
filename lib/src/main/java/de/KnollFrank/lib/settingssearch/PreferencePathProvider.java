@@ -1,6 +1,7 @@
 package de.KnollFrank.lib.settingssearch;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.graph.ValueGraph;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinTree;
 
-@SuppressWarnings({"UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PreferencePathProvider {
 
     public static PreferencePath getPreferencePath(final SearchablePreferenceOfHostWithinTree target) {
@@ -34,7 +35,7 @@ public class PreferencePathProvider {
         return getEdgePreferences(target.getTreePath());
     }
 
-    private static List<SearchablePreferenceOfHostWithinTree> getEdgePreferences(final TreePath<SearchablePreferenceScreen, SearchablePreference> treePath) {
+    private static List<SearchablePreferenceOfHostWithinTree> getEdgePreferences(final TreePath<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
         return treePath
                 .edges()
                 .stream()

@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
+import com.google.common.graph.ValueGraph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -93,6 +94,7 @@ import de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFirst;
 import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
     @Test
@@ -881,8 +883,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         }
     }
 
-    @SuppressWarnings({"UnstableApiUsage"})
-    private static void makeGraphRootedAtPrefsFragmentFirstConnected(final Tree<PreferenceScreenWithHost, Preference> preferenceScreenTree) {
+    private static void makeGraphRootedAtPrefsFragmentFirstConnected(final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
         final Set<PreferenceScreenWithHost> nodesToRemove =
                 preferenceScreenTree
                         .graph()

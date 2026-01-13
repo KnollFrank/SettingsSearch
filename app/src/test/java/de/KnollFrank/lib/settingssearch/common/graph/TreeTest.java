@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
@@ -26,7 +27,7 @@ public class TreeTest {
                         .build();
 
         // When
-        final Tree<StringVertex, String> tree = new Tree<>(validGraph);
+        final Tree<StringVertex, String, ValueGraph<StringVertex, String>> tree = new Tree<>(validGraph);
 
         // Then
         assertThat(tree.graph(), is(validGraph));
@@ -123,12 +124,13 @@ public class TreeTest {
     @Test
     public void shouldReturnRootNode() {
         // Given: A valid tree with root A
-        final Tree<StringVertex, String> tree =
-                new Tree<>(ValueGraphBuilder
-                                   .directed()
-                                   .<StringVertex, String>immutable()
-                                   .putEdgeValue(vA, vB, "val")
-                                   .build());
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree =
+                new Tree<>(
+                        ValueGraphBuilder
+                                .directed()
+                                .<StringVertex, String>immutable()
+                                .putEdgeValue(vA, vB, "val")
+                                .build());
 
         // When
         final StringVertex rootNode = tree.rootNode();

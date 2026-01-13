@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.contains;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTestFactory.createScreen;
 import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceTestFactory.createSearchablePreference;
 
+import com.google.common.graph.ValueGraph;
+
 import org.junit.Test;
 
 import java.util.Set;
@@ -15,7 +17,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
 
-@SuppressWarnings({"UnstableApiUsage"})
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class PreferencePathProviderTest {
 
     @Test
@@ -26,7 +28,7 @@ public class PreferencePathProviderTest {
         final SearchablePreference p1 = createSearchablePreference("P1");
         final SearchablePreferenceScreen rootScreen = createScreen("Root", Set.of(p1));
 
-        final Tree<SearchablePreferenceScreen, SearchablePreference> tree =
+        final Tree<SearchablePreferenceScreen, SearchablePreference, ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree =
                 new Tree<>(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraphBuilder()
@@ -57,7 +59,7 @@ public class PreferencePathProviderTest {
         final SearchablePreference targetPref = createSearchablePreference("Target");
         final SearchablePreferenceScreen screenA = createScreen("ScreenA", Set.of(targetPref));
 
-        final Tree<SearchablePreferenceScreen, SearchablePreference> graph =
+        final Tree<SearchablePreferenceScreen, SearchablePreference, ValueGraph<SearchablePreferenceScreen, SearchablePreference>> graph =
                 new Tree<>(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraphBuilder()
@@ -94,7 +96,7 @@ public class PreferencePathProviderTest {
         final SearchablePreferenceScreen screenA = createScreen("A", Set.of(bridge2));
         final SearchablePreferenceScreen screenB = createScreen("B", Set.of(target));
 
-        final Tree<SearchablePreferenceScreen, SearchablePreference> tree =
+        final Tree<SearchablePreferenceScreen, SearchablePreference, ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree =
                 new Tree<>(
                         SearchablePreferenceScreenGraphTestFactory
                                 .createGraphBuilder()

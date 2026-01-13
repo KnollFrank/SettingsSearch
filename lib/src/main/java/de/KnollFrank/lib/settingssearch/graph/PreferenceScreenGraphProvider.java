@@ -30,7 +30,7 @@ class PreferenceScreenGraphProvider {
     }
 
     // FK-TODO: rename to getPreferenceScreenTree()
-    public Tree<PreferenceScreenWithHost, Preference> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
+    public Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
         final MutableValueGraph<PreferenceScreenWithHost, Preference> preferenceScreenGraph = PreferenceScreenGraphFactory.createEmptyPreferenceScreenGraph(preferenceScreenGraphListener);
         buildPreferenceScreenGraph(root, preferenceScreenGraph);
         return new Tree<>(ImmutableValueGraph.copyOf(preferenceScreenGraph));
