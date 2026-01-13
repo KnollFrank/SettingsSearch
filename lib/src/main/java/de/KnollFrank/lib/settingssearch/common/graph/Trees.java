@@ -23,7 +23,7 @@ public class Trees {
         return new TreePath<>(tree, List.copyOf(path));
     }
 
-    public static <N, V, G extends ValueGraph<N, V>> List<Edge<N, V>> getEdgesOnPath(final TreePath<N, V, G> path) {
+    public static <N, V> List<Edge<N, V>> getEdgesOnPath(final TreePath<N, V, ? extends ValueGraph<N, V>> path) {
         final List<N> nodes = path.nodes();
         final ValueGraph<N, V> graph = path.tree().graph();
         return Lists
