@@ -18,7 +18,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.SubtreeReplacer;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunnerFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
@@ -32,16 +32,16 @@ import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
 import de.KnollFrank.settingssearch.SearchDatabaseConfigFactory;
 
-public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements SearchablePreferenceScreenGraphTransformer<Configuration> {
+public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements SearchablePreferenceScreenTreeTransformer<Configuration> {
 
     private final @IdRes int FRAGMENT_CONTAINER_VIEW_ID = View.generateViewId();
 
     @Override
-    public SearchablePreferenceScreenTree transformGraph(final SearchablePreferenceScreenTree graph,
-                                                         final Configuration actualConfiguration,
-                                                         final FragmentActivity activityContext) {
+    public SearchablePreferenceScreenTree transformTree(final SearchablePreferenceScreenTree tree,
+                                                        final Configuration actualConfiguration,
+                                                        final FragmentActivity activityContext) {
         return adaptGraphAtPrefsFragmentFifth(
-                graph,
+                tree,
                 actualConfiguration,
                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                 activityContext);

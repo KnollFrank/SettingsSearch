@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.common.Optionals;
-import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
@@ -17,16 +17,16 @@ import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 
 class PreferenceSearcher<C> {
 
-    private final SearchablePreferenceScreenGraphRepository<C> graphRepository;
+    private final SearchablePreferenceScreenTreeRepository<C> treeRepository;
     private final SearchResultsFilter searchResultsFilter;
     private final PreferenceMatcher preferenceMatcher;
     private final FragmentActivity activityContext;
 
-    public PreferenceSearcher(final SearchablePreferenceScreenGraphRepository<C> graphRepository,
+    public PreferenceSearcher(final SearchablePreferenceScreenTreeRepository<C> treeRepository,
                               final SearchResultsFilter searchResultsFilter,
                               final PreferenceMatcher preferenceMatcher,
                               final FragmentActivity activityContext) {
-        this.graphRepository = graphRepository;
+        this.treeRepository = treeRepository;
         this.searchResultsFilter = searchResultsFilter;
         this.preferenceMatcher = preferenceMatcher;
         this.activityContext = activityContext;
@@ -46,7 +46,7 @@ class PreferenceSearcher<C> {
 
     private Set<SearchablePreferenceOfHostWithinTree> getHaystack(final Locale locale) {
         return this
-                .getPreferences(graphRepository.findGraphById(locale, null, activityContext))
+                .getPreferences(treeRepository.findTreeById(locale, null, activityContext))
                 .stream()
                 .filter(searchablePreferenceWithinGraph -> searchablePreferenceWithinGraph.searchablePreference().isVisible())
                 .filter(searchResultsFilter::includePreferenceInSearchResults)

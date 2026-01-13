@@ -159,7 +159,7 @@ public class SearchPreferenceFragment<C> extends Fragment {
         final SearchAndDisplay<C> searchAndDisplay =
                 new SearchAndDisplay<>(
                         new PreferenceSearcher<>(
-                                mergedPreferenceScreen.graphRepository(),
+                                mergedPreferenceScreen.treeRepository(),
                                 searchResultsFilter,
                                 preferenceMatcher,
                                 requireActivity()),

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabaseConfig;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PrepackagedPreferencesDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenGraphTransformer;
+import de.KnollFrank.lib.settingssearch.db.preference.db.transformer.SearchablePreferenceScreenTreeTransformer;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.settingssearch.preference.fragment.SearchDatabaseRootedAtPrefsFragmentFifthAdapter;
 
@@ -28,14 +28,14 @@ class PreferencesDatabaseConfigFactory {
                 Optional.of(
                         new PrepackagedPreferencesDatabase<>(
                                 new File("database/searchable_preferences_prepackaged.db"),
-                                new SearchablePreferenceScreenGraphTransformer<>() {
+                                new SearchablePreferenceScreenTreeTransformer<>() {
 
                                     @Override
-                                    public SearchablePreferenceScreenTree transformGraph(final SearchablePreferenceScreenTree graph,
-                                                                                         final Configuration actualConfiguration,
-                                                                                         final FragmentActivity activityContext) {
+                                    public SearchablePreferenceScreenTree transformTree(final SearchablePreferenceScreenTree tree,
+                                                                                        final Configuration actualConfiguration,
+                                                                                        final FragmentActivity activityContext) {
                                         return new SearchDatabaseRootedAtPrefsFragmentFifthAdapter().adaptGraphAtPrefsFragmentFifth(
-                                                graph,
+                                                tree,
                                                 actualConfiguration,
                                                 SearchDatabaseConfigFactory.createSearchDatabaseConfig(),
                                                 activityContext);

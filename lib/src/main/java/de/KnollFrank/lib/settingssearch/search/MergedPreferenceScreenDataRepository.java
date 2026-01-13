@@ -17,7 +17,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.Preference2SearchablePreferenceConverterFactory;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
@@ -62,14 +62,14 @@ public class MergedPreferenceScreenDataRepository<C> {
 
     public void fillSearchDatabaseWithPreferences(final Locale locale, final PersistableBundle configuration) {
         synchronized (LockingSupport.searchDatabaseLock) {
-            final SearchablePreferenceScreenGraphRepository<C> graphRepository = preferencesDatabase.searchablePreferenceScreenGraphRepository();
-            if (graphRepository
-                    .findGraphById(locale, configurationBundleConverter.convertBackward(configuration), activityContext)
+            final SearchablePreferenceScreenTreeRepository<C> treeRepository = preferencesDatabase.searchablePreferenceScreenTreeRepository();
+            if (treeRepository
+                    .findTreeById(locale, configurationBundleConverter.convertBackward(configuration), activityContext)
                     .isEmpty()) {
                 // FK-TODO: show progressBar only for computePreferences() and not for load()?
                 final var searchablePreferenceScreenGraph = computeSearchablePreferenceScreenGraph();
                 progressUpdateListener.onProgressUpdate("persisting search database");
-                graphRepository.persistOrReplace(
+                treeRepository.persistOrReplace(
                         new SearchablePreferenceScreenTree(
                                 searchablePreferenceScreenGraph,
                                 locale,

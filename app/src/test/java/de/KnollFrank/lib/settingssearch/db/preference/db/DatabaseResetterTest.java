@@ -77,7 +77,7 @@ public class DatabaseResetterTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         preferencesDatabase
-                .searchablePreferenceScreenGraphRepository()
+                .searchablePreferenceScreenTreeRepository()
                 .persistOrReplace(
                         new SearchablePreferenceScreenTree(
                                 singleNodeGraph.pojoTree(),
@@ -87,6 +87,6 @@ public class DatabaseResetterTest {
 
     private static void assertIsReset(final PreferencesDatabase<Configuration> preferencesDatabase,
                                       final FragmentActivity activityContext) {
-        assertThat(preferencesDatabase.searchablePreferenceScreenGraphRepository().loadAll(null, activityContext), is(empty()));
+        assertThat(preferencesDatabase.searchablePreferenceScreenTreeRepository().loadAll(null, activityContext), is(empty()));
     }
 }

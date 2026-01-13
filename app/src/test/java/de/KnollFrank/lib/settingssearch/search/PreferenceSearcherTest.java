@@ -53,7 +53,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceFragme
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceToSearchablePreferenceConverter;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesRoomDatabaseTest;
-import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
@@ -119,7 +119,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -155,7 +155,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceToIncludeInSearchResults)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -190,7 +190,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreferenceToExcludeFromSearchResults))),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -217,7 +217,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -249,7 +249,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfNestedPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -276,7 +276,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -303,7 +303,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -333,7 +333,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -364,7 +364,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -393,7 +393,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -422,7 +422,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -452,7 +452,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -480,7 +480,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -519,7 +519,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItems(keyOfPreference1, keyOfPreference2)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -540,7 +540,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
@@ -560,7 +560,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
-                createGraphRepository(),
+                createTreeRepository(),
                 PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
@@ -580,7 +580,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreferenceFromSettingsActivity)),
-                createGraphRepository(),
+                createTreeRepository(),
                 PreferenceSearcherTest::makeGraphRootedAtPrefsFragmentFirstConnected);
     }
 
@@ -609,7 +609,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -640,7 +640,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 hasItem(keyOfPreference)),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -668,7 +668,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                         assertThat(
                                 getKeySet(preferenceMatches),
                                 not(hasItem(keyOfPreference))),
-                createGraphRepository(),
+                createTreeRepository(),
                 preferenceScreenGraph -> {
                 });
     }
@@ -676,19 +676,19 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
     @Test
     public void shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths() {
         PreferenceSearcherTestCaseTwoDifferentPreferencePaths.shouldSearchAndFindPreferenceWithTwoDifferentPreferencePaths(
-                createGraphRepository());
+                createTreeRepository());
     }
 
     @Test
     public void shouldSearchAndFindPreferenceOfNonStandardConnectedFragment() {
         PreferenceSearcherTestCaseTwoNonStandardConnectedFragments.shouldSearchAndFindPreferenceOfNonStandardConnectedFragment(
-                createGraphRepository());
+                createTreeRepository());
     }
 
     @Test
     public void shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment() {
         PreferenceSearcherTestCaseNonStandardPreferenceFragment.shouldSearchAndFindPreferenceOfNonStandardPreferenceFragment(
-                createGraphRepository());
+                createTreeRepository());
     }
 
     static void testSearch(final Fragment preferenceFragment,
@@ -699,7 +699,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                            final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
                            final PrincipalAndProxyProvider principalAndProxyProvider,
                            final Consumer<Set<PreferenceMatch>> checkPreferenceMatches,
-                           final SearchablePreferenceScreenGraphRepository<Configuration> graphRepository,
+                           final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository,
                            final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener) {
         try (final ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
             scenario.onActivity(
@@ -716,13 +716,13 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                         preferenceDialogAndSearchableInfoProvider,
                                         principalAndProxyProvider,
                                         emptyComputePreferencesListener(),
-                                        graphRepository,
+                                        treeRepository,
                                         preferenceScreenTreeAvailableListener,
                                         locale,
                                         new DefaultPreferenceFragmentIdProvider());
                         final PreferenceSearcher<Configuration> preferenceSearcher =
                                 new PreferenceSearcher<>(
-                                        mergedPreferenceScreen.graphRepository(),
+                                        mergedPreferenceScreen.treeRepository(),
                                         searchResultsFilter,
                                         new PreferenceMatcher(new CaseInsensitiveSubstringMatcher()),
                                         fragmentActivity);
@@ -774,7 +774,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
             final de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoProvider preferenceDialogAndSearchableInfoProvider,
             final PrincipalAndProxyProvider principalAndProxyProvider,
             final ComputePreferencesListener computePreferencesListener,
-            final SearchablePreferenceScreenGraphRepository<Configuration> graphRepository,
+            final SearchablePreferenceScreenTreeRepository<Configuration> treeRepository,
             final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener,
             final Locale locale,
             final PreferenceFragmentIdProvider preferenceFragmentIdProvider) {
@@ -831,7 +831,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                 preferenceScreenWithHost -> {
                                 }),
                         locale);
-        graphRepository.persistOrReplace(
+        treeRepository.persistOrReplace(
                 new SearchablePreferenceScreenTree(
                         searchablePreferenceScreenTreeProvider.getSearchablePreferenceScreenTree(
                                 preferenceScreenWithHostProvider
@@ -846,7 +846,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                 },
                 preferencePath -> true,
                 new DefaultPreferencePathDisplayer(),
-                graphRepository,
+                treeRepository,
                 fragmentFactoryAndInitializer,
                 new SearchResultsFragmentUI() {
 
@@ -894,8 +894,8 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         // FK-FIXME: preferenceScreenTree.removeAllVertices(nodesToRemove);
     }
 
-    private SearchablePreferenceScreenGraphRepository<Configuration> createGraphRepository() {
-        return SearchablePreferenceScreenGraphRepository.of(
+    private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository() {
+        return SearchablePreferenceScreenTreeRepository.of(
                 preferencesRoomDatabase.searchablePreferenceScreenGraphDAO(),
                 emptyComputePreferencesListener());
     }

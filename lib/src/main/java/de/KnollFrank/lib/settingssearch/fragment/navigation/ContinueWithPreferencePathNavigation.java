@@ -90,7 +90,7 @@ public class ContinueWithPreferencePathNavigation<C> {
                 .navigatePreferencePathAndHighlightPreference(
                         PreferencePathFactory.createPreferencePath(
                                 preferencePathData,
-                                mergedPreferenceScreen.graphRepository(),
+                                mergedPreferenceScreen.treeRepository(),
                                 locale,
                                 activity));
     }

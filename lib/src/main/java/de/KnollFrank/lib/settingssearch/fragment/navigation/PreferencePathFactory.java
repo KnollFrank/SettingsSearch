@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.PreferencePath;
-import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
 import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
@@ -16,14 +16,14 @@ import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
 class PreferencePathFactory {
 
     public static <C> PreferencePath createPreferencePath(final PreferencePathData preferencePathData,
-                                                          final SearchablePreferenceScreenGraphRepository<C> graphRepository,
+                                                          final SearchablePreferenceScreenTreeRepository<C> treeRepository,
                                                           final Locale locale,
                                                           final FragmentActivity activityContext) {
         return createPreferencePath(
                 preferencePathData,
                 PojoGraphs.getPreferences(
-                        graphRepository
-                                .findGraphById(locale, null, activityContext)
+                        treeRepository
+                                .findTreeById(locale, null, activityContext)
                                 .orElseThrow()
                                 .tree()));
     }

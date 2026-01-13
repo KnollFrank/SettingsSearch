@@ -16,7 +16,7 @@ import de.KnollFrank.lib.settingssearch.MergedPreferenceScreen;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.common.task.OnUiThreadRunner;
 import de.KnollFrank.lib.settingssearch.db.preference.db.PreferencesDatabase;
-import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactory;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentFactoryAndInitializer;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
@@ -125,7 +125,7 @@ public class MergedPreferenceScreenFactory<C> {
                 prepareShow,
                 showPreferencePathPredicate,
                 preferencePathDisplayer,
-                preferencesDatabase.searchablePreferenceScreenGraphRepository(),
+                preferencesDatabase.searchablePreferenceScreenTreeRepository(),
                 fragmentFactoryAndInitializer,
                 searchResultsFragmentUI,
                 markupsFactory,
@@ -141,7 +141,7 @@ public class MergedPreferenceScreenFactory<C> {
             final PrepareShow prepareShow,
             final ShowPreferencePathPredicate showPreferencePathPredicate,
             final PreferencePathDisplayer preferencePathDisplayer,
-            final SearchablePreferenceScreenGraphRepository<C> graphRepository,
+            final SearchablePreferenceScreenTreeRepository<C> treeRepository,
             final FragmentFactoryAndInitializer fragmentFactoryAndInitializer,
             final SearchResultsFragmentUI searchResultsFragmentUI,
             final MarkupsFactory markupsFactory,
@@ -152,7 +152,7 @@ public class MergedPreferenceScreenFactory<C> {
             final ShowSettingsFragmentAndHighlightSetting showSettingsFragmentAndHighlightSetting,
             final FragmentActivity activity) {
         return new MergedPreferenceScreen<>(
-                graphRepository,
+                treeRepository,
                 new SearchResultsDisplayer(
                         new SearchResultsFragment(
                                 new NavigatePreferencePathAndHighlightPreference(

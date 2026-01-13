@@ -82,8 +82,8 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
     private SearchablePreferenceScreenTree getPojoGraph(final Locale locale) {
         return getPreferencesDatabase()
-                .searchablePreferenceScreenGraphRepository()
-                .findGraphById(locale, null, requireActivity())
+                .searchablePreferenceScreenTreeRepository()
+                .findTreeById(locale, null, requireActivity())
                 .orElseThrow();
     }
 
@@ -105,7 +105,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                                 getSummaryChangingPreference(pojoGraph.tree()),
                                 getSummary(checked));
                         getPreferencesDatabase()
-                                .searchablePreferenceScreenGraphRepository()
+                                .searchablePreferenceScreenTreeRepository()
                                 .persistOrReplace(
                                         getGraphHavingConfiguration(
                                                 pojoGraph,

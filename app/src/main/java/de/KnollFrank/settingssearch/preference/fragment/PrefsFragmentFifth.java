@@ -14,7 +14,7 @@ import androidx.preference.PreferenceManager;
 
 import java.util.stream.Stream;
 
-import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenGraphRepository;
+import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.R;
 import de.KnollFrank.settingssearch.SettingsSearchApplication;
@@ -56,18 +56,18 @@ public class PrefsFragmentFifth extends PreferenceFragmentCompat implements Pref
         checkBoxPreference.setTitle(ADD_PREFERENCE_TO_PREFERENCE_FRAGMENT_WITH_SINGLE_PREFERENCE_TITLE);
         checkBoxPreference.setOnPreferenceClickListener(
                 preference -> {
-                    getGraphRepository().addGraphTransformer(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter());
+                    getTreeRepository().addTreeTransformer(new SearchDatabaseRootedAtPrefsFragmentFifthAdapter());
                     return true;
                 });
         return checkBoxPreference;
     }
 
-    private SearchablePreferenceScreenGraphRepository<Configuration> getGraphRepository() {
+    private SearchablePreferenceScreenTreeRepository<Configuration> getTreeRepository() {
         return SettingsSearchApplication
                 .getInstanceFromContext(requireContext())
                 .preferencesDatabaseManager
                 .getPreferencesDatabase()
-                .searchablePreferenceScreenGraphRepository();
+                .searchablePreferenceScreenTreeRepository();
     }
 
     public static Bundle createArguments4PreferenceWithoutExtras(final Preference preference,
