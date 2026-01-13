@@ -17,7 +17,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Trees;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 
@@ -26,7 +26,7 @@ public class PojoGraphToEntityGraphTransformerTest {
 
     @Test
     public void test_toPojoGraph_singleNodeGraph() {
-        final Graphs graphs =
+        final Trees trees =
                 createSingleNodeGraph(
                         PreferenceFragmentCompat.class,
                         Locale.GERMAN,
@@ -41,13 +41,13 @@ public class PojoGraphToEntityGraphTransformerTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         test_toEntityGraph(
-                graphs.pojoTree(),
-                graphs.entityTreeAndDbDataProvider());
+                trees.pojoTree(),
+                trees.entityTreeAndDbDataProvider());
     }
 
     @Test
     public void test_toPojoGraph_multiNodeGraph() {
-        final Graphs graphs =
+        final Trees trees =
                 createGraph(
                         PreferenceFragmentCompat.class,
                         Locale.GERMAN,
@@ -62,8 +62,8 @@ public class PojoGraphToEntityGraphTransformerTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         test_toEntityGraph(
-                graphs.pojoTree(),
-                graphs.entityTreeAndDbDataProvider());
+                trees.pojoTree(),
+                trees.entityTreeAndDbDataProvider());
     }
 
     private static void test_toEntityGraph(@SuppressWarnings({"UnstableApiUsage", "NullableProblems"}) final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,

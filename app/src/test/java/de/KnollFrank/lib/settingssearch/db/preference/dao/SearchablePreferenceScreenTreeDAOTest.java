@@ -2,7 +2,7 @@ package de.KnollFrank.lib.settingssearch.db.preference.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
+import static de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Trees;
 
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -177,10 +177,10 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
         assertThat(actual.locale(), is(expected.locale()));
     }
 
-    private static SearchablePreferenceScreenTree asSearchablePreferenceScreenGraph(final Graphs graphs) {
+    private static SearchablePreferenceScreenTree asSearchablePreferenceScreenGraph(final Trees trees) {
         return new SearchablePreferenceScreenTree(
-                graphs.pojoTree(),
-                graphs.entityTreeAndDbDataProvider().tree().id(),
-                graphs.entityTreeAndDbDataProvider().tree().configuration());
+                trees.pojoTree(),
+                trees.entityTreeAndDbDataProvider().tree().id(),
+                trees.entityTreeAndDbDataProvider().tree().configuration());
     }
 }

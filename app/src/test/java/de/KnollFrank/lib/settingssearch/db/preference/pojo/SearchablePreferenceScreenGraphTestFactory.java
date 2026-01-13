@@ -39,14 +39,14 @@ public class SearchablePreferenceScreenGraphTestFactory {
                        String twoNodeScreen2Id) {
     }
 
-    public record Graphs(
+    public record Trees(
             TreeAndDbDataProvider entityTreeAndDbDataProvider,
             Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoTree) {
     }
 
-    public static Graphs createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host,
-                                               final Locale locale,
-                                               final Data data) {
+    public static Trees createSingleNodeGraph(final Class<? extends PreferenceFragmentCompat> host,
+                                              final Locale locale,
+                                              final Data data) {
         final String screenId = data.singleNodeScreenId();
         final SearchablePreferenceEntity preferenceConnectingSrcToDst =
                 new SearchablePreferenceEntity(
@@ -92,7 +92,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         host,
                         treeEntity.id(),
                         data);
-        return new Graphs(
+        return new Trees(
                 new TreeAndDbDataProvider(
                         treeEntity,
                         DbDataProviderFactory.createDbDataProvider(
@@ -121,9 +121,9 @@ public class SearchablePreferenceScreenGraphTestFactory {
                                 .build()));
     }
 
-    public static Graphs createGraph(final Class<? extends PreferenceFragmentCompat> host,
-                                     final Locale locale,
-                                     final Data data) {
+    public static Trees createGraph(final Class<? extends PreferenceFragmentCompat> host,
+                                    final Locale locale,
+                                    final Data data) {
         final String screenId = data.twoNodeScreen1Id();
         final Class<? extends Fragment> fragment = PreferenceFragmentWithSinglePreference.class;
         final SearchablePreferenceEntity preferenceConnectingSrcToDst =
@@ -175,7 +175,7 @@ public class SearchablePreferenceScreenGraphTestFactory {
                         preferenceConnectingSrcToDst,
                         treeEntity.id(),
                         data);
-        return new Graphs(
+        return new Trees(
                 new TreeAndDbDataProvider(
                         treeEntity,
                         DbDataProviderFactory.createDbDataProvider(

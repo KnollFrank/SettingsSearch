@@ -19,7 +19,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory;
-import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Graphs;
+import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenGraphTestFactory.Trees;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.TreeAndDbDataProvider;
 
 @RunWith(RobolectricTestRunner.class)
@@ -28,7 +28,7 @@ public class EntityTreeToPojoTreeTransformerTest {
 
     @Test
     public void test_toPojoGraph_singleNodeGraph() {
-        final Graphs graphs =
+        final Trees trees =
                 createSingleNodeGraph(
                         PreferenceFragmentCompat.class,
                         Locale.GERMAN,
@@ -43,13 +43,13 @@ public class EntityTreeToPojoTreeTransformerTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         test_toPojoGraph(
-                graphs.entityTreeAndDbDataProvider(),
-                graphs.pojoTree());
+                trees.entityTreeAndDbDataProvider(),
+                trees.pojoTree());
     }
 
     @Test
     public void test_toPojoGraph_multiNodeGraph() {
-        final Graphs graphs =
+        final Trees trees =
                 createGraph(
                         PreferenceFragmentCompat.class,
                         Locale.GERMAN,
@@ -64,8 +64,8 @@ public class EntityTreeToPojoTreeTransformerTest {
                                 "graph-screen1",
                                 "graph-screen2"));
         test_toPojoGraph(
-                graphs.entityTreeAndDbDataProvider(),
-                graphs.pojoTree());
+                trees.entityTreeAndDbDataProvider(),
+                trees.pojoTree());
     }
 
     private static void test_toPojoGraph(final TreeAndDbDataProvider entityTreeAndDbDataProvider,
