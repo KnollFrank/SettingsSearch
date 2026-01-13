@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 public class SubtreeReplacer {
 
-    public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> replaceSubtreeWithTree(final Subtree<N, V, ? extends ValueGraph<N, V>> subtreeToReplace,
-                                                                                      final Tree<N, V, ? extends ValueGraph<N, V>> replacementTree) {
+    public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> replaceSubtreeWithTree(final Subtree<N, V, ImmutableValueGraph<N, V>> subtreeToReplace,
+                                                                                      final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree) {
         final MutableValueGraph<N, V> resultGraph = ValueGraphBuilder.directed().build();
         copyPartsOfGraph(
                 subtreeToReplace.tree().graph(),
@@ -28,8 +28,8 @@ public class SubtreeReplacer {
         return new Tree<>(ImmutableValueGraph.copyOf(resultGraph));
     }
 
-    private static <N, V> void integrateReplacementTreeIntoResultGraph(final TreeAtNode<N, V, ? extends ValueGraph<N, V>> originalTreeAtNodeToReplace,
-                                                                       final Tree<N, V, ? extends ValueGraph<N, V>> replacementTree,
+    private static <N, V> void integrateReplacementTreeIntoResultGraph(final TreeAtNode<N, V, ImmutableValueGraph<N, V>> originalTreeAtNodeToReplace,
+                                                                       final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree,
                                                                        final MutableValueGraph<N, V> resultGraph) {
         copyGraphFromSrc2Dst(replacementTree.graph(), resultGraph);
         connectParentToRootOfReplacementTree(
@@ -64,12 +64,12 @@ public class SubtreeReplacer {
                 parentAndEdgeValue.valueOfEdgeToChild);
     }
 
-    private static <N, V> void copyGraphFromSrc2Dst(final ValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
+    private static <N, V> void copyGraphFromSrc2Dst(final ImmutableValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
         addNodesToGraph(src.nodes(), dst);
         copyEdgesFromSrc2Dst(src, src.edges(), dst);
     }
 
-    private static <N, V> void copyPartsOfGraph(final ValueGraph<N, V> originalGraph,
+    private static <N, V> void copyPartsOfGraph(final ImmutableValueGraph<N, V> originalGraph,
                                                 final Set<N> subtreeVerticesToRemove,
                                                 final MutableValueGraph<N, V> resultGraph) {
         addNodesToGraph(
@@ -85,7 +85,7 @@ public class SubtreeReplacer {
         nodes.forEach(graph::addNode);
     }
 
-    private static <N, V> void copyEdgesFromSrc2Dst(final ValueGraph<N, V> src,
+    private static <N, V> void copyEdgesFromSrc2Dst(final ImmutableValueGraph<N, V> src,
                                                     final Set<EndpointPair<N>> edgesOfSrcToCopy,
                                                     final MutableValueGraph<N, V> dst) {
         for (final EndpointPair<N> edge : edgesOfSrcToCopy) {
@@ -113,7 +113,7 @@ public class SubtreeReplacer {
     }
 
 
-    private static <N, V> Optional<ParentAndEdgeValue<N, V>> getParentAndEdgeValue(final TreeAtNode<N, V, ? extends ValueGraph<N, V>> treeAtNode) {
+    private static <N, V> Optional<ParentAndEdgeValue<N, V>> getParentAndEdgeValue(final TreeAtNode<N, V, ImmutableValueGraph<N, V>> treeAtNode) {
         return treeAtNode
                 .tree()
                 .incomingEdgeOf(treeAtNode.nodeOfTree())

@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraph;
 
 import java.util.Locale;
@@ -79,7 +80,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     }
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    private Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> getPojoGraphRootedAt(
+    private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> getPojoGraphRootedAt(
             final PreferenceScreenWithHost root,
             final Locale locale,
             final FragmentActivity activityContext,
@@ -97,7 +98,6 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 .getSearchablePreferenceScreenTree(root);
     }
 
-    @SuppressWarnings({"UnstableApiUsage"})
     private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenTree graphToSearchIn) {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
