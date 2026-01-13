@@ -119,7 +119,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
 
                     private SearchablePreferenceScreenTree getGraphHavingConfiguration(final SearchablePreferenceScreenTree graph,
                                                                                        final Configuration configuration) {
-                        return graph.asGraphHavingConfiguration(new ConfigurationBundleConverter().convertForward(configuration));
+                        return graph.asTreeHavingConfiguration(new ConfigurationBundleConverter().convertForward(configuration));
                     }
 
                     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})

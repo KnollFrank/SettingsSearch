@@ -41,6 +41,6 @@ class InitialTreeTransformer<C> {
         return treeTransformer
                 .map(_treeTransformer -> _treeTransformer.transformTree(tree, configuration, activityContext))
                 .orElse(tree)
-                .asGraphHavingConfiguration(configurationBundleConverter.convertForward(configuration));
+                .asTreeHavingConfiguration(configurationBundleConverter.convertForward(configuration));
     }
 }

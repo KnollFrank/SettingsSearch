@@ -24,7 +24,7 @@ public class PreferencesDatabaseFactory {
                 PreferencesRoomDatabaseFactory.createPreferencesRoomDatabase(
                         preferencesDatabaseConfig,
                         activityContext);
-        processAndPersistGraph(
+        processAndPersistTree(
                 preferencesRoomDatabase
                         .searchablePreferenceScreenGraphDAO()
                         .findGraphById(locale),
@@ -49,12 +49,12 @@ public class PreferencesDatabaseFactory {
         };
     }
 
-    private static <C> void processAndPersistGraph(final Optional<SearchablePreferenceScreenTree> tree,
-                                                   final Optional<SearchablePreferenceScreenTreeTransformer<C>> treeTransformer,
-                                                   final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO,
-                                                   final C configuration,
-                                                   final ConfigurationBundleConverter<C> configurationBundleConverter,
-                                                   final FragmentActivity activityContext) {
+    private static <C> void processAndPersistTree(final Optional<SearchablePreferenceScreenTree> tree,
+                                                  final Optional<SearchablePreferenceScreenTreeTransformer<C>> treeTransformer,
+                                                  final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO,
+                                                  final C configuration,
+                                                  final ConfigurationBundleConverter<C> configurationBundleConverter,
+                                                  final FragmentActivity activityContext) {
         final InitialTreeTransformer<C> initialTreeTransformer =
                 new InitialTreeTransformer<>(
                         treeTransformer,

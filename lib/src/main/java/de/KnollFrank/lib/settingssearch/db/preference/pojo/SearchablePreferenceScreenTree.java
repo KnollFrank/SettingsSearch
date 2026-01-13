@@ -23,7 +23,7 @@ public record SearchablePreferenceScreenTree(
         Locale locale,
         PersistableBundle configuration) {
 
-    public SearchablePreferenceScreenTree asGraphHavingConfiguration(final PersistableBundle configuration) {
+    public SearchablePreferenceScreenTree asTreeHavingConfiguration(final PersistableBundle configuration) {
         return new SearchablePreferenceScreenTree(tree, locale, configuration);
     }
 }
