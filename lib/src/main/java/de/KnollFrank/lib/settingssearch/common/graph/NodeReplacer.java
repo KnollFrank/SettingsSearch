@@ -8,7 +8,7 @@ public class NodeReplacer {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> replaceNode(final TreeAtNode<N, V, ImmutableValueGraph<N, V>> treeAtNodeToReplace,
-                                                                            final N replacementNode) {
+                                                                           final N replacementNode) {
         return NodesTransformer.transformNodes(
                 treeAtNodeToReplace.tree(),
                 createNodeReplacer(treeAtNodeToReplace.nodeOfTree(), replacementNode));

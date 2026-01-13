@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 
 import org.junit.Test;
 
@@ -50,7 +49,7 @@ public class SubtreeReplacerTest {
                                 .build());
 
         // When
-        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 SubtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(originalTree, vR),
                         replacementTree);
@@ -93,7 +92,7 @@ public class SubtreeReplacerTest {
                                 .build());
 
         // When
-        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 SubtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(originalGraph, vR),
                         replacementGraph);
@@ -129,7 +128,7 @@ public class SubtreeReplacerTest {
                                 .build());
 
         // When
-        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 SubtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(originalGraph, vR),
                         replacementGraph);
@@ -188,7 +187,7 @@ public class SubtreeReplacerTest {
                                 .build());
 
         // When
-        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 SubtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(originalGraph, vR),
                         replacementGraph);

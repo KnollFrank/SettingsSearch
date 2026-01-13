@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 
 import org.junit.Test;
 
@@ -38,7 +37,7 @@ public class NodeReplacerTest {
                                 .build());
 
         // When replacing node R with X
-        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
                         new TreeAtNode<>(originalGraph, vR),
                         vX);
@@ -75,7 +74,7 @@ public class NodeReplacerTest {
                                 .build());
 
         // When replacing root R with X
-        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
                         new TreeAtNode<>(originalGraph, vR),
                         vX);
@@ -108,7 +107,7 @@ public class NodeReplacerTest {
                                 .build());
 
         // When replacing leaf R with X
-        final Tree<StringVertex, String, ? extends ValueGraph<StringVertex, String>> returnedGraph =
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
                 NodeReplacer.replaceNode(
                         new TreeAtNode<>(originalGraph, vR),
                         vX);
