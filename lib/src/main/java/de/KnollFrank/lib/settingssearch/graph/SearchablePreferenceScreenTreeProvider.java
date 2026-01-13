@@ -42,7 +42,7 @@ public class SearchablePreferenceScreenTreeProvider {
     }
 
     private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> _getSearchablePreferenceScreenTree(final PreferenceScreenWithHost root) {
-        final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree = preferenceScreenGraphProvider.getPreferenceScreenGraph(root);
+        final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree = preferenceScreenGraphProvider.getPreferenceScreenGraph(root);
         preferenceScreenTreeAvailableListener.onPreferenceScreenTreeAvailable(preferenceScreenTree);
         return transformGraphToPojoGraph(preferenceScreenTree);
     }

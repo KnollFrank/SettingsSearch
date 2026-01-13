@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import android.os.PersistableBundle;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraph;
 
 import java.util.Locale;
@@ -34,7 +35,7 @@ public class PojoGraphToEntityGraphTransformer {
             final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph,
             final Locale graphId,
             final PersistableBundle configuration) {
-        final Tree<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity>> transformedGraph =
+        final Tree<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<DetachedSearchablePreferenceScreenEntity, SearchablePreferenceEntity>> transformedGraph =
                 TreeTransformerAlgorithm.transform(
                         pojoGraph,
                         createGraphTransformer(graphId));
