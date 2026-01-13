@@ -160,7 +160,7 @@ public class SearchablePreferenceScreenTreeDAOTest extends PreferencesRoomDataba
     private SearchablePreferenceScreenTreeDAO createGraphDAO() {
         return new SearchablePreferenceScreenTreeDAO(
                 new EntityTreePojoTreeConverter(),
-                preferencesRoomDatabase.searchablePreferenceScreenGraphEntityDAO());
+                preferencesRoomDatabase.searchablePreferenceScreenTreeEntityDAO());
     }
 
     private static void testFindTreeById(final SearchablePreferenceScreenTree searchablePreferenceScreenTree,

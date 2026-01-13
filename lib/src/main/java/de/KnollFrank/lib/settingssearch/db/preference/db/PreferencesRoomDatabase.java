@@ -43,7 +43,7 @@ public abstract class PreferencesRoomDatabase extends RoomDatabase {
     private final SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO =
             new SearchablePreferenceScreenTreeDAO(
                     new EntityTreePojoTreeConverter(),
-                    searchablePreferenceScreenGraphEntityDAO());
+                    searchablePreferenceScreenTreeEntityDAO());
 
     protected PreferencesRoomDatabase() {
     }
@@ -52,7 +52,7 @@ public abstract class PreferencesRoomDatabase extends RoomDatabase {
         return searchablePreferenceScreenTreeDAO;
     }
 
-    public abstract SearchablePreferenceScreenTreeEntityDAO searchablePreferenceScreenGraphEntityDAO();
+    public abstract SearchablePreferenceScreenTreeEntityDAO searchablePreferenceScreenTreeEntityDAO();
 
     public abstract SearchablePreferenceScreenEntityDAO searchablePreferenceScreenEntityDAO();
 
