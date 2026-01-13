@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.ImmutableBiMap;
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -883,7 +883,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
         }
     }
 
-    private static void makeGraphRootedAtPrefsFragmentFirstConnected(final Tree<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
+    private static void makeGraphRootedAtPrefsFragmentFirstConnected(final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree) {
         final Set<PreferenceScreenWithHost> nodesToRemove =
                 preferenceScreenTree
                         .graph()

@@ -3,7 +3,7 @@ package de.KnollFrank.lib.settingssearch.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -56,8 +56,8 @@ class EntityGraphEquality {
                 is(nodes2String(expected.first(), expected.second())));
     }
 
-    private static void assertActualEdgesEqualsExpectedEdges(final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>>, SearchablePreferenceEntity.DbDataProvider> actual,
-                                                             final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ? extends ValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>>, SearchablePreferenceEntity.DbDataProvider> expected) {
+    private static void assertActualEdgesEqualsExpectedEdges(final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>>, SearchablePreferenceEntity.DbDataProvider> actual,
+                                                             final Pair<Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>>, SearchablePreferenceEntity.DbDataProvider> expected) {
         assertThat(
                 edgesAsStrings(actual.first().graph(), actual.second()),
                 is(edgesAsStrings(expected.first().graph(), expected.second())));
@@ -72,7 +72,7 @@ class EntityGraphEquality {
                 .collect(Collectors.joining(", "));
     }
 
-    private static Set<String> edgesAsStrings(final ValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> graph,
+    private static Set<String> edgesAsStrings(final ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> graph,
                                               final SearchablePreferenceEntity.DbDataProvider dbDataProvider) {
         return graph
                 .edges()
