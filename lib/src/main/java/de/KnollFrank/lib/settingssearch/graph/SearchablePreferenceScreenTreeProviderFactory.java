@@ -20,15 +20,15 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 
-public class SearchablePreferenceScreenGraphProviderFactory {
+public class SearchablePreferenceScreenTreeProviderFactory {
 
-    public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
+    public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenTreeProvider(
             final Fragment fragment,
             final @IdRes int containerViewId,
             final SearchDatabaseConfig searchDatabaseConfig,
             final Locale locale,
             final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
-        return createSearchablePreferenceScreenGraphProvider(
+        return createSearchablePreferenceScreenTreeProvider(
                 containerViewId,
                 (ViewGroup) fragment.requireView(),
                 fragment.requireActivity(),
@@ -39,7 +39,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                 addEdgeToGraphPredicate);
     }
 
-    public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
+    public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenTreeProvider(
             final @IdRes int containerViewId,
             final ViewGroup view,
             final FragmentActivity fragmentActivity,
@@ -60,7 +60,7 @@ public class SearchablePreferenceScreenGraphProviderFactory {
                                         searchDatabaseConfig,
                                         PreferenceDialogsFactory.createPreferenceDialogs(fragmentActivity, containerViewId, searchDatabaseConfig.preferenceSearchablePredicate))),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
-                PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                PreferenceScreenTreeProviderFactory.createPreferenceScreenTreeProvider(
                         new PreferenceScreenWithHostProvider(
                                 InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment(
                                         searchDatabaseConfig.fragmentFactory,

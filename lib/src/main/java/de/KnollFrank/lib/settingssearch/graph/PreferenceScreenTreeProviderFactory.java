@@ -6,16 +6,16 @@ import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceFragmentConnected2PreferenceProvider;
 import de.KnollFrank.lib.settingssearch.provider.RootPreferenceFragmentOfActivityProvider;
 
-public class PreferenceScreenGraphProviderFactory {
+public class PreferenceScreenTreeProviderFactory {
 
-    public static PreferenceScreenGraphProvider createPreferenceScreenGraphProvider(
+    public static PreferenceScreenTreeProvider createPreferenceScreenTreeProvider(
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
             final PreferenceFragmentConnected2PreferenceProvider preferenceFragmentConnected2PreferenceProvider,
             final RootPreferenceFragmentOfActivityProvider rootPreferenceFragmentOfActivityProvider,
             final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
             final Context context,
             final PreferenceScreenGraphListener preferenceScreenGraphListener) {
-        return new PreferenceScreenGraphProvider(
+        return new PreferenceScreenTreeProvider(
                 preferenceScreenGraphListener,
                 new ConnectedPreferenceScreenByPreferenceProvider(
                         preferenceScreenWithHostProvider,

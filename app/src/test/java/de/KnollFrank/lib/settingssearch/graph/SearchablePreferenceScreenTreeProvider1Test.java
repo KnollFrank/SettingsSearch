@@ -190,7 +190,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                                                 preference -> Optional.empty(),
                                                 (preference, hostOfPreference) -> Optional.empty()))),
                         new DefaultPreferenceFragmentIdProvider()),
-                PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                PreferenceScreenTreeProviderFactory.createPreferenceScreenTreeProvider(
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),

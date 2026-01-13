@@ -14,23 +14,21 @@ import de.KnollFrank.lib.settingssearch.common.Maps;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-// FK-TODO: rename to PreferenceScreenTreeProvider
-class PreferenceScreenGraphProvider {
+class PreferenceScreenTreeProvider {
 
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
     private final ConnectedPreferenceScreenByPreferenceProvider connectedPreferenceScreenByPreferenceProvider;
     private final AddEdgeToGraphPredicate addEdgeToGraphPredicate;
 
-    public PreferenceScreenGraphProvider(final PreferenceScreenGraphListener preferenceScreenGraphListener,
-                                         final ConnectedPreferenceScreenByPreferenceProvider connectedPreferenceScreenByPreferenceProvider,
-                                         final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
+    public PreferenceScreenTreeProvider(final PreferenceScreenGraphListener preferenceScreenGraphListener,
+                                        final ConnectedPreferenceScreenByPreferenceProvider connectedPreferenceScreenByPreferenceProvider,
+                                        final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
         this.preferenceScreenGraphListener = preferenceScreenGraphListener;
         this.connectedPreferenceScreenByPreferenceProvider = connectedPreferenceScreenByPreferenceProvider;
         this.addEdgeToGraphPredicate = addEdgeToGraphPredicate;
     }
 
-    // FK-TODO: rename to getPreferenceScreenTree()
-    public Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> getPreferenceScreenGraph(final PreferenceScreenWithHost root) {
+    public Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> getPreferenceScreenTree(final PreferenceScreenWithHost root) {
         final MutableValueGraph<PreferenceScreenWithHost, Preference> preferenceScreenGraph = PreferenceScreenGraphFactory.createEmptyPreferenceScreenGraph(preferenceScreenGraphListener);
         buildPreferenceScreenGraph(root, preferenceScreenGraph);
         return new Tree<>(ImmutableValueGraph.copyOf(preferenceScreenGraph));

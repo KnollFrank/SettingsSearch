@@ -24,7 +24,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.ConfigurationBundleConverter;
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogs;
 import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphListener;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenTreeProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformer;
 import de.KnollFrank.lib.settingssearch.search.progress.ProgressProvider;
@@ -103,7 +103,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                                         searchDatabaseConfig,
                                         preferenceDialogs)),
                         searchDatabaseConfig.preferenceFragmentIdProvider),
-                PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                PreferenceScreenTreeProviderFactory.createPreferenceScreenTreeProvider(
                         preferenceScreenWithHostProvider,
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,

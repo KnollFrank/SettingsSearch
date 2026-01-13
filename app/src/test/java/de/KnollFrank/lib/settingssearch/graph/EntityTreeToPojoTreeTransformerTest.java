@@ -72,7 +72,7 @@ public class EntityTreeToPojoTreeTransformerTest {
                                          final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoTreeExpected) {
         // When
         final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraphActual =
-                EntityGraphToPojoGraphTransformer.toPojoGraph(
+                EntityTreeToPojoTreeTransformer.toPojoTree(
                         entityTreeAndDbDataProvider.asGraph(),
                         entityTreeAndDbDataProvider.dbDataProvider());
 

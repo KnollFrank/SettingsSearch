@@ -66,7 +66,7 @@ import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmen
 import de.KnollFrank.lib.settingssearch.fragment.PreferenceDialogsFactory;
 import de.KnollFrank.lib.settingssearch.fragment.factory.FragmentFactoryAndInitializerRegistry;
 import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
-import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenGraphProviderFactory;
+import de.KnollFrank.lib.settingssearch.graph.PreferenceScreenTreeProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProvider;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformer;
 import de.KnollFrank.lib.settingssearch.provider.PreferenceDialogAndSearchableInfoByPreferenceDialogProvider;
@@ -810,7 +810,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
                                                                         preferenceSearchablePredicate),
                                                                 preferenceDialogAndSearchableInfoProvider)))),
                                 preferenceFragmentIdProvider),
-                        PreferenceScreenGraphProviderFactory.createPreferenceScreenGraphProvider(
+                        PreferenceScreenTreeProviderFactory.createPreferenceScreenTreeProvider(
                                 preferenceScreenWithHostProvider,
                                 preferenceFragmentConnected2PreferenceProvider,
                                 new RootPreferenceFragmentOfActivityProvider() {

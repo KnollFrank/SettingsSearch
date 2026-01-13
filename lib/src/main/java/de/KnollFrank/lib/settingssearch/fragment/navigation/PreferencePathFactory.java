@@ -11,7 +11,7 @@ import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
-import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
+import de.KnollFrank.lib.settingssearch.graph.PojoTrees;
 
 class PreferencePathFactory {
 
@@ -21,7 +21,7 @@ class PreferencePathFactory {
                                                           final FragmentActivity activityContext) {
         return createPreferencePath(
                 preferencePathData,
-                PojoGraphs.getPreferences(
+                PojoTrees.getPreferences(
                         treeRepository
                                 .findTreeById(locale, null, activityContext)
                                 .orElseThrow()

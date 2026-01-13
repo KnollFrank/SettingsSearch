@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenWithinTree;
 
-public class PojoGraphs {
+public class PojoTrees {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     public static Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {

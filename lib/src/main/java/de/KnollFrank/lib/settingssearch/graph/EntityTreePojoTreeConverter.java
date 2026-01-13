@@ -9,7 +9,7 @@ public class EntityTreePojoTreeConverter implements Converter<TreeAndDbDataProvi
     @Override
     public SearchablePreferenceScreenTree convertForward(final TreeAndDbDataProvider treeAndDbDataProvider) {
         return new SearchablePreferenceScreenTree(
-                EntityGraphToPojoGraphTransformer.toPojoGraph(
+                EntityTreeToPojoTreeTransformer.toPojoTree(
                         treeAndDbDataProvider.asGraph(),
                         treeAndDbDataProvider.dbDataProvider()),
                 treeAndDbDataProvider.tree().id(),

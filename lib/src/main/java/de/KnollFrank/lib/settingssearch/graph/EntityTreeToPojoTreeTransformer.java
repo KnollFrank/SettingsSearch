@@ -15,18 +15,18 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenEntity;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferences;
 
-public class EntityGraphToPojoGraphTransformer {
+public class EntityTreeToPojoTreeTransformer {
 
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-    public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> toPojoGraph(
-            final Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>> entityGraph,
+    public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> toPojoTree(
+            final Tree<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity>> entityTree,
             final DbDataProvider dbDataProvider) {
         return TreeTransformerAlgorithm.transform(
-                entityGraph,
-                createGraphTransformer(createScreenConverter(dbDataProvider)));
+                entityTree,
+                createTreeTransformer(createScreenConverter(dbDataProvider)));
     }
 
-    private static TreeTransformer<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, SearchablePreferenceScreen, SearchablePreference> createGraphTransformer(final SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter screenConverter) {
+    private static TreeTransformer<SearchablePreferenceScreenEntity, SearchablePreferenceEntity, SearchablePreferenceScreen, SearchablePreference> createTreeTransformer(final SearchablePreferenceScreenEntityToSearchablePreferenceScreenConverter screenConverter) {
         return new TreeTransformer<>() {
 
             @Override

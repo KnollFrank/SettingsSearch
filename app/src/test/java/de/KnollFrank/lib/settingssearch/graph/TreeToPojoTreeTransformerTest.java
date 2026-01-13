@@ -4,7 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory.createInstantiateAndInitializeFragment;
 import static de.KnollFrank.lib.settingssearch.graph.MapFromPojoNodesRemover.removeMapFromPojoNodes;
-import static de.KnollFrank.lib.settingssearch.graph.PojoGraphs.getPreferences;
+import static de.KnollFrank.lib.settingssearch.graph.PojoTrees.getPreferences;
 
 import android.content.Context;
 

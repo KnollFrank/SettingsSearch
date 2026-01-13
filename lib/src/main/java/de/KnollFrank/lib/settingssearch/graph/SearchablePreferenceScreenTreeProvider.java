@@ -18,18 +18,18 @@ public class SearchablePreferenceScreenTreeProvider {
     private final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener;
     private final ComputePreferencesListener computePreferencesListener;
     private final TreeToPojoTreeTransformer treeToPojoTreeTransformer;
-    private final PreferenceScreenGraphProvider preferenceScreenGraphProvider;
+    private final PreferenceScreenTreeProvider preferenceScreenTreeProvider;
     private final Locale locale;
 
     public SearchablePreferenceScreenTreeProvider(final PreferenceScreenTreeAvailableListener preferenceScreenTreeAvailableListener,
                                                   final ComputePreferencesListener computePreferencesListener,
                                                   final TreeToPojoTreeTransformer treeToPojoTreeTransformer,
-                                                  final PreferenceScreenGraphProvider preferenceScreenGraphProvider,
+                                                  final PreferenceScreenTreeProvider preferenceScreenTreeProvider,
                                                   final Locale locale) {
         this.preferenceScreenTreeAvailableListener = preferenceScreenTreeAvailableListener;
         this.computePreferencesListener = computePreferencesListener;
         this.treeToPojoTreeTransformer = treeToPojoTreeTransformer;
-        this.preferenceScreenGraphProvider = preferenceScreenGraphProvider;
+        this.preferenceScreenTreeProvider = preferenceScreenTreeProvider;
         this.locale = locale;
     }
 
@@ -41,7 +41,7 @@ public class SearchablePreferenceScreenTreeProvider {
     }
 
     private Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> _getSearchablePreferenceScreenTree(final PreferenceScreenWithHost root) {
-        final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree = preferenceScreenGraphProvider.getPreferenceScreenGraph(root);
+        final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> preferenceScreenTree = preferenceScreenTreeProvider.getPreferenceScreenTree(root);
         preferenceScreenTreeAvailableListener.onPreferenceScreenTreeAvailable(preferenceScreenTree);
         return transformGraphToPojoGraph(preferenceScreenTree);
     }

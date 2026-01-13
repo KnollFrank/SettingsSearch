@@ -50,8 +50,8 @@ public class PojoGraphTestFactory {
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
             final Context context) {
-        return PreferenceScreenGraphProviderFactory
-                .createPreferenceScreenGraphProvider(
+        return PreferenceScreenTreeProviderFactory
+                .createPreferenceScreenTreeProvider(
                         getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
@@ -59,7 +59,7 @@ public class PojoGraphTestFactory {
                         context,
                         preferenceScreenWithHost -> {
                         })
-                .getPreferenceScreenGraph(root);
+                .getPreferenceScreenTree(root);
     }
 
     private static PreferenceScreenWithHostProvider getPreferenceScreenWithHostProvider(final InstantiateAndInitializeFragment instantiateAndInitializeFragment) {

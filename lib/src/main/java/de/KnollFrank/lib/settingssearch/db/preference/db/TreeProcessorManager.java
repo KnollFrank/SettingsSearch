@@ -16,7 +16,7 @@ import de.KnollFrank.lib.settingssearch.graph.ComputePreferencesListener;
 class TreeProcessorManager<C> {
 
     private final ComputePreferencesListener computePreferencesListener;
-    // FK-TODO: graphProcessors in der Suchdatenbank speichern
+    // FK-TODO: treeProcessors in der Suchdatenbank speichern
     // FK-TODO: use Queue instead of List?
     private final List<Either<SearchablePreferenceScreenTreeTransformer<C>, SearchablePreferenceScreenTreeCreator<C>>> treeProcessors = new ArrayList<>();
 
@@ -24,13 +24,13 @@ class TreeProcessorManager<C> {
         this.computePreferencesListener = computePreferencesListener;
     }
 
-    public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> graphTransformer) {
-        treeProcessors.add(Either.ofLeft(graphTransformer));
+    public void addTreeTransformer(final SearchablePreferenceScreenTreeTransformer<C> treeTransformer) {
+        treeProcessors.add(Either.ofLeft(treeTransformer));
     }
 
-    public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> graphCreator) {
+    public void addTreeCreator(final SearchablePreferenceScreenTreeCreator<C> treeCreator) {
         removeTreeProcessors();
-        treeProcessors.add(Either.ofRight(graphCreator));
+        treeProcessors.add(Either.ofRight(treeCreator));
     }
 
     public void removeTreeProcessors() {
@@ -49,7 +49,7 @@ class TreeProcessorManager<C> {
         final List<SearchablePreferenceScreenTree> transformedTrees =
                 trees
                         .stream()
-                        .map(graph -> applyTreeProcessorsToTree(graph, configuration, activityContext))
+                        .map(tree -> applyTreeProcessorsToTree(tree, configuration, activityContext))
                         .collect(Collectors.toList());
         removeTreeProcessors();
         computePreferencesListener.onFinishComputePreferences();

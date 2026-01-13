@@ -12,7 +12,7 @@ import de.KnollFrank.lib.settingssearch.common.Optionals;
 import de.KnollFrank.lib.settingssearch.db.preference.db.SearchablePreferenceScreenTreeRepository;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceOfHostWithinTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
-import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
+import de.KnollFrank.lib.settingssearch.graph.PojoTrees;
 import de.KnollFrank.lib.settingssearch.results.SearchResultsFilter;
 
 class PreferenceSearcher<C> {
@@ -56,7 +56,7 @@ class PreferenceSearcher<C> {
     private Set<SearchablePreferenceOfHostWithinTree> getPreferences(final Optional<SearchablePreferenceScreenTree> graph) {
         return graph
                 .map(SearchablePreferenceScreenTree::tree)
-                .map(PojoGraphs::getPreferences)
+                .map(PojoTrees::getPreferences)
                 .orElseGet(Collections::emptySet);
     }
 }

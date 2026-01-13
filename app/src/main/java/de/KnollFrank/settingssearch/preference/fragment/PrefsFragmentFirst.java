@@ -30,7 +30,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceO
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreenTree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceWithinTrees;
-import de.KnollFrank.lib.settingssearch.graph.PojoGraphs;
+import de.KnollFrank.lib.settingssearch.graph.PojoTrees;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.Configuration;
 import de.KnollFrank.settingssearch.ConfigurationBundleConverter;
@@ -126,7 +126,7 @@ public class PrefsFragmentFirst extends PreferenceFragmentCompat implements OnPr
                     private SearchablePreferenceOfHostWithinTree getSummaryChangingPreference(final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraph) {
                         return SearchablePreferenceWithinTrees
                                 .findPreferenceByKey(
-                                        PojoGraphs.getPreferences(pojoGraph),
+                                        PojoTrees.getPreferences(pojoGraph),
                                         SUMMARY_CHANGING_PREFERENCE_KEY)
                                 .orElseThrow();
                     }

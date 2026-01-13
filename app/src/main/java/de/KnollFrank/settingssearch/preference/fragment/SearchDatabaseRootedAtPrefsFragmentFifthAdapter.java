@@ -25,7 +25,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceS
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreens;
 import de.KnollFrank.lib.settingssearch.fragment.FragmentInitializerFactory;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragmentFactory;
-import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenGraphProviderFactory;
+import de.KnollFrank.lib.settingssearch.graph.SearchablePreferenceScreenTreeProviderFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreePathInstantiator;
 import de.KnollFrank.lib.settingssearch.results.recyclerview.FragmentContainerViewAdder;
 import de.KnollFrank.settingssearch.Configuration;
@@ -84,8 +84,8 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
             final Locale locale,
             final FragmentActivity activityContext,
             final SearchDatabaseConfig searchDatabaseConfig) {
-        return SearchablePreferenceScreenGraphProviderFactory
-                .createSearchablePreferenceScreenGraphProvider(
+        return SearchablePreferenceScreenTreeProviderFactory
+                .createSearchablePreferenceScreenTreeProvider(
                         FRAGMENT_CONTAINER_VIEW_ID,
                         Views.getRootViewContainer(activityContext),
                         activityContext,
