@@ -48,7 +48,7 @@ public abstract class PreferencesRoomDatabase extends RoomDatabase {
     protected PreferencesRoomDatabase() {
     }
 
-    public SearchablePreferenceScreenTreeDAO searchablePreferenceScreenGraphDAO() {
+    public SearchablePreferenceScreenTreeDAO searchablePreferenceScreenTreeDAO() {
         return searchablePreferenceScreenTreeDAO;
     }
 

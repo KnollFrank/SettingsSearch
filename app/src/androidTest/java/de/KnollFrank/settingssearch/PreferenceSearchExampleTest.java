@@ -432,7 +432,7 @@ public class PreferenceSearchExampleTest {
                                 .databaseAssetFile());
         final Locale locale =
                 preferencesRoomDatabase
-                        .searchablePreferenceScreenGraphDAO()
+                        .searchablePreferenceScreenTreeDAO()
                         .loadAll()
                         .stream()
                         .findAny()

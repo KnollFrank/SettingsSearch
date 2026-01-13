@@ -46,7 +46,7 @@ public class SearchablePreferenceScreenTreeRepository<C> {
                                                                  final C actualConfiguration,
                                                                  final FragmentActivity activityContext) {
         updateSearchDatabase(actualConfiguration, activityContext);
-        return delegate.findGraphById(id);
+        return delegate.findTreeById(id);
     }
 
     public Set<SearchablePreferenceScreenTree> loadAll(final C actualConfiguration,

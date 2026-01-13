@@ -26,12 +26,12 @@ public class PreferencesDatabaseFactory {
                         activityContext);
         processAndPersistTree(
                 preferencesRoomDatabase
-                        .searchablePreferenceScreenGraphDAO()
-                        .findGraphById(locale),
+                        .searchablePreferenceScreenTreeDAO()
+                        .findTreeById(locale),
                 preferencesDatabaseConfig
                         .prepackagedPreferencesDatabase()
                         .map(PrepackagedPreferencesDatabase::searchablePreferenceScreenTreeTransformer),
-                preferencesRoomDatabase.searchablePreferenceScreenGraphDAO(),
+                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
                 configuration,
                 configurationBundleConverter,
                 activityContext);
@@ -39,7 +39,7 @@ public class PreferencesDatabaseFactory {
 
             private final SearchablePreferenceScreenTreeRepository<C> searchablePreferenceScreenTreeRepository =
                     SearchablePreferenceScreenTreeRepository.of(
-                            preferencesRoomDatabase.searchablePreferenceScreenGraphDAO(),
+                            preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
                             computePreferencesListener);
 
             @Override

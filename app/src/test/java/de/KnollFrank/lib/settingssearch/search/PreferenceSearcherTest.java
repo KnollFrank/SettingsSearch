@@ -896,7 +896,7 @@ public class PreferenceSearcherTest extends PreferencesRoomDatabaseTest {
 
     private SearchablePreferenceScreenTreeRepository<Configuration> createTreeRepository() {
         return SearchablePreferenceScreenTreeRepository.of(
-                preferencesRoomDatabase.searchablePreferenceScreenGraphDAO(),
+                preferencesRoomDatabase.searchablePreferenceScreenTreeDAO(),
                 emptyComputePreferencesListener());
     }
 }

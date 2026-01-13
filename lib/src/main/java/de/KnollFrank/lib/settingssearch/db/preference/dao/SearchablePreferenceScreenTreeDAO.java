@@ -27,7 +27,7 @@ public class SearchablePreferenceScreenTreeDAO {
         graphById.put(searchablePreferenceScreenTree.locale(), Optional.of(searchablePreferenceScreenTree));
     }
 
-    public Optional<SearchablePreferenceScreenTree> findGraphById(final Locale id) {
+    public Optional<SearchablePreferenceScreenTree> findTreeById(final Locale id) {
         if (!graphById.containsKey(id)) {
             graphById.put(id, _findGraphById(id));
         }
