@@ -4,7 +4,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
 import org.junit.Test;
@@ -19,7 +18,7 @@ public class TreeTest {
     @Test
     public void shouldCreateTreeFromValidGraph() {
         // Given: A valid graph: [A] --("val")--> [B]
-        final ValueGraph<StringVertex, String> validGraph =
+        final ImmutableValueGraph<StringVertex, String> validGraph =
                 ValueGraphBuilder
                         .directed()
                         .<StringVertex, String>immutable()
@@ -27,7 +26,7 @@ public class TreeTest {
                         .build();
 
         // When
-        final Tree<StringVertex, String, ValueGraph<StringVertex, String>> tree = new Tree<>(validGraph);
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> tree = new Tree<>(validGraph);
 
         // Then
         assertThat(tree.graph(), is(validGraph));
@@ -36,7 +35,7 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForUndirectedGraph() {
         // Given
-        final ValueGraph<StringVertex, String> undirectedGraph =
+        final ImmutableValueGraph<StringVertex, String> undirectedGraph =
                 ValueGraphBuilder
                         .undirected()
                         .<StringVertex, String>immutable()
@@ -50,7 +49,7 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForEmptyGraph() {
         // Given
-        final ValueGraph<StringVertex, String> emptyGraph =
+        final ImmutableValueGraph<StringVertex, String> emptyGraph =
                 ValueGraphBuilder
                         .directed()
                         .<StringVertex, String>immutable()
@@ -63,7 +62,7 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithCycle1() {
         // Given: [A] <--> [B]
-        final ValueGraph<StringVertex, String> graphWithCycle =
+        final ImmutableValueGraph<StringVertex, String> graphWithCycle =
                 ValueGraphBuilder
                         .directed()
                         .<StringVertex, String>immutable()
@@ -78,7 +77,7 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithCycle2() {
         // Given: [C] --> [A] <--> [B]
-        final ValueGraph<StringVertex, String> graphWithCycle =
+        final ImmutableValueGraph<StringVertex, String> graphWithCycle =
                 ValueGraphBuilder
                         .directed()
                         .<StringVertex, String>immutable()
@@ -94,7 +93,7 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForNodeWithMultipleParents() {
         // Given: [A] --> [C] <-- [B]
-        final ValueGraph<StringVertex, String> graphWithMultipleParents =
+        final ImmutableValueGraph<StringVertex, String> graphWithMultipleParents =
                 ValueGraphBuilder
                         .directed()
                         .<StringVertex, String>immutable()
@@ -109,7 +108,7 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithMultipleRoots() {
         // Given: [A], [B] (disconnected)
-        final ValueGraph<StringVertex, String> graphWithMultipleRoots =
+        final ImmutableValueGraph<StringVertex, String> graphWithMultipleRoots =
                 ValueGraphBuilder
                         .directed()
                         .<StringVertex, String>immutable()
