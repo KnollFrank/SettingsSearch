@@ -13,7 +13,7 @@ import androidx.preference.Preference;
 import androidx.test.core.app.ActivityScenario;
 
 import com.google.common.collect.Iterables;
-import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ImmutableValueGraph;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,16 +40,16 @@ public class TreePathInstantiatorTest {
             scenario.onActivity(fragmentActivity -> {
                 // Given
                 final TreePathInstantiator treePathInstantiator = new TreePathInstantiator(createPreferenceScreenWithHostProvider(fragmentActivity));
-                final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraphSingleNode =
+                final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> pojoGraphSingleNode =
                         createSomePojoGraph(
                                 fragmentActivity,
                                 Fragment4.class);
                 final SearchablePreferenceScreen searchablePreferenceScreen = Iterables.getOnlyElement(pojoGraphSingleNode.graph().nodes());
-                final TreePath<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath =
+                final TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath =
                         new TreePath<>(pojoGraphSingleNode, List.of(searchablePreferenceScreen));
 
                 // When
-                final TreePath<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> treePathInstantiated = treePathInstantiator.instantiate(treePath);
+                final TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> treePathInstantiated = treePathInstantiator.instantiate(treePath);
 
                 // Then
                 assertSameSize(treePathInstantiated, treePath);
@@ -64,16 +64,16 @@ public class TreePathInstantiatorTest {
             scenario.onActivity(fragmentActivity -> {
                 // Given
                 final TreePathInstantiator treePathInstantiator = new TreePathInstantiator(createPreferenceScreenWithHostProvider(fragmentActivity));
-                final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> graphTwoNodes = createSomePojoGraph(fragmentActivity, Fragment3ConnectedToFragment4.class);
+                final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> graphTwoNodes = createSomePojoGraph(fragmentActivity, Fragment3ConnectedToFragment4.class);
                 final SearchablePreferenceScreen thirdScreen = getPreferenceScreenByTitle(graphTwoNodes.graph().nodes(), "third screen");
                 final SearchablePreferenceScreen fourthScreen = getPreferenceScreenByTitle(graphTwoNodes.graph().nodes(), "fourth screen");
-                final TreePath<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath =
+                final TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath =
                         new TreePath<>(
                                 graphTwoNodes,
                                 List.of(thirdScreen, fourthScreen));
 
                 // When
-                final TreePath<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> treePathInstantiated = treePathInstantiator.instantiate(treePath);
+                final TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> treePathInstantiated = treePathInstantiator.instantiate(treePath);
 
                 // Then
                 assertSameSize(treePathInstantiated, treePath);
@@ -83,7 +83,7 @@ public class TreePathInstantiatorTest {
         }
     }
 
-    private static Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> createSomePojoGraph(
+    private static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> createSomePojoGraph(
             final FragmentActivity fragmentActivity,
             final Class<? extends Fragment> root) {
         final var result =

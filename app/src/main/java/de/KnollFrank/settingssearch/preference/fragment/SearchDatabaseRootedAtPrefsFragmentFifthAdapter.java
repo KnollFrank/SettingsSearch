@@ -6,7 +6,6 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 
 import java.util.Locale;
 
@@ -108,7 +107,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
 
     private PreferenceScreenWithHost instantiateSearchablePreferenceScreen(
             final SearchablePreferenceScreen searchablePreferenceScreen,
-            @SuppressWarnings({"UnstableApiUsage", "NullableProblems"}) final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
+            @SuppressWarnings({"UnstableApiUsage", "NullableProblems"}) final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
             final TreePathInstantiator treePathInstantiator,
             final OnUiThreadRunner onUiThreadRunner) {
         final var treePath = tree.getPathFromRootNodeToTarget(searchablePreferenceScreen);

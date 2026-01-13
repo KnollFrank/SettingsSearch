@@ -6,7 +6,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.google.common.collect.ImmutableList;
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.Optional;
@@ -31,7 +30,7 @@ public class TreePathInstantiator {
         this.preferenceScreenWithHostProvider = preferenceScreenWithHostProvider;
     }
 
-    public TreePath<PreferenceScreenWithHost, Preference, ? extends ValueGraph<PreferenceScreenWithHost, Preference>> instantiate(final TreePath<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
+    public TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> instantiate(final TreePath<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> treePath) {
         return instantiateTreePath(
                 Lists
                         .asHeadAndTail(treePath.nodes())
@@ -41,7 +40,7 @@ public class TreePathInstantiator {
 
     private TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> instantiateTreePath(
             final HeadAndTail<SearchablePreferenceScreen> treePath,
-            final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree) {
+            final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree) {
         final ImmutableValueGraph.Builder<PreferenceScreenWithHost, Preference> graphBuilder = ValueGraphBuilder.directed().immutable();
         final ImmutableList.Builder<PreferenceScreenWithHost> nodesBuilder = ImmutableList.builder();
         SearchablePreferenceScreen searchablePreferenceScreenPrevious = treePath.head();
@@ -93,7 +92,7 @@ public class TreePathInstantiator {
     }
 
     private static SearchablePreference getSearchablePreferenceOnEdge(
-            final Tree<SearchablePreferenceScreen, SearchablePreference, ? extends ValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
+            final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
             final EndpointPair<SearchablePreferenceScreen> edge) {
         return tree.graph().edgeValueOrDefault(edge, null);
     }
