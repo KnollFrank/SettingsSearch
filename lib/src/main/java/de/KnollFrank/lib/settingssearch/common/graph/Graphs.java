@@ -53,14 +53,22 @@ public class Graphs {
 
     public static <N, V> MutableValueGraph<N, V> toMutableValueGraph(final ValueGraph<N, V> graph) {
         final MutableValueGraph<N, V> mutableCopy = ValueGraphBuilder.from(graph).build();
-        graph.nodes().forEach(mutableCopy::addNode);
-        for (final EndpointPair<N> edge : graph.edges()) {
-            mutableCopy.putEdgeValue(
+        copyNodes(graph, mutableCopy);
+        copyEdges(graph, mutableCopy);
+        return mutableCopy;
+    }
+
+    private static <N, V> void copyNodes(final ValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
+        src.nodes().forEach(dst::addNode);
+    }
+
+    private static <N, V> void copyEdges(final ValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
+        for (final EndpointPair<N> edge : src.edges()) {
+            dst.putEdgeValue(
                     edge.source(),
                     edge.target(),
-                    graph.edgeValueOrDefault(edge, null));
+                    src.edgeValueOrDefault(edge, null));
         }
-        return mutableCopy;
     }
 
     private static <Node> boolean isRootNode(final ValueGraph<Node, ?> graph, final Node node) {
