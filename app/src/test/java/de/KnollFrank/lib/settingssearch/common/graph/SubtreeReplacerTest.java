@@ -3,218 +3,279 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-import org.junit.Test;
+import com.google.common.graph.ImmutableValueGraph;
 
-@SuppressWarnings({"UnstableApiUsage"})
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+
+@SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+@RunWith(Parameterized.class)
 public class SubtreeReplacerTest {
 
-    private final StringVertex vR = new StringVertex("R");
-    private final StringVertex vA = new StringVertex("A");
-    private final StringVertex vB = new StringVertex("B");
-    private final StringVertex vX = new StringVertex("X");
-    private final StringVertex vY = new StringVertex("Y");
-    private final StringVertex vZ = new StringVertex("Z");
-    private final StringVertex vP = new StringVertex("P");
+    // Test data setup
+    private static final StringVertex vR = new StringVertex("R");
+    private static final StringVertex vA = new StringVertex("A");
+    private static final StringVertex vB = new StringVertex("B");
+    private static final StringVertex vX = new StringVertex("X");
+    private static final StringVertex vY = new StringVertex("Y");
+    private static final StringVertex vZ = new StringVertex("Z");
+    private static final StringVertex vP = new StringVertex("P");
 
-    private final String eRA = "R->A";
-    private final String eRB = "R->B";
-    private final String eXY = "X->Y";
-    private final String eXZ = "X->Z";
-    private final String ePR = "P->R";
+    private static final String eRA = "R->A";
+    private static final String eRB = "R->B";
+    private static final String eXY = "X->Y";
+    private static final String eXZ = "X->Z";
+    private static final String ePR = "P->R";
 
-    @Test
-    public void replaceSubtree_nodeToReplaceIsRoot_replacesEntireGraph() {
-        //   subtreeToReplace   replacementTree  =>   expectedTree
-        //      >R< ----------->       X                   X
-        //       | (eRA)               | (eXY)   =>        | (eXY)
-        //       A                     Y                   Y
-        // Given
-        final var subtreeToReplace =
-                new Subtree<>(
-                        new Tree<>(
-                                StringGraphs
-                                        .newStringGraphBuilder()
-                                        .putEdgeValue(vR, vA, eRA)
-                                        .build()),
-                        vR);
-        final var replacementTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vX, vY, eXY)
-                                .build());
-        final var expectedTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vX, vY, eXY)
-                                .build());
+    private interface ISubtreeReplacerTest {
 
-        // When
-        final var actualTree = SubtreeReplacer.replaceSubtreeWithTree(subtreeToReplace, replacementTree);
+        Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getSubtreeToReplace();
 
-        // Then
-        assertThat(actualTree, is(expectedTree));
+        Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getReplacementTree();
+
+        Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getExpectedTree();
+    }
+
+    // Parameters for the test class
+    @Parameterized.Parameter(value = 0)
+    public String description;
+
+    @Parameterized.Parameter(value = 1)
+    public ISubtreeReplacerTest testCase;
+
+    @Parameterized.Parameters(name = "{0}")
+    public static Iterable<Object[]> data() {
+        return Arrays.asList(
+                new Object[][]{
+                        {
+                                "Node to replace is root, replaces entire graph",
+                                new ISubtreeReplacerTest() {
+                                    /*
+                                     *   subtreeToReplace   replacementTree  =>   expectedTree
+                                     *      >R< ----------->       X                   X
+                                     *       | (eRA)               | (eXY)   =>        | (eXY)
+                                     *       A                     Y                   Y
+                                     */
+                                    @Override
+                                    public Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getSubtreeToReplace() {
+                                        return new Subtree<>(
+                                                new Tree<>(
+                                                        StringGraphs
+                                                                .newStringGraphBuilder()
+                                                                .putEdgeValue(vR, vA, eRA)
+                                                                .build()),
+                                                vR);
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getReplacementTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vX, vY, eXY)
+                                                        .build());
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getExpectedTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vX, vY, eXY)
+                                                        .build());
+                                    }
+                                }
+                        },
+                        {
+                                "Node to replace is a child",
+                                new ISubtreeReplacerTest() {
+                                    /*
+                                     *   subtreeToReplace replacementTree => expectedTree
+                                     *       P                                   P
+                                     *       | (ePR)                             | (label from ePR)
+                                     *      >R< ------------> X           =>     X
+                                     *      / \ (eRA, eRB)    | (eXY)            | (eXY)
+                                     *     A   B              Y                  Y
+                                     */
+                                    @Override
+                                    public Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getSubtreeToReplace() {
+                                        return new Subtree<>(
+                                                new Tree<>(
+                                                        StringGraphs
+                                                                .newStringGraphBuilder()
+                                                                .putEdgeValue(vP, vR, ePR)
+                                                                .putEdgeValue(vR, vA, eRA)
+                                                                .putEdgeValue(vR, vB, eRB)
+                                                                .build()),
+                                                vR);
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getReplacementTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vX, vY, eXY)
+                                                        .build());
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getExpectedTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vP, vX, ePR)
+                                                        .putEdgeValue(vX, vY, eXY)
+                                                        .build());
+                                    }
+                                }
+                        },
+                        {
+                                "Node to replace is a leaf",
+                                new ISubtreeReplacerTest() {
+                                    /*
+                                     *   subtreeToReplace   replacementTree =>     expectedTree
+                                     *       P                                         P
+                                     *       | (ePR)                                   | (label from ePR)
+                                     *      >R< ------------> X             =>         X
+                                     */
+                                    @Override
+                                    public Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getSubtreeToReplace() {
+                                        return new Subtree<>(
+                                                new Tree<>(
+                                                        StringGraphs
+                                                                .newStringGraphBuilder()
+                                                                .putEdgeValue(vP, vR, ePR)
+                                                                .build()),
+                                                vR);
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getReplacementTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .addNode(vX)
+                                                        .build());
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getExpectedTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vP, vX, ePR)
+                                                        .build());
+                                    }
+                                }
+                        },
+                        {
+                                "Complex scenario with a deeper subtree",
+                                new ISubtreeReplacerTest() {
+                                    /*
+                                     *   subtreeToReplace       replacementTree      =>   expectedTree
+                                     *         P                                           P
+                                     *         | (ePR)                                     | (label from ePR)
+                                     *        >R< ------------------> X               =>   X
+                                     *       / \ (eRA, eRB)          / \ (eXY, eXZ)       / \ (eXY, eXZ)
+                                     *      A   B                   Y   Z                Y   Z
+                                     *     / (eAC_local)
+                                     *    C_local
+                                     */
+                                    @Override
+                                    public Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getSubtreeToReplace() {
+                                        final StringVertex vC_local = new StringVertex("C_local");
+                                        final String eAC_local = "A->C_local";
+                                        return new Subtree<>(
+                                                new Tree<>(
+                                                        StringGraphs
+                                                                .newStringGraphBuilder()
+                                                                .putEdgeValue(vP, vR, ePR)
+                                                                .putEdgeValue(vR, vA, eRA)
+                                                                .putEdgeValue(vR, vB, eRB)
+                                                                .putEdgeValue(vA, vC_local, eAC_local)
+                                                                .build()),
+                                                vR);
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getReplacementTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vX, vY, eXY)
+                                                        .putEdgeValue(vX, vZ, eXZ)
+                                                        .build());
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getExpectedTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vP, vX, ePR)
+                                                        .putEdgeValue(vX, vY, eXY)
+                                                        .putEdgeValue(vX, vZ, eXZ)
+                                                        .build());
+                                    }
+                                }
+                        },
+                        {
+                                "Replacement tree has overlapping nodes with original tree",
+                                new ISubtreeReplacerTest() {
+                                    /*
+                                     *   subtreeToReplace       replacementTree   => expectedTree
+                                     *      R                                             R
+                                     *     / \ (eRA, eRB)                                / \ (eRA, eRB)
+                                     *    >A<  B  -------------> X                =>    X   B
+                                     *                           |
+                                     *                           B (overlapping)
+                                     */
+                                    @Override
+                                    public Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getSubtreeToReplace() {
+                                        return new Subtree<>(
+                                                new Tree<>(
+                                                        StringGraphs
+                                                                .newStringGraphBuilder()
+                                                                .putEdgeValue(vR, vA, eRA)
+                                                                .putEdgeValue(vR, vB, eRB)
+                                                                .build()),
+                                                vA);
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getReplacementTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vX, vB, "X->B")
+                                                        .build());
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getExpectedTree() {
+                                        return new Tree<>(
+                                                StringGraphs
+                                                        .newStringGraphBuilder()
+                                                        .putEdgeValue(vR, vX, eRA)
+                                                        .putEdgeValue(vR, vB, eRB)
+                                                        .build());
+                                    }
+                                }
+                        }
+                }
+                            );
     }
 
     @Test
-    public void replaceSubtree_nodeToReplaceIsChild() {
-        //   subtreeToReplace replacementTree => expectedTree
-        //       P                                   P
-        //       | (ePR)                             | (label from ePR)
-        //      >R< ------------> X           =>     X
-        //      / \ (eRA, eRB)    | (eXY)            | (eXY)
-        //     A   B              Y                  Y
-        // Given
-        final var subtreeToReplace =
-                new Subtree<>(
-                        new Tree<>(
-                                StringGraphs
-                                        .newStringGraphBuilder()
-                                        .putEdgeValue(vP, vR, ePR)
-                                        .putEdgeValue(vR, vA, eRA)
-                                        .putEdgeValue(vR, vB, eRB)
-                                        .build()),
-                        vR);
-        final var replacementTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vX, vY, eXY)
-                                .build());
-        final var expectedTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vP, vX, ePR)
-                                .putEdgeValue(vX, vY, eXY)
-                                .build());
-
-        // When
-        final var actualTree = SubtreeReplacer.replaceSubtreeWithTree(subtreeToReplace, replacementTree);
-
-        // Then
-        assertThat(actualTree, is(expectedTree));
-    }
-
-    @Test
-    public void replaceSubtree_nodeToReplaceIsLeaf() {
-        //   subtreeToReplace   replacementTree =>     expectedTree
-        //       P                                         P
-        //       | (ePR)                                   | (label from ePR)
-        //      >R< ------------> X             =>         X
-        // Given
-        final var subtreeToReplace =
-                new Subtree<>(
-                        new Tree<>(
-                                StringGraphs
-                                        .newStringGraphBuilder()
-                                        .putEdgeValue(vP, vR, ePR)
-                                        .build()),
-                        vR);
-        final var replacementTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .addNode(vX)
-                                .build());
-        final var expectedTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vP, vX, ePR)
-                                .build());
-
-        // When
-        final var actualTree = SubtreeReplacer.replaceSubtreeWithTree(subtreeToReplace, replacementTree);
-
-        // Then
-        assertThat(actualTree, is(expectedTree));
-    }
-
-    @Test
-    public void replaceSubtree_complexScenarioWithDeeperSubtree() {
-        //   subtreeToReplace       replacementTree      =>   expectedTree
-        //         P                                           P
-        //         | (ePR)                                     | (label from ePR)
-        //        >R< ------------------> X               =>   X
-        //       / \ (eRA, eRB)          / \ (eXY, eXZ)       / \ (eXY, eXZ)
-        //      A   B                   Y   Z                Y   Z
-        //     / (eAC_local)
-        //    C_local
-        // Given
-        final StringVertex vC_local = new StringVertex("C_local");
-        final String eAC_local = "A->C_local";
-        final var subtreeToReplace =
-                new Subtree<>(
-                        new Tree<>(
-                                StringGraphs
-                                        .newStringGraphBuilder()
-                                        .putEdgeValue(vP, vR, ePR)
-                                        .putEdgeValue(vR, vA, eRA)
-                                        .putEdgeValue(vR, vB, eRB)
-                                        .putEdgeValue(vA, vC_local, eAC_local)
-                                        .build()),
-                        vR);
-        final var replacementTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vX, vY, eXY)
-                                .putEdgeValue(vX, vZ, eXZ)
-                                .build());
-        final var expectedTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vP, vX, ePR)
-                                .putEdgeValue(vX, vY, eXY)
-                                .putEdgeValue(vX, vZ, eXZ)
-                                .build());
-
-        // When
-        final var actualTree = SubtreeReplacer.replaceSubtreeWithTree(subtreeToReplace, replacementTree);
-
-        // Then
-        assertThat(actualTree, is(expectedTree));
-    }
-
-    @Test
-    public void replaceSubtree_withOverlappingReplacementTree() {
-        //   subtreeToReplace       replacementTree   => expectedTree
-        //      R                                             R
-        //     / \ (eRA, eRB)                                / \ (eRA, eRB)
-        //    >A<  B  -------------> X                =>    X   B
-        //                           |
-        //                           B (overlapping)
-        // Given
-        final var subtreeToReplace =
-                new Subtree<>(
-                        new Tree<>(
-                                StringGraphs
-                                        .newStringGraphBuilder()
-                                        .putEdgeValue(vR, vA, eRA)
-                                        .putEdgeValue(vR, vB, eRB)
-                                        .build()),
-                        vA);
-        final var replacementTreeWithOverlap =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vX, vB, "X->B")
-                                .build());
-        final var expectedTree =
-                new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
-                                .putEdgeValue(vR, vX, eRA)
-                                .putEdgeValue(vR, vB, eRB)
-                                .build());
-
-        // When
-        final var actualTree = SubtreeReplacer.replaceSubtreeWithTree(subtreeToReplace, replacementTreeWithOverlap);
-
-        // Then
-        assertThat(actualTree, is(expectedTree));
+    public void test_replaceSubtreeWithTree() {
+        assertThat(
+                SubtreeReplacer.replaceSubtreeWithTree(
+                        testCase.getSubtreeToReplace(),
+                        testCase.getReplacementTree()),
+                is(testCase.getExpectedTree()));
     }
 }
