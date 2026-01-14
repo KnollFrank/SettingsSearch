@@ -14,13 +14,8 @@ public class SubtreeReplacer {
         final MutableValueGraph<N, V> resultGraph = Graphs.toMutableValueGraph(subtreeToReplace.tree().graph());
         // 2. Finde den Elternteil und den Wert der eingehenden Kante, BEVOR der Teilbaum gelöscht wird.
         final Optional<Edge<N, V>> incomingEdge = subtreeToReplace.tree().incomingEdgeOf(subtreeToReplace.rootNodeOfSubtree());
-
-        // 3. Entferne den zu ersetzenden Teilbaum (alle seine Knoten).
-        //    Guava entfernt automatisch alle anliegenden Kanten.
         removeSubtreeFromGraph(subtreeToReplace, resultGraph);
-
-        // 4. Füge die Knoten und Kanten des neuen "Ersatz"-Baumes hinzu.
-        GraphCopiers.copyNodesAndEdges(replacementTree.graph(), resultGraph);
+        GraphCopiers.copySrcToDst(replacementTree.graph(), resultGraph);
 
         // 5. Verbinde den ursprünglichen Elternteil mit der Wurzel des neuen Baumes.
         incomingEdge.ifPresent(

@@ -9,7 +9,7 @@ class ToMutableValueGraphConverter {
 
     public static <N, V> MutableValueGraph<N, V> toMutableValueGraph(final ImmutableValueGraph<N, V> graph) {
         final MutableValueGraph<N, V> mutableCopy = ValueGraphBuilder.from(graph).build();
-        GraphCopiers.copyNodesAndEdges(graph, mutableCopy);
+        GraphCopiers.copySrcToDst(graph, mutableCopy);
         return mutableCopy;
     }
 }

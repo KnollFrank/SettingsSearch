@@ -7,7 +7,7 @@ import com.google.common.graph.MutableValueGraph;
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class GraphCopiers {
 
-    public static <N, V> void copyNodesAndEdges(final ImmutableValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
+    public static <N, V> void copySrcToDst(final ImmutableValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
         copyNodes(src, dst);
         copyEdges(src, dst);
     }
