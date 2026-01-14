@@ -7,6 +7,7 @@ import static org.junit.Assert.fail;
 import com.codepoetics.ambivalence.Either;
 import com.google.common.graph.ImmutableValueGraph;
 
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -318,23 +319,38 @@ public class SubtreeReplacerTest {
                 .getExpectedOutcome()
                 .forEither(
                         expectedTree ->
-                                assertThat(
-                                        SubtreeReplacer.replaceSubtreeWithTree(
-                                                testCase.getSubtreeToReplace(),
-                                                testCase.getReplacementTree()),
-                                        is(expectedTree)),
-                        expectedException -> {
-                            try {
-                                SubtreeReplacer.replaceSubtreeWithTree(
+                                test_replaceSubtreeWithTree_succeed(
                                         testCase.getSubtreeToReplace(),
-                                        testCase.getReplacementTree());
-                                fail("Expected an " + expectedException.getSimpleName() + " to be thrown, but nothing was thrown.");
-                            } catch (final Exception e) {
-                                assertThat(
-                                        "Thrown exception is not of the expected type or a subtype.",
-                                        expectedException.isAssignableFrom(e.getClass()),
-                                        is(true));
-                            }
-                        });
+                                        testCase.getReplacementTree(),
+                                        expectedTree),
+                        expectedException ->
+                                test_replaceSubtreeWithTree_fail(
+                                        testCase.getSubtreeToReplace(),
+                                        testCase.getReplacementTree(),
+                                        expectedException));
+    }
+
+    private void test_replaceSubtreeWithTree_succeed(
+            final Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> subtreeToReplace,
+            final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> replacementTree,
+            final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> expectedTree) {
+        MatcherAssert.assertThat(
+                SubtreeReplacer.replaceSubtreeWithTree(subtreeToReplace, replacementTree),
+                is(expectedTree));
+    }
+
+    private void test_replaceSubtreeWithTree_fail(
+            final Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> subtreeToReplace,
+            final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> replacementTree,
+            final Class<? extends Exception> expectedException) {
+        try {
+            SubtreeReplacer.replaceSubtreeWithTree(subtreeToReplace, replacementTree);
+            fail("Expected an " + expectedException.getSimpleName() + " to be thrown, but nothing was thrown.");
+        } catch (final Exception e) {
+            assertThat(
+                    "Thrown exception is not of the expected type or a subtype.",
+                    expectedException.isAssignableFrom(e.getClass()),
+                    is(true));
+        }
     }
 }
