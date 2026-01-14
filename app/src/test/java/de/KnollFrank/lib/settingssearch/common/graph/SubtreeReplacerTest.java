@@ -195,4 +195,40 @@ public class SubtreeReplacerTest {
         // Then
         assertThat(returnedGraph.graph(), is(expectedReturnedGraph.graph()));
     }
+
+    @Test
+    public void replaceSubtree_withOverlappingReplacementTree() {
+        // Given
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> originalTree =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vR, vA, eRA)
+                                .putEdgeValue(vR, vB, eRB)
+                                .build());
+
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> replacementTreeWithOverlap =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vX, vB, "X->B")
+                                .build());
+
+        // When
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> returnedGraph =
+                SubtreeReplacer.replaceSubtreeWithTree(
+                        new Subtree<>(originalTree, vA),
+                        replacementTreeWithOverlap);
+
+        // Then
+        final Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> expectedGraph =
+                new Tree<>(
+                        StringGraphs
+                                .newStringGraphBuilder()
+                                .putEdgeValue(vR, vX, eRA)
+                                .putEdgeValue(vR, vB, eRB)
+                                .build());
+
+        assertThat(returnedGraph.graph(), is(expectedGraph.graph()));
+    }
 }
