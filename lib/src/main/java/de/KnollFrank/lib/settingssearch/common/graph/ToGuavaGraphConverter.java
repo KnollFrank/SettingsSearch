@@ -45,6 +45,6 @@ public class ToGuavaGraphConverter<TNode, TEdge, TEdgeValue> {
 
     private void addEdges(final ImmutableValueGraph.Builder<TNode, TEdgeValue> guavaGraphBuilder,
                           final Set<Edge<TNode, TEdgeValue>> edges) {
-        edges.forEach(edge -> guavaGraphBuilder.putEdgeValue(edge.edge(), edge.edgeValue()));
+        edges.forEach(edge -> guavaGraphBuilder.putEdgeValue(edge.endpointPair(), edge.value()));
     }
 }

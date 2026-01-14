@@ -41,8 +41,8 @@ public class PreferencePathProvider {
                 .stream()
                 .map(searchablePreferenceEdge ->
                              new SearchablePreferenceOfHostWithinTree(
-                                     searchablePreferenceEdge.edgeValue(),
-                                     searchablePreferenceEdge.edge().source(),
+                                     searchablePreferenceEdge.value(),
+                                     searchablePreferenceEdge.endpointPair().source(),
                                      treePath.tree()))
                 .collect(Collectors.toList());
     }

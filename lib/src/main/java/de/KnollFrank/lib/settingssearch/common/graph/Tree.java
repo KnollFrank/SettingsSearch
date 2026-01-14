@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.collect.MoreCollectors;
-import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ValueGraph;
 
 import java.util.Optional;
@@ -25,14 +24,14 @@ public record Tree<N, V, G extends ValueGraph<N, V>>(G graph) {
                 .collect(MoreCollectors.toOptional());
     }
 
-    public Optional<EndpointPair<N>> incomingEdgeOf(final N node) {
+    public Optional<Edge<N, V>> incomingEdgeOf(final N node) {
         return Graphs
                 .getIncomingEdgesOfNode(graph, node)
                 .stream()
                 .collect(MoreCollectors.toOptional());
     }
 
-    public Set<EndpointPair<N>> outgoingEdgesOf(final N node) {
+    public Set<Edge<N, V>> outgoingEdgesOf(final N node) {
         return Graphs.getOutgoingEdgesOfNode(graph, node);
     }
 

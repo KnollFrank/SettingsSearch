@@ -76,12 +76,12 @@ public class TreesTest {
         final List<String> edgeValues =
                 edgesOnPath
                         .stream()
-                        .map(Edge::edgeValue)
+                        .map(Edge::value)
                         .collect(Collectors.toList());
         assertThat(edgesOnPath.size(), is(2));
         assertThat(edgeValues, contains(EDGE_1, EDGE_3));
-        assertThat(edgesOnPath.get(0).edge(), is(EndpointPair.ordered(ROOT, CHILD_1)));
-        assertThat(edgesOnPath.get(1).edge(), is(EndpointPair.ordered(CHILD_1, GRAND_CHILD_1)));
+        assertThat(edgesOnPath.get(0).endpointPair(), is(EndpointPair.ordered(ROOT, CHILD_1)));
+        assertThat(edgesOnPath.get(1).endpointPair(), is(EndpointPair.ordered(CHILD_1, GRAND_CHILD_1)));
     }
 
     @Test

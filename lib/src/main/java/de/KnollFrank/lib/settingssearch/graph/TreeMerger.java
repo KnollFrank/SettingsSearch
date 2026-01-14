@@ -5,6 +5,7 @@ import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.NodeReplacer;
 import de.KnollFrank.lib.settingssearch.common.graph.Subtree;
@@ -35,14 +36,15 @@ public class TreeMerger {
 
     private record TreeAndEdge(
             Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree,
+            // FK-TODO: use Edge record?
             EndpointPair<SearchablePreferenceScreen> edge) {
     }
 
     private static void copySubtreesOfSrcToDst(final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> src,
                                                final TreeAtNode<SearchablePreferenceScreen, SearchablePreference, MutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> dst) {
-        for (final EndpointPair<SearchablePreferenceScreen> outgoingEdgeOfMergePoint : src.tree().outgoingEdgesOf(src.nodeOfTree())) {
+        for (final Edge<SearchablePreferenceScreen, SearchablePreference> outgoingEdgeOfMergePoint : src.tree().outgoingEdgesOf(src.nodeOfTree())) {
             copyEdgeTargetSubtreeOfSrcToDst(
-                    new TreeAndEdge(src.tree(), outgoingEdgeOfMergePoint),
+                    new TreeAndEdge(src.tree(), outgoingEdgeOfMergePoint.endpointPair()),
                     dst);
         }
     }
