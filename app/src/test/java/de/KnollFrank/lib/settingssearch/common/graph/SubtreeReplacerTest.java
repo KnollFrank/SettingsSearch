@@ -179,7 +179,7 @@ public class SubtreeReplacerTest {
                                      *   subtreeToReplace       replacementTree      =>   expectedTree
                                      *         P                                           P
                                      *         | (ePR)                                     | (label from ePR)
-                                     *        >R< ------------------> X               =>   X
+                                     *        >R< ------------------> X              =>    X
                                      *       / \ (eRA, eRB)          / \ (eXY, eXZ)       / \ (eXY, eXZ)
                                      *      A   B                   Y   Z                Y   Z
                                      *     / (eAC_local)
@@ -266,8 +266,7 @@ public class SubtreeReplacerTest {
                                     }
                                 }
                         }
-                }
-                            );
+                });
     }
 
     @Test
