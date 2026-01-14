@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 
@@ -22,12 +21,7 @@ public class SubtreeReplacer {
         subtreeToReplace.getSubtreeNodes().forEach(resultGraph::removeNode);
 
         // 4. Füge die Knoten und Kanten des neuen "Ersatz"-Baumes hinzu.
-        replacementTree.graph().nodes().forEach(resultGraph::addNode);
-        for (final EndpointPair<N> edge : replacementTree.graph().edges()) {
-            final V value = replacementTree.graph().edgeValueOrDefault(edge, null);
-            // Guava-Kantenwerte sind nie null, daher kann die Prüfung entfallen, wenn der Graph valide ist.
-            resultGraph.putEdgeValue(edge.source(), edge.target(), value);
-        }
+        GraphCopiers.copyNodesAndEdges(replacementTree.graph(), resultGraph);
 
         // 5. Verbinde den ursprünglichen Elternteil mit der Wurzel des neuen Baumes.
         incomingEdge.ifPresent(
