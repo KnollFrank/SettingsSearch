@@ -35,4 +35,8 @@ public class Graphs {
     public static <N, V> MutableValueGraph<N, V> toMutableValueGraph(final ImmutableValueGraph<N, V> graph) {
         return ToMutableValueGraphConverter.toMutableValueGraph(graph);
     }
+
+    public static <N, V> void addEdge(final MutableValueGraph<N, V> graph, final Edge<N, V> edge) {
+        graph.putEdgeValue(edge.endpointPair(), edge.value());
+    }
 }
