@@ -1,11 +1,13 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.collect.Iterables;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import com.google.common.graph.Traverser;
 import com.google.common.graph.ValueGraph;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
 class TreeValidator {
@@ -16,6 +18,37 @@ class TreeValidator {
         }
         if (Graphs.isEmpty(graph)) {
             return TreeValidatorResult.invalid("The graph must not be empty.");
+        }
+        {
+            final int rootCount = Graphs.getRootNodes(graph).size();
+            if (rootCount != 1) {
+                return TreeValidatorResult.invalid(
+                        String.format(
+                                Locale.ROOT,
+                                "A Tree must have exactly one root node, but found %d: %s",
+                                rootCount,
+                                Graphs.getRootNodes(graph)));
+            }
+        }
+        {
+            final Optional<Node> nodeWithMultiplePredecessors = findNodeWithMultiplePredecessors(graph);
+            if (nodeWithMultiplePredecessors.isPresent()) {
+                final Node _nodeWithMultiplePredecessors = nodeWithMultiplePredecessors.orElseThrow();
+                return TreeValidatorResult.invalid(
+                        String.format(
+                                "Node '%s' is not a valid tree node because it has multiple predecessors: %s.",
+                                _nodeWithMultiplePredecessors,
+                                graph.predecessors(_nodeWithMultiplePredecessors)));
+            }
+        }
+        {
+            final Set<Node> unreachableNodes = getUnreachableNodesFromRootNode(graph);
+            if (!unreachableNodes.isEmpty()) {
+                return TreeValidatorResult.invalid(
+                        String.format(
+                                "The graph is not connected. The following nodes are not reachable from the root node: %s",
+                                unreachableNodes));
+            }
         }
         {
             final int numberOfNodes = graph.nodes().size();
@@ -30,26 +63,6 @@ class TreeValidator {
                                 numberOfEdges));
             }
         }
-        {
-            final int rootCount = Graphs.getRootNodes(graph).size();
-            if (rootCount != 1) {
-                return TreeValidatorResult.invalid("A Tree must have exactly one root node, but found: " + rootCount);
-            }
-        }
-        {
-            final Optional<Node> nodeWithMultiplePredecessors = findNodeWithMultiplePredecessors(graph);
-            if (nodeWithMultiplePredecessors.isPresent()) {
-                final Node _nodeWithMultiplePredecessors = nodeWithMultiplePredecessors.orElseThrow();
-                return TreeValidatorResult.invalid(
-                        String.format(
-                                "Node %s has multiple predecessors %s.",
-                                _nodeWithMultiplePredecessors,
-                                graph.predecessors(_nodeWithMultiplePredecessors)));
-            }
-        }
-        if (!allNodesReachableFromRootNode(graph)) {
-            return TreeValidatorResult.invalid("The graph is not connected; not all nodes are reachable from the root node.");
-        }
         return TreeValidatorResult.valid();
     }
 
@@ -61,12 +74,12 @@ class TreeValidator {
                 .findAny();
     }
 
-    private static <Node> boolean allNodesReachableFromRootNode(final ValueGraph<Node, ?> graph) {
-        return getReachableCountFromRootNode(graph) == graph.nodes().size();
+    private static <Node> Set<Node> getUnreachableNodesFromRootNode(final ValueGraph<Node, ?> graph) {
+        return Sets.difference(graph.nodes(), getReachableNodesFromRootNode(graph));
     }
 
-    private static <Node> int getReachableCountFromRootNode(final ValueGraph<Node, ?> graph) {
-        return Iterables.size(
+    private static <Node> Set<Node> getReachableNodesFromRootNode(final ValueGraph<Node, ?> graph) {
+        return ImmutableSet.copyOf(
                 Traverser
                         .forGraph(graph)
                         .depthFirstPreOrder(Graphs.getRootNode(graph).orElseThrow()));
