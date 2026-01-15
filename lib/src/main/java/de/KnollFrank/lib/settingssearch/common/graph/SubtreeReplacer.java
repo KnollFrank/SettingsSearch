@@ -13,9 +13,11 @@ public class SubtreeReplacer {
             final Subtree<N, V, ImmutableValueGraph<N, V>> subtreeToReplace,
             final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree) {
         final var resultGraph = Graphs.toMutableValueGraph(subtreeToReplace.tree().graph());
-        final var edgeToRootOfReplacementTree = createEdgeFromParentOfTreeAtNodeToTarget(subtreeToReplace.asTreeAtNode(), replacementTree.rootNode());
         removeSubtreeFromGraph(subtreeToReplace, resultGraph);
-        addTreeAndEdgeToGraph(replacementTree, edgeToRootOfReplacementTree, resultGraph);
+        {
+            final var edgeToRootOfReplacementTree = createEdgeFromParentOfTreeAtNodeToTarget(subtreeToReplace.asTreeAtNode(), replacementTree.rootNode());
+            addTreeAndEdgeToGraph(replacementTree, edgeToRootOfReplacementTree, resultGraph);
+        }
         return new Tree<>(ImmutableValueGraph.copyOf(resultGraph));
     }
 
