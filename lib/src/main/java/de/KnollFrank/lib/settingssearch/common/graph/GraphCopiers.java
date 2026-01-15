@@ -1,6 +1,5 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 
@@ -17,11 +16,6 @@ class GraphCopiers {
     }
 
     private static <N, V> void copyEdges(final ImmutableValueGraph<N, V> src, final MutableValueGraph<N, V> dst) {
-        for (final EndpointPair<N> edge : src.edges()) {
-            // FK-TODO: use Graphs.addEdge()
-            dst.putEdgeValue(
-                    edge,
-                    src.edgeValueOrDefault(edge, null));
-        }
+        Graphs.getEdges(src).forEach(edge -> Graphs.addEdge(dst, edge));
     }
 }

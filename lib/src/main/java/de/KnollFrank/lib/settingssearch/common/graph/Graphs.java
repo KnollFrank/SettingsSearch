@@ -22,6 +22,14 @@ public class Graphs {
         return RootNodeProvider.getRootNodes(graph);
     }
 
+    public static <N, V> Set<Edge<N, V>> getEdges(final ValueGraph<N, V> graph) {
+        return EdgesProvider.getEdges(graph);
+    }
+
+    public static <N, V> void addEdge(final MutableValueGraph<N, V> graph, final Edge<N, V> edge) {
+        graph.putEdgeValue(edge.endpointPair(), edge.value());
+    }
+
     public static <N, V> Set<Edge<N, V>> getIncomingEdgesOfNode(final ValueGraph<N, V> graph,
                                                                 final N node) {
         return EdgesProvider.getIncomingEdgesOfNode(graph, node);
@@ -34,9 +42,5 @@ public class Graphs {
 
     public static <N, V> MutableValueGraph<N, V> toMutableValueGraph(final ImmutableValueGraph<N, V> graph) {
         return ToMutableValueGraphConverter.toMutableValueGraph(graph);
-    }
-
-    public static <N, V> void addEdge(final MutableValueGraph<N, V> graph, final Edge<N, V> edge) {
-        graph.putEdgeValue(edge.endpointPair(), edge.value());
     }
 }
