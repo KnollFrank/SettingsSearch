@@ -15,6 +15,7 @@ import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceScreen;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+// FK-TODO: vereinfachen ähnlich zu SubtreeReplacer
 public class TreeMerger {
 
     public static Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> mergeSubtreeIntoTreeAtMergePoint(

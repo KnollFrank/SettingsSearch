@@ -94,6 +94,45 @@ public class SubtreeReplacerTest {
                                 }
                         },
                         {
+                                "Replacement with overlapping predecessor node should throw exception",
+                                new ISubtreeReplacerTest() {
+                                    /*
+                                     *   subtreeToReplace         replacementTree  =>   INVALID TREE
+                                     *        P                                              P
+                                     *        | (ePR)                                        | (ePR)
+                                     *        R                                    =>        R
+                                     *        |                                            / |
+                                     *        | (eRA)                               (X->R) | | (label from eRA)
+                                     *       >A< --------------------> X                   \ X (now has two parents: P and X)
+                                     *                                 | (X->R)
+                                     *                                 R (overlapping)
+                                     * */
+                                    @Override
+                                    public Subtree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getSubtreeToReplace() {
+                                        return new Subtree<>(
+                                                new Tree<>(
+                                                        StringGraphs.newStringGraphBuilder()
+                                                                .putEdgeValue(vP, vR, ePR)
+                                                                .putEdgeValue(vR, vA, eRA)
+                                                                .build()),
+                                                vA);
+                                    }
+
+                                    @Override
+                                    public Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>> getReplacementTree() {
+                                        return new Tree<>(
+                                                StringGraphs.newStringGraphBuilder()
+                                                        .putEdgeValue(vX, vR, "X->R")
+                                                        .build());
+                                    }
+
+                                    @Override
+                                    public Either<Tree<StringVertex, String, ImmutableValueGraph<StringVertex, String>>, Class<? extends Exception>> getExpectedOutcome() {
+                                        return Either.ofRight(IllegalArgumentException.class);
+                                    }
+                                }
+                        },
+                        {
                                 "Node to replace is a child",
                                 new ISubtreeReplacerTest() {
                                     /*

@@ -49,6 +49,7 @@ import de.KnollFrank.settingssearch.test.TestActivity;
 
 @RunWith(RobolectricTestRunner.class)
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+// FK-TODO: wie in SubtreeReplacerTest ASCII-Bäume malen?
 public class TreeMergerTest {
 
     @Test
