@@ -14,11 +14,8 @@ public class SubtreeReplacer {
             final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree) {
         final var resultGraph = Graphs.toMutableValueGraph(subtreeToReplace.tree().graph());
         final var edgeToRootOfReplacementTree = createEdgeFromParentOfTreeAtNodeToTarget(subtreeToReplace.asTreeAtNode(), replacementTree.rootNode());
-        // remove subtreeToReplace
         removeSubtreeFromGraph(subtreeToReplace, resultGraph);
-        // add replacementTree
-        GraphCopiers.copySrcToDst(replacementTree.graph(), resultGraph);
-        addEdge(edgeToRootOfReplacementTree, resultGraph);
+        addTreeAndEdgeToGraph(replacementTree, edgeToRootOfReplacementTree, resultGraph);
         return new Tree<>(ImmutableValueGraph.copyOf(resultGraph));
     }
 
@@ -42,6 +39,13 @@ public class SubtreeReplacer {
     private static <N, V> void removeSubtreeFromGraph(final Subtree<N, V, ImmutableValueGraph<N, V>> subtree,
                                                       final MutableValueGraph<N, V> graph) {
         subtree.getSubtreeNodes().forEach(graph::removeNode);
+    }
+
+    private static <N, V> void addTreeAndEdgeToGraph(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
+                                                     final Optional<Edge<N, V>> edge,
+                                                     final MutableValueGraph<N, V> graph) {
+        GraphCopiers.copySrcToDst(tree.graph(), graph);
+        addEdge(edge, graph);
     }
 
     private static <N, V> void addEdge(final Optional<Edge<N, V>> edge,
