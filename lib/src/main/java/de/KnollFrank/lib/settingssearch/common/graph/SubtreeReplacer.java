@@ -36,11 +36,48 @@ public class SubtreeReplacer {
         return treeAtNode.tree().incomingEdgeOf(treeAtNode.nodeOfTree());
     }
 
+    /**
+     * Removes all nodes of the given subtree from the graph.
+     * Guava automatically removes all incident edges.
+     * <pre>
+     * Example:
+     *
+     * BEFORE (graph):          subtree to remove:
+     *      P                         >R<
+     *     / \                         |
+     *    Q   R                        A
+     *        |
+     *        A
+     *
+     * AFTER (graph):
+     *      P
+     *     /
+     *    Q
+     * </pre>
+     */
     private static <N, V> void removeSubtreeFromGraph(final Subtree<N, V, ImmutableValueGraph<N, V>> subtree,
                                                       final MutableValueGraph<N, V> graph) {
         subtree.getSubtreeNodes().forEach(graph::removeNode);
     }
 
+    /**
+     * Adds all nodes and edges from the given tree to the graph and then adds the provided connecting edge.
+     * <pre>
+     * Example:
+     *
+     * BEFORE (graph):      tree to add:      connecting edge:
+     *      P                   X                 P -> X
+     *     /                    |
+     *    Q                     Y
+     *
+     * AFTER (graph):
+     *      P
+     *     / \
+     *    Q   X
+     *        |
+     *        Y
+     * </pre>
+     */
     private static <N, V> void addTreeAndEdgeToGraph(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
                                                      final Optional<Edge<N, V>> edge,
                                                      final MutableValueGraph<N, V> graph) {
