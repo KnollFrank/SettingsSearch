@@ -103,7 +103,8 @@ public class SubtreeReplacerTest {
                                      *        R                                    =>        R
                                      *        |                                            / |
                                      *        | (eRA)                               (X->R) | | (label from eRA)
-                                     *       >A< --------------------> X                   \ X (now has two parents: P and X)
+                                     *        |                                            \ |
+                                     *       >A< --------------------> X                     X (now has two parents: P and X)
                                      *                                 | (X->R)
                                      *                                 R (overlapping)
                                      * */
