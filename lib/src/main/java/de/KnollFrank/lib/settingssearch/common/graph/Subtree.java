@@ -7,6 +7,7 @@ import com.google.common.graph.ValueGraph;
 import java.util.Set;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+// FK-TODO: remove, use Tree instead
 public record Subtree<N, V, G extends ValueGraph<N, V>>(Tree<N, V, G> tree, N rootNodeOfSubtree) {
 
     public Subtree {
