@@ -12,91 +12,83 @@ public class SubtreeReplacer {
     public static <N, V> Tree<N, V, ImmutableValueGraph<N, V>> replaceSubtreeWithTree(
             final Subtree<N, V, ImmutableValueGraph<N, V>> subtreeToReplace,
             final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree) {
-        final var resultGraph = Graphs.toMutableValueGraph(subtreeToReplace.tree().graph());
-        replaceSubtreeWithTree(subtreeToReplace, replacementTree, resultGraph);
-        return new Tree<>(ImmutableValueGraph.copyOf(resultGraph));
+        return ReplacerWorker
+                .withinGraph(subtreeToReplace.tree().graph())
+                .replaceSubtreeWithTree(subtreeToReplace, replacementTree);
     }
 
-    private static <N, V> void replaceSubtreeWithTree(final Subtree<N, V, ImmutableValueGraph<N, V>> subtreeToReplace,
-                                                      final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree,
-                                                      final MutableValueGraph<N, V> resultGraph) {
-        removeSubtreeFromGraph(subtreeToReplace, resultGraph);
-        {
-            final var edgeToRootOfReplacementTree = createEdgeFromParentOfTreeAtNodeToTarget(subtreeToReplace.asTreeAtNode(), replacementTree.rootNode());
-            addTreeAndEdgeToGraph(replacementTree, edgeToRootOfReplacementTree, resultGraph);
+    private static class ReplacerWorker<N, V> {
+
+        private final MutableValueGraph<N, V> resultGraph;
+
+        public static <N, V> ReplacerWorker<N, V> withinGraph(final ImmutableValueGraph<N, V> graph) {
+            return new ReplacerWorker<>(graph);
         }
-    }
 
-    private static <N, V> Optional<Edge<N, V>> createEdgeFromParentOfTreeAtNodeToTarget(
-            final TreeAtNode<N, V, ImmutableValueGraph<N, V>> treeAtNode,
-            final N target) {
-        return SubtreeReplacer
-                .getIncomingEdgeOf(treeAtNode)
-                .map(edgeToTreeAtNode -> {
-                    final N parentOfTreeAtNode = edgeToTreeAtNode.endpointPair().source();
-                    return new Edge<>(
-                            EndpointPair.ordered(
-                                    parentOfTreeAtNode,
-                                    target),
-                            edgeToTreeAtNode.value());
-                });
-    }
+        public ReplacerWorker(final ImmutableValueGraph<N, V> graph) {
+            this.resultGraph = Graphs.toMutableValueGraph(graph);
+        }
 
-    private static <N, V> Optional<Edge<N, V>> getIncomingEdgeOf(final TreeAtNode<N, V, ImmutableValueGraph<N, V>> treeAtNode) {
-        return treeAtNode.tree().incomingEdgeOf(treeAtNode.nodeOfTree());
-    }
+        public Tree<N, V, ImmutableValueGraph<N, V>> replaceSubtreeWithTree(
+                final Subtree<N, V, ImmutableValueGraph<N, V>> subtreeToReplace,
+                final Tree<N, V, ImmutableValueGraph<N, V>> replacementTree) {
+            remove(subtreeToReplace);
+            {
+                add(replacementTree);
+                final var edgeToRootOfReplacementTree = createEdgeFromParentOfTreeAtNodeToTarget(subtreeToReplace.asTreeAtNode(), replacementTree.rootNode());
+                add(edgeToRootOfReplacementTree);
+            }
+            return new Tree<>(ImmutableValueGraph.copyOf(resultGraph));
+        }
 
-    /**
-     * Removes all nodes of the given subtree from the graph.
-     * Guava automatically removes all incident edges.
-     * <pre>
-     * Example:
-     *
-     * BEFORE (graph):          subtree to remove:
-     *      P                         >R<
-     *     / \                         |
-     *    Q   R                        A
-     *        |
-     *        A
-     *
-     * AFTER (graph):
-     *      P
-     *     /
-     *    Q
-     * </pre>
-     */
-    private static <N, V> void removeSubtreeFromGraph(final Subtree<N, V, ImmutableValueGraph<N, V>> subtree,
-                                                      final MutableValueGraph<N, V> graph) {
-        subtree.getSubtreeNodes().forEach(graph::removeNode);
-    }
+        private static <N, V> Optional<Edge<N, V>> createEdgeFromParentOfTreeAtNodeToTarget(
+                final TreeAtNode<N, V, ImmutableValueGraph<N, V>> treeAtNode,
+                final N target) {
+            return ReplacerWorker
+                    .getIncomingEdgeOf(treeAtNode)
+                    .map(edgeToTreeAtNode -> {
+                        final N parentOfTreeAtNode = edgeToTreeAtNode.endpointPair().source();
+                        return new Edge<>(
+                                EndpointPair.ordered(
+                                        parentOfTreeAtNode,
+                                        target),
+                                edgeToTreeAtNode.value());
+                    });
+        }
 
-    /**
-     * Adds all nodes and edges from the given tree to the graph and then adds the provided connecting edge.
-     * <pre>
-     * Example:
-     *
-     * BEFORE (graph):      tree to add:      connecting edge:
-     *      P                   X                 P -> X
-     *     /                    |
-     *    Q                     Y
-     *
-     * AFTER (graph):
-     *      P
-     *     / \
-     *    Q   X
-     *        |
-     *        Y
-     * </pre>
-     */
-    private static <N, V> void addTreeAndEdgeToGraph(final Tree<N, V, ImmutableValueGraph<N, V>> tree,
-                                                     final Optional<Edge<N, V>> edge,
-                                                     final MutableValueGraph<N, V> graph) {
-        GraphCopiers.copySrcToDst(tree.graph(), graph);
-        addEdge(edge, graph);
-    }
+        private static <N, V> Optional<Edge<N, V>> getIncomingEdgeOf(final TreeAtNode<N, V, ImmutableValueGraph<N, V>> treeAtNode) {
+            return treeAtNode.tree().incomingEdgeOf(treeAtNode.nodeOfTree());
+        }
 
-    private static <N, V> void addEdge(final Optional<Edge<N, V>> edge,
-                                       final MutableValueGraph<N, V> graph) {
-        edge.ifPresent(_edge -> Graphs.addEdge(graph, _edge));
+        /**
+         * Removes all nodes of the given subtree from the graph.
+         * Guava automatically removes all incident edges.
+         * <pre>
+         * Example:
+         *
+         * BEFORE (resultGraph):      subtree to remove:
+         *      P                         >R<
+         *     / \                         |
+         *    Q   R                        A
+         *        |
+         *        A
+         *
+         * AFTER (resultGraph):
+         *      P
+         *     /
+         *    Q
+         * </pre>
+         */
+        private void remove(final Subtree<N, V, ImmutableValueGraph<N, V>> subtree) {
+            subtree.getSubtreeNodes().forEach(resultGraph::removeNode);
+        }
+
+        private void add(final Tree<N, V, ImmutableValueGraph<N, V>> tree) {
+            GraphCopiers.copySrcToDst(tree.graph(), resultGraph);
+        }
+
+        private void add(final Optional<Edge<N, V>> edge) {
+            edge.ifPresent(_edge -> Graphs.addEdge(resultGraph, _edge));
+        }
     }
 }
