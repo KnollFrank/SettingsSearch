@@ -29,8 +29,8 @@ public class NodeReplacerTest {
         //              --eRB--> B
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> originalGraph =
                 new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nP, nR, ePR)
                                 .putEdgeValue(nR, nA, eRA)
                                 .putEdgeValue(nR, nB, eRB)
@@ -48,8 +48,8 @@ public class NodeReplacerTest {
         //                --(eRB)--> B
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> expectedGraph =
                 new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nP, nX, ePR) // old incoming edge
                                 .putEdgeValue(nX, nA, eRA) // old outgoing edge
                                 .putEdgeValue(nX, nB, eRB) // old outgoing edge
@@ -67,8 +67,8 @@ public class NodeReplacerTest {
         //   --eRB--> B
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> originalGraph =
                 new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nR, nA, eRA)
                                 .putEdgeValue(nR, nB, eRB)
                                 .build());
@@ -85,8 +85,8 @@ public class NodeReplacerTest {
         //   --(eRB)--> B
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> expectedGraph =
                 new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nX, nA, eRA)
                                 .putEdgeValue(nX, nB, eRB)
                                 .build());
@@ -101,8 +101,8 @@ public class NodeReplacerTest {
         //   P --ePR--> R
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> originalGraph =
                 new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nP, nR, ePR)
                                 .build());
 
@@ -116,8 +116,8 @@ public class NodeReplacerTest {
         //   P --(ePR)--> X
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> expectedGraph =
                 new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nP, nX, ePR)
                                 .build());
         assertThat(returnedGraph, is(expectedGraph));

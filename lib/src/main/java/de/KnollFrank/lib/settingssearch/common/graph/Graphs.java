@@ -3,6 +3,7 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraph;
+import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.Optional;
 import java.util.Set;
@@ -42,5 +43,9 @@ public class Graphs {
 
     public static <N, V> MutableValueGraph<N, V> toMutableValueGraph(final ImmutableValueGraph<N, V> graph) {
         return ToMutableValueGraphConverter.toMutableValueGraph(graph);
+    }
+
+    public static <N, V> ImmutableValueGraph.Builder<N, V> directedImmutableValueGraphBuilder() {
+        return ValueGraphBuilder.directed().immutable();
     }
 }

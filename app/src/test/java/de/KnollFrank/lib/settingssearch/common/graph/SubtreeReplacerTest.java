@@ -66,8 +66,8 @@ public class SubtreeReplacerTest {
                                     public Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> getSubtreeToReplace() {
                                         return new Subtree<>(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nR, nA, eRA)
                                                                 .build()),
                                                 nR);
@@ -76,8 +76,8 @@ public class SubtreeReplacerTest {
                                     @Override
                                     public Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> getReplacementTree() {
                                         return new Tree<>(
-                                                StringGraphs
-                                                        .newStringGraphBuilder()
+                                                Graphs
+                                                        .<StringNode, String>directedImmutableValueGraphBuilder()
                                                         .putEdgeValue(nX, nY, eXY)
                                                         .build());
                                     }
@@ -86,8 +86,8 @@ public class SubtreeReplacerTest {
                                     public Either<Tree<StringNode, String, ImmutableValueGraph<StringNode, String>>, Class<? extends Exception>> getExpectedOutcome() {
                                         return Either.ofLeft(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nX, nY, eXY)
                                                                 .build()));
                                     }
@@ -112,7 +112,8 @@ public class SubtreeReplacerTest {
                                     public Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> getSubtreeToReplace() {
                                         return new Subtree<>(
                                                 new Tree<>(
-                                                        StringGraphs.newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nR, ePR)
                                                                 .putEdgeValue(nR, nA, eRA)
                                                                 .build()),
@@ -122,7 +123,8 @@ public class SubtreeReplacerTest {
                                     @Override
                                     public Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> getReplacementTree() {
                                         return new Tree<>(
-                                                StringGraphs.newStringGraphBuilder()
+                                                Graphs
+                                                        .<StringNode, String>directedImmutableValueGraphBuilder()
                                                         .putEdgeValue(nX, nR, "X->R")
                                                         .build());
                                     }
@@ -148,8 +150,8 @@ public class SubtreeReplacerTest {
                                     public Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> getSubtreeToReplace() {
                                         return new Subtree<>(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nR, ePR)
                                                                 .putEdgeValue(nR, nA, eRA)
                                                                 .putEdgeValue(nR, nB, eRB)
@@ -160,8 +162,8 @@ public class SubtreeReplacerTest {
                                     @Override
                                     public Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> getReplacementTree() {
                                         return new Tree<>(
-                                                StringGraphs
-                                                        .newStringGraphBuilder()
+                                                Graphs
+                                                        .<StringNode, String>directedImmutableValueGraphBuilder()
                                                         .putEdgeValue(nX, nY, eXY)
                                                         .build());
                                     }
@@ -170,8 +172,8 @@ public class SubtreeReplacerTest {
                                     public Either<Tree<StringNode, String, ImmutableValueGraph<StringNode, String>>, Class<? extends Exception>> getExpectedOutcome() {
                                         return Either.ofLeft(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nX, ePR)
                                                                 .putEdgeValue(nX, nY, eXY)
                                                                 .build()));
@@ -192,7 +194,8 @@ public class SubtreeReplacerTest {
                                     public Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> getSubtreeToReplace() {
                                         return new Subtree<>(
                                                 new Tree<>(
-                                                        StringGraphs.newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nQ, ePQ)
                                                                 .putEdgeValue(nP, nR, ePR)
                                                                 .putEdgeValue(nR, nA, eRA)
@@ -203,7 +206,8 @@ public class SubtreeReplacerTest {
                                     @Override
                                     public Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> getReplacementTree() {
                                         return new Tree<>(
-                                                StringGraphs.newStringGraphBuilder()
+                                                Graphs
+                                                        .<StringNode, String>directedImmutableValueGraphBuilder()
                                                         .putEdgeValue(nX, nY, eXY)
                                                         .build());
                                     }
@@ -212,7 +216,8 @@ public class SubtreeReplacerTest {
                                     public Either<Tree<StringNode, String, ImmutableValueGraph<StringNode, String>>, Class<? extends Exception>> getExpectedOutcome() {
                                         return Either.ofLeft(
                                                 new Tree<>(
-                                                        StringGraphs.newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nQ, ePQ)
                                                                 .putEdgeValue(nP, nX, ePR)
                                                                 .putEdgeValue(nX, nY, eXY)
@@ -233,8 +238,8 @@ public class SubtreeReplacerTest {
                                     public Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> getSubtreeToReplace() {
                                         return new Subtree<>(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nR, ePR)
                                                                 .build()),
                                                 nR);
@@ -243,8 +248,8 @@ public class SubtreeReplacerTest {
                                     @Override
                                     public Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> getReplacementTree() {
                                         return new Tree<>(
-                                                StringGraphs
-                                                        .newStringGraphBuilder()
+                                                Graphs
+                                                        .<StringNode, String>directedImmutableValueGraphBuilder()
                                                         .addNode(nX)
                                                         .build());
                                     }
@@ -253,8 +258,8 @@ public class SubtreeReplacerTest {
                                     public Either<Tree<StringNode, String, ImmutableValueGraph<StringNode, String>>, Class<? extends Exception>> getExpectedOutcome() {
                                         return Either.ofLeft(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nX, ePR)
                                                                 .build()));
                                     }
@@ -279,8 +284,8 @@ public class SubtreeReplacerTest {
                                         final String eAC_local = "A->C_local";
                                         return new Subtree<>(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nR, ePR)
                                                                 .putEdgeValue(nR, nA, eRA)
                                                                 .putEdgeValue(nR, nB, eRB)
@@ -292,8 +297,8 @@ public class SubtreeReplacerTest {
                                     @Override
                                     public Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> getReplacementTree() {
                                         return new Tree<>(
-                                                StringGraphs
-                                                        .newStringGraphBuilder()
+                                                Graphs
+                                                        .<StringNode, String>directedImmutableValueGraphBuilder()
                                                         .putEdgeValue(nX, nY, eXY)
                                                         .putEdgeValue(nX, nZ, eXZ)
                                                         .build());
@@ -303,8 +308,8 @@ public class SubtreeReplacerTest {
                                     public Either<Tree<StringNode, String, ImmutableValueGraph<StringNode, String>>, Class<? extends Exception>> getExpectedOutcome() {
                                         return Either.ofLeft(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nP, nX, ePR)
                                                                 .putEdgeValue(nX, nY, eXY)
                                                                 .putEdgeValue(nX, nZ, eXZ)
@@ -327,8 +332,8 @@ public class SubtreeReplacerTest {
                                     public Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> getSubtreeToReplace() {
                                         return new Subtree<>(
                                                 new Tree<>(
-                                                        StringGraphs
-                                                                .newStringGraphBuilder()
+                                                        Graphs
+                                                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                                                 .putEdgeValue(nR, nA, eRA)
                                                                 .putEdgeValue(nR, nB, eRB)
                                                                 .build()),
@@ -338,8 +343,8 @@ public class SubtreeReplacerTest {
                                     @Override
                                     public Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> getReplacementTree() {
                                         return new Tree<>(
-                                                StringGraphs
-                                                        .newStringGraphBuilder()
+                                                Graphs
+                                                        .<StringNode, String>directedImmutableValueGraphBuilder()
                                                         .putEdgeValue(nX, nB, "X->B")
                                                         .build());
                                     }

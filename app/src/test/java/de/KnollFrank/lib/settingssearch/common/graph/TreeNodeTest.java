@@ -15,8 +15,8 @@ public class TreeNodeTest {
         // Graph structure: [ v1 ]
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> graph =
                 new Tree<>(
-                        StringGraphs
-                        .newStringGraphBuilder()
+                        Graphs
+                        .<StringNode, String>directedImmutableValueGraphBuilder()
                         .addNode(new StringNode("v1"))
                         .build());
         final StringNode nodeNotInGraph = new StringNode("not-in-graph");

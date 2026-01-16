@@ -17,8 +17,8 @@ public class SubtreeTest {
         // Given
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
-                        StringGraphs
-                                .newStringGraphBuilder()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nA, nB, "val")
                                 .build());
         final StringNode nodeNotInTree = nE;

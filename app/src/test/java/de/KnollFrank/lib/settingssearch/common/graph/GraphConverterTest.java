@@ -28,8 +28,8 @@ public class GraphConverterTest {
     // [A] --("Edge-AB")--> [B]
     @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
     private final ImmutableValueGraph<StringNode, String> GUAVA_GRAPH =
-            StringGraphs
-                    .newStringGraphBuilder()
+            Graphs
+                    .<StringNode, String>directedImmutableValueGraphBuilder()
                     .addNode(nA)
                     .addNode(nB)
                     .putEdgeValue(nA, nB, "Edge-AB")
