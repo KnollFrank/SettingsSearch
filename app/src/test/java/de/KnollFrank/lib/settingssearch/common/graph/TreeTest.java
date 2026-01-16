@@ -144,7 +144,6 @@ public class TreeTest {
                                         .putEdgeValue(nB, nC, "B->C")
                                         .build()),
                         nA);
-
         assert_subtree_asTree_is_expectedTree(subtree, subtree.tree());
     }
 
