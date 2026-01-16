@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 
 import com.google.common.graph.ImmutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
@@ -136,74 +135,75 @@ public class TreeTest {
 
     @Test
     public void test_asTree_wholeTree() {
-        // Given: A valid tree A -> B -> C
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
-                new Tree<>(
-                        Graphs
-                                .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nA, nB, "A->B")
-                                .putEdgeValue(nB, nC, "B->C")
-                                .build());
+        // Given
         final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
-                new Subtree<>(tree, tree.rootNode());
+                new Subtree<>(
+                        new Tree<>(
+                                Graphs
+                                        .<StringNode, String>directedImmutableValueGraphBuilder()
+                                        .putEdgeValue(nA, nB, "A->B")
+                                        .putEdgeValue(nB, nC, "B->C")
+                                        .build()),
+                        nA);
 
         // When
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> actualTree = subtree.asTree();
 
         // Then
-        assertThat(actualTree, is(tree));
+        assertThat(actualTree, is(subtree.tree()));
     }
 
     @Test
     public void test_asTree_properSubtree() {
-        // Given: A valid tree A -> B -> C, and A -> D
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
-                new Tree<>(
-                        Graphs
-                                .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nA, nB, "A->B")
-                                .putEdgeValue(nB, nC, "B->C")
-                                .putEdgeValue(nA, nD, "A->D")
-                                .build());
+        // Given
         final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
-                new Subtree<>(tree, nB);
+                new Subtree<>(
+                        new Tree<>(
+                                Graphs
+                                        .<StringNode, String>directedImmutableValueGraphBuilder()
+                                        .putEdgeValue(nA, nB, "A->B")
+                                        .putEdgeValue(nB, nC, "B->C")
+                                        .putEdgeValue(nA, nD, "A->D")
+                                        .build()),
+                        nB);
 
         // When
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> actualTree = subtree.asTree();
 
         // Then
-        // FK-TODO: erzeuge und vergleiche mit dem gewünschten Subtree B -> C
-        assertThat(actualTree, is(not(tree))); // It's a new tree object
-        assertThat(actualTree.rootNode(), is(nB)); // Root is B
-        assertThat(actualTree.graph().nodes().size(), is(2)); // Contains B and C
-        assertThat(actualTree.graph().hasEdgeConnecting(nB, nC), is(true));
-        assertThat(actualTree.graph().edgeValueOrDefault(nB, nC, null), is("B->C"));
-        assertThat(actualTree.graph().nodes().contains(nA), is(false)); // Should not contain A
-        assertThat(actualTree.graph().nodes().contains(nD), is(false)); // Should not contain D
+        assertThat(
+                actualTree,
+                is(
+                        new Tree<>(
+                                Graphs
+                                        .<StringNode, String>directedImmutableValueGraphBuilder()
+                                        .putEdgeValue(nB, nC, "B->C")
+                                        .build())));
     }
 
     @Test
     public void test_asTree_shouldReturnSubtreeWithSingleNodeForLeaf() {
-        // Given: A valid tree A -> B
-        final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
-                new Tree<>(
-                        Graphs
-                                .<StringNode, String>directedImmutableValueGraphBuilder()
-                                .putEdgeValue(nA, nB, "A->B")
-                                .build());
-        // And a subtree starting from the leaf node B
+        // Given
         final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
-                new Subtree<>(tree, nB);
+                new Subtree<>(
+                        new Tree<>(
+                                Graphs
+                                        .<StringNode, String>directedImmutableValueGraphBuilder()
+                                        .putEdgeValue(nA, nB, "A->B")
+                                        .build()),
+                        nB);
 
         // When
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> resultTree = subtree.asTree();
 
-        // Then: The result should be a new tree with only node B
-        // FK-TODO: erzeuge und vergleiche mit dem gewünschten Subtree B
-        assertThat(resultTree, is(not(tree)));
-        assertThat(resultTree.rootNode(), is(nB));
-        assertThat(resultTree.graph().nodes().size(), is(1));
-        assertThat(resultTree.graph().nodes().contains(nB), is(true));
-        assertThat(resultTree.graph().nodes().contains(nA), is(false));
+        // Then
+        assertThat(
+                resultTree,
+                is(
+                        new Tree<>(
+                                Graphs
+                                        .<StringNode, String>directedImmutableValueGraphBuilder()
+                                        .addNode(nB)
+                                        .build())));
     }
 }
