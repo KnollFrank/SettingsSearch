@@ -55,7 +55,7 @@ class EdgesProvider {
                                                    final ValueGraph<N, V> graph) {
         return endpointPairs
                 .stream()
-                .map(endpointPair -> new Edge<>(endpointPair, getEdgeValue(endpointPair, graph)))
+                .map(endpointPair -> Edge.of(endpointPair, graph))
                 .collect(Collectors.toSet());
     }
 }

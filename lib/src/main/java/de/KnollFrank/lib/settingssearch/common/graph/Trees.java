@@ -28,7 +28,7 @@ public class Trees {
                 .getConsecutivePairs(path.nodes())
                 .stream()
                 .map(consecutiveNodePair -> EndpointPair.ordered(consecutiveNodePair.first, consecutiveNodePair.second))
-                .map(edge -> new Edge<>(edge, Graphs.getEdgeValue(edge, path.tree().graph())))
+                .map(edge -> Edge.of(edge, path.tree().graph()))
                 .toList();
     }
 }
