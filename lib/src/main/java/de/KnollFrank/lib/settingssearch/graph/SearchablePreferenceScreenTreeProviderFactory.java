@@ -27,7 +27,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final @IdRes int containerViewId,
             final SearchDatabaseConfig searchDatabaseConfig,
             final Locale locale,
-            final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
+            final AddEdgeToTreePredicate addEdgeToTreePredicate) {
         return createSearchablePreferenceScreenTreeProvider(
                 containerViewId,
                 (ViewGroup) fragment.requireView(),
@@ -36,7 +36,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                 fragment.requireContext(),
                 searchDatabaseConfig,
                 locale,
-                addEdgeToGraphPredicate);
+                addEdgeToTreePredicate);
     }
 
     public static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenTreeProvider(
@@ -47,7 +47,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
             final Context context,
             final SearchDatabaseConfig searchDatabaseConfig,
             final Locale locale,
-            final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
+            final AddEdgeToTreePredicate addEdgeToTreePredicate) {
         FragmentContainerViewAdder.addInvisibleFragmentContainerViewWithIdToParent(
                 view,
                 containerViewId);
@@ -73,7 +73,7 @@ public class SearchablePreferenceScreenTreeProviderFactory {
                                 searchDatabaseConfig.principalAndProxyProvider),
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
-                        addEdgeToGraphPredicate,
+                        addEdgeToTreePredicate,
                         context,
                         preferenceScreenWithHost -> {
                         }),

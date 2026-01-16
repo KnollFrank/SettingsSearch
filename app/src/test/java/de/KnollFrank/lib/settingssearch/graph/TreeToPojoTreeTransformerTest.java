@@ -56,7 +56,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
                 final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> entityGraph =
-                        PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
+                        PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
                                 preferenceFragment.getClass(),
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
@@ -151,7 +151,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
                 // Given
                 final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
                 final Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> entityGraph =
-                        PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
+                        PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
                                 preferenceFragment.getClass(),
                                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                                 activity);
@@ -285,7 +285,7 @@ public class TreeToPojoTreeTransformerTest extends PreferencesRoomDatabaseTest {
 
     private static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createSomeEntityGraph(final FragmentActivity activity) {
         final PreferenceFragmentCompat preferenceFragment = new PreferenceFragmentTemplate(getAddPreferencesToScreen());
-        return PojoGraphTestFactory.createEntityPreferenceScreenGraphRootedAt(
+        return PojoTreeTestFactory.createEntityPreferenceScreenTreeRootedAt(
                 preferenceFragment.getClass(),
                 createInstantiateAndInitializeFragment(preferenceFragment, activity),
                 activity);

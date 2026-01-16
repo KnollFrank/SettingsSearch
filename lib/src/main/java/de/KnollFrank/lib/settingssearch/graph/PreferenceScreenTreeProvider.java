@@ -18,14 +18,14 @@ class PreferenceScreenTreeProvider {
 
     private final PreferenceScreenGraphListener preferenceScreenGraphListener;
     private final ConnectedPreferenceScreenByPreferenceProvider connectedPreferenceScreenByPreferenceProvider;
-    private final AddEdgeToGraphPredicate addEdgeToGraphPredicate;
+    private final AddEdgeToTreePredicate addEdgeToTreePredicate;
 
     public PreferenceScreenTreeProvider(final PreferenceScreenGraphListener preferenceScreenGraphListener,
                                         final ConnectedPreferenceScreenByPreferenceProvider connectedPreferenceScreenByPreferenceProvider,
-                                        final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
+                                        final AddEdgeToTreePredicate addEdgeToTreePredicate) {
         this.preferenceScreenGraphListener = preferenceScreenGraphListener;
         this.connectedPreferenceScreenByPreferenceProvider = connectedPreferenceScreenByPreferenceProvider;
-        this.addEdgeToGraphPredicate = addEdgeToGraphPredicate;
+        this.addEdgeToTreePredicate = addEdgeToTreePredicate;
     }
 
     public Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> getPreferenceScreenTree(final PreferenceScreenWithHost root) {
@@ -56,7 +56,7 @@ class PreferenceScreenTreeProvider {
         return Maps.filter(
                 connectedPreferenceScreenByPreferenceProvider.getConnectedPreferenceScreenByPreference(root),
                 (final Preference preference, final PreferenceScreenWithHost child) ->
-                        addEdgeToGraphPredicate.shallAddEdgeToGraph(
+                        addEdgeToTreePredicate.shallAddEdgeToTree(
                                 new PreferenceEdge(preference),
                                 root,
                                 child));

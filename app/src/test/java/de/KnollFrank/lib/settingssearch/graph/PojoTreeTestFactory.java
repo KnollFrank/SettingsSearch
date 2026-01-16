@@ -17,15 +17,14 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
-// FK-TODO: rename to PojoTreeTestFactory
-public class PojoGraphTestFactory {
+public class PojoTreeTestFactory {
 
-    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenTreeRootedAt(
             final Class<? extends PreferenceFragmentCompat> root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
-        return createEntityPreferenceScreenGraphRootedAt(
-                PojoGraphTestFactory
+        return createEntityPreferenceScreenTreeRootedAt(
+                PojoTreeTestFactory
                         .getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment)
                         .getPreferenceScreenWithHostOfFragment(
                                 root,
@@ -35,28 +34,28 @@ public class PojoGraphTestFactory {
                 context);
     }
 
-    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenTreeRootedAt(
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
             final Context context) {
-        return createEntityPreferenceScreenGraphRootedAt(
+        return createEntityPreferenceScreenTreeRootedAt(
                 root,
                 instantiateAndInitializeFragment,
                 (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
                 context);
     }
 
-    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenGraphRootedAt(
+    public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenTreeRootedAt(
             final PreferenceScreenWithHost root,
             final InstantiateAndInitializeFragment instantiateAndInitializeFragment,
-            final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
+            final AddEdgeToTreePredicate addEdgeToTreePredicate,
             final Context context) {
         return PreferenceScreenTreeProviderFactory
                 .createPreferenceScreenTreeProvider(
                         getPreferenceScreenWithHostProvider(instantiateAndInitializeFragment),
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
-                        addEdgeToGraphPredicate,
+                        addEdgeToTreePredicate,
                         context,
                         preferenceScreenWithHost -> {
                         })

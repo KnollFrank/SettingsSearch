@@ -90,12 +90,12 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                 final var result =
                         createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
                                 Fragment1ConnectedToFragment2AndFragment4.class,
-                                new AddEdgeToGraphPredicate() {
+                                new AddEdgeToTreePredicate() {
 
                                     @Override
-                                    public boolean shallAddEdgeToGraph(final PreferenceEdge edge,
-                                                                       final PreferenceScreenWithHost sourceNodeOfEdge,
-                                                                       final PreferenceScreenWithHost targetNodeOfEdge) {
+                                    public boolean shallAddEdgeToTree(final PreferenceEdge edge,
+                                                                      final PreferenceScreenWithHost sourceNodeOfEdge,
+                                                                      final PreferenceScreenWithHost targetNodeOfEdge) {
                                         return !shallNotAddEdgeToGraph(sourceNodeOfEdge, targetNodeOfEdge);
                                     }
 
@@ -177,7 +177,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
     private static SearchablePreferenceScreenTreeProvider createSearchablePreferenceScreenGraphProvider(
             final FragmentActivity activity,
             final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider,
-            final AddEdgeToGraphPredicate addEdgeToGraphPredicate) {
+            final AddEdgeToTreePredicate addEdgeToTreePredicate) {
         return new SearchablePreferenceScreenTreeProvider(
                 preferenceScreenGraph -> {
                 },
@@ -194,7 +194,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         classNameOfActivity -> Optional.empty(),
-                        addEdgeToGraphPredicate,
+                        addEdgeToTreePredicate,
                         activity,
                         preferenceScreenWithHost -> {
                         }),
@@ -237,14 +237,14 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
 
     private static SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
             final Class<? extends Fragment> root,
-            final AddEdgeToGraphPredicate addEdgeToGraphPredicate,
+            final AddEdgeToTreePredicate addEdgeToTreePredicate,
             final FragmentActivity activity) {
         final PreferenceScreenWithHostProvider preferenceScreenWithHostProvider = createPreferenceScreenWithHostProvider(activity);
         return new SearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHost(
                 createSearchablePreferenceScreenGraphProvider(
                         activity,
                         preferenceScreenWithHostProvider,
-                        addEdgeToGraphPredicate),
+                        addEdgeToTreePredicate),
                 preferenceScreenWithHostProvider
                         .getPreferenceScreenWithHostOfFragment(
                                 root,
