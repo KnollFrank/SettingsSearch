@@ -48,7 +48,7 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
     }
 
     public SearchablePreferenceScreenTree adaptGraphAtPrefsFragmentFifth(
-            final SearchablePreferenceScreenTree graph,
+            final SearchablePreferenceScreenTree searchablePreferenceScreenTree,
             final Configuration newConfiguration,
             final SearchDatabaseConfig searchDatabaseConfig,
             final FragmentActivity activityContext) {
@@ -59,22 +59,22 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                     FRAGMENT_CONTAINER_VIEW_ID);
             return null;
         });
-        final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(graph);
+        final SearchablePreferenceScreen prefsFragmentFifthPreferenceScreen = getPrefsFragmentFifthPreferenceScreen(searchablePreferenceScreenTree);
         return new SearchablePreferenceScreenTree(
                 SubtreeReplacer.replaceSubtreeWithTree(
                         new Subtree<>(
-                                graph.tree(),
+                                searchablePreferenceScreenTree.tree(),
                                 prefsFragmentFifthPreferenceScreen),
                         getPojoGraphRootedAt(
                                 instantiateSearchablePreferenceScreen(
                                         prefsFragmentFifthPreferenceScreen,
-                                        graph.tree(),
+                                        searchablePreferenceScreenTree.tree(),
                                         createTreePathInstantiator(searchDatabaseConfig, activityContext),
                                         onUiThreadRunner),
-                                graph.locale(),
+                                searchablePreferenceScreenTree.locale(),
                                 activityContext,
                                 searchDatabaseConfig)),
-                graph.locale(),
+                searchablePreferenceScreenTree.locale(),
                 new ConfigurationBundleConverter().convertForward(newConfiguration));
     }
 
@@ -97,10 +97,10 @@ public class SearchDatabaseRootedAtPrefsFragmentFifthAdapter implements Searchab
                 .getSearchablePreferenceScreenTree(root);
     }
 
-    private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenTree graphToSearchIn) {
+    private SearchablePreferenceScreen getPrefsFragmentFifthPreferenceScreen(final SearchablePreferenceScreenTree treeToSearchIn) {
         return SearchablePreferenceScreens
                 .findSearchablePreferenceScreenById(
-                        graphToSearchIn.tree().graph().nodes(),
+                        treeToSearchIn.tree().graph().nodes(),
                         "en-de.KnollFrank.settingssearch.preference.fragment.PrefsFragmentFifth Bundle[{some_string_extra=hello world, some_boolean_extra=true}]") // Strings.prefixIdWithLanguage(PrefsFragmentFifth.class.getName(), graphToSearchIn.locale()))
                 .orElseThrow();
     }
