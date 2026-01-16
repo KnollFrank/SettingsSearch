@@ -16,10 +16,15 @@ public class TreeTest {
     private final StringNode nC = new StringNode("C");
     private final StringNode nD = new StringNode("D");
 
-    // FK-TODO: male schönere ASCII-Bäume
     @Test
     public void shouldCreateTreeFromValidGraph() {
-        // Given: A valid graph: [A] --("val")--> [B]
+        // Given
+        /*
+         * A
+         * |
+         * v
+         * B
+         */
         final ImmutableValueGraph<StringNode, String> validGraph =
                 Graphs
                         .<StringNode, String>directedImmutableValueGraphBuilder()
@@ -36,6 +41,9 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForUndirectedGraph() {
         // Given
+        /*
+         * A -- B
+         */
         final ImmutableValueGraph<StringNode, String> undirectedGraph =
                 ValueGraphBuilder
                         .undirected()
@@ -50,6 +58,7 @@ public class TreeTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForEmptyGraph() {
         // Given
+        // (empty graph)
         final ImmutableValueGraph<StringNode, String> emptyGraph =
                 Graphs
                         .<StringNode, String>directedImmutableValueGraphBuilder()
@@ -61,7 +70,14 @@ public class TreeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithCycle1() {
-        // Given: [A] <--> [B]
+        // Given
+        /*
+         * A
+         * ^
+         * |
+         * v
+         * B
+         */
         final ImmutableValueGraph<StringNode, String> graphWithCycle =
                 Graphs
                         .<StringNode, String>directedImmutableValueGraphBuilder()
@@ -75,7 +91,17 @@ public class TreeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithCycle2() {
-        // Given: [C] --> [A] <--> [B]
+        // Given
+        /*
+         *   C
+         *   |
+         *   v
+         *   A
+         *   ^
+         *   |
+         *   v
+         *   B
+         */
         final ImmutableValueGraph<StringNode, String> graphWithCycle =
                 Graphs
                         .<StringNode, String>directedImmutableValueGraphBuilder()
@@ -90,7 +116,13 @@ public class TreeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForNodeWithMultipleParents() {
-        // Given: [A] --> [C] <-- [B]
+        // Given
+        /*
+         * A   B
+         *  \ /
+         *   v
+         *   C
+         */
         final ImmutableValueGraph<StringNode, String> graphWithMultipleParents =
                 Graphs
                         .<StringNode, String>directedImmutableValueGraphBuilder()
@@ -104,7 +136,10 @@ public class TreeTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailForGraphWithMultipleRoots() {
-        // Given: [A], [B] (disconnected)
+        // Given
+        /*
+         * A   B
+         */
         final ImmutableValueGraph<StringNode, String> graphWithMultipleRoots =
                 Graphs
                         .<StringNode, String>directedImmutableValueGraphBuilder()
@@ -118,7 +153,13 @@ public class TreeTest {
 
     @Test
     public void shouldReturnRootNode() {
-        // Given: A valid tree with root A
+        // Given
+        /*
+         * A
+         * |
+         * v
+         * B
+         */
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
                         Graphs
@@ -135,6 +176,16 @@ public class TreeTest {
 
     @Test
     public void test_asTree_wholeTree() {
+        // Given
+        /*
+         * >A<
+         *  |
+         *  v
+         *  B
+         *  |
+         *  v
+         *  C
+         */
         final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
                 new Subtree<>(
                         new Tree<>(
@@ -149,10 +200,16 @@ public class TreeTest {
 
     @Test
     public void test_asTree_properSubtree() {
-        // Given
-
-        // When
         assert_subtree_asTree_is_expectedTree(
+                /*
+                 *   A
+                 *  / \
+                 * v   v
+                 *>B<  D
+                 *  |
+                 *  v
+                 *  C
+                 */
                 new Subtree<>(
                         new Tree<>(
                                 Graphs
@@ -162,6 +219,12 @@ public class TreeTest {
                                         .putEdgeValue(nA, nD, "A->D")
                                         .build()),
                         nB),
+                /*
+                 * B
+                 * |
+                 * v
+                 * C
+                 */
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
@@ -172,6 +235,12 @@ public class TreeTest {
     @Test
     public void test_asTree_shouldReturnSubtreeWithSingleNodeForLeaf() {
         assert_subtree_asTree_is_expectedTree(
+                /*
+                 * A
+                 * |
+                 * v
+                 *>B<
+                 */
                 new Subtree<>(
                         new Tree<>(
                                 Graphs
@@ -179,6 +248,9 @@ public class TreeTest {
                                         .putEdgeValue(nA, nB, "A->B")
                                         .build()),
                         nB),
+                /*
+                 * B
+                 */
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
