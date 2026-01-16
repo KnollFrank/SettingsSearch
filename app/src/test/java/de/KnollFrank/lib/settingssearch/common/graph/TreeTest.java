@@ -202,10 +202,10 @@ public class TreeTest {
     public void test_asTree_properSubtree() {
         assert_subtree_asTree_is_expectedTree(
                 /*
-                 *   A
-                 *  / \
-                 * v   v
-                 *>B<  D
+                 *    A
+                 *   / \
+                 *  v   v
+                 * >B<  D
                  *  |
                  *  v
                  *  C
@@ -236,10 +236,10 @@ public class TreeTest {
     public void test_asTree_shouldReturnSubtreeWithSingleNodeForLeaf() {
         assert_subtree_asTree_is_expectedTree(
                 /*
-                 * A
-                 * |
-                 * v
-                 *>B<
+                 *  A
+                 *  |
+                 *  v
+                 * >B<
                  */
                 new Subtree<>(
                         new Tree<>(
