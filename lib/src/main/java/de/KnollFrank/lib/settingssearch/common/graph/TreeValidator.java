@@ -1,8 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.google.common.graph.Traverser;
 import com.google.common.graph.ValueGraph;
 
 import java.util.Locale;
@@ -79,9 +77,8 @@ class TreeValidator {
     }
 
     private static <Node> Set<Node> getReachableNodesFromRootNode(final ValueGraph<Node, ?> graph) {
-        return ImmutableSet.copyOf(
-                Traverser
-                        .forGraph(graph)
-                        .depthFirstPreOrder(Graphs.getRootNode(graph).orElseThrow()));
+        return com.google.common.graph.Graphs.reachableNodes(
+                graph.asGraph(),
+                Graphs.getRootNode(graph).orElseThrow());
     }
 }

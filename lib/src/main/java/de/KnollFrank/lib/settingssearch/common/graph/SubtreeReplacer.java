@@ -49,8 +49,8 @@ public class SubtreeReplacer {
          * <pre>
          * Example:
          *
-         * BEFORE (resultGraph):      subtree to remove:
-         *      P                         >R<
+         * BEFORE (resultGraph):      tree to remove:
+         *      P                          R
          *     / \                         |
          *    Q   R                        A
          *        |
