@@ -1,8 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.Traverser;
 import com.google.common.graph.ValueGraph;
 
 import java.util.Set;
@@ -33,9 +31,8 @@ public record Subtree<N, V, G extends ValueGraph<N, V>>(Tree<N, V, G> tree, N ro
     }
 
     public Set<N> getSubtreeNodes() {
-        return ImmutableSet.copyOf(
-                Traverser
-                        .forTree(tree.graph())
-                        .depthFirstPreOrder(rootNodeOfSubtree));
+        return com.google.common.graph.Graphs.reachableNodes(
+                tree.graph().asGraph(),
+                rootNodeOfSubtree);
     }
 }
