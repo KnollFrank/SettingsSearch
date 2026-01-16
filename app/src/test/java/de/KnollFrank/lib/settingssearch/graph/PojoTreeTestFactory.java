@@ -41,7 +41,7 @@ public class PojoTreeTestFactory {
         return createEntityPreferenceScreenTreeRootedAt(
                 root,
                 instantiateAndInitializeFragment,
-                (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
+                edge -> true,
                 context);
     }
 

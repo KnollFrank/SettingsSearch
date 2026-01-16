@@ -107,7 +107,7 @@ public class MergedPreferenceScreenDataRepository<C> {
                         preferenceScreenWithHostProvider,
                         searchDatabaseConfig.preferenceFragmentConnected2PreferenceProvider,
                         searchDatabaseConfig.rootPreferenceFragmentOfActivityProvider,
-                        (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
+                        edge -> true,
                         activityContext,
                         new PreferenceScreenGraphListener() {
 

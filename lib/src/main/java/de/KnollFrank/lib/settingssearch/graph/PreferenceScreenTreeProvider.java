@@ -8,9 +8,9 @@ import com.google.common.graph.MutableValueGraph;
 
 import java.util.Map;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.common.Maps;
+import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
@@ -57,8 +57,8 @@ class PreferenceScreenTreeProvider {
                 connectedPreferenceScreenByPreferenceProvider.getConnectedPreferenceScreenByPreference(root),
                 (final Preference preference, final PreferenceScreenWithHost child) ->
                         addEdgeToTreePredicate.shallAddEdgeToTree(
-                                new PreferenceEdge(preference),
-                                root,
-                                child));
+                                new Edge<>(
+                                        EndpointPair.ordered(root, child),
+                                        preference)));
     }
 }

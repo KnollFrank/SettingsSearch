@@ -30,11 +30,11 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreeNode;
@@ -173,10 +173,8 @@ public class TreeMergerTest {
                 new AddEdgeToTreePredicate() {
 
                     @Override
-                    public boolean shallAddEdgeToTree(final PreferenceEdge edge,
-                                                      final PreferenceScreenWithHost sourceNodeOfEdge,
-                                                      final PreferenceScreenWithHost targetNodeOfEdge) {
-                        return !"some preference key".equals(edge.preference.getKey());
+                    public boolean shallAddEdgeToTree(final Edge<PreferenceScreenWithHost, Preference> edge) {
+                        return !"some preference key".equals(edge.value().getKey());
                     }
                 },
                 activity);

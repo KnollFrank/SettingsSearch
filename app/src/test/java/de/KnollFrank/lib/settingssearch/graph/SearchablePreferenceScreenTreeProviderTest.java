@@ -119,7 +119,7 @@ public class SearchablePreferenceScreenTreeProviderTest {
                         preferenceScreenWithHostProvider,
                         (preference, hostOfPreference) -> Optional.empty(),
                         activityClass -> Optional.empty(),
-                        (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
+                        edge -> true,
                         fragmentActivity,
                         preferenceScreenWithHost -> {
                         }),

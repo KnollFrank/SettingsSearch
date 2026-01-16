@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.test.core.app.ActivityScenario;
 
@@ -30,13 +31,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import de.KnollFrank.lib.settingssearch.InstantiateAndInitializeFragmentFactory;
-import de.KnollFrank.lib.settingssearch.PreferenceEdge;
 import de.KnollFrank.lib.settingssearch.PreferencePath;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHost;
 import de.KnollFrank.lib.settingssearch.PreferenceScreenWithHostProvider;
 import de.KnollFrank.lib.settingssearch.PreferenceScreensProviderTestHelper;
 import de.KnollFrank.lib.settingssearch.PrincipalAndProxyProvider;
 import de.KnollFrank.lib.settingssearch.client.searchDatabaseConfig.DefaultPreferenceFragmentIdProvider;
+import de.KnollFrank.lib.settingssearch.common.graph.Edge;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.SearchableInfoAndDialogInfoProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.converter.PreferenceScreenToSearchablePreferenceScreenConverter;
@@ -93,16 +94,13 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                                 new AddEdgeToTreePredicate() {
 
                                     @Override
-                                    public boolean shallAddEdgeToTree(final PreferenceEdge edge,
-                                                                      final PreferenceScreenWithHost sourceNodeOfEdge,
-                                                                      final PreferenceScreenWithHost targetNodeOfEdge) {
-                                        return !shallNotAddEdgeToGraph(sourceNodeOfEdge, targetNodeOfEdge);
+                                    public boolean shallAddEdgeToTree(final Edge<PreferenceScreenWithHost, Preference> edge) {
+                                        return !shallNotAddEdgeToGraph(edge);
                                     }
 
-                                    private boolean shallNotAddEdgeToGraph(final PreferenceScreenWithHost sourceNodeOfEdge,
-                                                                           final PreferenceScreenWithHost targetNodeOfEdge) {
-                                        return sourceNodeOfEdge.host() instanceof Fragment1ConnectedToFragment2AndFragment4 &&
-                                                targetNodeOfEdge.host() instanceof Fragment2ConnectedToFragment3ConnectedToFragment4;
+                                    private boolean shallNotAddEdgeToGraph(final Edge<PreferenceScreenWithHost, Preference> edge) {
+                                        return edge.endpointPair().source().host() instanceof Fragment1ConnectedToFragment2AndFragment4 &&
+                                                edge.endpointPair().target().host() instanceof Fragment2ConnectedToFragment3ConnectedToFragment4;
                                     }
                                 },
                                 activity);
@@ -149,9 +147,9 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
                                 .nodes()
                                 .stream()
                                 .map(searchablePreferenceScreen ->
-                                        new SearchablePreferenceScreenWithinTree(
-                                                searchablePreferenceScreen,
-                                                pojoGraph))
+                                             new SearchablePreferenceScreenWithinTree(
+                                                     searchablePreferenceScreen,
+                                                     pojoGraph))
                                 .collect(Collectors.toSet());
                 final SearchablePreferenceOfHostWithinTree preferenceOfFragment2PointingToFragment3 =
                         getPreference(
@@ -231,7 +229,7 @@ public class SearchablePreferenceScreenTreeProvider1Test extends PreferencesRoom
             final FragmentActivity activity) {
         return createSearchablePreferenceScreenGraphProviderAndPreferenceScreenWithHostProvider(
                 root,
-                (edge, sourceNodeOfEdge, targetNodeOfEdge) -> true,
+                edge -> true,
                 activity);
     }
 
