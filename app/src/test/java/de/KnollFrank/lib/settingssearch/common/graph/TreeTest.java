@@ -176,17 +176,16 @@ public class TreeTest {
 
     @Test
     public void test_asTree_wholeTree() {
-        // Given
         /*
-         * >A<
-         *  |
-         *  v
-         *  B
-         *  |
-         *  v
-         *  C
+         * >A<  =>   A
+         *  |        |
+         *  v        v
+         *  B        B
+         *  |        |
+         *  v        v
+         *  C        C
          */
-        final Subtree<StringNode, String, ImmutableValueGraph<StringNode, String>> subtree =
+        assert_subtree_asTree_is_expectedTree(
                 new Subtree<>(
                         new Tree<>(
                                 Graphs
@@ -194,22 +193,27 @@ public class TreeTest {
                                         .putEdgeValue(nA, nB, "A->B")
                                         .putEdgeValue(nB, nC, "B->C")
                                         .build()),
-                        nA);
-        assert_subtree_asTree_is_expectedTree(subtree, subtree.tree());
+                        nA),
+                new Tree<>(
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
+                                .putEdgeValue(nA, nB, "A->B")
+                                .putEdgeValue(nB, nC, "B->C")
+                                .build()));
     }
 
     @Test
     public void test_asTree_properSubtree() {
+        /*
+         *    A
+         *   / \
+         *  v   v
+         * >B<  D   =>   B
+         *  |            |
+         *  v            v
+         *  C            C
+         */
         assert_subtree_asTree_is_expectedTree(
-                /*
-                 *    A
-                 *   / \
-                 *  v   v
-                 * >B<  D
-                 *  |
-                 *  v
-                 *  C
-                 */
                 new Subtree<>(
                         new Tree<>(
                                 Graphs
@@ -219,12 +223,6 @@ public class TreeTest {
                                         .putEdgeValue(nA, nD, "A->D")
                                         .build()),
                         nB),
-                /*
-                 * B
-                 * |
-                 * v
-                 * C
-                 */
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
@@ -234,13 +232,13 @@ public class TreeTest {
 
     @Test
     public void test_asTree_shouldReturnSubtreeWithSingleNodeForLeaf() {
+        /*
+         *  A
+         *  |
+         *  v
+         * >B<  =>  B
+         */
         assert_subtree_asTree_is_expectedTree(
-                /*
-                 *  A
-                 *  |
-                 *  v
-                 * >B<
-                 */
                 new Subtree<>(
                         new Tree<>(
                                 Graphs
@@ -248,9 +246,6 @@ public class TreeTest {
                                         .putEdgeValue(nA, nB, "A->B")
                                         .build()),
                         nB),
-                /*
-                 * B
-                 */
                 new Tree<>(
                         Graphs
                                 .<StringNode, String>directedImmutableValueGraphBuilder()
