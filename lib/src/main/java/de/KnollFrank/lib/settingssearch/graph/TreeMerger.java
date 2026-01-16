@@ -5,7 +5,6 @@ import com.google.common.graph.MutableValueGraph;
 import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.Set;
-import java.util.stream.Stream;
 
 import de.KnollFrank.lib.settingssearch.common.Sets;
 import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
@@ -27,20 +26,6 @@ public class TreeMerger {
         TreeMerger
                 .getNodesToAdd(tree, treeNode)
                 .forEach(mergedGraph::addNode);
-        Stream
-                .concat(
-                        treeNode
-                                .tree()
-                                .graph()
-                                .nodes()
-                                .stream()
-                                .filter(node -> !node.equals(treeNode.node())),
-                        tree
-                                .graph()
-                                .nodes()
-                                .stream())
-                .forEach(mergedGraph::addNode);
-
         // 2. Add all edges from the original tree that are not connected to the "mergePoint".
         treeNode.tree().graph().edges().forEach(edge -> {
             if (!edge.source().equals(treeNode.node()) && !edge.target().equals(treeNode.node())) {
