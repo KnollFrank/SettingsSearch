@@ -111,7 +111,7 @@ public class TreeMerger {
 
     private static void copyNodesOfSubtreeToGraph(final Subtree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> subtree,
                                                   final MutableValueGraph<SearchablePreferenceScreen, SearchablePreference> graph) {
-        subtree.getSubtreeNodes().forEach(graph::addNode);
+        subtree.asTree().graph().nodes().forEach(graph::addNode);
     }
 
     private static void copyEdges(final ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference> src,

@@ -30,7 +30,7 @@ public record Subtree<N, V, G extends ValueGraph<N, V>>(Tree<N, V, G> tree, N ro
                                 getSubtreeNodes())));
     }
 
-    public Set<N> getSubtreeNodes() {
+    private Set<N> getSubtreeNodes() {
         return com.google.common.graph.Graphs.reachableNodes(
                 tree.graph().asGraph(),
                 rootNodeOfSubtree);
