@@ -17,6 +17,7 @@ import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.fragment.InstantiateAndInitializeFragment;
 
 @SuppressWarnings({"UnstableApiUsage", "NullableProblems"})
+// FK-TODO: rename to PojoTreeTestFactory
 public class PojoGraphTestFactory {
 
     public static Tree<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> createEntityPreferenceScreenGraphRootedAt(
