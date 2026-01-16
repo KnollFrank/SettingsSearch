@@ -6,7 +6,6 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.google.common.collect.ImmutableList;
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.Optional;
 
@@ -16,6 +15,7 @@ import de.KnollFrank.lib.settingssearch.PreferenceWithHost;
 import de.KnollFrank.lib.settingssearch.common.HeadAndTail;
 import de.KnollFrank.lib.settingssearch.common.Lists;
 import de.KnollFrank.lib.settingssearch.common.Preferences;
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.common.graph.TreePath;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreference;
@@ -41,7 +41,7 @@ public class TreePathInstantiator {
     private TreePath<PreferenceScreenWithHost, Preference, ImmutableValueGraph<PreferenceScreenWithHost, Preference>> instantiateTreePath(
             final HeadAndTail<SearchablePreferenceScreen> treePath,
             final Tree<SearchablePreferenceScreen, SearchablePreference, ImmutableValueGraph<SearchablePreferenceScreen, SearchablePreference>> tree) {
-        final ImmutableValueGraph.Builder<PreferenceScreenWithHost, Preference> graphBuilder = ValueGraphBuilder.directed().immutable();
+        final ImmutableValueGraph.Builder<PreferenceScreenWithHost, Preference> graphBuilder = Graphs.directedImmutableValueGraphBuilder();
         final ImmutableList.Builder<PreferenceScreenWithHost> nodesBuilder = ImmutableList.builder();
         SearchablePreferenceScreen searchablePreferenceScreenPrevious = treePath.head();
         PreferenceScreenWithHost preferenceScreenWithHostPrevious =

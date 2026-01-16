@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.is;
 
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
 
 import org.junit.Test;
 
@@ -37,9 +36,8 @@ public class TreesTest {
      */
     private static final Tree<String, String, ImmutableValueGraph<String, String>> testTree =
             new Tree<>(
-                    ValueGraphBuilder
-                            .directed()
-                            .<String, String>immutable()
+                    Graphs
+                            .<String, String>directedImmutableValueGraphBuilder()
                             .putEdgeValue(ROOT, CHILD_1, EDGE_1)
                             .putEdgeValue(ROOT, CHILD_2, EDGE_2)
                             .putEdgeValue(CHILD_1, GRAND_CHILD_1, EDGE_3)

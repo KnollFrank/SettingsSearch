@@ -2,12 +2,12 @@ package de.KnollFrank.lib.settingssearch.graph;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.DbDataProvider;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.SearchablePreferenceEntity;
@@ -25,7 +25,7 @@ public class SearchablePreferenceScreenEntitiesToGraphConverter {
     private static ImmutableValueGraph<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> convertScreensToGraph(
             final Set<SearchablePreferenceScreenEntity> screens,
             final DbDataProvider dbDataProvider) {
-        final ImmutableValueGraph.Builder<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> graphBuilder = ValueGraphBuilder.directed().immutable();
+        final ImmutableValueGraph.Builder<SearchablePreferenceScreenEntity, SearchablePreferenceEntity> graphBuilder = Graphs.directedImmutableValueGraphBuilder();
         addNodes(graphBuilder, screens);
         addEdges(graphBuilder, getEdgeDescriptions(screens, dbDataProvider));
         return graphBuilder.build();

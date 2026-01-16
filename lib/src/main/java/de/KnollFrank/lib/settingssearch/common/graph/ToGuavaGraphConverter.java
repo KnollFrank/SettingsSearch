@@ -2,7 +2,6 @@ package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.graph.EndpointPair;
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
 
 import org.jgrapht.Graph;
 
@@ -20,7 +19,7 @@ public class ToGuavaGraphConverter<TNode, TEdge, TEdgeValue> {
     }
 
     public ImmutableValueGraph<TNode, TEdgeValue> toGuava(final Graph<TNode, TEdge> jgraphtGraph) {
-        final ImmutableValueGraph.Builder<TNode, TEdgeValue> guavaGraphBuilder = ValueGraphBuilder.directed().immutable();
+        final ImmutableValueGraph.Builder<TNode, TEdgeValue> guavaGraphBuilder = Graphs.directedImmutableValueGraphBuilder();
         addNodes(guavaGraphBuilder, jgraphtGraph.vertexSet());
         addEdges(guavaGraphBuilder, getEdges(jgraphtGraph));
         return guavaGraphBuilder.build();

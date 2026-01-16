@@ -22,9 +22,8 @@ public class TreeTest {
     public void shouldCreateTreeFromValidGraph() {
         // Given: A valid graph: [A] --("val")--> [B]
         final ImmutableValueGraph<StringNode, String> validGraph =
-                ValueGraphBuilder
-                        .directed()
-                        .<StringNode, String>immutable()
+                Graphs
+                        .<StringNode, String>directedImmutableValueGraphBuilder()
                         .putEdgeValue(nA, nB, "val")
                         .build();
 
@@ -53,9 +52,8 @@ public class TreeTest {
     public void shouldFailForEmptyGraph() {
         // Given
         final ImmutableValueGraph<StringNode, String> emptyGraph =
-                ValueGraphBuilder
-                        .directed()
-                        .<StringNode, String>immutable()
+                Graphs
+                        .<StringNode, String>directedImmutableValueGraphBuilder()
                         .build();
 
         // When & Then
@@ -66,9 +64,8 @@ public class TreeTest {
     public void shouldFailForGraphWithCycle1() {
         // Given: [A] <--> [B]
         final ImmutableValueGraph<StringNode, String> graphWithCycle =
-                ValueGraphBuilder
-                        .directed()
-                        .<StringNode, String>immutable()
+                Graphs
+                        .<StringNode, String>directedImmutableValueGraphBuilder()
                         .putEdgeValue(nA, nB, "val1")
                         .putEdgeValue(nB, nA, "val2")
                         .build();
@@ -81,9 +78,8 @@ public class TreeTest {
     public void shouldFailForGraphWithCycle2() {
         // Given: [C] --> [A] <--> [B]
         final ImmutableValueGraph<StringNode, String> graphWithCycle =
-                ValueGraphBuilder
-                        .directed()
-                        .<StringNode, String>immutable()
+                Graphs
+                        .<StringNode, String>directedImmutableValueGraphBuilder()
                         .putEdgeValue(nC, nA, "C->A")
                         .putEdgeValue(nA, nB, "A->B")
                         .putEdgeValue(nB, nA, "B->A")
@@ -97,9 +93,8 @@ public class TreeTest {
     public void shouldFailForNodeWithMultipleParents() {
         // Given: [A] --> [C] <-- [B]
         final ImmutableValueGraph<StringNode, String> graphWithMultipleParents =
-                ValueGraphBuilder
-                        .directed()
-                        .<StringNode, String>immutable()
+                Graphs
+                        .<StringNode, String>directedImmutableValueGraphBuilder()
                         .putEdgeValue(nA, nC, "val1")
                         .putEdgeValue(nB, nC, "val2")
                         .build();
@@ -112,9 +107,8 @@ public class TreeTest {
     public void shouldFailForGraphWithMultipleRoots() {
         // Given: [A], [B] (disconnected)
         final ImmutableValueGraph<StringNode, String> graphWithMultipleRoots =
-                ValueGraphBuilder
-                        .directed()
-                        .<StringNode, String>immutable()
+                Graphs
+                        .<StringNode, String>directedImmutableValueGraphBuilder()
                         .addNode(nA)
                         .addNode(nB)
                         .build();
@@ -128,9 +122,8 @@ public class TreeTest {
         // Given: A valid tree with root A
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
-                        ValueGraphBuilder
-                                .directed()
-                                .<StringNode, String>immutable()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nA, nB, "val")
                                 .build());
 
@@ -146,9 +139,8 @@ public class TreeTest {
         // Given: A valid tree A -> B -> C
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
-                        ValueGraphBuilder
-                                .directed()
-                                .<StringNode, String>immutable()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nA, nB, "A->B")
                                 .putEdgeValue(nB, nC, "B->C")
                                 .build());
@@ -167,9 +159,8 @@ public class TreeTest {
         // Given: A valid tree A -> B -> C, and A -> D
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
-                        ValueGraphBuilder
-                                .directed()
-                                .<StringNode, String>immutable()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nA, nB, "A->B")
                                 .putEdgeValue(nB, nC, "B->C")
                                 .putEdgeValue(nA, nD, "A->D")
@@ -196,9 +187,8 @@ public class TreeTest {
         // Given: A valid tree A -> B
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
-                        ValueGraphBuilder
-                                .directed()
-                                .<StringNode, String>immutable()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nA, nB, "A->B")
                                 .build());
         // And a subtree starting from the leaf node B

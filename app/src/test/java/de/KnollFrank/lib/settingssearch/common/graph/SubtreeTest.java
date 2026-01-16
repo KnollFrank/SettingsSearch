@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
 
 import org.junit.Test;
 
@@ -32,9 +31,8 @@ public class SubtreeTest {
         // Given
         final Tree<StringNode, String, ImmutableValueGraph<StringNode, String>> tree =
                 new Tree<>(
-                        ValueGraphBuilder
-                                .directed()
-                                .<StringNode, String>immutable()
+                        Graphs
+                                .<StringNode, String>directedImmutableValueGraphBuilder()
                                 .putEdgeValue(nA, nB, "val")
                                 .build());
         final StringNode nodeOfTree = tree.graph().nodes().stream().findAny().orElseThrow();

@@ -7,7 +7,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.KnollFrank.lib.settingssearch.common.Pair;
+import de.KnollFrank.lib.settingssearch.common.graph.Graphs;
 import de.KnollFrank.lib.settingssearch.common.graph.Tree;
 import de.KnollFrank.lib.settingssearch.db.preference.pojo.converters.PersistableBundleTestFactory;
 import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTest;
@@ -25,7 +25,7 @@ import de.KnollFrank.lib.settingssearch.graph.TreeToPojoTreeTransformerTest.Pref
 public class SearchablePreferenceScreenGraphTestFactory {
 
     public static ImmutableValueGraph.Builder<SearchablePreferenceScreen, SearchablePreference> createGraphBuilder() {
-        return ValueGraphBuilder.directed().immutable();
+        return Graphs.directedImmutableValueGraphBuilder();
     }
 
     public record Data(String DST_PREFERENCE_ID,

@@ -1,7 +1,6 @@
 package de.KnollFrank.lib.settingssearch.common.graph;
 
 import com.google.common.graph.ImmutableValueGraph;
-import com.google.common.graph.ValueGraphBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +13,7 @@ public class TreeTransformerAlgorithm {
     public static <NSrc, VSrc, NDst, VDst> Tree<NDst, VDst, ImmutableValueGraph<NDst, VDst>> transform(
             final Tree<NSrc, VSrc, ImmutableValueGraph<NSrc, VSrc>> tree,
             final TreeTransformer<NSrc, VSrc, NDst, VDst> treeTransformer) {
-        final ImmutableValueGraph.Builder<NDst, VDst> transformedGraphBuilder = ValueGraphBuilder.directed().immutable();
+        final ImmutableValueGraph.Builder<NDst, VDst> transformedGraphBuilder = Graphs.directedImmutableValueGraphBuilder();
         final BreadthFirstTreeVisitor<NSrc, VSrc> treeVisitor =
                 new BreadthFirstTreeVisitor<>() {
 
